@@ -50,3 +50,28 @@ test('the tail rule needs a clear margin: a tail that fits both pangtis does not
   const on = await run(script, { tailAdv: 6, tailSlack: 30 });
   assert.strictEqual(on[4], 0);
 });
+
+test('gateNear: two near-equal pangtis that include the next one are decided, not frozen', async () => {
+  // a window where A's end and B's start score alike: the gate freezes the recited profile; with gateNear the
+  // line scores decide and the cursor moves on to B as more of B is heard
+  const nA2 = norm(A);
+  const half = nA2.slice(16) + norm(B).slice(0, 16); // A 0.58, B 0.43: within a 0.3 gate
+  const more = nA2.slice(24) + norm(B).slice(0, 24); // A 0.42, B 0.65: B leads, still within the gate
+  const script = [nA2, nA2, nA2, nA2, half, more, more, more];
+  const off = await run(script, { marginGate: 0.3 });
+  const on = await run(script, { marginGate: 0.3, gateNear: true });
+  assert.strictEqual(off[7], null, 'gated: frozen, no decision');
+  assert.strictEqual(on[7], 1, 'gateNear: moved to B');
+});
+
+test('revisitDwell: a return to the rahao pangti already sung needs one decode, not the far-jump dwell', async () => {
+  const R = 'ਸਤਿਗੁਰ ਪ੍ਰਸਾਦਿ ਜਪੁ ਆਦਿ ਸਚੁ ਰਹਾਉ';
+  const L3 = [R, B, 'ਚੁਪੈ ਚੁਪ ਨ ਹੋਵਈ ਜੇ ਲਾਇ ਰਹਾ ਲਿਵ ਤਾਰ', 'ਭੁਖਿਆ ਭੁਖ ਨ ਉਤਰੀ ਜੇ ਬੰਨਾ ਪੁਰੀਆ ਭਾਰ'].map((t, i) => ({ words: t.split(' '), verseId: 200 + i }));
+  const nR = norm(R); const n1 = norm(L3[1].words.join(' ')); const n2 = norm(L3[2].words.join(' ')); const n3 = norm(L3[3].words.join(' '));
+  const script = [nR, nR, nR, nR, n1, n1, n2, n2, n3, n3, nR, nR];
+  const go = async (opts) => { const f = new Follower(fakeInfer(script), sp, L3, { inputSr: SR, ...opts }); const out = []; for (let i = 0; i < script.length; i++) out.push(await f.push(new Float32Array(SR))); return out.map((r) => (r ? r.lineIndex : null)); };
+  const slow = await go({});
+  const fast = await go({ revisitDwell: 1 });
+  assert.strictEqual(slow[10], 3, 'recited: the first decode of the repeat still shows the last pangti');
+  assert.strictEqual(fast[10], 0, 'revisitDwell 1: back on the rahao at once');
+});
