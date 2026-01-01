@@ -239,7 +239,7 @@ const DUP_AWARE_LOCK = 1;
 // took Salok 72 while the ragi sang only Salok 71 (72% of that recording on the wrong Salok). A switch between two
 // candidates whose text scores are within NEAR_TWIN of each other is vetoed like an exact tie, until the words that
 // tell them apart are heard. 0 = exact ties only (as 9.0.5).
-const NEAR_TWIN = 0;
+const NEAR_TWIN = 0.03;
 // Simran hold (owner, Oct 16): while the sangat chants Waheguru simran in the middle of a Shabad (10 s to 10 min,
 // common in Akhand Kirtan), the screen holds its pangti and nothing is searched or switched on the simran itself;
 // the singing that follows decides (the same pangti, another pangti, or a new Shabad). engine/simran.js. 0 = off.
@@ -287,7 +287,7 @@ const AARTI_SHARED_BANIS = [21, 23]; // Rehras, Sohila
 // missing 19 points are pangtis shown 10 s late or never; aa02's trace shows a 45 s stall at a jump
 // back of ~180 lines on slow held notes (the follower released, and a fresh lock needs a 0.6 match).
 // AARTI_FOLLOW picks a profile from AARTI_PROFILES (engine/follower2.js options); 0 = as 9.0.4.
-const AARTI_FOLLOW = 0;
+const AARTI_FOLLOW = 1;
 const AARTI_PROFILES = [
   {},
   // sung, like Asa di Vaar, plus cheaper far jumps and re-locks
