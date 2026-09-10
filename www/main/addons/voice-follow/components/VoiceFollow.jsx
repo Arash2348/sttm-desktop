@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
 import { filterRequiredVerseItems } from '../../../navigator/shabad/utils/filter-verse-items';
+import { loadBani as loadBaniRows } from '../../../navigator/utils/load-bani';
 
 const anvaad = require('anvaad-js');
 const banidb = require('../../../banidb');
@@ -41,6 +42,15 @@ class VoiceFollowPcm extends AudioWorkletProcessor {
 registerProcessor('voice-follow-pcm', VoiceFollowPcm);
 `;
 
+// Sundar-gutka banis (Japji, Rehras, …) are stored with a per-length flag column;
+// this maps the user's chosen baniLength to the DB column loadBani() filters on.
+const BANI_LENGTH_COLS = {
+  short: 'existsSGPC',
+  medium: 'existsMedium',
+  long: 'existsTaksal',
+  extralong: 'existsBuddhaDal',
+};
+
 // Split a Unicode Gurmukhi line into word tokens for the aligner. The server
 // normalizes further (strips punctuation/matras irrelevant to matching); this
 // only needs to break on whitespace and drop dandas/line numbers.
@@ -55,10 +65,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // object across renders — a slice reference can be an immer proxy that gets
   // revoked between selection and render.
   const activeShabadId = useStoreState((state) => state.navigator.activeShabadId);
-  // Bani/ceremony are a different content path (separate ids); voice-follow only
-  // knows how to load a regular shabad by activeShabadId.
+  // Banis (Japji/Rehras/…) load via a separate content path: sundarGutkaBaniId +
+  // the chosen baniLength, NOT activeShabadId. Ceremonies stay unsupported.
   const isSundarGutkaBani = useStoreState((state) => state.navigator.isSundarGutkaBani);
   const isCeremonyBani = useStoreState((state) => state.navigator.isCeremonyBani);
+  const sundarGutkaBaniId = useStoreState((state) => state.navigator.sundarGutkaBaniId);
+  const baniLength = useStoreState((state) => state.userSettings.baniLength);
   const { setActiveVerseId, setLineNumber } = useStoreActions((actions) => actions.navigator);
   const setOverlayScreen = useStoreActions((actions) => actions.app.setOverlayScreen);
 
@@ -80,7 +92,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const srcRef = useRef(null);
   const linesRef = useRef([]); // [{ verseId }] indexed by aligner lineIndex
   const lastVerseRef = useRef(null);
-  const followingShabadRef = useRef(null); // shabad id the current session was built for
+  const followingKeyRef = useRef(null); // session key: `shabad:<id>` or `bani:<id>`
   const panelRef = useRef(null); // flyout panel, for click-outside dismissal
 
   const cleanup = useCallback(() => {
@@ -109,44 +121,59 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   }, [cleanup]);
 
   const start = useCallback(async () => {
-    if (isSundarGutkaBani || isCeremonyBani) {
+    // Ceremonies (Anand Karaj, Antam Sanskar, …) are free-form and not supported.
+    if (isCeremonyBani) {
       setStatus('error');
-      setDetail('voice-follow supports shabads for now, not banis/ceremonies.');
+      setDetail('Voice-Follow supports shabads and banis, not ceremonies yet.');
       return;
     }
-    if (!activeShabadId) {
+    const isBani = isSundarGutkaBani && !!sundarGutkaBaniId;
+    if (!isBani && !activeShabadId) {
       setStatus('error');
-      setDetail('Open a shabad first, then start voice-follow.');
+      setDetail('Open a shabad or bani first, then start Voice-Follow.');
       return;
     }
-    // Tear down any prior session so switching shabads mid-listen re-attaches
-    // cleanly instead of leaking a socket/mic bound to the old shabad.
+    // Tear down any prior session so switching content mid-listen re-attaches
+    // cleanly instead of leaking a socket/mic bound to the old shabad/bani.
     cleanup();
     setStatus('connecting');
-    setDetail('loading shabad lines…');
+    setDetail(isBani ? 'loading bani lines…' : 'loading shabad lines…');
     lastVerseRef.current = null;
-    followingShabadRef.current = activeShabadId;
+    followingKeyRef.current = isBani ? `bani:${sundarGutkaBaniId}` : `shabad:${activeShabadId}`;
     setPos(null);
 
-    // Resolve the currently displayed shabad's lines -> {verseId, unicode words}.
+    // Resolve the displayed content's lines -> {verseId, unicode words}. Banis
+    // return verse rows directly (each with .ID/.Gurmukhi); shabads come through
+    // filterRequiredVerseItems. Both must be anvaad.unicode()'d before matching.
     let verses;
     try {
-      const rows = await banidb.loadShabad(activeShabadId);
-      const filtered = filterRequiredVerseItems(rows)
-        .filter((it) => it && it.verseId != null && it.verse);
-      linesRef.current = filtered.map((it) => ({ verseId: it.verseId }));
-      verses = filtered.map((it) => ({
-        verseId: it.verseId,
-        words: tokenize(anvaad.unicode(it.verse)),
-      }));
+      if (isBani) {
+        const col = BANI_LENGTH_COLS[baniLength] || BANI_LENGTH_COLS.short;
+        const rows = await loadBaniRows(sundarGutkaBaniId, col);
+        const filtered = (rows || []).filter((r) => r && r.ID != null && r.Gurmukhi);
+        linesRef.current = filtered.map((r) => ({ verseId: r.ID }));
+        verses = filtered.map((r) => ({
+          verseId: r.ID,
+          words: tokenize(anvaad.unicode(r.Gurmukhi)),
+        }));
+      } else {
+        const rows = await banidb.loadShabad(activeShabadId);
+        const filtered = filterRequiredVerseItems(rows)
+          .filter((it) => it && it.verseId != null && it.verse);
+        linesRef.current = filtered.map((it) => ({ verseId: it.verseId }));
+        verses = filtered.map((it) => ({
+          verseId: it.verseId,
+          words: tokenize(anvaad.unicode(it.verse)),
+        }));
+      }
     } catch (e) {
       setStatus('error');
-      setDetail(`could not load shabad: ${e?.message || e}`);
+      setDetail(`could not load ${isBani ? 'bani' : 'shabad'}: ${e?.message || e}`);
       return;
     }
     if (!verses.length) {
       setStatus('error');
-      setDetail('shabad has no lines to follow.');
+      setDetail(`${isBani ? 'bani' : 'shabad'} has no lines to follow.`);
       return;
     }
 
@@ -230,25 +257,39 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     ws.onclose = () => {
       if (status === 'listening' || status === 'connecting') setStatus('stopped');
     };
-  }, [activeShabadId, isSundarGutkaBani, isCeremonyBani, mode, cleanup, setActiveVerseId, setLineNumber, status]);
+  }, [
+    activeShabadId,
+    isSundarGutkaBani,
+    isCeremonyBani,
+    sundarGutkaBaniId,
+    baniLength,
+    mode,
+    cleanup,
+    setActiveVerseId,
+    setLineNumber,
+    status,
+  ]);
 
-  // While listening, if the presenter switches to a different shabad (via any
-  // menu — search, history, favorites, arrows), re-attach to the new shabad so
-  // we stop matching against the previous one's lines.
+  // While listening, if the presenter switches to a different shabad or bani (via
+  // any menu — search, history, favorites, arrows, bani picker), re-attach to the
+  // new content so we stop matching against the previous one's lines.
   useEffect(() => {
     const active = status === 'listening' || status === 'connecting';
     if (!active) return;
-    if (isSundarGutkaBani || isCeremonyBani) {
+    if (isCeremonyBani) {
       // Switched to an unsupported content type — stop cleanly.
       stop();
       setStatus('error');
-      setDetail('voice-follow supports shabads for now, not banis/ceremonies.');
+      setDetail('Voice-Follow supports shabads and banis, not ceremonies yet.');
       return;
     }
-    if (activeShabadId && activeShabadId !== followingShabadRef.current) {
+    let key = null;
+    if (isSundarGutkaBani && sundarGutkaBaniId) key = `bani:${sundarGutkaBaniId}`;
+    else if (activeShabadId) key = `shabad:${activeShabadId}`;
+    if (key && key !== followingKeyRef.current) {
       start();
     }
-  }, [activeShabadId, isSundarGutkaBani, isCeremonyBani, status, start, stop]);
+  }, [activeShabadId, sundarGutkaBaniId, isSundarGutkaBani, isCeremonyBani, status, start, stop]);
 
   const listening = status === 'listening' || status === 'connecting';
   // The floating widget is present whenever the tool is opened OR a session is
