@@ -349,6 +349,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   let pillText = STATUS_LABEL[status] || 'Voice-Follow';
   if (status === 'listening') pillText = `Line ${posLine == null ? '—' : posLine}`;
 
+  // Live stats (shown while listening). Word is 1-based like the line; confidence
+  // reads as a friendly percentage.
+  const wordNum = pos && typeof pos.wordIndex === 'number' ? pos.wordIndex + 1 : null;
+  const confPct =
+    pos && typeof pos.confidence === 'number' ? `${Math.round(pos.confidence * 100)}%` : null;
+
   return (
     <>
       {/* Non-modal, draggable floating panel. No backdrop, so the Gurbani stays
@@ -409,13 +415,19 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           </button>
 
           {status === 'listening' ? (
-            <div className="vf-live">
-              <span className="vf-live-num">{posLine == null ? '—' : posLine}</span>
-              <span className="vf-live-label">
-                current line
-                <br />
-                {MODES[mode].label}
-              </span>
+            <div className="vf-stats">
+              <div className="vf-stat">
+                <span className="vf-stat-val">{posLine == null ? '—' : posLine}</span>
+                <span className="vf-stat-label">Line</span>
+              </div>
+              <div className="vf-stat">
+                <span className="vf-stat-val">{wordNum == null ? '—' : wordNum}</span>
+                <span className="vf-stat-label">Word</span>
+              </div>
+              <div className="vf-stat">
+                <span className="vf-stat-val">{confPct == null ? '—' : confPct}</span>
+                <span className="vf-stat-label">Confidence</span>
+              </div>
             </div>
           ) : (
             <div className="vf-status">{statusText}</div>
