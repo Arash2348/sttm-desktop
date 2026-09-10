@@ -116,11 +116,17 @@ const SWITCH_HYP_SLICE = 35; // chars of recent decoded audio to score (≈ the 
 // is rejected — without needing slower confirmation (see vf-switch-eval).
 const SWITCH_ACOUSTIC_MIN = 0.65; // candidate must match the recent audio at least this well
 const SWITCH_ACOUSTIC_MARGIN = 0.15; // ...and beat the current shabad by at least this much
-// 4 net winning decodes (~2s+) — tuned on the 86-min real-kirtan switch benchmark
-// (vf-kirtan-switch-eval): vs 2, this cuts false switches ~5x (159->32 over 86min,
-// precision 37%->72%) at the cost of some recall (79%->72%) and latency (~8s->~13s).
-// A wrong projector jump is far more jarring hands-free than a slightly late one.
-const SWITCH_CONFIRM = 4; // consecutive winning decodes needed to commit a switch
+// 3 net winning decodes — the knee on the 86-min real-kirtan switch benchmark
+// (vf-kirtan-switch-eval), ranked by a UX metric that splits "wrong" into STALE
+// (still showing the previous shabad — a graceful late switch) vs ERRONEOUS (jumped
+// to an unrelated shabad — the jarring failure to avoid). Over the full 86min:
+//   CONFIRM=2: on-correct 68.3%  erroneous 20.6%  (thrashes: 159 false switches)
+//   CONFIRM=3: on-correct 68.9%  erroneous 13.2%  (52 false)   <- best on both axes
+//   CONFIRM=4: on-correct 63.4%  erroneous 13.1%  (32 false)
+// Going 3->4 cuts the false-switch COUNT but buys ~zero erroneous-TIME (the extra
+// suppressed switches were brief); it only adds latency/stale, dropping on-correct
+// 5.5pts. So 3 minimizes jarring wrong jumps AND maximizes time on the right shabad.
+const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a switch
 // The CURRENT shabad is scored RELATIVE TO THE FOLLOWER CURSOR, not as a global max
 // over all its lines. Otherwise, starting a new shabad whose opening words happen to
 // appear in some far-off line of the shabad we're on keeps the current score high
