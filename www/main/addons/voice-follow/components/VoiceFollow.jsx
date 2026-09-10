@@ -2,7 +2,6 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
-import { Overlay } from '../../../common/sttm-ui';
 import { filterRequiredVerseItems } from '../../../navigator/shabad/utils/filter-verse-items';
 
 const anvaad = require('anvaad-js');
@@ -76,6 +75,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const linesRef = useRef([]); // [{ verseId }] indexed by aligner lineIndex
   const lastVerseRef = useRef(null);
   const followingShabadRef = useRef(null); // shabad id the current session was built for
+  const panelRef = useRef(null); // flyout panel, for click-outside dismissal
 
   const cleanup = useCallback(() => {
     try { nodeRef.current?.disconnect(); } catch (_) {}
@@ -244,6 +244,28 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     }
   }, [activeShabadId, isSundarGutkaBani, isCeremonyBani, status, start, stop]);
 
+  // Dismiss the (non-modal) flyout the easy ways: Esc, or a click anywhere
+  // outside it. The toolbar mic + status pill are excluded so their own toggle
+  // handlers aren't fought (clicking the mic while open should close via its own
+  // toggle, not double-fire here).
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const close = () => onScreenClose();
+    const onKey = (e) => { if (e.key === 'Escape') close(); };
+    const onDown = (e) => {
+      const t = e.target;
+      if (panelRef.current && panelRef.current.contains(t)) return;
+      if (t && t.closest && t.closest('#toolbar, #toolbar-nav, #tool-voice-follow, #vf-pill')) return;
+      close();
+    };
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('mousedown', onDown);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('mousedown', onDown);
+    };
+  }, [isOpen, onScreenClose]);
+
   const listening = status === 'listening' || status === 'connecting';
 
   const dot = <span style={{ ...styles.dot, background: DOT[status] || '#888' }} />;
@@ -251,12 +273,25 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
   return (
     <>
-      {/* Setup / control modal — opened from the toolbar mic button. */}
-      <Overlay onScreenClose={onScreenClose} className={isOpen ? '' : 'd-none'}>
-        <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
+      {/* Non-modal flyout anchored beside the toolbar mic. No backdrop, so the
+          Gurbani stays fully visible while you set up and sing. */}
+      {isOpen && (
+        <div ref={panelRef} style={styles.panel}>
+          <span style={styles.caret} />
           <div style={styles.header}>
-            {dot}
-            Voice-Follow <span style={styles.tag}>beta</span>
+            <span style={styles.title}>
+              {dot}
+              Voice-Follow <span style={styles.tag}>beta</span>
+            </span>
+            <button
+              type="button"
+              style={styles.close}
+              title="Close (Esc)"
+              aria-label="Close"
+              onClick={() => onScreenClose()}
+            >
+              ×
+            </button>
           </div>
 
           <div style={styles.row}>
@@ -295,13 +330,14 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             </div>
           )}
         </div>
-      </Overlay>
+      )}
 
-      {/* Compact status pill — stays visible while listening even with the modal
-          closed, so the presenter can monitor at a glance. Click reopens the
-          modal (to Stop or switch mode). */}
+      {/* Compact status pill — stays visible while listening even with the
+          flyout closed, so the presenter can monitor at a glance. Click reopens
+          the flyout (to Stop or switch mode). */}
       {listening && !isOpen && (
         <button
+          id="vf-pill"
           type="button"
           style={styles.pill}
           title="Voice-Follow — click to open"
@@ -323,20 +359,35 @@ VoiceFollow.propTypes = {
 const DOT = { idle: '#888', connecting: '#f39c12', listening: '#27ae60', error: '#c0392b', stopped: '#888' };
 
 const styles = {
-  modal: {
-    position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-    zIndex: 100000, width: 280, padding: 18, borderRadius: 12,
-    background: 'rgba(20,20,24,0.97)', color: '#eee',
+  // Anchored just right of the 48px-wide left toolbar, near the mic item — the
+  // same left-edge zone the Sundar Gutka / Ceremonies panels use. No backdrop.
+  panel: {
+    position: 'fixed', top: 88, left: 56, zIndex: 100000, width: 240, padding: 16,
+    borderRadius: 12, background: 'rgba(20,20,24,0.97)', color: '#eee',
     font: '13px/1.45 -apple-system,Segoe UI,sans-serif', boxShadow: '0 8px 30px rgba(0,0,0,0.55)',
   },
+  // Little arrow on the left edge pointing back at the toolbar mic.
+  caret: {
+    position: 'absolute', left: -7, top: 18, width: 0, height: 0,
+    borderTop: '7px solid transparent', borderBottom: '7px solid transparent',
+    borderRight: '7px solid rgba(20,20,24,0.97)',
+  },
   pill: {
-    position: 'fixed', bottom: 16, right: 16, zIndex: 99999,
+    position: 'fixed', bottom: 20, left: 56, zIndex: 99999,
     display: 'flex', alignItems: 'center', gap: 2, padding: '6px 12px', borderRadius: 999,
     border: 'none', cursor: 'pointer', background: 'rgba(20,20,24,0.92)', color: '#eee',
     font: '12px/1 -apple-system,Segoe UI,sans-serif', fontVariantNumeric: 'tabular-nums',
     boxShadow: '0 4px 18px rgba(0,0,0,0.4)',
   },
-  header: { display: 'flex', alignItems: 'center', fontWeight: 600, marginBottom: 10, fontSize: 14 },
+  header: {
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    fontWeight: 600, marginBottom: 10, fontSize: 14,
+  },
+  title: { display: 'flex', alignItems: 'center' },
+  close: {
+    border: 'none', background: 'transparent', color: '#aaa', cursor: 'pointer',
+    fontSize: 22, lineHeight: 1, padding: '0 4px', marginRight: -4,
+  },
   dot: { width: 8, height: 8, borderRadius: '50%', marginRight: 6, display: 'inline-block' },
   tag: { marginLeft: 6, fontSize: 9, opacity: 0.6, textTransform: 'uppercase', letterSpacing: 0.5 },
   row: { display: 'flex', gap: 6, marginBottom: 8 },
