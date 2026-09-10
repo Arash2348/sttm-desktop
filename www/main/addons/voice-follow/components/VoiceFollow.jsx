@@ -66,6 +66,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const [mode, setMode] = useState('kirtan');
   const [detail, setDetail] = useState('');
   const [pos, setPos] = useState(null); // { lineIndex, wordIndex, confidence }
+  // Zoom-style floating widget: collapse the panel down to just the pill, and
+  // drag either one anywhere on screen. `widgetPos` is null until first dragged
+  // (then it overrides the default anchored position).
+  const [collapsed, setCollapsed] = useState(false);
+  const [widgetPos, setWidgetPos] = useState(null); // { top, left } | null
+  const movedRef = useRef(false); // set during a drag so the pill click doesn't also expand
 
   const wsRef = useRef(null);
   const ctxRef = useRef(null);
@@ -244,19 +250,30 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     }
   }, [activeShabadId, isSundarGutkaBani, isCeremonyBani, status, start, stop]);
 
-  // Dismiss the (non-modal) flyout the easy ways: Esc, or a click anywhere
-  // outside it. The toolbar mic + status pill are excluded so their own toggle
-  // handlers aren't fought (clicking the mic while open should close via its own
-  // toggle, not double-fire here).
+  const listening = status === 'listening' || status === 'connecting';
+  // The floating widget is present whenever the tool is opened OR a session is
+  // running (like Zoom's share bar, which persists independently of any menu).
+  const present = isOpen || listening;
+  const panelVisible = present && !collapsed;
+
+  // Opening from the toolbar mic (or the pill) always expands the panel.
   useEffect(() => {
-    if (!isOpen) return undefined;
-    const close = () => onScreenClose();
-    const onKey = (e) => { if (e.key === 'Escape') close(); };
+    if (isOpen) setCollapsed(false);
+  }, [isOpen]);
+
+  // Dismiss the panel the easy ways: Esc or a click outside it. While a session
+  // is running we collapse to the pill (never kill the live session); otherwise
+  // we close the tool. Toolbar mic + pill are excluded so their own toggles
+  // aren't double-fired.
+  useEffect(() => {
+    if (!panelVisible) return undefined;
+    const dismiss = () => (listening ? setCollapsed(true) : onScreenClose());
+    const onKey = (e) => { if (e.key === 'Escape') dismiss(); };
     const onDown = (e) => {
       const t = e.target;
       if (panelRef.current && panelRef.current.contains(t)) return;
       if (t && t.closest && t.closest('#toolbar, #toolbar-nav, #tool-voice-follow, #vf-pill')) return;
-      close();
+      dismiss();
     };
     document.addEventListener('keydown', onKey);
     document.addEventListener('mousedown', onDown);
@@ -264,34 +281,80 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       document.removeEventListener('keydown', onKey);
       document.removeEventListener('mousedown', onDown);
     };
-  }, [isOpen, onScreenClose]);
+  }, [panelVisible, listening, onScreenClose]);
 
-  const listening = status === 'listening' || status === 'connecting';
+  // Drag handle: mousedown on a widget's grip moves the whole widget. Records a
+  // moved flag so a drag on the pill doesn't also fire its expand-on-click.
+  const startDrag = useCallback((e) => {
+    if (e.button !== 0) return;
+    const el = e.currentTarget.closest('[data-vf-widget]');
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const offX = e.clientX - rect.left;
+    const offY = e.clientY - rect.top;
+    movedRef.current = false;
+    const onMove = (m) => {
+      movedRef.current = true;
+      const maxLeft = window.innerWidth - rect.width;
+      const maxTop = window.innerHeight - rect.height;
+      setWidgetPos({
+        left: Math.min(Math.max(0, m.clientX - offX), Math.max(0, maxLeft)),
+        top: Math.min(Math.max(0, m.clientY - offY), Math.max(0, maxTop)),
+      });
+    };
+    const onUp = () => {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    };
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+    e.preventDefault();
+  }, []);
+
+  // Once dragged, both widgets use the free position (and the caret that points
+  // back at the mic no longer makes sense, so it's hidden).
+  const posOverride = widgetPos
+    ? { top: widgetPos.top, left: widgetPos.left, right: 'auto', bottom: 'auto' }
+    : null;
 
   const dot = <span style={{ ...styles.dot, background: DOT[status] || '#888' }} />;
   const posLine = pos && typeof pos.lineIndex === 'number' ? pos.lineIndex + 1 : null;
 
   return (
     <>
-      {/* Non-modal flyout anchored beside the toolbar mic. No backdrop, so the
-          Gurbani stays fully visible while you set up and sing. */}
-      {isOpen && (
-        <div ref={panelRef} style={styles.panel}>
-          <span style={styles.caret} />
-          <div style={styles.header}>
+      {/* Non-modal, draggable floating panel. No backdrop, so the Gurbani stays
+          fully visible while you set up and sing. Drag it by the header. */}
+      {panelVisible && (
+        <div ref={panelRef} data-vf-widget style={{ ...styles.panel, ...posOverride }}>
+          {!widgetPos && <span style={styles.caret} />}
+          <div style={styles.header} onMouseDown={startDrag} title="Drag to move">
             <span style={styles.title}>
+              <span style={styles.grip}>⠿</span>
               {dot}
               Voice-Follow <span style={styles.tag}>beta</span>
             </span>
-            <button
-              type="button"
-              style={styles.close}
-              title="Close (Esc)"
-              aria-label="Close"
-              onClick={() => onScreenClose()}
-            >
-              ×
-            </button>
+            <span style={styles.headerBtns}>
+              <button
+                type="button"
+                style={styles.hdrBtn}
+                title="Collapse to pill"
+                aria-label="Collapse"
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={() => setCollapsed(true)}
+              >
+                –
+              </button>
+              <button
+                type="button"
+                style={styles.hdrBtn}
+                title="Close (Esc)"
+                aria-label="Close"
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={() => (listening ? setCollapsed(true) : onScreenClose())}
+              >
+                ×
+              </button>
+            </span>
           </div>
 
           <div style={styles.row}>
@@ -332,16 +395,21 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         </div>
       )}
 
-      {/* Compact status pill — stays visible while listening even with the
-          flyout closed, so the presenter can monitor at a glance. Click reopens
-          the flyout (to Stop or switch mode). */}
-      {listening && !isOpen && (
+      {/* Collapsed state: a compact, draggable status pill. Click expands back
+          to the panel; drag to reposition (a drag doesn't trigger the expand). */}
+      {present && collapsed && (
         <button
           id="vf-pill"
+          data-vf-widget
           type="button"
-          style={styles.pill}
-          title="Voice-Follow — click to open"
-          onClick={() => setOverlayScreen('voice-follow')}
+          style={{ ...styles.pill, ...posOverride }}
+          title="Voice-Follow — click to expand, drag to move"
+          onMouseDown={startDrag}
+          onClick={() => {
+            if (movedRef.current) { movedRef.current = false; return; }
+            setCollapsed(false);
+            if (!isOpen) setOverlayScreen('voice-follow');
+          }}
         >
           {dot}
           {status === 'connecting' ? 'connecting…' : `line ${posLine == null ? '—' : posLine}`}
@@ -381,12 +449,14 @@ const styles = {
   },
   header: {
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    fontWeight: 600, marginBottom: 10, fontSize: 14,
+    fontWeight: 600, marginBottom: 10, fontSize: 14, cursor: 'move', userSelect: 'none',
   },
   title: { display: 'flex', alignItems: 'center' },
-  close: {
+  grip: { marginRight: 6, opacity: 0.4, fontSize: 12, letterSpacing: -1 },
+  headerBtns: { display: 'flex', alignItems: 'center', gap: 2 },
+  hdrBtn: {
     border: 'none', background: 'transparent', color: '#aaa', cursor: 'pointer',
-    fontSize: 22, lineHeight: 1, padding: '0 4px', marginRight: -4,
+    fontSize: 20, lineHeight: 1, padding: '0 6px', minWidth: 24,
   },
   dot: { width: 8, height: 8, borderRadius: '50%', marginRight: 6, display: 'inline-block' },
   tag: { marginLeft: 6, fontSize: 9, opacity: 0.6, textTransform: 'uppercase', letterSpacing: 0.5 },
