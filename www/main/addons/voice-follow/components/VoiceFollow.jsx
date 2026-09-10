@@ -40,6 +40,23 @@ const DETECT_TOP_N = 3; // how many candidates to surface in the UI
 // that merely contains it, so start-anchored hits carry extra weight.
 const START_MATCH_WEIGHT = 12;
 
+// Autopilot gates (separate from the manual one-shot detect above, so unattended
+// behavior can be tuned without touching manual mode). Autopilot runs detection
+// continuously in BOTH phases: it locks the first shabad, and while following it
+// keeps listening so it can SWITCH the instant a different shabad clearly takes
+// over — it does not wait for the follower to release (which can stall when the
+// new shabad's audio keeps grazing the old lines).
+const AP_LOCK_MIN_LETTERS = 6; // need a real phrase before the FIRST lock (kills quick wrong picks)
+const AP_LOCK_STABLE = 3; // leader must hold this many decodes before the first lock
+const AP_SWITCH_CONF = 0.7; // separation the new shabad needs to trigger a switch
+const AP_SWITCH_STABLE = 4; // a switch needs more confirmation than the first lock
+const AP_SWITCH_EVIDENCE = 10; // absolute vote weight the new leader must reach
+const AP_SWITCH_MARGIN = 1.2; // new leader must beat the shabad we're on by this factor
+const VOTE_CAP = 60; // clamp votes so a long shabad can't become impossible to switch away from
+// While following we run the recognizer AND the follower on every chunk; a slightly
+// larger recognizer hop keeps combined inference comfortably under real-time.
+const AP_REC_HOP_S = 0.9;
+
 // Two modes carried over from the web lab: Path (spoken paatth) and Kirtan
 // (sung). Both map to the karansea CTC + line decoder with the same tuned
 // params (the JS engine DEFAULTS), so the label is the only difference for now.
@@ -162,6 +179,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // shabads hands-free. phaseRef gates which engine each audio chunk feeds.
   const autopilotRef = useRef(false);
   const phaseRef = useRef('searching'); // 'searching' (detect) | 'following' (track)
+  const lockingRef = useRef(false); // a lock/switch is mid-commit — don't double-fire
   const sampleRateRef = useRef(null); // mic sample rate, for building engine sessions
   const currentShabadIdRef = useRef(null); // shabad currently projected (avoid re-open)
   const ctxRef = useRef(null);
@@ -229,6 +247,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     recognizingRef.current = false;
     autopilotRef.current = false;
     phaseRef.current = 'searching';
+    lockingRef.current = false;
     currentShabadIdRef.current = null;
     cleanup();
     setStatus('stopped');
@@ -402,64 +421,98 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     setDetail('listening for the next shabad…');
     try {
       if (sampleRateRef.current) {
-        recognizerRef.current = await engine.createRecognizer({ inputSr: sampleRateRef.current });
+        recognizerRef.current = await engine.createRecognizer({
+          inputSr: sampleRateRef.current,
+          hopS: AP_REC_HOP_S,
+        });
       }
     } catch (_) {
       /* keep the existing recognizer if a fresh one can't be built */
     }
   }, []);
 
-  // A confident, stable shabad emerged while searching. Build a follower for it,
-  // project it (unless it's the one already up), and switch to following — all
-  // without tearing down the single continuous mic session.
+  // A confident, stable shabad emerged — either the FIRST one (initial lock) or a
+  // DIFFERENT one that has taken over while we were following (switch). Build a
+  // follower for it, project it (unless it's the one already up), and (keep)
+  // following — all without tearing down the single continuous mic session.
+  // Re-entrancy-guarded so overlapping detections can't double-commit.
   const autopilotLock = useCallback(
     async (cand) => {
       if (!cand || !cand.verse) return;
-      // Claim 'following' immediately so in-flight detections don't double-lock.
-      phaseRef.current = 'following';
-      setCands([]);
-      setStatus('connecting');
-      setDetail('found it — projecting & following…');
-
-      let verses;
+      if (lockingRef.current) return; // a lock/switch is already committing
+      lockingRef.current = true;
+      // On a switch we already have a working follower; a transient failure below
+      // must NOT drop it, so remember whether this is the first lock or a switch.
+      const isSwitch = !!followerRef.current;
       try {
-        const rows = await banidb.loadShabad(cand.shabadId);
-        const filtered = filterRequiredVerseItems(rows).filter(
-          (it) => it && it.verseId != null && it.verse,
-        );
-        verses = filtered.map((it) => ({
-          verseId: it.verseId,
-          words: tokenize(anvaad.unicode(it.verse)),
-        }));
-      } catch (e) {
-        setDetail(`could not load shabad: ${e?.message || e}`);
-        await enterSearching();
-        return;
-      }
-      if (!verses.length) {
-        await enterSearching();
-        return;
-      }
+        setStatus('connecting');
+        setDetail(isSwitch ? 'switching to the new shabad…' : 'found it — projecting & following…');
 
-      let follower;
-      try {
-        follower = await engine.createFollower(verses, { inputSr: sampleRateRef.current });
-      } catch (e) {
-        setDetail(`engine init failed: ${e?.message || e}`);
-        await enterSearching();
-        return;
-      }
-      // A stop/switch may have happened during the awaits.
-      if (!autopilotRef.current || phaseRef.current !== 'following') return;
+        let verses;
+        try {
+          const rows = await banidb.loadShabad(cand.shabadId);
+          const filtered = filterRequiredVerseItems(rows).filter(
+            (it) => it && it.verseId != null && it.verse,
+          );
+          verses = filtered.map((it) => ({
+            verseId: it.verseId,
+            words: tokenize(anvaad.unicode(it.verse)),
+          }));
+        } catch (e) {
+          setDetail(`could not load shabad: ${e?.message || e}`);
+          if (!isSwitch) await enterSearching();
+          return;
+        }
+        if (!verses.length) {
+          if (!isSwitch) await enterSearching();
+          return;
+        }
 
-      lastVerseRef.current = null;
-      followerRef.current = follower;
-      if (cand.shabadId !== currentShabadIdRef.current) {
-        currentShabadIdRef.current = cand.shabadId;
-        openShabadRef.current(cand.shabadId, cand.verseId, cand.verse);
+        let follower;
+        try {
+          follower = await engine.createFollower(verses, { inputSr: sampleRateRef.current });
+        } catch (e) {
+          setDetail(`engine init failed: ${e?.message || e}`);
+          if (!isSwitch) await enterSearching();
+          return;
+        }
+        // A stop may have happened during the awaits.
+        if (!autopilotRef.current) return;
+
+        // Commit the new shabad.
+        phaseRef.current = 'following';
+        lastVerseRef.current = null;
+        followerRef.current = follower;
+        if (cand.shabadId !== currentShabadIdRef.current) {
+          currentShabadIdRef.current = cand.shabadId;
+          openShabadRef.current(cand.shabadId, cand.verseId, cand.verse);
+        }
+        // Fresh vote slate so the shabad we just committed to can't immediately
+        // re-trigger a switch, and so evidence for the next one starts clean.
+        detectVotesRef.current = new Map();
+        detectRowsRef.current = new Map();
+        detectStableRef.current = { id: null, count: 0 };
+        // Also give the recognizer a clean buffer: its window still holds up to
+        // ~10s of the PREVIOUS shabad's audio, which would otherwise keep voting
+        // for the old shabad and could flip us straight back. A fresh session
+        // starts identification of the new shabad from now. (Cheap — shares the
+        // already-loaded model session.)
+        try {
+          if (sampleRateRef.current) {
+            recognizerRef.current = await engine.createRecognizer({
+              inputSr: sampleRateRef.current,
+              hopS: AP_REC_HOP_S,
+            });
+          }
+        } catch (_) {
+          /* keep the existing recognizer if a fresh one can't be built */
+        }
+        setCands([]);
+        setStatus('listening');
+        setDetail('following — sing on');
+      } finally {
+        lockingRef.current = false;
       }
-      setStatus('listening');
-      setDetail('following — sing on');
     },
     [enterSearching],
   );
@@ -540,7 +593,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (sid == null) return;
           // Longer gram + higher rank in its result set => stronger evidence.
           const weight = g.w * ((r.length - i) / r.length);
-          votes.set(sid, (votes.get(sid) || 0) + weight);
+          // Cap the tally so a long-running shabad can't build a lead so large it
+          // becomes impossible to ever switch away from it.
+          votes.set(sid, Math.min(VOTE_CAP, (votes.get(sid) || 0) + weight));
           if (!rowByShabad.has(sid)) {
             rowByShabad.set(sid, { verseId: row.ID, verse: row.Gurmukhi, shabadId: sid });
           }
@@ -548,8 +603,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       });
 
       if (!votes.size) {
-        setCands([]);
-        setDetail(`heard ${fl.length} letters — no match yet…`);
+        if (!(autopilotRef.current && phaseRef.current === 'following')) {
+          setCands([]);
+          setDetail(`heard ${fl.length} letters — no match yet…`);
+        }
         return;
       }
 
@@ -573,7 +630,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           share: v / best,
         };
       });
-      setCands(shortlist);
+      // Don't surface the detect shortlist while following — it's background
+      // switch-detection, not something the presenter should see or tap.
+      if (!(autopilotRef.current && phaseRef.current === 'following')) setCands(shortlist);
 
       const st = detectStableRef.current;
       if (leaderId === st.id) st.count += 1;
@@ -582,30 +641,60 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         st.count = 1;
       }
       // Nudge: with only a few letters the match is ambiguous — more sung words
-      // narrow it down, and the shortlist is tappable in the meantime.
-      if (lead >= AUTO_LOCK_CONF && best >= DETECT_MIN_EVIDENCE) {
-        setDetail(`${Math.round(lead * 100)}% confident · confirming ${Math.min(st.count, DETECT_STABLE)}/${DETECT_STABLE}`);
-      } else {
-        setDetail('keep singing to narrow it down — or tap a match below');
+      // narrow it down, and the shortlist is tappable in the meantime. While
+      // already following (autopilot), stay quiet so detection running in the
+      // background doesn't churn the "following — sing on" status.
+      if (!(autopilotRef.current && phaseRef.current === 'following')) {
+        if (lead >= AUTO_LOCK_CONF && best >= DETECT_MIN_EVIDENCE) {
+          setDetail(`${Math.round(lead * 100)}% confident · confirming ${Math.min(st.count, DETECT_STABLE)}/${DETECT_STABLE}`);
+        } else {
+          setDetail('keep singing to narrow it down — or tap a match below');
+        }
       }
 
       // Auto-select when the leader is clearly ahead of the runner-up, has held
-      // the lead a couple of decodes, and has enough absolute evidence.
+      // the lead a few decodes, and has enough absolute evidence.
       const cand = shortlist[0];
-      if (
+      if (!cand || !cand.verse) return;
+
+      if (autopilotRef.current) {
+        // A lock/switch already committing? Let it finish before deciding again.
+        if (lockingRef.current) return;
+        if (phaseRef.current === 'searching') {
+          // FIRST lock: stricter than manual (more sung letters + more stable
+          // decodes) so a couple of ambiguous first-letters can't pick the wrong
+          // shabad the instant listening starts.
+          if (
+            fl.length >= AP_LOCK_MIN_LETTERS &&
+            lead >= AUTO_LOCK_CONF &&
+            best >= DETECT_MIN_EVIDENCE &&
+            st.count >= AP_LOCK_STABLE
+          ) {
+            autopilotLock(cand);
+          }
+        } else {
+          // FOLLOWING: detection runs continuously so we can catch the singer
+          // moving to a new shabad even when the follower keeps grazing the old
+          // lines (shared Gurbani words) and never releases. Switch ONLY to a
+          // DIFFERENT shabad that both clears the (stricter) switch gates and
+          // clearly dominates the one we're currently on.
+          const curVotes = votes.get(currentShabadIdRef.current) || 0;
+          if (
+            leaderId !== currentShabadIdRef.current &&
+            lead >= AP_SWITCH_CONF &&
+            best >= AP_SWITCH_EVIDENCE &&
+            st.count >= AP_SWITCH_STABLE &&
+            best >= curVotes * AP_SWITCH_MARGIN
+          ) {
+            autopilotLock(cand);
+          }
+        }
+      } else if (
         lead >= AUTO_LOCK_CONF &&
         best >= DETECT_MIN_EVIDENCE &&
-        st.count >= DETECT_STABLE &&
-        cand &&
-        cand.verse
+        st.count >= DETECT_STABLE
       ) {
-        if (autopilotRef.current) {
-          // Only lock/switch while searching; a healthy follower is never
-          // interrupted by detection (the switch signal is follower release).
-          if (phaseRef.current === 'searching') autopilotLock(cand);
-        } else {
-          lockOnto(cand);
-        }
+        lockOnto(cand);
       }
     },
     [lockOnto, autopilotLock],
@@ -684,6 +773,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     autopilotRef.current = true;
     recognizingRef.current = true;
     phaseRef.current = 'searching';
+    lockingRef.current = false;
     currentShabadIdRef.current = null;
     detectVotesRef.current = new Map();
     detectRowsRef.current = new Map();
@@ -720,28 +810,30 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     try {
       sampleRate = await startAudio(async (pcm) => {
         if (!autopilotRef.current) return;
+        // Detection runs on EVERY chunk, in both phases. This is what makes
+        // autopilot un-stuck: the moment a different shabad clearly takes over,
+        // handleTranscript switches us — we no longer depend on the follower
+        // releasing (it often won't, because Gurbani lines share words).
+        const r = recognizerRef.current;
+        if (r) {
+          const rout = await r.push(pcm);
+          if (rout && rout.text) handleTranscript(rout.text);
+        }
+        // While following, also advance the follower for the live line/word cursor.
         if (phaseRef.current === 'following') {
           const f = followerRef.current;
-          if (!f) return; // still building the follower after a lock
+          if (!f) return; // still building the follower after a lock/switch
           const out = await f.push(pcm);
           if (!out) return;
-          if (out.lineIndex == null || out.verseIndex === -1) {
-            // Follower released — the current shabad no longer matches. Signal 1
-            // of 2 for a switch; enterSearching arms detection for the new one.
-            await enterSearching();
-            return;
-          }
+          // Follower released (singer paused, or moved on): just hold the current
+          // shabad on screen — detection above handles any real switch.
+          if (out.lineIndex == null || out.verseIndex === -1) return;
           setPos({ lineIndex: out.lineIndex, wordIndex: out.wordIndex, confidence: out.confidence });
           if (out.verseId != null && out.verseId !== lastVerseRef.current) {
             lastVerseRef.current = out.verseId;
             setActiveVerseId(out.verseId);
             setLineNumber(out.lineIndex + 1);
           }
-        } else {
-          const r = recognizerRef.current;
-          if (!r) return;
-          const out = await r.push(pcm);
-          if (out && out.text) handleTranscript(out.text);
         }
       });
     } catch (e) {
@@ -755,7 +847,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     sampleRateRef.current = sampleRate;
 
     try {
-      recognizerRef.current = await engine.createRecognizer({ inputSr: sampleRate });
+      recognizerRef.current = await engine.createRecognizer({
+        inputSr: sampleRate,
+        hopS: AP_REC_HOP_S,
+      });
     } catch (e) {
       setStatus('error');
       setDetail(`engine init failed: ${e?.message || e}`);
