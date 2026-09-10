@@ -10,10 +10,11 @@
 //   const rec = await engine.createRecognizer(); // blind auto-detect
 //   const fol = await engine.createFollower(lines, opts); // track a shabad
 //   const out = await fol.push(float32PcmChunk); // per audio chunk
-const { Infer } = require('./infer');
+const { Infer, norm } = require('./infer');
 const { SP } = require('./sentencepiece');
 const { Recognizer } = require('./recognizer');
 const { Follower } = require('./follower');
+const { partialRatio } = require('./fuzz');
 const modelManager = require('./model-manager');
 
 let inferPromise = null; // shared session (load the model once)
@@ -54,6 +55,12 @@ module.exports = {
   isReady,
   createRecognizer,
   createFollower,
+  // Text helpers reused by the supervisor for acoustic switch-scoring: `norm`
+  // strips whitespace/punctuation the way the follower does, and `partialRatio`
+  // is the same fuzzy matcher, so a shabad scored here is comparable to the
+  // follower's own line confidences.
+  norm,
+  partialRatio,
   modelPath: modelManager.modelPath,
   modelDir: modelManager.modelDir,
 };

@@ -10,6 +10,23 @@ const anvaad = require('anvaad-js');
 const banidb = require('../../../banidb');
 // In-process native engine (onnxruntime-node): no Python sidecar, no websocket.
 const engine = require('../engine');
+const { norm: vfNorm, partialRatio } = engine;
+
+// Best fuzzy match of the recently decoded audio against any line of a shabad — the
+// same measure the follower uses per-line, so scores for two shabads are directly
+// comparable. Used to judge "does the voice now match this OTHER shabad better?".
+function maxLineScore(hypNorm, linesNorm) {
+  if (!hypNorm || !linesNorm || !linesNorm.length) return 0;
+  let best = 0;
+  for (let i = 0; i < linesNorm.length; i += 1) {
+    const ln = linesNorm[i];
+    if (ln) {
+      const s = partialRatio(hypNorm, ln) / 100;
+      if (s > best) best = s;
+    }
+  }
+  return best;
+}
 
 // "First letter anywhere" search — the primitive used to identify a shabad from
 // the Gurmukhi first-letters of what's being sung (matches banidb's FirstLetterStr).
@@ -40,22 +57,33 @@ const DETECT_TOP_N = 3; // how many candidates to surface in the UI
 // that merely contains it, so start-anchored hits carry extra weight.
 const START_MATCH_WEIGHT = 12;
 
-// Autopilot gates (separate from the manual one-shot detect above, so unattended
-// behavior can be tuned without touching manual mode). Autopilot runs detection
-// continuously in BOTH phases: it locks the first shabad, and while following it
-// keeps listening so it can SWITCH the instant a different shabad clearly takes
-// over — it does not wait for the follower to release (which can stall when the
-// new shabad's audio keeps grazing the old lines).
-const AP_LOCK_MIN_LETTERS = 6; // need a real phrase before the FIRST lock (kills quick wrong picks)
-const AP_LOCK_STABLE = 3; // leader must hold this many decodes before the first lock
-const AP_SWITCH_CONF = 0.7; // separation the new shabad needs to trigger a switch
-const AP_SWITCH_STABLE = 4; // a switch needs more confirmation than the first lock
-const AP_SWITCH_EVIDENCE = 10; // absolute vote weight the new leader must reach
-const AP_SWITCH_MARGIN = 1.2; // new leader must beat the shabad we're on by this factor
+// Autopilot gates. Design: the first-letter detector is a fast, noisy PROPOSER
+// (high recall — catch that a different shabad might be starting), and the switch
+// itself is judged ACOUSTICALLY (high precision — does the recent audio actually
+// match the candidate's lines better than the shabad we're on?). This separation
+// is what makes switching both fast and reliable, and lets the first lock be
+// permissive (a wrong lock self-corrects: the correct shabad simply wins the
+// acoustic comparison and we switch to it).
+const AP_LOCK_MIN_LETTERS = 5; // a small phrase is enough to lock the FIRST shabad
+const AP_LOCK_STABLE = 2; // hold the lead this many decodes before the first lock
 const VOTE_CAP = 60; // clamp votes so a long shabad can't become impossible to switch away from
 // While following we run the recognizer AND the follower on every chunk; a slightly
 // larger recognizer hop keeps combined inference comfortably under real-time.
 const AP_REC_HOP_S = 0.9;
+
+// Acoustic switch test (runs while following). Each recognizer decode we score the
+// recent decoded audio against the CURRENT shabad's lines and against a proposed
+// DIFFERENT candidate's lines. A candidate only counts as "winning" when it beats
+// the current shabad by a clear margin AND matches well in absolute terms; a few
+// consecutive wins commit the switch.
+const SWITCH_CAND_MIN_VOTES = 6; // detector interest before we bother acoustic-testing a candidate
+const SWITCH_ACOUSTIC_MIN = 0.6; // candidate must match the recent audio at least this well
+const SWITCH_ACOUSTIC_MARGIN = 0.08; // ...and beat the current shabad by at least this much
+const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a switch (~a couple seconds)
+// Highlight gating: don't chase the projected line onto similar-worded lines of the
+// OLD shabad. Move only on confident frames, and freeze entirely while a switch is
+// being evaluated or the current shabad has stopped matching.
+const UI_MOVE_CONF = 0.6; // follower confidence required to move the on-screen line
 
 // Two modes carried over from the web lab: Path (spoken paatth) and Kirtan
 // (sung). Both map to the karansea CTC + line decoder with the same tuned
@@ -182,6 +210,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const lockingRef = useRef(false); // a lock/switch is mid-commit — don't double-fire
   const sampleRateRef = useRef(null); // mic sample rate, for building engine sessions
   const currentShabadIdRef = useRef(null); // shabad currently projected (avoid re-open)
+  const curLinesNormRef = useRef([]); // normalized lines of the current shabad (acoustic scoring)
+  // Acoustic switch candidate being evaluated while following:
+  // { shabadId, verseId, verse, linesNorm, wins, loading }
+  const switchCandRef = useRef(null);
   const ctxRef = useRef(null);
   const streamRef = useRef(null);
   const nodeRef = useRef(null);
@@ -249,6 +281,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     phaseRef.current = 'searching';
     lockingRef.current = false;
     currentShabadIdRef.current = null;
+    curLinesNormRef.current = [];
+    switchCandRef.current = null;
     cleanup();
     setStatus('stopped');
     setDetail('');
@@ -412,6 +446,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const enterSearching = useCallback(async () => {
     phaseRef.current = 'searching';
     followerRef.current = null;
+    curLinesNormRef.current = [];
+    switchCandRef.current = null;
     detectVotesRef.current = new Map();
     detectRowsRef.current = new Map();
     detectStableRef.current = { id: null, count: 0 };
@@ -431,8 +467,23 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     }
   }, []);
 
+  // Load a shabad's verses (tokenized, for a Follower) and normalized line texts
+  // (for acoustic scoring). Throws if it can't be loaded / has no usable lines.
+  const loadShabadProfile = useCallback(async (shabadId) => {
+    const rows = await banidb.loadShabad(shabadId);
+    const filtered = filterRequiredVerseItems(rows).filter(
+      (it) => it && it.verseId != null && it.verse,
+    );
+    const verses = filtered.map((it) => ({
+      verseId: it.verseId,
+      words: tokenize(anvaad.unicode(it.verse)),
+    }));
+    const linesNorm = verses.map((v) => vfNorm((v.words || []).join(' ')));
+    return { verses, linesNorm };
+  }, []);
+
   // A confident, stable shabad emerged — either the FIRST one (initial lock) or a
-  // DIFFERENT one that has taken over while we were following (switch). Build a
+  // DIFFERENT one that has WON the acoustic switch test while following. Build a
   // follower for it, project it (unless it's the one already up), and (keep)
   // following — all without tearing down the single continuous mic session.
   // Re-entrancy-guarded so overlapping detections can't double-commit.
@@ -448,29 +499,22 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         setStatus('connecting');
         setDetail(isSwitch ? 'switching to the new shabad…' : 'found it — projecting & following…');
 
-        let verses;
+        let profile;
         try {
-          const rows = await banidb.loadShabad(cand.shabadId);
-          const filtered = filterRequiredVerseItems(rows).filter(
-            (it) => it && it.verseId != null && it.verse,
-          );
-          verses = filtered.map((it) => ({
-            verseId: it.verseId,
-            words: tokenize(anvaad.unicode(it.verse)),
-          }));
+          profile = await loadShabadProfile(cand.shabadId);
         } catch (e) {
           setDetail(`could not load shabad: ${e?.message || e}`);
           if (!isSwitch) await enterSearching();
           return;
         }
-        if (!verses.length) {
+        if (!profile.verses.length) {
           if (!isSwitch) await enterSearching();
           return;
         }
 
         let follower;
         try {
-          follower = await engine.createFollower(verses, { inputSr: sampleRateRef.current });
+          follower = await engine.createFollower(profile.verses, { inputSr: sampleRateRef.current });
         } catch (e) {
           setDetail(`engine init failed: ${e?.message || e}`);
           if (!isSwitch) await enterSearching();
@@ -483,6 +527,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         phaseRef.current = 'following';
         lastVerseRef.current = null;
         followerRef.current = follower;
+        curLinesNormRef.current = profile.linesNorm;
+        switchCandRef.current = null; // clear any in-flight switch evaluation
         if (cand.shabadId !== currentShabadIdRef.current) {
           currentShabadIdRef.current = cand.shabadId;
           openShabadRef.current(cand.shabadId, cand.verseId, cand.verse);
@@ -493,10 +539,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         detectRowsRef.current = new Map();
         detectStableRef.current = { id: null, count: 0 };
         // Also give the recognizer a clean buffer: its window still holds up to
-        // ~10s of the PREVIOUS shabad's audio, which would otherwise keep voting
-        // for the old shabad and could flip us straight back. A fresh session
-        // starts identification of the new shabad from now. (Cheap — shares the
-        // already-loaded model session.)
+        // ~10s of the PREVIOUS shabad's audio, which would otherwise keep matching
+        // the old shabad and could flip us straight back. A fresh session starts
+        // identification from now. (Cheap — shares the already-loaded session.)
         try {
           if (sampleRateRef.current) {
             recognizerRef.current = await engine.createRecognizer({
@@ -514,7 +559,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         lockingRef.current = false;
       }
     },
-    [enterSearching],
+    [enterSearching, loadShabadProfile],
   );
 
   // Each decode from the recognizer: turn it into Gurmukhi first-letters, slide
@@ -652,18 +697,17 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         }
       }
 
-      // Auto-select when the leader is clearly ahead of the runner-up, has held
-      // the lead a few decodes, and has enough absolute evidence.
       const cand = shortlist[0];
       if (!cand || !cand.verse) return;
 
       if (autopilotRef.current) {
         // A lock/switch already committing? Let it finish before deciding again.
         if (lockingRef.current) return;
+
         if (phaseRef.current === 'searching') {
-          // FIRST lock: stricter than manual (more sung letters + more stable
-          // decodes) so a couple of ambiguous first-letters can't pick the wrong
-          // shabad the instant listening starts.
+          // FIRST lock: permissive. A wrong lock is cheap now — the acoustic
+          // switch test below will simply find the shabad that actually matches
+          // and switch to it — so favour locking fast over locking perfectly.
           if (
             fl.length >= AP_LOCK_MIN_LETTERS &&
             lead >= AUTO_LOCK_CONF &&
@@ -672,24 +716,85 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           ) {
             autopilotLock(cand);
           }
-        } else {
-          // FOLLOWING: detection runs continuously so we can catch the singer
-          // moving to a new shabad even when the follower keeps grazing the old
-          // lines (shared Gurbani words) and never releases. Switch ONLY to a
-          // DIFFERENT shabad that both clears the (stricter) switch gates and
-          // clearly dominates the one we're currently on.
-          const curVotes = votes.get(currentShabadIdRef.current) || 0;
-          if (
-            leaderId !== currentShabadIdRef.current &&
-            lead >= AP_SWITCH_CONF &&
-            best >= AP_SWITCH_EVIDENCE &&
-            st.count >= AP_SWITCH_STABLE &&
-            best >= curVotes * AP_SWITCH_MARGIN
-          ) {
-            autopilotLock(cand);
-          }
+          return;
         }
-      } else if (
+
+        // FOLLOWING: judge a switch ACOUSTICALLY. The detector proposes the best
+        // DIFFERENT shabad it currently sees; we then compare how well the recent
+        // decoded audio matches THAT candidate's lines vs. the shabad we're on.
+        // Only a clear, sustained acoustic win commits the switch — this is what
+        // makes it both switch reliably and not chase similar-worded lines.
+        const curId = currentShabadIdRef.current;
+        const contender = ranked.find(([sid, v]) => sid !== curId && v >= SWITCH_CAND_MIN_VOTES);
+        if (!contender) {
+          // Nothing else looks plausible — wind down any in-flight evaluation.
+          const scNone = switchCandRef.current;
+          if (scNone) {
+            scNone.wins = Math.max(0, scNone.wins - 1);
+            if (scNone.wins === 0) {
+              switchCandRef.current = null;
+              setCands([]);
+              setDetail('following — sing on');
+            }
+          }
+          return;
+        }
+
+        const contId = contender[0];
+        const row = rowByShabad.get(contId);
+        if (!row || !row.verse) return;
+
+        let sc = switchCandRef.current;
+        if (!sc || sc.shabadId !== contId) {
+          // New contender: kick off an async load of its lines; score next decode.
+          sc = {
+            shabadId: contId,
+            verseId: row.verseId,
+            verse: row.verse,
+            linesNorm: null,
+            wins: 0,
+          };
+          switchCandRef.current = sc;
+          loadShabadProfile(contId)
+            .then((p) => {
+              if (switchCandRef.current === sc) sc.linesNorm = p.linesNorm;
+            })
+            .catch(() => {
+              if (switchCandRef.current === sc) switchCandRef.current = null;
+            });
+          return;
+        }
+        if (!sc.linesNorm) return; // still loading the candidate's lines
+
+        const hypNorm = vfNorm(text).slice(-80); // recent decoded audio
+        const sCur = maxLineScore(hypNorm, curLinesNormRef.current);
+        const sCand = maxLineScore(hypNorm, sc.linesNorm);
+        const winning = sCand >= SWITCH_ACOUSTIC_MIN && sCand >= sCur + SWITCH_ACOUSTIC_MARGIN;
+        sc.wins = winning ? sc.wins + 1 : Math.max(0, sc.wins - 1);
+
+        if (sc.wins >= 1) {
+          setCands([
+            {
+              shabadId: contId,
+              verseId: sc.verseId,
+              verse: sc.verse,
+              display: anvaad.unicode(sc.verse),
+              share: 1,
+            },
+          ]);
+          setDetail(`new shabad? confirming ${Math.min(sc.wins, SWITCH_CONFIRM)}/${SWITCH_CONFIRM}…`);
+        } else {
+          setCands([]);
+          setDetail('following — sing on');
+        }
+
+        if (sc.wins >= SWITCH_CONFIRM) {
+          autopilotLock({ shabadId: contId, verseId: sc.verseId, verse: sc.verse });
+        }
+        return;
+      }
+
+      if (
         lead >= AUTO_LOCK_CONF &&
         best >= DETECT_MIN_EVIDENCE &&
         st.count >= DETECT_STABLE
@@ -697,7 +802,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         lockOnto(cand);
       }
     },
-    [lockOnto, autopilotLock],
+    [lockOnto, autopilotLock, loadShabadProfile],
   );
 
   // Start a blind-detect session: same mic pipeline as start(), but we run the
@@ -775,6 +880,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     phaseRef.current = 'searching';
     lockingRef.current = false;
     currentShabadIdRef.current = null;
+    curLinesNormRef.current = [];
+    switchCandRef.current = null;
     detectVotesRef.current = new Map();
     detectRowsRef.current = new Map();
     detectStableRef.current = { id: null, count: 0 };
@@ -825,9 +932,14 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (!f) return; // still building the follower after a lock/switch
           const out = await f.push(pcm);
           if (!out) return;
-          // Follower released (singer paused, or moved on): just hold the current
-          // shabad on screen — detection above handles any real switch.
+          // Follower released (singer paused, or moved on): hold on screen —
+          // the acoustic switch test handles a real move to another shabad.
           if (out.lineIndex == null || out.verseIndex === -1) return;
+          // Don't chase the highlight onto a similar-worded line of the OLD shabad:
+          // hold position on low-confidence frames, and freeze entirely while a
+          // switch is being evaluated (the current shabad is likely being left).
+          const evaluatingSwitch = switchCandRef.current && switchCandRef.current.wins >= 1;
+          if (evaluatingSwitch || out.confidence < UI_MOVE_CONF) return;
           setPos({ lineIndex: out.lineIndex, wordIndex: out.wordIndex, confidence: out.confidence });
           if (out.verseId != null && out.verseId !== lastVerseRef.current) {
             lastVerseRef.current = out.verseId;
