@@ -690,6 +690,57 @@ app.on('ready', () => {
   });
   mainWindow.loadURL(`file://${__dirname}/www/index.html`);
 
+  // Automated smoke test: `VF_SMOKE=1 electron .` (or `npm run smoke`).
+  // Launches the real app, waits for the renderer to settle, then checks
+  // whether the ErrorBoundary fallback tripped or the renderer logged errors,
+  // prints a machine-readable PASS/FAIL to stdout, and quits. Lets a crash be
+  // detected without a human watching the window.
+  if (process.env.VF_SMOKE) {
+    const rendererErrors = [];
+    mainWindow.webContents.on('console-message', (_e, level, message) => {
+      // level 3 === error
+      if (level >= 3) rendererErrors.push(message);
+    });
+    mainWindow.webContents.on('render-process-gone', (_e, details) => {
+      // eslint-disable-next-line no-console
+      console.log(`SMOKE_RESULT: FAIL renderer-gone ${JSON.stringify(details)}`);
+      app.exit(1);
+    });
+    mainWindow.webContents.on('did-finish-load', () => {
+      const waitMs = parseInt(process.env.VF_SMOKE_WAIT || '6000', 10);
+      setTimeout(() => {
+        mainWindow.webContents
+          .executeJavaScript(
+            `(function () {
+              const h = document.querySelector('h2');
+              const boundaryTripped = !!(h && /Render error/.test(h.textContent || ''));
+              const pre = document.querySelector('pre');
+              return { boundaryTripped, stack: pre ? pre.textContent : null };
+            })()`,
+          )
+          .then((r) => {
+            const ok = !r.boundaryTripped && rendererErrors.length === 0;
+            // eslint-disable-next-line no-console
+            console.log(`SMOKE_RESULT: ${ok ? 'PASS' : 'FAIL'}`);
+            if (r.boundaryTripped) {
+              // eslint-disable-next-line no-console
+              console.log(`SMOKE_BOUNDARY_STACK:\n${r.stack}`);
+            }
+            if (rendererErrors.length) {
+              // eslint-disable-next-line no-console
+              console.log(`SMOKE_CONSOLE_ERRORS:\n${rendererErrors.join('\n---\n')}`);
+            }
+            app.exit(ok ? 0 : 1);
+          })
+          .catch((err) => {
+            // eslint-disable-next-line no-console
+            console.log(`SMOKE_RESULT: FAIL eval-error ${err && err.message}`);
+            app.exit(1);
+          });
+      }, waitMs);
+    });
+  }
+
   if (!store.get('user-agent')) {
     store.set('user-agent', mainWindow.webContents.getUserAgent());
   }
