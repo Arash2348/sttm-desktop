@@ -4,9 +4,39 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 
 import { filterRequiredVerseItems } from '../../../navigator/shabad/utils/filter-verse-items';
 import { loadBani as loadBaniRows } from '../../../navigator/utils/load-bani';
+import { useNewShabad } from '../../../navigator/search/hooks/use-new-shabad';
 
 const anvaad = require('anvaad-js');
 const banidb = require('../../../banidb');
+
+// "First letter anywhere" search — the primitive used to identify a shabad from
+// the Gurmukhi first-letters of what's being sung (matches banidb's FirstLetterStr).
+const FIRST_LETTERS_ANYWHERE = banidb.CONSTS.SEARCH_TYPES.FIRST_LETTERS_ANYWHERE;
+const FIRST_LETTERS_START = banidb.CONSTS.SEARCH_TYPES.FIRST_LETTERS; // BEGINSWITH
+
+// Blind auto-detect tuning. We build a first-letter query from the trailing part
+// of the running transcript, preferring the most specific window that still hits,
+// then vote across windows so one misheard letter doesn't decide the lock.
+const DETECT_MIN_LETTERS = 4; // need at least this many first-letters to search
+// The recognizer mishears the odd letter, and FirstLetterStr search is an exact
+// contiguous CONTAINS — so one wrong letter kills a long window. Instead we slide
+// several shorter n-grams across what we've heard and vote: clean fragments still
+// hit the right shabad even when a neighbour letter is wrong. Longer grams are
+// more specific, so they carry more weight.
+const GRAM_SIZES = [8, 6, 5, 4]; // contiguous first-letter windows to slide (down to 4)
+const DETECT_MAX_GRAMS = 16; // cap queries per decode (realm search is cheap, but bound it)
+const DETECT_VOTE_DECAY = 0.8; // fade old evidence so a new shabad can overtake
+const DETECT_STABLE = 2; // leader must hold this many decodes before auto-select
+// Confidence = the leader's SEPARATION from the runner-up: best / (best + second).
+// (Share-of-all-candidates looks tiny because short first-letters are ambiguous —
+// dozens of shabads collect a few votes each, diluting the leader's slice.)
+// 0.65 ≈ leader roughly 2x the runner-up.
+const AUTO_LOCK_CONF = 0.65; // separation needed to auto-select
+const DETECT_MIN_EVIDENCE = 8; // leader must have this much absolute vote weight too
+const DETECT_TOP_N = 3; // how many candidates to surface in the UI
+// A shabad that BEGINS with what's being sung is a much stronger signal than one
+// that merely contains it, so start-anchored hits carry extra weight.
+const START_MATCH_WEIGHT = 12;
 
 // Local forced-alignment sidecar (voice-align-server, `python server.py`).
 const FA_URL = 'ws://127.0.0.1:8000/ws';
@@ -60,6 +90,35 @@ const tokenize = (uni) =>
     .split(/\s+/)
     .filter(Boolean);
 
+// The DB's FirstLetterStr is keyed on ASCII-FONT first-letter char codes (e.g.
+// s=115, k=107, A=65), NOT Unicode codepoints. The recognizer emits Unicode, so a
+// Unicode first-letter query never matches. Build a Unicode-base -> ASCII-font
+// first-letter map once from anvaad (so it always tracks the installed font), then
+// convert the recognizer's transcript into the ASCII-font first-letters the search
+// actually expects.
+const UNI_TO_ASCII_FL = (() => {
+  const m = {};
+  for (let code = 33; code < 127; code += 1) {
+    const c = String.fromCharCode(code);
+    let base = '';
+    try {
+      base = anvaad.firstLetters(anvaad.unicode(c)) || '';
+    } catch (_) {
+      base = '';
+    }
+    if (base.length === 1 && !(base in m)) m[base] = c;
+  }
+  return m;
+})();
+
+// Unicode Gurmukhi text -> ASCII-font first-letters string (the DB search format).
+const toAsciiFirstLetters = (uniText) => {
+  const fl = anvaad.firstLetters(uniText || '') || '';
+  let out = '';
+  for (const ch of fl) if (UNI_TO_ASCII_FL[ch]) out += UNI_TO_ASCII_FL[ch];
+  return out;
+};
+
 const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // Select the primitive directly rather than holding the whole navigator slice
   // object across renders — a slice reference can be an immer proxy that gets
@@ -73,8 +132,17 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const baniLength = useStoreState((state) => state.userSettings.baniLength);
   const { setActiveVerseId, setLineNumber } = useStoreActions((actions) => actions.navigator);
   const setOverlayScreen = useStoreActions((actions) => actions.app.setOverlayScreen);
+  // Proper "open this shabad" action (drives viewer/projector/history/socket).
+  // Kept in a ref so the async detect->lock path always calls the latest one.
+  const changeActiveShabad = useNewShabad();
+  const openShabadRef = useRef(changeActiveShabad);
+  openShabadRef.current = changeActiveShabad;
 
-  const [status, setStatus] = useState('idle'); // idle|connecting|listening|error|stopped
+  const [status, setStatus] = useState('idle'); // idle|connecting|listening|detecting|error|stopped
+  const [autoDetect, setAutoDetect] = useState(false); // blind: identify the shabad from audio, then follow
+  const [heard, setHeard] = useState(''); // gurmukhi first-letters heard (for visibility)
+  const [rawHeard, setRawHeard] = useState(''); // raw recognizer transcript (diagnostic)
+  const [cands, setCands] = useState([]); // [{shabadId, verseId, verse, display, share}] shortlist
   const [mode, setMode] = useState('kirtan');
   const [detail, setDetail] = useState('');
   const [pos, setPos] = useState(null); // { lineIndex, wordIndex, confidence }
@@ -94,6 +162,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const lastVerseRef = useRef(null);
   const followingKeyRef = useRef(null); // session key: `shabad:<id>` or `bani:<id>`
   const panelRef = useRef(null); // flyout panel, for click-outside dismissal
+  // Blind-detect session state (mutable, avoids re-render churn per decode).
+  const recognizingRef = useRef(false); // true while blindly identifying a shabad
+  const detectVotesRef = useRef(new Map()); // shabadId -> accumulated vote weight
+  const detectRowsRef = useRef(new Map()); // shabadId -> best {verseId, verse, shabadId, rank}
+  const detectStableRef = useRef({ id: null, count: 0 }); // leader-stability counter
 
   const cleanup = useCallback(() => {
     try { nodeRef.current?.disconnect(); } catch (_) {}
@@ -115,9 +188,13 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
   const stop = useCallback(() => {
     try { wsRef.current?.send(JSON.stringify({ type: 'stop' })); } catch (_) {}
+    recognizingRef.current = false;
     cleanup();
     setStatus('stopped');
     setDetail('');
+    setCands([]);
+    setHeard('');
+    setRawHeard('');
   }, [cleanup]);
 
   const start = useCallback(async () => {
@@ -270,6 +347,270 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     status,
   ]);
 
+  // -- Blind auto-detect: identify the shabad from audio, then follow it --------
+
+  // A confident, stable candidate emerged. Open that shabad in the app and hand
+  // off to the normal follower (the re-attach effect below starts it once
+  // activeShabadId updates).
+  const lockOnto = useCallback(
+    (cand) => {
+      recognizingRef.current = false;
+      cleanup();
+      followingKeyRef.current = null;
+      lastVerseRef.current = null;
+      setPos(null);
+      setCands([]);
+      setHeard('');
+      setRawHeard('');
+      setStatus('connecting');
+      setDetail('found it — projecting & following…');
+      openShabadRef.current(cand.shabadId, cand.verseId, cand.verse);
+    },
+    [cleanup],
+  );
+
+  // Each decode from the recognizer: turn it into Gurmukhi first-letters, slide
+  // several n-grams across them, search banidb for each, and vote. Surface the
+  // running shortlist, and auto-select once one shabad is confidently ahead.
+  const handleTranscript = useCallback(
+    async (text) => {
+      if (!recognizingRef.current) return;
+      setRawHeard((text || '').trim().slice(-60));
+      // Unicode first-letters are for the readable on-screen chip; the search needs
+      // ASCII-font first-letters (the DB's FirstLetterStr encoding). They're 1:1.
+      const flUni = (anvaad.firstLetters(text || '') || '').replace(/\s+/g, '').trim();
+      const fl = toAsciiFirstLetters(text);
+      if (fl.length < DETECT_MIN_LETTERS) {
+        setHeard(flUni);
+        return;
+      }
+      setHeard(flUni.slice(-28)); // show a readable tail of what's been heard
+
+      // Fade prior evidence a touch each decode so the tally tracks what's being
+      // sung now, not a false start from a few seconds ago.
+      const votes = detectVotesRef.current;
+      votes.forEach((v, k) => {
+        const nv = v * DETECT_VOTE_DECAY;
+        if (nv < 0.4) votes.delete(k);
+        else votes.set(k, nv);
+      });
+
+      // Build the query set: contiguous n-grams (CONTAINS — tolerant of errors in
+      // the surrounding letters), a couple of leave-one-out variants of the recent
+      // window (tolerates ONE spurious inserted letter), and a start-anchored query
+      // (BEGINSWITH — a shabad that begins with what's sung is a strong match).
+      const queries = [];
+      const seenQ = new Set();
+      const addQ = (q, w, type) => {
+        if (!q || q.length < 4 || queries.length >= DETECT_MAX_GRAMS) return;
+        const key = `${type}:${q}`;
+        if (seenQ.has(key)) return;
+        seenQ.add(key);
+        queries.push({ q, w, type });
+      };
+      // Start-anchored first (strongest signal), then sliding windows most-recent
+      // and longest first, then one-letter-drop variants of the recent window.
+      addQ(fl.slice(0, Math.min(fl.length, 8)), START_MATCH_WEIGHT, FIRST_LETTERS_START);
+      for (let gi = 0; gi < GRAM_SIZES.length; gi += 1) {
+        const k = GRAM_SIZES[gi];
+        if (fl.length < k) continue; // eslint-disable-line no-continue
+        for (let s = fl.length - k; s >= 0; s -= 1) addQ(fl.slice(s, s + k), k, FIRST_LETTERS_ANYWHERE);
+      }
+      const tail = fl.slice(-8);
+      for (let d = 1; d < tail.length - 1; d += 1) {
+        addQ(tail.slice(0, d) + tail.slice(d + 1), tail.length - 1, FIRST_LETTERS_ANYWHERE);
+      }
+      if (!queries.length) return;
+
+      const results = await Promise.all(
+        queries.map((g) =>
+          banidb
+            .query(g.q, g.type, 'all', 8)
+            .then((r) => ({ g, r }))
+            .catch(() => ({ g, r: [] })),
+        ),
+      );
+      if (!recognizingRef.current) return; // locked/stopped during the awaits
+
+      const rowByShabad = detectRowsRef.current;
+      results.forEach(({ g, r }) => {
+        if (!r || !r.length) return;
+        r.forEach((row, i) => {
+          let sid = null;
+          try {
+            sid = row.Shabads[0].ShabadID;
+          } catch (_) {
+            sid = null;
+          }
+          if (sid == null) return;
+          // Longer gram + higher rank in its result set => stronger evidence.
+          const weight = g.w * ((r.length - i) / r.length);
+          votes.set(sid, (votes.get(sid) || 0) + weight);
+          if (!rowByShabad.has(sid)) {
+            rowByShabad.set(sid, { verseId: row.ID, verse: row.Gurmukhi, shabadId: sid });
+          }
+        });
+      });
+
+      if (!votes.size) {
+        setCands([]);
+        setDetail(`heard ${fl.length} letters — no match yet…`);
+        return;
+      }
+
+      // Rank by accumulated votes. Confidence is the leader's SEPARATION from the
+      // runner-up (best / (best + second)) — meaningful and reachable, unlike a
+      // share of the whole ambiguous field. Candidate bars are shown relative to
+      // the leader so the top guess reads as a full bar.
+      const ranked = [...votes.entries()].sort((a, b) => b[1] - a[1]);
+      const best = ranked[0][1];
+      const second = ranked[1] ? ranked[1][1] : 0;
+      const leaderId = ranked[0][0];
+      const lead = best / (best + second || best);
+
+      const shortlist = ranked.slice(0, DETECT_TOP_N).map(([sid, v]) => {
+        const row = rowByShabad.get(sid) || {};
+        return {
+          shabadId: sid,
+          verseId: row.verseId,
+          verse: row.verse,
+          display: row.verse ? anvaad.unicode(row.verse) : '',
+          share: v / best,
+        };
+      });
+      setCands(shortlist);
+
+      const st = detectStableRef.current;
+      if (leaderId === st.id) st.count += 1;
+      else {
+        st.id = leaderId;
+        st.count = 1;
+      }
+      // Nudge: with only a few letters the match is ambiguous — more sung words
+      // narrow it down, and the shortlist is tappable in the meantime.
+      if (lead >= AUTO_LOCK_CONF && best >= DETECT_MIN_EVIDENCE) {
+        setDetail(`${Math.round(lead * 100)}% confident · confirming ${Math.min(st.count, DETECT_STABLE)}/${DETECT_STABLE}`);
+      } else {
+        setDetail('keep singing to narrow it down — or tap a match below');
+      }
+
+      // Auto-select when the leader is clearly ahead of the runner-up, has held
+      // the lead a couple of decodes, and has enough absolute evidence.
+      const cand = shortlist[0];
+      if (
+        lead >= AUTO_LOCK_CONF &&
+        best >= DETECT_MIN_EVIDENCE &&
+        st.count >= DETECT_STABLE &&
+        cand &&
+        cand.verse
+      ) {
+        lockOnto(cand);
+      }
+    },
+    [lockOnto],
+  );
+
+  // Start a blind-detect session: same mic pipeline as start(), but the server
+  // runs the free-decode recognizer and we identify + open the shabad ourselves.
+  const startDetect = useCallback(async () => {
+    cleanup();
+    recognizingRef.current = true;
+    detectVotesRef.current = new Map();
+    detectRowsRef.current = new Map();
+    detectStableRef.current = { id: null, count: 0 };
+    lastVerseRef.current = null;
+    setPos(null);
+    setCands([]);
+    setHeard('');
+    setRawHeard('');
+    setStatus('detecting');
+    setDetail('listening for a shabad…');
+
+    const ws = new WebSocket(FA_URL);
+    ws.binaryType = 'arraybuffer';
+    wsRef.current = ws;
+
+    ws.onopen = async () => {
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          audio: { channelCount: 1, echoCancellation: false, noiseSuppression: false },
+        });
+      } catch (_) {
+        setStatus('error');
+        setDetail('microphone permission denied.');
+        recognizingRef.current = false;
+        cleanup();
+        return;
+      }
+      streamRef.current = stream;
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      ctxRef.current = ctx;
+      ws.send(
+        JSON.stringify({
+          type: 'init',
+          mode: 'identify',
+          engine: 'karansea',
+          profile: MODES[mode].profile,
+          sampleRate: ctx.sampleRate,
+        }),
+      );
+      try {
+        const url = URL.createObjectURL(new Blob([WORKLET_SRC], { type: 'application/javascript' }));
+        await ctx.audioWorklet.addModule(url);
+        URL.revokeObjectURL(url);
+        const node = new AudioWorkletNode(ctx, 'voice-follow-pcm');
+        node.port.onmessage = (ev) => {
+          if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+            wsRef.current.send(ev.data);
+          }
+        };
+        const src = ctx.createMediaStreamSource(stream);
+        src.connect(node);
+        nodeRef.current = node;
+        srcRef.current = src;
+        setDetail('listening… sing or recite a few words');
+      } catch (e) {
+        setStatus('error');
+        setDetail(`audio setup failed: ${e?.message || e}`);
+        recognizingRef.current = false;
+        cleanup();
+      }
+    };
+
+    ws.onmessage = (ev) => {
+      if (typeof ev.data !== 'string') return;
+      let msg;
+      try {
+        msg = JSON.parse(ev.data);
+      } catch (_) {
+        return;
+      }
+      if (msg.type === 'transcript') {
+        handleTranscript(msg.text);
+      } else if (msg.type === 'error') {
+        setStatus('error');
+        setDetail(msg.message || 'server error');
+        recognizingRef.current = false;
+      }
+    };
+    ws.onerror = () => {
+      setStatus('error');
+      setDetail('cannot reach alignment server on :8000 — is it running?');
+      recognizingRef.current = false;
+    };
+    // If the socket drops while we're still identifying (e.g. a stale sidecar that
+    // doesn't understand identify mode, or a server restart), surface it clearly
+    // instead of letting the session silently disappear.
+    ws.onclose = () => {
+      if (recognizingRef.current) {
+        recognizingRef.current = false;
+        setStatus('error');
+        setDetail('lost the recognizer on :8000 — restart the sidecar, then try again.');
+      }
+    };
+  }, [cleanup, mode, handleTranscript]);
+
   // While listening, if the presenter switches to a different shabad or bani (via
   // any menu — search, history, favorites, arrows, bani picker), re-attach to the
   // new content so we stop matching against the previous one's lines.
@@ -292,9 +633,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   }, [activeShabadId, sundarGutkaBaniId, isSundarGutkaBani, isCeremonyBani, status, start, stop]);
 
   const listening = status === 'listening' || status === 'connecting';
+  const detecting = status === 'detecting';
+  const active = listening || detecting; // a session (follow or detect) is running
   // The floating widget is present whenever the tool is opened OR a session is
   // running (like Zoom's share bar, which persists independently of any menu).
-  const present = isOpen || listening;
+  const present = isOpen || active;
   const panelVisible = present && !collapsed;
 
   // Opening from the toolbar mic (or the pill) always expands the panel.
@@ -308,7 +651,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // aren't double-fired.
   useEffect(() => {
     if (!panelVisible) return undefined;
-    const dismiss = () => (listening ? setCollapsed(true) : onScreenClose());
+    const dismiss = () => (active ? setCollapsed(true) : onScreenClose());
     const onKey = (e) => { if (e.key === 'Escape') dismiss(); };
     const onDown = (e) => {
       const t = e.target;
@@ -322,7 +665,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       document.removeEventListener('keydown', onKey);
       document.removeEventListener('mousedown', onDown);
     };
-  }, [panelVisible, listening, onScreenClose]);
+  }, [panelVisible, active, onScreenClose]);
 
   // Drag handle: mousedown on a widget's grip moves the whole widget. Records a
   // moved flag so a drag on the pill doesn't also fire its expand-on-click.
@@ -376,7 +719,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const posLine = pos && typeof pos.lineIndex === 'number' ? pos.lineIndex + 1 : null;
   const dot = (
     <span
-      className={`vf-dot${listening ? ' is-live' : ''}`}
+      className={`vf-dot${active ? ' is-live' : ''}`}
       style={{ background: DOT[status] || '#888' }}
     />
   );
@@ -395,6 +738,14 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const wordNum = pos && typeof pos.wordIndex === 'number' ? pos.wordIndex + 1 : null;
   const confPct =
     pos && typeof pos.confidence === 'number' ? `${Math.round(pos.confidence * 100)}%` : null;
+
+  // Main button: Stop while a session runs, else Start (blind detect or follow).
+  let onMainClick = start;
+  if (active) onMainClick = stop;
+  else if (autoDetect) onMainClick = startDetect;
+  let mainLabel = '●  Start listening';
+  if (active) mainLabel = '■  Stop';
+  else if (autoDetect) mainLabel = '●  Start auto-detect';
 
   return (
     <>
@@ -426,7 +777,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                 title="Close (Esc)"
                 aria-label="Close"
                 onMouseDown={(e) => e.stopPropagation()}
-                onClick={() => (listening ? setCollapsed(true) : onScreenClose())}
+                onClick={() => (active ? setCollapsed(true) : onScreenClose())}
               >
                 ×
               </button>
@@ -438,7 +789,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               <button
                 key={k}
                 type="button"
-                disabled={listening}
+                disabled={active}
                 onClick={() => setMode(k)}
                 className={`vf-mode${mode === k ? ' is-active' : ''}`}
               >
@@ -447,15 +798,25 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             ))}
           </div>
 
+          <label className="vf-toggle" title="Identify the shabad from your voice, then follow it">
+            <input
+              type="checkbox"
+              checked={autoDetect}
+              disabled={active}
+              onChange={(e) => setAutoDetect(e.target.checked)}
+            />
+            <span>Auto&#8288;-detect the shabad from my voice</span>
+          </label>
+
           <button
             type="button"
-            onClick={listening ? stop : start}
-            className={`vf-main ${listening ? 'is-stop' : 'is-start'}`}
+            onClick={onMainClick}
+            className={`vf-main ${active ? 'is-stop' : 'is-start'}`}
           >
-            {listening ? '■  Stop' : '●  Start listening'}
+            {mainLabel}
           </button>
 
-          {status === 'listening' ? (
+          {status === 'listening' && (
             <div className="vf-stats">
               <div className="vf-stat">
                 <span className="vf-stat-val">{posLine == null ? '—' : posLine}</span>
@@ -470,9 +831,48 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                 <span className="vf-stat-label">Confidence</span>
               </div>
             </div>
-          ) : (
-            <div className="vf-status">{statusText}</div>
           )}
+          {detecting && (
+            <div className="vf-detect">
+              <div className="vf-detect-head">
+                <span className="vf-detect-spin" />
+                <span className="vf-detect-text">{detail || 'listening for a shabad…'}</span>
+              </div>
+              {rawHeard && (
+                <div className="vf-raw" title="What the recognizer transcribed" lang="pa">
+                  {rawHeard}
+                </div>
+              )}
+              {heard && (
+                <div className="vf-heard" title="Gurmukhi first-letters heard">
+                  {heard}
+                </div>
+              )}
+              {cands.length > 0 && (
+                <div className="vf-cands">
+                  {cands.map((c, i) => (
+                    <button
+                      key={c.shabadId}
+                      type="button"
+                      className={`vf-cand${i === 0 ? ' is-leader' : ''}`}
+                      title="Select and project this shabad"
+                      onClick={() => c.verse && lockOnto(c)}
+                    >
+                      <span
+                        className="vf-cand-bar"
+                        style={{ width: `${Math.round(c.share * 100)}%` }}
+                      />
+                      <span className="vf-cand-line" lang="pa">
+                        {c.display || '…'}
+                      </span>
+                      <span className="vf-cand-pct">{Math.round(c.share * 100)}%</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+          {status !== 'listening' && !detecting && <div className="vf-status">{statusText}</div>}
         </div>
       )}
 
@@ -509,10 +909,18 @@ VoiceFollow.propTypes = {
   onScreenClose: PropTypes.func,
 };
 
-const DOT = { idle: '#888', connecting: '#f39c12', listening: '#27ae60', error: '#c0392b', stopped: '#888' };
+const DOT = {
+  idle: '#888',
+  connecting: '#f39c12',
+  detecting: '#5b73ff',
+  listening: '#27ae60',
+  error: '#c0392b',
+  stopped: '#888',
+};
 const STATUS_LABEL = {
   idle: 'Ready',
   connecting: 'Starting…',
+  detecting: 'Detecting…',
   listening: 'Listening',
   error: 'Problem',
   stopped: 'Stopped',
