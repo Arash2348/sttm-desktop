@@ -8,6 +8,8 @@ import { useNewShabad } from '../../../navigator/search/hooks/use-new-shabad';
 
 const anvaad = require('anvaad-js');
 const banidb = require('../../../banidb');
+// In-process native engine (onnxruntime-node): no Python sidecar, no websocket.
+const engine = require('../engine');
 
 // "First letter anywhere" search — the primitive used to identify a shabad from
 // the Gurmukhi first-letters of what's being sung (matches banidb's FirstLetterStr).
@@ -38,11 +40,9 @@ const DETECT_TOP_N = 3; // how many candidates to surface in the UI
 // that merely contains it, so start-anchored hits carry extra weight.
 const START_MATCH_WEIGHT = 12;
 
-// Local forced-alignment sidecar (voice-align-server, `python server.py`).
-const FA_URL = 'ws://127.0.0.1:8000/ws';
-
-// Two modes carried over from the web lab: Path (spoken paatth, 4s window) and
-// Kirtan (sung, 8s window). Both map to the karansea CTC + line decoder.
+// Two modes carried over from the web lab: Path (spoken paatth) and Kirtan
+// (sung). Both map to the karansea CTC + line decoder with the same tuned
+// params (the JS engine DEFAULTS), so the label is the only difference for now.
 const MODES = {
   kirtan: { label: 'Kirtan (sung)', profile: 'kirtan' },
   path: { label: 'Path (recitation)', profile: 'karansea' },
@@ -146,6 +146,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const [mode, setMode] = useState('kirtan');
   const [detail, setDetail] = useState('');
   const [pos, setPos] = useState(null); // { lineIndex, wordIndex, confidence }
+  const [dlProgress, setDlProgress] = useState(null); // 0..1 during first-run model download, else null
   // Zoom-style floating widget: collapse the panel down to just the pill, and
   // drag either one anywhere on screen. `widgetPos` is null until first dragged
   // (then it overrides the default anchored position).
@@ -153,7 +154,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const [widgetPos, setWidgetPos] = useState(null); // { top, left } | null
   const movedRef = useRef(false); // set during a drag so the pill click doesn't also expand
 
-  const wsRef = useRef(null);
+  const followerRef = useRef(null); // Follower (track a known shabad/bani)
+  const recognizerRef = useRef(null); // Recognizer (blind auto-detect)
+  const chainRef = useRef(Promise.resolve()); // serialize async inference per chunk
   const ctxRef = useRef(null);
   const streamRef = useRef(null);
   const nodeRef = useRef(null);
@@ -169,29 +172,58 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const detectStableRef = useRef({ id: null, count: 0 }); // leader-stability counter
 
   const cleanup = useCallback(() => {
+    // Detach the worklet handler first so no in-flight chunk pushes into a
+    // torn-down engine session.
+    if (nodeRef.current) { try { nodeRef.current.port.onmessage = null; } catch (_) {} }
     try { nodeRef.current?.disconnect(); } catch (_) {}
     try { srcRef.current?.disconnect(); } catch (_) {}
     try { streamRef.current?.getTracks().forEach((t) => t.stop()); } catch (_) {}
     try { ctxRef.current?.close(); } catch (_) {}
-    // Detach handlers first so a torn-down socket's onclose can't flip status
-    // back to 'stopped' after we've already re-attached to a new shabad.
-    if (wsRef.current) {
-      wsRef.current.onopen = null;
-      wsRef.current.onmessage = null;
-      wsRef.current.onerror = null;
-      wsRef.current.onclose = null;
-    }
-    try { wsRef.current?.close(); } catch (_) {}
-    wsRef.current = null; ctxRef.current = null; streamRef.current = null;
+    ctxRef.current = null; streamRef.current = null;
     nodeRef.current = null; srcRef.current = null;
+    followerRef.current = null; recognizerRef.current = null;
+    chainRef.current = Promise.resolve();
+  }, []);
+
+  // Shared mic + worklet pipeline. Resolves the AudioContext sample rate, then
+  // streams raw Float32 PCM chunks to `onChunk` (awaited serially so we never run
+  // two inferences on the same ONNX session concurrently). Returns the sample
+  // rate so callers can build the engine session at the right input rate.
+  const startAudio = useCallback(async (onChunk) => {
+    let stream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        audio: { channelCount: 1, echoCancellation: false, noiseSuppression: false },
+      });
+    } catch (_) {
+      throw new Error('microphone permission denied.');
+    }
+    streamRef.current = stream;
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    ctxRef.current = ctx;
+    const url = URL.createObjectURL(new Blob([WORKLET_SRC], { type: 'application/javascript' }));
+    await ctx.audioWorklet.addModule(url);
+    URL.revokeObjectURL(url);
+    const node = new AudioWorkletNode(ctx, 'voice-follow-pcm');
+    chainRef.current = Promise.resolve();
+    node.port.onmessage = (ev) => {
+      const pcm = new Float32Array(ev.data);
+      chainRef.current = chainRef.current.then(() => onChunk(pcm)).catch(() => {});
+    };
+    const src = ctx.createMediaStreamSource(stream);
+    src.connect(node);
+    // Deliberately not connected to destination — no playback.
+    nodeRef.current = node;
+    srcRef.current = src;
+    return ctx.sampleRate;
   }, []);
 
   const stop = useCallback(() => {
-    try { wsRef.current?.send(JSON.stringify({ type: 'stop' })); } catch (_) {}
     recognizingRef.current = false;
     cleanup();
     setStatus('stopped');
     setDetail('');
+    setDlProgress(null);
     setCands([]);
     setHeard('');
     setRawHeard('');
@@ -254,86 +286,60 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       return;
     }
 
-    const ws = new WebSocket(FA_URL);
-    ws.binaryType = 'arraybuffer';
-    wsRef.current = ws;
+    // First run only: fetch the ~184 MB int8 model and load the ONNX session.
+    // Subsequent starts are instant (cached in userData + session kept warm).
+    if (!engine.isReady()) {
+      setDetail('downloading recognition model (~184 MB, one time)…');
+      setDlProgress(0);
+    }
+    try {
+      await engine.ready((p) => {
+        setDlProgress(p);
+        setDetail(`downloading recognition model… ${Math.round(p * 100)}% (one time)`);
+      });
+    } catch (e) {
+      setStatus('error');
+      setDetail(`could not prepare the recognition model: ${e?.message || e}`);
+      setDlProgress(null);
+      return;
+    }
+    setDlProgress(null);
 
-    ws.onopen = async () => {
-      let stream;
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          audio: { channelCount: 1, echoCancellation: false, noiseSuppression: false },
-        });
-      } catch (_) {
-        setStatus('error');
-        setDetail('microphone permission denied.');
-        cleanup();
-        return;
-      }
-      streamRef.current = stream;
-
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      ctxRef.current = ctx;
-
-      ws.send(JSON.stringify({
-        type: 'init',
-        sampleRate: ctx.sampleRate,
-        engine: 'karansea',
-        profile: MODES[mode].profile,
-        verses,
-      }));
-
-      try {
-        const url = URL.createObjectURL(new Blob([WORKLET_SRC], { type: 'application/javascript' }));
-        await ctx.audioWorklet.addModule(url);
-        URL.revokeObjectURL(url);
-        const node = new AudioWorkletNode(ctx, 'voice-follow-pcm');
-        node.port.onmessage = (ev) => {
-          if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-            wsRef.current.send(ev.data);
-          }
-        };
-        const src = ctx.createMediaStreamSource(stream);
-        src.connect(node);
-        // Deliberately not connected to destination — no playback.
-        nodeRef.current = node;
-        srcRef.current = src;
-        setStatus('listening');
-        setDetail(`${verses.length} lines · ${MODES[mode].label}`);
-      } catch (e) {
-        setStatus('error');
-        setDetail(`audio setup failed: ${e?.message || e}`);
-        cleanup();
-      }
-    };
-
-    ws.onmessage = (ev) => {
-      if (typeof ev.data !== 'string') return;
-      let msg;
-      try { msg = JSON.parse(ev.data); } catch (_) { return; }
-      if (msg.type === 'position') {
-        setPos({ lineIndex: msg.lineIndex, wordIndex: msg.wordIndex, confidence: msg.confidence });
-        if (typeof msg.lineIndex === 'number') {
-          const line = linesRef.current[msg.lineIndex];
+    // Wire the mic; each PCM chunk is pushed into the follower (serialized).
+    let sampleRate;
+    try {
+      sampleRate = await startAudio(async (pcm) => {
+        const f = followerRef.current;
+        if (!f) return;
+        const out = await f.push(pcm);
+        if (!out) return;
+        setPos({ lineIndex: out.lineIndex, wordIndex: out.wordIndex, confidence: out.confidence });
+        if (typeof out.lineIndex === 'number') {
+          const line = linesRef.current[out.lineIndex];
           if (line && line.verseId != null && line.verseId !== lastVerseRef.current) {
             lastVerseRef.current = line.verseId;
             setActiveVerseId(line.verseId);
-            setLineNumber(msg.lineIndex + 1);
+            setLineNumber(out.lineIndex + 1);
           }
         }
-      } else if (msg.type === 'error') {
-        setStatus('error');
-        setDetail(msg.message || 'server error');
-      }
-    };
-
-    ws.onerror = () => {
+      });
+    } catch (e) {
       setStatus('error');
-      setDetail('cannot reach alignment server on :8000 — is it running?');
-    };
-    ws.onclose = () => {
-      if (status === 'listening' || status === 'connecting') setStatus('stopped');
-    };
+      setDetail(e?.message || 'audio setup failed');
+      cleanup();
+      return;
+    }
+
+    try {
+      followerRef.current = await engine.createFollower(verses, { inputSr: sampleRate });
+    } catch (e) {
+      setStatus('error');
+      setDetail(`engine init failed: ${e?.message || e}`);
+      cleanup();
+      return;
+    }
+    setStatus('listening');
+    setDetail(`${verses.length} lines · ${MODES[mode].label}`);
   }, [
     activeShabadId,
     isSundarGutkaBani,
@@ -342,9 +348,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     baniLength,
     mode,
     cleanup,
+    startAudio,
     setActiveVerseId,
     setLineNumber,
-    status,
   ]);
 
   // -- Blind auto-detect: identify the shabad from audio, then follow it --------
@@ -510,8 +516,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     [lockOnto],
   );
 
-  // Start a blind-detect session: same mic pipeline as start(), but the server
-  // runs the free-decode recognizer and we identify + open the shabad ourselves.
+  // Start a blind-detect session: same mic pipeline as start(), but we run the
+  // free-decode recognizer in-process and identify + open the shabad ourselves.
   const startDetect = useCallback(async () => {
     cleanup();
     recognizingRef.current = true;
@@ -526,90 +532,53 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     setStatus('detecting');
     setDetail('listening for a shabad…');
 
-    const ws = new WebSocket(FA_URL);
-    ws.binaryType = 'arraybuffer';
-    wsRef.current = ws;
-
-    ws.onopen = async () => {
-      let stream;
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          audio: { channelCount: 1, echoCancellation: false, noiseSuppression: false },
-        });
-      } catch (_) {
-        setStatus('error');
-        setDetail('microphone permission denied.');
-        recognizingRef.current = false;
-        cleanup();
-        return;
-      }
-      streamRef.current = stream;
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      ctxRef.current = ctx;
-      ws.send(
-        JSON.stringify({
-          type: 'init',
-          mode: 'identify',
-          engine: 'karansea',
-          profile: MODES[mode].profile,
-          sampleRate: ctx.sampleRate,
-        }),
-      );
-      try {
-        const url = URL.createObjectURL(new Blob([WORKLET_SRC], { type: 'application/javascript' }));
-        await ctx.audioWorklet.addModule(url);
-        URL.revokeObjectURL(url);
-        const node = new AudioWorkletNode(ctx, 'voice-follow-pcm');
-        node.port.onmessage = (ev) => {
-          if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-            wsRef.current.send(ev.data);
-          }
-        };
-        const src = ctx.createMediaStreamSource(stream);
-        src.connect(node);
-        nodeRef.current = node;
-        srcRef.current = src;
-        setDetail('listening… sing or recite a few words');
-      } catch (e) {
-        setStatus('error');
-        setDetail(`audio setup failed: ${e?.message || e}`);
-        recognizingRef.current = false;
-        cleanup();
-      }
-    };
-
-    ws.onmessage = (ev) => {
-      if (typeof ev.data !== 'string') return;
-      let msg;
-      try {
-        msg = JSON.parse(ev.data);
-      } catch (_) {
-        return;
-      }
-      if (msg.type === 'transcript') {
-        handleTranscript(msg.text);
-      } else if (msg.type === 'error') {
-        setStatus('error');
-        setDetail(msg.message || 'server error');
-        recognizingRef.current = false;
-      }
-    };
-    ws.onerror = () => {
+    // First run only: ensure the model is present + the ONNX session is loaded.
+    if (!engine.isReady()) {
+      setDetail('downloading recognition model (~184 MB, one time)…');
+      setDlProgress(0);
+    }
+    try {
+      await engine.ready((p) => {
+        setDlProgress(p);
+        setDetail(`downloading recognition model… ${Math.round(p * 100)}% (one time)`);
+      });
+    } catch (e) {
       setStatus('error');
-      setDetail('cannot reach alignment server on :8000 — is it running?');
+      setDetail(`could not prepare the recognition model: ${e?.message || e}`);
+      setDlProgress(null);
       recognizingRef.current = false;
-    };
-    // If the socket drops while we're still identifying (e.g. a stale sidecar that
-    // doesn't understand identify mode, or a server restart), surface it clearly
-    // instead of letting the session silently disappear.
-    ws.onclose = () => {
-      if (recognizingRef.current) {
-        recognizingRef.current = false;
-        setStatus('error');
-        setDetail('lost the recognizer on :8000 — restart the sidecar, then try again.');
-      }
-    };
-  }, [cleanup, mode, handleTranscript]);
+      return;
+    }
+    setDlProgress(null);
+    if (!recognizingRef.current) return; // stopped during the download
+
+    let sampleRate;
+    try {
+      sampleRate = await startAudio(async (pcm) => {
+        const r = recognizerRef.current;
+        if (!r || !recognizingRef.current) return;
+        const out = await r.push(pcm);
+        if (out && out.text) handleTranscript(out.text);
+      });
+    } catch (e) {
+      setStatus('error');
+      setDetail(e?.message || 'audio setup failed');
+      recognizingRef.current = false;
+      cleanup();
+      return;
+    }
+
+    try {
+      recognizerRef.current = await engine.createRecognizer({ inputSr: sampleRate });
+    } catch (e) {
+      setStatus('error');
+      setDetail(`engine init failed: ${e?.message || e}`);
+      recognizingRef.current = false;
+      cleanup();
+      return;
+    }
+    setDetail('listening… sing or recite a few words');
+  }, [cleanup, startAudio, handleTranscript]);
 
   // While listening, if the presenter switches to a different shabad or bani (via
   // any menu — search, history, favorites, arrows, bani picker), re-attach to the
@@ -815,6 +784,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           >
             {mainLabel}
           </button>
+
+          {dlProgress != null && (
+            <div className="vf-dl" title="Downloading the recognition model (one time)">
+              <span className="vf-dl-bar" style={{ width: `${Math.round(dlProgress * 100)}%` }} />
+            </div>
+          )}
 
           {status === 'listening' && (
             <div className="vf-stats">

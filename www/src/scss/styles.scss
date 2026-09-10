@@ -1461,6 +1461,22 @@ $vf-glass: linear-gradient(160deg, rgba(34, 36, 47, 0.94), rgba(19, 20, 27, 0.96
   word-break: break-word;
 }
 
+.vf-dl {
+  margin-top: 10px;
+  height: 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+
+  .vf-dl-bar {
+    display: block;
+    height: 100%;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #5b73ff, #8a5bff);
+    transition: width 0.2s ease;
+  }
+}
+
 .vf-stats {
   margin-top: 12px;
   display: grid;
