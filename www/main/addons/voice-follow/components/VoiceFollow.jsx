@@ -67,9 +67,15 @@ const START_MATCH_WEIGHT = 12;
 const AP_LOCK_MIN_LETTERS = 5; // a small phrase is enough to lock the FIRST shabad
 const AP_LOCK_STABLE = 2; // hold the lead this many decodes before the first lock
 const VOTE_CAP = 60; // clamp votes so a long shabad can't become impossible to switch away from
-// While following we run the recognizer AND the follower on every chunk; a slightly
-// larger recognizer hop keeps combined inference comfortably under real-time.
-const AP_REC_HOP_S = 0.9;
+// While following we run the recognizer AND the follower on every chunk. The
+// recognizer WINDOW is the dominant switch-latency lever: a long window keeps
+// several seconds of the PREVIOUS shabad's audio, so a new shabad only wins the
+// acoustic test once that window refills. A short window (~4s ≈ one sung line)
+// lets the new shabad take over quickly; the hop keeps combined inference under
+// real-time. Offline-tuned on concatenated benchmark shabads: WIN=4/HOP=0.5 gives
+// ~3-7s switch latency at 100% recall / 0 false switches. (See vf-switch-eval.)
+const AP_REC_WIN_S = 4; // recognizer analysis window while in autopilot
+const AP_REC_HOP_S = 0.5; // recognizer decode hop while in autopilot
 
 // Acoustic switch test (runs while following). Each recognizer decode we score the
 // recent decoded audio against the CURRENT shabad's lines and against a proposed
@@ -77,9 +83,10 @@ const AP_REC_HOP_S = 0.9;
 // the current shabad by a clear margin AND matches well in absolute terms; a few
 // consecutive wins commit the switch.
 const SWITCH_CAND_MIN_VOTES = 6; // detector interest before we bother acoustic-testing a candidate
+const SWITCH_HYP_SLICE = 35; // chars of recent decoded audio to score (≈ the current line, not older shabad)
 const SWITCH_ACOUSTIC_MIN = 0.6; // candidate must match the recent audio at least this well
 const SWITCH_ACOUSTIC_MARGIN = 0.08; // ...and beat the current shabad by at least this much
-const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a switch (~a couple seconds)
+const SWITCH_CONFIRM = 2; // consecutive winning decodes needed to commit a switch (~a second)
 // Highlight gating: don't chase the projected line onto similar-worded lines of the
 // OLD shabad. Move only on confident frames, and freeze entirely while a switch is
 // being evaluated or the current shabad has stopped matching.
@@ -459,6 +466,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       if (sampleRateRef.current) {
         recognizerRef.current = await engine.createRecognizer({
           inputSr: sampleRateRef.current,
+          windowS: AP_REC_WIN_S,
           hopS: AP_REC_HOP_S,
         });
       }
@@ -546,6 +554,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (sampleRateRef.current) {
             recognizerRef.current = await engine.createRecognizer({
               inputSr: sampleRateRef.current,
+              windowS: AP_REC_WIN_S,
               hopS: AP_REC_HOP_S,
             });
           }
@@ -766,7 +775,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         }
         if (!sc.linesNorm) return; // still loading the candidate's lines
 
-        const hypNorm = vfNorm(text).slice(-80); // recent decoded audio
+        const hypNorm = vfNorm(text).slice(-SWITCH_HYP_SLICE); // recent decoded audio
         const sCur = maxLineScore(hypNorm, curLinesNormRef.current);
         const sCand = maxLineScore(hypNorm, sc.linesNorm);
         const winning = sCand >= SWITCH_ACOUSTIC_MIN && sCand >= sCur + SWITCH_ACOUSTIC_MARGIN;
@@ -961,6 +970,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     try {
       recognizerRef.current = await engine.createRecognizer({
         inputSr: sampleRate,
+        windowS: AP_REC_WIN_S,
         hopS: AP_REC_HOP_S,
       });
     } catch (e) {
