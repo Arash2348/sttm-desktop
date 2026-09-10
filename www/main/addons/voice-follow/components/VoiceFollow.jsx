@@ -292,17 +292,32 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     const rect = el.getBoundingClientRect();
     const offX = e.clientX - rect.left;
     const offY = e.clientY - rect.top;
+    const w = rect.width;
+    const h = rect.height;
     movedRef.current = false;
+    // Coalesce moves to one state update per animation frame. Native mousemove
+    // listeners don't batch, so an unthrottled setState-per-event is janky;
+    // rAF caps it to ~60fps while keeping React the source of truth (so live
+    // position re-renders during a session can't clobber the drag position).
+    let pending = null;
+    let raf = 0;
+    const apply = () => {
+      raf = 0;
+      if (pending) setWidgetPos(pending);
+    };
     const onMove = (m) => {
       movedRef.current = true;
-      const maxLeft = window.innerWidth - rect.width;
-      const maxTop = window.innerHeight - rect.height;
-      setWidgetPos({
+      const maxLeft = window.innerWidth - w;
+      const maxTop = window.innerHeight - h;
+      pending = {
         left: Math.min(Math.max(0, m.clientX - offX), Math.max(0, maxLeft)),
         top: Math.min(Math.max(0, m.clientY - offY), Math.max(0, maxTop)),
-      });
+      };
+      if (!raf) raf = requestAnimationFrame(apply);
     };
     const onUp = () => {
+      if (raf) cancelAnimationFrame(raf);
+      if (pending) setWidgetPos(pending);
       document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseup', onUp);
     };
@@ -317,26 +332,40 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     ? { top: widgetPos.top, left: widgetPos.left, right: 'auto', bottom: 'auto' }
     : null;
 
-  const dot = <span style={{ ...styles.dot, background: DOT[status] || '#888' }} />;
   const posLine = pos && typeof pos.lineIndex === 'number' ? pos.lineIndex + 1 : null;
+  const dot = (
+    <span
+      className={`vf-dot${listening ? ' is-live' : ''}`}
+      style={{ background: DOT[status] || '#888' }}
+    />
+  );
+
+  // Human-readable status line (avoids surfacing internal states like "idle").
+  const statusText =
+    status === 'idle'
+      ? 'Ready — pick a mode and press Start'
+      : `${STATUS_LABEL[status] || status}${detail ? ` — ${detail}` : ''}`;
+  // Short label for the collapsed pill.
+  let pillText = STATUS_LABEL[status] || 'Voice-Follow';
+  if (status === 'listening') pillText = `Line ${posLine == null ? '—' : posLine}`;
 
   return (
     <>
       {/* Non-modal, draggable floating panel. No backdrop, so the Gurbani stays
           fully visible while you set up and sing. Drag it by the header. */}
       {panelVisible && (
-        <div ref={panelRef} data-vf-widget style={{ ...styles.panel, ...posOverride }}>
-          {!widgetPos && <span style={styles.caret} />}
-          <div style={styles.header} onMouseDown={startDrag} title="Drag to move">
-            <span style={styles.title}>
-              <span style={styles.grip}>⠿</span>
+        <div ref={panelRef} data-vf-widget className="vf-panel" style={posOverride || undefined}>
+          {!widgetPos && <span className="vf-caret" />}
+          <div className="vf-header" onMouseDown={startDrag} title="Drag to move">
+            <span className="vf-title">
+              <span className="vf-grip">⠿</span>
               {dot}
-              Voice-Follow <span style={styles.tag}>beta</span>
+              Voice&#8288;-&#8288;Follow <span className="vf-tag">beta</span>
             </span>
-            <span style={styles.headerBtns}>
+            <span className="vf-hdr-btns">
               <button
                 type="button"
-                style={styles.hdrBtn}
+                className="vf-hdr-btn"
                 title="Collapse to pill"
                 aria-label="Collapse"
                 onMouseDown={(e) => e.stopPropagation()}
@@ -346,7 +375,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               </button>
               <button
                 type="button"
-                style={styles.hdrBtn}
+                className="vf-hdr-btn"
                 title="Close (Esc)"
                 aria-label="Close"
                 onMouseDown={(e) => e.stopPropagation()}
@@ -357,14 +386,14 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             </span>
           </div>
 
-          <div style={styles.row}>
+          <div className="vf-modes">
             {Object.keys(MODES).map((k) => (
               <button
                 key={k}
                 type="button"
                 disabled={listening}
                 onClick={() => setMode(k)}
-                style={{ ...styles.modeBtn, ...(mode === k ? styles.modeBtnActive : {}) }}
+                className={`vf-mode${mode === k ? ' is-active' : ''}`}
               >
                 {MODES[k].label}
               </button>
@@ -374,23 +403,22 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           <button
             type="button"
             onClick={listening ? stop : start}
-            style={{ ...styles.mainBtn, background: listening ? '#c0392b' : '#27ae60' }}
+            className={`vf-main ${listening ? 'is-stop' : 'is-start'}`}
           >
-            {listening ? 'Stop listening' : 'Start listening'}
+            {listening ? '■  Stop' : '●  Start listening'}
           </button>
 
-          <div style={styles.status}>
-            {status}
-            {detail ? ` — ${detail}` : ''}
-          </div>
-          {pos && (
-            <div style={styles.pos}>
-              line {posLine == null ? '—' : posLine}
-              {' · word '}
-              {pos.wordIndex}
-              {' · conf '}
-              {typeof pos.confidence === 'number' ? pos.confidence.toFixed(2) : '—'}
+          {status === 'listening' ? (
+            <div className="vf-live">
+              <span className="vf-live-num">{posLine == null ? '—' : posLine}</span>
+              <span className="vf-live-label">
+                current line
+                <br />
+                {MODES[mode].label}
+              </span>
             </div>
+          ) : (
+            <div className="vf-status">{statusText}</div>
           )}
         </div>
       )}
@@ -402,17 +430,21 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           id="vf-pill"
           data-vf-widget
           type="button"
-          style={{ ...styles.pill, ...posOverride }}
+          className="vf-pill"
+          style={posOverride || undefined}
           title="Voice-Follow — click to expand, drag to move"
           onMouseDown={startDrag}
           onClick={() => {
-            if (movedRef.current) { movedRef.current = false; return; }
+            if (movedRef.current) {
+              movedRef.current = false;
+              return;
+            }
             setCollapsed(false);
             if (!isOpen) setOverlayScreen('voice-follow');
           }}
         >
           {dot}
-          {status === 'connecting' ? 'connecting…' : `line ${posLine == null ? '—' : posLine}`}
+          {pillText}
         </button>
       )}
     </>
@@ -425,53 +457,12 @@ VoiceFollow.propTypes = {
 };
 
 const DOT = { idle: '#888', connecting: '#f39c12', listening: '#27ae60', error: '#c0392b', stopped: '#888' };
-
-const styles = {
-  // Anchored just right of the 48px-wide left toolbar, near the mic item — the
-  // same left-edge zone the Sundar Gutka / Ceremonies panels use. No backdrop.
-  panel: {
-    position: 'fixed', top: 88, left: 56, zIndex: 100000, width: 240, padding: 16,
-    borderRadius: 12, background: 'rgba(20,20,24,0.97)', color: '#eee',
-    font: '13px/1.45 -apple-system,Segoe UI,sans-serif', boxShadow: '0 8px 30px rgba(0,0,0,0.55)',
-  },
-  // Little arrow on the left edge pointing back at the toolbar mic.
-  caret: {
-    position: 'absolute', left: -7, top: 18, width: 0, height: 0,
-    borderTop: '7px solid transparent', borderBottom: '7px solid transparent',
-    borderRight: '7px solid rgba(20,20,24,0.97)',
-  },
-  pill: {
-    position: 'fixed', bottom: 20, left: 56, zIndex: 99999,
-    display: 'flex', alignItems: 'center', gap: 2, padding: '6px 12px', borderRadius: 999,
-    border: 'none', cursor: 'pointer', background: 'rgba(20,20,24,0.92)', color: '#eee',
-    font: '12px/1 -apple-system,Segoe UI,sans-serif', fontVariantNumeric: 'tabular-nums',
-    boxShadow: '0 4px 18px rgba(0,0,0,0.4)',
-  },
-  header: {
-    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    fontWeight: 600, marginBottom: 10, fontSize: 14, cursor: 'move', userSelect: 'none',
-  },
-  title: { display: 'flex', alignItems: 'center' },
-  grip: { marginRight: 6, opacity: 0.4, fontSize: 12, letterSpacing: -1 },
-  headerBtns: { display: 'flex', alignItems: 'center', gap: 2 },
-  hdrBtn: {
-    border: 'none', background: 'transparent', color: '#aaa', cursor: 'pointer',
-    fontSize: 20, lineHeight: 1, padding: '0 6px', minWidth: 24,
-  },
-  dot: { width: 8, height: 8, borderRadius: '50%', marginRight: 6, display: 'inline-block' },
-  tag: { marginLeft: 6, fontSize: 9, opacity: 0.6, textTransform: 'uppercase', letterSpacing: 0.5 },
-  row: { display: 'flex', gap: 6, marginBottom: 8 },
-  modeBtn: {
-    flex: 1, padding: '5px 4px', fontSize: 10, borderRadius: 6, cursor: 'pointer',
-    border: '1px solid #444', background: '#2a2a30', color: '#ccc',
-  },
-  modeBtnActive: { background: '#3d5afe', borderColor: '#3d5afe', color: '#fff' },
-  mainBtn: {
-    width: '100%', padding: '8px', border: 'none', borderRadius: 6, color: '#fff',
-    fontWeight: 600, cursor: 'pointer', fontSize: 12,
-  },
-  status: { marginTop: 8, opacity: 0.85, wordBreak: 'break-word' },
-  pos: { marginTop: 4, opacity: 0.7, fontVariantNumeric: 'tabular-nums' },
+const STATUS_LABEL = {
+  idle: 'Ready',
+  connecting: 'Starting…',
+  listening: 'Listening',
+  error: 'Problem',
+  stopped: 'Stopped',
 };
 
 export default VoiceFollow;
