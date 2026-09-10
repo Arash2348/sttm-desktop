@@ -1552,6 +1552,17 @@ $vf-glass: linear-gradient(160deg, rgba(34, 36, 47, 0.94), rgba(19, 20, 27, 0.96
   }
 }
 
+.vf-toggle-primary {
+  background: rgba($vf-accent, 0.14);
+  color: #fff;
+  font-weight: 600;
+  border: 1px solid rgba($vf-accent, 0.4);
+
+  &:hover {
+    background: rgba($vf-accent, 0.2);
+  }
+}
+
 .vf-detect {
   margin-top: 12px;
   display: flex;

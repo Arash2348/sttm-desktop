@@ -139,7 +139,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   openShabadRef.current = changeActiveShabad;
 
   const [status, setStatus] = useState('idle'); // idle|connecting|listening|detecting|error|stopped
-  const [autoDetect, setAutoDetect] = useState(false); // blind: identify the shabad from audio, then follow
+  const [autopilot, setAutopilot] = useState(true); // hands-free: detect + follow + auto-switch, one press
+  const [autoDetect, setAutoDetect] = useState(false); // blind: identify the shabad from audio, then follow (one-shot)
   const [heard, setHeard] = useState(''); // gurmukhi first-letters heard (for visibility)
   const [rawHeard, setRawHeard] = useState(''); // raw recognizer transcript (diagnostic)
   const [cands, setCands] = useState([]); // [{shabadId, verseId, verse, display, share}] shortlist
@@ -157,6 +158,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const followerRef = useRef(null); // Follower (track a known shabad/bani)
   const recognizerRef = useRef(null); // Recognizer (blind auto-detect)
   const chainRef = useRef(Promise.resolve()); // serialize async inference per chunk
+  // Autopilot: one continuous session that detects, follows, and auto-switches
+  // shabads hands-free. phaseRef gates which engine each audio chunk feeds.
+  const autopilotRef = useRef(false);
+  const phaseRef = useRef('searching'); // 'searching' (detect) | 'following' (track)
+  const sampleRateRef = useRef(null); // mic sample rate, for building engine sessions
+  const currentShabadIdRef = useRef(null); // shabad currently projected (avoid re-open)
   const ctxRef = useRef(null);
   const streamRef = useRef(null);
   const nodeRef = useRef(null);
@@ -220,6 +227,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
   const stop = useCallback(() => {
     recognizingRef.current = false;
+    autopilotRef.current = false;
+    phaseRef.current = 'searching';
+    currentShabadIdRef.current = null;
     cleanup();
     setStatus('stopped');
     setDetail('');
@@ -375,6 +385,85 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     [cleanup],
   );
 
+  // -- Autopilot: hands-free detect -> follow -> auto-switch, one session -------
+
+  // Drop back to detecting (the current shabad stopped matching, or we're just
+  // starting). Keeps whatever is on screen; spins up a FRESH recognizer so the
+  // previous shabad's audio tail can't bias the next identification.
+  const enterSearching = useCallback(async () => {
+    phaseRef.current = 'searching';
+    followerRef.current = null;
+    detectVotesRef.current = new Map();
+    detectRowsRef.current = new Map();
+    detectStableRef.current = { id: null, count: 0 };
+    setCands([]);
+    setPos(null);
+    setStatus('detecting');
+    setDetail('listening for the next shabad…');
+    try {
+      if (sampleRateRef.current) {
+        recognizerRef.current = await engine.createRecognizer({ inputSr: sampleRateRef.current });
+      }
+    } catch (_) {
+      /* keep the existing recognizer if a fresh one can't be built */
+    }
+  }, []);
+
+  // A confident, stable shabad emerged while searching. Build a follower for it,
+  // project it (unless it's the one already up), and switch to following — all
+  // without tearing down the single continuous mic session.
+  const autopilotLock = useCallback(
+    async (cand) => {
+      if (!cand || !cand.verse) return;
+      // Claim 'following' immediately so in-flight detections don't double-lock.
+      phaseRef.current = 'following';
+      setCands([]);
+      setStatus('connecting');
+      setDetail('found it — projecting & following…');
+
+      let verses;
+      try {
+        const rows = await banidb.loadShabad(cand.shabadId);
+        const filtered = filterRequiredVerseItems(rows).filter(
+          (it) => it && it.verseId != null && it.verse,
+        );
+        verses = filtered.map((it) => ({
+          verseId: it.verseId,
+          words: tokenize(anvaad.unicode(it.verse)),
+        }));
+      } catch (e) {
+        setDetail(`could not load shabad: ${e?.message || e}`);
+        await enterSearching();
+        return;
+      }
+      if (!verses.length) {
+        await enterSearching();
+        return;
+      }
+
+      let follower;
+      try {
+        follower = await engine.createFollower(verses, { inputSr: sampleRateRef.current });
+      } catch (e) {
+        setDetail(`engine init failed: ${e?.message || e}`);
+        await enterSearching();
+        return;
+      }
+      // A stop/switch may have happened during the awaits.
+      if (!autopilotRef.current || phaseRef.current !== 'following') return;
+
+      lastVerseRef.current = null;
+      followerRef.current = follower;
+      if (cand.shabadId !== currentShabadIdRef.current) {
+        currentShabadIdRef.current = cand.shabadId;
+        openShabadRef.current(cand.shabadId, cand.verseId, cand.verse);
+      }
+      setStatus('listening');
+      setDetail('following — sing on');
+    },
+    [enterSearching],
+  );
+
   // Each decode from the recognizer: turn it into Gurmukhi first-letters, slide
   // several n-grams across them, search banidb for each, and vote. Surface the
   // running shortlist, and auto-select once one shabad is confidently ahead.
@@ -510,10 +599,16 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         cand &&
         cand.verse
       ) {
-        lockOnto(cand);
+        if (autopilotRef.current) {
+          // Only lock/switch while searching; a healthy follower is never
+          // interrupted by detection (the switch signal is follower release).
+          if (phaseRef.current === 'searching') autopilotLock(cand);
+        } else {
+          lockOnto(cand);
+        }
       }
     },
-    [lockOnto],
+    [lockOnto, autopilotLock],
   );
 
   // Start a blind-detect session: same mic pipeline as start(), but we run the
@@ -580,10 +675,105 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     setDetail('listening… sing or recite a few words');
   }, [cleanup, startAudio, handleTranscript]);
 
+  // One-press hands-free mode. A single continuous mic session: detect a shabad,
+  // follow it, and when the singer moves to a different shabad (the follower
+  // releases), automatically find and project the next one — no clicks, no
+  // confirmations, no person needed at the computer.
+  const startAutopilot = useCallback(async () => {
+    cleanup();
+    autopilotRef.current = true;
+    recognizingRef.current = true;
+    phaseRef.current = 'searching';
+    currentShabadIdRef.current = null;
+    detectVotesRef.current = new Map();
+    detectRowsRef.current = new Map();
+    detectStableRef.current = { id: null, count: 0 };
+    lastVerseRef.current = null;
+    setPos(null);
+    setCands([]);
+    setHeard('');
+    setRawHeard('');
+    setStatus('detecting');
+    setDetail('starting…');
+
+    if (!engine.isReady()) {
+      setDetail('downloading recognition model (~184 MB, one time)…');
+      setDlProgress(0);
+    }
+    try {
+      await engine.ready((p) => {
+        setDlProgress(p);
+        setDetail(`downloading recognition model… ${Math.round(p * 100)}% (one time)`);
+      });
+    } catch (e) {
+      setStatus('error');
+      setDetail(`could not prepare the recognition model: ${e?.message || e}`);
+      setDlProgress(null);
+      autopilotRef.current = false;
+      recognizingRef.current = false;
+      return;
+    }
+    setDlProgress(null);
+    if (!autopilotRef.current) return; // stopped during the download
+
+    let sampleRate;
+    try {
+      sampleRate = await startAudio(async (pcm) => {
+        if (!autopilotRef.current) return;
+        if (phaseRef.current === 'following') {
+          const f = followerRef.current;
+          if (!f) return; // still building the follower after a lock
+          const out = await f.push(pcm);
+          if (!out) return;
+          if (out.lineIndex == null || out.verseIndex === -1) {
+            // Follower released — the current shabad no longer matches. Signal 1
+            // of 2 for a switch; enterSearching arms detection for the new one.
+            await enterSearching();
+            return;
+          }
+          setPos({ lineIndex: out.lineIndex, wordIndex: out.wordIndex, confidence: out.confidence });
+          if (out.verseId != null && out.verseId !== lastVerseRef.current) {
+            lastVerseRef.current = out.verseId;
+            setActiveVerseId(out.verseId);
+            setLineNumber(out.lineIndex + 1);
+          }
+        } else {
+          const r = recognizerRef.current;
+          if (!r) return;
+          const out = await r.push(pcm);
+          if (out && out.text) handleTranscript(out.text);
+        }
+      });
+    } catch (e) {
+      setStatus('error');
+      setDetail(e?.message || 'audio setup failed');
+      autopilotRef.current = false;
+      recognizingRef.current = false;
+      cleanup();
+      return;
+    }
+    sampleRateRef.current = sampleRate;
+
+    try {
+      recognizerRef.current = await engine.createRecognizer({ inputSr: sampleRate });
+    } catch (e) {
+      setStatus('error');
+      setDetail(`engine init failed: ${e?.message || e}`);
+      autopilotRef.current = false;
+      recognizingRef.current = false;
+      cleanup();
+      return;
+    }
+    setDetail('listening… start singing any shabad');
+  }, [cleanup, startAudio, handleTranscript, enterSearching, setActiveVerseId, setLineNumber]);
+
   // While listening, if the presenter switches to a different shabad or bani (via
   // any menu — search, history, favorites, arrows, bani picker), re-attach to the
   // new content so we stop matching against the previous one's lines.
   useEffect(() => {
+    // Autopilot owns its own content switching within one continuous session —
+    // never let the manual re-attach path tear it down.
+    if (autopilotRef.current) return;
     const active = status === 'listening' || status === 'connecting';
     if (!active) return;
     if (isCeremonyBani) {
@@ -708,12 +898,15 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const confPct =
     pos && typeof pos.confidence === 'number' ? `${Math.round(pos.confidence * 100)}%` : null;
 
-  // Main button: Stop while a session runs, else Start (blind detect or follow).
+  // Main button: Stop while a session runs, else Start. Autopilot is the default
+  // hands-free experience; manual follow / one-shot detect are the fallbacks.
   let onMainClick = start;
   if (active) onMainClick = stop;
+  else if (autopilot) onMainClick = startAutopilot;
   else if (autoDetect) onMainClick = startDetect;
   let mainLabel = '●  Start listening';
   if (active) mainLabel = '■  Stop';
+  else if (autopilot) mainLabel = '●  Start autopilot';
   else if (autoDetect) mainLabel = '●  Start auto-detect';
 
   return (
@@ -753,29 +946,46 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             </span>
           </div>
 
-          <div className="vf-modes">
-            {Object.keys(MODES).map((k) => (
-              <button
-                key={k}
-                type="button"
-                disabled={active}
-                onClick={() => setMode(k)}
-                className={`vf-mode${mode === k ? ' is-active' : ''}`}
-              >
-                {MODES[k].label}
-              </button>
-            ))}
-          </div>
-
-          <label className="vf-toggle" title="Identify the shabad from your voice, then follow it">
+          <label
+            className="vf-toggle vf-toggle-primary"
+            title="Hands-free: detect, follow, and switch shabads automatically — press once and walk away"
+          >
             <input
               type="checkbox"
-              checked={autoDetect}
+              checked={autopilot}
               disabled={active}
-              onChange={(e) => setAutoDetect(e.target.checked)}
+              onChange={(e) => setAutopilot(e.target.checked)}
             />
-            <span>Auto&#8288;-detect the shabad from my voice</span>
+            <span>Autopilot — follow &amp; switch shabads hands&#8288;-free</span>
           </label>
+
+          {!autopilot && (
+            <>
+              <div className="vf-modes">
+                {Object.keys(MODES).map((k) => (
+                  <button
+                    key={k}
+                    type="button"
+                    disabled={active}
+                    onClick={() => setMode(k)}
+                    className={`vf-mode${mode === k ? ' is-active' : ''}`}
+                  >
+                    {MODES[k].label}
+                  </button>
+                ))}
+              </div>
+
+              <label className="vf-toggle" title="Identify the shabad from your voice, then follow it">
+                <input
+                  type="checkbox"
+                  checked={autoDetect}
+                  disabled={active}
+                  onChange={(e) => setAutoDetect(e.target.checked)}
+                />
+                <span>Auto&#8288;-detect the shabad from my voice</span>
+              </label>
+            </>
+          )}
 
           <button
             type="button"
