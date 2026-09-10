@@ -67,14 +67,19 @@ const START_MATCH_WEIGHT = 12;
 const AP_LOCK_MIN_LETTERS = 5; // a small phrase is enough to lock the FIRST shabad
 const AP_LOCK_STABLE = 2; // hold the lead this many decodes before the first lock
 const VOTE_CAP = 60; // clamp votes so a long shabad can't become impossible to switch away from
-// While following we run the recognizer AND the follower on every chunk. The
-// recognizer WINDOW is the dominant switch-latency lever: a long window keeps
-// several seconds of the PREVIOUS shabad's audio, so a new shabad only wins the
-// acoustic test once that window refills. A short window (~4s ≈ one sung line)
-// lets the new shabad take over quickly; the hop keeps combined inference under
-// real-time. Offline-tuned on concatenated benchmark shabads: WIN=4/HOP=0.5 gives
-// ~3-7s switch latency at 100% recall / 0 false switches. (See vf-switch-eval.)
-const AP_REC_WIN_S = 4; // recognizer analysis window while in autopilot
+// The recognizer WINDOW is a two-sided lever, so autopilot uses a DIFFERENT one
+// per phase (goal: each capability as good as its dedicated feature):
+//  - SEARCHING: identifying a shabad from scratch wants as much context as
+//    possible, so use the SAME 10s window the standalone auto-detect uses. This
+//    makes autopilot's initial detection identical to that feature — no regress.
+//  - FOLLOWING: a long window keeps several seconds of the PREVIOUS shabad's
+//    audio, so a switch only wins the acoustic test once the window refills
+//    (~15s — the slow-switch bug). A short window (~4s ≈ one sung line) lets the
+//    new shabad take over quickly. Offline-tuned on concatenated benchmark
+//    shabads: WIN=4/HOP=0.5 gives ~3-7s switch latency at 100% recall / 0 false
+//    switches. (See vf-switch-eval.)
+const AP_SEARCH_WIN_S = 10; // recognizer window while SEARCHING (matches standalone detect)
+const AP_FOLLOW_WIN_S = 4; // recognizer window while FOLLOWING (fast switching)
 const AP_REC_HOP_S = 0.5; // recognizer decode hop while in autopilot
 
 // Acoustic switch test (runs while following). Each recognizer decode we score the
@@ -84,8 +89,13 @@ const AP_REC_HOP_S = 0.5; // recognizer decode hop while in autopilot
 // consecutive wins commit the switch.
 const SWITCH_CAND_MIN_VOTES = 6; // detector interest before we bother acoustic-testing a candidate
 const SWITCH_HYP_SLICE = 35; // chars of recent decoded audio to score (≈ the current line, not older shabad)
-const SWITCH_ACOUSTIC_MIN = 0.6; // candidate must match the recent audio at least this well
-const SWITCH_ACOUSTIC_MARGIN = 0.08; // ...and beat the current shabad by at least this much
+// Precision gate (offline-tuned): a real shabad change scores the new shabad ≥0.67
+// with a ≥0.33 margin over the current one, while a borderline confusion (a shared
+// closing phrase between two shabads) tops out around 0.60 / 0.20 margin. These
+// thresholds sit cleanly between the two, so real switches pass and the confusion
+// is rejected — without needing slower confirmation (see vf-switch-eval).
+const SWITCH_ACOUSTIC_MIN = 0.65; // candidate must match the recent audio at least this well
+const SWITCH_ACOUSTIC_MARGIN = 0.15; // ...and beat the current shabad by at least this much
 const SWITCH_CONFIRM = 2; // consecutive winning decodes needed to commit a switch (~a second)
 // Highlight gating: don't chase the projected line onto similar-worded lines of the
 // OLD shabad. Move only on confident frames, and freeze entirely while a switch is
@@ -466,7 +476,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       if (sampleRateRef.current) {
         recognizerRef.current = await engine.createRecognizer({
           inputSr: sampleRateRef.current,
-          windowS: AP_REC_WIN_S,
+          windowS: AP_SEARCH_WIN_S, // searching: full context, like standalone detect
           hopS: AP_REC_HOP_S,
         });
       }
@@ -554,7 +564,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (sampleRateRef.current) {
             recognizerRef.current = await engine.createRecognizer({
               inputSr: sampleRateRef.current,
-              windowS: AP_REC_WIN_S,
+              windowS: AP_FOLLOW_WIN_S, // now following: short window = fast next switch
               hopS: AP_REC_HOP_S,
             });
           }
@@ -970,7 +980,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     try {
       recognizerRef.current = await engine.createRecognizer({
         inputSr: sampleRate,
-        windowS: AP_REC_WIN_S,
+        windowS: AP_SEARCH_WIN_S, // starts in the searching phase
         hopS: AP_REC_HOP_S,
       });
     } catch (e) {
