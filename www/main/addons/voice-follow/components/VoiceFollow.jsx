@@ -15,13 +15,22 @@ const { norm: vfNorm, partialRatio } = engine;
 // Best fuzzy match of the recently decoded audio against any line of a shabad — the
 // same measure the follower uses per-line, so scores for two shabads are directly
 // comparable. Used to judge "does the voice now match this OTHER shabad better?".
-function maxLineScore(hypNorm, linesNorm) {
+// minLineChars > 0 applies a length-aware containment penalty: partialRatio is
+// asymmetric (it rewards a SHORT line found as a substring of a longer hyp), so a
+// 1-line shabad can score ~1.0 against a fragment of unrelated audio — the dominant
+// source of jarring ERRONEOUS switches on a large shabad field. Scaling each line's
+// score by min(1, lineLen/minLineChars) makes a short line clear a proportionally
+// higher raw bar before it can win. Cross-validated on real kirtan: cut erroneous
+// on the 86-min stream (13.2->10.5) and the 20-singer stream (~34->28) with no
+// recall loss and neutral on clean short-segment streams. See vf-kirtan-switch-eval.
+function maxLineScore(hypNorm, linesNorm, minLineChars = 0) {
   if (!hypNorm || !linesNorm || !linesNorm.length) return 0;
   let best = 0;
   for (let i = 0; i < linesNorm.length; i += 1) {
     const ln = linesNorm[i];
     if (ln) {
-      const s = partialRatio(hypNorm, ln) / 100;
+      let s = partialRatio(hypNorm, ln) / 100;
+      if (minLineChars > 0) s *= Math.min(1, ln.length / minLineChars);
       if (s > best) best = s;
     }
   }
@@ -99,6 +108,9 @@ const VOTE_CAP = 60; // clamp votes so a long shabad can't become impossible to 
 //    shabads: WIN=4/HOP=0.5 gives ~3-7s switch latency at 100% recall / 0 false
 //    switches. (See vf-switch-eval.)
 const AP_SEARCH_WIN_S = 10; // recognizer window while SEARCHING (matches standalone detect)
+// Kept at 4 after cross-voice validation: a shorter FOLLOW window (3) helped a
+// second raagi's stream but REGRESSED the primary 86-min stream (erroneous 13.2->14.9,
+// recall 85->83) and was ~a wash on the 9s stress stream — not voice-agnostic, so 4 stays.
 const AP_FOLLOW_WIN_S = 4; // recognizer window while FOLLOWING (fast switching)
 const AP_REC_HOP_S = 0.5; // recognizer decode hop while in autopilot
 
@@ -116,6 +128,12 @@ const SWITCH_HYP_SLICE = 35; // chars of recent decoded audio to score (≈ the 
 // is rejected — without needing slower confirmation (see vf-switch-eval).
 const SWITCH_ACOUSTIC_MIN = 0.65; // candidate must match the recent audio at least this well
 const SWITCH_ACOUSTIC_MARGIN = 0.15; // ...and beat the current shabad by at least this much
+// Length-aware penalty applied to the CANDIDATE score only (the current shabad is
+// scored by cursorLineScore, which we leave untouched so it stays strong). A proposed
+// switch to a shabad whose only match is a short line contained in the hyp is
+// discounted. 15 chars ≈ a few Gurmukhi words; validated to cut erroneous switches
+// with no recall loss (see maxLineScore comment / vf-kirtan-switch-eval).
+const SWITCH_CAND_MIN_LINE_CHARS = 15;
 // 3 net winning decodes — the knee on the 86-min real-kirtan switch benchmark
 // (vf-kirtan-switch-eval), ranked by a UX metric that splits "wrong" into STALE
 // (still showing the previous shabad — a graceful late switch) vs ERRONEOUS (jumped
@@ -126,6 +144,14 @@ const SWITCH_ACOUSTIC_MARGIN = 0.15; // ...and beat the current shabad by at lea
 // Going 3->4 cuts the false-switch COUNT but buys ~zero erroneous-TIME (the extra
 // suppressed switches were brief); it only adds latency/stale, dropping on-correct
 // 5.5pts. So 3 minimizes jarring wrong jumps AND maximizes time on the right shabad.
+// CROSS-VALIDATED (2026-09, on-correct/stale/erroneous): CONFIRM=3 is the only value
+// that is never worst across all three real-kirtan regimes —
+//   86-min live (voice A):        69 / 18 / 13
+//   51-shabad ~45s (voice B):     74 / 11 / 15
+//   9s rapid-switch stress test:  35 / 38 / 27  (fails to STALE, not ERRONEOUS)
+// CONFIRM=4 looked good on long clean 45s segments but COLLAPSES under rapid switching
+// (misses switches: recall 68->60%), so raising it is not safe. The 9s stress ceiling
+// (~35% on-correct) is latency-bound (react time ~4-5s vs 9s dwell), not tunable.
 const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a switch
 // The CURRENT shabad is scored RELATIVE TO THE FOLLOWER CURSOR, not as a global max
 // over all its lines. Otherwise, starting a new shabad whose opening words happen to
@@ -842,7 +868,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           CUR_SCORE_BACK,
           CUR_SCORE_AHEAD,
         );
-        const sCand = maxLineScore(hypNorm, sc.linesNorm);
+        const sCand = maxLineScore(hypNorm, sc.linesNorm, SWITCH_CAND_MIN_LINE_CHARS);
         const winning = sCand >= SWITCH_ACOUSTIC_MIN && sCand >= sCur + SWITCH_ACOUSTIC_MARGIN;
         sc.wins = winning ? sc.wins + 1 : Math.max(0, sc.wins - 1);
         // Surface the live comparison so the presenter can see a new shabad being
