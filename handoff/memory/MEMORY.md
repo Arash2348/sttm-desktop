@@ -1,0 +1,15 @@
+- [Voice-follow project](voice-follow-project.md) — Gurbani real-time line/word highlight feature on sttm-web (forced alignment, aiming to ship)
+- [Kirtan model goal](voice-follow-kirtan-model-goal.md) — active: break Kirtan Mode acoustic ceiling (new/fine-tuned local model) + keep Path Mode advancing
+- [Real-kirtan frontier](voice-follow-realkirtan-frontier.md) — ~37% kirtan ceiling is acoustic; exhaustive lever sweep done
+- [Communication & respect for Bani](communication-respect-bani.md) — avoid one idiom; always speak of Gurbani reverently
+- [Mid-pangti start decision](voice-follow-midpangti-decision.md) — decided NOT to special-case mid-line joins (FP risk not worth it); already handled acceptably
+- [Oracle within-shabad bake-off](voice-follow-oracle-bakeoff.md) — per-mode winners: Path=forced-align (85→93 clean), Kirtan=CTC-posterior (47→49.6); next=segmental Viterbi
+- [Desktop integration](voice-follow-desktop-integration.md) — voice-follow ported into sttm-desktop (Electron addon) for E2E; drives setActiveVerseId → auto highlight+projection
+- [Path near-100 push](voice-follow-path-near100.md) — Path errors are 100% FIXABLE (posterior knows GT, not acoustic); align2=best streaming (92.6/91.1), seg raises offline ceiling to 95.7
+- [Real-kirtan accuracy/FP frontier](voice-follow-realkirtan-frontier.md) — real-kirtan acc is FP-bound (~35-37%); win8 is the safe Kirtan-Mode win; loosening gates = 84% FP
+- [First-letter search format](voice-follow-firstletter-format.md) — banidb FirstLetterStr is ASCII-font coded; convert unicode→ascii-font first-letters before querying (blind auto-detect fix)
+- [Native onnxruntime-node port](voice-follow-native-port.md) — active: port Python sidecar into sttm-desktop as native ONNX (no server) to ship upstream; inference/recognizer/BPE-encode verified, follower port next
+- [Kirtan switch benchmark](voice-follow-kirtan-switch-bench.md) — real 86-min kirtan, 116 real switches; +2nd-voice pull benchmark; CONF=3 robust, FOLLOW_WIN 4→3 = best-of-both candidate
+- [Kirtan benchmark YouTube pull](voice-follow-kirtan-benchmark-pull.md) — how to self-download kirtan (yt-dlp+POT stack) + label shabads from local Realm DB
+- [No-commit rule](no-commit-without-approval.md) — do NOT git commit unless the user explicitly says to
+- [North-star KPIs](voice-follow-north-star-kpis.md) — the 9 agreed autopilot KPIs (plain+technical); Big 3 = right page↑, wrong page↓, lock-on↑; #3/#7 not measured yet

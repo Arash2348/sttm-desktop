@@ -1,0 +1,409 @@
+[1] I want to build a good body app that basically doesn't compete with Seek to the Max but basically like the goal is like to the max right it shows slide by slide each Gurbani right pangti one by one but the thing is like it would be really awesome if there was something that could like like AI model or like system that could automatically detect which pangti was being read within a shabad or like which word was being sung and highlight those words like kind of like and then kind of keep track of that so like for example it's like while you're speaking it's like highlighting the exact words and then it automatically goes to the next slide and so on and so forth that would be like awesome right can you explain me how to build a system like help me build figure out what what systems that i can like use through GitHub to like do this like what local models i might use which one is the best from like speech to Gurbani or like which way to even go about doing this um my goal isn't to rebuild all that the max already has they already have a lot of functionality i mine is more of like a feature on top
+
+[2] install it yoruself and make it wokr here please. also remember I am not to sure how you are using the sytem desing, but we need this to be high fidelity (i.e like high accuracy, and low latency)
+
+[3] the frontend looks broken and in raw html please hlep
+
+[4] I mean a lt of ostuff is missing the app looks unfunctional
+
+[5] okay awesome I see it how to test
+
+[6] searching is not working. and some things are not funcitonal.
+
+[7] please accept all permissions
+
+[8] sorry keep going
+
+[9] I dno't see voice follow tab though
+
+[10] I can't use incongniteo mode
+
+[11] neither
+
+[12] no yellow bar at all. can I run any terminal commands to get this good
+
+[13] oaky ran 1st one
+
+[14] VF-DIAG PROMISE REJECT: Failed to fetch getting htis
+
+[15] VF-DIAG · build loaded · waiting for React…. also fyi sikhto the max seraching with guru goes away form some reason on the 3rd dropdown form our code VF-DIAG · React mounted=true · children=2 · yellowBar=true · failedFetches=[FAILED //api.sikhitothemax.org/doodle/ (Failed to fetch) | FAILED //api.banidb.com/v2/writers/ (Failed to fetch) | FAILED //api.banidb.com/v2/shabads/2624 (Failed to fetch) | FAILED //api.banidb.com/v2/writers/ (Failed to fetch) | FAILED //api.sikhitothemax.org/doodle/ (Failed to fetch) | FAILED https://ad.doubleclick.net/ccm/s/collect?auid=1430506948.1788919306&gtm=45be6930h1za200xec&fmt=8 (Failed to fetch) | HTTP 0 https://www.google.com/ccm/collect?rcb=4&frm=0&apvc=1&auid=1430506948.1788919306&dt=Shabad%20-%20SikhiToTheMax&tid=AW-958770124&en=page_view&dl=http%3A%2F%2Flocalhost%3A8082%2Fshabad%3Fid%3D2624&scrsrc=www.googletagmanager.com&rnd=1251319080.1788921183&navt=n&npa=0&gtm=45be6930h1za200xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938469~117776796~118897920~118897930~119793973~120385423~120469145~120469153&tft=1788921182929&tfd=346&tids=AW-958770124&fmt=8 | HTTP 0 https://www.google.com/rmkt/collect/958770124/?random=1788921182926&cv=11&fst=1788921182926&fmt=8&bg=ffffff&guid=ON&async=1&en=gtag.config&gtm=45be6930h1za200xec&gcd=13l3l3l3l1l1&dma=0&tag_exp=115938466~115938469~117776796~118897920~118897930~119793973~120385423~120469145~120469153&u_w=1920&u_h=1080&url=http%3A%2F%2Flocalhost%3A8082%2Fshabad%3Fid%3D2624&rcb=4&frm=0&tiba=Shabad%20-%20SikhiToTheMax&hn=www.googleadservices.com&npa=0&pscdl=noapi&auid=1430506948.1788919306&uaa=arm&uab=64&uafvl=Chromium%3B152.0.7977.77%7CNot%253FA_Brand%3B24.0.0.0%7CGoogle%2520Chrome%3B152.0.7977.77&uamb=0&uam=&uap=macOS&uapv=26.6.2&uaw=0&data=event%3Dgtag.config&ept=68&gcp=5] here
+
+[16] I don't see no purpose button. and neither do I ahve a shabad selected. do I have to ahve one first? maybe I am folow steps wrong
+
+[17] Something isn't working correctly
+This is really unusual. Try clearing your cache. If you still face the issue, you may want to hit the Feedback button at the bottom of this page, and report this issue to our team to fix it. the shabad page i sjust this
+
+[18] omething isn't working correctly
+This is really unusual. Try clearing your cache. If you still face the issue, you may want to hit the Feedback button at the bottom of this page, and report this issue to our team to fix it.
+
+v1.19.0
+Help
+About Us
+Feedback
+Legal
+Donate
+|
+Desktop icon
+iOS icon
+Android icon
+Copyright © 2026 Khalis Foundation, SikhiToTheMax Trademark SHARE Charity, UK
+VF-DIAG · build loaded · waiting for React… just see this
+
+[19] done
+
+[20] okay so couple of things we are just using time and not models. the goal should be to actual use local models like mybe try using indicconformer for kritan search the paper oneline
+
+[21] or other models. the goal is to use a combination of tehcniques ot be really good fidelity, it should also be able to udnerstand when pangti are skipped. for example going fomr 1st line to like 6th line, which I tested and di not work here
+
+[22] hf_***REDACTED*** here is the token. also please before we use indic do a full deep serahc which is best for our task and so we can use that. I don't know if inidc is best, and want to do a full-depth understnading that we are doing waht is best forom system desing perspective
+
+[23] summarize the local models you tried and whihc was the best and what you did. gieve a table to undrestand
+
+[24] what were other models that are usable, and why did we not choose them
+
+[25] whihc one or liekly combination is usable ot ship commericallyl, and liley would get highes prercneage with a bit more pubumbing
+
+[26] okay awesome how cna I test this. can you open the borwser for me. also let's make sure that we ctest on a lto fo diffeernet shabada, are are benchmarking system is robust
+
+[27] so tell me full hiostry. what we are trying to do and usmmary hwere we are at, and what we have left ot try etc..
+
+[28] give table history of metrics for accuracy, latency, false positive rate and why irhg now is best
+
+[29] okay let's try it then
+
+[30] is it ni the UI browser can I test it
+
+[31] the time to lock is super slwo, and words level highlithting is still not hpapaneing. /goal run differne trial across all the metrics we value. keep iterating untiil we get this best system design, model, and technical design that optimzes the metrics we care about. time to lock for example is extrmely slow. we need high fidelity meaning high accuracy, low false positive, fast lock in time (and siwthinc), word level, super low latency. for example what happens with current impelementiaon is that I start reading like a full pnagti and then get to the nding word of hte pngthi and then it finailly locks in. it hsould lokc in ideally after the 1st or 2nd word
+
+[32] I can't click on the dmeo goes it goes off the pgag . also hmm help me think the better ways to do this. I really want this to bes fast, and also take. most of time people goes sequential, but sometimes people will skip like 1-2 pangtis. what do you think is best way to get this then in a way we cna handle multiple line skips but also be fast in all cases. match a human as close as possible
+
+[33] whatever you think is best
+
+[34] erase the react werid banner on the bottom, and then get me a git patch I can send to my friend
+
+[35] can you push to sttm-web, or get github. basically I want another person to be able to pull this down publicly and work on it with their own agnet
+
+[36] how to give you my personal github credentials
+
+[37] <bash-input>git auth login</bash-input>
+
+[38] <bash-stdout></bash-stdout><bash-stderr>git: 'auth' is not a git command. See 'git --help'.
+
+The most similar commands are
+	push
+	status
+</bash-stderr>
+
+[39] <bash-input>gh auth login</bash-input>
+
+[40] <bash-stdout></bash-stdout><bash-stderr>(eval):1: command not found: gh
+</bash-stderr>
+
+[41] <bash-input>brew install gh</bash-input>
+
+[42] <bash-stdout></bash-stdout><bash-stderr>(eval):1: command not found: brew
+</bash-stderr>
+
+[43] <bash-input> cat ~/.ssh/id_ed25519.pub</bash-input>
+
+[44] <bash-stdout>ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFdxzF0QSJAhFdBBPMWZV2QRYSGyuKQ6U6W06s1xOgHs asingh02@meta.com</bash-stdout><bash-stderr></bash-stderr>
+
+[45] appartenly key is alreayd in use
+
+[46] <bash-input> ssh -T git@github.com</bash-input>
+
+[47] <bash-stdout></bash-stdout><bash-stderr>ssh: connect to host github.com port 22: Operation not permitted
+</bash-stderr>
+
+[48] <bash-input> ssh -T -p 443 git@ssh.github.com</bash-input>
+
+[49] <bash-stdout></bash-stdout><bash-stderr>ssh: connect to host ssh.github.com port 443: Operation not permitted
+</bash-stderr>
+
+[50] <bash-input>git ls-remote https://github.com/KhalisFoundation/sttm-web HEAD</bash-input>
+
+[51] <bash-stdout>bde4147988df95194a5b250253b935d657f82e1e	HEAD</bash-stdout><bash-stderr></bash-stderr>
+
+[52] run all command sfor me and do it
+
+[53] my git username is Arash2348
+
+[54] github_pat_***REDACTED***
+
+[55] okay revoked both. anything I need to give you now to kepe testing for new ones
+
+[56] hf_***REDACTED*** -- new token
+
+[57] alrighty veverything is revoekd. wwhat do you need forom me
+
+[58] okay awesome let's keep iterating on the task
+
+[59] also in the UI we should highlight indvidual words. right now we autofollow by line, but not by word. we should extend and have same fideltiy word for word
+
+[60] give link or browser
+
+[61] the beanner at the bottom is rmeoved there
+
+[62] i still see it is what I mean
+
+[63] also on side: 
+      I think you've got the wrong thread here — and one factual correction matters.
+
+      That branch isn't a teammate's; it's the user's own work (Arash2348/sttm-web, branch voice-follow, commit 8985ca4), pushed earlier in this very session. So there's no need to reconstruct it "from a teammate" — it originates from the working tree it was assembled in.
+
+      Given the constraints I'm under (no tools, one-shot answer), I can't clone, run the API rebuild, or verify anything myself right now. So I can't execute the file-by-file reconstruction you're offering.
+
+      On the substance of what you found, it matches what I know:
+      - The branch is a single self-contained checkout: the VoiceFollow/ frontend (Lab UI, PCM worklet, aligner/recognizer/wiring), the voice-align-server/ Python sidecar (streaming CTC engine, websocket server, benchmark harnesses + the 78-file parquet_bench/ dataset), and two orientation docs (VOICE_FOLLOW.md for humans, voice-align-server/CLAUDE.md for agents).
+      - Model weights (~184MB) are not committed — download from HuggingFace (karansea/indicconformer-stt-pa-ctc-shabad-preview).
+      - The /vfproxy bits in server/index.js + server/template.js are a dev-sandbox hack, not part of the feature — revert on normal internet.
+      - The shipped config is 92.03% frame-accuracy (that number is line-tracking; the most recent work added high-fidelity intra-line word alignment, which has no numeric benchmark since there's no word-level ground truth).
+
+      One caveat on your clone stall: it's very likely the ~98MB parquet_bench/ dataset choking git's transfer, exactly as you suspected. An API-based file-by-file rebuild that skips those large binaries would get you the complete code — that's a sound plan if someone runs it.
+
+      But I can't do it in this response, and I'd flag the "teammate" premise for whoever picks this up: this is the user's own branch, so the simplest path is usually the local working tree, not a reconstruction.
+
+    ↑/↓ to scroll · c to copy · f to fork · Esc
+
+[64] so basically my goal is to make it so that naother agnet knows how to pull all of our work and use it locally itself and iterate on it. have we gotten our code to a point where it's on github in such am naner this is easy for another agnet. explain to the other agnet what to do as well
+
+[65] okay aweesome let's go back to the actual feature. where are we at  and can we test locally. think and system design work with me for how can we get this to be a really high value accurate scalable, fast, and highly used feature (i.e it's seamlesss and really fast etc...) for example how you think of instagrametc...
+
+[66] it working with way lower accuracy, and thne it's not even switching when we get to the next pangthi. also eahc indvidual is not being highglithed in another color. on the full line in like backtorun dray. waht did you chage?
+
+[67] Could not reach the alignment server. Start it with ./run.sh (port 8000).
+ -- also getthing this at time s
+
+[68] how come no inddividual words are still being hihglihted I've mntioned this so much now
+
+[69] give action tiems for me simple
+
+[70] awesome way better. make sure it a good color orange. also the orange hihglihts one space extra eahc time than it hsould "word " knid of is how it does it. also after commmand R the app isn't fitting hte whole screen. please fix and then resubmit to the github patch that we have goign
+
+[71] can you fix that override issue. why do you need hte overrride
+
+[72] also something I m thinking about is that we cna't really handle for exmpale which is rartre, but for exmaple starting in the middle of a pangti for a shbad and matching. it ried and are's doens't work for that. dont' want adding htis to degrade quality, but see if we can do this as well
+
+[73] awesome summarize where we are at what are metrics are and launch application again so I can test
+
+[74] what is are real kirtan bnehcmark. woul d be nice to /goal and get highest sytem and deisgn for htat and then go from there. also learn from karoke on the internet and how they do auto-follow for exmaple and are os semealess so we cna learn form therei stystme
+
+[75] can you edit the sikhto ththemax desktop app as a featuer so I can test it thr, and see ourfeature E2E
+
+[76] https://github.com/KhalisFoundation/sttm-desktop --> this that github
+
+[77] sure. we should benchmark voice-wave I don't know if it's capable of what we want to do, which is hwy we have been building and learning all of this as you can see with the local models and best way to do this in the web app to take those learnings here
+
+[78] okay awesome reunning commands. in the meantimg tell me hte sytem design of what we are doing and why it's the best for this, and on a high-level how we can mkae htings better what are limitaitno are etc.. so we cna brainstorm together for how to get even better
+
+[79] the system design and wahat you are giveing me is a lot. be moer concise. and be simople to udnerstand. you are going pretyt llow-levle about parts of the stack that don't matr for the feature. we have to care about high-level goal, and hten low-level metrics and get htisto be algined with what we want
+
+[80] honeslty kirtan i ts the nubmer 1 use case, but to keep things simple for now let's just go with the scoping and getting path one to be almost perfect, and then we cna figuere out kirtan after
+
+[81] can you launch the app so I can test this imlemented o n sikhi to the max. one thign I am scare of is that switch speed will be too slow
+
+[82] wait sorry cna yo urelaunch I messed up a bit
+
+[83] it works but then it crashes to a hwite scren while I am using it. which is bad. cna you help me why s it doing that
+
+[84] i am getting render error in main window and hten also on load it say that the new code is not being accepted for some reason. it is sanying cnanot perform get on a proxy that has been reoveked
+
+[85] at the beginning after npm start it wlayws red banner popul that says sor r ycoudn't get the "enw code" that is als oantoehr probelm that keeps hapepepning
+
+[86] give full commands to run
+
+[87] don't care about web anymore the focus is dekstop
+
+[88] give fulll commands
+
+[89] npm error A complete log of this run can be found in: /Users/asingh02/.npm/_logs/2026-09-10T00_29_45_505Z-debug-0.log
+ ~                                                                                                               254 | 05:29:45 PM 
+cd /Users/asingh02/AAI/sttm-web/voice-align-server && \
+KARANSEA_MODEL_DIR=/Users/asingh02/AAI/models/karansea-shabad-ctc \
+SSL_CERT_FILE=/etc/ssl/cert.pem \
+REQUESTS_CA_BUNDLE=/etc/ssl/cert.pem \
+/Users/asingh02/AAI/voice-venv/bin/python server.py
+
+/Users/asingh02/AAI/sttm-web/voice-align-server/server.py:87: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+INFO:     Started server process [72611]
+INFO:     Waiting for application startup.
+warmup ok, device: mps
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('127.0.0.1', 8000): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+
+[90] press this message.
+
+ ~  export PATH="$HOME/.nvm/versions/node/v18.20.8/bin:$PATH" && \                                                ok | 05:32:28 PM 
+cd /Users/asingh02/AAI/sttm-desktop && \
+npm run smoke
+
+> sttm-desktop@9.3.2 smoke
+> npm run build:local && cross-env VF_SMOKE=1 electron .
+
+
+> sttm-desktop@9.3.2 build:local
+> npm run build-css & npm run build-js:sm
+
+
+> sttm-desktop@9.3.2 build-js:sm
+> rm -rf www/js & babel ./www/main -d ./www/js --source-maps
+
+
+> sttm-desktop@9.3.2 build-css
+> run-p build-css:*
+
+
+> sttm-desktop@9.3.2 build-css:main
+> node-sass --output-style compressed --include-path www/src/scss www/src/scss/styles.scss www/assets/css/bundle.css
+
+
+> sttm-desktop@9.3.2 build-css:obs
+> node-sass --output-style compressed --include-path www/src/scss/obs www/src/scss/obs/styles.scss www/obs/bundle.css
+
+Rendering Complete, saving .css file...
+Wrote CSS to /Users/asingh02/AAI/sttm-desktop/www/obs/bundle.css
+Rendering Complete, saving .css file...
+Wrote CSS to /Users/asingh02/AAI/sttm-desktop/www/assets/css/bundle.css
+Successfully compiled 233 files with Babel (1793ms).
+
+[91] nope none of this works. cn't you use any skills to opne and test E2E yourself
+
+[92] okay luanched, and the same problem of "sorry. ..... new code" etc.. banner happened her
+
+[93] it's up and running but i's fialing. please look and fix it
+
+[94] okay try now
+
+[95] can you autoamtically re-run this for me. I don't want to keep ding that
+
+[96] go
+
+[97] awesome it's really good. I was blown away. couple of htigns though, when I switch to aa different shabad through differnet menus and we are presneting something differently for someon reason it stops working then. I have a ffeelign thtat it is attached to like the first or previous shabad I formally selected, but hter eis multiple ways to select. also find a more intutivie plac for the voice assist feature . right now for test it's okay on bottom rih, but imagine we were shipping this to prod. it should be put into a good a nice plac
+
+[98] pelase run this yourself. why do I have to run
+
+[99] it sitll fyi popped up with the sorry. forgot to pull new cod red pop up but I guess it's okay snice it's still wroks, but it'se weird hta happnsens
+
+[100] <bash-input>./vf-debug.sh</bash-input>
+
+[101] <bash-stdout></bash-stdout><bash-stderr>==&gt; Freeing debug port 9222 + stopping any old app
+==&gt; Sidecar already up on :8000
+==&gt; Launching desktop app with CDP on :9222 (leave this running)
+[10644:0909/183255.222145:FATAL:mach_port_rendezvous.cc(147)] Check failed: kr == KERN_SUCCESS. bootstrap_check_in com.github.Electron.MachPortRendezvousServer.10644: Permission denied (1100)
+/Users/asingh02/AAI/sttm-desktop/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron exited with signal SIGTRAP
+</bash-stderr>
+
+[102] wow super awesome. can you make a commit to the sttm-desktop github with all these latest changes this is a very very good MVP 1.0 Final
+
+[103] my username is Arash2348
+
+[104] ~  cd /Users/asingh02/AAI/sttm-desktop && git push -u fork feature/voice-follow                                  ok | 06:39:50 PM 
+remote: Repository not found.
+fatal: repository 'https://github.com/Arash2348/sttm-desktop.git/' not found
+ ~/AA/sttm-desktop | feature/voice-follow ?3                                                                 128 err | 06:39:51 PM
+
+[105] one thing I will say is that I like the mic on the left side the issue is that now the enitre view is blocked by our thing, and it's not easy to see the shabad to sing. find a better way to surface this featuer that makes it seamslss but highly disocverable. critically think about the UI/UX and how to make it the best. I also don't like how you ahve to close X on top right, just seems really hard to use
+
+[106] it's kind of slow at move whine you drag which is kind of weird. also the word idle at the bottom doens't really mean much to people can bcan be kind of confusing
+
+[107] aewomse better. I like everything except the ubtton current line path recitaion. the below should hae a couple of htings that are useufl to know and gneerauly good for user. I like line, word, confidence like before, but make sure it looks simple and good on UI
+
+[108] but mkae sure font size is good neoug htat it dones't look to large, and overwhlemning .this hsoudl be side hting that ar elook at for like slightlu out of curoisty not prominent as much
+
+[109] add support for banis (maybe not ceromonies), but banis I feel like shoudl be similar like japji sahib or reharas sahib, if not too hard.
+
+[110] this is really amazing please commit this now
+
+[111] okay for 1 main push, in terms of locking on the the shabad being sung. let's say you didn't even know that. this expand scope. more of a test, and I don't know even know if we want to increase socoper here, but how hard would it be to detect any gurbani someone singing and then basically start auto-follow from that shabad/path afte it's listening
+
+[112] the voice-serach in sikhi to the max is not that great at infding the shabd in my opinion. can we try to figure out a better way to do this. I know surat's app one has a model or a way to do this that is pretty good, maybe we create our own one. find me the best way and tradeoffs for what to pick
+
+[113] yes approach A sounds good
+
+[114] tried that but every time i strauto-detect it ust cloes itself also fix the UI for it so spacing and it looks good please. right now it's a little too muchc
+
+[115] it hears the letter but odesn't really find the shabd. it would be nice if we have some visiblity of what it's coming up with or choosing, and after a certain threshold if for example it's reall y confident, it just selects and projects it as the shabad for me
+
+[116] I said a full pangti for aaise preet karo man mera, and but it didn't get it . maybe condifent auto-select is too hard right now or something
+
+[117] it gets the letter sbut is still not uatomattcig. it just no match yet for  a long long time. sometimes also I feel like I like repeating the pangti, cause I feel like it didn't hear me, so we shoul be able to handle that as well
+
+[118] awesome please commit this all as a new commit. it works and does a good job
+
+[119] I would say that th epercnetages it statse are kind of low. for exampel when I do aaise preet karo man mera it got it to like 12% even after multiple repeats, but it is still really good, and was able to handle multiple pangti
+
+[120] it would be nice if we could also filter sound. I feel like my grandma sometimes has katha in the background or kirtan, but the mic should pick up and care about the kirtan the person closest is singing if that makes sense.
+
+[121] it would be nice if we could also filter sound. I feel like my grandma sometimes has katha in the background or kirtan, but the mic should pick up and care about the kirtan the person closest is singing if that makes sense., but first please commit what we already ahve as a commit titled "MVP 2.0 + Auto-Detect Shabad"
+
+[122] this made it much worse. background is still picked up, but now even when I speak near it some words are not caught and wrong shabad is selected
+
+[123] okay so we are the baseline code now that I said owrked well. does the github have all my server and frontend code. it's importnat to me that has everythign becuase I wante to fully deploy this if that makes sense, so that anyoen can run this on their own computer
+
+[124] that's my answers, but first wouldn't makeing my own rpo make this not usable. I feell ike it hsould be inside sttm-desktop and all packagedt ogether. my goal is for this to become a faeture thta is publicly pushed to prod and all sikhitomax users can use without having to do antyhgin, since sttm-desktop is already downloaded if that makes sesne
+
+[125] awesome keep going
+
+[126] is should be exactl yteh same and fideltiy to what we had in python. is that true
+
+[127] how to test thsi now
+
+[128] okay so for example what ar eyou thoughts on concatenating shabads. for exmaple sevadars who sing kirtan, might sing multiple kirtan one after another. so they psend 7 minute son one, and then change. the hting is that the UX makes it so that you have t o auto detect 3 times eahc and basically click 6 buttons to make this happen. i kind of want it more like autopilot where you start listening once, and it just knows everything like whereever we are in a certain shabad, and then if we switch to an entirely new shabad or path it just switches and shows that as well. what are you thgouths on this
+
+[129] okay build this out then. don't go throis routtre if yo uhav vbetter ideas that would be more accurate. also befoer we do this make sure all o f this code with the funcitonal backedn is on github together
+
+[130] so the autopilot mode is like I woudl say 60% there. sometiems it just stops working and like even if I am singging other shabads it does absolutely nothing, can we please fix that. right now I am smoke testing by like singing 2 random lines within shabad and then swithching, which it sometimes catches on too, but most of the time it doesn't or just does nothing. help me figure out how to do this. also sometiems finding the shabad will make a mistake a find the wrong shabad because it selects really quick (more rarer). how can we solve these problesm
+
+[131] i feel like it got worse. it's not swithcing enough, and sometimes I am singing an enitrely new shabad and goes to another line wihtin the same shabad with like similar words. overall the last one was much better. also it's not ovious from UI/UX when a new shabad is even being searched. I also will be hoenst that I am smoke testing hard by swithcing after 1-2 lines, which isn't the normal case, but woudl be awesome if it worked here as well. wdyt best way to get around this adn become high fidelity
+
+[132] this didn't hurt other metrics of wiehting shabad etc.. right of the good baseline we had going right that's importnat that we don't regress what we had befoer
+
+[133] so the goal in a sense is for the autopilot feature ot be as good as the other features right. it hsould have the good of all the feature sin one. like within shabads really good, swithching between really good, detecting really good. essetnailly at a point we would remove the other ones, but this is fine now
+
+[134] wny are you backgrounding. did I mess something up. do whtat you do here with backrtournd agnets as needed. also givem estauts updates on our goal
+
+[135] so the sytem might be getting slightly better, but midway it stops like performing maybe we when we just siwthc to an new shabad. so I am trying to stress test by going rthrough 1-2 lines of differnet shabads and it is still not performing that a great. I see this a lot particular when the shabad false positive to another shabad that matches the first 2 words but wasn't the correct pangti, or when I am in shabad alreayd and I am singing a new shabad that starts with 2 words that are in another line within that same shabad. thigns like this it's currently bad at. also after autopilot we have aboslutely no UI visbility on whether we are finding new shabads not, what is likely like we did before
+
+[136] https://www.youtube.com/playlist?list=PLnnODsM2enUZ5Ru1dQgFjvlgTZ59dgG-i --> here's a playlist of 143 videos of kirtan each video is a different shabad
+
+[137] simply give me what we tired, metrics in a way I can understand their meaning, and where we are at
+
+[138] in simple leike explaining to a 12 year old tell me whre we are at. user temonolgiy thta in tables that is understandable on read. explai n to me why we wstopped here and can't go fruther, and whether we hit a good enough bar we wanted to reach
+
+[139] awesome package this up in the app, and give me commands to test. in the meantime, I will also give you more data to optimze for in case it helps and yo u can find a wyat oget past thsis ceiling with clever system design, while not regerssing our other KPIs for already within shabad and following and what we had good as baseline. the goal is that we have some central KPIs that track real progress that affects what we want, and then we get the highest scores for them by consitently imporving our system design until we are happy, fi tha tmakes sense here is a full playist of 729 different shabd videos with differnet singers acors s most of them probably 20 different kirtanies: https://www.youtube.com/playlist?list=PLnnODsM2enUaj15N8rLldcIJKhNM6nFlN
+
+[140] how did you end up using the 120 vidoes did it provide more value or?
+
+[141] so remind me of all the metrics we have in terms of our autopilot what is our KPIs key performance indicator , emaning if we optimze this to a good point we are golden. I tested the one you just amde before this , and I would say it's really good aside form somtimes I am singing a new shabad and I can see that in the finding shabad spot it finds hte shabad I am looking for, but it wouln't ever lock-in. sometimes I am singing a new sahabad and it never finds it (are we making sure to do first letter of each word anywhere for sttm instead of just first letter of each word beginnig). I felt like shabads I sing in the middle and wnat to swithc oth middle of another shabad was relatively harder. not to sure. help me finalize our goals and puruse them and get to where we want
+
+[142] can you make the KPIs right them in like epxlainable to a 12 year old, so I don't ahve to remember what recalle means in this case etc.. again the goal is to make thign very understnadable for me so I dcna help you etc... or direct
+
+[143] like hte plain names, asid the plain name , but hte tehcnical terms as well
+
+[144] as well as what we are tcurrent, and whether you think it's enough
+
+[145] what is tsmartest stategy for unlocking the yellow or reds to green. that's the ultimate goal fi that make ssense. also do we have metircs for following within   shabad as well. alwasy remmeber thiese 9 KPIs and feel free to add delete or edit, bu t now you udnerstnad the goal. can we ultracode as strategy as needed plan with me and then attempt the biggest unlock. I will say this might be imopossible and we might ahve to make something fundamental but ask me help me udnerstnad how I can help you unclock this
+
+[146] did you hear what I sadi
+
+[147] please expolain t e me highest ROI, and as a 12 year old mor eplainly but without missing tehcncial detials or knoweldge tha conffudles the maning of what yo uare doing. epxlain to me our north stars which are chanign with emojis etc.., adn why or why not it is the hgiehst ORI. and dtehcncial approach to change thign s
+
+[148] awesome try out this appraoach with ultracode as needed, and come back to me a talbe with emojis of our how KIPI shift an measurements we should /goal on these KPIs so the goal is tom ake the strictly better from one iteration to hte next until we are happy with the produc . if we get worse we have to try something else etc...
+
+[149] what is status?
+
+[150] remind me in simply where we are tat. get used to talking like that to me for status udpates
+
+[151] okay awesome you have done wonderufl for me so far. commit what our current best metric and basline is too github
+
+[152] tell me all verbatim prompts I've give you one by one
+
+[153] from full start to fininsh. I've gieve you a lot I feel like
