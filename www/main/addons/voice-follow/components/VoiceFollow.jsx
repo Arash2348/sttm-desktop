@@ -94,7 +94,7 @@ const VOTE_CAP = 60; // clamp votes so a long shabad can't become impossible to 
 //    (~15s — the slow-switch bug). A short window (~4s ≈ one sung line) lets the
 //    new shabad take over quickly. Offline-tuned on concatenated benchmark
 //    shabads: WIN=4/HOP=0.5 gives ~3-7s switch latency at 100% recall / 0 false
-//    switches. (See vf-switch-eval.)
+//    switches. (Offline concatenated-shabad benchmark; audio harness not shipped.)
 const AP_SEARCH_WIN_S = 10; // recognizer window while SEARCHING (matches standalone detect)
 // Kept at 4 after cross-voice validation: a shorter FOLLOW window (3) helped a
 // second raagi's stream but REGRESSED the primary 86-min stream (erroneous 13.2->14.9,
@@ -113,17 +113,20 @@ const SWITCH_HYP_SLICE = 35; // chars of recent decoded audio to score (≈ the 
 // with a ≥0.33 margin over the current one, while a borderline confusion (a shared
 // closing phrase between two shabads) tops out around 0.60 / 0.20 margin. These
 // thresholds sit cleanly between the two, so real switches pass and the confusion
-// is rejected — without needing slower confirmation (see vf-switch-eval).
+// is rejected — without needing slower confirmation (offline confusion-pair
+// benchmark; harness not shipped).
 const SWITCH_ACOUSTIC_MIN = 0.65; // candidate must match the recent audio at least this well
 const SWITCH_ACOUSTIC_MARGIN = 0.15; // ...and beat the current shabad by at least this much
 // Length-aware penalty applied to the CANDIDATE score only (the current shabad is
 // scored by cursorLineScore, which we leave untouched so it stays strong). A proposed
 // switch to a shabad whose only match is a short line contained in the hyp is
 // discounted. 15 chars ≈ a few Gurmukhi words; validated to cut erroneous switches
-// with no recall loss (see maxLineScore comment / vf-kirtan-switch-eval).
+// with no recall loss (see maxLineScore comment; validated on the offline
+// sung-kirtan benchmark, harness not shipped).
 const SWITCH_CAND_MIN_LINE_CHARS = 15;
 // 3 net winning decodes — the knee on the 86-min real-kirtan switch benchmark
-// (vf-kirtan-switch-eval), ranked by a UX metric that splits "wrong" into STALE
+// (offline 86-min sung-kirtan benchmark; harness not shipped), ranked by a UX
+// metric that splits "wrong" into STALE
 // (still showing the previous shabad — a graceful late switch) vs ERRONEOUS (jumped
 // to an unrelated shabad — the jarring failure to avoid). Over the full 86min:
 //   CONFIRM=2: on-correct 68.3%  erroneous 20.6%  (thrashes: 159 false switches)

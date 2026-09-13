@@ -12,8 +12,11 @@
 //
 // What it does NOT measure: acoustics. Real-kirtan numbers (on-correct /
 // erroneous / stale on the 86-min, voice-B, and stress streams) still need
-// handoff/benchmark/run_kpis.sh on the machine holding the ~1.2GB audio.
-// Relation to the 9 north-star KPIs (voice-follow-north-star-kpis.md):
+// the audio benchmark harness on the machine holding the kirtan audio corpus
+// (kept out of the repo: it needs the private ~1.2GB audio).
+// Relation to the project's 9 north-star KPIs for voice-follow (#1 right-page,
+// #2 wrong-page, #3 lock-in, #4 stale, #5 recall, #6 flip speed, #7 mid-join,
+// #8 within-shabad, #9 path regression):
 // commit-latency is a proxy for #6 (how fast it flips); confusion-commits
 // guard #2 (wrong page); the counter dynamics are relevant to #3/#5
 // (lock-in, recall) but prove nothing about audio. Unmeasured here: #1
