@@ -35,7 +35,8 @@
     "watch-js": "babel ./www/main --watch -d ./www/js --source-maps",
     "watch-css": "nodemon --watch www -e scss -x \"npm run build-css\"",
     "rebuild-realm": "$(npm bin)/electron-rebuild -f -w realm",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "test:voice-follow": "node --test test/voice-follow/*.test.js"
   },
   "repository": {
     "type": "git",
