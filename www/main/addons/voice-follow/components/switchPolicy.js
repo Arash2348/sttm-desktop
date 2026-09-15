@@ -51,7 +51,8 @@ function nextEmptyStreak(streak, hasVotes, holdDecodes) {
 // score by min(1, lineLen/minLineChars) makes a short line clear a proportionally
 // higher raw bar before it can win. Cross-validated on real kirtan: cut erroneous
 // on the 86-min stream (13.2->10.5) and the 20-singer stream (~34->28) with no
-// recall loss and neutral on clean short-segment streams. See vf-kirtan-switch-eval.
+// recall loss and neutral on clean short-segment streams (offline sung-kirtan
+// benchmark; the audio harness is kept out of the repo with the audio corpus).
 function maxLineScore(hypNorm, linesNorm, minLineChars = 0) {
   if (!hypNorm || !linesNorm || !linesNorm.length) return 0;
   let best = 0;
