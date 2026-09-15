@@ -38,6 +38,9 @@ const maxChangeLogSeenCount = 5;
 /* eslint-disable import/no-unresolved, import/extensions */
 const Store = require('./www/js/store');
 const {
+  registerRetrievalService,
+} = require('./www/js/addons/voice-follow/engine/retrieval/main-service');
+const {
   savedSettingsCamelCase,
 } = require('./www/js/common/store/user-settings/get-saved-user-settings');
 const { styles } = require('./resetViewerStyles');
@@ -95,6 +98,15 @@ if (currentTheme === undefined) {
 }
 
 let mainWindow;
+const voiceFollowRetrieval = registerRetrievalService({
+  ipcMain,
+  userData: app.getPath('userData'),
+  isAllowed: (sender) =>
+    !!mainWindow && !mainWindow.isDestroyed() && sender === mainWindow.webContents,
+});
+app.once('will-quit', () => {
+  voiceFollowRetrieval.dispose().catch(() => {});
+});
 let viewerWindow = false;
 let startChangelogOpenTimer;
 let endChangelogOpenTimer;

@@ -7,20 +7,19 @@ import { loadBani as loadBaniRows } from '../../../navigator/utils/load-bani';
 import { useNewShabad } from '../../../navigator/search/hooks/use-new-shabad';
 
 const anvaad = require('anvaad-js');
+const { ipcRenderer } = require('electron');
 const banidb = require('../../../banidb');
 const { slideStrings } = require('../../../common/constants/slidedb');
 // In-process native engine (onnxruntime-node): no Python sidecar, no websocket.
 const engine = require('../engine');
+const { Follower: AcousticFollower } = require('../engine/follower');
+const { SP: AcousticSP } = require('../engine/sentencepiece');
+const { createRendererRetrieval } = require('../engine/retrieval/renderer-client');
+
 const { norm: vfNorm, partialRatio } = engine;
 
 // Pure, unit-tested switch/display policy (see switchPolicy.js + .test.js).
-const {
-  nextSwitchWins,
-  nextEmptyStreak,
-  maxLineScore,
-  screenByFirstLetters,
-  bestLineMatch,
-} = require('./switchPolicy');
+const { nextSwitchWins, nextEmptyStreak, maxLineScore, bestLineMatch } = require('./switchPolicy');
 
 // maxLineScore lives in ./switchPolicy (same implementation, unit-tested there)
 // so the benchmarked length-penalty math is shared, not duplicated.
@@ -47,7 +46,7 @@ function cursorLineScore(hypNorm, linesNorm, cursor, back, ahead) {
 
 // "First letter anywhere" search — the primitive used to identify a shabad from
 // the Gurmukhi first-letters of what's being sung (matches banidb's FirstLetterStr).
-const FIRST_LETTERS_ANYWHERE = banidb.CONSTS.SEARCH_TYPES.FIRST_LETTERS_ANYWHERE;
+const { FIRST_LETTERS_ANYWHERE } = banidb.CONSTS.SEARCH_TYPES;
 const FIRST_LETTERS_START = banidb.CONSTS.SEARCH_TYPES.FIRST_LETTERS; // BEGINSWITH
 
 // Blind auto-detect tuning. We build a first-letter query from the trailing part
@@ -155,7 +154,6 @@ const SWITCH_STRONG_MARGIN = 0.3; // ...and margin over the current shabad
 // surfaces are the measured starvation case, so a second proposer screens the
 // WHOLE shabad field by first-letter overlap (cheap) and rescores survivors by
 // line text. Overlap 2 keeps the full win on real kirtan; 3+ collapses recall.
-const BACKSTOP_MIN_OVERLAP = 2; // LCS overlap of heard first-letters to rescore
 const BACKSTOP_TOP_N = 60; // survivors rescored per decode (ranked by overlap)
 const BACKSTOP_MAX_LOADS = 3; // uncached line-profile loads kicked per decode
 const BACKSTOP_CACHE_MAX = 300; // cap on cached line profiles (oldest evicted)
@@ -258,9 +256,24 @@ const UNI_TO_ASCII_FL = (() => {
 // Unicode Gurmukhi text -> ASCII-font first-letters string (the DB search format).
 const toAsciiFirstLetters = (uniText) => {
   const fl = anvaad.firstLetters(uniText || '') || '';
-  let out = '';
-  for (const ch of fl) if (UNI_TO_ASCII_FL[ch]) out += UNI_TO_ASCII_FL[ch];
-  return out;
+  return Array.from(fl, (ch) => UNI_TO_ASCII_FL[ch] || '').join('');
+};
+
+const DOT = {
+  idle: '#888',
+  connecting: '#f39c12',
+  detecting: '#5b73ff',
+  listening: '#27ae60',
+  error: '#c0392b',
+  stopped: '#888',
+};
+const STATUS_LABEL = {
+  idle: 'Ready',
+  connecting: 'Starting…',
+  detecting: 'Detecting…',
+  listening: 'Listening',
+  error: 'Problem',
+  stopped: 'Stopped',
 };
 
 const VoiceFollow = ({ isOpen, onScreenClose }) => {
@@ -285,11 +298,23 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   openShabadRef.current = changeActiveShabad;
 
   const [status, setStatus] = useState('idle'); // idle|connecting|listening|detecting|error|stopped
-  const [autopilot, setAutopilot] = useState(true); // hands-free: detect + follow + auto-switch, one press
+  const [autopilot] = useState(true); // hands-free: detect + follow + auto-switch, one press
   const [autoDetect, setAutoDetect] = useState(false); // blind: identify the shabad from audio, then follow (one-shot)
-  const [heard, setHeard] = useState(''); // gurmukhi first-letters heard (for visibility)
-  const [rawHeard, setRawHeard] = useState(''); // raw recognizer transcript (diagnostic)
+  // Acoustic text stays inside matching; only canonical BaniDB text is rendered.
   const [cands, setCands] = useState([]); // [{shabadId, verseId, verse, display, share}] shortlist
+  const [audioView, setAudioView] = useState({ seconds: 0, level: 0, device: '' });
+  const audioViewRef = useRef({ samples: 0, published: 0 });
+  const [currentView, setCurrentView] = useState(null);
+  const [rankedView, setRankedView] = useState([]);
+  const rankedViewRef = useRef(0);
+  // Presentation snapshots never feed the matching or projection policy.
+  const publishRanks = useCallback((rows) => {
+    const now = Date.now();
+    if (now - rankedViewRef.current < 2000) return;
+    rankedViewRef.current = now;
+    setRankedView(rows.filter((row) => row.display).slice(0, 3));
+  }, []);
+
   const [mode, setMode] = useState('kirtan');
   const [detail, setDetail] = useState('');
   const [pos, setPos] = useState(null); // { lineIndex, wordIndex, confidence }
@@ -304,6 +329,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const followerRef = useRef(null); // Follower (track a known shabad/bani)
   const recognizerRef = useRef(null); // Recognizer (blind auto-detect)
   const chainRef = useRef(Promise.resolve()); // serialize async inference per chunk
+  const sessionRef = useRef(0); // invalidates asynchronous work after cleanup/restart
+  const transcriptSeqRef = useRef(0);
+  const transcriptAbortRef = useRef(null);
+  const retrievalOwnerRef = useRef(null);
   // Autopilot: one continuous session that detects, follows, and auto-switches
   // shabads hands-free. phaseRef gates which engine each audio chunk feeds.
   const autopilotRef = useRef(false);
@@ -314,14 +343,27 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const curLinesNormRef = useRef([]); // normalized lines of the current shabad (acoustic scoring)
   const curCursorRef = useRef(null); // follower's current line index within the current shabad
   const [switchView, setSwitchView] = useState(null); // { cand, sCand, sCur, wins } for the following-phase UI
+  const [nextView, setNextView] = useState(null);
+  const nextViewRef = useRef(0);
+  useEffect(() => {
+    if (!switchView) {
+      setNextView(null);
+      return;
+    }
+    const now = Date.now();
+    if (now - nextViewRef.current >= 2000) {
+      nextViewRef.current = now;
+      setNextView(switchView);
+    }
+  }, [switchView]);
   // Acoustic switch candidate being evaluated while following:
   // { shabadId, verseId, verse, linesNorm, wins, loading }
   const switchCandRef = useRef(null);
   // Acoustic backstop contender (same shape + display/lastScore/committed):
   // the best line-text match across the screened shabad field.
   const backstopRef = useRef(null);
-  // Whole-field first-letter index for the backstop screen (+ line profiles).
-  const flIndexRef = useRef(null); // Map shabadId -> first-letter string
+  // Read-only canonical retrieval service, isolated from the renderer process.
+  const flIndexRef = useRef(null); // ready retrieval client
   const flIndexLoadingRef = useRef(null); // in-flight index promise
   const lineCacheRef = useRef(new Map()); // shabadId -> { linesNorm, verses } | null (loading)
   const bsWinsRef = useRef(new Map()); // backstop wins banked per shabadId (survives screen flap)
@@ -344,22 +386,59 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const panelRef = useRef(null); // flyout panel, for click-outside dismissal
   // Blind-detect session state (mutable, avoids re-render churn per decode).
   const recognizingRef = useRef(false); // true while blindly identifying a shabad
+  const contextEvidenceRef = useRef(null);
   const detectVotesRef = useRef(new Map()); // shabadId -> accumulated vote weight
   const detectRowsRef = useRef(new Map()); // shabadId -> best {verseId, verse, shabadId, rank}
   const detectStableRef = useRef({ id: null, count: 0 }); // leader-stability counter
   const emptyStreakRef = useRef(0); // consecutive no-hit decodes (shortlist hold)
 
   const cleanup = useCallback(() => {
+    sessionRef.current += 1;
+    transcriptSeqRef.current += 1;
+    transcriptAbortRef.current?.abort();
+    transcriptAbortRef.current = null;
+    const retrieval = retrievalOwnerRef.current;
+    retrievalOwnerRef.current = null;
+    flIndexRef.current = null;
+    flIndexLoadingRef.current = null;
+    flIndexFailAtRef.current = 0;
+    lineCacheRef.current = new Map();
+    if (retrieval) retrieval.dispose().catch(() => {});
     // Detach the worklet handler first so no in-flight chunk pushes into a
     // torn-down engine session.
-    if (nodeRef.current) { try { nodeRef.current.port.onmessage = null; } catch (_) {} }
-    try { nodeRef.current?.disconnect(); } catch (_) {}
-    try { srcRef.current?.disconnect(); } catch (_) {}
-    try { streamRef.current?.getTracks().forEach((t) => t.stop()); } catch (_) {}
-    try { ctxRef.current?.close(); } catch (_) {}
-    ctxRef.current = null; streamRef.current = null;
-    nodeRef.current = null; srcRef.current = null;
-    followerRef.current = null; recognizerRef.current = null;
+    if (nodeRef.current) {
+      try {
+        nodeRef.current.port.onmessage = null;
+      } catch (_) {
+        /* Resource may already be closed during teardown. */
+      }
+    }
+    try {
+      nodeRef.current?.disconnect();
+    } catch (_) {
+      /* Resource may already be closed during teardown. */
+    }
+    try {
+      srcRef.current?.disconnect();
+    } catch (_) {
+      /* Resource may already be closed during teardown. */
+    }
+    try {
+      streamRef.current?.getTracks().forEach((t) => t.stop());
+    } catch (_) {
+      /* Resource may already be closed during teardown. */
+    }
+    try {
+      ctxRef.current?.close();
+    } catch (_) {
+      /* Resource may already be closed during teardown. */
+    }
+    ctxRef.current = null;
+    streamRef.current = null;
+    nodeRef.current = null;
+    srcRef.current = null;
+    followerRef.current = null;
+    recognizerRef.current = null;
     chainRef.current = Promise.resolve();
     // Take down our seeking slide if we put one up; never touch the user's own.
     if (seekingRef.current) {
@@ -372,36 +451,67 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     }
   }, [setIsMiscSlide]);
 
+  useEffect(() => () => cleanup(), [cleanup]);
+
   // Shared mic + worklet pipeline. Resolves the AudioContext sample rate, then
   // streams raw Float32 PCM chunks to `onChunk` (awaited serially so we never run
   // two inferences on the same ONNX session concurrently). Returns the sample
   // rate so callers can build the engine session at the right input rate.
   const startAudio = useCallback(async (onChunk) => {
-    let stream;
-    try {
-      stream = await navigator.mediaDevices.getUserMedia({
-        audio: { channelCount: 1, echoCancellation: false, noiseSuppression: false },
-      });
-    } catch (_) {
-      throw new Error('microphone permission denied.');
+    const session = sessionRef.current;
+    // Preserve the actual capture error; missing/busy devices are not all
+    // permission denials. The caller handles it only for its current session.
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: { channelCount: 1, echoCancellation: false, noiseSuppression: false },
+    });
+    if (session !== sessionRef.current) {
+      stream.getTracks().forEach((track) => track.stop());
+      return null;
     }
     streamRef.current = stream;
+    audioViewRef.current = { samples: 0, published: 0 };
+    rankedViewRef.current = 0;
+    setRankedView([]);
+    setCurrentView(null);
+    const device = stream.getAudioTracks?.()[0]?.label || 'Microphone';
+    setAudioView({ seconds: 0, level: 0, device });
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     ctxRef.current = ctx;
     const url = URL.createObjectURL(new Blob([WORKLET_SRC], { type: 'application/javascript' }));
-    await ctx.audioWorklet.addModule(url);
-    URL.revokeObjectURL(url);
+    try {
+      await ctx.audioWorklet.addModule(url);
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+    if (session !== sessionRef.current) return null;
     const node = new AudioWorkletNode(ctx, 'voice-follow-pcm');
     chainRef.current = Promise.resolve();
     node.port.onmessage = (ev) => {
+      if (session !== sessionRef.current) return;
       const pcm = new Float32Array(ev.data);
-      chainRef.current = chainRef.current.then(() => onChunk(pcm)).catch(() => {});
+      const capture = audioViewRef.current;
+      capture.samples += pcm.length;
+      const now = Date.now();
+      if (now - capture.published >= 250) {
+        let energy = 0;
+        for (let i = 0; i < pcm.length; i += 1) energy += pcm[i] * pcm[i];
+        const rms = Math.sqrt(energy / (pcm.length || 1));
+        capture.published = now;
+        setAudioView({
+          seconds: Math.floor(capture.samples / ctx.sampleRate),
+          level: Math.min(1, rms * 8),
+          device,
+        });
+      }
+      chainRef.current = chainRef.current
+        .then(() => (session === sessionRef.current ? onChunk(pcm) : undefined))
+        .catch(() => {});
     };
     const src = ctx.createMediaStreamSource(stream);
-    src.connect(node);
-    // Deliberately not connected to destination — no playback.
     nodeRef.current = node;
     srcRef.current = src;
+    src.connect(node);
+    // Deliberately not connected to destination — no playback.
     return ctx.sampleRate;
   }, []);
 
@@ -423,8 +533,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     setDetail('');
     setDlProgress(null);
     setCands([]);
-    setHeard('');
-    setRawHeard('');
   }, [cleanup]);
 
   const start = useCallback(async () => {
@@ -443,6 +551,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     // Tear down any prior session so switching content mid-listen re-attaches
     // cleanly instead of leaking a socket/mic bound to the old shabad/bani.
     cleanup();
+    const session = sessionRef.current;
     setStatus('connecting');
     setDetail(isBani ? 'loading bani lines…' : 'loading shabad lines…');
     lastVerseRef.current = null;
@@ -457,6 +566,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       if (isBani) {
         const col = BANI_LENGTH_COLS[baniLength] || BANI_LENGTH_COLS.short;
         const rows = await loadBaniRows(sundarGutkaBaniId, col);
+        if (session !== sessionRef.current) return;
         const filtered = (rows || []).filter((r) => r && r.ID != null && r.Gurmukhi);
         linesRef.current = filtered.map((r) => ({ verseId: r.ID }));
         verses = filtered.map((r) => ({
@@ -465,8 +575,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         }));
       } else {
         const rows = await banidb.loadShabad(activeShabadId);
-        const filtered = filterRequiredVerseItems(rows)
-          .filter((it) => it && it.verseId != null && it.verse);
+        if (session !== sessionRef.current) return;
+        const filtered = filterRequiredVerseItems(rows).filter(
+          (it) => it && it.verseId != null && it.verse,
+        );
         linesRef.current = filtered.map((it) => ({ verseId: it.verseId }));
         verses = filtered.map((it) => ({
           verseId: it.verseId,
@@ -474,6 +586,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         }));
       }
     } catch (e) {
+      if (session !== sessionRef.current) return;
       setStatus('error');
       setDetail(`could not load ${isBani ? 'bani' : 'shabad'}: ${e?.message || e}`);
       return;
@@ -492,15 +605,18 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     }
     try {
       await engine.ready((p) => {
+        if (session !== sessionRef.current) return;
         setDlProgress(p);
         setDetail(`downloading recognition model… ${Math.round(p * 100)}% (one time)`);
       });
     } catch (e) {
+      if (session !== sessionRef.current) return;
       setStatus('error');
       setDetail(`could not prepare the recognition model: ${e?.message || e}`);
       setDlProgress(null);
       return;
     }
+    if (session !== sessionRef.current) return;
     setDlProgress(null);
 
     // Wire the mic; each PCM chunk is pushed into the follower (serialized).
@@ -510,7 +626,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         const f = followerRef.current;
         if (!f) return;
         const out = await f.push(pcm);
-        if (!out) return;
+        // A stop or content change can replace the follower during inference.
+        if (!out || followerRef.current !== f) return;
         setPos({ lineIndex: out.lineIndex, wordIndex: out.wordIndex, confidence: out.confidence });
         if (typeof out.lineIndex === 'number') {
           const line = linesRef.current[out.lineIndex];
@@ -522,15 +639,20 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         }
       });
     } catch (e) {
+      if (session !== sessionRef.current) return;
       setStatus('error');
       setDetail(e?.message || 'audio setup failed');
       cleanup();
       return;
     }
 
+    if (session !== sessionRef.current) return;
     try {
-      followerRef.current = await engine.createFollower(verses, { inputSr: sampleRate });
+      const follower = await engine.createFollower(verses, { inputSr: sampleRate });
+      if (session !== sessionRef.current) return;
+      followerRef.current = follower;
     } catch (e) {
+      if (session !== sessionRef.current) return;
       setStatus('error');
       setDetail(`engine init failed: ${e?.message || e}`);
       cleanup();
@@ -564,8 +686,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       lastVerseRef.current = null;
       setPos(null);
       setCands([]);
-      setHeard('');
-      setRawHeard('');
       setStatus('connecting');
       setDetail('found it — projecting & following…');
       openShabadRef.current(cand.shabadId, cand.verseId, cand.verse);
@@ -588,6 +708,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     bsWinsRef.current.clear();
     bsAdoptKeyRef.current = '';
     setSwitchView(null);
+    contextEvidenceRef.current = null;
     detectVotesRef.current = new Map();
     detectRowsRef.current = new Map();
     detectStableRef.current = { id: null, count: 0 };
@@ -621,34 +742,62 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       words: tokenize(anvaad.unicode(it.verse)),
     }));
     const linesNorm = verses.map((v) => vfNorm((v.words || []).join(' ')));
-    return { verses, linesNorm };
+    // Preserve the exact BaniDB text for display, separately from tokenized
+    // alignment words (which omit punctuation and verse numbers).
+    const displayLines = filtered.map((it) => anvaad.unicode(it.verse));
+    return { verses, linesNorm, displayLines };
   }, []);
 
-  // One-time first-letter index of the whole shabad field for the backstop
-  // screen. Built once (the DB is static) and shared across sessions; a
-  // failure just disables the backstop (vote-only behavior, as before).
+  // Prepare independently of audio inference. A failed service backs off;
+  // obsolete preparation cannot publish into a restarted microphone session.
   const ensureFlIndex = useCallback(() => {
     if (flIndexRef.current) return Promise.resolve(flIndexRef.current);
     if (flIndexLoadingRef.current) return flIndexLoadingRef.current;
-    const p = banidb
-      .loadFirstLetterIndex()
-      .then((rows) => {
-        const m = new Map();
-        (rows || []).forEach((r) => {
-          if (r == null || r.shabadId == null || !r.fl) return;
-          const prev = m.get(r.shabadId);
-          m.set(r.shabadId, prev ? prev + r.fl : r.fl);
-        });
-        flIndexRef.current = m;
-        return m;
+    if (flIndexFailAtRef.current && Date.now() - flIndexFailAtRef.current < 60000) {
+      return Promise.resolve(null);
+    }
+    const session = sessionRef.current;
+    const client = createRendererRetrieval(ipcRenderer);
+    retrievalOwnerRef.current = client;
+    const p = client.ready
+      .then(() => {
+        if (session !== sessionRef.current || retrievalOwnerRef.current !== client) return null;
+        flIndexRef.current = client;
+        return client;
       })
-      .catch(() => null);
+      .catch(() => {
+        if (session === sessionRef.current && retrievalOwnerRef.current === client) {
+          flIndexFailAtRef.current = Date.now();
+          retrievalOwnerRef.current = null;
+        }
+        client.dispose().catch(() => {});
+        return null;
+      });
     flIndexLoadingRef.current = p;
     p.then(() => {
-      flIndexLoadingRef.current = null;
-    }).catch(() => {});
+      if (flIndexLoadingRef.current === p) flIndexLoadingRef.current = null;
+    });
     return p;
   }, []);
+
+  const searchCanonicalText = useCallback(
+    async (text, cap, signal) => {
+      const client = await ensureFlIndex();
+      if (!client || signal.aborted) return null;
+      try {
+        return await client.search(text, cap, { signal });
+      } catch (error) {
+        if (error.name !== 'AbortError' && retrievalOwnerRef.current === client) {
+          retrievalOwnerRef.current = null;
+          flIndexRef.current = null;
+          flIndexFailAtRef.current = Date.now();
+          client.dispose().catch(() => {});
+        }
+        return null;
+      }
+    },
+    [ensureFlIndex],
+  );
 
   // A confident, stable shabad emerged — either the FIRST one (initial lock) or a
   // DIFFERENT one that has WON the acoustic switch test while following. Build a
@@ -660,6 +809,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       if (!cand || !cand.verse) return;
       if (lockingRef.current) return; // a lock/switch is already committing
       lockingRef.current = true;
+      const session = sessionRef.current;
       // On a switch we already have a working follower; a transient failure below
       // must NOT drop it, so remember whether this is the first lock or a switch.
       const isSwitch = !!followerRef.current;
@@ -671,10 +821,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         try {
           profile = await loadShabadProfile(cand.shabadId);
         } catch (e) {
+          if (session !== sessionRef.current) return;
           setDetail(`could not load shabad: ${e?.message || e}`);
           if (!isSwitch) await enterSearching();
           return;
         }
+        if (session !== sessionRef.current || !autopilotRef.current) return;
         if (!profile.verses.length) {
           if (!isSwitch) await enterSearching();
           return;
@@ -682,20 +834,24 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
         let follower;
         try {
-          follower = await engine.createFollower(profile.verses, { inputSr: sampleRateRef.current });
+          follower = await engine.createFollower(profile.verses, {
+            inputSr: sampleRateRef.current,
+          });
         } catch (e) {
+          if (session !== sessionRef.current) return;
           setDetail(`engine init failed: ${e?.message || e}`);
           if (!isSwitch) await enterSearching();
           return;
         }
-        // A stop may have happened during the awaits.
-        if (!autopilotRef.current) return;
+        // A restart makes autopilot true again, so check the session as well.
+        if (!autopilotRef.current || session !== sessionRef.current) return;
 
         // Commit the new shabad.
         phaseRef.current = 'following';
         lastVerseRef.current = null;
         followerRef.current = follower;
         curLinesNormRef.current = profile.linesNorm;
+        setCurrentView({ id: cand.shabadId, line: anvaad.unicode(cand.verse) });
         curCursorRef.current = null; // new shabad — cursor unknown until the follower reports
         setSwitchView(null);
         switchCandRef.current = null; // clear any in-flight switch evaluation
@@ -719,6 +875,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         }
         // Fresh vote slate so the shabad we just committed to can't immediately
         // re-trigger a switch, and so evidence for the next one starts clean.
+        contextEvidenceRef.current = null;
         detectVotesRef.current = new Map();
         detectRowsRef.current = new Map();
         detectStableRef.current = { id: null, count: 0 };
@@ -729,20 +886,23 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         // identification from now. (Cheap — shares the already-loaded session.)
         try {
           if (sampleRateRef.current) {
-            recognizerRef.current = await engine.createRecognizer({
+            const recognizer = await engine.createRecognizer({
               inputSr: sampleRateRef.current,
               windowS: AP_FOLLOW_WIN_S, // now following: short window = fast next switch
               hopS: AP_REC_HOP_S,
             });
+            if (session !== sessionRef.current) return;
+            recognizerRef.current = recognizer;
           }
         } catch (_) {
           /* keep the existing recognizer if a fresh one can't be built */
         }
+        if (session !== sessionRef.current) return;
         setCands([]);
         setStatus('listening');
         setDetail('Following the Shabad');
       } finally {
-        lockingRef.current = false;
+        if (session === sessionRef.current) lockingRef.current = false;
       }
     },
     [enterSearching, loadShabadProfile],
@@ -754,16 +914,207 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const handleTranscript = useCallback(
     async (text) => {
       if (!recognizingRef.current) return;
-      setRawHeard((text || '').trim().slice(-60));
-      // Unicode first-letters are for the readable on-screen chip; the search needs
-      // ASCII-font first-letters (the DB's FirstLetterStr encoding). They're 1:1.
-      const flUni = (anvaad.firstLetters(text || '') || '').replace(/\s+/g, '').trim();
+      const session = sessionRef.current;
+      // Accumulate distinct hypotheses while identifying the first Shabad.
+      // Canonical retrieval supplies identities; recognized text is never displayed.
+      if (autopilotRef.current && phaseRef.current === 'searching' && !lockingRef.current) {
+        const prior = contextEvidenceRef.current;
+        const memory =
+          prior && prior.session === session ? prior : { session, step: 0, entries: [] };
+        contextEvidenceRef.current = memory;
+        memory.step += 1;
+        const { step } = memory;
+        memory.entries = memory.entries.filter((e) => step - e.step <= 24);
+        const hyp = vfNorm(text);
+        if (hyp.length >= 8) {
+          const acousticRecognizer = recognizerRef.current;
+          const acousticPcm = acousticRecognizer?.buf;
+          transcriptAbortRef.current?.abort();
+          const request = new AbortController();
+          transcriptAbortRef.current = request;
+          const leaders = await searchCanonicalText(text, 3, request.signal);
+          if (
+            session !== sessionRef.current ||
+            !recognizingRef.current ||
+            phaseRef.current !== 'searching' ||
+            lockingRef.current ||
+            contextEvidenceRef.current !== memory ||
+            memory.step !== step
+          )
+            return;
+          const top = leaders?.[0];
+          const margin = top ? top.score - (leaders[1]?.score || 0) : 0;
+          if (
+            top &&
+            top.score >= 0.3 &&
+            margin > 1e-9 &&
+            leaders.length >= 3 &&
+            acousticPcm?.length
+          ) {
+            try {
+              const profiles = await Promise.all(leaders.map((c) => loadShabadProfile(c.shabadId)));
+              const emissions = await acousticRecognizer.infer.emissions(acousticPcm);
+              if (
+                session !== sessionRef.current ||
+                !recognizingRef.current ||
+                phaseRef.current !== 'searching' ||
+                lockingRef.current ||
+                recognizerRef.current !== acousticRecognizer ||
+                contextEvidenceRef.current !== memory ||
+                memory.step !== step
+              )
+                return;
+              if (!memory.acousticSP) memory.acousticSP = AcousticSP.load();
+              const scored = profiles
+                .map((profile, index) => ({
+                  id: leaders[index].shabadId,
+                  score: Math.max(
+                    ...profile.displayLines.map((line) => {
+                      const tokens = memory.acousticSP.encode(
+                        line
+                          .replace(/[।॥|0-9੦-੯.,;:!?-]+/g, ' ')
+                          .replace(/\s+/g, ' ')
+                          .trim(),
+                      );
+                      // Reuse the follower scorer so acquisition uses the same audio evidence.
+                      return tokens.length
+                        ? // eslint-disable-next-line no-underscore-dangle
+                          AcousticFollower.prototype._ctcScore(emissions, tokens, [
+                            0,
+                            emissions.frames,
+                          ])
+                        : -Infinity;
+                    }),
+                  ),
+                }))
+                .sort((a, b) => b.score - a.score);
+              memory.acousticVotes = (memory.acousticVotes || []).filter(
+                (v) => step - v.step <= 16,
+              );
+              if (
+                scored[0].id === top.shabadId &&
+                scored[0].score - scored[1].score >= 0.05 &&
+                !memory.acousticVotes.some((v) => v.hyp === hyp)
+              ) {
+                memory.acousticVotes.push({ id: top.shabadId, step, hyp });
+              }
+              const agreeing = memory.acousticVotes.filter((v) => v.id === top.shabadId);
+              if (
+                agreeing.length >= 3 &&
+                step - agreeing[0].step >= 4 &&
+                scored[0].id === top.shabadId &&
+                scored[0].score - scored[1].score >= 0.05
+              ) {
+                const profile = profiles[0];
+                const canonicalIndex = profile.verses.findIndex((v) => v.verseId === top.verseId);
+                if (canonicalIndex >= 0) {
+                  autopilotLock({
+                    shabadId: top.shabadId,
+                    verseId: top.verseId,
+                    verse: profile.displayLines[canonicalIndex],
+                  });
+                  return;
+                }
+              }
+            } catch (_) {
+              // Optional acoustic assistance must not prevent existing acquisition.
+              if (
+                session !== sessionRef.current ||
+                contextEvidenceRef.current !== memory ||
+                memory.step !== step
+              )
+                return;
+            }
+          }
+          if (top) {
+            if (!memory.entries.some((e) => e.hyp === hyp)) {
+              memory.entries.push({
+                step,
+                hyp,
+                candidates: leaders,
+                anchor: top.score >= 0.8 && margin >= 0.2,
+              });
+            }
+            memory.entries = memory.entries.slice(-12);
+            const tally = new Map();
+            memory.entries.forEach((e) =>
+              e.candidates.forEach((candidate, rank) => {
+                if (candidate.score < 0.2) return;
+                const acc = tally.get(candidate.shabadId) || {
+                  id: candidate.shabadId,
+                  count: 0,
+                  score: 0,
+                  wins: 0,
+                  anchor: false,
+                  verses: new Set(),
+                };
+                acc.count += 1;
+                acc.score += candidate.score;
+                if (
+                  rank === 0 &&
+                  (!e.candidates[1] || e.candidates[0].score > e.candidates[1].score + 1e-9)
+                ) {
+                  acc.wins += 1;
+                  acc.verses.add(candidate.verseId);
+                  acc.anchor = acc.anchor || e.anchor;
+                }
+                tally.set(candidate.shabadId, acc);
+              }),
+            );
+            const rankedContext = [...tally.values()].sort((a, b) => b.score - a.score);
+            const winner = rankedContext[0];
+            if (
+              winner?.id === top.shabadId &&
+              margin > 1e-9 &&
+              winner.count >= 6 &&
+              winner.wins >= 4 &&
+              (winner.anchor || winner.verses.size >= 2) &&
+              winner.score - (rankedContext[1]?.score || 0) >= 1
+            ) {
+              let profile;
+              try {
+                profile = await loadShabadProfile(top.shabadId);
+              } catch (_) {
+                return;
+              }
+              if (
+                session !== sessionRef.current ||
+                !recognizingRef.current ||
+                phaseRef.current !== 'searching' ||
+                lockingRef.current ||
+                contextEvidenceRef.current !== memory ||
+                memory.step !== step
+              )
+                return;
+              const canonicalIndex = profile.verses.findIndex((v) => v.verseId === top.verseId);
+              if (canonicalIndex >= 0) {
+                autopilotLock({
+                  shabadId: top.shabadId,
+                  verseId: top.verseId,
+                  verse: profile.displayLines[canonicalIndex],
+                });
+                return;
+              }
+            }
+          }
+        }
+      } else contextEvidenceRef.current = null;
+      // Search uses ASCII-font first letters (the DB's FirstLetterStr encoding).
+      // The recognizer's unverified text is never a display or canonical source.
       const fl = toAsciiFirstLetters(text);
-      if (fl.length < DETECT_MIN_LETTERS) {
-        setHeard(flUni);
-        return;
-      }
-      setHeard(flUni.slice(-28)); // show a readable tail of what's been heard
+      if (fl.length < DETECT_MIN_LETTERS) return;
+      const sequence = ++transcriptSeqRef.current;
+      const phase = phaseRef.current;
+      const originShabad = currentShabadIdRef.current;
+      transcriptAbortRef.current?.abort();
+      const abort = new AbortController();
+      transcriptAbortRef.current = abort;
+      const isCurrentTranscript = () =>
+        session === sessionRef.current &&
+        sequence === transcriptSeqRef.current &&
+        recognizingRef.current &&
+        phase === phaseRef.current &&
+        originShabad === currentShabadIdRef.current;
 
       // Fade prior evidence a touch each decode so the tally tracks what's being
       // sung now, not a false start from a few seconds ago.
@@ -793,7 +1144,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       for (let gi = 0; gi < GRAM_SIZES.length; gi += 1) {
         const k = GRAM_SIZES[gi];
         if (fl.length < k) continue; // eslint-disable-line no-continue
-        for (let s = fl.length - k; s >= 0; s -= 1) addQ(fl.slice(s, s + k), k, FIRST_LETTERS_ANYWHERE);
+        for (let s = fl.length - k; s >= 0; s -= 1)
+          addQ(fl.slice(s, s + k), k, FIRST_LETTERS_ANYWHERE);
       }
       const tail = fl.slice(-8);
       for (let d = 1; d < tail.length - 1; d += 1) {
@@ -809,7 +1161,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             .catch(() => ({ g, r: [] })),
         ),
       );
-      if (!recognizingRef.current) return; // locked/stopped during the awaits
+      if (!isCurrentTranscript()) return;
 
       const rowByShabad = detectRowsRef.current;
       results.forEach(({ g, r }) => {
@@ -842,7 +1194,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           emptyStreakRef.current = hold.streak;
           if (hold.clear) {
             setCands([]);
-            setDetail('Couldn\'t recognise that — keep singing, or tap a match below');
+            setDetail("Couldn't recognise that — keep singing, or tap a match below");
           } else {
             setDetail('Listening… keep singing');
           }
@@ -871,6 +1223,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           share: v / best,
         };
       });
+      publishRanks(shortlist);
       // Don't surface the detect shortlist while following — it's background
       // switch-detection, not something the presenter should see or tap.
       if (!(autopilotRef.current && phaseRef.current === 'following')) setCands(shortlist);
@@ -901,15 +1254,31 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         if (lockingRef.current) return;
 
         if (phaseRef.current === 'searching') {
-          // FIRST lock: permissive. A wrong lock is cheap now — the acoustic
-          // switch test below will simply find the shabad that actually matches
-          // and switch to it — so favour locking fast over locking perfectly.
+          // Require the unique full-text leader to agree with the first-letter
+          // nominee. Ties and stale asynchronous answers cannot establish a lock.
           if (
             fl.length >= AP_LOCK_MIN_LETTERS &&
             lead >= AUTO_LOCK_CONF &&
             best >= DETECT_MIN_EVIDENCE &&
             st.count >= AP_LOCK_STABLE
           ) {
+            const leaders = await searchCanonicalText(text, 2, abort.signal);
+            if (
+              !isCurrentTranscript() ||
+              lockingRef.current ||
+              detectStableRef.current.id !== cand.shabadId ||
+              detectStableRef.current.count < AP_LOCK_STABLE
+            )
+              return;
+            if (!leaders) {
+              setDetail('Shabad search is unavailable — stop and try again');
+              return;
+            }
+            if (
+              leaders[0]?.shabadId !== cand.shabadId ||
+              (leaders[1] && Math.abs(leaders[0].score - leaders[1].score) < 1e-9)
+            )
+              return;
             autopilotLock(cand);
           }
           return;
@@ -923,7 +1292,25 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         // current shabad's lines; only a clear, sustained acoustic win commits
         // the switch — this is what makes it both switch reliably and not
         // chase similar-worded lines.
+        const textCandidates = await searchCanonicalText(text, BACKSTOP_TOP_N + 1, abort.signal);
+        if (!isCurrentTranscript() || lockingRef.current) return;
+        if (!textCandidates) {
+          setDetail('Shabad search is unavailable — stop and try again');
+          return;
+        }
         const curId = currentShabadIdRef.current;
+        const tiedLeaderIds = new Set();
+        if (
+          textCandidates.length > 1 &&
+          Math.abs(textCandidates[0].score - textCandidates[1].score) < 1e-9
+        ) {
+          textCandidates.forEach((candidate) => {
+            if (Math.abs(candidate.score - textCandidates[0].score) < 1e-9) {
+              tiedLeaderIds.add(candidate.shabadId);
+              bsWinsRef.current.delete(candidate.shabadId);
+            }
+          });
+        }
         const hypFull = vfNorm(text).slice(-SWITCH_HYP_SLICE); // recent decoded audio
         // Current shabad scored from the cursor, candidates scored across all
         // their lines (a new shabad may be entered anywhere, usually its start).
@@ -943,6 +1330,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           hypMin: SWITCH_HYP_MIN,
         };
         const stepSlot = (slot, sCand) => {
+          // Suppress confirmation only for identities in the tied leader set.
+          if (tiedLeaderIds.has(slot.shabadId)) {
+            slot.wins = 0; // eslint-disable-line no-param-reassign
+            slot.lastScore = sCand; // eslint-disable-line no-param-reassign
+            return false;
+          }
           const step = nextSwitchWins(slot.wins, sCand, sCurFull, acousticCfg);
           slot.wins = step.wins; // eslint-disable-line no-param-reassign
           // Held decodes judged nothing — keep showing the last judged score.
@@ -994,26 +1387,13 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           }
         }
 
-        // --- Slot 2: acoustic backstop. Screen the whole shabad field by
-        // first-letter overlap (cheap), rescore survivors by line text, and
-        // evaluate the best cached one — even when the vote sees nothing.
+        // --- Slot 2: rescore full-text survivors against canonical lines.
         let bs = backstopRef.current;
-        if (!flIndexRef.current) {
-          // Builds once; the backstop joins once it lands. On persistent
-          // failure back off (a scan per decode would hammer Realm).
-          if (!flIndexFailAtRef.current || Date.now() - flIndexFailAtRef.current > 60000) {
-            ensureFlIndex().then((m) => {
-              if (!m) flIndexFailAtRef.current = Date.now();
-            });
-          }
-        } else {
-          const screened = screenByFirstLetters(
-            fl,
-            flIndexRef.current,
-            curId,
-            BACKSTOP_MIN_OVERLAP,
-            BACKSTOP_TOP_N,
-          );
+        {
+          const screened = textCandidates
+            .filter((row) => row.shabadId !== curId)
+            .slice(0, BACKSTOP_TOP_N)
+            .map((row) => ({ id: row.shabadId, overlap: row.score }));
           const inScreen = new Set(screened.map((e) => e.id));
           if (bs && !inScreen.has(bs.shabadId)) {
             // Incumbent left the field: bank its wins (screen membership
@@ -1031,18 +1411,17 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             }
           });
           if (!bs) {
-            // No incumbent: adopt today's best fully-cached survivor, but only
-            // re-run the rescore when the screened field changed (same field
-            // with a cold cache would just re-scan for nothing every decode).
+            // A free slot must reconsider newly loaded profiles even when
+            // the first retrieved ID and candidate count have not changed.
             const screenKey = screened.length ? `${screened[0].id}:${screened.length}` : '';
-            if (screenKey && screenKey !== bsAdoptKeyRef.current) {
+            if (screenKey) {
               bsAdoptKeyRef.current = screenKey;
               let top = null;
               screened.forEach(({ id }) => {
                 const prof = lineCacheRef.current.get(id);
                 if (prof && prof.linesNorm) {
                   const m = bestLineMatch(hypFull, prof.linesNorm, SWITCH_CAND_MIN_LINE_CHARS);
-                  if (m.index >= 0 && (!top || m.s > top.s)) top = { id, prof, m };
+                  if (m.index >= 0 && (!top || m.s > top.m.s)) top = { id, prof, m };
                 }
               });
               if (top) {
@@ -1051,8 +1430,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                   shabadId: top.id,
                   verseId: v.verseId,
                   verse: null, // ascii verse fetched once, at commit
-                  display: (v.words || []).join(' '),
+                  display: top.prof.displayLines[top.m.index] || '',
                   linesNorm: top.prof.linesNorm,
+                  // Keep matching lines and their canonical identities together
+                  // while the shared cache can evict/reload this profile.
+                  profile: top.prof,
                   wins: bsWinsRef.current.get(top.id) || 0,
                 };
                 backstopRef.current = bs;
@@ -1077,23 +1459,30 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                 const oldest = lineCacheRef.current.keys().next();
                 if (!oldest.done) lineCacheRef.current.delete(oldest.value);
               }
-              lineCacheRef.current.set(id, null); // placeholder: load in flight
+              const cache = lineCacheRef.current;
+              const pendingProfile = {}; // identity survives eviction/reload races
+              cache.set(id, pendingProfile);
               loadShabadProfile(id)
                 .then((q) => {
-                  lineCacheRef.current.set(id, q);
+                  if (
+                    session === sessionRef.current &&
+                    cache === lineCacheRef.current &&
+                    cache.get(id) === pendingProfile
+                  )
+                    cache.set(id, q);
                 })
                 .catch(() => {
-                  lineCacheRef.current.delete(id);
+                  if (cache.get(id) === pendingProfile) cache.delete(id);
                 });
             });
           if (bs && bs.linesNorm) {
             const m = bestLineMatch(hypFull, bs.linesNorm, SWITCH_CAND_MIN_LINE_CHARS);
             if (m.index >= 0) {
-              const prof = lineCacheRef.current.get(bs.shabadId);
-              const v = (prof && prof.verses[m.index]) || {};
+              const prof = bs.profile;
+              const v = prof.verses[m.index] || {};
               if (v.verseId) {
                 bs.verseId = v.verseId;
-                bs.display = (v.words || []).join(' ');
+                bs.display = prof.displayLines[m.index] || '';
               }
               bs.committed = stepSlot(bs, m.s);
               bsWinsRef.current.set(bs.shabadId, bs.wins);
@@ -1119,6 +1508,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           } catch (_) {
             /* fall back to whatever verse payload we have */
           }
+          if (!isCurrentTranscript() || lockingRef.current || backstopRef.current !== bgp) {
+            return;
+          }
           if (!verse) return; // verse still unfetchable: keep the won slot, retry next decode
           backstopRef.current = null;
           autopilotLock({ shabadId: bgp.shabadId, verseId: bgp.verseId, verse });
@@ -1143,10 +1535,25 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         // Leader for display: most wins; the vote slot breaks ties (as before).
         const leadSlot = bgp && bgp.wins > (vote ? vote.wins : -1) ? bgp : vote;
         if (leadSlot.lastScore == null) return; // still loading its lines; keep prior UI
+        if (
+          seekingRef.current &&
+          hypFull.length >= SWITCH_HYP_MIN &&
+          leadSlot.wins === 0 &&
+          sCurFull >= SWITCH_ACOUSTIC_MIN &&
+          sCurFull - leadSlot.lastScore >= SWITCH_ACOUSTIC_MARGIN
+        ) {
+          seekingRef.current = false;
+          try {
+            setIsMiscSlide(false);
+          } catch (_) {
+            /* Closing store. */
+          }
+        }
         const leadDisplay = leadSlot.display || anvaad.unicode(leadSlot.verse || '');
         // Surface the live comparison so the presenter can see a new shabad being
         // considered (candidate line + how strongly it matches vs. the current one).
         setSwitchView({
+          shabadId: leadSlot.shabadId,
           cand: leadDisplay,
           sCand: leadSlot.lastScore,
           sCur: sCurFull,
@@ -1192,22 +1599,27 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         return;
       }
 
-      if (
-        lead >= AUTO_LOCK_CONF &&
-        best >= DETECT_MIN_EVIDENCE &&
-        st.count >= DETECT_STABLE
-      ) {
+      if (lead >= AUTO_LOCK_CONF && best >= DETECT_MIN_EVIDENCE && st.count >= DETECT_STABLE) {
         lockOnto(cand);
       }
     },
-    [lockOnto, autopilotLock, loadShabadProfile, ensureFlIndex, setIsMiscSlide, setMiscSlideText],
+    [
+      lockOnto,
+      autopilotLock,
+      loadShabadProfile,
+      searchCanonicalText,
+      setIsMiscSlide,
+      setMiscSlideText,
+    ],
   );
 
   // Start a blind-detect session: same mic pipeline as start(), but we run the
   // free-decode recognizer in-process and identify + open the shabad ourselves.
   const startDetect = useCallback(async () => {
     cleanup();
+    const session = sessionRef.current;
     recognizingRef.current = true;
+    contextEvidenceRef.current = null;
     detectVotesRef.current = new Map();
     detectRowsRef.current = new Map();
     detectStableRef.current = { id: null, count: 0 };
@@ -1215,8 +1627,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     lastVerseRef.current = null;
     setPos(null);
     setCands([]);
-    setHeard('');
-    setRawHeard('');
     setStatus('detecting');
     setDetail('Listening for a Shabad…');
 
@@ -1227,16 +1637,19 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     }
     try {
       await engine.ready((p) => {
+        if (session !== sessionRef.current) return;
         setDlProgress(p);
         setDetail(`downloading recognition model… ${Math.round(p * 100)}% (one time)`);
       });
     } catch (e) {
+      if (session !== sessionRef.current) return;
       setStatus('error');
       setDetail(`could not prepare the recognition model: ${e?.message || e}`);
       setDlProgress(null);
       recognizingRef.current = false;
       return;
     }
+    if (session !== sessionRef.current) return;
     setDlProgress(null);
     if (!recognizingRef.current) return; // stopped during the download
 
@@ -1246,9 +1659,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         const r = recognizerRef.current;
         if (!r || !recognizingRef.current) return;
         const out = await r.push(pcm);
+        if (session !== sessionRef.current || recognizerRef.current !== r) return;
         if (out && out.text) handleTranscript(out.text);
       });
     } catch (e) {
+      if (session !== sessionRef.current) return;
       setStatus('error');
       setDetail(e?.message || 'audio setup failed');
       recognizingRef.current = false;
@@ -1256,9 +1671,13 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       return;
     }
 
+    if (session !== sessionRef.current) return;
     try {
-      recognizerRef.current = await engine.createRecognizer({ inputSr: sampleRate });
+      const recognizer = await engine.createRecognizer({ inputSr: sampleRate });
+      if (session !== sessionRef.current) return;
+      recognizerRef.current = recognizer;
     } catch (e) {
+      if (session !== sessionRef.current) return;
       setStatus('error');
       setDetail(`engine init failed: ${e?.message || e}`);
       recognizingRef.current = false;
@@ -1274,6 +1693,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // confirmations, no person needed at the computer.
   const startAutopilot = useCallback(async () => {
     cleanup();
+    const session = sessionRef.current;
     autopilotRef.current = true;
     recognizingRef.current = true;
     phaseRef.current = 'searching';
@@ -1286,6 +1706,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     bsWinsRef.current.clear();
     bsAdoptKeyRef.current = '';
     setSwitchView(null);
+    contextEvidenceRef.current = null;
     detectVotesRef.current = new Map();
     detectRowsRef.current = new Map();
     detectStableRef.current = { id: null, count: 0 };
@@ -1293,8 +1714,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     lastVerseRef.current = null;
     setPos(null);
     setCands([]);
-    setHeard('');
-    setRawHeard('');
     setStatus('detecting');
     setDetail('starting…');
 
@@ -1304,10 +1723,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     }
     try {
       await engine.ready((p) => {
+        if (session !== sessionRef.current) return;
         setDlProgress(p);
         setDetail(`downloading recognition model… ${Math.round(p * 100)}% (one time)`);
       });
     } catch (e) {
+      if (session !== sessionRef.current) return;
       setStatus('error');
       setDetail(`could not prepare the recognition model: ${e?.message || e}`);
       setDlProgress(null);
@@ -1315,8 +1736,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       recognizingRef.current = false;
       return;
     }
+    if (session !== sessionRef.current) return;
     setDlProgress(null);
     if (!autopilotRef.current) return; // stopped during the download
+    ensureFlIndex(); // prepare the corpus while capture starts; never block audio
 
     let sampleRate;
     try {
@@ -1329,6 +1752,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         const r = recognizerRef.current;
         if (r) {
           const rout = await r.push(pcm);
+          if (session !== sessionRef.current || recognizerRef.current !== r) return;
           if (rout && rout.text) handleTranscript(rout.text);
         }
         // While following, also advance the follower for the live line/word cursor.
@@ -1336,7 +1760,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           const f = followerRef.current;
           if (!f) return; // still building the follower after a lock/switch
           const out = await f.push(pcm);
-          if (!out) return;
+          // A late result belongs to the follower that produced it, not a new
+          // Shabad/session selected while inference was in flight.
+          if (!out || followerRef.current !== f || !autopilotRef.current || lockingRef.current) {
+            return;
+          }
           // Follower released (singer paused, or moved on): hold on screen —
           // the acoustic switch test handles a real move to another shabad.
           if (out.lineIndex == null || out.verseIndex === -1) return;
@@ -1348,7 +1776,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           // switch is being evaluated (the current shabad is likely being left).
           const evaluatingSwitch = switchCandRef.current && switchCandRef.current.wins >= 1;
           if (evaluatingSwitch || out.confidence < UI_MOVE_CONF) return;
-          setPos({ lineIndex: out.lineIndex, wordIndex: out.wordIndex, confidence: out.confidence });
+          setPos({
+            lineIndex: out.lineIndex,
+            wordIndex: out.wordIndex,
+            confidence: out.confidence,
+          });
           if (out.verseId != null && out.verseId !== lastVerseRef.current) {
             lastVerseRef.current = out.verseId;
             setActiveVerseId(out.verseId);
@@ -1357,6 +1789,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         }
       });
     } catch (e) {
+      if (session !== sessionRef.current) return;
       setStatus('error');
       setDetail(e?.message || 'audio setup failed');
       autopilotRef.current = false;
@@ -1364,15 +1797,19 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       cleanup();
       return;
     }
+    if (session !== sessionRef.current) return;
     sampleRateRef.current = sampleRate;
 
     try {
-      recognizerRef.current = await engine.createRecognizer({
+      const recognizer = await engine.createRecognizer({
         inputSr: sampleRate,
         windowS: AP_SEARCH_WIN_S, // starts in the searching phase
         hopS: AP_REC_HOP_S,
       });
+      if (session !== sessionRef.current) return;
+      recognizerRef.current = recognizer;
     } catch (e) {
+      if (session !== sessionRef.current) return;
       setStatus('error');
       setDetail(`engine init failed: ${e?.message || e}`);
       autopilotRef.current = false;
@@ -1381,7 +1818,15 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       return;
     }
     setDetail('listening… start singing any shabad');
-  }, [cleanup, startAudio, handleTranscript, enterSearching, setActiveVerseId, setLineNumber]);
+  }, [
+    cleanup,
+    startAudio,
+    handleTranscript,
+    enterSearching,
+    ensureFlIndex,
+    setActiveVerseId,
+    setLineNumber,
+  ]);
 
   // While listening, if the presenter switches to a different shabad or bani (via
   // any menu — search, history, favorites, arrows, bani picker), re-attach to the
@@ -1427,11 +1872,14 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   useEffect(() => {
     if (!panelVisible) return undefined;
     const dismiss = () => (active ? setCollapsed(true) : onScreenClose());
-    const onKey = (e) => { if (e.key === 'Escape') dismiss(); };
+    const onKey = (e) => {
+      if (e.key === 'Escape') dismiss();
+    };
     const onDown = (e) => {
       const t = e.target;
       if (panelRef.current && panelRef.current.contains(t)) return;
-      if (t && t.closest && t.closest('#toolbar, #toolbar-nav, #tool-voice-follow, #vf-pill')) return;
+      if (t && t.closest && t.closest('#toolbar, #toolbar-nav, #tool-voice-follow, #vf-pill'))
+        return;
       dismiss();
     };
     document.addEventListener('keydown', onKey);
@@ -1510,9 +1958,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
   // Live stats (shown while listening). Word is 1-based like the line; confidence
   // reads as a friendly percentage.
-  const wordNum = pos && typeof pos.wordIndex === 'number' ? pos.wordIndex + 1 : null;
-  const confPct =
-    pos && typeof pos.confidence === 'number' ? `${Math.round(pos.confidence * 100)}%` : null;
 
   // Main button: Stop while a session runs, else Start. Autopilot is the default
   // hands-free experience; manual follow / one-shot detect are the fallbacks.
@@ -1522,8 +1967,28 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   else if (autoDetect) onMainClick = startDetect;
   let mainLabel = '●  Start listening';
   if (active) mainLabel = '■  Stop';
-  else if (autopilot) mainLabel = '●  Start autopilot';
+  else if (autopilot) mainLabel = '●  Start listening';
   else if (autoDetect) mainLabel = '●  Start auto-detect';
+
+  let projectionStatus = currentView ? 'Following' : 'Listening…';
+  if (nextView?.wins >= 2) projectionStatus = 'Checking a change';
+  if (isMiscSlide) projectionStatus = 'Holding a separate slide';
+  const checkingNext = nextView?.cand && nextView.wins >= 1;
+  const matchPool = (rankedView.length ? rankedView : cands).filter(
+    (candidate) => candidate.display && candidate.shabadId !== currentView?.id,
+  );
+  const visibleMatches = (
+    checkingNext
+      ? [
+          { shabadId: nextView.shabadId, display: nextView.cand, checking: true },
+          ...matchPool.filter((candidate) => candidate.shabadId !== nextView.shabadId),
+        ]
+      : matchPool
+  ).slice(0, 2);
+
+  let microphoneLabel = 'Ready';
+  if (active) microphoneLabel = audioView.device ? 'Listening' : 'Preparing…';
+  const currentLabel = isMiscSlide ? 'Current Shabad · slide held' : 'Following this Shabad';
 
   return (
     <>
@@ -1535,8 +2000,25 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           <div className="vf-header" onMouseDown={startDrag} title="Drag to move">
             <span className="vf-title">
               <span className="vf-grip">⠿</span>
-              {dot}
-              Voice&#8288;-&#8288;Follow <span className="vf-tag">beta</span>
+              <span className="vf-heading-copy">
+                <span>Voice Follow</span>
+                <span className="vf-listening-label">{microphoneLabel}</span>
+              </span>
+              {active && (
+                <span
+                  className="vf-mic-bars"
+                  role="meter"
+                  aria-label="Microphone sound level"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={Math.round(audioView.level * 100)}
+                  title={audioView.device || 'Microphone'}
+                >
+                  {[0.4, 0.7, 1, 0.8, 0.5].map((scale, index) => (
+                    <span key={index} style={{ height: `${3 + 17 * scale * audioView.level}px` }} />
+                  ))}
+                </span>
+              )}
             </span>
             <span className="vf-hdr-btns">
               <button
@@ -1562,19 +2044,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             </span>
           </div>
 
-          <label
-            className="vf-toggle vf-toggle-primary"
-            title="Hands-free: detect, follow, and switch shabads automatically — press once and walk away"
-          >
-            <input
-              type="checkbox"
-              checked={autopilot}
-              disabled={active}
-              onChange={(e) => setAutopilot(e.target.checked)}
-            />
-            <span>Autopilot — follow &amp; switch shabads hands&#8288;-free</span>
-          </label>
-
           {!autopilot && (
             <>
               <div className="vf-modes">
@@ -1591,7 +2060,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                 ))}
               </div>
 
-              <label className="vf-toggle" title="Identify the shabad from your voice, then follow it">
+              <label
+                className="vf-toggle"
+                title="Identify the shabad from your voice, then follow it"
+              >
                 <input
                   type="checkbox"
                   checked={autoDetect}
@@ -1603,109 +2075,73 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             </>
           )}
 
-          <button
-            type="button"
-            onClick={onMainClick}
-            className={`vf-main ${active ? 'is-stop' : 'is-start'}`}
-          >
-            {mainLabel}
-          </button>
-
           {dlProgress != null && (
             <div className="vf-dl" title="Downloading the recognition model (one time)">
               <span className="vf-dl-bar" style={{ width: `${Math.round(dlProgress * 100)}%` }} />
             </div>
           )}
 
-          {status === 'listening' && (
-            <div className="vf-stats">
-              <div className="vf-stat">
-                <span className="vf-stat-val">{posLine == null ? '—' : posLine}</span>
-                <span className="vf-stat-label">Line</span>
-              </div>
-              <div className="vf-stat">
-                <span className="vf-stat-val">{wordNum == null ? '—' : wordNum}</span>
-                <span className="vf-stat-label">Word</span>
-              </div>
-              <div className="vf-stat">
-                <span className="vf-stat-val">{confPct == null ? '—' : confPct}</span>
-                <span className="vf-stat-label">Confidence</span>
-              </div>
-            </div>
-          )}
-          {/* Autopilot following: keep the presenter aware that shabad-switch
-              detection is running in the background — what's being heard, and any
-              new shabad currently under consideration (with how strongly it matches
-              vs. the one we're on, and the confirm progress before it takes over). */}
-          {autopilot && status === 'listening' && (
-            <div className="vf-follow">
-              <div className="vf-follow-head">
-                <span className="vf-follow-dot" />
-                <span className="vf-follow-text">{detail || 'Following the Shabad'}</span>
-              </div>
-              {rawHeard && (
-                <div className="vf-raw" title="What the recognizer is hearing" lang="pa">
-                  {rawHeard}
+          {active && (
+            <div className="vf-compact-content">
+              <div className={`vf-current-shabad${currentView ? ' is-following' : ''}`}>
+                <div className="vf-section-label" aria-live="polite">
+                  {currentView ? currentLabel : projectionStatus}
                 </div>
-              )}
-              {switchView && (
-                <div className="vf-switch" title="A different shabad is being considered">
-                  <div className="vf-switch-head">Sounds like a new Shabad — checking…</div>
-                  <div className="vf-switch-line" lang="pa">
-                    {switchView.cand}
+                <div className="vf-canonical-line" lang={currentView ? 'pa' : undefined}>
+                  {currentView?.line ||
+                    (status === 'listening'
+                      ? 'Following your selected Shabad'
+                      : 'Finding the Shabad…')}
+                </div>
+              </div>
+              {checkingNext && (
+                <div className="vf-change-preview">
+                  <div className="vf-section-label">
+                    {nextView.wins >= 2 ? 'Confirming a change' : 'Checking a new Shabad'}
                   </div>
-                  <div className="vf-switch-bar-wrap">
-                    <span
-                      className="vf-switch-bar"
-                      style={{ width: `${(switchView.wins / SWITCH_CONFIRM) * 100}%` }}
-                    />
+                  <div className="vf-canonical-line" lang="pa">
+                    {nextView.cand}
+                  </div>
+                  <div
+                    className="vf-change-track"
+                    role="meter"
+                    aria-label="Switch confirmation progress"
+                    aria-valuemin={0}
+                    aria-valuemax={SWITCH_CONFIRM}
+                    aria-valuenow={nextView.wins}
+                  >
+                    <span style={{ width: `${(nextView.wins / SWITCH_CONFIRM) * 100}%` }} />
                   </div>
                 </div>
               )}
+              <details className="vf-other-matches">
+                <summary>Matches</summary>
+                {visibleMatches.length ? (
+                  visibleMatches.map((candidate) => (
+                    <div className="vf-match-card" key={candidate.shabadId}>
+                      <div className="vf-match-meta">
+                        {candidate.checking ? 'Checking' : 'Possible match'}
+                      </div>
+                      <div className="vf-canonical-line" lang="pa">
+                        {candidate.display}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="vf-explanation">Listening for more matches…</div>
+                )}
+              </details>
             </div>
           )}
-          {detecting && (
-            <div className="vf-detect">
-              <div className="vf-detect-head">
-                <span className="vf-detect-spin" />
-                <span className="vf-detect-text">{detail || 'Listening for a Shabad…'}</span>
-              </div>
-              {rawHeard && (
-                <div className="vf-raw" title="What the recognizer transcribed" lang="pa">
-                  {rawHeard}
-                </div>
-              )}
-              {heard && (
-                <div className="vf-heard" title="Gurmukhi first-letters heard">
-                  {heard}
-                </div>
-              )}
-              {cands.length > 0 && (
-                <div className="vf-cands">
-                  {cands.map((c, i) => (
-                    <button
-                      key={c.shabadId}
-                      type="button"
-                      className={`vf-cand${i === 0 ? ' is-leader' : ''}`}
-                      title="Select and project this shabad"
-                      onClick={() => c.verse && lockOnto(c)}
-                    >
-                      <span
-                        className="vf-cand-bar"
-                        style={{ width: `${Math.round(c.share * 100)}%` }}
-                      />
-                      <span className="vf-cand-line" lang="pa">
-                        {c.display || '…'}
-                      </span>
-                      {c.share > 0 && (
-                        <span className="vf-cand-pct">{Math.round(c.share * 100)}%</span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
+          <div className={`vf-compact-footer${active ? '' : ' is-idle'}`}>
+            <button
+              type="button"
+              onClick={onMainClick}
+              className={`vf-main ${active ? 'is-stop' : 'is-start'}`}
+            >
+              {mainLabel}
+            </button>
+          </div>
           {status !== 'listening' && !detecting && <div className="vf-status">{statusText}</div>}
         </div>
       )}
@@ -1741,23 +2177,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 VoiceFollow.propTypes = {
   isOpen: PropTypes.bool,
   onScreenClose: PropTypes.func,
-};
-
-const DOT = {
-  idle: '#888',
-  connecting: '#f39c12',
-  detecting: '#5b73ff',
-  listening: '#27ae60',
-  error: '#c0392b',
-  stopped: '#888',
-};
-const STATUS_LABEL = {
-  idle: 'Ready',
-  connecting: 'Starting…',
-  detecting: 'Detecting…',
-  listening: 'Listening',
-  error: 'Problem',
-  stopped: 'Stopped',
 };
 
 export default VoiceFollow;
