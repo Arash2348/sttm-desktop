@@ -19,7 +19,13 @@ const { createRendererRetrieval } = require('../engine/retrieval/renderer-client
 const { norm: vfNorm, partialRatio } = engine;
 
 // Pure, unit-tested switch/display policy (see switchPolicy.js + .test.js).
-const { nextSwitchWins, nextEmptyStreak, maxLineScore, bestLineMatch } = require('./switchPolicy');
+const {
+  nextSwitchWins,
+  nextEmptyStreak,
+  maxLineScore,
+  bestLineMatch,
+  orderFreeLineScore,
+} = require('./switchPolicy');
 
 // maxLineScore lives in ./switchPolicy (same implementation, unit-tested there)
 // so the benchmarked length-penalty math is shared, not duplicated.
@@ -82,6 +88,11 @@ const START_MATCH_WEIGHT = 12;
 // acoustic comparison and we switch to it).
 const AP_LOCK_MIN_LETTERS = 5; // a small phrase is enough to lock the FIRST shabad
 const AP_LOCK_STABLE = 2; // hold the lead this many decodes before the first lock
+// The FIRST lock needs a clear full-text leader: many shabads share a line (e.g.
+// "charan kamal rid antar dhaare" is in both 1452 and 4590), and a near-tie is a
+// coin flip that then costs ~40 s to undo. Level 2 benchmark: every correct first
+// lock had a margin >= 0.12 over the runner-up; the one wrong lock had 0.00.
+const AP_LOCK_TEXT_MARGIN = 0.08;
 const VOTE_CAP = 60; // clamp votes so a long shabad can't become impossible to switch away from
 // The recognizer WINDOW is a two-sided lever, so autopilot uses a DIFFERENT one
 // per phase (goal: each capability as good as its dedicated feature):
@@ -143,6 +154,13 @@ const SWITCH_CAND_MIN_LINE_CHARS = 15;
 // (misses switches: recall 68->60%), so raising it is not safe. The 9s stress ceiling
 // (~35% on-correct) is latency-bound (react time ~4-5s vs 9s dwell), not tunable.
 const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a switch
+// Returning to the shabad we JUST left is low-risk (we were confidently following
+// it moments ago) and slow returns are the main cost of a brief pramaan quote or a
+// mistaken switch: the true shabad kept reaching 2 wins but the shared contender
+// slot was hijacked by transient candidates and reset (Level 2 clip 21: 76 s away).
+// So the previous shabad keeps its own slot for a while and returns on 2 wins.
+const RETURN_CONFIRM = 2;
+const RETURN_WINDOW_DECODES = 240; // ~2 min at the 0.5 s following hop
 // Strong-win fast path: a win this decisive (far above the 0.60/0.20 confusion
 // zone, inside the >=0.67/>=0.33 zone real switches score) counts double, so a
 // clear new shabad commits in ~2 decodes (~1s) instead of ~3. Borderline matches
@@ -341,6 +359,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const sampleRateRef = useRef(null); // mic sample rate, for building engine sessions
   const currentShabadIdRef = useRef(null); // shabad currently projected (avoid re-open)
   const curLinesNormRef = useRef([]); // normalized lines of the current shabad (acoustic scoring)
+  const curWordsNormRef = useRef([]); // per-line normalized words of the current shabad (order-free defense)
+  const curProfileRef = useRef(null); // full profile of the current shabad (kept for a fast return)
+  const prevShabadRef = useRef(null); // { id, profile, decodesSince } — shabad we just switched away from
+  const returnSlotRef = useRef(null); // { shabadId, wins, index, lastScore } — in-flight return evaluation
   const curCursorRef = useRef(null); // follower's current line index within the current shabad
   const [switchView, setSwitchView] = useState(null); // { cand, sCand, sCur, wins } for the following-phase UI
   const [nextView, setNextView] = useState(null);
@@ -522,6 +544,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     lockingRef.current = false;
     currentShabadIdRef.current = null;
     curLinesNormRef.current = [];
+    curWordsNormRef.current = [];
+    curProfileRef.current = null;
+    prevShabadRef.current = null;
+    returnSlotRef.current = null;
     curCursorRef.current = null;
     switchCandRef.current = null;
     backstopRef.current = null;
@@ -702,6 +728,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     phaseRef.current = 'searching';
     followerRef.current = null;
     curLinesNormRef.current = [];
+    curWordsNormRef.current = [];
+    curProfileRef.current = null;
+    prevShabadRef.current = null;
+    returnSlotRef.current = null;
     curCursorRef.current = null;
     switchCandRef.current = null;
     backstopRef.current = null;
@@ -850,7 +880,13 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         phaseRef.current = 'following';
         lastVerseRef.current = null;
         followerRef.current = follower;
+        if (isSwitch && currentShabadIdRef.current != null && currentShabadIdRef.current !== cand.shabadId) {
+          prevShabadRef.current = { id: currentShabadIdRef.current, profile: curProfileRef.current, decodesSince: 0 };
+        } else if (!isSwitch) prevShabadRef.current = null;
+        returnSlotRef.current = null;
+        curProfileRef.current = profile;
         curLinesNormRef.current = profile.linesNorm;
+        curWordsNormRef.current = profile.verses.map((v) => (v.words || []).map(vfNorm).filter(Boolean));
         setCurrentView({ id: cand.shabadId, line: anvaad.unicode(cand.verse) });
         curCursorRef.current = null; // new shabad — cursor unknown until the follower reports
         setSwitchView(null);
@@ -947,7 +983,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (
             top &&
             top.score >= 0.3 &&
-            margin > 1e-9 &&
+            margin >= AP_LOCK_TEXT_MARGIN &&
             leaders.length >= 3 &&
             acousticPcm?.length
           ) {
@@ -1065,7 +1101,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             const winner = rankedContext[0];
             if (
               winner?.id === top.shabadId &&
-              margin > 1e-9 &&
+              margin >= AP_LOCK_TEXT_MARGIN &&
               winner.count >= 6 &&
               winner.wins >= 4 &&
               (winner.anchor || winner.verses.size >= 2) &&
@@ -1276,7 +1312,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             }
             if (
               leaders[0]?.shabadId !== cand.shabadId ||
-              (leaders[1] && Math.abs(leaders[0].score - leaders[1].score) < 1e-9)
+              (leaders[1] && leaders[0].score - leaders[1].score < AP_LOCK_TEXT_MARGIN)
             )
               return;
             autopilotLock(cand);
@@ -1314,13 +1350,24 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         const hypFull = vfNorm(text).slice(-SWITCH_HYP_SLICE); // recent decoded audio
         // Current shabad scored from the cursor, candidates scored across all
         // their lines (a new shabad may be entered anywhere, usually its start).
-        const sCurFull = cursorLineScore(
+        const sCurWindow = cursorLineScore(
           hypFull,
           curLinesNormRef.current,
           curCursorRef.current,
           CUR_SCORE_BACK,
           CUR_SCORE_AHEAD,
         );
+        // Defense against false switches on long kirtan: before a candidate can
+        // out-score the current shabad, the current shabad is also judged across
+        // ALL its lines (the rahao lives outside the cursor window when it is
+        // re-sung) and with word order ignored (kirtan rotates phrases). The
+        // candidate keeps its own scoring; only the bar it must clear is honest.
+        const hypWordsNorm = tokenize(text).map(vfNorm).filter(Boolean);
+        const sCurAll = Math.max(
+          maxLineScore(hypFull, curLinesNormRef.current, SWITCH_CAND_MIN_LINE_CHARS),
+          orderFreeLineScore(hypWordsNorm, curWordsNormRef.current, SWITCH_CAND_MIN_LINE_CHARS),
+        );
+        const sCurFull = Math.max(sCurWindow, sCurAll);
         const acousticCfg = {
           min: SWITCH_ACOUSTIC_MIN,
           margin: SWITCH_ACOUSTIC_MARGIN,
@@ -1492,6 +1539,48 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               bs = null;
             }
           }
+        }
+
+        // --- Return slot: the shabad we just left, judged in its own slot. ---
+        {
+          const prev = prevShabadRef.current;
+          if (prev && prev.id !== curId && prev.profile && prev.profile.linesNorm) {
+            prev.decodesSince += 1;
+            if (prev.decodesSince > RETURN_WINDOW_DECODES) {
+              prevShabadRef.current = null;
+              returnSlotRef.current = null;
+            } else {
+              let rs = returnSlotRef.current;
+              if (!rs || rs.shabadId !== prev.id) {
+                rs = { shabadId: prev.id, wins: 0, index: -1, lastScore: null };
+                returnSlotRef.current = rs;
+              }
+              const m = bestLineMatch(hypFull, prev.profile.linesNorm, SWITCH_CAND_MIN_LINE_CHARS);
+              if (m.index >= 0) {
+                const step = nextSwitchWins(rs.wins, m.s, sCurFull, acousticCfg);
+                rs.wins = step.wins;
+                if (!step.held) {
+                  rs.lastScore = m.s;
+                  rs.index = m.index;
+                }
+              } else rs.wins = Math.max(0, rs.wins - 1);
+              if (rs.wins >= RETURN_CONFIRM && rs.index >= 0 && !lockingRef.current) {
+                const v = prev.profile.verses[rs.index] || {};
+                let verse = null;
+                try {
+                  verse = v.verseId ? await banidb.getVerse(prev.id, v.verseId) : null;
+                } catch (_) {
+                  verse = null;
+                }
+                if (!isCurrentTranscript() || lockingRef.current || returnSlotRef.current !== rs) return;
+                if (verse) {
+                  returnSlotRef.current = null;
+                  autopilotLock({ shabadId: prev.id, verseId: v.verseId, verse });
+                  return;
+                }
+              }
+            }
+          } else if (returnSlotRef.current) returnSlotRef.current = null;
         }
 
         // --- Finish: commits first, then one shared UI from the leader. ---
@@ -1700,6 +1789,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     lockingRef.current = false;
     currentShabadIdRef.current = null;
     curLinesNormRef.current = [];
+    curWordsNormRef.current = [];
+    curProfileRef.current = null;
+    prevShabadRef.current = null;
+    returnSlotRef.current = null;
     curCursorRef.current = null;
     switchCandRef.current = null;
     backstopRef.current = null;

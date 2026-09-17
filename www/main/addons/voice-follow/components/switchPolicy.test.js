@@ -8,6 +8,7 @@ const {
   maxLineScore,
   screenByFirstLetters,
   bestLineMatch,
+  orderFreeLineScore,
 } = require('./switchPolicy');
 // Shipped tuning, read from VoiceFollow.jsx so tests track the app's config.
 const { CFG, CONFIRM, HOLD } = require('./switchPolicy.config');
@@ -233,5 +234,26 @@ describe('bestLineMatch', () => {
 
   it('empty input scores 0 with index -1', () => {
     assert.deepEqual(bestLineMatch('', ['bbbb'], 0), { s: 0, index: -1 });
+  });
+});
+
+describe('orderFreeLineScore', () => {
+  // Level 2 benchmark clip 20: the rahao "mere laal jio tera ant na jaana" was
+  // re-sung as "tera ant na jaana mere laal"; order-sensitive scoring gave the
+  // current shabad ~0.62 while a shabad holding the sung order scored ~0.9.
+  const line = ['ਮੇਰੇ', 'ਲਾਲ', 'ਜੀਉ', 'ਤੇਰਾ', 'ਅੰਤੁ', 'ਨ', 'ਜਾਣਾ'];
+  it('scores the same bag of words highly regardless of word order', () => {
+    const rotated = ['ਤੇਰਾ', 'ਅੰਤੁ', 'ਨ', 'ਜਾਣਾ', 'ਮੇਰੇ', 'ਲਾਲ'];
+    assert.ok(orderFreeLineScore(rotated, [line], 15) >= 0.8);
+  });
+  it('stays low for unrelated words', () => {
+    const other = ['ਹਰਿ', 'ਜਨ', 'ਬੋਲਤ', 'ਸ੍ਰੀਰਾਮ', 'ਨਾਮਾ'];
+    assert.ok(orderFreeLineScore(other, [line], 15) < 0.5);
+  });
+  it('applies the short-line containment penalty and guards empty input', () => {
+    assert.ok(orderFreeLineScore(['ਹਰਿ', 'ਹਰਿ'], [['ਹਰਿ']], 15) < 0.3);
+    assert.equal(orderFreeLineScore([], [line], 15), 0);
+    assert.equal(orderFreeLineScore(['ਹਰਿ'], [line], 15), 0);
+    assert.equal(orderFreeLineScore(['ਹਰਿ', 'ਜਨ'], [], 15), 0);
   });
 });
