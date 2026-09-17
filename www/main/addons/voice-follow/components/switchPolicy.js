@@ -113,10 +113,39 @@ function bestLineMatch(hypNorm, linesNorm, minLineChars = 0) {
   return { s: best, index: at };
 }
 
+
+// Order-tolerant line match for the CURRENT shabad. Kirtan constantly re-sings
+// the rahao and rotates word order ("tera ant na jaana mere laal" for the line
+// "mere laal jio tera ant na jaana"). partialRatio is order-sensitive, so the
+// current shabad can score ~0.6 on its own line while some other shabad that
+// happens to hold the same words in the sung order scores ~0.9 — the dominant
+// false-switch mechanism on long live kirtan (Level 2 benchmark, clip 20:
+// every wrong switch left the correct shabad while its rahao was being sung).
+// Compare word-sorted strings instead: the same bag of words scores the same
+// regardless of order. hypWords / linesWords are arrays of normalized words.
+// minLineChars applies the same length-aware containment penalty as
+// maxLineScore so a tiny line cannot win by being contained in the hyp.
+function orderFreeLineScore(hypWords, linesWords, minLineChars = 0) {
+  if (!hypWords || hypWords.length < 2 || !linesWords || !linesWords.length) return 0;
+  const hyp = hypWords.slice().sort().join('');
+  let best = 0;
+  for (let i = 0; i < linesWords.length; i += 1) {
+    const words = linesWords[i];
+    if (words && words.length) {
+      const ln = words.slice().sort().join('');
+      let s = partialRatio(hyp, ln) / 100;
+      if (minLineChars > 0) s *= Math.min(1, ln.length / minLineChars);
+      if (s > best) best = s;
+    }
+  }
+  return best;
+}
+
 module.exports = {
   nextSwitchWins,
   nextEmptyStreak,
   maxLineScore,
   screenByFirstLetters,
   bestLineMatch,
+  orderFreeLineScore,
 };
