@@ -287,10 +287,10 @@ const DOT = {
 };
 const STATUS_LABEL = {
   idle: 'Ready',
-  connecting: 'Starting…',
-  detecting: 'Detecting…',
+  connecting: 'Starting',
+  detecting: 'Finding the Shabad',
   listening: 'Listening',
-  error: 'Problem',
+  error: 'Something went wrong',
   stopped: 'Stopped',
 };
 
@@ -319,11 +319,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const [autopilot] = useState(true); // hands-free: detect + follow + auto-switch, one press
   const [autoDetect, setAutoDetect] = useState(false); // blind: identify the shabad from audio, then follow (one-shot)
   // Acoustic text stays inside matching; only canonical BaniDB text is rendered.
-  const [cands, setCands] = useState([]); // [{shabadId, verseId, verse, display, share}] shortlist
+  const [, setCands] = useState([]); // [{shabadId, verseId, verse, display, share}] shortlist
   const [audioView, setAudioView] = useState({ seconds: 0, level: 0, device: '' });
   const audioViewRef = useRef({ samples: 0, published: 0 });
   const [currentView, setCurrentView] = useState(null);
-  const [rankedView, setRankedView] = useState([]);
+  const [, setRankedView] = useState([]);
   const rankedViewRef = useRef(0);
   // Presentation snapshots never feed the matching or projection policy.
   const publishRanks = useCallback((rows) => {
@@ -365,7 +365,16 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const returnSlotRef = useRef(null); // { shabadId, wins, index, lastScore } — in-flight return evaluation
   const curCursorRef = useRef(null); // follower's current line index within the current shabad
   const [switchView, setSwitchView] = useState(null); // { cand, sCand, sCur, wins } for the following-phase UI
-  const [nextView, setNextView] = useState(null);
+  // Panel: the switch judge's live candidates, published every decode while
+  // following — { sCur, items: [{ shabadId, line, score, wins, needed, kind }] }.
+  // score = the candidate's match to the last ~10 s of audio (the number the
+  // judge actually compares), wins = confirmation progress. Honest by design:
+  // what the sevadar sees is exactly what decides a switch.
+  const [liveCands, setLiveCands] = useState({ sCur: 0, items: [] });
+  const [lineExpanded, setLineExpanded] = useState(true); // full pangti (wrapped) vs one line
+  const liveSigRef = useRef('');
+  const liveAtRef = useRef(0);
+  const [, setNextView] = useState(null);
   const nextViewRef = useRef(0);
   useEffect(() => {
     if (!switchView) {
@@ -546,6 +555,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     curLinesNormRef.current = [];
     curWordsNormRef.current = [];
     curProfileRef.current = null;
+    setLiveCands({ sCur: 0, items: [] });
     prevShabadRef.current = null;
     returnSlotRef.current = null;
     curCursorRef.current = null;
@@ -571,7 +581,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     const isBani = isSundarGutkaBani && !!sundarGutkaBaniId;
     if (!isBani && !activeShabadId) {
       setStatus('error');
-      setDetail('Open a shabad or bani first, then start Voice-Follow.');
+      setDetail('Open a Shabad first, then press Start.');
       return;
     }
     // Tear down any prior session so switching content mid-listen re-attaches
@@ -626,7 +636,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     // First run only: fetch the ~184 MB int8 model and load the ONNX session.
     // Subsequent starts are instant (cached in userData + session kept warm).
     if (!engine.isReady()) {
-      setDetail('downloading recognition model (~184 MB, one time)…');
+      setDetail('Downloading the voice model (184 MB, one time)');
       setDlProgress(0);
     }
     try {
@@ -654,7 +664,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         const out = await f.push(pcm);
         // A stop or content change can replace the follower during inference.
         if (!out || followerRef.current !== f) return;
-        setPos({ lineIndex: out.lineIndex, wordIndex: out.wordIndex, confidence: out.confidence });
+        setPos({
+          lineIndex: out.lineIndex,
+          wordIndex: out.wordIndex,
+          confidence: out.confidence,
+          shabadId: currentShabadIdRef.current,
+        });
         if (typeof out.lineIndex === 'number') {
           const line = linesRef.current[out.lineIndex];
           if (line && line.verseId != null && line.verseId !== lastVerseRef.current) {
@@ -713,7 +728,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       setPos(null);
       setCands([]);
       setStatus('connecting');
-      setDetail('found it — projecting & following…');
+      setDetail('Found it');
       openShabadRef.current(cand.shabadId, cand.verseId, cand.verse);
     },
     [cleanup],
@@ -730,6 +745,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     curLinesNormRef.current = [];
     curWordsNormRef.current = [];
     curProfileRef.current = null;
+    setLiveCands({ sCur: 0, items: [] });
     prevShabadRef.current = null;
     returnSlotRef.current = null;
     curCursorRef.current = null;
@@ -746,7 +762,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     setCands([]);
     setPos(null);
     setStatus('detecting');
-    setDetail('Listening for the next Shabad…');
+    setDetail('Listening for the next Shabad');
     try {
       if (sampleRateRef.current) {
         recognizerRef.current = await engine.createRecognizer({
@@ -845,7 +861,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       const isSwitch = !!followerRef.current;
       try {
         setStatus('connecting');
-        setDetail(isSwitch ? 'switching to the new shabad…' : 'found it — projecting & following…');
+        setDetail(isSwitch ? 'switching to the new shabad…' : 'Found it');
 
         let profile;
         try {
@@ -880,15 +896,37 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         phaseRef.current = 'following';
         lastVerseRef.current = null;
         followerRef.current = follower;
-        if (isSwitch && currentShabadIdRef.current != null && currentShabadIdRef.current !== cand.shabadId) {
-          prevShabadRef.current = { id: currentShabadIdRef.current, profile: curProfileRef.current, decodesSince: 0 };
+        if (
+          isSwitch &&
+          currentShabadIdRef.current != null &&
+          currentShabadIdRef.current !== cand.shabadId
+        ) {
+          prevShabadRef.current = {
+            id: currentShabadIdRef.current,
+            profile: curProfileRef.current,
+            decodesSince: 0,
+          };
         } else if (!isSwitch) prevShabadRef.current = null;
         returnSlotRef.current = null;
         curProfileRef.current = profile;
         curLinesNormRef.current = profile.linesNorm;
-        curWordsNormRef.current = profile.verses.map((v) => (v.words || []).map(vfNorm).filter(Boolean));
+        curWordsNormRef.current = profile.verses.map((v) =>
+          (v.words || []).map(vfNorm).filter(Boolean),
+        );
         setCurrentView({ id: cand.shabadId, line: anvaad.unicode(cand.verse) });
         curCursorRef.current = null; // new shabad — cursor unknown until the follower reports
+        // Seed the panel's position at the verse we locked on. Without this the
+        // stale fix from the previous shabad (or line 1) shows for a beat until
+        // the new follower reports, which reads as a jump to the wrong pangti.
+        {
+          const at = profile.verses.findIndex((v) => v.verseId === cand.verseId);
+          setPos({
+            lineIndex: at >= 0 ? at : null,
+            wordIndex: 0,
+            confidence: 0,
+            shabadId: cand.shabadId,
+          });
+        }
         setSwitchView(null);
         switchCandRef.current = null; // clear any in-flight switch evaluation
         backstopRef.current = null;
@@ -936,7 +974,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         if (session !== sessionRef.current) return;
         setCands([]);
         setStatus('listening');
-        setDetail('Following the Shabad');
+        setDetail('Following');
       } finally {
         if (session === sessionRef.current) lockingRef.current = false;
       }
@@ -1232,7 +1270,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             setCands([]);
             setDetail("Couldn't recognise that — keep singing, or tap a match below");
           } else {
-            setDetail('Listening… keep singing');
+            setDetail('Listening');
           }
         }
         return;
@@ -1276,9 +1314,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       // background doesn't churn the "following — sing on" status.
       if (!(autopilotRef.current && phaseRef.current === 'following')) {
         if (lead >= AUTO_LOCK_CONF && best >= DETECT_MIN_EVIDENCE) {
-          setDetail('A Shabad is emerging — keep singing, or tap a match below');
+          setDetail('Almost there, keep going');
         } else {
-          setDetail('keep singing to narrow it down — or tap a match below');
+          setDetail('Keep going');
         }
       }
 
@@ -1307,7 +1345,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             )
               return;
             if (!leaders) {
-              setDetail('Shabad search is unavailable — stop and try again');
+              setDetail('Search is not available right now. Press Stop and try again.');
               return;
             }
             if (
@@ -1331,7 +1369,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         const textCandidates = await searchCanonicalText(text, BACKSTOP_TOP_N + 1, abort.signal);
         if (!isCurrentTranscript() || lockingRef.current) return;
         if (!textCandidates) {
-          setDetail('Shabad search is unavailable — stop and try again');
+          setDetail('Search is not available right now. Press Stop and try again.');
           return;
         }
         const curId = currentShabadIdRef.current;
@@ -1572,7 +1610,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                 } catch (_) {
                   verse = null;
                 }
-                if (!isCurrentTranscript() || lockingRef.current || returnSlotRef.current !== rs) return;
+                if (!isCurrentTranscript() || lockingRef.current || returnSlotRef.current !== rs)
+                  return;
                 if (verse) {
                   returnSlotRef.current = null;
                   autopilotLock({ shabadId: prev.id, verseId: v.verseId, verse });
@@ -1581,6 +1620,71 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               }
             }
           } else if (returnSlotRef.current) returnSlotRef.current = null;
+        }
+
+        // --- Panel feed: every candidate the judge scored this decode. ---
+        {
+          const live = [];
+          const sc = switchCandRef.current;
+          const bsl = backstopRef.current;
+          const rsl = returnSlotRef.current;
+          const prevS = prevShabadRef.current;
+          if (sc && sc.lastScore != null) {
+            live.push({
+              shabadId: sc.shabadId,
+              line: anvaad.unicode(sc.verse || ''),
+              score: sc.lastScore,
+              wins: sc.wins,
+              needed: SWITCH_CONFIRM,
+              kind: 'vote',
+            });
+          }
+          if (bsl && bsl.lastScore != null && !live.some((x) => x.shabadId === bsl.shabadId)) {
+            live.push({
+              shabadId: bsl.shabadId,
+              line: bsl.display || '',
+              score: bsl.lastScore,
+              wins: bsl.wins,
+              needed: SWITCH_CONFIRM,
+              kind: 'acoustic',
+            });
+          }
+          if (
+            rsl &&
+            prevS &&
+            rsl.shabadId === prevS.id &&
+            rsl.lastScore != null &&
+            !live.some((x) => x.shabadId === rsl.shabadId)
+          ) {
+            const lines = (prevS.profile && prevS.profile.displayLines) || [];
+            live.push({
+              shabadId: rsl.shabadId,
+              line: lines[rsl.index] || '',
+              score: rsl.lastScore,
+              wins: rsl.wins,
+              needed: RETURN_CONFIRM,
+              kind: 'return',
+            });
+          }
+          live.sort((a, b) => b.wins - a.wins || b.score - a.score);
+          // Gate for the panel: only candidates that clear the judge's own
+          // minimum match (the bar a win needs), and nothing at all while the
+          // heard fragment is too thin to judge (silence, a breath, a pause) —
+          // so the list is empty when nobody is singing and never shows junk.
+          const speaking = hypFull.length >= SWITCH_HYP_MIN;
+          const next = speaking
+            ? live.filter((x) => x.score >= SWITCH_ACOUSTIC_MIN).slice(0, 3)
+            : [];
+          // Publish only when the picture changed (ids or wins), and at most
+          // ~3x/s: the recognizer shares this thread, so needless re-renders
+          // of the panel cost decode latency.
+          const sig = next.map((x) => `${x.shabadId}:${x.wins}`).join('|');
+          const now = Date.now();
+          if (sig !== liveSigRef.current || now - liveAtRef.current > 1500) {
+            liveSigRef.current = sig;
+            liveAtRef.current = now;
+            setLiveCands({ sCur: sCurFull, items: next });
+          }
         }
 
         // --- Finish: commits first, then one shared UI from the leader. ---
@@ -1609,7 +1713,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           // No live evaluation on either slot — rest the switch UI.
           setSwitchView(null);
           setCands([]);
-          setDetail('Following the Shabad');
+          setDetail('Following');
           // The evaluation died without committing: come back from seeking.
           if (seekingRef.current) {
             seekingRef.current = false;
@@ -1667,7 +1771,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           ]);
         }
         if (leadSlot.wins >= 1) {
-          setDetail('Sounds like a new Shabad — checking…');
+          setDetail('Checking a new Shabad');
           // Genuinely torn between the current shabad and this contender: put
           // up the Waheguru seeking slide instead of a possibly-wrong shabad.
           // Gated on wins >= 2 (a single winning decode flickers too much to
@@ -1683,7 +1787,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             }
           }
         } else {
-          setDetail('Possible new Shabad — listening…');
+          setDetail('Listening');
         }
         return;
       }
@@ -1717,11 +1821,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     setPos(null);
     setCands([]);
     setStatus('detecting');
-    setDetail('Listening for a Shabad…');
+    setDetail('Listening for the Shabad');
 
     // First run only: ensure the model is present + the ONNX session is loaded.
     if (!engine.isReady()) {
-      setDetail('downloading recognition model (~184 MB, one time)…');
+      setDetail('Downloading the voice model (184 MB, one time)');
       setDlProgress(0);
     }
     try {
@@ -1773,7 +1877,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       cleanup();
       return;
     }
-    setDetail('listening… sing or recite a few words');
+    setDetail('Listening');
   }, [cleanup, startAudio, handleTranscript]);
 
   // One-press hands-free mode. A single continuous mic session: detect a shabad,
@@ -1791,6 +1895,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     curLinesNormRef.current = [];
     curWordsNormRef.current = [];
     curProfileRef.current = null;
+    setLiveCands({ sCur: 0, items: [] });
     prevShabadRef.current = null;
     returnSlotRef.current = null;
     curCursorRef.current = null;
@@ -1808,10 +1913,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     setPos(null);
     setCands([]);
     setStatus('detecting');
-    setDetail('starting…');
+    setDetail('Starting');
 
     if (!engine.isReady()) {
-      setDetail('downloading recognition model (~184 MB, one time)…');
+      setDetail('Downloading the voice model (184 MB, one time)');
       setDlProgress(0);
     }
     try {
@@ -1873,6 +1978,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             lineIndex: out.lineIndex,
             wordIndex: out.wordIndex,
             confidence: out.confidence,
+            shabadId: currentShabadIdRef.current,
           });
           if (out.verseId != null && out.verseId !== lastVerseRef.current) {
             lastVerseRef.current = out.verseId;
@@ -1910,7 +2016,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       cleanup();
       return;
     }
-    setDetail('listening… start singing any shabad');
+    setDetail('Listening for the Shabad');
   }, [
     cleanup,
     startAudio,
@@ -2043,8 +2149,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // Human-readable status line (avoids surfacing internal states like "idle").
   const statusText =
     status === 'idle'
-      ? 'Ready — pick a mode and press Start'
-      : `${STATUS_LABEL[status] || status}${detail ? ` — ${detail}` : ''}`;
+      ? 'Press Start for Gurbani Voice Follow'
+      : `${STATUS_LABEL[status] || status}${detail ? ` · ${detail}` : ''}`;
   // Short label for the collapsed pill.
   let pillText = STATUS_LABEL[status] || 'Voice-Follow';
   if (status === 'listening') pillText = `Line ${posLine == null ? '—' : posLine}`;
@@ -2058,30 +2164,36 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   if (active) onMainClick = stop;
   else if (autopilot) onMainClick = startAutopilot;
   else if (autoDetect) onMainClick = startDetect;
-  let mainLabel = '●  Start listening';
-  if (active) mainLabel = '■  Stop';
-  else if (autopilot) mainLabel = '●  Start listening';
-  else if (autoDetect) mainLabel = '●  Start auto-detect';
-
-  let projectionStatus = currentView ? 'Following' : 'Listening…';
-  if (nextView?.wins >= 2) projectionStatus = 'Checking a change';
-  if (isMiscSlide) projectionStatus = 'Holding a separate slide';
-  const checkingNext = nextView?.cand && nextView.wins >= 1;
-  const matchPool = (rankedView.length ? rankedView : cands).filter(
-    (candidate) => candidate.display && candidate.shabadId !== currentView?.id,
-  );
-  const visibleMatches = (
-    checkingNext
-      ? [
-          { shabadId: nextView.shabadId, display: nextView.cand, checking: true },
-          ...matchPool.filter((candidate) => candidate.shabadId !== nextView.shabadId),
-        ]
-      : matchPool
-  ).slice(0, 2);
+  let mainLabel = 'Start';
+  if (active) mainLabel = 'Stop';
+  else if (autopilot) mainLabel = 'Start';
+  else if (autoDetect) mainLabel = 'Start';
 
   let microphoneLabel = 'Ready';
   if (active) microphoneLabel = audioView.device ? 'Listening' : 'Preparing…';
-  const currentLabel = isMiscSlide ? 'Current Shabad · slide held' : 'Following this Shabad';
+  const currentLabel = isMiscSlide ? 'Current Shabad · slide held' : 'Following this line';
+  // The line the follower is on right now (the follower indexes the same line
+  // list as the profile), falling back to the lock line until the first fix.
+  const profLines = (curProfileRef.current && curProfileRef.current.displayLines) || null;
+  const posIsCurrent =
+    pos && currentView && pos.shabadId === currentView.id && typeof pos.lineIndex === 'number';
+  const liveLine =
+    (posIsCurrent && profLines && profLines[pos.lineIndex]) ||
+    (currentView && currentView.line) ||
+    null;
+  const lineNo = posIsCurrent ? pos.lineIndex + 1 : null;
+  const liveItems = currentView ? liveCands.items : [];
+  // Lead for display = the candidate furthest along in confirmation (ties by score).
+  const liveLead = liveItems.reduce((best, c) => (!best || c.wins > best.wins ? c : best), null);
+  // Gated: only candidates the app is actually collecting wins for are listed.
+  const gatedItems = liveItems.filter(
+    (c) => !(liveLead && liveLead.wins >= 1 && c.shabadId === liveLead.shabadId),
+  );
+  let judgeWord = 'Following';
+  if (!currentView) judgeWord = 'Listening';
+  else if (liveLead && liveLead.wins >= 2) judgeWord = 'Confirming a change';
+  else if (liveLead && liveLead.wins >= 1) judgeWord = 'Checking';
+  if (isMiscSlide) judgeWord = 'Holding a separate slide';
 
   return (
     <>
@@ -2095,7 +2207,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               <span className="vf-grip">⠿</span>
               <span className="vf-heading-copy">
                 <span>Voice Follow</span>
-                <span className="vf-listening-label">{microphoneLabel}</span>
+                <span className="vf-listening-label">
+                  {active && currentView ? judgeWord : microphoneLabel}
+                </span>
               </span>
               {active && (
                 <span
@@ -2175,55 +2289,106 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           )}
 
           {active && (
-            <div className="vf-compact-content">
-              <div className={`vf-current-shabad${currentView ? ' is-following' : ''}`}>
-                <div className="vf-section-label" aria-live="polite">
-                  {currentView ? currentLabel : projectionStatus}
+            <div className="vf2-body">
+              <section className={`vf2-now${currentView ? ' is-following' : ' is-searching'}`}>
+                <div className="vf2-label" aria-live="polite">
+                  <span className={`vf2-dot ${currentView ? 'is-on' : 'is-seeking'}`} />
+                  {currentView ? currentLabel : 'Finding the Shabad'}
+                  {currentView && lineNo != null && (
+                    <span className="vf2-lineno">line {lineNo}</span>
+                  )}
+                  {currentView && (
+                    <button
+                      type="button"
+                      className="vf2-fold"
+                      title={lineExpanded ? 'Show on one line' : 'Show the full line'}
+                      aria-label={lineExpanded ? 'Collapse the line' : 'Expand the line'}
+                      aria-expanded={lineExpanded}
+                      onClick={() => setLineExpanded((v) => !v)}
+                    >
+                      {lineExpanded ? '−' : '+'}
+                    </button>
+                  )}
                 </div>
-                <div className="vf-canonical-line" lang={currentView ? 'pa' : undefined}>
-                  {currentView?.line ||
-                    (status === 'listening'
-                      ? 'Following your selected Shabad'
-                      : 'Finding the Shabad…')}
+                <div
+                  className={`vf2-line${lineExpanded ? ' is-expanded' : ''}`}
+                  lang="pa"
+                  key={liveLine || 'none'}
+                  role="button"
+                  tabIndex={0}
+                  title={lineExpanded ? 'Click to show on one line' : 'Click to show the full line'}
+                  onClick={() => setLineExpanded((v) => !v)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') setLineExpanded((v) => !v);
+                  }}
+                >
+                  {liveLine || 'Listening…'}
                 </div>
-              </div>
-              {checkingNext && (
-                <div className="vf-change-preview">
-                  <div className="vf-section-label">
-                    {nextView.wins >= 2 ? 'Confirming a change' : 'Checking a new Shabad'}
+              </section>
+
+              {currentView && liveLead && liveLead.wins >= 1 && (
+                <section
+                  className={`vf2-change${liveLead.wins >= 2 ? ' is-confirming' : ''}`}
+                  aria-live="polite"
+                >
+                  <div className="vf2-label">
+                    <span className="vf2-dot is-seeking" />
+                    {liveLead.wins >= 2 ? 'Changing to' : 'Might be changing to'}
                   </div>
-                  <div className="vf-canonical-line" lang="pa">
-                    {nextView.cand}
+                  <div className="vf2-cand-line" lang="pa">
+                    {liveLead.line || '…'}
                   </div>
                   <div
-                    className="vf-change-track"
+                    className="vf2-cand-track"
                     role="meter"
-                    aria-label="Switch confirmation progress"
+                    aria-label="Confirmation progress"
                     aria-valuemin={0}
-                    aria-valuemax={SWITCH_CONFIRM}
-                    aria-valuenow={nextView.wins}
+                    aria-valuemax={liveLead.needed}
+                    aria-valuenow={Math.min(liveLead.wins, liveLead.needed)}
                   >
-                    <span style={{ width: `${(nextView.wins / SWITCH_CONFIRM) * 100}%` }} />
+                    <span
+                      style={{
+                        width: `${(Math.min(liveLead.wins, liveLead.needed) / liveLead.needed) * 100}%`,
+                      }}
+                    />
                   </div>
-                </div>
+                </section>
               )}
-              <details className="vf-other-matches">
-                <summary>Matches</summary>
-                {visibleMatches.length ? (
-                  visibleMatches.map((candidate) => (
-                    <div className="vf-match-card" key={candidate.shabadId}>
-                      <div className="vf-match-meta">
-                        {candidate.checking ? 'Checking' : 'Possible match'}
+              {currentView && (
+                <details className="vf2-matches">
+                  <summary>
+                    <span>Possible New Shabad</span>
+                    <span className="vf2-summary-hint">{gatedItems.length || ''}</span>
+                  </summary>
+                  <div className="vf2-next" aria-live="polite">
+                    {gatedItems.length === 0 && <div className="vf2-empty">None right now.</div>}
+                    {gatedItems.map((c) => (
+                      <div
+                        className={`vf2-cand ${c.wins >= 2 ? 'is-confirming' : 'is-checking'}`}
+                        key={c.shabadId}
+                      >
+                        <div className="vf2-cand-row">
+                          <span className="vf2-cand-line" lang="pa">
+                            {c.line || '…'}
+                          </span>
+                        </div>
+                        <div
+                          className="vf2-cand-track"
+                          role="meter"
+                          aria-label="Confirmation progress"
+                          aria-valuemin={0}
+                          aria-valuemax={c.needed}
+                          aria-valuenow={Math.min(c.wins, c.needed)}
+                        >
+                          <span
+                            style={{ width: `${(Math.min(c.wins, c.needed) / c.needed) * 100}%` }}
+                          />
+                        </div>
                       </div>
-                      <div className="vf-canonical-line" lang="pa">
-                        {candidate.display}
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="vf-explanation">Listening for more matches…</div>
-                )}
-              </details>
+                    ))}
+                  </div>
+                </details>
+              )}
             </div>
           )}
           <div className={`vf-compact-footer${active ? '' : ' is-idle'}`}>
