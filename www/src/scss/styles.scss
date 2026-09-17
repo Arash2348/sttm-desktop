@@ -1935,3 +1935,387 @@ $vf-glass: linear-gradient(160deg, rgba(34, 36, 47, 0.94), rgba(19, 20, 27, 0.96
     transition: none;
   }
 }
+
+// ---------------------------------------------------------------------------
+// Voice-Follow panel, redesign (2026-09): the sevadar's control card.
+// Matches the controller's own palette (white card, #222 text, STTM orange
+// accent) instead of a dark glass sheet. Layout: Now (the line being followed)
+// -> Might change to (the judge's live candidates with honest scores) -> one
+// button. Motion is kept to fades and short slides so nothing jumps.
+// ---------------------------------------------------------------------------
+$vf2-orange: #f39c1d;
+$vf2-ink: #222;
+$vf2-muted: #6b6b6b;
+$vf2-faint: #9a9a9a;
+$vf2-line: #ececec;
+$vf2-green: #43ac6a;
+
+.vf-panel {
+  width: 300px;
+  padding: 14px 16px 16px;
+  border-radius: 18px;
+  color: $vf2-ink;
+  font: 13px/1.45 -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22), 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+}
+.vf-caret {
+  border-bottom-color: rgba(255, 255, 255, 0.94);
+}
+.vf-header {
+  color: $vf2-ink;
+  margin-bottom: 10px;
+}
+.vf-title,
+.vf-heading-copy {
+  color: $vf2-ink;
+}
+.vf-grip {
+  color: $vf2-faint;
+}
+.vf-listening-label {
+  color: $vf2-muted;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+.vf-mic-bars > span {
+  background: $vf2-green;
+}
+.vf-hdr-btn {
+  color: $vf2-muted;
+  background: transparent;
+  border: 0;
+  &:hover {
+    color: $vf2-ink;
+    background: rgba(0, 0, 0, 0.05);
+  }
+}
+.vf-dl {
+  background: $vf2-line;
+  .vf-dl-bar {
+    background: $vf2-orange;
+  }
+}
+.vf-status {
+  color: $vf2-muted;
+}
+
+.vf2-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.vf2-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $vf2-muted;
+}
+.vf2-lineno,
+.vf2-cur-score {
+  margin-left: auto;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: $vf2-faint;
+  font-variant-numeric: tabular-nums;
+}
+.vf2-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: $vf2-faint;
+  &.is-on {
+    background: $vf2-green;
+    box-shadow: 0 0 0 3px rgba(67, 172, 106, 0.18);
+  }
+  &.is-seeking {
+    background: $vf2-orange;
+    animation: vf2-breathe 1.4s ease-in-out infinite;
+  }
+}
+@keyframes vf2-breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(243, 156, 29, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(243, 156, 29, 0);
+  }
+}
+
+// Now: the line being followed.
+.vf2-now {
+  padding: 12px 14px 12px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid $vf2-line;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  &.is-following {
+    border-color: rgba(67, 172, 106, 0.35);
+  }
+  &.is-searching .vf2-line {
+    color: $vf2-muted;
+    font-size: 15px;
+  }
+}
+.vf2-line {
+  margin-top: 6px;
+  font-size: 20px;
+  line-height: 1.35;
+  color: $vf2-ink;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  animation: vf2-fade 0.28s ease-out;
+  &.is-expanded {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    word-break: break-word;
+  }
+  &:focus-visible {
+    outline: 2px solid rgba(243, 156, 29, 0.5);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+.vf2-opening {
+  margin-top: 6px;
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: $vf2-faint;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@keyframes vf2-fade {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Might change to: the judge's live candidates.
+.vf2-next {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.vf2-cand {
+  padding: 9px 12px 8px;
+  border-radius: 12px;
+  background: #fafafa;
+  border: 1px solid $vf2-line;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  animation: vf2-fade 0.28s ease-out;
+  &.is-checking {
+    background: #fff8ec;
+    border-color: rgba(243, 156, 29, 0.35);
+  }
+  &.is-confirming {
+    background: #fff3dc;
+    border-color: $vf2-orange;
+    transform: translateY(-1px);
+  }
+}
+.vf2-cand-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.vf2-cand-line {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  line-height: 1.35;
+  color: $vf2-ink;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.vf2-cand-pct {
+  font-size: 12px;
+  font-weight: 600;
+  color: $vf2-muted;
+  font-variant-numeric: tabular-nums;
+  .is-checking &,
+  .is-confirming & {
+    color: $vf2-orange;
+  }
+}
+.vf2-cand-track {
+  margin-top: 7px;
+  height: 3px;
+  border-radius: 2px;
+  background: $vf2-line;
+  overflow: hidden;
+  > span {
+    display: block;
+    height: 100%;
+    border-radius: 2px;
+    background: $vf2-orange;
+    transition: width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+}
+.vf2-cand-meta {
+  margin-top: 5px;
+  font-size: 11px;
+  color: $vf2-faint;
+}
+
+// One button.
+.vf-compact-footer {
+  margin-top: 12px;
+  .vf-main {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 0;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease;
+    &.is-start {
+      color: #fff;
+      background: $vf2-orange;
+      box-shadow: 0 6px 16px rgba(243, 156, 29, 0.35);
+    }
+    &.is-stop {
+      color: #fff;
+      background: #e0393f;
+      box-shadow: none;
+    }
+    &:hover {
+      transform: translateY(-1px);
+    }
+    &:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+  }
+}
+
+// Collapsed pill.
+.vf-pill {
+  color: $vf2-ink;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+// Possible matches: collapsed by default, one calm row to open it.
+.vf2-matches {
+  border-radius: 12px;
+  border: 1px solid $vf2-line;
+  background: #fafafa;
+  > summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: $vf2-muted;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    &::-webkit-details-marker {
+      display: none;
+    }
+    &::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-right: 1.5px solid $vf2-faint;
+      border-bottom: 1.5px solid $vf2-faint;
+      transform: rotate(-45deg);
+      transition: transform 0.2s ease;
+      margin-right: 2px;
+    }
+  }
+  &[open] > summary::before {
+    transform: rotate(45deg);
+  }
+  .vf2-next {
+    padding: 0 8px 8px;
+  }
+  .vf2-cand {
+    background: #fff;
+  }
+}
+.vf2-summary-hint {
+  margin-left: auto;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: $vf2-faint;
+  font-variant-numeric: tabular-nums;
+}
+.vf2-empty {
+  padding: 4px 6px 2px;
+  font-size: 12px;
+  color: $vf2-faint;
+}
+
+// One card, only while a change is being confirmed.
+.vf2-change {
+  padding: 10px 12px 10px;
+  border-radius: 12px;
+  background: #fff8ec;
+  border: 1px solid rgba(243, 156, 29, 0.35);
+  animation: vf2-fade 0.28s ease-out;
+  .vf2-cand-line {
+    display: block;
+    margin-top: 5px;
+    font-size: 16px;
+  }
+  &.is-confirming {
+    background: #fff3dc;
+    border-color: $vf2-orange;
+  }
+}
+
+// Small −/+ box on the Now header to fold the line to one row and back.
+.vf2-fold {
+  margin-left: 6px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 5px;
+  border: 1px solid $vf2-line;
+  background: #fff;
+  color: $vf2-muted;
+  font: 600 13px/16px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  cursor: pointer;
+  flex: 0 0 auto;
+  &:hover {
+    color: $vf2-ink;
+    border-color: #d5d5d5;
+  }
+}
+.vf2-lineno + .vf2-fold {
+  margin-left: 8px;
+}
+.vf2-label .vf2-fold:only-of-type:not(.vf2-lineno ~ .vf2-fold) {
+  margin-left: auto;
+}
