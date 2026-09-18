@@ -161,35 +161,6 @@ const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a swit
 // So the previous shabad keeps its own slot for a while and returns on 2 wins.
 const RETURN_CONFIRM = 2;
 const RETURN_WINDOW_DECODES = 240; // ~2 min at the 0.5 s following hop
-// Coming BACK is judged more gently than leaving (Level 2 cycle 6). The shabad we
-// just left was right for minutes; after a hop the wrong shabad fades to ~0.4-0.6
-// while the true one sits at 0.5-0.6 for half a minute or more (Renton clip 40:
-// 82 s -> 116 s) and never clears the 0.65 / +0.15 bar meant for LEAVING. So a
-// return win needs the previous shabad at RETURN_MIN and merely ahead of the
-// current one; a decisive win keeps the leaving bar. RETURN_CONFIRM is unchanged.
-const RETURN_MIN = 0.5;
-const RETURN_MARGIN = 0.0;
-// Shared-line hold (Level 2 cycle 5). A pramaan quote is usually ONE line, and
-// many lines exist word-for-word in several shabads. Committing to whichever
-// sibling wins by a hair put the wrong shabad on the projector 13 times in the
-// benchmark (Renton), then took 30-80 s to come back. So: a candidate that has
-// won on a single line is committed only if that line is unique to it in the
-// BaniDB text index. If another shabad has the same line (coverage >= this),
-// the app shows the Waheguru slide instead of guessing and keeps judging; a
-// second, distinct line of the candidate commits the switch (a real change of
-// shabad keeps producing new lines; a quote does not).
-const SHARED_LINE_SCORE = 0.85;
-// ...and no switch at all on the strength of ONE line for the first
-// SINGLE_LINE_HOLD_DECODES (~20 s): a pramaan quote is over by then and the
-// candidate fades with nothing to return from; a real new shabad is still
-// winning after 20 s (its opening line is repeated) and commits. A shared line
-// is held longer (SHARED_LINE_HOLD_DECODES, ~60 s) because only a second line
-// can say which sibling it is.
-// Measured in following decodes (~0.5 s of audio each), never wall time, so the
-// offline benchmark and the live app measure the same thing.
-const SINGLE_LINE_HOLD_DECODES = 12; // unique line: still winning after ~10 s => real change
-const SHARED_LINE_HOLD_DECODES = 80; // shared line: longer (only a second line can settle it)
-const HOLD_EXPIRE_DECODES = 30; // a hold forgotten after ~15 s without the shabad reaching commit
 // Strong-win fast path: a win this decisive (far above the 0.60/0.20 confusion
 // zone, inside the >=0.67/>=0.33 zone real switches score) counts double, so a
 // clear new shabad commits in ~2 decodes (~1s) instead of ~3. Borderline matches
@@ -392,13 +363,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const curProfileRef = useRef(null); // full profile of the current shabad (kept for a fast return)
   const prevShabadRef = useRef(null); // { id, profile, decodesSince } — shabad we just switched away from
   const returnSlotRef = useRef(null); // { shabadId, wins, index, lastScore } — in-flight return evaluation
-  const sharedLineCacheRef = useRef(new Map()); // `${shabadId}:${line}` -> boolean (shared-line hold)
-  // Hold counts are banked PER SHABAD, not per slot: a slot is released and
-  // recreated as its shabad flickers in and out of the shortlist, and a counter
-  // on the slot reset every time (Level 2 clip 34: the true shabad was held
-  // forever and never committed).
-  const holdDecodesRef = useRef(new Map());
-  const judgeDecodeRef = useRef(0); // counts following-phase decodes (the hold clock)
   const curCursorRef = useRef(null); // follower's current line index within the current shabad
   const [switchView, setSwitchView] = useState(null); // { cand, sCand, sCur, wins } for the following-phase UI
   // Panel: the switch judge's live candidates, published every decode while
@@ -880,37 +844,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     },
     [ensureFlIndex],
   );
-
-  // Does this canonical line also exist in some OTHER shabad? (shared-line hold)
-  // Looked up ONCE per line, off the decode path: the answer lands in a cache
-  // and the commit decision reads it synchronously. (Awaiting it inside the
-  // decode made every decode stale before the answer arrived, so nothing ever
-  // committed — clip 34 was never found.)
-  const primeLineShared = useCallback(
-    (shabadId, lineText) => {
-      if (!lineText) return;
-      const key = `${shabadId}:${lineText}`;
-      const cache = sharedLineCacheRef.current;
-      if (cache.has(key)) return;
-      cache.set(key, 'pending');
-      searchCanonicalText(lineText, 6, new AbortController().signal)
-        .then((rows) => {
-          if (!rows)
-            cache.delete(key); // index unavailable: ask again later
-          else
-            cache.set(
-              key,
-              rows.some((r) => r.shabadId !== shabadId && r.score >= SHARED_LINE_SCORE),
-            );
-        })
-        .catch(() => cache.delete(key));
-    },
-    [searchCanonicalText],
-  );
-  const lineSharedKnown = useCallback((shabadId, lineText) => {
-    const v = sharedLineCacheRef.current.get(`${shabadId}:${lineText}`);
-    return v === true || v === false ? v : null; // null = not known yet
-  }, []);
 
   // A confident, stable shabad emerged — either the FIRST one (initial lock) or a
   // DIFFERENT one that has WON the acoustic switch test while following. Build a
@@ -1467,7 +1400,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         // ALL its lines (the rahao lives outside the cursor window when it is
         // re-sung) and with word order ignored (kirtan rotates phrases). The
         // candidate keeps its own scoring; only the bar it must clear is honest.
-        judgeDecodeRef.current += 1;
         const hypWordsNorm = tokenize(text).map(vfNorm).filter(Boolean);
         const sCurAll = Math.max(
           maxLineScore(hypFull, curLinesNormRef.current, SWITCH_CAND_MIN_LINE_CHARS),
@@ -1528,22 +1460,14 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               switchCandRef.current = sc;
               loadShabadProfile(contId)
                 .then((p) => {
-                  if (switchCandRef.current === sc) {
-                    sc.linesNorm = p.linesNorm;
-                    sc.displayLines = p.displayLines;
-                  }
+                  if (switchCandRef.current === sc) sc.linesNorm = p.linesNorm;
                 })
                 .catch(() => {
                   if (switchCandRef.current === sc) switchCandRef.current = null;
                 });
             } else if (sc.linesNorm) {
-              const cm = bestLineMatch(hypFull, sc.linesNorm, SWITCH_CAND_MIN_LINE_CHARS);
-              if (cm.index >= 0 && cm.s >= SWITCH_ACOUSTIC_MIN) {
-                if (!sc.lineHits) sc.lineHits = new Set();
-                sc.lineHits.add(cm.index);
-                sc.lineIndex = cm.index;
-              }
-              sc.committed = stepSlot(sc, cm.s);
+              const sCand = maxLineScore(hypFull, sc.linesNorm, SWITCH_CAND_MIN_LINE_CHARS);
+              sc.committed = stepSlot(sc, sCand);
             }
           }
         }
@@ -1645,10 +1569,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                 bs.verseId = v.verseId;
                 bs.display = prof.displayLines[m.index] || '';
               }
-              if (m.s >= SWITCH_ACOUSTIC_MIN) {
-                if (!bs.lineHits) bs.lineHits = new Set();
-                bs.lineHits.add(m.index);
-              }
               bs.committed = stepSlot(bs, m.s);
               bsWinsRef.current.set(bs.shabadId, bs.wins);
             } else if (decaySlot(bs)) {
@@ -1675,11 +1595,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               }
               const m = bestLineMatch(hypFull, prev.profile.linesNorm, SWITCH_CAND_MIN_LINE_CHARS);
               if (m.index >= 0) {
-                const step = nextSwitchWins(rs.wins, m.s, sCurFull, {
-                  ...acousticCfg,
-                  min: RETURN_MIN,
-                  margin: RETURN_MARGIN,
-                });
+                const step = nextSwitchWins(rs.wins, m.s, sCurFull, acousticCfg);
                 rs.wins = step.wins;
                 if (!step.held) {
                   rs.lastScore = m.s;
@@ -1774,59 +1690,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         // --- Finish: commits first, then one shared UI from the leader. ---
         const vote = switchCandRef.current;
         const bgp = backstopRef.current;
-        // Shared-line hold: a slot that won on ONE line that other shabads also
-        // hold is not committed. Show Waheguru, stay armed, wait for a second line.
-        const holdIfShared = (slot, lineText) => {
-          if (slot.lineHits && slot.lineHits.size >= 2) return false;
-          // No "is this a quote?" gate: neither the current shabad's instant score nor its
-          // recent health separates a quote from a real change in the first seconds
-          // (measured on clips 34/35/39/40). The hold is unconditional and short.
-          primeLineShared(slot.shabadId, lineText);
-          const shared = lineSharedKnown(slot.shabadId, lineText) === true; // unknown => unique-line hold
-          // Banked per shabad and expired by TIME, not by slot life: the slot
-          // flickers with the shortlist, and clearing on an empty decode
-          // restarted the hold forever (clip 34 was never committed).
-          // Measured as TIME since the shabad was first held (it reaches commit
-          // only every few seconds, so counting decodes never accumulated).
-          const nowD = judgeDecodeRef.current;
-          const prevBank = holdDecodesRef.current.get(slot.shabadId);
-          const bank =
-            prevBank && nowD - prevBank.last < HOLD_EXPIRE_DECODES ? prevBank : { first: nowD };
-          bank.last = nowD;
-          holdDecodesRef.current.set(slot.shabadId, bank);
-          const cap = shared ? SHARED_LINE_HOLD_DECODES : SINGLE_LINE_HOLD_DECODES;
-          if (nowD - bank.first >= cap) {
-            holdDecodesRef.current.delete(slot.shabadId);
-            return false; // still winning after the hold: a real change of shabad
-          }
-          slot.committed = false; // eslint-disable-line no-param-reassign
-          slot.wins = Math.max(0, SWITCH_CONFIRM - 1); // eslint-disable-line no-param-reassign
-          if (!seekingRef.current && !isMiscSlideRef.current) {
-            seekingRef.current = true;
-            try {
-              setMiscSlideText(slideStrings.waheguru);
-              setIsMiscSlide(true);
-            } catch (_) {
-              seekingRef.current = false;
-            }
-          }
-          setDetail(
-            shared
-              ? 'This line is in more than one Shabad — waiting for the next line'
-              : 'One line so far — waiting for the next line',
-          );
-          return true;
-        };
         if (vote && vote.committed && !lockingRef.current) {
-          const voteLine =
-            vote.displayLines && vote.lineIndex != null ? vote.displayLines[vote.lineIndex] : null;
-          if (!holdIfShared(vote, voteLine)) {
-            autopilotLock({ shabadId: vote.shabadId, verseId: vote.verseId, verse: vote.verse });
-            return;
-          }
+          autopilotLock({ shabadId: vote.shabadId, verseId: vote.verseId, verse: vote.verse });
+          return;
         }
         if (bgp && bgp.committed && !lockingRef.current) {
-          if (holdIfShared(bgp, bgp.display)) return;
           let { verse } = bgp;
           try {
             verse = (await banidb.getVerse(bgp.shabadId, bgp.verseId)) || verse;
