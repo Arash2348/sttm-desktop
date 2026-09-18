@@ -154,6 +154,7 @@
       "!builds${/*}",
       "!**/scss${/*}",
       "!packaging${/*}",
+      "!research${/*}",
       "!test${/*}",
       "!www/node_modules${/*}",
       "!www/package.json",
