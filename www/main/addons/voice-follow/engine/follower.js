@@ -11,6 +11,15 @@ const DEFAULTS = {
   dwell: 3, dwellAdv: 1, dwellBack: 2, skipSpan: 2, backSpan: 1, backCost: 0.14,
   margin: 0.05, marginGate: 0.10, initConfirm: 4, release: 14,
   acousticGate: 0.0, acousticWin: 3.0, acousticTopm: 5,
+  // Evidence bar for any move other than "next line": the fragment must match the
+  // challenger line clearly better than the current line (a word shared by both
+  // lines is not evidence of a jump). 0 disables.
+  jumpEmisGap: 0.0,
+  // A fragment shorter than this (normalized chars) cannot move the cursor anywhere
+  // but the next line: one common word is not evidence of a jump. 0 disables.
+  minHypJump: 8,
+  // Decodes a 2..skipSpan-line skip must persist (default: same as dwellAdv).
+  dwellSkip: null,
 };
 
 function argmax(a) { let bi = 0, bv = -Infinity; for (let i = 0; i < a.length; i++) if (a[i] > bv) { bv = a[i]; bi = i; } return bi; }
@@ -206,6 +215,7 @@ class Follower {
 
     this.miss = 0;
     const top = this._viterbi(emis);
+    if (c.onTrace) c.onTrace({ hyp, top, cur: this.cur, emisTop: emis[top], emisCur: this.cur == null ? null : emis[this.cur], scoreTop: this.score[top], scoreCur: this.cur == null ? null : this.score[this.cur], dwell: this.dwell, challenger: this.challenger });
 
     if (this.cur === null) {
       if (top === this.initCand) this.initCount += 1;
@@ -219,10 +229,12 @@ class Follower {
       else { this.challenger = top; this.dwell = 1; }
       const d = top - this.cur;
       let need;
-      if (d >= 1 && d <= c.skipSpan) need = c.dwellAdv;
+      if (d === 1) need = c.dwellAdv;
+      else if (d >= 2 && d <= c.skipSpan) need = c.dwellSkip == null ? c.dwellAdv : c.dwellSkip;
       else if (d >= -c.backSpan && d <= -1) need = c.dwellBack;
       else need = c.dwell;
-      if (this.dwell >= need && this.score[top] >= this.score[this.cur] + c.margin) {
+      const evid = d === 1 || ((c.jumpEmisGap <= 0 || emis[top] - emis[this.cur] >= c.jumpEmisGap) && hyp.length >= c.minHypJump);
+      if (evid && this.dwell >= need && this.score[top] >= this.score[this.cur] + c.margin) {
         this.cur = top; this.challenger = null; this.dwell = 0;
       }
     }
