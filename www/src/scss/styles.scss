@@ -43,11 +43,12 @@ $tag-popular-color: #ce744e;
   width: calc(#{$presenter-panes-container} - calc(#{$presenter-pane-gap} * 1.5));
 }
 
-@import 'controller.scss', 'markdown', 'themes/themes', 'update', 'viewer', 'window', 'addon', 'akhandpaatt',
-  'overlay', 'animations', 'noty', 'ui-library', 'workspace-bar', 'navigator/common/pane',
-  'navigator/common/verse-block', 'navigator/search/searchNew', 'navigator/shabad/shabad', 'navigator/shabad/multipane',
-  'navigator/misc/misc', 'navigator/common/icon-button', 'navigator/viewer/viewer',
-  'navigator/search/gurmukhi-keyboard', 'navigator/common/autoplay_icon';
+@import 'controller.scss', 'markdown', 'themes/themes', 'update', 'viewer', 'window', 'addon',
+  'akhandpaatt', 'overlay', 'animations', 'noty', 'ui-library', 'workspace-bar',
+  'navigator/common/pane', 'navigator/common/verse-block', 'navigator/search/searchNew',
+  'navigator/shabad/shabad', 'navigator/shabad/multipane', 'navigator/misc/misc',
+  'navigator/common/icon-button', 'navigator/viewer/viewer', 'navigator/search/gurmukhi-keyboard',
+  'navigator/common/autoplay_icon';
 
 @import 'utils/utils', 'viewer/viewer';
 
@@ -151,7 +152,8 @@ button {
   flex-direction: column;
 }
 
-.sync-wrapper, .auth-wrapper {
+.sync-wrapper,
+.auth-wrapper {
   bottom: 0;
   height: 100vh;
   left: 60px;
@@ -1291,7 +1293,10 @@ $vf-glass: linear-gradient(160deg, rgba(34, 36, 47, 0.94), rgba(19, 20, 27, 0.96
   padding: 16px 16px 18px;
   border-radius: 16px;
   color: #f3f4f8;
-  font: 13px/1.45 -apple-system, 'Segoe UI', sans-serif;
+  font:
+    13px/1.45 -apple-system,
+    'Segoe UI',
+    sans-serif;
   background: $vf-glass;
   border: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow: 0 16px 44px rgba(0, 0, 0, 0.5);
@@ -1375,7 +1380,9 @@ $vf-glass: linear-gradient(160deg, rgba(34, 36, 47, 0.94), rgba(19, 20, 27, 0.96
   line-height: 1;
   padding: 3px 7px;
   border-radius: 7px;
-  transition: background 0.12s, color 0.12s;
+  transition:
+    background 0.12s,
+    color 0.12s;
 
   &:hover {
     background: rgba(255, 255, 255, 0.09);
@@ -1402,7 +1409,10 @@ $vf-glass: linear-gradient(160deg, rgba(34, 36, 47, 0.94), rgba(19, 20, 27, 0.96
   cursor: pointer;
   background: transparent;
   color: #aab0bd;
-  transition: background 0.14s, color 0.14s, box-shadow 0.14s;
+  transition:
+    background 0.14s,
+    color 0.14s,
+    box-shadow 0.14s;
 
   &:hover:not(:disabled):not(.is-active) {
     color: #fff;
@@ -1431,7 +1441,10 @@ $vf-glass: linear-gradient(160deg, rgba(34, 36, 47, 0.94), rgba(19, 20, 27, 0.96
   font-size: 13px;
   letter-spacing: 0.2px;
   cursor: pointer;
-  transition: transform 0.1s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
 
   &:hover {
     transform: translateY(-1px);
@@ -1526,7 +1539,9 @@ $vf-glass: linear-gradient(160deg, rgba(34, 36, 47, 0.94), rgba(19, 20, 27, 0.96
   color: rgba(255, 255, 255, 0.75);
   cursor: pointer;
   user-select: none;
-  transition: background 0.12s, color 0.12s;
+  transition:
+    background 0.12s,
+    color 0.12s;
 
   input {
     flex: none;
@@ -1791,14 +1806,19 @@ $vf-glass: linear-gradient(160deg, rgba(34, 36, 47, 0.94), rgba(19, 20, 27, 0.96
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
   color: #f3f4f8;
-  font: 600 12px/1 -apple-system, 'Segoe UI', sans-serif;
+  font:
+    600 12px/1 -apple-system,
+    'Segoe UI',
+    sans-serif;
   font-variant-numeric: tabular-nums;
   background: $vf-glass;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 6px 22px rgba(0, 0, 0, 0.45);
   animation: vf-in 0.16s ease-out;
-  transition: transform 0.12s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.15s ease;
 
   &:hover {
     transform: translateY(-1px);
@@ -1955,10 +1975,18 @@ $vf2-green: #43ac6a;
   padding: 14px 16px 16px;
   border-radius: 18px;
   color: $vf2-ink;
-  font: 13px/1.45 -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font:
+    13px/1.45 -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Helvetica,
+    Arial,
+    sans-serif;
   background: rgba(255, 255, 255, 0.94);
   border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22), 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  box-shadow:
+    0 18px 48px rgba(0, 0, 0, 0.22),
+    0 1px 0 rgba(255, 255, 255, 0.6) inset;
   backdrop-filter: blur(18px) saturate(1.3);
   -webkit-backdrop-filter: blur(18px) saturate(1.3);
 }
@@ -2120,7 +2148,10 @@ $vf2-green: #43ac6a;
   border-radius: 12px;
   background: #fafafa;
   border: 1px solid $vf2-line;
-  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
   animation: vf2-fade 0.28s ease-out;
   &.is-checking {
     background: #fff8ec;
@@ -2189,7 +2220,10 @@ $vf2-green: #43ac6a;
     font-weight: 600;
     letter-spacing: 0.01em;
     cursor: pointer;
-    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease;
+    transition:
+      transform 0.12s ease,
+      box-shadow 0.12s ease,
+      background 0.2s ease;
     &.is-start {
       color: #fff;
       background: $vf2-orange;
@@ -2305,7 +2339,13 @@ $vf2-green: #43ac6a;
   border: 1px solid $vf2-line;
   background: #fff;
   color: $vf2-muted;
-  font: 600 13px/16px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font:
+    600 13px/16px -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Helvetica,
+    Arial,
+    sans-serif;
   cursor: pointer;
   flex: 0 0 auto;
   &:hover {
@@ -2318,4 +2358,81 @@ $vf2-green: #43ac6a;
 }
 .vf2-label .vf2-fold:only-of-type:not(.vf2-lineno ~ .vf2-fold) {
   margin-left: auto;
+}
+
+// --- Sevadaar assist: Auto / Ask me, and tappable candidates ---------------
+.vf2-assist {
+  display: flex;
+  gap: 4px;
+  margin: 8px 10px 0;
+  padding: 3px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+}
+.vf2-assist-btn {
+  flex: 1;
+  padding: 6px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: transparent;
+  color: #aab0bd;
+  transition:
+    background 0.14s,
+    color 0.14s,
+    box-shadow 0.14s;
+  &:hover:not(.is-active) {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+  }
+  &.is-active {
+    color: #fff;
+    background: linear-gradient(135deg, $vf-accent, $vf-accent-2);
+    box-shadow: 0 3px 12px rgba(61, 90, 254, 0.4);
+  }
+}
+.vf2-cand.is-tappable,
+.vf2-change.is-tappable,
+.vf2-change.is-ready {
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  &:hover {
+    border-color: $vf2-orange;
+    transform: translateY(-1px);
+  }
+  &:focus-visible {
+    outline: 2px solid $vf2-orange;
+    outline-offset: 2px;
+  }
+}
+.vf2-change.is-ready {
+  background: #eefbf0;
+  border-color: #2e9e5b;
+  animation: vf2-ready 1.4s ease-in-out infinite;
+  .vf2-dot.is-on {
+    background: #2e9e5b;
+  }
+}
+@keyframes vf2-ready {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(46, 158, 91, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(46, 158, 91, 0.22);
+  }
+}
+.vf2-change .vf2-cand-pct {
+  margin-left: auto;
+}
+.vf2-summary-tap {
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: $vf2-faint;
 }

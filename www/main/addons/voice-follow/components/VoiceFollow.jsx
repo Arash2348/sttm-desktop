@@ -160,6 +160,11 @@ const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a swit
 // slot was hijacked by transient candidates and reset (Level 2 clip 21: 76 s away).
 // So the previous shabad keeps its own slot for a while and returns on 2 wins.
 const RETURN_CONFIRM = 2;
+// Sevadaar assist: "auto" = the app switches by itself (a tap overrides at any time);
+// "ask" = the app finds the first shabad by itself, then only CHANGES shabad when
+// the sevadaar taps a candidate. Same judge, same evidence bars; only who commits.
+const ASSIST_KEY = 'vf.assist';
+const PROPOSAL_TTL_MS = 60000; // a ready-to-switch proposal nobody taps expires
 const RETURN_WINDOW_DECODES = 240; // ~2 min at the 0.5 s following hop
 // Strong-win fast path: a win this decisive (far above the 0.60/0.20 confusion
 // zone, inside the >=0.67/>=0.33 zone real switches score) counts double, so a
@@ -317,6 +322,25 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
   const [status, setStatus] = useState('idle'); // idle|connecting|listening|detecting|error|stopped
   const [autopilot] = useState(true); // hands-free: detect + follow + auto-switch, one press
+  const [assist, setAssist] = useState(() => {
+    try {
+      return window.localStorage.getItem(ASSIST_KEY) === 'ask' ? 'ask' : 'auto';
+    } catch (_) {
+      return 'auto';
+    }
+  });
+  const assistRef = useRef('auto');
+  useEffect(() => {
+    assistRef.current = assist;
+    try {
+      window.localStorage.setItem(ASSIST_KEY, assist);
+    } catch (_) {
+      // Persistence is a convenience only.
+    }
+  }, [assist]);
+  // "Ask me": the switch the judge would have made, waiting for a tap.
+  const [proposal, setProposal] = useState(null);
+  const proposalRef = useRef(null);
   const [autoDetect, setAutoDetect] = useState(false); // blind: identify the shabad from audio, then follow (one-shot)
   // Acoustic text stays inside matching; only canonical BaniDB text is rendered.
   const [, setCands] = useState([]); // [{shabadId, verseId, verse, display, share}] shortlist
@@ -556,6 +580,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     curWordsNormRef.current = [];
     curProfileRef.current = null;
     setLiveCands({ sCur: 0, items: [] });
+    proposalRef.current = null;
+    setProposal(null);
     prevShabadRef.current = null;
     returnSlotRef.current = null;
     curCursorRef.current = null;
@@ -746,6 +772,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     curWordsNormRef.current = [];
     curProfileRef.current = null;
     setLiveCands({ sCur: 0, items: [] });
+    proposalRef.current = null;
+    setProposal(null);
     prevShabadRef.current = null;
     returnSlotRef.current = null;
     curCursorRef.current = null;
@@ -851,8 +879,30 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // following — all without tearing down the single continuous mic session.
   // Re-entrancy-guarded so overlapping detections can't double-commit.
   const autopilotLock = useCallback(
-    async (cand) => {
+    async (cand, opts = {}) => {
       if (!cand || !cand.verse) return;
+      // Sevadaar assist "ask": a CHANGE of shabad the judge wants to make becomes a
+      // proposal the sevadaar taps; the first lock still happens by itself so the
+      // projector is never left empty. A tap arrives with opts.manual.
+      if (
+        !opts.manual &&
+        assistRef.current === 'ask' &&
+        phaseRef.current === 'following' &&
+        followerRef.current &&
+        currentShabadIdRef.current != null &&
+        cand.shabadId !== currentShabadIdRef.current
+      ) {
+        const p = {
+          shabadId: cand.shabadId,
+          verseId: cand.verseId,
+          verse: cand.verse,
+          at: Date.now(),
+        };
+        proposalRef.current = p;
+        setProposal(p);
+        setDetail('Ready to change — tap the Shabad to switch');
+        return;
+      }
       if (lockingRef.current) return; // a lock/switch is already committing
       lockingRef.current = true;
       const session = sessionRef.current;
@@ -929,6 +979,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         }
         setSwitchView(null);
         switchCandRef.current = null; // clear any in-flight switch evaluation
+        proposalRef.current = null;
+        setProposal(null);
         backstopRef.current = null;
         bsWinsRef.current.clear();
         bsAdoptKeyRef.current = '';
@@ -980,6 +1032,29 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       }
     },
     [enterSearching, loadShabadProfile],
+  );
+
+  // A sevadaar tap: adopt this shabad NOW through the same path every automatic
+  // lock and switch uses, so following, the return slot and every rule behave
+  // exactly as after an automatic switch. Nothing is remembered about the tap.
+  const pickCandidate = useCallback(
+    async (c) => {
+      if (!c || c.shabadId == null || lockingRef.current) return;
+      let verse = c.verse || null;
+      try {
+        if (!verse && c.verseId != null) verse = await banidb.getVerse(c.shabadId, c.verseId);
+      } catch (_) {
+        verse = null;
+      }
+      if (!verse) {
+        setDetail('Could not open that Shabad');
+        return;
+      }
+      proposalRef.current = null;
+      setProposal(null);
+      autopilotLock({ shabadId: c.shabadId, verseId: c.verseId, verse }, { manual: true });
+    },
+    [autopilotLock],
   );
 
   // Each decode from the recognizer: turn it into Gurmukhi first-letters, slide
@@ -1624,6 +1699,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
         // --- Panel feed: every candidate the judge scored this decode. ---
         {
+          if (proposalRef.current && Date.now() - proposalRef.current.at > PROPOSAL_TTL_MS) {
+            proposalRef.current = null;
+            setProposal(null);
+          }
           const live = [];
           const sc = switchCandRef.current;
           const bsl = backstopRef.current;
@@ -1632,6 +1711,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (sc && sc.lastScore != null) {
             live.push({
               shabadId: sc.shabadId,
+              verseId: sc.verseId,
               line: anvaad.unicode(sc.verse || ''),
               score: sc.lastScore,
               wins: sc.wins,
@@ -1642,6 +1722,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (bsl && bsl.lastScore != null && !live.some((x) => x.shabadId === bsl.shabadId)) {
             live.push({
               shabadId: bsl.shabadId,
+              verseId: bsl.verseId,
               line: bsl.display || '',
               score: bsl.lastScore,
               wins: bsl.wins,
@@ -1659,6 +1740,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             const lines = (prevS.profile && prevS.profile.displayLines) || [];
             live.push({
               shabadId: rsl.shabadId,
+              verseId: ((prevS.profile && prevS.profile.verses[rsl.index]) || {}).verseId,
               line: lines[rsl.index] || '',
               score: rsl.lastScore,
               wins: rsl.wins,
@@ -1896,6 +1978,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     curWordsNormRef.current = [];
     curProfileRef.current = null;
     setLiveCands({ sCur: 0, items: [] });
+    proposalRef.current = null;
+    setProposal(null);
     prevShabadRef.current = null;
     returnSlotRef.current = null;
     curCursorRef.current = null;
@@ -2189,6 +2273,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const gatedItems = liveItems.filter(
     (c) => !(liveLead && liveLead.wins >= 1 && c.shabadId === liveLead.shabadId),
   );
+  let changeLabel = 'Might be changing to';
+  if (assist === 'ask') changeLabel = 'Suggesting a change to';
+  else if (liveLead && liveLead.wins >= 2) changeLabel = 'Changing to';
   let judgeWord = 'Following';
   if (!currentView) judgeWord = 'Listening';
   else if (liveLead && liveLead.wins >= 2) judgeWord = 'Confirming a change';
@@ -2249,6 +2336,33 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                 ×
               </button>
             </span>
+          </div>
+
+          <div
+            className="vf2-assist"
+            role="radiogroup"
+            aria-label="How much the app decides on its own"
+          >
+            <button
+              type="button"
+              role="radio"
+              aria-checked={assist === 'auto'}
+              className={`vf2-assist-btn${assist === 'auto' ? ' is-active' : ''}`}
+              onClick={() => setAssist('auto')}
+              title="Follows and changes Shabad by itself. Tap any Shabad in the list to override."
+            >
+              Auto
+            </button>
+            <button
+              type="button"
+              role="radio"
+              aria-checked={assist === 'ask'}
+              className={`vf2-assist-btn${assist === 'ask' ? ' is-active' : ''}`}
+              onClick={() => setAssist('ask')}
+              title="Finds the first Shabad by itself, then only changes when you tap."
+            >
+              Ask me
+            </button>
           </div>
 
           {!autopilot && (
@@ -2326,51 +2440,85 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                 </div>
               </section>
 
-              {currentView && liveLead && liveLead.wins >= 1 && (
-                <section
-                  className={`vf2-change${liveLead.wins >= 2 ? ' is-confirming' : ''}`}
-                  aria-live="polite"
+              {currentView && proposal && (
+                <button
+                  type="button"
+                  className="vf2-change is-ready"
+                  onClick={() => pickCandidate(proposal)}
+                  title="Tap to change to this Shabad now"
                 >
                   <div className="vf2-label">
-                    <span className="vf2-dot is-seeking" />
-                    {liveLead.wins >= 2 ? 'Changing to' : 'Might be changing to'}
+                    <span className="vf2-dot is-on" />
+                    Ready to change — tap to switch
                   </div>
                   <div className="vf2-cand-line" lang="pa">
-                    {liveLead.line || '…'}
+                    {anvaad.unicode(proposal.verse || '')}
                   </div>
-                  <div
-                    className="vf2-cand-track"
-                    role="meter"
-                    aria-label="Confirmation progress"
-                    aria-valuemin={0}
-                    aria-valuemax={liveLead.needed}
-                    aria-valuenow={Math.min(liveLead.wins, liveLead.needed)}
-                  >
-                    <span
-                      style={{
-                        width: `${(Math.min(liveLead.wins, liveLead.needed) / liveLead.needed) * 100}%`,
-                      }}
-                    />
-                  </div>
-                </section>
+                </button>
               )}
+              {currentView &&
+                liveLead &&
+                liveLead.wins >= 1 &&
+                !(proposal && proposal.shabadId === liveLead.shabadId) && (
+                  <section
+                    className={`vf2-change${liveLead.wins >= 2 ? ' is-confirming' : ''} is-tappable`}
+                    aria-live="polite"
+                    role="button"
+                    tabIndex={0}
+                    title="Tap to change to this Shabad now"
+                    onClick={() => pickCandidate(liveLead)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') pickCandidate(liveLead);
+                    }}
+                  >
+                    <div className="vf2-label">
+                      <span className="vf2-dot is-seeking" />
+                      {changeLabel}
+                      <span className="vf2-cand-pct">
+                        {Math.round((liveLead.score || 0) * 100)}% match
+                      </span>
+                    </div>
+                    <div className="vf2-cand-line" lang="pa">
+                      {liveLead.line || '…'}
+                    </div>
+                    <div
+                      className="vf2-cand-track"
+                      role="meter"
+                      aria-label="Confirmation progress"
+                      aria-valuemin={0}
+                      aria-valuemax={liveLead.needed}
+                      aria-valuenow={Math.min(liveLead.wins, liveLead.needed)}
+                    >
+                      <span
+                        style={{
+                          width: `${(Math.min(liveLead.wins, liveLead.needed) / liveLead.needed) * 100}%`,
+                        }}
+                      />
+                    </div>
+                  </section>
+                )}
               {currentView && (
                 <details className="vf2-matches">
                   <summary>
                     <span>Possible New Shabad</span>
+                    <span className="vf2-summary-tap">tap to switch</span>
                     <span className="vf2-summary-hint">{gatedItems.length || ''}</span>
                   </summary>
                   <div className="vf2-next" aria-live="polite">
                     {gatedItems.length === 0 && <div className="vf2-empty">None right now.</div>}
                     {gatedItems.map((c) => (
-                      <div
-                        className={`vf2-cand ${c.wins >= 2 ? 'is-confirming' : 'is-checking'}`}
+                      <button
+                        type="button"
+                        className={`vf2-cand is-tappable ${c.wins >= 2 ? 'is-confirming' : 'is-checking'}`}
                         key={c.shabadId}
+                        onClick={() => pickCandidate(c)}
+                        title="Tap to change to this Shabad now"
                       >
                         <div className="vf2-cand-row">
                           <span className="vf2-cand-line" lang="pa">
                             {c.line || '…'}
                           </span>
+                          <span className="vf2-cand-pct">{Math.round((c.score || 0) * 100)}%</span>
                         </div>
                         <div
                           className="vf2-cand-track"
@@ -2384,7 +2532,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                             style={{ width: `${(Math.min(c.wins, c.needed) / c.needed) * 100}%` }}
                           />
                         </div>
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </details>
