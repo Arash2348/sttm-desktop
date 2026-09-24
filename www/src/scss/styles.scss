@@ -2436,3 +2436,17 @@ $vf2-green: #43ac6a;
   text-transform: none;
   color: $vf2-faint;
 }
+.vf2-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 6px 12px 0;
+  font-size: 11px;
+  line-height: 1.35;
+  color: #aab0bd;
+  cursor: pointer;
+  input {
+    margin-top: 1px;
+    flex: none;
+  }
+}

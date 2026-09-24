@@ -15,6 +15,7 @@ const engine = require('../engine');
 const { Follower: AcousticFollower } = require('../engine/follower');
 const { SP: AcousticSP } = require('../engine/sentencepiece');
 const { createRendererRetrieval } = require('../engine/retrieval/renderer-client');
+const sessionLog = require('../engine/session-log');
 
 const { norm: vfNorm, partialRatio } = engine;
 
@@ -165,6 +166,8 @@ const RETURN_CONFIRM = 2;
 // the sevadaar taps a candidate. Same judge, same evidence bars; only who commits.
 const ASSIST_KEY = 'vf.assist';
 const PROPOSAL_TTL_MS = 60000; // a ready-to-switch proposal nobody taps expires
+const SAVE_AUDIO_KEY = 'vf.saveAudio';
+const CORRECTION_SECONDS = 45; // audio kept before a sevadaar correction
 const RETURN_WINDOW_DECODES = 240; // ~2 min at the 0.5 s following hop
 // Strong-win fast path: a win this decisive (far above the 0.60/0.20 confusion
 // zone, inside the >=0.67/>=0.33 zone real switches score) counts double, so a
@@ -341,6 +344,28 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // "Ask me": the switch the judge would have made, waiting for a tap.
   const [proposal, setProposal] = useState(null);
   const proposalRef = useRef(null);
+  // Consent to keep the audio before a correction, on this computer only.
+  const [saveAudio, setSaveAudio] = useState(() => {
+    try {
+      return window.localStorage.getItem(SAVE_AUDIO_KEY) === '1';
+    } catch (_) {
+      return false;
+    }
+  });
+  const saveAudioRef = useRef(false);
+  useEffect(() => {
+    saveAudioRef.current = saveAudio;
+    try {
+      window.localStorage.setItem(SAVE_AUDIO_KEY, saveAudio ? '1' : '0');
+    } catch (_) {
+      // Persistence is a convenience only.
+    }
+  }, [saveAudio]);
+  const [savedCount, setSavedCount] = useState(0);
+  const ringRef = useRef(null); // rolling audio for corrections
+  const sessionIdRef = useRef(null);
+  const sessionStartRef = useRef(0);
+  const lastAutoDecisionRef = useRef(0);
   const [autoDetect, setAutoDetect] = useState(false); // blind: identify the shabad from audio, then follow (one-shot)
   // Acoustic text stays inside matching; only canonical BaniDB text is rendered.
   const [, setCands] = useState([]); // [{shabadId, verseId, verse, display, share}] shortlist
@@ -571,6 +596,13 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   }, []);
 
   const stop = useCallback(() => {
+    if (sessionIdRef.current) {
+      sessionLog.logEvent('session_end', {
+        session: sessionIdRef.current,
+        seconds: Math.round((Date.now() - sessionStartRef.current) / 1000),
+      });
+      sessionIdRef.current = null;
+    }
     recognizingRef.current = false;
     autopilotRef.current = false;
     phaseRef.current = 'searching';
@@ -900,6 +932,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         };
         proposalRef.current = p;
         setProposal(p);
+        sessionLog.logEvent('proposal', {
+          session: sessionIdRef.current,
+          from: currentShabadIdRef.current,
+          to: cand.shabadId,
+        });
         setDetail('Ready to change — tap the Shabad to switch');
         return;
       }
@@ -981,6 +1018,43 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         switchCandRef.current = null; // clear any in-flight switch evaluation
         proposalRef.current = null;
         setProposal(null);
+        {
+          const from = currentShabadIdRef.current;
+          const prev = prevShabadRef.current;
+          let kind = 'lock';
+          if (opts.manual) kind = 'override';
+          else if (isSwitch && prev && prev.id === cand.shabadId) kind = 'return';
+          else if (isSwitch) kind = 'switch';
+          const now = Date.now();
+          const sinceLastAuto = lastAutoDecisionRef.current
+            ? Math.round((now - lastAutoDecisionRef.current) / 1000)
+            : null;
+          sessionLog.logEvent(kind, {
+            session: sessionIdRef.current,
+            from,
+            to: cand.shabadId,
+            verseId: cand.verseId,
+            assist: assistRef.current,
+            sinceLastAuto,
+            sinceStart: Math.round((now - sessionStartRef.current) / 1000),
+          });
+          if (!opts.manual) lastAutoDecisionRef.current = now;
+          if (opts.manual && saveAudioRef.current && ringRef.current) {
+            const saved = sessionLog.saveCorrection(
+              ringRef.current.snapshot(),
+              ringRef.current.sampleRate,
+              {
+                session: sessionIdRef.current,
+                from,
+                to: cand.shabadId,
+                verseId: cand.verseId,
+                assist: assistRef.current,
+                sinceLastAuto,
+              },
+            );
+            if (saved) setSavedCount((n) => n + 1);
+          }
+        }
         backstopRef.current = null;
         bsWinsRef.current.clear();
         bsAdoptKeyRef.current = '';
@@ -993,6 +1067,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         // keep-follower transient-failure path too).
         if (seekingRef.current) {
           seekingRef.current = false;
+          sessionLog.logEvent('seeking', {
+            session: sessionIdRef.current,
+            visible: false,
+            to: cand.shabadId,
+          });
           try {
             setIsMiscSlide(false);
           } catch (_) {
@@ -1861,6 +1940,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           // (never cover the user's own slide), and only once per evaluation.
           if (leadSlot.wins >= 2 && !seekingRef.current && !isMiscSlideRef.current) {
             seekingRef.current = true;
+            sessionLog.logEvent('seeking', {
+              session: sessionIdRef.current,
+              visible: true,
+              from: currentShabadIdRef.current,
+            });
             try {
               setMiscSlideText(slideStrings.waheguru);
               setIsMiscSlide(true);
@@ -1998,6 +2082,14 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     setCands([]);
     setStatus('detecting');
     setDetail('Starting');
+    sessionIdRef.current = Date.now();
+    sessionStartRef.current = Date.now();
+    setSavedCount(0);
+    sessionLog.logEvent('session_start', {
+      session: sessionIdRef.current,
+      assist: assistRef.current,
+      saveAudio: saveAudioRef.current,
+    });
 
     if (!engine.isReady()) {
       setDetail('Downloading the voice model (184 MB, one time)');
@@ -2027,6 +2119,13 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     try {
       sampleRate = await startAudio(async (pcm) => {
         if (!autopilotRef.current) return;
+        {
+          const sr = sampleRateRef.current || 48000;
+          if (!ringRef.current || ringRef.current.sampleRate !== sr) {
+            ringRef.current = sessionLog.createRing(CORRECTION_SECONDS, sr);
+          }
+          ringRef.current.push(pcm);
+        }
         // Detection runs on EVERY chunk, in both phases. This is what makes
         // autopilot un-stuck: the moment a different shabad clearly takes over,
         // handleTranscript switches us — we no longer depend on the follower
@@ -2364,6 +2463,20 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               Ask me
             </button>
           </div>
+          <label
+            className="vf2-consent"
+            title="Keeps the last 45 seconds of audio before each of your taps, plus the Shabad you chose, in this app's data folder on this computer. Nothing is sent anywhere. These recordings are what lets the recogniser be improved for your venue."
+          >
+            <input
+              type="checkbox"
+              checked={saveAudio}
+              onChange={(e) => setSaveAudio(e.target.checked)}
+            />
+            <span>
+              Save audio when I correct the app
+              {savedCount > 0 ? ` (${savedCount} saved this session)` : ''}
+            </span>
+          </label>
 
           {!autopilot && (
             <>
