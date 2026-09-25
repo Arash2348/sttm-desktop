@@ -165,7 +165,6 @@ const RETURN_CONFIRM = 2;
 // sevadaar tapped AWAY from is vetoed as a switch candidate for a while, so the
 // same false evidence that put it on screen cannot pull it straight back.
 const TAP_VETO_DECODES = 120; // judged decodes (~1 min of kirtan) the left shabad stays vetoed
-const SAVE_AUDIO_KEY = 'vf.saveAudio';
 const CORRECTION_SECONDS = 45; // audio kept before a sevadaar correction
 const RETURN_WINDOW_DECODES = 240; // ~2 min at the 0.5 s following hop
 // Strong-win fast path: a win this decisive (far above the 0.60/0.20 confusion
@@ -325,24 +324,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const [status, setStatus] = useState('idle'); // idle|connecting|listening|detecting|error|stopped
   const [autopilot] = useState(true); // hands-free: detect + follow + auto-switch, one press
   const vetoRef = useRef(null); // { id, left }: shabad a tap just left, and judged decodes remaining
-  // Consent to keep the audio before a correction, on this computer only.
-  const [saveAudio, setSaveAudio] = useState(() => {
-    try {
-      return window.localStorage.getItem(SAVE_AUDIO_KEY) === '1';
-    } catch (_) {
-      return false;
-    }
-  });
-  const saveAudioRef = useRef(false);
-  useEffect(() => {
-    saveAudioRef.current = saveAudio;
-    try {
-      window.localStorage.setItem(SAVE_AUDIO_KEY, saveAudio ? '1' : '0');
-    } catch (_) {
-      // Persistence is a convenience only.
-    }
-  }, [saveAudio]);
-  const [savedCount, setSavedCount] = useState(0);
+  // Settings > Other Options > "Help Improve Voice-Follow" (on by default): keep the
+  // audio before a sevadaar correction, on this computer only.
+  const saveAudio = useStoreState((state) => state.userSettings.improveVoiceFollow) !== false;
+  const saveAudioRef = useRef(true);
+  saveAudioRef.current = saveAudio;
   const ringRef = useRef(null); // rolling audio for corrections
   const sessionIdRef = useRef(null);
   const sessionStartRef = useRef(0);
@@ -1007,7 +993,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                 sinceLastAuto,
               },
             );
-            if (saved) setSavedCount((n) => n + 1);
+            if (saved)
+              sessionLog.logEvent('correction_saved', {
+                session: sessionIdRef.current,
+                to: cand.shabadId,
+              });
           }
         }
         backstopRef.current = null;
@@ -2038,7 +2028,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     setDetail('Starting');
     sessionIdRef.current = Date.now();
     sessionStartRef.current = Date.now();
-    setSavedCount(0);
     sessionLog.logEvent('session_start', {
       session: sessionIdRef.current,
       saveAudio: saveAudioRef.current,
@@ -2388,20 +2377,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               </button>
             </span>
           </div>
-          <label
-            className="vf2-consent"
-            title="Keeps the last 45 seconds of audio before each of your taps, plus the Shabad you chose, in this app's data folder on this computer. Nothing is sent anywhere. These recordings are what lets the recogniser be improved for your venue."
-          >
-            <input
-              type="checkbox"
-              checked={saveAudio}
-              onChange={(e) => setSaveAudio(e.target.checked)}
-            />
-            <span>
-              Save audio when I correct the app
-              {savedCount > 0 ? ` (${savedCount} saved this session)` : ''}
-            </span>
-          </label>
 
           {!autopilot && (
             <>
@@ -2519,9 +2494,27 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               {currentView && (
                 <details className="vf2-matches">
                   <summary>
+                    <svg
+                      className="vf2-chevron"
+                      viewBox="0 0 10 10"
+                      width="10"
+                      height="10"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M3.5 2 6.5 5 3.5 8"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                     <span>Possible New Shabad</span>
-                    <span className="vf2-summary-tap">tap to switch</span>
-                    <span className="vf2-summary-hint">{gatedItems.length || ''}</span>
+                    {gatedItems.length > 0 && (
+                      <span className="vf2-summary-count">{gatedItems.length}</span>
+                    )}
+                    <span className="vf2-summary-tap">Tap to switch</span>
                   </summary>
                   <div className="vf2-next" aria-live="polite">
                     {gatedItems.length === 0 && <div className="vf2-empty">None right now.</div>}

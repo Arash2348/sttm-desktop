@@ -2276,19 +2276,9 @@ $vf2-green: #43ac6a;
     &::-webkit-details-marker {
       display: none;
     }
-    &::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-right: 1.5px solid $vf2-faint;
-      border-bottom: 1.5px solid $vf2-faint;
-      transform: rotate(-45deg);
-      transition: transform 0.2s ease;
-      margin-right: 2px;
-    }
   }
-  &[open] > summary::before {
-    transform: rotate(45deg);
+  &[open] > summary .vf2-chevron {
+    transform: rotate(90deg);
   }
   .vf2-next {
     padding: 0 8px 8px;
@@ -2373,23 +2363,34 @@ $vf2-green: #43ac6a;
 .vf2-change .vf2-cand-pct {
   margin-left: auto;
 }
+// Chevron: an SVG so it stays crisp and centred on the text line.
+.vf2-chevron {
+  flex: none;
+  color: $vf2-faint;
+  transition: transform 0.2s ease;
+}
+// Count of candidates, as a small badge beside the title.
+.vf2-summary-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.06);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: $vf2-muted;
+  font-variant-numeric: tabular-nums;
+}
+// Quiet, sentence-case hint on the right; the title keeps the section styling.
 .vf2-summary-tap {
-  font-weight: 500;
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 400;
   letter-spacing: 0;
   text-transform: none;
   color: $vf2-faint;
-}
-.vf2-consent {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  margin: 6px 12px 0;
-  font-size: 11px;
-  line-height: 1.35;
-  color: #aab0bd;
-  cursor: pointer;
-  input {
-    margin-top: 1px;
-    flex: none;
-  }
 }
