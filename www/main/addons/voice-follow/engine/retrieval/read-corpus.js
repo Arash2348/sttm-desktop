@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const Realm = require('realm');
+if (typeof globalThis.self === 'undefined') globalThis.self = globalThis;
 const anvaad = require('anvaad-js');
 
 async function readCorpus(userData) {
