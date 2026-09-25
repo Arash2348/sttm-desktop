@@ -2510,14 +2510,16 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <span>Possible New Shabad</span>
+                    <span className="vf2-summary-title">Possible New Shabad</span>
                     {gatedItems.length > 0 && (
                       <span className="vf2-summary-count">{gatedItems.length}</span>
                     )}
-                    <span className="vf2-summary-tap">Tap to switch</span>
                   </summary>
                   <div className="vf2-next" aria-live="polite">
                     {gatedItems.length === 0 && <div className="vf2-empty">None right now.</div>}
+                    {gatedItems.length > 0 && (
+                      <div className="vf2-next-hint">Tap a Shabad to switch to it</div>
+                    )}
                     {gatedItems.map((c) => (
                       <button
                         type="button"

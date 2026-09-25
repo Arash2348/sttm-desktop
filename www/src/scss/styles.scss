@@ -2385,12 +2385,16 @@ $vf2-green: #43ac6a;
   color: $vf2-muted;
   font-variant-numeric: tabular-nums;
 }
-// Quiet, sentence-case hint on the right; the title keeps the section styling.
-.vf2-summary-tap {
-  margin-left: auto;
+// Header never overflows the card: the title may truncate, nothing else grows.
+.vf2-summary-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+// Hint lives inside the open list, on its own line, so it never crowds the header.
+.vf2-next-hint {
+  padding: 0 4px 6px;
   font-size: 11px;
   font-weight: 400;
-  letter-spacing: 0;
-  text-transform: none;
   color: $vf2-faint;
 }
