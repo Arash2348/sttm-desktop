@@ -15,6 +15,7 @@ const engine = require('../engine');
 const { Follower: AcousticFollower } = require('../engine/follower');
 const { SP: AcousticSP } = require('../engine/sentencepiece');
 const { createRendererRetrieval } = require('../engine/retrieval/renderer-client');
+const sessionLog = require('../engine/session-log');
 
 const { norm: vfNorm, partialRatio } = engine;
 
@@ -160,6 +161,11 @@ const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a swit
 // slot was hijacked by transient candidates and reset (Level 2 clip 21: 76 s away).
 // So the previous shabad keeps its own slot for a while and returns on 2 wins.
 const RETURN_CONFIRM = 2;
+// A sevadaar tap is folded into the judge, not bolted beside it: the shabad the
+// sevadaar tapped AWAY from is vetoed as a switch candidate for a while, so the
+// same false evidence that put it on screen cannot pull it straight back.
+const TAP_VETO_DECODES = 120; // judged decodes (~1 min of kirtan) the left shabad stays vetoed
+const CORRECTION_SECONDS = 45; // audio kept before a sevadaar correction
 const RETURN_WINDOW_DECODES = 240; // ~2 min at the 0.5 s following hop
 // Strong-win fast path: a win this decisive (far above the 0.60/0.20 confusion
 // zone, inside the >=0.67/>=0.33 zone real switches score) counts double, so a
@@ -317,6 +323,16 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
   const [status, setStatus] = useState('idle'); // idle|connecting|listening|detecting|error|stopped
   const [autopilot] = useState(true); // hands-free: detect + follow + auto-switch, one press
+  const vetoRef = useRef(null); // { id, left }: shabad a tap just left, and judged decodes remaining
+  // Settings > Other Options > "Help Improve Voice-Follow" (on by default): keep the
+  // audio before a sevadaar correction, on this computer only.
+  const saveAudio = useStoreState((state) => state.userSettings.improveVoiceFollow) !== false;
+  const saveAudioRef = useRef(true);
+  saveAudioRef.current = saveAudio;
+  const ringRef = useRef(null); // rolling audio for corrections
+  const sessionIdRef = useRef(null);
+  const sessionStartRef = useRef(0);
+  const lastAutoDecisionRef = useRef(0);
   const [autoDetect, setAutoDetect] = useState(false); // blind: identify the shabad from audio, then follow (one-shot)
   // Acoustic text stays inside matching; only canonical BaniDB text is rendered.
   const [, setCands] = useState([]); // [{shabadId, verseId, verse, display, share}] shortlist
@@ -547,6 +563,13 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   }, []);
 
   const stop = useCallback(() => {
+    if (sessionIdRef.current) {
+      sessionLog.logEvent('session_end', {
+        session: sessionIdRef.current,
+        seconds: Math.round((Date.now() - sessionStartRef.current) / 1000),
+      });
+      sessionIdRef.current = null;
+    }
     recognizingRef.current = false;
     autopilotRef.current = false;
     phaseRef.current = 'searching';
@@ -556,6 +579,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     curWordsNormRef.current = [];
     curProfileRef.current = null;
     setLiveCands({ sCur: 0, items: [] });
+    vetoRef.current = null;
     prevShabadRef.current = null;
     returnSlotRef.current = null;
     curCursorRef.current = null;
@@ -746,6 +770,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     curWordsNormRef.current = [];
     curProfileRef.current = null;
     setLiveCands({ sCur: 0, items: [] });
+    vetoRef.current = null;
     prevShabadRef.current = null;
     returnSlotRef.current = null;
     curCursorRef.current = null;
@@ -851,7 +876,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // following — all without tearing down the single continuous mic session.
   // Re-entrancy-guarded so overlapping detections can't double-commit.
   const autopilotLock = useCallback(
-    async (cand) => {
+    async (cand, opts = {}) => {
       if (!cand || !cand.verse) return;
       if (lockingRef.current) return; // a lock/switch is already committing
       lockingRef.current = true;
@@ -929,6 +954,52 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         }
         setSwitchView(null);
         switchCandRef.current = null; // clear any in-flight switch evaluation
+        vetoRef.current = null;
+        {
+          const from = currentShabadIdRef.current;
+          const prev = prevShabadRef.current;
+          if (opts.manual && from != null && from !== cand.shabadId) {
+            // The sevadaar said "not that one": no return slot back to it, and it
+            // cannot win a switch for a while. Any OTHER shabad still can.
+            prevShabadRef.current = null;
+            vetoRef.current = { id: from, left: TAP_VETO_DECODES };
+          }
+          let kind = 'lock';
+          if (opts.manual) kind = 'override';
+          else if (isSwitch && prev && prev.id === cand.shabadId) kind = 'return';
+          else if (isSwitch) kind = 'switch';
+          const now = Date.now();
+          const sinceLastAuto = lastAutoDecisionRef.current
+            ? Math.round((now - lastAutoDecisionRef.current) / 1000)
+            : null;
+          sessionLog.logEvent(kind, {
+            session: sessionIdRef.current,
+            from,
+            to: cand.shabadId,
+            verseId: cand.verseId,
+            sinceLastAuto,
+            sinceStart: Math.round((now - sessionStartRef.current) / 1000),
+          });
+          if (!opts.manual) lastAutoDecisionRef.current = now;
+          if (opts.manual && saveAudioRef.current && ringRef.current) {
+            const saved = sessionLog.saveCorrection(
+              ringRef.current.snapshot(),
+              ringRef.current.sampleRate,
+              {
+                session: sessionIdRef.current,
+                from,
+                to: cand.shabadId,
+                verseId: cand.verseId,
+                sinceLastAuto,
+              },
+            );
+            if (saved)
+              sessionLog.logEvent('correction_saved', {
+                session: sessionIdRef.current,
+                to: cand.shabadId,
+              });
+          }
+        }
         backstopRef.current = null;
         bsWinsRef.current.clear();
         bsAdoptKeyRef.current = '';
@@ -941,6 +1012,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         // keep-follower transient-failure path too).
         if (seekingRef.current) {
           seekingRef.current = false;
+          sessionLog.logEvent('seeking', {
+            session: sessionIdRef.current,
+            visible: false,
+            to: cand.shabadId,
+          });
           try {
             setIsMiscSlide(false);
           } catch (_) {
@@ -980,6 +1056,28 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       }
     },
     [enterSearching, loadShabadProfile],
+  );
+
+  // A sevadaar tap: adopt this shabad NOW through the same path every automatic
+  // lock and switch uses, so following, the return slot and every rule behave
+  // exactly as after an automatic switch. Nothing is remembered about the tap.
+  const pickCandidate = useCallback(
+    async (c) => {
+      if (!c || c.shabadId == null || lockingRef.current) return;
+      let verse = c.verse || null;
+      try {
+        if (!verse && c.verseId != null) verse = await banidb.getVerse(c.shabadId, c.verseId);
+      } catch (_) {
+        verse = null;
+      }
+      if (!verse) {
+        setDetail('Could not open that Shabad');
+        return;
+      }
+      vetoRef.current = null;
+      autopilotLock({ shabadId: c.shabadId, verseId: c.verseId, verse }, { manual: true });
+    },
+    [autopilotLock],
   );
 
   // Each decode from the recognizer: turn it into Gurmukhi first-letters, slide
@@ -1416,7 +1514,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         };
         const stepSlot = (slot, sCand) => {
           // Suppress confirmation only for identities in the tied leader set.
-          if (tiedLeaderIds.has(slot.shabadId)) {
+          const vetoed = !!(vetoRef.current && vetoRef.current.id === slot.shabadId);
+          if (tiedLeaderIds.has(slot.shabadId) || vetoed) {
             slot.wins = 0; // eslint-disable-line no-param-reassign
             slot.lastScore = sCand; // eslint-disable-line no-param-reassign
             return false;
@@ -1624,6 +1723,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
         // --- Panel feed: every candidate the judge scored this decode. ---
         {
+          if (vetoRef.current) {
+            vetoRef.current.left -= 1;
+            if (vetoRef.current.left <= 0) vetoRef.current = null;
+          }
           const live = [];
           const sc = switchCandRef.current;
           const bsl = backstopRef.current;
@@ -1632,6 +1735,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (sc && sc.lastScore != null) {
             live.push({
               shabadId: sc.shabadId,
+              verseId: sc.verseId,
               line: anvaad.unicode(sc.verse || ''),
               score: sc.lastScore,
               wins: sc.wins,
@@ -1642,6 +1746,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (bsl && bsl.lastScore != null && !live.some((x) => x.shabadId === bsl.shabadId)) {
             live.push({
               shabadId: bsl.shabadId,
+              verseId: bsl.verseId,
               line: bsl.display || '',
               score: bsl.lastScore,
               wins: bsl.wins,
@@ -1659,6 +1764,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             const lines = (prevS.profile && prevS.profile.displayLines) || [];
             live.push({
               shabadId: rsl.shabadId,
+              verseId: ((prevS.profile && prevS.profile.verses[rsl.index]) || {}).verseId,
               line: lines[rsl.index] || '',
               score: rsl.lastScore,
               wins: rsl.wins,
@@ -1779,6 +1885,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           // (never cover the user's own slide), and only once per evaluation.
           if (leadSlot.wins >= 2 && !seekingRef.current && !isMiscSlideRef.current) {
             seekingRef.current = true;
+            sessionLog.logEvent('seeking', {
+              session: sessionIdRef.current,
+              visible: true,
+              from: currentShabadIdRef.current,
+            });
             try {
               setMiscSlideText(slideStrings.waheguru);
               setIsMiscSlide(true);
@@ -1896,6 +2007,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     curWordsNormRef.current = [];
     curProfileRef.current = null;
     setLiveCands({ sCur: 0, items: [] });
+    vetoRef.current = null;
     prevShabadRef.current = null;
     returnSlotRef.current = null;
     curCursorRef.current = null;
@@ -1914,6 +2026,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     setCands([]);
     setStatus('detecting');
     setDetail('Starting');
+    sessionIdRef.current = Date.now();
+    sessionStartRef.current = Date.now();
+    sessionLog.logEvent('session_start', {
+      session: sessionIdRef.current,
+      saveAudio: saveAudioRef.current,
+    });
 
     if (!engine.isReady()) {
       setDetail('Downloading the voice model (184 MB, one time)');
@@ -1943,6 +2061,13 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     try {
       sampleRate = await startAudio(async (pcm) => {
         if (!autopilotRef.current) return;
+        {
+          const sr = sampleRateRef.current || 48000;
+          if (!ringRef.current || ringRef.current.sampleRate !== sr) {
+            ringRef.current = sessionLog.createRing(CORRECTION_SECONDS, sr);
+          }
+          ringRef.current.push(pcm);
+        }
         // Detection runs on EVERY chunk, in both phases. This is what makes
         // autopilot un-stuck: the moment a different shabad clearly takes over,
         // handleTranscript switches us — we no longer depend on the follower
@@ -2189,6 +2314,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const gatedItems = liveItems.filter(
     (c) => !(liveLead && liveLead.wins >= 1 && c.shabadId === liveLead.shabadId),
   );
+  let changeLabel = 'Might be changing to';
+  if (liveLead && liveLead.wins >= 2) changeLabel = 'Changing to';
   let judgeWord = 'Following';
   if (!currentView) judgeWord = 'Listening';
   else if (liveLead && liveLead.wins >= 2) judgeWord = 'Confirming a change';
@@ -2328,12 +2455,22 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
               {currentView && liveLead && liveLead.wins >= 1 && (
                 <section
-                  className={`vf2-change${liveLead.wins >= 2 ? ' is-confirming' : ''}`}
+                  className={`vf2-change${liveLead.wins >= 2 ? ' is-confirming' : ''} is-tappable`}
                   aria-live="polite"
+                  role="button"
+                  tabIndex={0}
+                  title="Tap to change to this Shabad now"
+                  onClick={() => pickCandidate(liveLead)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') pickCandidate(liveLead);
+                  }}
                 >
                   <div className="vf2-label">
                     <span className="vf2-dot is-seeking" />
-                    {liveLead.wins >= 2 ? 'Changing to' : 'Might be changing to'}
+                    {changeLabel}
+                    <span className="vf2-cand-pct">
+                      {Math.round((liveLead.score || 0) * 100)}% match
+                    </span>
                   </div>
                   <div className="vf2-cand-line" lang="pa">
                     {liveLead.line || '…'}
@@ -2357,20 +2494,45 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               {currentView && (
                 <details className="vf2-matches">
                   <summary>
-                    <span>Possible New Shabad</span>
-                    <span className="vf2-summary-hint">{gatedItems.length || ''}</span>
+                    <svg
+                      className="vf2-chevron"
+                      viewBox="0 0 10 10"
+                      width="10"
+                      height="10"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M3.5 2 6.5 5 3.5 8"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    <span className="vf2-summary-title">Possible New Shabad</span>
+                    {gatedItems.length > 0 && (
+                      <span className="vf2-summary-count">{gatedItems.length}</span>
+                    )}
                   </summary>
                   <div className="vf2-next" aria-live="polite">
                     {gatedItems.length === 0 && <div className="vf2-empty">None right now.</div>}
+                    {gatedItems.length > 0 && (
+                      <div className="vf2-next-hint">Tap a Shabad to switch to it</div>
+                    )}
                     {gatedItems.map((c) => (
-                      <div
-                        className={`vf2-cand ${c.wins >= 2 ? 'is-confirming' : 'is-checking'}`}
+                      <button
+                        type="button"
+                        className={`vf2-cand is-tappable ${c.wins >= 2 ? 'is-confirming' : 'is-checking'}`}
                         key={c.shabadId}
+                        onClick={() => pickCandidate(c)}
+                        title="Tap to change to this Shabad now"
                       >
                         <div className="vf2-cand-row">
                           <span className="vf2-cand-line" lang="pa">
                             {c.line || '…'}
                           </span>
+                          <span className="vf2-cand-pct">{Math.round((c.score || 0) * 100)}%</span>
                         </div>
                         <div
                           className="vf2-cand-track"
@@ -2384,7 +2546,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                             style={{ width: `${(Math.min(c.wins, c.needed) / c.needed) * 100}%` }}
                           />
                         </div>
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </details>
