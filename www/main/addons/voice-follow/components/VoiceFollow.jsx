@@ -165,6 +165,31 @@ const RETURN_CONFIRM = 2;
 // sevadaar tapped AWAY from is vetoed as a switch candidate for a while, so the
 // same false evidence that put it on screen cannot pull it straight back.
 const TAP_VETO_DECODES = 120; // judged decodes (~1 min of kirtan) the left shabad stays vetoed
+// Bani follow: when two shabads of the same Bani are heard in recitation order
+// (the second within BANI_NEXT_MAX shabads of the first), the recitation is that
+// Bani, so follow the WHOLE Bani instead of shabad by shabad. One shabad alone
+// never triggers it: Sodar, So Purakh and Aarti shabads are also sung as kirtan.
+const BANI_NEXT_MAX = 3;
+const BANI_KEY = 'bani:';
+const baniIdOf = (id) =>
+  typeof id === 'string' && id.startsWith(BANI_KEY) ? Number(id.slice(BANI_KEY.length)) : null;
+// The Bani in which `nextId` follows `prevId` most closely, in order; else null.
+function findBaniSequence(index, prevId, nextId) {
+  const a = index.byShabad.get(prevId) || [];
+  const b = index.byShabad.get(nextId) || [];
+  let best = null;
+  let bestGap = Infinity;
+  a.forEach((x) =>
+    b.forEach((y) => {
+      const gap = y.pos - x.pos;
+      if (x.bani === y.bani && gap >= 1 && gap <= BANI_NEXT_MAX && gap < bestGap) {
+        best = x.bani;
+        bestGap = gap;
+      }
+    }),
+  );
+  return best;
+}
 const CORRECTION_SECONDS = 45; // audio kept before a sevadaar correction
 const RETURN_WINDOW_DECODES = 240; // ~2 min at the 0.5 s following hop
 // Strong-win fast path: a win this decisive (far above the 0.60/0.20 confusion
@@ -312,6 +337,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const sundarGutkaBaniId = useStoreState((state) => state.navigator.sundarGutkaBaniId);
   const baniLength = useStoreState((state) => state.userSettings.baniLength);
   const { setActiveVerseId, setLineNumber } = useStoreActions((actions) => actions.navigator);
+  const {
+    setIsSundarGutkaBani,
+    setSundarGutkaBaniId,
+    setIsCeremonyBani,
+    setSingleDisplayActiveTab,
+  } = useStoreActions((actions) => actions.navigator);
   const { setIsMiscSlide, setMiscSlideText } = useStoreActions((actions) => actions.navigator);
   const isMiscSlide = useStoreState((state) => state.navigator.isMiscSlide);
   const setOverlayScreen = useStoreActions((actions) => actions.app.setOverlayScreen);
@@ -324,6 +355,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const [status, setStatus] = useState('idle'); // idle|connecting|listening|detecting|error|stopped
   const [autopilot] = useState(true); // hands-free: detect + follow + auto-switch, one press
   const vetoRef = useRef(null); // { id, left }: shabad a tap just left, and judged decodes remaining
+  const baniLengthRef = useRef('short');
+  baniLengthRef.current = baniLength;
+  const baniIndexRef = useRef(null); // { col, promise } shabad<->Bani index, built once per length
+  const curBaniShabadsRef = useRef(null); // Set of shabads inside the Bani being followed
+  const autopilotLockRef = useRef(null);
   // Settings > Other Options > "Help Improve Voice-Follow" (on by default): keep the
   // audio before a sevadaar correction, on this computer only.
   const saveAudio = useStoreState((state) => state.userSettings.improveVoiceFollow) !== false;
@@ -578,6 +614,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     curLinesNormRef.current = [];
     curWordsNormRef.current = [];
     curProfileRef.current = null;
+    curBaniShabadsRef.current = null;
     setLiveCands({ sCur: 0, items: [] });
     vetoRef.current = null;
     prevShabadRef.current = null;
@@ -769,6 +806,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     curLinesNormRef.current = [];
     curWordsNormRef.current = [];
     curProfileRef.current = null;
+    curBaniShabadsRef.current = null;
     setLiveCands({ sCur: 0, items: [] });
     vetoRef.current = null;
     prevShabadRef.current = null;
@@ -803,6 +841,51 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
   // Load a shabad's verses (tokenized, for a Follower) and normalized line texts
   // (for acoustic scoring). Throws if it can't be loaded / has no usable lines.
+  const getBaniIndex = useCallback(() => {
+    const col = BANI_LENGTH_COLS[baniLengthRef.current] || BANI_LENGTH_COLS.short;
+    if (!baniIndexRef.current || baniIndexRef.current.col !== col) {
+      const promise = banidb.loadBaniIndex(col).then((banis) => {
+        const byShabad = new Map();
+        Object.keys(banis).forEach((b) =>
+          banis[b].forEach((sid, order) => {
+            const list = byShabad.get(sid) || [];
+            list.push({ bani: Number(b), pos: order });
+            byShabad.set(sid, list);
+          }),
+        );
+        return { banis, byShabad };
+      });
+      promise.catch(() => {
+        if (baniIndexRef.current && baniIndexRef.current.promise === promise) {
+          baniIndexRef.current = null;
+        }
+      });
+      baniIndexRef.current = { col, promise };
+    }
+    return baniIndexRef.current.promise;
+  }, []);
+
+  // Same shape as a shabad profile, over every line of the Bani (the same rows
+  // and length setting Sundar Gutka shows), plus the shabads the Bani contains.
+  const loadBaniProfile = useCallback(
+    async (baniId) => {
+      const col = BANI_LENGTH_COLS[baniLengthRef.current] || BANI_LENGTH_COLS.short;
+      const rows = await loadBaniRows(baniId, col);
+      const filtered = (rows || []).filter((r) => r && r.ID != null && r.Gurmukhi);
+      const verses = filtered.map((r) => ({
+        verseId: r.ID,
+        words: tokenize(anvaad.unicode(r.Gurmukhi)),
+      }));
+      const linesNorm = verses.map((v) => vfNorm((v.words || []).join(' ')));
+      const displayLines = filtered.map((r) => anvaad.unicode(r.Gurmukhi));
+      const rawLines = filtered.map((r) => r.Gurmukhi);
+      const index = await getBaniIndex();
+      const shabadIds = new Set((index && index.banis[baniId]) || []);
+      return { verses, linesNorm, displayLines, rawLines, shabadIds };
+    },
+    [getBaniIndex],
+  );
+
   const loadShabadProfile = useCallback(async (shabadId) => {
     const rows = await banidb.loadShabad(shabadId);
     const filtered = filterRequiredVerseItems(rows).filter(
@@ -884,13 +967,16 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       // On a switch we already have a working follower; a transient failure below
       // must NOT drop it, so remember whether this is the first lock or a switch.
       const isSwitch = !!followerRef.current;
+      const fromId = currentShabadIdRef.current;
+      const baniId = baniIdOf(cand.shabadId);
       try {
         setStatus('connecting');
         setDetail(isSwitch ? 'switching to the new shabad…' : 'Found it');
 
         let profile;
         try {
-          profile = await loadShabadProfile(cand.shabadId);
+          profile =
+            baniId != null ? await loadBaniProfile(baniId) : await loadShabadProfile(cand.shabadId);
         } catch (e) {
           if (session !== sessionRef.current) return;
           setDetail(`could not load shabad: ${e?.message || e}`);
@@ -923,6 +1009,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         followerRef.current = follower;
         if (
           isSwitch &&
+          !opts.promote &&
           currentShabadIdRef.current != null &&
           currentShabadIdRef.current !== cand.shabadId
         ) {
@@ -931,7 +1018,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             profile: curProfileRef.current,
             decodesSince: 0,
           };
-        } else if (!isSwitch) prevShabadRef.current = null;
+        } else if (!isSwitch || opts.promote) prevShabadRef.current = null;
+        curBaniShabadsRef.current = baniId != null ? profile.shabadIds : null;
         returnSlotRef.current = null;
         curProfileRef.current = profile;
         curLinesNormRef.current = profile.linesNorm;
@@ -965,7 +1053,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             vetoRef.current = { id: from, left: TAP_VETO_DECODES };
           }
           let kind = 'lock';
-          if (opts.manual) kind = 'override';
+          if (opts.promote) kind = 'bani_follow';
+          else if (opts.manual) kind = 'override';
           else if (isSwitch && prev && prev.id === cand.shabadId) kind = 'return';
           else if (isSwitch) kind = 'switch';
           const now = Date.now();
@@ -1005,7 +1094,16 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         bsAdoptKeyRef.current = '';
         if (cand.shabadId !== currentShabadIdRef.current) {
           currentShabadIdRef.current = cand.shabadId;
-          openShabadRef.current(cand.shabadId, cand.verseId, cand.verse);
+          if (baniId != null) {
+            // Same actions the Sundar Gutka screen uses to open a Bani.
+            setIsCeremonyBani(false);
+            setSingleDisplayActiveTab('shabad');
+            setIsSundarGutkaBani(true);
+            setSundarGutkaBaniId(baniId);
+            if (cand.verseId != null) setActiveVerseId(cand.verseId);
+          } else {
+            openShabadRef.current(cand.shabadId, cand.verseId, cand.verse);
+          }
         }
         // A commit resolves the uncertainty: take down our seeking slide if up
         // (opening the shabad already dismisses misc slides; this covers the
@@ -1054,9 +1152,41 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       } finally {
         if (session === sessionRef.current) lockingRef.current = false;
       }
+      // Two shabads of one Bani in recitation order: follow the whole Bani.
+      if (
+        !opts.promote &&
+        baniId == null &&
+        typeof fromId === 'number' &&
+        fromId !== cand.shabadId &&
+        session === sessionRef.current &&
+        autopilotRef.current &&
+        currentShabadIdRef.current === cand.shabadId
+      ) {
+        let index = null;
+        try {
+          index = await getBaniIndex();
+        } catch (_) {
+          index = null;
+        }
+        if (
+          index &&
+          session === sessionRef.current &&
+          currentShabadIdRef.current === cand.shabadId &&
+          !lockingRef.current
+        ) {
+          const bani = findBaniSequence(index, fromId, cand.shabadId);
+          if (bani != null && autopilotLockRef.current) {
+            autopilotLockRef.current(
+              { shabadId: `${BANI_KEY}${bani}`, verseId: cand.verseId, verse: cand.verse },
+              { promote: true },
+            );
+          }
+        }
+      }
     },
-    [enterSearching, loadShabadProfile],
+    [enterSearching, loadShabadProfile, loadBaniProfile, getBaniIndex],
   );
+  autopilotLockRef.current = autopilotLock;
 
   // A sevadaar tap: adopt this shabad NOW through the same path every automatic
   // lock and switch uses, so following, the return slot and every rule behave
@@ -1514,7 +1644,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         };
         const stepSlot = (slot, sCand) => {
           // Suppress confirmation only for identities in the tied leader set.
-          const vetoed = !!(vetoRef.current && vetoRef.current.id === slot.shabadId);
+          const vetoed =
+            !!(vetoRef.current && vetoRef.current.id === slot.shabadId) ||
+            !!(curBaniShabadsRef.current && curBaniShabadsRef.current.has(slot.shabadId));
           if (tiedLeaderIds.has(slot.shabadId) || vetoed) {
             slot.wins = 0; // eslint-disable-line no-param-reassign
             slot.lastScore = sCand; // eslint-disable-line no-param-reassign
@@ -1705,7 +1837,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                 const v = prev.profile.verses[rs.index] || {};
                 let verse = null;
                 try {
-                  verse = v.verseId ? await banidb.getVerse(prev.id, v.verseId) : null;
+                  if (baniIdOf(prev.id) != null) {
+                    verse = (prev.profile.rawLines || [])[rs.index] || null;
+                  } else {
+                    verse = v.verseId ? await banidb.getVerse(prev.id, v.verseId) : null;
+                  }
                 } catch (_) {
                   verse = null;
                 }
@@ -1771,6 +1907,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               needed: RETURN_CONFIRM,
               kind: 'return',
             });
+          }
+          if (curBaniShabadsRef.current) {
+            for (let i = live.length - 1; i >= 0; i -= 1) {
+              if (curBaniShabadsRef.current.has(live[i].shabadId)) live.splice(i, 1);
+            }
           }
           live.sort((a, b) => b.wins - a.wins || b.score - a.score);
           // Gate for the panel: only candidates that clear the judge's own
@@ -2006,6 +2147,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     curLinesNormRef.current = [];
     curWordsNormRef.current = [];
     curProfileRef.current = null;
+    curBaniShabadsRef.current = null;
     setLiveCands({ sCur: 0, items: [] });
     vetoRef.current = null;
     prevShabadRef.current = null;

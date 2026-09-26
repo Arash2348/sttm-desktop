@@ -283,6 +283,39 @@ const loadBani = (BaniID, BaniLength) =>
   });
 
 /**
+ * Index of every Bani's shabads, in recitation order, for one Bani length.
+ * Voice-Follow uses it to recognise a Bani being recited (two of its shabads
+ * heard in order) and follow the whole Bani instead of shabad by shabad.
+ *
+ * @param {string} BaniLength The length column, e.g. "existsSGPC"
+ * @returns {object} { [baniId]: [shabadId, ...] } distinct shabads in Seq order
+ * @example
+ *
+ * loadBaniIndex("existsSGPC");
+ * // => { 21: [2046, 2047, ...], 23: [...], ... }
+ */
+const loadBaniIndex = (BaniLength) =>
+  new Promise((resolve, reject) => {
+    if (!initialized) {
+      init();
+    }
+    Realm.open(realmConfig)
+      .then((realm) => {
+        const rows = realm.objects('Banis_Shabad').filtered(`${BaniLength} == true`).sorted('Seq');
+        const index = {};
+        rows.forEach((row) => {
+          const baniId = row.Bani && row.Bani.ID;
+          const shabadId = row.Shabad && row.Shabad.ShabadID;
+          if (baniId == null || shabadId == null) return;
+          const list = index[baniId] || (index[baniId] = []);
+          if (list[list.length - 1] !== shabadId) list.push(shabadId);
+        });
+        resolve(index);
+      })
+      .catch(reject);
+  });
+
+/**
  * Retrieve all lines from a Ceremony
  *
  * @param {number} CermonyID The specific Shabad to get
@@ -547,6 +580,7 @@ module.exports = {
   loadFirstLetterIndex,
   loadBanis,
   loadBani,
+  loadBaniIndex,
   loadCeremony,
   loadCeremonies,
   getAng,
