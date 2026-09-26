@@ -173,6 +173,16 @@ const BANI_NEXT_MAX = 3;
 const BANI_KEY = 'bani:';
 const baniIdOf = (id) =>
   typeof id === 'string' && id.startsWith(BANI_KEY) ? Number(id.slice(BANI_KEY.length)) : null;
+// Paath shabads that open their Bani on the first line heard. Anand Sahib is
+// stored as three large shabads, so the two-shabad rule above almost never saw
+// it. The 6-pauri paath (Bani 1000: pauris 1-5 and 40) is recited far more
+// often than the full 40, so pauri 1-5 and 40 lines open it; a line from pauris
+// 6-39 exists only in the full paath, so it opens (or moves up to) Bani 10.
+const PAATH_BANI = new Map([
+  [333375, 1000], // Anand Sahib pauris 1-5
+  [333376, 1000], // Anand Sahib pauri 40
+  [3375, 10], // Anand Sahib pauris 6-39
+]);
 // The Bani in which `nextId` follows `prevId` most closely, in order; else null.
 function findBaniSequence(index, prevId, nextId) {
   const a = index.byShabad.get(prevId) || [];
@@ -1151,6 +1161,24 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         setDetail('Following');
       } finally {
         if (session === sessionRef.current) lockingRef.current = false;
+      }
+      // A paath-only shabad: open its Bani straight away.
+      const paathBani = PAATH_BANI.get(cand.shabadId);
+      if (
+        paathBani != null &&
+        !opts.promote &&
+        !opts.manual &&
+        session === sessionRef.current &&
+        autopilotRef.current &&
+        currentShabadIdRef.current === cand.shabadId &&
+        !lockingRef.current &&
+        autopilotLockRef.current
+      ) {
+        autopilotLockRef.current(
+          { shabadId: `${BANI_KEY}${paathBani}`, verseId: cand.verseId, verse: cand.verse },
+          { promote: true },
+        );
+        return;
       }
       // Two shabads of one Bani in recitation order: follow the whole Bani.
       if (
