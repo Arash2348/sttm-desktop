@@ -274,10 +274,9 @@ const loadBani = (BaniID, BaniLength) =>
     Realm.open(realmConfig)
       .then((realm) => {
         const condition = `Bani.ID == ${BaniID} AND ${BaniLength} == true`;
-        const rows = realm.objects('Banis_Shabad').filtered(condition).sorted('Seq');
-        if (rows.length > 0) {
-          resolve(rows);
-        }
+        // Always answer, even with no rows: a Bani with nothing at this length
+        // used to leave the promise pending forever, silently stalling callers.
+        resolve(realm.objects('Banis_Shabad').filtered(condition).sorted('Seq'));
       })
       .catch(reject);
   });

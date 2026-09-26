@@ -1073,7 +1073,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         // A restart makes autopilot true again, so check the session as well.
         if (!autopilotRef.current || session !== sessionRef.current) return;
 
-        // Commit the new shabad.
+        // Commit the new shabad. The return slot is read BEFORE it is overwritten
+        // below, so the session log can tell a return from a fresh switch.
+        const prevBefore = prevShabadRef.current;
         phaseRef.current = 'following';
         lastVerseRef.current = null;
         followerRef.current = follower;
@@ -1115,7 +1117,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         vetoRef.current = null;
         {
           const from = currentShabadIdRef.current;
-          const prev = prevShabadRef.current;
           if (opts.manual && from != null && from !== cand.shabadId) {
             // The sevadaar said "not that one": no return slot back to it, and it
             // cannot win a switch for a while. Any OTHER shabad still can.
@@ -1125,7 +1126,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           let kind = 'lock';
           if (opts.promote) kind = 'bani_follow';
           else if (opts.manual) kind = 'override';
-          else if (isSwitch && prev && prev.id === cand.shabadId) kind = 'return';
+          else if (isSwitch && prevBefore && prevBefore.id === cand.shabadId) kind = 'return';
           else if (isSwitch) kind = 'switch';
           const now = Date.now();
           const sinceLastAuto = lastAutoDecisionRef.current
