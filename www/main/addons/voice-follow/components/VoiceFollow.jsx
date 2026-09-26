@@ -173,16 +173,35 @@ const BANI_NEXT_MAX = 3;
 const BANI_KEY = 'bani:';
 const baniIdOf = (id) =>
   typeof id === 'string' && id.startsWith(BANI_KEY) ? Number(id.slice(BANI_KEY.length)) : null;
-// Paath shabads that open their Bani on the first line heard. Anand Sahib is
-// stored as three large shabads, so the two-shabad rule above almost never saw
-// it. The 6-pauri paath (Bani 1000: pauris 1-5 and 40) is recited far more
-// often than the full 40, so pauri 1-5 and 40 lines open it; a line from pauris
-// 6-39 exists only in the full paath, so it opens (or moves up to) Bani 10.
-const PAATH_BANI = new Map([
-  [333375, 1000], // Anand Sahib pauris 1-5
-  [333376, 1000], // Anand Sahib pauri 40
-  [3375, 10], // Anand Sahib pauris 6-39
+// Paath Banis (Nitnem): a line that ONLY a paath contains opens that Bani on the
+// first line heard, instead of waiting for two shabads in order. Several are
+// stored as one or a few huge shabads (Chaupai 1, Tav Prasad Savaiye 2, Anand 3),
+// so the two-shabad rule above could never see them. Listed in preference order:
+// the 6-pauri Anand (1000) is recited far more often than the full 40 (10), so a
+// pauri 1-5 or 40 line opens it and a pauri 6-39 line opens (or moves up to) 10.
+// Rehras, Sohila and Aarti are NOT here: their shabads are sung as kirtan too,
+// so they keep the two-shabads-in-order rule.
+const PAATH_BANIS = [1000, 10, 2, 4, 6, 7, 9]; // Anand 6, Anand, Japji, Jaap, Savaiye x2, Chaupai
+const PAATH_FAMILY = {
+  1000: 'anand',
+  10: 'anand',
+  2: 'japji',
+  4: 'jaap',
+  6: 'savaiye',
+  7: 'savaiye',
+  9: 'chaupai',
+};
+// A line also in one of these is said or sung outside a paath (Mool Mantar, Aarti
+// chhands, Sohila, Ardas), so it never opens a paath on its own.
+const NOT_PAATH_BANIS = [1, 22, 23, 24]; // Gur Mantar, Aarti, Sohila, Ardas
+// Shabads of a paath that are also sung as kirtan in their own right.
+const PAATH_SKIP_SHABADS = new Set([
+  39, // Japji closing salok (Pavan Guru), also in Sohila
+  7423, // Jaap Sahib chhand, also sung in Aarti
 ]);
+// Mool Mantar and the "Aad sach ... Hai bhee sach" salok open Japji's paath but
+// are recited and sung on their own (simran, before kirtan), so they never open it.
+const PAATH_SKIP_VERSES = new Set([1, 2, 3, 4]);
 // The Bani in which `nextId` follows `prevId` most closely, in order; else null.
 function findBaniSequence(index, prevId, nextId) {
   const a = index.byShabad.get(prevId) || [];
@@ -877,6 +896,47 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
   // Same shape as a shabad profile, over every line of the Bani (the same rows
   // and length setting Sundar Gutka shows), plus the shabads the Bani contains.
+  // verseId -> paath Bani for lines only a paath contains (see PAATH_BANIS).
+  const paathLinesRef = useRef(null);
+  const getPaathLines = useCallback(() => {
+    const col = BANI_LENGTH_COLS[baniLengthRef.current] || BANI_LENGTH_COLS.short;
+    if (!paathLinesRef.current || paathLinesRef.current.col !== col) {
+      const verseIds = (rows) =>
+        (rows || []).filter((r) => r && r.Verse && r.Verse.ID != null).map((r) => r.Verse.ID);
+      const promise = Promise.all([
+        Promise.all(PAATH_BANIS.map((b) => banidb.loadBani(b, col))),
+        Promise.all(NOT_PAATH_BANIS.map((b) => banidb.loadBani(b, col))),
+      ]).then(([paath, notPaath]) => {
+        const blocked = new Set();
+        notPaath.forEach((rows) => verseIds(rows).forEach((v) => blocked.add(v)));
+        const families = new Map();
+        const lines = new Map();
+        paath.forEach((rows, k) => {
+          const bani = PAATH_BANIS[k];
+          verseIds(rows).forEach((v) => {
+            const fams = families.get(v) || new Set();
+            fams.add(PAATH_FAMILY[bani]);
+            families.set(v, fams);
+            if (!lines.has(v)) lines.set(v, bani); // first in preference order
+          });
+        });
+        // Headers and lines shared by two different paaths decide nothing.
+        families.forEach((fams, v) => {
+          if (fams.size > 1 || blocked.has(v)) lines.delete(v);
+        });
+        PAATH_SKIP_VERSES.forEach((v) => lines.delete(v));
+        return lines;
+      });
+      promise.catch(() => {
+        if (paathLinesRef.current && paathLinesRef.current.promise === promise) {
+          paathLinesRef.current = null;
+        }
+      });
+      paathLinesRef.current = { col, promise };
+    }
+    return paathLinesRef.current.promise;
+  }, []);
+
   const loadBaniProfile = useCallback(
     async (baniId) => {
       const col = BANI_LENGTH_COLS[baniLengthRef.current] || BANI_LENGTH_COLS.short;
@@ -1162,23 +1222,36 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       } finally {
         if (session === sessionRef.current) lockingRef.current = false;
       }
-      // A paath-only shabad: open its Bani straight away.
-      const paathBani = PAATH_BANI.get(cand.shabadId);
+      // A line only a paath contains: open that Bani straight away.
       if (
-        paathBani != null &&
         !opts.promote &&
         !opts.manual &&
+        baniId == null &&
+        !PAATH_SKIP_SHABADS.has(cand.shabadId) &&
         session === sessionRef.current &&
         autopilotRef.current &&
-        currentShabadIdRef.current === cand.shabadId &&
-        !lockingRef.current &&
-        autopilotLockRef.current
+        currentShabadIdRef.current === cand.shabadId
       ) {
-        autopilotLockRef.current(
-          { shabadId: `${BANI_KEY}${paathBani}`, verseId: cand.verseId, verse: cand.verse },
-          { promote: true },
-        );
-        return;
+        let lines = null;
+        try {
+          lines = await getPaathLines();
+        } catch (_) {
+          lines = null;
+        }
+        const paathBani = lines && lines.get(cand.verseId);
+        if (
+          paathBani != null &&
+          session === sessionRef.current &&
+          currentShabadIdRef.current === cand.shabadId &&
+          !lockingRef.current &&
+          autopilotLockRef.current
+        ) {
+          autopilotLockRef.current(
+            { shabadId: `${BANI_KEY}${paathBani}`, verseId: cand.verseId, verse: cand.verse },
+            { promote: true },
+          );
+          return;
+        }
       }
       // Two shabads of one Bani in recitation order: follow the whole Bani.
       if (
@@ -1212,7 +1285,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         }
       }
     },
-    [enterSearching, loadShabadProfile, loadBaniProfile, getBaniIndex],
+    [enterSearching, loadShabadProfile, loadBaniProfile, getBaniIndex, getPaathLines],
   );
   autopilotLockRef.current = autopilotLock;
 
