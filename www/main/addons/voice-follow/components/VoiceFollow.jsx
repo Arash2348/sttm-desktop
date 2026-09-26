@@ -26,6 +26,8 @@ const {
   maxLineScore,
   bestLineMatch,
   orderFreeLineScore,
+  stripGreetings,
+  sameGurbani,
 } = require('./switchPolicy');
 
 // maxLineScore lives in ./switchPolicy (same implementation, unit-tested there)
@@ -60,6 +62,10 @@ const FIRST_LETTERS_START = banidb.CONSTS.SEARCH_TYPES.FIRST_LETTERS; // BEGINSW
 // of the running transcript, preferring the most specific window that still hits,
 // then vote across windows so one misheard letter doesn't decide the lock.
 const DETECT_MIN_LETTERS = 4; // need at least this many first-letters to search
+// Slow singing (cycle 12): while following, a decode often hears only 3 words, and the
+// switch check skipped all of them. >0 = judge a switch from this many first-letters
+// (no new first-letter votes from such a short decode). 0 = DETECT_MIN_LETTERS.
+const FOLLOW_MIN_LETTERS = 0;
 // The recognizer mishears the odd letter, and FirstLetterStr search is an exact
 // contiguous CONTAINS — so one wrong letter kills a long window. Instead we slide
 // several shorter n-grams across what we've heard and vote: clean fragments still
@@ -94,6 +100,9 @@ const AP_LOCK_STABLE = 2; // hold the lead this many decodes before the first lo
 // coin flip that then costs ~40 s to undo. Level 2 benchmark: every correct first
 // lock had a margin >= 0.12 over the runner-up; the one wrong lock had 0.00.
 const AP_LOCK_TEXT_MARGIN = 0.08;
+// Context route (several decodes agreeing on one shabad): hearings and clear wins needed.
+const CTX_LOCK_COUNT = 6;
+const CTX_LOCK_WINS = 4;
 const VOTE_CAP = 60; // clamp votes so a long shabad can't become impossible to switch away from
 // The recognizer WINDOW is a two-sided lever, so autopilot uses a DIFFERENT one
 // per phase (goal: each capability as good as its dedicated feature):
@@ -155,6 +164,92 @@ const SWITCH_CAND_MIN_LINE_CHARS = 15;
 // (misses switches: recall 68->60%), so raising it is not safe. The 9s stress ceiling
 // (~35% on-correct) is latency-bound (react time ~4-5s vs 9s dwell), not tunable.
 const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a switch
+// Source prior (cycle 10): most of the canonical corpus is not Sri Guru Granth Sahib
+// (Dasam Bani alone has more lines), but kirtan diwans sing SGGS far more often, and
+// katha and Ardas quote Vaaran and Dasam Bani in passing. A switch INTO a different,
+// non-SGGS source needs this many wins instead of SWITCH_CONFIRM.
+const SWITCH_OFFSOURCE_CONFIRM = 3;
+// ...and its candidate must clear the acoustic bars by this much more.
+const SWITCH_OFFSOURCE_EXTRA = 0;
+// Sustained evidence (cycle 10): a strong win counts double, so two decodes (~1 s of
+// new audio, the rest of the window overlaps) can commit a switch — enough for a line
+// quoted once in katha. A switch also needs this many winning decodes for the same
+// shabad (a losing or unjudged decode takes one back). 0 = off.
+const SWITCH_MIN_WINNING = 0;
+// The same prior for a lock from searching after something was already shown this
+// session (kirtan ended, katha or Ardas began): a Vaaran/Dasam shabad whose source
+// differs from the last one shown must be proposed this many times in a row by the
+// lock routes before it goes up. 1 = off. The first lock of a session is never delayed.
+const RELOCK_OFFSOURCE_REPEATS = 1;
+// 1 = drop the spoken Fateh and Jaikara from what was heard before any matching
+// (they fuzzy-match heading lines like "ੴ ਵਾਹਗੁਰੂ ਜੀ ਕੀ ਫ਼ਤਹ ॥"). 0 = off.
+const GREETING_FILTER = 1; // cycle 10
+// Cycle 10 hold framework (0 = off = today's behaviour). Times are AUDIO seconds.
+// Off-source hold: a Vaaran/Dasam/other candidate (not the current source, not a
+// paath shabad) cannot replace an ESTABLISHED shabad unless it keeps winning for
+// this long — a line quoted once in katha or Ardas never gets that far.
+const SWITCH_OFFSOURCE_SPAN_S = 8; // cycle 10
+const SWITCH_ESTABLISHED_S = 30; // shown this long = established (a return keeps its time)
+// A sung Vaar or Dasam shabad keeps winning in scattered bursts over minutes; a katha
+// quote wins in one short burst. The hold also releases once the candidate has won this
+// many separate decodes within the last SWITCH_OFFSOURCE_SPREAD_S seconds. 0 = off.
+const SWITCH_OFFSOURCE_SPREAD_WINS = 4; // cycle 10
+const SWITCH_OFFSOURCE_SPREAD_S = 60; // cycle 10
+// ...and those wins must be spread over at least this long (first to last): one quoted
+// line recited in a single burst (many wins in a few seconds) does not count.
+const SWITCH_OFFSOURCE_SPREAD_MIN_S = 15; // cycle 10
+// The hold only protects a shabad that was really heard lately: its lines matched well
+// (text >= 0.75 or follower >= 0.85) within this many seconds. A shabad that has been up
+// for minutes without support is probably wrong itself and gets no protection. 0 = off.
+const SWITCH_OFFSOURCE_SUPPORT_S = 150; // cycle 10
+// Speech mode: when recent transcripts are long (speech, not sung lines), any
+// non-return switch needs a winning run this long. 0 chars = off.
+const SWITCH_SPEECH_CHARS = 0;
+const SWITCH_SPEECH_WINDOW_S = 8;
+const SWITCH_SPEECH_SPAN_S = 4.5;
+const SWITCH_SPEECH_OFFSOURCE = 0; // 1 = in speech mode an off-source, non-paath candidate never commits
+const SWITCH_RUN_MISSES = 3; // a winning run ends after this many judged non-winning decodes
+const SWITCH_RUN_GAP_S = 6; // ...or after this long with no win
+const HOLD_WINS_CAP = 1; // a held candidate keeps at most this many wins (1 = no Waheguru slide)
+// Waheguru-slide expiry: take our slide down after this long with no fresh strong
+// win, if the shabad under it had been up SEEK_EXPIRE_ESTABLISHED_S. 0 = off.
+const SEEK_EXPIRE_S = 10; // cycle 12
+const SEEK_EXPIRE_ESTABLISHED_S = 90;
+// Probation (cycle 11): after a switch away from an established shabad, the follower
+// must find the new shabad. If fewer than PROBATION_MIN_FRAC of its reports in the first
+// PROBATION_S seconds reach PROBATION_CONF (a line quoted in talk is not followed by more
+// singing of it), put up the Waheguru slide instead of a possibly wrong page; take it
+// down once PROBATION_RECOVER of the last 8 reports are confident again. 0 = off.
+const PROBATION_S = 15; // cycle 11
+const PROBATION_CONF = 0.7;
+const PROBATION_MIN_FRAC = 0.3;
+const PROBATION_RECOVER = 8; // cycle 11
+// 1 = also fail probation when the follower goes quiet on the new shabad (reports nothing
+// for PROBATION_SILENT_S past PROBATION_S): talk after a quoted line leaves it silent.
+const PROBATION_SILENT = 0;
+const PROBATION_SILENT_S = 5;
+// 1 = a switch made while the last one is still on probation is on probation too (talk can
+// hop twice in a few seconds; the second hop leaves a shabad that was never established).
+const PROBATION_CHAIN = 0;
+// 1 = when probation fails, go back to the shabad the app left (talk in the middle of a
+// shabad is labelled as that shabad) instead of putting up the Waheguru slide.
+const PROBATION_RESTORE = 0;
+// Same-Gurbani lock (cycle 11): the same text stored as two shabads (Aarti in Sohila and
+// in Dhanasari, a Rehras shabad and its SGGS original) searches as an exact tie, and a tie
+// never locks. 1 = while searching, treat such copies as one candidate. 0 = off.
+const DUP_AWARE_LOCK = 1; // cycle 11
+// Ardas guard: 1 = while following, never switch INTO the Ardas Bani's own shabads
+// (Chandi di Vaar, whose first pauri opens every Ardas) from another source. 0 = off.
+const ARDAS_GUARD = 0;
+const ARDAS_BANI_ID = 24;
+// Shared-tie hold: text that scores exactly the same in more than this many other
+// shabads (a stock phrase or a heading) cannot name a shabad; hold that decode. 0 = off.
+const SWITCH_SHARED_TIE_MIN = 0;
+const SWITCH_SHARED_TIE_KEEP_1 = 0; // 1 = never hold shabad 1 (sung Mool Mantar is labelled 1)
+// Mool Mantar home: when searching, this many distinct heard fragments that tie
+// exactly between shabad 1's Mool Mantar and other shabads lock shabad 1. 0 = off.
+const MOOL_HOME = 4; // cycle 12
+const MOOL_HOME_MIN = 0.6;
 // Returning to the shabad we JUST left is low-risk (we were confidently following
 // it moments ago) and slow returns are the main cost of a brief pramaan quote or a
 // mistaken switch: the true shabad kept reaching 2 wins but the shared contender
@@ -479,6 +574,20 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const flIndexLoadingRef = useRef(null); // in-flight index promise
   const lineCacheRef = useRef(new Map()); // shabadId -> { linesNorm, verses } | null (loading)
   const bsWinsRef = useRef(new Map()); // backstop wins banked per shabadId (survives screen flap)
+  const winCountRef = useRef(new Map()); // winning decodes per candidate shabadId (both slots)
+  const lastSourceRef = useRef(null); // source of the last shabad shown this session
+  const relockRef = useRef({ id: null, n: 0 }); // repeated off-source relock proposals
+  const runRef = useRef(new Map()); // shabadId -> { start, last, n, miss } winning run, audio s
+  const winTimesRef = useRef(new Map()); // shabadId -> audio s of its recent winning decodes
+  const probationRef = useRef(null); // { sid, start, n, hi, failed, recent } after a switch
+  const lastSupportAtRef = useRef(-1e9); // audio s the shown shabad last matched well
+  const curSinceRef = useRef(0); // audio s the shown shabad went up
+  const seekSinceRef = useRef(0); // audio s our Waheguru slide went up
+  const lastStrongAtRef = useRef(-1e9); // audio s a slot last won holding >= 2 wins
+  const paathShabadsRef = useRef(null); // Set of paath member shabads (never held)
+  const speechLenRef = useRef([]); // [{ at, n }] letters per recent transcript
+  const ardasShabadsRef = useRef(null); // shabads of the Ardas Bani (ARDAS_GUARD)
+  const sameGurbaniRef = useRef(new Map()); // 'a:b' -> Promise<boolean> (DUP_AWARE_LOCK)
   const bsAdoptKeyRef = useRef(''); // last screened field we ran adoption against
   const flIndexFailAtRef = useRef(0); // last index-build failure (backoff clock)
   // Seeking slide: while a switch evaluation is genuinely live (a contender is
@@ -652,6 +761,18 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     switchCandRef.current = null;
     backstopRef.current = null;
     bsWinsRef.current.clear();
+    winCountRef.current.clear();
+    runRef.current.clear();
+    winTimesRef.current.clear();
+    probationRef.current = null;
+    speechLenRef.current = [];
+    lastSourceRef.current = null;
+    relockRef.current = { id: null, n: 0 };
+    curSinceRef.current = 0;
+    seekSinceRef.current = 0;
+    lastStrongAtRef.current = -1e9;
+    paathShabadsRef.current = null;
+    ardasShabadsRef.current = null;
     bsAdoptKeyRef.current = '';
     setSwitchView(null);
     cleanup();
@@ -844,6 +965,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     switchCandRef.current = null;
     backstopRef.current = null;
     bsWinsRef.current.clear();
+    winCountRef.current.clear();
+    runRef.current.clear();
+    winTimesRef.current.clear();
+    probationRef.current = null;
+    speechLenRef.current = [];
+    relockRef.current = { id: null, n: 0 };
     bsAdoptKeyRef.current = '';
     setSwitchView(null);
     contextEvidenceRef.current = null;
@@ -969,8 +1096,49 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     // Preserve the exact BaniDB text for display, separately from tokenized
     // alignment words (which omit punctuation and verse numbers).
     const displayLines = filtered.map((it) => anvaad.unicode(it.verse));
-    return { verses, linesNorm, displayLines };
+    let sourceId = null;
+    try {
+      sourceId = (rows && rows[0] && rows[0].Source && rows[0].Source.SourceID) || null;
+    } catch (_) {
+      sourceId = null;
+    }
+    return { verses, linesNorm, displayLines, sourceId };
   }, []);
+
+  // DUP_AWARE_LOCK: whether two shabads are one Gurbani text stored twice (cached).
+  const isSameGurbani = useCallback(
+    (a, b) => {
+      if (a === b) return Promise.resolve(false);
+      const key = a < b ? `${a}:${b}` : `${b}:${a}`;
+      const cache = sameGurbaniRef.current;
+      if (!cache.has(key)) {
+        cache.set(
+          key,
+          Promise.all([loadShabadProfile(a), loadShabadProfile(b)])
+            .then(([pa, pb]) => sameGurbani(pa.displayLines, pb.displayLines))
+            .catch(() => false),
+        );
+      }
+      return cache.get(key);
+    },
+    [loadShabadProfile],
+  );
+
+  // Drop search leaders that are a copy of a higher-ranked leader, keeping n.
+  const distinctLeaders = useCallback(
+    async (list, n) => {
+      if (!list || list.length < 2) return list;
+      const copies = await Promise.all(
+        list.map((c, i) =>
+          Promise.all(list.slice(0, i).map((o) => isSameGurbani(o.shabadId, c.shabadId))).then(
+            (r) => r.some(Boolean),
+          ),
+        ),
+      );
+      return list.filter((c, i) => !copies[i]).slice(0, n);
+    },
+    [isSameGurbani],
+  );
 
   // Prepare independently of audio inference. A failed service backs off;
   // obsolete preparation cannot publish into a restarted microphone session.
@@ -1058,6 +1226,21 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (!isSwitch) await enterSearching();
           return;
         }
+        if (
+          !isSwitch &&
+          !opts.manual &&
+          baniId == null &&
+          lastSourceRef.current &&
+          profile.sourceId &&
+          profile.sourceId !== 'G' &&
+          profile.sourceId !== lastSourceRef.current
+        ) {
+          const rl = relockRef.current;
+          if (rl.id === cand.shabadId) rl.n += 1;
+          else relockRef.current = { id: cand.shabadId, n: 1 };
+          if (relockRef.current.n < RELOCK_OFFSOURCE_REPEATS) return;
+        }
+        relockRef.current = { id: null, n: 0 };
 
         let follower;
         try {
@@ -1089,9 +1272,13 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             id: currentShabadIdRef.current,
             profile: curProfileRef.current,
             decodesSince: 0,
+            since: curSinceRef.current,
+            cursor: curCursorRef.current,
           };
         } else if (!isSwitch || opts.promote) prevShabadRef.current = null;
         curBaniShabadsRef.current = baniId != null ? profile.shabadIds : null;
+        if (cand.shabadId !== currentShabadIdRef.current) lastSupportAtRef.current = -1e9;
+        lastSourceRef.current = profile.sourceId || (baniId != null ? 'bani' : null);
         returnSlotRef.current = null;
         curProfileRef.current = profile;
         curLinesNormRef.current = profile.linesNorm;
@@ -1162,8 +1349,52 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         }
         backstopRef.current = null;
         bsWinsRef.current.clear();
+        winCountRef.current.clear();
+        runRef.current.clear();
+        winTimesRef.current.clear();
+        const priorProbation = probationRef.current;
+        probationRef.current = null;
+        speechLenRef.current = [];
         bsAdoptKeyRef.current = '';
+        {
+          const switchAt = audioViewRef.current.samples / (sampleRateRef.current || 16000);
+          const leftEstablished =
+            (currentShabadIdRef.current != null &&
+              switchAt - curSinceRef.current >= SWITCH_ESTABLISHED_S) ||
+            !!(PROBATION_CHAIN && priorProbation);
+          const returning = !!(prevBefore && prevBefore.id === cand.shabadId);
+          probationRef.current =
+            PROBATION_S > 0 &&
+            isSwitch &&
+            !opts.manual &&
+            !opts.promote &&
+            baniId == null &&
+            !returning &&
+            leftEstablished &&
+            cand.shabadId !== currentShabadIdRef.current
+              ? {
+                  sid: cand.shabadId,
+                  start: switchAt,
+                  n: 0,
+                  hi: 0,
+                  failed: false,
+                  recent: [],
+                  from:
+                    (PROBATION_CHAIN && priorProbation && priorProbation.from) ||
+                    prevShabadRef.current,
+                }
+              : null;
+        }
         if (cand.shabadId !== currentShabadIdRef.current) {
+          if (!opts.promote) {
+            const upAt = audioViewRef.current.samples / (sampleRateRef.current || 16000);
+            if (opts.since != null) curSinceRef.current = opts.since;
+            else
+              curSinceRef.current =
+                prevBefore && prevBefore.id === cand.shabadId && prevBefore.since != null
+                  ? prevBefore.since
+                  : upAt;
+          }
           currentShabadIdRef.current = cand.shabadId;
           if (baniId != null) {
             // Same actions the Sundar Gutka screen uses to open a Bani.
@@ -1316,8 +1547,73 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // several n-grams across them, search banidb for each, and vote. Surface the
   // running shortlist, and auto-select once one shabad is confidently ahead.
   const handleTranscript = useCallback(
-    async (text) => {
+    async (heard) => {
       if (!recognizingRef.current) return;
+      const text = GREETING_FILTER ? stripGreetings(heard) : heard;
+      const audioNow = audioViewRef.current.samples / (sampleRateRef.current || 16000);
+      if (SWITCH_SPEECH_CHARS > 0) {
+        const buf = speechLenRef.current;
+        buf.push({ at: audioNow, n: vfNorm(text).length });
+        while (buf.length && audioNow - buf[0].at > SWITCH_SPEECH_WINDOW_S) buf.shift();
+      }
+      const probe = probationRef.current;
+      if (
+        PROBATION_SILENT &&
+        probe &&
+        !probe.failed &&
+        currentShabadIdRef.current === probe.sid &&
+        audioNow - probe.start >= PROBATION_S + PROBATION_SILENT_S &&
+        probe.hi / Math.max(1, probe.n) < PROBATION_MIN_FRAC
+      ) {
+        probe.failed = true;
+        if (!seekingRef.current && !isMiscSlideRef.current && !(PROBATION_RESTORE && probe.from)) {
+          seekingRef.current = true;
+          sessionLog.logEvent('seeking', {
+            session: sessionIdRef.current,
+            visible: true,
+            from: currentShabadIdRef.current,
+          });
+          try {
+            setMiscSlideText(slideStrings.waheguru);
+            setIsMiscSlide(true);
+          } catch (_) {
+            seekingRef.current = false;
+          }
+        }
+      }
+      if (
+        PROBATION_RESTORE &&
+        probe &&
+        probe.failed &&
+        probe.from &&
+        probe.from.profile &&
+        !probe.restoring &&
+        autopilotRef.current &&
+        !lockingRef.current &&
+        currentShabadIdRef.current === probe.sid
+      ) {
+        // Probation failed: go back to the shabad the app left, at the line it was on.
+        probe.restoring = true;
+        const { from } = probe;
+        const idx = Math.min(Math.max(0, from.cursor || 0), from.profile.verses.length - 1);
+        const v = from.profile.verses[idx] || {};
+        let verse = null;
+        try {
+          if (baniIdOf(from.id) != null) verse = (from.profile.rawLines || [])[idx] || null;
+          else verse = v.verseId ? await banidb.getVerse(from.id, v.verseId) : null;
+        } catch (_) {
+          verse = null;
+        }
+        if (
+          verse &&
+          recognizingRef.current &&
+          !lockingRef.current &&
+          currentShabadIdRef.current === probe.sid
+        ) {
+          autopilotLock({ shabadId: from.id, verseId: v.verseId, verse }, { since: from.since });
+          return;
+        }
+      }
       const session = sessionRef.current;
       // Accumulate distinct hypotheses while identifying the first Shabad.
       // Canonical retrieval supplies identities; recognized text is never displayed.
@@ -1336,7 +1632,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           transcriptAbortRef.current?.abort();
           const request = new AbortController();
           transcriptAbortRef.current = request;
-          const leaders = await searchCanonicalText(text, 3, request.signal);
+          let leaders = await searchCanonicalText(text, 3 + DUP_AWARE_LOCK, request.signal);
+          if (DUP_AWARE_LOCK) leaders = await distinctLeaders(leaders, 3);
           if (
             session !== sessionRef.current ||
             !recognizingRef.current ||
@@ -1348,6 +1645,45 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             return;
           const top = leaders?.[0];
           const margin = top ? top.score - (leaders[1]?.score || 0) : 0;
+          if (
+            MOOL_HOME > 0 &&
+            top &&
+            top.shabadId === 1 &&
+            top.verseId === 1 &&
+            top.score >= MOOL_HOME_MIN &&
+            leaders[1] &&
+            Math.abs(top.score - leaders[1].score) < 1e-9
+          ) {
+            const mm =
+              memory.mool && step - memory.mool.last <= 4
+                ? memory.mool
+                : { hyps: new Set(), last: step };
+            mm.hyps.add(hyp);
+            mm.last = step;
+            memory.mool = mm;
+            if (mm.hyps.size >= MOOL_HOME) {
+              let moolProfile;
+              try {
+                moolProfile = await loadShabadProfile(1);
+              } catch (_) {
+                return;
+              }
+              if (
+                session !== sessionRef.current ||
+                !recognizingRef.current ||
+                phaseRef.current !== 'searching' ||
+                lockingRef.current ||
+                contextEvidenceRef.current !== memory ||
+                memory.step !== step
+              )
+                return;
+              const at = moolProfile.verses.findIndex((v) => v.verseId === 1);
+              if (at >= 0) {
+                autopilotLock({ shabadId: 1, verseId: 1, verse: moolProfile.displayLines[at] });
+                return;
+              }
+            }
+          }
           if (
             top &&
             top.score >= 0.3 &&
@@ -1470,8 +1806,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             if (
               winner?.id === top.shabadId &&
               margin >= AP_LOCK_TEXT_MARGIN &&
-              winner.count >= 6 &&
-              winner.wins >= 4 &&
+              winner.count >= CTX_LOCK_COUNT &&
+              winner.wins >= CTX_LOCK_WINS &&
               (winner.anchor || winner.verses.size >= 2) &&
               winner.score - (rankedContext[1]?.score || 0) >= 1
             ) {
@@ -1506,7 +1842,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       // Search uses ASCII-font first letters (the DB's FirstLetterStr encoding).
       // The recognizer's unverified text is never a display or canonical source.
       const fl = toAsciiFirstLetters(text);
-      if (fl.length < DETECT_MIN_LETTERS) return;
+      const minLetters =
+        FOLLOW_MIN_LETTERS > 0 && autopilotRef.current && phaseRef.current === 'following'
+          ? FOLLOW_MIN_LETTERS
+          : DETECT_MIN_LETTERS;
+      if (fl.length < minLetters) return;
+      const thin = fl.length < DETECT_MIN_LETTERS;
       const sequence = ++transcriptSeqRef.current;
       const phase = phaseRef.current;
       const originShabad = currentShabadIdRef.current;
@@ -1523,11 +1864,13 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       // Fade prior evidence a touch each decode so the tally tracks what's being
       // sung now, not a false start from a few seconds ago.
       const votes = detectVotesRef.current;
-      votes.forEach((v, k) => {
-        const nv = v * DETECT_VOTE_DECAY;
-        if (nv < 0.4) votes.delete(k);
-        else votes.set(k, nv);
-      });
+      if (!thin) {
+        votes.forEach((v, k) => {
+          const nv = v * DETECT_VOTE_DECAY;
+          if (nv < 0.4) votes.delete(k);
+          else votes.set(k, nv);
+        });
+      }
 
       // Build the query set: contiguous n-grams (CONTAINS — tolerant of errors in
       // the surrounding letters), a couple of leave-one-out variants of the recent
@@ -1555,7 +1898,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       for (let d = 1; d < tail.length - 1; d += 1) {
         addQ(tail.slice(0, d) + tail.slice(d + 1), tail.length - 1, FIRST_LETTERS_ANYWHERE);
       }
-      if (!queries.length) return;
+      if (!queries.length && !thin) return;
 
       const results = await Promise.all(
         queries.map((g) =>
@@ -1613,7 +1956,19 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       // the leader so the top guess reads as a full bar.
       const ranked = [...votes.entries()].sort((a, b) => b[1] - a[1]);
       const best = ranked[0][1];
-      const second = ranked[1] ? ranked[1][1] : 0;
+      let runnerUp = 1;
+      if (DUP_AWARE_LOCK && autopilotRef.current && phaseRef.current === 'searching') {
+        // A copy of the leader's text is the same candidate, not its rival.
+        while (
+          runnerUp < 3 &&
+          ranked[runnerUp] &&
+          // eslint-disable-next-line no-await-in-loop
+          (await isSameGurbani(ranked[0][0], ranked[runnerUp][0]))
+        )
+          runnerUp += 1;
+        if (!isCurrentTranscript()) return;
+      }
+      const second = ranked[runnerUp] ? ranked[runnerUp][1] : 0;
       const leaderId = ranked[0][0];
       const lead = best / (best + second || best);
 
@@ -1666,7 +2021,15 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             best >= DETECT_MIN_EVIDENCE &&
             st.count >= AP_LOCK_STABLE
           ) {
-            const leaders = await searchCanonicalText(text, 2, abort.signal);
+            let leaders = await searchCanonicalText(text, 2 + DUP_AWARE_LOCK, abort.signal);
+            if (DUP_AWARE_LOCK) leaders = await distinctLeaders(leaders, 2);
+            if (
+              DUP_AWARE_LOCK &&
+              leaders?.[0] &&
+              leaders[0].shabadId !== cand.shabadId &&
+              (await isSameGurbani(leaders[0].shabadId, cand.shabadId))
+            )
+              leaders = [{ ...leaders[0], shabadId: cand.shabadId }, ...leaders.slice(1)];
             if (
               !isCurrentTranscript() ||
               lockingRef.current ||
@@ -1715,6 +2078,23 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             }
           });
         }
+        const sharedTieIds = new Set();
+        if (SWITCH_SHARED_TIE_MIN > 0) {
+          const tieRows = textCandidates
+            .filter((r) => r.shabadId !== curId)
+            .sort((a, b) => b.score - a.score);
+          for (let i = 0; i < tieRows.length;) {
+            let j = i + 1;
+            while (j < tieRows.length && Math.abs(tieRows[j - 1].score - tieRows[j].score) < 1e-9)
+              j += 1;
+            if (j - i >= SWITCH_SHARED_TIE_MIN + 1) {
+              tieRows.slice(i, j).forEach((r) => {
+                if (!(SWITCH_SHARED_TIE_KEEP_1 && r.shabadId === 1)) sharedTieIds.add(r.shabadId);
+              });
+            }
+            i = j;
+          }
+        }
         const hypFull = vfNorm(text).slice(-SWITCH_HYP_SLICE); // recent decoded audio
         // Current shabad scored from the cursor, candidates scored across all
         // their lines (a new shabad may be entered anywhere, usually its start).
@@ -1744,21 +2124,133 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           hypLen: hypFull.length,
           hypMin: SWITCH_HYP_MIN,
         };
-        const stepSlot = (slot, sCand) => {
+        const curSource = (curProfileRef.current && curProfileRef.current.sourceId) || null;
+        const offSourceCfg = {
+          ...acousticCfg,
+          min: SWITCH_ACOUSTIC_MIN + SWITCH_OFFSOURCE_EXTRA,
+          margin: SWITCH_ACOUSTIC_MARGIN + SWITCH_OFFSOURCE_EXTRA,
+          strongMin: SWITCH_STRONG_MIN + SWITCH_OFFSOURCE_EXTRA,
+          strongMargin: SWITCH_STRONG_MARGIN + SWITCH_OFFSOURCE_EXTRA,
+        };
+        if (sCurFull >= 0.75) lastSupportAtRef.current = audioNow;
+        const supported =
+          SWITCH_OFFSOURCE_SUPPORT_S <= 0 ||
+          audioNow - lastSupportAtRef.current <= SWITCH_OFFSOURCE_SUPPORT_S;
+        const established = audioNow - curSinceRef.current >= SWITCH_ESTABLISHED_S && supported;
+        const speechBuf = speechLenRef.current;
+        const speechAvg = speechBuf.length
+          ? speechBuf.reduce((a, x) => a + x.n, 0) / speechBuf.length
+          : 0;
+        const speechMode =
+          SWITCH_SPEECH_CHARS > 0 && speechBuf.length >= 4 && speechAvg >= SWITCH_SPEECH_CHARS;
+        if ((SWITCH_OFFSOURCE_SPAN_S > 0 || SWITCH_SPEECH_OFFSOURCE) && !paathShabadsRef.current) {
+          paathShabadsRef.current = new Set();
+          getBaniIndex()
+            .then((ix) => {
+              paathShabadsRef.current = new Set(
+                PAATH_BANIS.flatMap((b) => (ix && ix.banis[b]) || []),
+              );
+            })
+            .catch(() => {});
+        }
+        if (ARDAS_GUARD && !ardasShabadsRef.current) {
+          ardasShabadsRef.current = new Set();
+          getBaniIndex()
+            .then((ix) => {
+              ardasShabadsRef.current = new Set((ix && ix.banis[ARDAS_BANI_ID]) || []);
+            })
+            .catch(() => {});
+        }
+        const countedThisDecode = new Set(); // shabads a slot judged this decode
+        const stepSlot = (slot, sCand, source) => {
           // Suppress confirmation only for identities in the tied leader set.
           const vetoed =
             !!(vetoRef.current && vetoRef.current.id === slot.shabadId) ||
-            !!(curBaniShabadsRef.current && curBaniShabadsRef.current.has(slot.shabadId));
+            !!(curBaniShabadsRef.current && curBaniShabadsRef.current.has(slot.shabadId)) ||
+            !!(
+              ARDAS_GUARD &&
+              ardasShabadsRef.current &&
+              ardasShabadsRef.current.has(slot.shabadId) &&
+              source !== curSource
+            );
           if (tiedLeaderIds.has(slot.shabadId) || vetoed) {
             slot.wins = 0; // eslint-disable-line no-param-reassign
             slot.lastScore = sCand; // eslint-disable-line no-param-reassign
+            runRef.current.delete(slot.shabadId);
             return false;
           }
-          const step = nextSwitchWins(slot.wins, sCand, sCurFull, acousticCfg);
+          if (sharedTieIds.has(slot.shabadId)) {
+            slot.lastScore = sCand; // eslint-disable-line no-param-reassign
+            slot.wins = Math.min(HOLD_WINS_CAP, slot.wins); // eslint-disable-line no-param-reassign
+            countedThisDecode.add(slot.shabadId);
+            return false;
+          }
+          const offSource = !!source && source !== 'G' && source !== curSource;
+          const slotCfg = offSource ? offSourceCfg : acousticCfg;
+          const before = slot.wins;
+          const step = nextSwitchWins(slot.wins, sCand, sCurFull, slotCfg);
           slot.wins = step.wins; // eslint-disable-line no-param-reassign
           // Held decodes judged nothing — keep showing the last judged score.
           if (!step.held) slot.lastScore = sCand; // eslint-disable-line no-param-reassign
-          return slot.wins >= SWITCH_CONFIRM;
+          const won = !step.held && step.wins > before;
+          if (!step.held && !countedThisDecode.has(slot.shabadId)) {
+            // One count (and one run update) per shabad per decode, whichever slot judged it.
+            countedThisDecode.add(slot.shabadId);
+            const n = winCountRef.current.get(slot.shabadId) || 0;
+            winCountRef.current.set(slot.shabadId, won ? n + 1 : Math.max(0, n - 1));
+            if (won && SWITCH_OFFSOURCE_SPREAD_WINS > 0) {
+              const wt = (winTimesRef.current.get(slot.shabadId) || []).filter(
+                (t) => audioNow - t <= SWITCH_OFFSOURCE_SPREAD_S,
+              );
+              wt.push(audioNow);
+              winTimesRef.current.set(slot.shabadId, wt);
+            }
+            let run = runRef.current.get(slot.shabadId);
+            if (won) {
+              if (!run || audioNow - run.last > SWITCH_RUN_GAP_S)
+                run = { start: audioNow, last: audioNow, n: 0, miss: 0 };
+              run.last = audioNow;
+              run.n += 1;
+              run.miss = 0;
+              runRef.current.set(slot.shabadId, run);
+            } else if (run) {
+              run.miss += 1;
+              if (run.miss >= SWITCH_RUN_MISSES) runRef.current.delete(slot.shabadId);
+            }
+          }
+          const sustained = (winCountRef.current.get(slot.shabadId) || 0) >= SWITCH_MIN_WINNING;
+          const need = offSource ? SWITCH_OFFSOURCE_CONFIRM : SWITCH_CONFIRM;
+          let holdSpan = 0;
+          const isReturn = !!(prevShabadRef.current && prevShabadRef.current.id === slot.shabadId);
+          if (!isReturn) {
+            const ps = paathShabadsRef.current;
+            const paath = !(ps && ps.size) || ps.has(slot.shabadId); // index not loaded = exempt
+            if (SWITCH_OFFSOURCE_SPAN_S > 0 && offSource && established && !paath)
+              holdSpan = SWITCH_OFFSOURCE_SPAN_S;
+            if (speechMode && SWITCH_SPEECH_OFFSOURCE && offSource && !paath) holdSpan = Infinity;
+            else if (speechMode && SWITCH_SPEECH_SPAN_S > 0)
+              holdSpan = Math.max(holdSpan, SWITCH_SPEECH_SPAN_S);
+          }
+          if (holdSpan > 0) {
+            const run = runRef.current.get(slot.shabadId);
+            const span = run ? audioNow - run.start : 0;
+            if (won && span >= holdSpan && run.n >= need && sustained) return true;
+            if (won && SWITCH_OFFSOURCE_SPREAD_WINS > 0 && holdSpan !== Infinity) {
+              const recent = (winTimesRef.current.get(slot.shabadId) || []).filter(
+                (t) => audioNow - t <= SWITCH_OFFSOURCE_SPREAD_S,
+              );
+              if (
+                recent.length >= SWITCH_OFFSOURCE_SPREAD_WINS &&
+                recent[recent.length - 1] - recent[0] >= SWITCH_OFFSOURCE_SPREAD_MIN_S &&
+                sustained
+              )
+                return true;
+            }
+            slot.wins = Math.min(slot.wins, HOLD_WINS_CAP); // eslint-disable-line no-param-reassign
+            return false;
+          }
+          if (won && slot.wins >= 2) lastStrongAtRef.current = audioNow;
+          return sustained && slot.wins >= need;
         };
         const decaySlot = (slot) => {
           slot.wins = Math.max(0, slot.wins - 1); // eslint-disable-line no-param-reassign
@@ -1793,14 +2285,17 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               switchCandRef.current = sc;
               loadShabadProfile(contId)
                 .then((p) => {
-                  if (switchCandRef.current === sc) sc.linesNorm = p.linesNorm;
+                  if (switchCandRef.current === sc) {
+                    sc.linesNorm = p.linesNorm;
+                    sc.sourceId = p.sourceId;
+                  }
                 })
                 .catch(() => {
                   if (switchCandRef.current === sc) switchCandRef.current = null;
                 });
             } else if (sc.linesNorm) {
               const sCand = maxLineScore(hypFull, sc.linesNorm, SWITCH_CAND_MIN_LINE_CHARS);
-              sc.committed = stepSlot(sc, sCand);
+              sc.committed = stepSlot(sc, sCand, sc.sourceId);
             }
           }
         }
@@ -1902,7 +2397,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                 bs.verseId = v.verseId;
                 bs.display = prof.displayLines[m.index] || '';
               }
-              bs.committed = stepSlot(bs, m.s);
+              bs.committed = stepSlot(bs, m.s, prof && prof.sourceId);
               bsWinsRef.current.set(bs.shabadId, bs.wins);
             } else if (decaySlot(bs)) {
               bsWinsRef.current.delete(bs.shabadId);
@@ -1911,6 +2406,13 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             }
           }
         }
+
+        // Shabads no slot judged this decode lose one winning decode.
+        winCountRef.current.forEach((n, id) => {
+          if (countedThisDecode.has(id)) return;
+          if (n <= 1) winCountRef.current.delete(id);
+          else winCountRef.current.set(id, n - 1);
+        });
 
         // --- Return slot: the shabad we just left, judged in its own slot. ---
         {
@@ -2063,8 +2565,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           setSwitchView(null);
           setCands([]);
           setDetail('Following');
-          // The evaluation died without committing: come back from seeking.
-          if (seekingRef.current) {
+          // The evaluation died without committing: come back from seeking
+          // (unless probation put the slide up: that one waits for the follower).
+          if (seekingRef.current && !(probationRef.current && probationRef.current.failed)) {
             seekingRef.current = false;
             try {
               setIsMiscSlide(false);
@@ -2078,7 +2581,21 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         const leadSlot = bgp && bgp.wins > (vote ? vote.wins : -1) ? bgp : vote;
         if (leadSlot.lastScore == null) return; // still loading its lines; keep prior UI
         if (
+          SEEK_EXPIRE_S > 0 &&
           seekingRef.current &&
+          seekSinceRef.current - curSinceRef.current >= SEEK_EXPIRE_ESTABLISHED_S &&
+          audioNow - Math.max(lastStrongAtRef.current, seekSinceRef.current) >= SEEK_EXPIRE_S
+        ) {
+          seekingRef.current = false;
+          try {
+            setIsMiscSlide(false);
+          } catch (_) {
+            /* Closing store. */
+          }
+        }
+        if (
+          seekingRef.current &&
+          !(probationRef.current && probationRef.current.failed) &&
           hypFull.length >= SWITCH_HYP_MIN &&
           leadSlot.wins === 0 &&
           sCurFull >= SWITCH_ACOUSTIC_MIN &&
@@ -2126,8 +2643,14 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           // Gated on wins >= 2 (a single winning decode flickers too much to
           // flip the projector on), only when no misc slide is already showing
           // (never cover the user's own slide), and only once per evaluation.
-          if (leadSlot.wins >= 2 && !seekingRef.current && !isMiscSlideRef.current) {
+          if (
+            leadSlot.wins >= 2 &&
+            !seekingRef.current &&
+            !isMiscSlideRef.current &&
+            (SEEK_EXPIRE_S <= 0 || audioNow - lastStrongAtRef.current < 1)
+          ) {
             seekingRef.current = true;
+            seekSinceRef.current = audioNow;
             sessionLog.logEvent('seeking', {
               session: sessionIdRef.current,
               visible: true,
@@ -2155,6 +2678,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       autopilotLock,
       loadShabadProfile,
       searchCanonicalText,
+      getBaniIndex,
       setIsMiscSlide,
       setMiscSlideText,
     ],
@@ -2258,6 +2782,18 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     switchCandRef.current = null;
     backstopRef.current = null;
     bsWinsRef.current.clear();
+    winCountRef.current.clear();
+    runRef.current.clear();
+    winTimesRef.current.clear();
+    probationRef.current = null;
+    speechLenRef.current = [];
+    lastSourceRef.current = null;
+    relockRef.current = { id: null, n: 0 };
+    curSinceRef.current = 0;
+    seekSinceRef.current = 0;
+    lastStrongAtRef.current = -1e9;
+    paathShabadsRef.current = null;
+    ardasShabadsRef.current = null;
     bsAdoptKeyRef.current = '';
     setSwitchView(null);
     contextEvidenceRef.current = null;
@@ -2331,6 +2867,53 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           // Shabad/session selected while inference was in flight.
           if (!out || followerRef.current !== f || !autopilotRef.current || lockingRef.current) {
             return;
+          }
+          if (out.lineIndex != null && out.verseIndex !== -1 && (out.confidence || 0) >= 0.85) {
+            lastSupportAtRef.current =
+              audioViewRef.current.samples / (sampleRateRef.current || 16000);
+          }
+          const pb = probationRef.current;
+          if (pb && currentShabadIdRef.current === pb.sid) {
+            const released = out.lineIndex == null || out.verseIndex === -1;
+            const sure = !released && (out.confidence || 0) >= PROBATION_CONF;
+            const tNow = audioViewRef.current.samples / (sampleRateRef.current || 16000);
+            pb.n += 1;
+            if (sure) pb.hi += 1;
+            pb.recent.push(sure);
+            if (pb.recent.length > 8) pb.recent.shift();
+            if (!pb.failed && tNow - pb.start >= PROBATION_S) {
+              if (pb.hi / Math.max(1, pb.n) < PROBATION_MIN_FRAC) {
+                pb.failed = true;
+                if (
+                  !seekingRef.current &&
+                  !isMiscSlideRef.current &&
+                  !(PROBATION_RESTORE && pb.from)
+                ) {
+                  seekingRef.current = true;
+                  sessionLog.logEvent('seeking', {
+                    session: sessionIdRef.current,
+                    visible: true,
+                    from: currentShabadIdRef.current,
+                  });
+                  try {
+                    setMiscSlideText(slideStrings.waheguru);
+                    setIsMiscSlide(true);
+                  } catch (_) {
+                    seekingRef.current = false;
+                  }
+                }
+              } else probationRef.current = null;
+            } else if (pb.failed && pb.recent.filter(Boolean).length >= PROBATION_RECOVER) {
+              probationRef.current = null;
+              if (seekingRef.current) {
+                seekingRef.current = false;
+                try {
+                  setIsMiscSlide(false);
+                } catch (_) {
+                  /* Closing store. */
+                }
+              }
+            }
           }
           // Follower released (singer paused, or moved on): hold on screen —
           // the acoustic switch test handles a real move to another shabad.

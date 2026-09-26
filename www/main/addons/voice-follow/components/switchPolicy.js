@@ -113,7 +113,6 @@ function bestLineMatch(hypNorm, linesNorm, minLineChars = 0) {
   return { s: best, index: at };
 }
 
-
 // Order-tolerant line match for the CURRENT shabad. Kirtan constantly re-sings
 // the rahao and rotates word order ("tera ant na jaana mere laal" for the line
 // "mere laal jio tera ant na jaana"). partialRatio is order-sensitive, so the
@@ -141,7 +140,90 @@ function orderFreeLineScore(hypWords, linesWords, minLineChars = 0) {
   return best;
 }
 
+// Spoken greetings are not Gurbani. The Fateh ("ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ
+// ਫਤਿਹ") opens and closes katha and Ardas, and the Jaikara ("ਬੋਲੇ ਸੋ ਨਿਹਾਲ ਸਤਿ ਸ੍ਰੀ
+// ਅਕਾਲ") follows it; both fuzzy-match heading lines such as "ੴ ਵਾਹਗੁਰੂ ਜੀ ਕੀ ਫ਼ਤਹ ॥".
+// Words are compared by consonant skeleton (vowel signs dropped) because the
+// recogniser spells them loosely (ਖਸਾ, ਵਾਹਿੁਰ, ਫਤਹਿ). A run of greeting words is
+// removed only when it holds a key word (ਖਾਲਸਾ/ਫਤਿਹ, or ਨਿਹਾਲ, or ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ together)
+// and at least two words, so Gurbani that merely contains ਅਕਾਲ or ਵਾਹਿਗੁਰੂ is untouched.
+const SIGNS = /[ਁ-ਃ਼-੍ੑੰੱੵ]/g;
+const skeleton = (w) => w.replace(SIGNS, '');
+const FATEH_KEY = new Set(['ਖਲਸ', 'ਖਸ', 'ਖਲ', 'ਫਤਹ', 'ਫਤ', 'ਫਹ']);
+const FATEH_GLUE = new Set(['ਵਹਗਰ', 'ਵਹਰ', 'ਵਹਗ', 'ਹਗਰ', 'ਗਰ', 'ਜ', 'ਕ', 'ਪਤ', 'ਪਤਹ', '']);
+const JAI_KEY = new Set(['ਨਹਲ']);
+const JAI_GLUE = new Set(['ਬਲ', 'ਸ', 'ਸਤ', 'ਸਰ', 'ਅਕਲ', '']);
+function stripGreetings(text) {
+  if (!text) return text;
+  const words = String(text).split(/\s+/).filter(Boolean);
+  const sk = words.map(skeleton);
+  const drop = new Array(words.length).fill(false);
+  const mark = (inRun, isKey, extraKey) => {
+    let i = 0;
+    while (i < words.length) {
+      if (!inRun(sk[i])) {
+        i += 1;
+      } else {
+        let j = i;
+        while (j < words.length && inRun(sk[j])) j += 1;
+        const run = sk.slice(i, j);
+        if (j - i >= 2 && (run.some(isKey) || (extraKey && extraKey(run)))) {
+          for (let k = i; k < j; k += 1) drop[k] = true;
+        }
+        i = j;
+      }
+    }
+  };
+  mark(
+    (w) => FATEH_KEY.has(w) || FATEH_GLUE.has(w),
+    (w) => FATEH_KEY.has(w),
+  );
+  mark(
+    (w) => JAI_KEY.has(w) || JAI_GLUE.has(w),
+    (w) => JAI_KEY.has(w),
+    (run) => run.includes('ਸਤ') && run.includes('ਸਰ') && run.includes('ਅਕਲ'),
+  );
+  return words.filter((w, i) => !drop[i]).join(' ');
+}
+
+// Two shabads that are the same Gurbani text in two places (Aarti's SGGS
+// shabad vs its copy in the Aarti Bani, a Sohila shabad repeated elsewhere)
+// search as an exact tie, and a tie can never lock. sameGurbani(a, b) says
+// whether two shabads' display lines are such a copy: at least 80% of the
+// shorter one's real lines (headings dropped, vowel signs and small spelling
+// differences ignored) appear in the longer one.
+const DUP_HEADING = /ੴ|ਮਹਲਾ|ਪਾਤਿਸਾਹੀ|ਘਰੁ|^ਪਉੜੀ|^ਸਲੋਕ|^ਰਾਗੁ/;
+const DUP_VOWELS = { ਆ: 'ਅ', ਈ: 'ਇ', ਊ: 'ਉ', ਐ: 'ਏ', ਔ: 'ਓ' };
+const dupLines = (lines) =>
+  new Set(
+    (lines || [])
+      .filter((l) => l && !DUP_HEADING.test(l))
+      .map((l) =>
+        l
+          .replace(/[।॥|0-9੦-੯.,;:!?\-\s]+/g, '')
+          .replace(/[ਾ-ੌਁ-ਃੰੱ਼੍]/g, '')
+          .replace(/[ਆਈਊਐਔ]/g, (c) => DUP_VOWELS[c]),
+      )
+      .filter((l) => l.length >= 8),
+  );
+function sameGurbani(linesA, linesB) {
+  const a = dupLines(linesA);
+  const b = dupLines(linesB);
+  const [small, big] = a.size <= b.size ? [a, b] : [b, a];
+  if (small.size < 2) return false;
+  const near = (l) =>
+    big.has(l) ||
+    [...big].some((m) => Math.abs(l.length - m.length) <= 4 && partialRatio(l, m) >= 90);
+  let k = 0;
+  small.forEach((l) => {
+    if (near(l)) k += 1;
+  });
+  return k >= 0.8 * small.size;
+}
+
 module.exports = {
+  sameGurbani,
+  stripGreetings,
   nextSwitchWins,
   nextEmptyStreak,
   maxLineScore,
