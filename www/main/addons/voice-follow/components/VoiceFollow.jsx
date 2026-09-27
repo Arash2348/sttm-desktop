@@ -1105,37 +1105,33 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     return { verses, linesNorm, displayLines, sourceId };
   }, []);
 
-  // DUP_AWARE_LOCK: whether two shabads are one Gurbani text stored twice (cached).
+  // DUP_AWARE_LOCK: whether two shabads are one Gurbani text stored twice. NEVER waits: the
+  // lock path must not stall on loading text (live, the next decode cancels a slow decision,
+  // so a waiting check means the app rarely locks). An unknown pair answers false now and is
+  // looked up in the background; later decodes see the cached answer.
   const isSameGurbani = useCallback(
     (a, b) => {
-      if (a === b) return Promise.resolve(false);
+      if (a === b) return false;
       const key = a < b ? `${a}:${b}` : `${b}:${a}`;
       const cache = sameGurbaniRef.current;
       if (!cache.has(key)) {
-        cache.set(
-          key,
-          Promise.all([loadShabadProfile(a), loadShabadProfile(b)])
-            .then(([pa, pb]) => sameGurbani(pa.displayLines, pb.displayLines))
-            .catch(() => false),
-        );
+        cache.set(key, null);
+        Promise.all([loadShabadProfile(a), loadShabadProfile(b)])
+          .then(([pa, pb]) => cache.set(key, sameGurbani(pa.displayLines, pb.displayLines)))
+          .catch(() => cache.set(key, false));
       }
-      return cache.get(key);
+      return cache.get(key) === true;
     },
     [loadShabadProfile],
   );
 
-  // Drop search leaders that are a copy of a higher-ranked leader, keeping n.
+  // Drop search leaders that are a copy of a higher-ranked leader, keeping n (no waiting).
   const distinctLeaders = useCallback(
-    async (list, n) => {
+    (list, n) => {
       if (!list || list.length < 2) return list;
-      const copies = await Promise.all(
-        list.map((c, i) =>
-          Promise.all(list.slice(0, i).map((o) => isSameGurbani(o.shabadId, c.shabadId))).then(
-            (r) => r.some(Boolean),
-          ),
-        ),
-      );
-      return list.filter((c, i) => !copies[i]).slice(0, n);
+      return list
+        .filter((c, i) => !list.slice(0, i).some((o) => isSameGurbani(o.shabadId, c.shabadId)))
+        .slice(0, n);
     },
     [isSameGurbani],
   );
@@ -1633,7 +1629,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           const request = new AbortController();
           transcriptAbortRef.current = request;
           let leaders = await searchCanonicalText(text, 3 + DUP_AWARE_LOCK, request.signal);
-          if (DUP_AWARE_LOCK) leaders = await distinctLeaders(leaders, 3);
+          if (DUP_AWARE_LOCK) leaders = distinctLeaders(leaders, 3);
           if (
             session !== sessionRef.current ||
             !recognizingRef.current ||
@@ -1959,14 +1955,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       let runnerUp = 1;
       if (DUP_AWARE_LOCK && autopilotRef.current && phaseRef.current === 'searching') {
         // A copy of the leader's text is the same candidate, not its rival.
-        while (
-          runnerUp < 3 &&
-          ranked[runnerUp] &&
-          // eslint-disable-next-line no-await-in-loop
-          (await isSameGurbani(ranked[0][0], ranked[runnerUp][0]))
-        )
+        while (runnerUp < 3 && ranked[runnerUp] && isSameGurbani(ranked[0][0], ranked[runnerUp][0]))
           runnerUp += 1;
-        if (!isCurrentTranscript()) return;
       }
       const second = ranked[runnerUp] ? ranked[runnerUp][1] : 0;
       const leaderId = ranked[0][0];
@@ -2022,12 +2012,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             st.count >= AP_LOCK_STABLE
           ) {
             let leaders = await searchCanonicalText(text, 2 + DUP_AWARE_LOCK, abort.signal);
-            if (DUP_AWARE_LOCK) leaders = await distinctLeaders(leaders, 2);
+            if (DUP_AWARE_LOCK) leaders = distinctLeaders(leaders, 2);
             if (
               DUP_AWARE_LOCK &&
               leaders?.[0] &&
               leaders[0].shabadId !== cand.shabadId &&
-              (await isSameGurbani(leaders[0].shabadId, cand.shabadId))
+              isSameGurbani(leaders[0].shabadId, cand.shabadId)
             )
               leaders = [{ ...leaders[0], shabadId: cand.shabadId }, ...leaders.slice(1)];
             if (
