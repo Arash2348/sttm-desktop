@@ -328,11 +328,13 @@
     },
     "shadow-recording": {
       "title": "SHADOW_RECORDING",
+      "dontApplyClass": true,
       "initialValue": true,
       "notes": "SHADOW_RECORDING_MSG"
     },
     "shadow-tester": {
       "title": "SHADOW_TESTER",
+      "dontApplyClass": true,
       "initialValue": ""
     },
     "improve-voice-follow": {

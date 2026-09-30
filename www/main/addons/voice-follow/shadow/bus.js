@@ -124,9 +124,22 @@ function scoreSecond(i) {
   } else sc.wrong += 1;
 }
 
+function flushActivity(upTo) {
+  // One line per finished second: loudest level (RMS 0-1) and most letters heard.
+  while (S.act.sec < upTo) {
+    writeLine('activity.jsonl', {
+      t: S.act.sec,
+      level: Math.round(S.act.level * 1000) / 1000,
+      letters: S.act.letters,
+    });
+    S.act = { sec: S.act.sec + 1, level: 0, letters: 0 };
+  }
+}
+
 function tick() {
   if (!S) return;
   const i = Math.floor(now());
+  flushActivity(i);
   while (S.samples.length <= i) {
     S.samples.push({ human: { ...S.human }, system: { ...S.system }, paused: S.paused });
   }
@@ -166,6 +179,7 @@ function begin(dir, t0) {
     pending: null,
     paused: false,
     lastSave: 0,
+    act: { sec: 0, level: 0, letters: 0 },
     timer: setInterval(tick, 1000),
   };
 }
@@ -187,7 +201,7 @@ function human(label) {
   if (!S) return;
   const prevKey = contentKey(S.human);
   S.human = { ...label, key: contentKey(label) };
-  writeLine('timeline.jsonl', { t: now(), ...label });
+  writeLine('human.jsonl', { t: now(), ...label });
   const key = contentKey(label);
   if (key && key !== prevKey) {
     S.score.switches += 1;
@@ -208,6 +222,16 @@ function system(update) {
   writeLine('system.jsonl', { t: now(), ...update });
 }
 
+// Microphone loudness (RMS 0-1), sampled several times a second by the collector.
+function level(rms) {
+  if (S && rms > S.act.level) S.act.level = rms;
+}
+
+// Letters in the latest recognised window (0 = nothing recognisable was heard).
+function heard(letters) {
+  if (S && letters > S.act.letters) S.act.letters = letters;
+}
+
 function setPaused(paused) {
   if (!S || S.paused === paused) return;
   S.paused = paused;
@@ -217,4 +241,16 @@ function setPaused(paused) {
 const active = () => !!S;
 const sessionDir = () => (S ? S.dir : null);
 
-module.exports = { begin, end, human, system, setPaused, active, sessionDir, contentKey, summary };
+module.exports = {
+  begin,
+  end,
+  human,
+  system,
+  level,
+  heard,
+  setPaused,
+  active,
+  sessionDir,
+  contentKey,
+  summary,
+};

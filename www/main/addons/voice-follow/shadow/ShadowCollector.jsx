@@ -12,7 +12,8 @@ const remote = require('@electron/remote');
 
 // One folder per app session under <userData>/voice-follow/shadow/<id>/:
 //   audio-000.webm ... - what the microphone heard, one file per SHADOW_SEGMENT_MS
-//   timeline.jsonl     - what the sevadaar put on screen (the human label)
+//   human.jsonl        - what the sevadaar put on screen (the human label)
+//   activity.jsonl     - per second: microphone loudness and letters heard
 //   system.jsonl       - what Voice-Follow would have shown (shadow mode)
 //   events.jsonl       - matches, pauses, audio segment boundaries
 //   score.json         - live agreement totals, rewritten every 30 s
@@ -53,6 +54,8 @@ const ShadowCollector = () => {
     if (!enabled) return undefined;
     let stopped = false;
     let segTimer = null;
+    let meterTimer = null;
+    let meterCtx = null;
     const start = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -153,6 +156,27 @@ const ShadowCollector = () => {
             rotating = false;
           }
         };
+        // Loudness meter for the activity log (reattached whenever the mic is replaced).
+        let analyser = null;
+        let meterStream = null;
+        const buf = new Float32Array(2048);
+        meterCtx = new (window.AudioContext || window.webkitAudioContext)();
+        meterTimer = setInterval(() => {
+          try {
+            if (meterStream !== s.stream) {
+              meterStream = s.stream;
+              analyser = meterCtx.createAnalyser();
+              analyser.fftSize = 2048;
+              meterCtx.createMediaStreamSource(s.stream).connect(analyser);
+            }
+            analyser.getFloatTimeDomainData(buf);
+            let sum = 0;
+            for (let k = 0; k < buf.length; k += 1) sum += buf[k] * buf[k];
+            bus.level(Math.sqrt(sum / buf.length));
+          } catch (_) {
+            /* meter only; recording carries on */
+          }
+        }, 250);
         startSegment();
         // A new file every SHADOW_SEGMENT_MS; also check every 20 s that the mic is alive.
         let lastRotate = Date.now();
@@ -178,6 +202,12 @@ const ShadowCollector = () => {
     const stop = () => {
       stopped = true;
       clearInterval(segTimer);
+      clearInterval(meterTimer);
+      try {
+        if (meterCtx) meterCtx.close();
+      } catch (_) {
+        /* already closed */
+      }
       const s = sessionRef.current;
       sessionRef.current = null;
       if (!s) return;

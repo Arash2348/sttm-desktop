@@ -1119,6 +1119,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const handleTranscript = useCallback(
     async (text) => {
       if (!recognizingRef.current) return;
+      // Shadow activity log: words are being heard (singing or speech) right now.
+      if (SHADOW_BUILD) shadowBus.heard((text || '').replace(/\s+/g, '').length);
       const session = sessionRef.current;
       // Accumulate distinct hypotheses while identifying the first Shabad.
       // Canonical retrieval supplies identities; recognized text is never displayed.

@@ -10,7 +10,14 @@ const { UPLOAD_ENDPOINT, UPLOAD_KEY } = require('./config');
 
 const TICK_MS = 60 * 1000;
 const LIVE_EVERY_MS = 10 * 60 * 1000;
-const LIVE_FILES = ['session.json', 'score.json', 'timeline.jsonl', 'system.jsonl', 'events.jsonl'];
+const LIVE_FILES = [
+  'session.json',
+  'score.json',
+  'human.jsonl',
+  'system.jsonl',
+  'activity.jsonl',
+  'events.jsonl',
+];
 const TYPES = {
   '.webm': 'audio/webm',
   '.json': 'application/json',
