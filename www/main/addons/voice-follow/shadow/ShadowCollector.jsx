@@ -86,18 +86,42 @@ const ShadowCollector = () => {
         );
         bus.begin(dir, t0);
         bus.human(labelOf(nav));
+        const event = (obj) => {
+          try {
+            fs.appendFileSync(
+              path.join(dir, 'events.jsonl'),
+              `${JSON.stringify({ t: (Date.now() - t0) / 1000, ...obj })}\n`,
+            );
+          } catch (_) {
+            /* never disturb the sevadaar */
+          }
+        };
+        // The microphone stream ends when the computer sleeps, the input device changes or
+        // the mic is taken away; get a fresh one whenever that happens.
+        const live = () => s.stream.getAudioTracks().some((t) => t.readyState === 'live');
+        const reacquire = async () => {
+          try {
+            s.stream.getTracks().forEach((t) => t.stop());
+          } catch (_) {
+            /* already gone */
+          }
+          s.stream = await navigator.mediaDevices.getUserMedia({
+            audio: { channelCount: 1, echoCancellation: false, noiseSuppression: false },
+          });
+          event({ type: 'mic_restarted', microphone: s.stream.getAudioTracks()[0]?.label || '' });
+        };
         // Audio in self-contained segments so finished ones can upload during the service.
+        // eslint-disable-next-line no-use-before-define
+        const onEnded = () => rotate();
         const startSegment = () => {
-          const file = path.join(dir, `audio-${String(s.seg).padStart(3, '0')}.webm`);
-          const rec = new MediaRecorder(stream, {
+          const n = s.seg;
+          s.seg += 1; // a failed start never reuses a file name
+          const file = path.join(dir, `audio-${String(n).padStart(3, '0')}.webm`);
+          const rec = new MediaRecorder(s.stream, {
             mimeType: 'audio/webm;codecs=opus',
             audioBitsPerSecond: SHADOW_AUDIO_BPS,
           });
-          const at = (Date.now() - t0) / 1000;
-          fs.appendFileSync(
-            path.join(dir, 'events.jsonl'),
-            `${JSON.stringify({ t: at, type: 'audio_segment', file: path.basename(file) })}\n`,
-          );
+          event({ type: 'audio_segment', file: path.basename(file) });
           rec.ondataavailable = async (e) => {
             if (!e.data || !e.data.size) return;
             try {
@@ -109,17 +133,35 @@ const ShadowCollector = () => {
           rec.onstop = () => uploader.enqueue(dir, path.basename(file));
           rec.start(SHADOW_SLICE_MS);
           s.recorder = rec;
-          s.seg += 1;
+          s.stream.getAudioTracks().forEach((t) => t.addEventListener('ended', onEnded));
+        };
+        let rotating = false;
+        const rotate = async () => {
+          if (rotating || stopped) return;
+          rotating = true;
+          try {
+            if (s.recorder && s.recorder.state !== 'inactive') s.recorder.stop();
+          } catch (_) {
+            /* already stopped */
+          }
+          try {
+            if (!live()) await reacquire();
+            if (!stopped) startSegment();
+          } catch (e) {
+            event({ type: 'mic_error', error: e?.message || String(e) });
+          } finally {
+            rotating = false;
+          }
         };
         startSegment();
+        // A new file every SHADOW_SEGMENT_MS; also check every 20 s that the mic is alive.
+        let lastRotate = Date.now();
         segTimer = setInterval(() => {
-          try {
-            s.recorder.stop();
-          } catch (_) {
-            /* restart below */
+          if (Date.now() - lastRotate >= SHADOW_SEGMENT_MS || !live()) {
+            lastRotate = Date.now();
+            rotate();
           }
-          startSegment();
-        }, SHADOW_SEGMENT_MS);
+        }, 20000);
       } catch (e) {
         try {
           fs.mkdirSync(shadowRoot(), { recursive: true });
@@ -144,7 +186,11 @@ const ShadowCollector = () => {
       } catch (_) {
         /* already stopped */
       }
-      s.stream.getTracks().forEach((t) => t.stop());
+      try {
+        s.stream.getTracks().forEach((t) => t.stop());
+      } catch (_) {
+        /* already gone */
+      }
       bus.end();
       uploader.enqueueSession(s.dir);
     };

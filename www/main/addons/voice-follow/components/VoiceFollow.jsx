@@ -2237,6 +2237,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         st.paused = false;
         shadowBus.setPaused(false);
       }
+      // Voice-Follow stopped itself (its mic ended, an error): start it again.
+      if (st.running && !autopilotRef.current) st.running = false;
       if (shadowBus.active() && !st.running && !st.paused) {
         st.running = true;
         st.since = nowMs;
