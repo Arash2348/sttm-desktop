@@ -181,12 +181,18 @@ const ShadowCollector = () => {
         </p>
         <label htmlFor="shadow-name">
           Your name
-          <input id="shadow-name" value={name} onChange={(e) => setName(e.target.value)} />
+          <input
+            id="shadow-name"
+            className="disable-kb-shortcuts"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </label>
         <label htmlFor="shadow-gurdwara">
           Gurdwara
           <input
             id="shadow-gurdwara"
+            className="disable-kb-shortcuts"
             value={gurdwara}
             onChange={(e) => setGurdwara(e.target.value)}
           />
