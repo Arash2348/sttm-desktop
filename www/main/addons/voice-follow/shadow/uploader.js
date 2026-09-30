@@ -1,0 +1,123 @@
+// Uploads shadow sessions to the Voice-Follow team's private S3 bucket.
+// The app never holds AWS keys: it asks UPLOAD_ENDPOINT for a one-time presigned PUT
+// URL per file (sending UPLOAD_KEY, which only allows uploads into sessions/), then
+// PUTs the file. Each session folder keeps uploaded.json (file -> size uploaded), so
+// a restart, a sleep or Gurdwara Wi-Fi dropping out just resumes later. Live files
+// (score, timelines) are re-sent every LIVE_EVERY_MS while the service is running.
+const fs = require('fs');
+const path = require('path');
+const { UPLOAD_ENDPOINT, UPLOAD_KEY } = require('./config');
+
+const TICK_MS = 60 * 1000;
+const LIVE_EVERY_MS = 10 * 60 * 1000;
+const LIVE_FILES = ['session.json', 'score.json', 'timeline.jsonl', 'system.jsonl', 'events.jsonl'];
+const TYPES = {
+  '.webm': 'audio/webm',
+  '.json': 'application/json',
+  '.jsonl': 'application/x-ndjson',
+};
+
+let root = null;
+let timer = null;
+let busy = false;
+let lastLive = 0;
+const queue = []; // [{ dir, file }]
+
+const readJson = (f, d) => {
+  try {
+    return JSON.parse(fs.readFileSync(f, 'utf8'));
+  } catch (_) {
+    return d;
+  }
+};
+
+async function putFile(dir, file) {
+  const full = path.join(dir, file);
+  if (!fs.existsSync(full) || !UPLOAD_ENDPOINT) return false;
+  const session = readJson(path.join(dir, 'session.json'), {});
+  const testerId = (session.tester && session.tester.id) || 'unknown';
+  const body = fs.readFileSync(full);
+  const contentType = TYPES[path.extname(file)] || 'application/octet-stream';
+  const res = await fetch(UPLOAD_ENDPOINT, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'x-vf-key': UPLOAD_KEY },
+    body: JSON.stringify({ tester: testerId, session: path.basename(dir), file, contentType }),
+  });
+  if (!res.ok) throw new Error(`endpoint ${res.status}`);
+  const { url } = await res.json();
+  const put = await fetch(url, { method: 'PUT', headers: { 'content-type': contentType }, body });
+  if (!put.ok) throw new Error(`upload ${put.status}`);
+  const doneFile = path.join(dir, 'uploaded.json');
+  const done = readJson(doneFile, {});
+  done[file] = body.length;
+  fs.writeFileSync(doneFile, JSON.stringify(done, null, 1));
+  return true;
+}
+
+function enqueue(dir, file) {
+  if (!queue.some((q) => q.dir === dir && q.file === file)) queue.push({ dir, file });
+}
+
+// Every file of every finished session that is not uploaded at its current size.
+function scanPending() {
+  if (!root || !fs.existsSync(root)) return;
+  fs.readdirSync(root).forEach((id) => {
+    const dir = path.join(root, id);
+    if (!fs.statSync(dir).isDirectory()) return;
+    const done = readJson(path.join(dir, 'uploaded.json'), {});
+    fs.readdirSync(dir).forEach((file) => {
+      if (file === 'uploaded.json') return;
+      const { size } = fs.statSync(path.join(dir, file));
+      const live = require('./bus').sessionDir() === dir; // eslint-disable-line global-require
+      // The live session's current audio segment is still being written: skip it.
+      if (live && file.endsWith('.webm')) return;
+      if (live && LIVE_FILES.includes(file)) return;
+      if (done[file] !== size) enqueue(dir, file);
+    });
+  });
+}
+
+async function drain() {
+  if (busy) return;
+  busy = true;
+  try {
+    const bus = require('./bus'); // eslint-disable-line global-require
+    if (bus.sessionDir() && Date.now() - lastLive > LIVE_EVERY_MS) {
+      lastLive = Date.now();
+      LIVE_FILES.forEach((f) => enqueue(bus.sessionDir(), f));
+    }
+    while (queue.length) {
+      const { dir, file } = queue[0];
+      // eslint-disable-next-line no-await-in-loop
+      await putFile(dir, file);
+      queue.shift();
+    }
+  } catch (_) {
+    /* offline or endpoint down: keep the queue, try next tick */
+  } finally {
+    busy = false;
+  }
+}
+
+// A session just ended: queue everything in it.
+function enqueueSession(dir) {
+  try {
+    fs.readdirSync(dir).forEach((f) => f !== 'uploaded.json' && enqueue(dir, f));
+  } catch (_) {
+    /* ignore */
+  }
+  drain();
+}
+
+function start(shadowRoot) {
+  root = shadowRoot;
+  if (timer) return;
+  scanPending();
+  drain();
+  timer = setInterval(() => {
+    scanPending();
+    drain();
+  }, TICK_MS);
+}
+
+module.exports = { start, enqueue, enqueueSession };

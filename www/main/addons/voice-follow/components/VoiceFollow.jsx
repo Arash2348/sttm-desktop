@@ -16,6 +16,27 @@ const { Follower: AcousticFollower } = require('../engine/follower');
 const { SP: AcousticSP } = require('../engine/sentencepiece');
 const { createRendererRetrieval } = require('../engine/retrieval/renderer-client');
 const sessionLog = require('../engine/session-log');
+const shadowBus = require('../shadow/bus');
+const { SHADOW_BUILD, SHADOW_CPU_PAUSE, SHADOW_CPU_RESUME } = require('../shadow/config');
+const os = require('os'); // eslint-disable-line import/order
+
+// Shadow mode (tester builds): Voice-Follow runs with no panel and never touches the
+// screen; each thing it would show goes to the shadow bus, which scores it live against
+// what the sevadaar shows by hand. These stand in for the screen actions.
+const shadowSetVerse = (verseId) => shadowBus.system({ verseId });
+const shadowNoop = () => {};
+const shadowOpen = (shabadId, verseId) => shadowBus.system({ shabadId, verseId });
+// Busy fraction of all cores between two os.cpus() samples (works on Windows too,
+// where os.loadavg() is always 0).
+const cpuSample = () =>
+  os.cpus().reduce(
+    (a, c) => {
+      const t = c.times;
+      const total = t.user + t.nice + t.sys + t.idle + t.irq;
+      return { idle: a.idle + t.idle, total: a.total + total };
+    },
+    { idle: 0, total: 0 },
+  );
 
 const { norm: vfNorm, partialRatio } = engine;
 
@@ -311,15 +332,27 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const isCeremonyBani = useStoreState((state) => state.navigator.isCeremonyBani);
   const sundarGutkaBaniId = useStoreState((state) => state.navigator.sundarGutkaBaniId);
   const baniLength = useStoreState((state) => state.userSettings.baniLength);
-  const { setActiveVerseId, setLineNumber } = useStoreActions((actions) => actions.navigator);
-  const { setIsMiscSlide, setMiscSlideText } = useStoreActions((actions) => actions.navigator);
+  const navActions = useStoreActions((actions) => actions.navigator);
+  const setActiveVerseId = SHADOW_BUILD ? shadowSetVerse : navActions.setActiveVerseId;
+  const setLineNumber = SHADOW_BUILD ? shadowNoop : navActions.setLineNumber;
+  const setMiscSlideText = SHADOW_BUILD ? shadowNoop : navActions.setMiscSlideText;
+  // In shadow mode the slide Voice-Follow would put up is its own, never the sevadaar's.
+  const shadowSlideRef = useRef(null);
+  if (!shadowSlideRef.current) {
+    shadowSlideRef.current = (visible) => {
+      // eslint-disable-next-line no-use-before-define
+      isMiscSlideRef.current = !!visible;
+      shadowBus.system({ slide: visible ? true : null });
+    };
+  }
+  const setIsMiscSlide = SHADOW_BUILD ? shadowSlideRef.current : navActions.setIsMiscSlide;
   const isMiscSlide = useStoreState((state) => state.navigator.isMiscSlide);
   const setOverlayScreen = useStoreActions((actions) => actions.app.setOverlayScreen);
   // Proper "open this shabad" action (drives viewer/projector/history/socket).
   // Kept in a ref so the async detect->lock path always calls the latest one.
   const changeActiveShabad = useNewShabad();
   const openShabadRef = useRef(changeActiveShabad);
-  openShabadRef.current = changeActiveShabad;
+  openShabadRef.current = SHADOW_BUILD ? shadowOpen : changeActiveShabad;
 
   const [status, setStatus] = useState('idle'); // idle|connecting|listening|detecting|error|stopped
   const [autopilot] = useState(true); // hands-free: detect + follow + auto-switch, one press
@@ -422,7 +455,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // never clear a misc slide the user opened themselves.
   const seekingRef = useRef(false);
   const isMiscSlideRef = useRef(false);
-  isMiscSlideRef.current = isMiscSlide;
+  if (!SHADOW_BUILD) isMiscSlideRef.current = isMiscSlide;
   const ctxRef = useRef(null);
   const streamRef = useRef(null);
   const nodeRef = useRef(null);
@@ -2176,6 +2209,51 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     }
   }, [activeShabadId, sundarGutkaBaniId, isSundarGutkaBani, isCeremonyBani, status, start, stop]);
 
+  // Shadow mode: follow silently whenever a shadow recording session is running, and
+  // step aside while the computer is busy (resuming once it has calmed down).
+  const shadowStateRef = useRef({ running: false, paused: false, since: 0, cpu: null });
+  useEffect(() => {
+    if (!SHADOW_BUILD) return undefined;
+    const check = () => {
+      const st = shadowStateRef.current;
+      const sample = cpuSample();
+      let busy = null;
+      if (st.cpu) {
+        const dt = sample.total - st.cpu.total;
+        busy = dt > 0 ? 1 - (sample.idle - st.cpu.idle) / dt : null;
+      }
+      st.cpu = sample;
+      const nowMs = Date.now();
+      if (st.running && busy != null && busy > SHADOW_CPU_PAUSE && nowMs - st.since > 60000) {
+        st.paused = true;
+        st.since = nowMs;
+        shadowBus.setPaused(true);
+        shadowBus.system({ shabadId: null, verseId: null, slide: null });
+        stop();
+        st.running = false;
+        return;
+      }
+      if (st.paused && busy != null && busy < SHADOW_CPU_RESUME && nowMs - st.since > 300000) {
+        st.paused = false;
+        shadowBus.setPaused(false);
+      }
+      if (shadowBus.active() && !st.running && !st.paused) {
+        st.running = true;
+        st.since = nowMs;
+        startAutopilot();
+      } else if (!shadowBus.active() && st.running) {
+        st.running = false;
+        stop();
+      }
+    };
+    const timer = setInterval(check, 30000);
+    const first = setTimeout(check, 5000);
+    return () => {
+      clearInterval(timer);
+      clearTimeout(first);
+    };
+  }, [startAutopilot, stop]);
+
   const listening = status === 'listening' || status === 'connecting';
   const detecting = status === 'detecting';
   const active = listening || detecting; // a session (follow or detect) is running
@@ -2321,6 +2399,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   else if (liveLead && liveLead.wins >= 2) judgeWord = 'Confirming a change';
   else if (liveLead && liveLead.wins >= 1) judgeWord = 'Checking';
   if (isMiscSlide) judgeWord = 'Holding a separate slide';
+
+  // Tester builds: no panel, no pill. Voice-Follow only runs in the shadow.
+  if (SHADOW_BUILD) return null;
 
   return (
     <>
