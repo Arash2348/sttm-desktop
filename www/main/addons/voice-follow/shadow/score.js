@@ -136,12 +136,15 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events, fi
 
   // paused: busy computer (paused..resumed), mic down (mic_error..mic_restarted), asleep (gap).
   const paused = new Array(length).fill(false);
-  const mark = (from, to) => {
+  const vfDown = new Array(length).fill(false); // hidden Voice-Follow could not run
+  const mark = (from, to, arr = paused) => {
+    const a = arr;
     for (let k = Math.max(0, Math.floor(from)); k < Math.min(length, Math.ceil(to)); k += 1)
-      paused[k] = true;
+      a[k] = true;
   };
   let busyFrom = null;
   let micFrom = null;
+  let downFrom = null;
   [...events]
     .sort((a, b) => (a.t || 0) - (b.t || 0))
     .forEach((e) => {
@@ -156,9 +159,16 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events, fi
         micFrom = null;
       }
       if (e.type === 'gap') mark(e.from, e.t);
+      if (e.type === 'vf_down' && downFrom == null) downFrom = e.t;
+      if (e.type === 'vf_up' && downFrom != null) {
+        mark(downFrom, e.t, vfDown);
+        downFrom = null;
+      }
     });
   if (busyFrom != null) mark(busyFrom, length);
   if (micFrom != null) mark(micFrom, length);
+  if (downFrom != null) mark(downFrom, length, vfDown);
+  for (let k = 0; k < length; k += 1) if (vfDown[k]) paused[k] = true;
 
   const heard = (i) => {
     if (!haveActivity) return true;
@@ -203,6 +213,7 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events, fi
 
   const sc = {
     seconds: length,
+    vfDown: vfDown.filter(Boolean).length, // part of paused: Voice-Follow not running
     kirtan: 0,
     held: 0,
     idle: 0,
@@ -223,6 +234,7 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events, fi
     lineSeconds: 0,
     lineAgree: 0,
     switches: 0,
+    switchesCut: 0, // human switches whose follow-up a pause cut short (not scored)
     matched: 0,
     switchDelays: [],
   };
@@ -271,19 +283,28 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events, fi
   switchesAt.forEach((i) => {
     if (states[i] !== 'kirtan') return;
     const key = hkey[i];
-    sc.switches += 1;
     let at = null;
+    let cut = false; // paused before Voice-Follow got there: not scorable either way
     if (skey[i] === key) {
       at = i;
       while (at > 0 && at > i - C.EARLY_S && skey[at - 1] === key) at -= 1;
     } else {
       for (let m = i + 1; m < Math.min(length, i + C.MATCH_CAP_S); m += 1) {
+        if (paused[m]) {
+          cut = true;
+          break;
+        }
         if (skey[m] === key) {
           at = m;
           break;
         }
       }
     }
+    if (cut) {
+      sc.switchesCut += 1;
+      return;
+    }
+    sc.switches += 1;
     const row = { t: i, at: mmss(i), human: key, delay: at == null ? null : at - i };
     switches.push(row);
     if (at != null) {
@@ -352,29 +373,32 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events, fi
 const pct = (a, b) => (b ? Math.round((1000 * a) / b) / 10 : null);
 const median = (xs) => (xs.length ? xs[Math.floor(xs.length / 2)] : null);
 
-// The numbers people read. "right" = agree + early. The headline is how often what
-// Voice-Follow put up was right (WRONG is the failure); how long it takes to get there
-// is the switch delay, and the share of kirtan spent searching or behind.
+// The numbers people read. "right" = agree + early.
+//   successPct      THE headline: of the singing time both the sevadaar and Voice-Follow
+//                   had Gurbani up, the share where it was the same shabad. Confounders are
+//                   left out and reported beside it: no Gurbani on screen (idle, slides),
+//                   nothing heard (held), paused/asleep/mic down, and catch-up after a
+//                   switch (behind/searching), which is measured as switch delay instead.
+//   lineSuccessPct  the same for the line, while the sevadaar is moving lines.
+//   foundPct        switches Voice-Follow reached within MATCH_CAP_S (guards successPct:
+//                   a system that never commits would otherwise look perfect).
 function summarize(sc) {
   const right = sc.agree + sc.early;
+  const min = (x) => Math.round((x / 60) * 10) / 10;
   return {
-    kirtanMin: Math.round((sc.kirtan / 60) * 10) / 10,
-    rightWhenShownPct: pct(right, right + sc.wrong),
-    wrongPct: pct(sc.wrong, sc.kirtan),
-    onRightShabadPct: pct(right, sc.kirtan),
-    behindPct: pct(sc.behind, sc.kirtan),
-    searchingPct: pct(sc.none, sc.kirtan),
-    lineAgreePct: pct(sc.lineAgree, sc.lineSeconds),
+    successPct: pct(right, right + sc.wrong),
+    lineSuccessPct: pct(sc.lineAgree, sc.lineSeconds),
+    foundPct: pct(sc.matched, sc.switches),
     switches: sc.switches,
-    matchedPct: pct(sc.matched, sc.switches),
-    medianSwitchDelayS: median(sc.switchDelays),
-    worstSwitchDelayS: sc.switchDelays.length ? sc.switchDelays[sc.switchDelays.length - 1] : null,
-    switchesBeforeHumanPct: pct(sc.switchDelays.filter((d) => d < 0).length, sc.switches),
-    heldMin: Math.round((sc.held / 60) * 10) / 10,
-    heldRightPct: pct(sc.heldAgree, sc.held),
-    idleMin: Math.round((sc.idle / 60) * 10) / 10,
+    medianDelayS: median(sc.switchDelays),
+    worstDelayS: sc.switchDelays.length ? sc.switchDelays[sc.switchDelays.length - 1] : null,
+    scoredMin: min(right + sc.wrong),
+    catchUpMin: min(sc.behind + sc.none),
+    heldMin: min(sc.held),
+    idleMin: min(sc.idle),
+    pausedMin: min(sc.paused),
+    vfDownMin: min(sc.vfDown || 0),
     falseAlarmPct: pct(sc.falseAlarm, sc.idle),
-    pausedMin: Math.round((sc.paused / 60) * 10) / 10,
   };
 }
 

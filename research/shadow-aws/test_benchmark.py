@@ -28,16 +28,17 @@ import benchmark as B  # noqa: E402
 #   270-274 system shows shabad 7, nobody's shabad                     -> 5 s WRONG
 #          lines disagree 265-269 and 275-280
 #   285-299 nothing heard, shabad 3 up, system on 3                    -> 15 s HELD agree
-#   300-319 human shows a slide; system still on 3                     -> 20 s LINGER
-# States: kirtan 40-239 + 260-284 = 225, held 15, idle 0-1,6-39,300-319 = 56, paused 24.
+#   300-319 human shows a slide; system still on 3                     -> 15 s LINGER
+#   300-304 hidden Voice-Follow reports itself down (vf_down..vf_up)   -> 5 s PAUSED (vfDown)
+# States: kirtan 40-239 + 260-284 = 225, held 15, idle 0-1,6-39,305-319 = 51, paused 29.
 # Kirtan: agree 40-134, 170-199, 215-239, 260-269, 275-284 = 170; early 15; behind 35; wrong 5.
 # Lines (agreed, sevadaar moved a line within 60 s): 40-134 (95), 170-190 (21), 220-239 (20),
 # 260-269 + 275-280 (16) = 152; disagree 265-269 + 275-280 (11) -> 141.
 EXPECT = {
-    'kirtan': 225, 'held': 15, 'idle': 56, 'paused': 24,
+    'kirtan': 225, 'held': 15, 'idle': 51, 'paused': 29, 'vfDown': 5,
     'agree': 170, 'early': 15, 'behind': 35, 'wrong': 5, 'none': 0,
     'heldAgree': 15, 'heldBehind': 0, 'heldWrong': 0, 'heldNone': 0,
-    'idleQuiet': 11, 'idleEarly': 15, 'linger': 20, 'falseAlarm': 10,
+    'idleQuiet': 11, 'idleEarly': 15, 'linger': 15, 'falseAlarm': 10,
     'lineSeconds': 152, 'lineAgree': 141,
     'switches': 3, 'matched': 3, 'switchDelays': [-20, -15, 40],
 }
@@ -50,8 +51,8 @@ EXPECT_LISTEN = [{'fromS': 135, 'toS': 170, 'from': '2:15', 'to': '2:50', 'secon
 #   agree 170 + 35 = 205, behind 0; the switch to shabad 2 is now at 170 (delay 0);
 #   lines lose 130-134 (fixed seconds carry no line) and gain 191-199 and 215-219 (the
 #   line change now happens at 170, so the sevadaar counts as moving lines until 230):
-#   161 / 150. Words: the heard text runs two lines together, so 8 of its 11 letter
-#   4-grams are in shabad 1 (0.73) and none in shabad 2.
+#   161 / 150. Words: every telling heard word (in only one of the two shabads) is
+#   shabad 1's, so the share is 1.0.
 SHABADS = {
     '1': [[11, 'ਹਮ ਅੰਧੁਲੇ ਅੰਧ ਬਿਖੈ ਬਿਖੁ ਰਾਤੇ ਕਿਉ ਚਾਲਹ ਗੁਰ ਚਾਲੀ ॥'],
           [12, 'ਸਤਗੁਰੁ ਦਇਆ ਕਰੇ ਸੁਖਦਾਤਾ ਹਮ ਲਾਵੈ ਆਪਨ ਪਾਲੀ ॥੧॥']],
@@ -59,7 +60,7 @@ SHABADS = {
 }
 HEARD = 'ਹਮ ਅੰਧੁਲੇ ਅੰਧ ਬਿਖੈ ਬਿਖੁ ਰਾਤੇ ਕਿਉ ਚਾਲਹ ਗੁਰ ਚਾਲੀ ਸਤਗੁਰੁ ਦਇਆ ਕਰੇ ਸੁਖਦਾਤਾ'
 EXPECT_ITEM = {'type': 'suspicious', 'reasons': ['words'], 'fromS': 135, 'toS': 170, 'kind': 'behind',
-               'human': 'shabad:2', 'system': 'shabad:1', 'wordsSystem': 0.73, 'wordsHuman': 0.0,
+               'human': 'shabad:2', 'system': 'shabad:1', 'wordsSystem': 1.0,
                'audio': 'audio-000.webm', 'audioOffset': 135}
 EXPECT_VERIFIED = {'agree': 205, 'early': 15, 'behind': 0, 'wrong': 5, 'none': 0,
                    'lineSeconds': 161, 'lineAgree': 150, 'switches': 3, 'matched': 3,
@@ -99,6 +100,8 @@ def build(root):
         {'t': 6, 'type': 'mic_restarted'},
         {'t': 150, 'type': 'audio_segment', 'file': 'audio-001.webm'},
         {'t': 260, 'type': 'gap', 'from': 240},
+        {'t': 300, 'type': 'vf_down', 'status': 'error: test'},
+        {'t': 305, 'type': 'vf_up', 'status': 'detecting: '},
     ])
 
 
@@ -111,6 +114,13 @@ def main():
         # 1. RAW: every rule of score.js.
         index, total, report, _ = B.run(root)
         bad += [(k, v, total.get(k)) for k, v in EXPECT.items() if total.get(k) != v]
+        # Headline: success = (agree 170 + early 15) / (185 + wrong 5) = 97.4%; lines 141/152.
+        head = {k: index[0][k] for k in ('success_pct', 'line_success_pct', 'found_pct', 'scored_min',
+                                         'catch_up_min', 'vf_down_min')}
+        want = {'success_pct': 97.4, 'line_success_pct': 92.8, 'found_pct': 100.0, 'scored_min': 3.2,
+                'catch_up_min': 0.6, 'vf_down_min': 0.1}
+        if head != want:
+            bad.append(('headline', want, head))
         sess = '2026-01-01T00-00-00-000Z'
         listen = [json.loads(l) for l in open(os.path.join(root, 'derived', sess, 'listen.jsonl'))]
         if listen != EXPECT_LISTEN:
@@ -128,6 +138,10 @@ def main():
         index, total, report, total_v = B.run(root)
         bad += [('verified ' + k, v, total_v.get(k)) for k, v in EXPECT_VERIFIED.items() if total_v.get(k) != v]
         bad += [('raw unchanged ' + k, v, total.get(k)) for k, v in EXPECT.items() if total.get(k) != v]
+        # Verified headline: (205 + 15) / (220 + 5) = 97.8%; lines 150/161 = 93.2%.
+        vh = {k: index[0]['verified'][k] for k in ('success_pct', 'line_success_pct')}
+        if vh != {'success_pct': 97.8, 'line_success_pct': 93.2}:
+            bad.append(('verified headline', '97.8 / 93.2', vh))
         if index[0]['to_review'] != 0 or index[0]['fixes'] != 1:
             bad.append(('after verdict', '0 to review, 1 fix', (index[0]['to_review'], index[0]['fixes'])))
         # 4. An audit marked "both wrong" becomes an unknown-truth fix; "tester right" none.
@@ -139,7 +153,7 @@ def main():
         print(report)
     finally:
         shutil.rmtree(root)
-    n = len(EXPECT) + 1 + 2 + len(EXPECT_VERIFIED) + len(EXPECT) + 1 + 1
+    n = len(EXPECT) + 6 + 1 + 2 + len(EXPECT_VERIFIED) + 2 + len(EXPECT) + 1 + 1
     if bad:
         for k, want, got in bad:
             print(f'MISMATCH {k}: expected {want}, got {got}')

@@ -2213,7 +2213,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
   // Shadow mode: follow silently whenever a shadow recording session is running, and
   // step aside while the computer is busy (resuming once it has calmed down).
-  const shadowStateRef = useRef({ running: false, paused: false, since: 0, cpu: null });
+  const shadowStateRef = useRef({ running: false, paused: false, since: 0, cpu: null, up: null });
+  const shadowStatusRef = useRef('');
+  shadowStatusRef.current = `${status}: ${detail}`;
   useEffect(() => {
     if (!SHADOW_BUILD) return undefined;
     const check = () => {
@@ -2226,7 +2228,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       }
       st.cpu = sample;
       const nowMs = Date.now();
-      if (st.running && busy != null && busy > SHADOW_CPU_PAUSE && nowMs - st.since > 60000) {
+      // Busy means two readings in a row (a minute): one spike is not a busy computer.
+      st.busyRuns = busy != null && busy > SHADOW_CPU_PAUSE ? (st.busyRuns || 0) + 1 : 0;
+      if (st.running && st.busyRuns >= 2 && nowMs - st.since > 60000) {
         st.paused = true;
         st.since = nowMs;
         shadowBus.setPaused(true);
@@ -2241,6 +2245,15 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       }
       // Voice-Follow stopped itself (its mic ended, an error): start it again.
       if (st.running && !autopilotRef.current) st.running = false;
+      // Record whether hidden Voice-Follow is actually listening (model and mic up), so
+      // a machine where it cannot run (missing system files, no model) shows in the data.
+      const up = !!(autopilotRef.current && recognizerRef.current);
+      if (shadowBus.active() && !st.paused && st.running && up !== st.up) {
+        if (up || nowMs - st.since > 60000) {
+          st.up = up;
+          shadowBus.note({ type: up ? 'vf_up' : 'vf_down', status: shadowStatusRef.current });
+        }
+      }
       if (shadowBus.active() && !st.running && !st.paused) {
         st.running = true;
         st.since = nowMs;

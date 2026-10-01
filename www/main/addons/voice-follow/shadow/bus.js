@@ -122,6 +122,11 @@ function heard(text) {
   }
 }
 
+// A health or status event from the hidden Voice-Follow (vf_up / vf_down).
+function note(obj) {
+  writeLine('events.jsonl', { t: now(), ...obj });
+}
+
 function setPaused(paused) {
   if (!S || S.paused === paused) return;
   S.paused = paused;
@@ -139,6 +144,7 @@ module.exports = {
   level,
   heard,
   setPaused,
+  note,
   active,
   sessionDir,
   contentKey,

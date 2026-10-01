@@ -9,7 +9,9 @@ person listens to those alone and clicks a verdict; the VERIFIED score applies t
 
 Suspicious (sent to a person) - a disagreement of 20 s+ where Voice-Follow was not merely
 searching, and one of:
-    words   the words heard match Voice-Follow's shabad clearly better than the sevadaar's
+    words   of the heard words found in only one of the two shabads, WORDS_SHARE+ are in
+            Voice-Follow's (with the sevadaar showing nothing: WORDS_ALONE+ of all heard
+            words are in Voice-Follow's shabad)
     later   the sevadaar opened Voice-Follow's shabad within LATER_S after the stretch
     stale   the sevadaar's line had not moved for STALE_LINE_S while singing went on
             (later/stale only count when the words do not clearly favour the sevadaar)
@@ -38,10 +40,10 @@ VERDICTS = os.path.join(REVIEW, 'verdicts.jsonl')
 SHABADS = os.path.join(HERE, 'shabads.json')
 FFMPEG = os.path.expanduser('~/.local/bin/ffmpeg')
 
-GRAM = 4              # first-letter n-gram length used to compare heard words with a shabad
-MIN_GRAMS = 8         # fewer heard n-grams than this: no word evidence
-WORDS_MARGIN = 0.2    # match(Voice-Follow's shabad) - match(sevadaar's) for "words"
-WORDS_MIN = 0.3       # ...and Voice-Follow's shabad must match at least this well
+MIN_WORDS = 10        # fewer telling words heard than this: no word evidence
+WORDS_SHARE = 0.7     # share of telling words in Voice-Follow's shabad that makes it suspicious
+WORDS_BACK = 0.3      # at or below this the words back the sevadaar: a confirmed system error
+WORDS_ALONE = 0.35
 LATER_S = 300
 STALE_LINE_S = 120
 AUDIT_EVERY_S = 3600
@@ -67,45 +69,46 @@ def shabad_text(key):
     return [t for _, t in rows] if rows else None
 
 
+def norm_word(w):
+    """A Gurmukhi word reduced to its letters (vowel signs and nukta dropped)."""
+    return ''.join(c for c in unicodedata.normalize('NFD', w) if '\u0a05' <= c <= '\u0a39' or c in '\u0a72\u0a73')
+
+
 def first_letters(text):
-    """Gurmukhi first letters of each word, nukta and vowel signs dropped."""
-    out = []
-    for w in unicodedata.normalize('NFD', text or '').split():
-        for ch in w:
-            if 'ਅ' <= ch <= 'ਹ' or 'ੲ' <= ch <= 'ੳ':
-                out.append(ch)
-                break
-    return ''.join(out)
+    """Gurmukhi first letters of each word."""
+    return ''.join(n[0] for n in (norm_word(w) for w in (text or '').split()) if n)
 
 
-def grams(letters):
-    return {letters[i:i + GRAM] for i in range(len(letters) - GRAM + 1)}
+_words = {}
 
 
-def shabad_grams(key):
-    lines = shabad_text(key)
-    if not lines:
+def shabad_words(key):
+    if key not in _words:
+        lines = shabad_text(key)
+        _words[key] = None if not lines else {n for l in lines for n in map(norm_word, l.split()) if len(n) >= 2}
+    return _words[key]
+
+
+def heard_words(activity, a, b):
+    return [n for row in activity if a <= row.get('t', -1) < b and row.get('text')
+            for n in map(norm_word, row['text'].split()) if len(n) >= 2]
+
+
+def word_evidence(heard, system, human):
+    """Share of the telling heard words that are in Voice-Follow's shabad (None: no evidence).
+    Telling = in exactly one of the two shabads; with nothing on the sevadaar's screen, the
+    share of all heard words that are in Voice-Follow's shabad."""
+    sw = shabad_words(system)
+    if not sw or not heard:
         return None
-    g = set()
-    for line in lines:
-        g |= grams(first_letters(line))
-    return g
-
-
-def word_match(heard, key):
-    """Share of heard n-grams found in the shabad (None when unknown)."""
-    sg = shabad_grams(key)
-    if sg is None or not heard:
+    if human is None:
+        return sum(w in sw for w in heard) / len(heard) if len(heard) >= MIN_WORDS else None
+    hw = shabad_words(human)
+    if not hw:
         return None
-    return sum(1 for x in heard if x in sg) / len(heard)
-
-
-def heard_grams(activity, a, b):
-    g = set()
-    for row in activity:
-        if a <= row.get('t', -1) < b and row.get('text'):
-            g |= grams(first_letters(row['text']))
-    return g
+    x = sum(w in sw and w not in hw for w in heard)
+    y = sum(w in hw and w not in sw for w in heard)
+    return x / (x + y) if x + y >= MIN_WORDS else None
 
 
 def read_jsonl(path):
@@ -147,17 +150,12 @@ def build_items(sess, d, res):
         if x['kind'] == 'none':
             continue
         a, b = x['fromS'], x['toS']
-        heard = heard_grams(activity, a, b)
-        mm = mh = None
-        if len(heard) >= MIN_GRAMS:
-            mm, mh = word_match(heard, x['system']), word_match(heard, x['human'])
-            if x['human'] is None:
-                mh = 0.0
+        share = word_evidence(heard_words(activity, a, b), x['system'], x['human'])
         reasons = []
-        if mm is not None and mh is not None:
-            if mh - mm >= WORDS_MARGIN:
+        if share is not None:
+            if x['human'] is not None and share <= WORDS_BACK:
                 continue  # the words back the sevadaar: a confirmed Voice-Follow error
-            if mm - mh >= WORDS_MARGIN and mm >= WORDS_MIN:
+            if share >= (WORDS_ALONE if x['human'] is None else WORDS_SHARE):
                 reasons.append('words')
         if any(r['human'] == x['system'] and b <= r['fromS'] <= b + LATER_S for r in runs):
             reasons.append('later')
@@ -170,7 +168,7 @@ def build_items(sess, d, res):
             'id': f'{sess}:{a}-{b}', 'session': sess, 'type': 'suspicious', 'reasons': reasons,
             'fromS': a, 'toS': b, 'seconds': b - a, 'from': x['from'], 'to': x['to'], 'kind': x['kind'],
             'human': x['human'], 'system': x['system'],
-            'wordsSystem': None if mm is None else round(mm, 2), 'wordsHuman': None if mh is None else round(mh, 2),
+            'wordsSystem': None if share is None else round(share, 2),
             'audio': file, 'audioOffset': off,
             'priority': (b - a) * (2 if 'words' in reasons else 1),
         })
@@ -188,7 +186,7 @@ def build_items(sess, d, res):
             'id': f'{sess}:{a}-{b}', 'session': sess, 'type': 'audit', 'reasons': ['random check'],
             'fromS': a, 'toS': b, 'seconds': AUDIT_LEN_S, 'from': f'{a // 60}:{a % 60:02d}',
             'to': f'{b // 60}:{b % 60:02d}', 'kind': 'agree', 'human': r['human'], 'system': r['system'],
-            'wordsSystem': None, 'wordsHuman': None, 'audio': file, 'audioOffset': off, 'priority': 0,
+            'wordsSystem': None, 'audio': file, 'audioOffset': off, 'priority': 0,
         })
     return items
 
@@ -239,7 +237,7 @@ async function load(){
     const btns=it.type==='audit'?['correct','both_wrong','unsure']:['tester','model','unsure'];
     const lines=t=>t?t.slice(0,8).join('<br>'):'<i>nothing on screen</i>';
     c.innerHTML=`<div class="why">${it.session.slice(0,16)} · ${it.from}–${it.to} (${it.seconds} s) · ${it.type}: ${it.reasons.join(', ')}
-      ${it.wordsSystem!=null?` · words match: Voice-Follow ${Math.round(it.wordsSystem*100)}%, tester ${Math.round(it.wordsHuman*100)}%`:''}</div>
+      ${it.wordsSystem!=null?` · telling words heard: ${Math.round(it.wordsSystem*100)}% Voice-Follow's shabad`:''}</div>
       <audio controls preload="none" src="/clip/${encodeURIComponent(it.id)}" style="width:100%;margin:8px 0"></audio>
       <div class="cols"><div><h3>Tester showed</h3><div class="g">${lines(it.humanText)}</div></div>
       <div><h3>Voice-Follow showed</h3><div class="g">${lines(it.systemText)}</div></div></div>

@@ -34,7 +34,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SCORER = os.path.join(HERE, '..', '..', 'www', 'main', 'addons', 'voice-follow', 'shadow', 'score.js')
 SUM_KEYS = ['kirtan', 'held', 'idle', 'paused', 'agree', 'early', 'wrong', 'behind', 'none',
             'heldAgree', 'heldBehind', 'heldWrong', 'heldNone', 'idleQuiet',
-            'idleEarly', 'linger', 'falseAlarm', 'lineSeconds', 'lineAgree', 'switches', 'matched']
+            'idleEarly', 'linger', 'falseAlarm', 'vfDown', 'switchesCut', 'lineSeconds', 'lineAgree', 'switches', 'matched']
 
 
 def score_session(d, fixes=None):
@@ -57,25 +57,23 @@ def pct(a, b):
 
 
 def summarize(sc):
-    k = sc['kirtan']
+    """Same definitions as summarize() in score.js (see its header)."""
+    right = sc['agree'] + sc['early']
     dl = sorted(sc['switchDelays'])
     return {
-        'kirtan_min': round(k / 60, 1),
-        'right_when_shown_pct': pct(sc['agree'] + sc['early'], sc['agree'] + sc['early'] + sc['wrong']),
-        'wrong_pct': pct(sc['wrong'], k),
-        'on_right_shabad_pct': pct(sc['agree'] + sc['early'], k),
-        'behind_pct': pct(sc['behind'], k),
-        'searching_pct': pct(sc['none'], k),
-        'line_pct': pct(sc['lineAgree'], sc['lineSeconds']),
+        'success_pct': pct(right, right + sc['wrong']),
+        'line_success_pct': pct(sc['lineAgree'], sc['lineSeconds']),
+        'found_pct': pct(sc['matched'], sc['switches']),
         'switches': sc['switches'],
-        'matched_pct': pct(sc['matched'], sc['switches']),
         'median_delay_s': dl[len(dl) // 2] if dl else None,
         'worst_delay_s': dl[-1] if dl else None,
+        'scored_min': round((right + sc['wrong']) / 60, 1),
+        'catch_up_min': round((sc['behind'] + sc['none']) / 60, 1),
         'held_min': round(sc['held'] / 60, 1),
-        'held_right_pct': pct(sc['heldAgree'], sc['held']),
         'idle_min': round(sc['idle'] / 60, 1),
-        'false_alarm_pct': pct(sc['falseAlarm'], sc['idle']),
         'paused_min': round(sc['paused'] / 60, 1),
+        'vf_down_min': round(sc.get('vfDown', 0) / 60, 1),
+        'false_alarm_pct': pct(sc['falseAlarm'], sc['idle']),
     }
 
 
@@ -98,7 +96,7 @@ def sessions(root):
                     yield tester, day, sess, d
 
 
-VERIFIED_COLS = ['right_when_shown_pct', 'wrong_pct', 'on_right_shabad_pct', 'median_delay_s', 'worst_delay_s']
+VERIFIED_COLS = ['success_pct', 'line_success_pct', 'found_pct', 'median_delay_s', 'worst_delay_s', 'scored_min']
 
 
 def table(title, rows, cols):
