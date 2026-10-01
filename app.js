@@ -108,17 +108,22 @@ app.once('will-quit', () => {
   voiceFollowRetrieval.dispose().catch(() => {});
 });
 // Tester build: hold the quit up to 20 s to upload the session that just ended.
+// Anything going wrong here must never stop the app from quitting.
 let shadowFlushed = false;
 app.on('will-quit', (e) => {
   if (shadowFlushed) return;
   shadowFlushed = true;
   e.preventDefault();
-  // eslint-disable-next-line global-require
-  const shadowUploader = require('./www/main/addons/voice-follow/shadow/uploader');
-  shadowUploader
-    .flush(path.join(app.getPath('userData'), 'voice-follow', 'shadow'), 20000)
-    .catch(() => {})
-    .finally(() => app.quit());
+  try {
+    // eslint-disable-next-line global-require
+    const shadowUploader = require('./www/js/addons/voice-follow/shadow/uploader');
+    shadowUploader
+      .flush(path.join(app.getPath('userData'), 'voice-follow', 'shadow'), 20000)
+      .catch(() => {})
+      .finally(() => app.quit());
+  } catch (_) {
+    app.quit();
+  }
 });
 let viewerWindow = false;
 let startChangelogOpenTimer;

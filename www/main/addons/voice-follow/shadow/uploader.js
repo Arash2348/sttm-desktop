@@ -8,6 +8,10 @@ const fs = require('fs');
 const path = require('path');
 const { UPLOAD_ENDPOINT, UPLOAD_KEY } = require('./config');
 
+// The renderer has fetch; the main process (quit-time flush) may not.
+// eslint-disable-next-line global-require
+const fetch = global.fetch || require('node-fetch');
+
 const TICK_MS = 60 * 1000;
 const LIVE_EVERY_MS = 10 * 60 * 1000;
 const LIVE_FILES = [
