@@ -41,8 +41,29 @@ EXPECT = {
     'lineSeconds': 152, 'lineAgree': 141,
     'switches': 3, 'matched': 3, 'switchDelays': [-20, -15, 40],
 }
-EXPECT_LISTEN = [{'from': '2:15', 'to': '2:50', 'seconds': 35, 'kind': 'behind', 'human': 'shabad:2',
+EXPECT_LISTEN = [{'fromS': 135, 'toS': 170, 'from': '2:15', 'to': '2:50', 'seconds': 35, 'kind': 'behind', 'human': 'shabad:2',
                   'system': 'shabad:1', 'audio': {'file': 'audio-000.webm', 'offset': '2:15'}}]
+
+# The words heard during 135-169 are shabad 1's (Voice-Follow's), so review flags that
+# stretch as suspicious ('words'). A person says "Voice-Follow right": the fix makes
+# shabad 1 the truth for 130-169 (from LAG_S before the stretch), so VERIFIED has:
+#   agree 170 + 35 = 205, behind 0; the switch to shabad 2 is now at 170 (delay 0);
+#   lines lose 130-134 (fixed seconds carry no line) and gain 191-199 and 215-219 (the
+#   line change now happens at 170, so the sevadaar counts as moving lines until 230):
+#   161 / 150. Words: the heard text runs two lines together, so 8 of its 11 letter
+#   4-grams are in shabad 1 (0.73) and none in shabad 2.
+SHABADS = {
+    '1': [[11, 'ਹਮ ਅੰਧੁਲੇ ਅੰਧ ਬਿਖੈ ਬਿਖੁ ਰਾਤੇ ਕਿਉ ਚਾਲਹ ਗੁਰ ਚਾਲੀ ॥'],
+          [12, 'ਸਤਗੁਰੁ ਦਇਆ ਕਰੇ ਸੁਖਦਾਤਾ ਹਮ ਲਾਵੈ ਆਪਨ ਪਾਲੀ ॥੧॥']],
+    '2': [[21, 'ਮੇਰਾ ਮਨੁ ਲੋਚੈ ਗੁਰ ਦਰਸਨ ਤਾਈ ॥'], [22, 'ਬਿਲਪ ਕਰੇ ਚਾਤ੍ਰਿਕ ਕੀ ਨਿਆਈ ॥']],
+}
+HEARD = 'ਹਮ ਅੰਧੁਲੇ ਅੰਧ ਬਿਖੈ ਬਿਖੁ ਰਾਤੇ ਕਿਉ ਚਾਲਹ ਗੁਰ ਚਾਲੀ ਸਤਗੁਰੁ ਦਇਆ ਕਰੇ ਸੁਖਦਾਤਾ'
+EXPECT_ITEM = {'type': 'suspicious', 'reasons': ['words'], 'fromS': 135, 'toS': 170, 'kind': 'behind',
+               'human': 'shabad:2', 'system': 'shabad:1', 'wordsSystem': 0.73, 'wordsHuman': 0.0,
+               'audio': 'audio-000.webm', 'audioOffset': 135}
+EXPECT_VERIFIED = {'agree': 205, 'early': 15, 'behind': 0, 'wrong': 5, 'none': 0,
+                   'lineSeconds': 161, 'lineAgree': 150, 'switches': 3, 'matched': 3,
+                   'switchDelays': [-20, -15, 0]}
 
 
 def write(d, name, rows):
@@ -68,7 +89,8 @@ def build(root):
     ])
     write(d, 'activity.jsonl', [
         {'t': t, 'level': 0.05 if 10 <= t <= 279 and not 240 <= t < 260 else 0.0,
-         'letters': 10 if 10 <= t <= 279 and not 240 <= t < 260 else 0}
+         'letters': 10 if 10 <= t <= 279 and not 240 <= t < 260 else 0,
+         'text': HEARD if 135 <= t < 170 else ''}
         for t in range(320)
     ])
     write(d, 'events.jsonl', [
@@ -82,21 +104,47 @@ def build(root):
 
 def main():
     root = tempfile.mkdtemp(prefix='vfbench-')
+    B.review._shabads = {k: v for k, v in SHABADS.items()}
+    bad = []
     try:
         build(root)
-        index, total, report = B.run(root)
-        bad = [(k, v, total.get(k)) for k, v in EXPECT.items() if total.get(k) != v]
-        listen = [json.loads(l) for l in open(os.path.join(root, 'derived', '2026-01-01T00-00-00-000Z', 'listen.jsonl'))]
+        # 1. RAW: every rule of score.js.
+        index, total, report, _ = B.run(root)
+        bad += [(k, v, total.get(k)) for k, v in EXPECT.items() if total.get(k) != v]
+        sess = '2026-01-01T00-00-00-000Z'
+        listen = [json.loads(l) for l in open(os.path.join(root, 'derived', sess, 'listen.jsonl'))]
         if listen != EXPECT_LISTEN:
             bad.append(('listen', EXPECT_LISTEN, listen))
+        # 2. Review queue: exactly the one suspicious stretch (no audits under 1 h of kirtan).
+        queue = [json.loads(l) for l in open(os.path.join(root, 'review', 'queue.jsonl'))]
+        got = [{k: it[k] for k in EXPECT_ITEM} for it in queue]
+        if got != [EXPECT_ITEM]:
+            bad.append(('queue', [EXPECT_ITEM], got))
+        if index[0]['to_review'] != 1:
+            bad.append(('to_review', 1, index[0]['to_review']))
+        # 3. VERIFIED after "Voice-Follow right" on that item.
+        with open(os.path.join(root, 'review', 'verdicts.jsonl'), 'w') as f:
+            f.write(json.dumps({'id': queue[0]['id'], 'verdict': 'model'}) + '\n')
+        index, total, report, total_v = B.run(root)
+        bad += [('verified ' + k, v, total_v.get(k)) for k, v in EXPECT_VERIFIED.items() if total_v.get(k) != v]
+        bad += [('raw unchanged ' + k, v, total.get(k)) for k, v in EXPECT.items() if total.get(k) != v]
+        if index[0]['to_review'] != 0 or index[0]['fixes'] != 1:
+            bad.append(('after verdict', '0 to review, 1 fix', (index[0]['to_review'], index[0]['fixes'])))
+        # 4. An audit marked "both wrong" becomes an unknown-truth fix; "tester right" none.
+        audit = {'id': 'a', 'type': 'audit', 'fromS': 50, 'toS': 80, 'system': 'shabad:1'}
+        sus = {**queue[0], 'id': 's'}
+        fx = B.review.fixes_for([audit, sus], {'a': {'verdict': 'both_wrong'}, 's': {'verdict': 'tester'}})
+        if fx != [{'from': 50, 'to': 80, 'truth': 'unknown'}]:
+            bad.append(('audit fix', 'unknown 50-80', fx))
         print(report)
-        if bad:
-            for k, want, got in bad:
-                print(f'MISMATCH {k}: expected {want}, got {got}')
-            sys.exit(1)
-        print(f'PASS: all {len(EXPECT) + 1} known answers match')
     finally:
         shutil.rmtree(root)
+    n = len(EXPECT) + 1 + 2 + len(EXPECT_VERIFIED) + len(EXPECT) + 1 + 1
+    if bad:
+        for k, want, got in bad:
+            print(f'MISMATCH {k}: expected {want}, got {got}')
+        sys.exit(1)
+    print(f'PASS: all {n} known answers match')
 
 
 if __name__ == '__main__':

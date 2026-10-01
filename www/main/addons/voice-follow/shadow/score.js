@@ -93,7 +93,10 @@ function perSecond(evs, length, merge) {
 
 const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 
-function scoreTimelines({ human: humanEv, system: systemEv, activity, events }) {
+// fixes: human-checked corrections [{ from, to, truth }] (seconds; truth is a content key,
+// 'unknown' when the sevadaar was wrong but the right shabad is not known, or null for no
+// Gurbani). They replace the sevadaar's label for those seconds; lines there are not scored.
+function scoreTimelines({ human: humanEv, system: systemEv, activity, events, fixes = [] }) {
   const ends = [...humanEv, ...systemEv, ...activity, ...events].map((e) => e.t || 0);
   const length = ends.length ? Math.floor(Math.max(...ends)) + 1 : 0;
   const human = perSecond(humanEv, length, false);
@@ -113,6 +116,12 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events }) 
   const skey = system.map(contentKey);
   const hverse = human.map((h, i) => (hkey[i] && h.verseId !== '' ? (h.verseId ?? null) : null));
   const sverse = system.map((s, i) => (skey[i] ? (s.verseId ?? null) : null));
+  fixes.forEach((f) => {
+    for (let k = Math.max(0, f.from); k < Math.min(length, f.to); k += 1) {
+      hkey[k] = f.truth;
+      hverse[k] = null;
+    }
+  });
 
   const level = new Array(length).fill(0);
   const letters = new Array(length).fill(0);
@@ -179,7 +188,7 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events }) 
   let caught = true;
   let ln = -1e9;
   for (let i = 0; i < length; i += 1) {
-    if (hkey[i] && hkey[i] !== shown) {
+    if (hkey[i] && hkey[i] !== 'unknown' && hkey[i] !== shown) {
       switchesAt.push(i);
       left = shown;
       shown = hkey[i];
@@ -314,6 +323,8 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events }) 
     }
     if (end - i + 1 >= C.LISTEN_MIN_S) {
       listen.push({
+        fromS: i,
+        toS: end + 1,
         from: mmss(i),
         to: mmss(end + 1),
         seconds: end - i + 1,
@@ -325,7 +336,17 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events }) 
     }
     i = end + 1;
   }
-  return { score: sc, switches, listen, states };
+  // Every stretch of one outcome (for review sampling).
+  const runs = [];
+  for (let i = 0, s = 0; i <= length; i += 1) {
+    if (i === length || outcome[i] !== outcome[s] || hkey[i] !== hkey[s] || skey[i] !== skey[s]) {
+      if (i > s && outcome[s]) {
+        runs.push({ fromS: s, toS: i, kind: outcome[s], human: hkey[s], system: skey[s] });
+      }
+      s = i;
+    }
+  }
+  return { score: sc, switches, listen, runs, states, audioAt };
 }
 
 const pct = (a, b) => (b ? Math.round((1000 * a) / b) / 10 : null);
@@ -357,8 +378,9 @@ function summarize(sc) {
   };
 }
 
-function scoreDir(dir) {
+function scoreDir(dir, fixes = []) {
   const r = scoreTimelines({
+    fixes,
     human: readJsonl(path.join(dir, 'human.jsonl')),
     system: readJsonl(path.join(dir, 'system.jsonl')),
     activity: readJsonl(path.join(dir, 'activity.jsonl')),
@@ -376,6 +398,7 @@ function scoreDir(dir) {
     raw: r.score,
     switches: r.switches,
     listen: r.listen,
+    runs: r.runs,
     segments,
   };
 }
@@ -383,5 +406,7 @@ function scoreDir(dir) {
 module.exports = { C, contentKey, scoreTimelines, scoreDir, summarize };
 
 if (require.main === module) {
-  process.stdout.write(JSON.stringify(scoreDir(process.argv[2])));
+  // node score.js <session dir> [fixes.json]
+  const fixes = process.argv[3] ? JSON.parse(fs.readFileSync(process.argv[3], 'utf8')) : [];
+  process.stdout.write(JSON.stringify(scoreDir(process.argv[2], fixes)));
 }

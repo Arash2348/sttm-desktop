@@ -1,7 +1,7 @@
 // Shadow bus: the two timelines of a shadow session, written as they happen.
 //   human  - what the sevadaar put on screen (the label), from ShadowCollector
 //   system - what Voice-Follow would have shown, from VoiceFollow in shadow mode
-//   activity / events - loudness and letters heard each second; pauses, sleep gaps
+//   activity / events - loudness and words heard each second; pauses, sleep gaps
 // The live score is score.js run on these same files every SAVE_S, the exact code the
 // offline benchmark runs. Nothing here touches the screen.
 const fs = require('fs');
@@ -38,14 +38,16 @@ function save() {
 }
 
 function flushActivity(upTo) {
-  // One line per finished second: loudest level (RMS 0-1) and most letters heard.
+  // One line per finished second: loudest level (RMS 0-1), most letters heard, and the
+  // longest recognised text (offline review compares it with each shabad's words).
   while (S.act.sec < upTo) {
     writeLine('activity.jsonl', {
       t: S.act.sec,
       level: Math.round(S.act.level * 1000) / 1000,
       letters: S.act.letters,
+      text: S.act.text,
     });
-    S.act = { sec: S.act.sec + 1, level: 0, letters: 0 };
+    S.act = { sec: S.act.sec + 1, level: 0, letters: 0, text: '' };
   }
 }
 
@@ -74,7 +76,7 @@ function begin(dir, t0) {
     paused: false,
     lastSave: 0,
     lastTick: 0,
-    act: { sec: 0, level: 0, letters: 0 },
+    act: { sec: 0, level: 0, letters: 0, text: '' },
     timer: setInterval(tick, 1000),
   };
 }
@@ -111,9 +113,13 @@ function level(rms) {
   if (S && rms > S.act.level) S.act.level = rms;
 }
 
-// Letters in the latest recognised window (0 = nothing recognisable was heard).
-function heard(letters) {
-  if (S && letters > S.act.letters) S.act.letters = letters;
+// Text of the latest recognised window ('' = nothing recognisable was heard).
+function heard(text) {
+  const letters = text.replace(/\s+/g, '').length;
+  if (S && letters > S.act.letters) {
+    S.act.letters = letters;
+    S.act.text = text.trim();
+  }
 }
 
 function setPaused(paused) {

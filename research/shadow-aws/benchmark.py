@@ -21,7 +21,11 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 from datetime import date
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import review  # noqa: E402
 
 BUCKET = 's3://vf-shadow-sessions-680476617406'
 AWS = [os.path.expanduser('~/.local/bin/aws'), '--profile', 'gurbani-prod', '--region', 'us-east-2']
@@ -33,9 +37,18 @@ SUM_KEYS = ['kirtan', 'held', 'idle', 'paused', 'agree', 'early', 'wrong', 'behi
             'idleEarly', 'linger', 'falseAlarm', 'lineSeconds', 'lineAgree', 'switches', 'matched']
 
 
-def score_session(d):
-    """Score one raw session folder with the shared scorer. Returns its result dict."""
-    out = subprocess.run([shutil.which('node') or 'node', SCORER, d], capture_output=True, text=True, check=True)
+def score_session(d, fixes=None):
+    """Score one raw session folder with the shared scorer (and human-checked fixes)."""
+    args = [shutil.which('node') or 'node', SCORER, d]
+    if fixes:
+        with tempfile.NamedTemporaryFile('w', suffix='.json', delete=False) as f:
+            json.dump(fixes, f)
+        args.append(f.name)
+    try:
+        out = subprocess.run(args, capture_output=True, text=True, check=True)
+    finally:
+        if fixes:
+            os.unlink(f.name)
     return json.loads(out.stdout)
 
 
@@ -85,60 +98,86 @@ def sessions(root):
                     yield tester, day, sess, d
 
 
+VERIFIED_COLS = ['right_when_shown_pct', 'wrong_pct', 'on_right_shabad_pct', 'median_delay_s', 'worst_delay_s']
+
+
+def table(title, rows, cols):
+    out = [f'**{title}**', '', '| who | ' + ' | '.join(cols) + ' |', '|' + '---|' * (len(cols) + 1)]
+    out += [f'| {name} | ' + ' | '.join(str(r[c]) for c in cols) + ' |' for name, r in rows]
+    return out
+
+
 def run(root, write=True):
-    index, total, by_tester, lines, listen_lines = [], {}, {}, [], []
+    """Score every session: RAW (trusting the sevadaar), the review queue, and VERIFIED
+    (RAW plus the verdicts in review/verdicts.jsonl)."""
+    vs = review.verdicts(os.path.join(root, 'review', 'verdicts.jsonl'))
+    index, items_all = [], []
+    total, total_v, by_tester, by_tester_v = {}, {}, {}, {}
     for tester, day, sess, d in sessions(root):
         res = score_session(d)
-        sc, segments = res['raw'], res['segments']
+        sc = res['raw']
+        items = review.build_items(sess, d, res)
+        items_all += items
+        fixes = review.fixes_for(items, vs)
+        res_v = score_session(d, fixes) if fixes else res
         try:
             meta = json.load(open(os.path.join(d, 'session.json')))
         except (OSError, json.JSONDecodeError):
             meta = {}
         t = meta.get('tester') or {}
         who = t.get('name') or tester
+        pending = [it for it in items if it['id'] not in vs]
         row = {'tester': tester, 'name': who, 'gurdwara': t.get('gurdwara', ''), 'date': day, 'session': sess,
                'app': meta.get('app'), 'build': meta.get('build'), 'platform': meta.get('platform'),
-               **summarize(sc)}
+               **summarize(sc), 'verified': summarize(res_v['raw']), 'fixes': len(fixes),
+               'to_review': len(pending)}
         index.append(row)
         add(total, sc)
-        for x in res['listen']:
-            a = x.get('audio') or {}
-            listen_lines.append(f"| {who} | {sess[:16]} | {x['from']}-{x['to']} ({x['seconds']} s) | {x['kind']} | "
-                                f"{x['human']} | {x['system']} | {a.get('file', '')} @ {a.get('offset', '')} |")
+        add(total_v, res_v['raw'])
         add(by_tester.setdefault(who, {}), sc)
+        add(by_tester_v.setdefault(who, {}), res_v['raw'])
         if write:
             out = os.path.join(root, 'derived', sess)
             os.makedirs(out, exist_ok=True)
             with open(os.path.join(out, 'segments.jsonl'), 'w') as f:
-                f.writelines(json.dumps(s) + '\n' for s in segments)
-            json.dump({**row, 'raw': sc, 'switches': res['switches']}, open(os.path.join(out, 'score.json'), 'w'),
-                      indent=1)
+                f.writelines(json.dumps(s) + '\n' for s in res['segments'])
+            json.dump({**row, 'raw': sc, 'verified_raw': res_v['raw'], 'fixes_applied': fixes,
+                       'switches': res['switches']}, open(os.path.join(out, 'score.json'), 'w'), indent=1)
             with open(os.path.join(out, 'listen.jsonl'), 'w') as f:
                 f.writelines(json.dumps(x) + '\n' for x in res['listen'])
     if write:
         os.makedirs(os.path.join(root, 'index'), exist_ok=True)
         with open(os.path.join(root, 'index', 'sessions.jsonl'), 'w') as f:
             f.writelines(json.dumps(r) + '\n' for r in index)
+        os.makedirs(os.path.join(root, 'review'), exist_ok=True)
+        with open(os.path.join(root, 'review', 'queue.jsonl'), 'w') as f:
+            f.writelines(json.dumps(it) + '\n' for it in items_all)
     cols = list(summarize({**{k: 0 for k in SUM_KEYS}, 'switchDelays': []}).keys())
-    lines.append('| who | ' + ' | '.join(cols) + ' |')
-    lines.append('|' + '---|' * (len(cols) + 1))
-    for r in index:
-        lines.append(f"| {r['name']} {r['session'][:16]} | " + ' | '.join(str(r[c]) for c in cols) + ' |')
-    for who, sc in by_tester.items():
-        s = summarize(sc)
-        lines.append(f'| **{who} (all)** | ' + ' | '.join(str(s[c]) for c in cols) + ' |')
+    raw_rows = [(f"{r['name']} {r['session'][:16]}", r) for r in index]
+    raw_rows += [(f'**{w} (all)**', summarize(sc)) for w, sc in by_tester.items()]
+    ver_rows = [(f"{r['name']} {r['session'][:16]}", {**r['verified'], 'fixes': r['fixes'],
+                                                       'to_review': r['to_review']}) for r in index]
+    ver_rows += [(f'**{w} (all)**', {**summarize(sc), 'fixes': '', 'to_review': ''}) for w, sc in by_tester_v.items()]
     if total:
-        s = summarize(total)
-        lines.append(f'| **ALL SANGAT** | ' + ' | '.join(str(s[c]) for c in cols) + ' |')
-    if listen_lines:
-        lines += ['', '**Listen list** (disagreements to settle by ear):', '',
-                  '| who | session | when | kind | human | system | audio |', '|---|---|---|---|---|---|---|']
-        lines += listen_lines
+        raw_rows.append(('**ALL SANGAT**', summarize(total)))
+        ver_rows.append(('**ALL SANGAT**', {**summarize(total_v), 'fixes': sum(r['fixes'] for r in index),
+                                            'to_review': sum(r['to_review'] for r in index)}))
+    lines = table('RAW (trusting the sevadaar)', raw_rows, cols) + ['']
+    lines += table('VERIFIED (with human verdicts on suspicious stretches)', ver_rows,
+                   VERIFIED_COLS + ['fixes', 'to_review'])
+    pending = [it for it in items_all if it['id'] not in vs]
+    if pending:
+        mins = sum(min(it['seconds'] + 10, 60) for it in pending) / 60
+        lines += ['', f'**To review:** {len(pending)} items, about {mins:.0f} min of listening. '
+                      'Run `python3 review.py`.', '',
+                  '| session | when | type | why | tester | Voice-Follow |', '|---|---|---|---|---|---|']
+        lines += [f"| {it['session'][:16]} | {it['from']}-{it['to']} ({it['seconds']} s) | {it['type']} | "
+                  f"{', '.join(it['reasons'])} | {it['human']} | {it['system']} |" for it in pending]
     report = '\n'.join(lines)
     if write:
         os.makedirs(os.path.join(root, 'reports'), exist_ok=True)
         open(os.path.join(root, 'reports', f'{date.today().isoformat()}.md'), 'w').write(report + '\n')
-    return index, total, report
+    return index, total, report, total_v
 
 
 def main():
@@ -146,12 +185,14 @@ def main():
     if '--local' not in sys.argv:
         subprocess.run(AWS + ['s3', 'sync', f'{BUCKET}/raw', os.path.join(root, 'raw'), '--exclude', '*.webm',
                               '--only-show-errors'], check=True)
-    _, _, report = run(root)
+        subprocess.run(AWS + ['s3', 'cp', f'{BUCKET}/review/verdicts.jsonl', os.path.join(root, 'review', 'verdicts.jsonl'),
+                              '--only-show-errors'], check=False, capture_output=True)
+    _, _, report, _ = run(root)
     print(report)
     if '--publish' in sys.argv:
-        for part in ('derived', 'index', 'reports'):
-            subprocess.run(AWS + ['s3', 'sync', os.path.join(root, part), f'{BUCKET}/{part}', '--only-show-errors'],
-                           check=True)
+        for part in ('derived', 'index', 'reports', 'review'):
+            subprocess.run(AWS + ['s3', 'sync', os.path.join(root, part), f'{BUCKET}/{part}', '--exclude', 'clips/*',
+                                  '--only-show-errors'], check=True)
 
 
 if __name__ == '__main__':
