@@ -19,29 +19,29 @@ import benchmark as B  # noqa: E402
 #   70     human line 12; system line 12 at 72                         (lines within +-10 s)
 #   100-101 human flicks to shabad 9 for 2 s                           -> BLIP, ignored
 #   130    human switches to shabad 2 line 21; system stays on 1 till 170 (switch 2: +40)
-#          130-134 AGREE (lag), 135-169 WRONG 35 s (135-159 in grace, 160-169 steady)
+#          130-134 AGREE (lag), 135-169 BEHIND 35 s (still on the shabad just left)
 #          -> one LISTEN entry 2:15-2:50, audio-000 @ 2:15
 #   200    system moves to shabad 3; human opens 3 at 220 (switch 3: -20)
 #          200-214 EARLY 15 s, 215-219 AGREE (lag)
 #   240-259 computer asleep (gap event)                                 -> 20 s PAUSED
-#   255    system drifts to line 32 (human stays on 31)                -> lines disagree 265-280
+#   255    system drifts to line 32 (human stays on 31)
+#   270-274 system shows shabad 7, nobody's shabad                     -> 5 s WRONG
+#          lines disagree 265-269 and 275-280
 #   285-299 nothing heard, shabad 3 up, system on 3                    -> 15 s HELD agree
 #   300-319 human shows a slide; system still on 3                     -> 20 s LINGER
 # States: kirtan 40-239 + 260-284 = 225, held 15, idle 0-1,6-39,300-319 = 56, paused 24.
-# Grace (30 s after each switch) covers 40-69, 130-159, 220-239 of kirtan: steady = 145,
-# of which agree 70-129, 170-199, 215-219, 260-284 = 120, early 15, wrong 160-169 = 10.
+# Kirtan: agree 40-134, 170-199, 215-239, 260-269, 275-284 = 170; early 15; behind 35; wrong 5.
 # Lines (agreed, sevadaar moved a line within 60 s): 40-134 (95), 170-190 (21), 220-239 (20),
-# 260-280 (21) = 157; disagree 265-280 (16) -> 141.
+# 260-269 + 275-280 (16) = 152; disagree 265-269 + 275-280 (11) -> 141.
 EXPECT = {
     'kirtan': 225, 'held': 15, 'idle': 56, 'paused': 24,
-    'agree': 175, 'early': 15, 'wrong': 35, 'none': 0,
-    'steady': 145, 'steadyAgree': 120, 'steadyEarly': 15, 'steadyWrong': 10, 'steadyNone': 0,
-    'heldAgree': 15, 'heldWrong': 0, 'heldNone': 0,
+    'agree': 170, 'early': 15, 'behind': 35, 'wrong': 5, 'none': 0,
+    'heldAgree': 15, 'heldBehind': 0, 'heldWrong': 0, 'heldNone': 0,
     'idleQuiet': 11, 'idleEarly': 15, 'linger': 20, 'falseAlarm': 10,
-    'lineSeconds': 157, 'lineAgree': 141,
+    'lineSeconds': 152, 'lineAgree': 141,
     'switches': 3, 'matched': 3, 'switchDelays': [-20, -15, 40],
 }
-EXPECT_LISTEN = [{'from': '2:15', 'to': '2:50', 'seconds': 35, 'kind': 'wrong', 'human': 'shabad:2',
+EXPECT_LISTEN = [{'from': '2:15', 'to': '2:50', 'seconds': 35, 'kind': 'behind', 'human': 'shabad:2',
                   'system': 'shabad:1', 'audio': {'file': 'audio-000.webm', 'offset': '2:15'}}]
 
 
@@ -63,7 +63,8 @@ def build(root):
         {'t': 10, 'shabadId': 5, 'verseId': 51}, {'t': 20, 'shabadId': None, 'verseId': None},
         {'t': 25, 'shabadId': 1, 'verseId': 11}, {'t': 72, 'verseId': 12},
         {'t': 170, 'shabadId': 2, 'verseId': 21}, {'t': 200, 'shabadId': 3, 'verseId': 31},
-        {'t': 255, 'verseId': 32},
+        {'t': 255, 'verseId': 32}, {'t': 270, 'shabadId': 7, 'verseId': 71},
+        {'t': 275, 'shabadId': 3, 'verseId': 32},
     ])
     write(d, 'activity.jsonl', [
         {'t': t, 'level': 0.05 if 10 <= t <= 279 and not 240 <= t < 260 else 0.0,

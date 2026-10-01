@@ -28,8 +28,8 @@ AWS = [os.path.expanduser('~/.local/bin/aws'), '--profile', 'gurbani-prod', '--r
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 SCORER = os.path.join(HERE, '..', '..', 'www', 'main', 'addons', 'voice-follow', 'shadow', 'score.js')
-SUM_KEYS = ['kirtan', 'held', 'idle', 'paused', 'agree', 'early', 'wrong', 'none', 'steady', 'steadyAgree',
-            'steadyEarly', 'steadyWrong', 'steadyNone', 'heldAgree', 'heldWrong', 'heldNone', 'idleQuiet',
+SUM_KEYS = ['kirtan', 'held', 'idle', 'paused', 'agree', 'early', 'wrong', 'behind', 'none',
+            'heldAgree', 'heldBehind', 'heldWrong', 'heldNone', 'idleQuiet',
             'idleEarly', 'linger', 'falseAlarm', 'lineSeconds', 'lineAgree', 'switches', 'matched']
 
 
@@ -48,9 +48,11 @@ def summarize(sc):
     dl = sorted(sc['switchDelays'])
     return {
         'kirtan_min': round(k / 60, 1),
-        'steady_right_pct': pct(sc['steadyAgree'] + sc['steadyEarly'], sc['steady']),
-        'right_pct': pct(sc['agree'] + sc['early'], k),
+        'right_when_shown_pct': pct(sc['agree'] + sc['early'], sc['agree'] + sc['early'] + sc['wrong']),
         'wrong_pct': pct(sc['wrong'], k),
+        'on_right_shabad_pct': pct(sc['agree'] + sc['early'], k),
+        'behind_pct': pct(sc['behind'], k),
+        'searching_pct': pct(sc['none'], k),
         'line_pct': pct(sc['lineAgree'], sc['lineSeconds']),
         'switches': sc['switches'],
         'matched_pct': pct(sc['matched'], sc['switches']),

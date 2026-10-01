@@ -17,9 +17,10 @@
 //   linger   - after the sevadaar leaves Gurbani (slide, blank), Voice-Follow still showing
 //              the shabad they had within LINGER_S is not a false alarm.
 //   blip     - a human label shown under BLIP_S (a mis-click, flicking through) is ignored.
-//   steady   - the headline % leaves out GRACE_S after each human switch; how fast
-//              Voice-Follow followed the switch is reported on its own (signed delay:
-//              negative = it got there before the sevadaar).
+//   behind   - after the sevadaar switches, Voice-Follow still on the shabad they just
+//              left (and not yet caught up) is BEHIND, not wrong: a delay, measured per
+//              switch (signed: negative = it got there before the sevadaar). WRONG is
+//              only a shabad the sevadaar was not on: the real failure.
 //   lines    - compared within +-LINE_LAG_S, only while the sevadaar is moving lines
 //              (a line change within STALE_S).
 //   listen   - every stretch of LISTEN_MIN_S+ where the two disagree is listed with its
@@ -36,7 +37,6 @@ const C = {
   EARLY_S: 60,
   LINGER_S: 60,
   BLIP_S: 3,
-  GRACE_S: 30,
   LINE_LAG_S: 10,
   STALE_S: 60,
   MATCH_CAP_S: 180, // a human switch not followed within this is missed
@@ -168,23 +168,27 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events }) 
     return false;
   };
 
-  // Human switches to new Gurbani, and the steady/transition split.
+  // Human switches to new Gurbani; what they left; whether Voice-Follow has caught up.
+  // A switch is new Gurbani, not a return to the same shabad after a slide.
   const switchesAt = [];
-  for (let i = 0; i < length; i += 1) {
-    if (hkey[i] && hkey[i] !== (i ? hkey[i - 1] : null)) switchesAt.push(i);
-  }
-  const lastSwitch = new Array(length).fill(-1e9);
+  const leftKey = new Array(length).fill(null); // the Gurbani before the latest switch
+  const caughtUp = new Array(length).fill(true); // Voice-Follow reached it since then
   const lastLine = new Array(length).fill(-1e9);
-  let sw = -1e9;
+  let left = null;
+  let shown = null; // last Gurbani the sevadaar had on screen
+  let caught = true;
   let ln = -1e9;
-  let swIdx = 0;
   for (let i = 0; i < length; i += 1) {
-    if (swIdx < switchesAt.length && switchesAt[swIdx] === i) {
-      sw = i;
-      swIdx += 1;
+    if (hkey[i] && hkey[i] !== shown) {
+      switchesAt.push(i);
+      left = shown;
+      shown = hkey[i];
+      caught = false;
     }
+    if (skey[i] && skey[i] === shown) caught = true;
     if (i === 0 || hkey[i] !== hkey[i - 1] || hverse[i] !== hverse[i - 1]) ln = i;
-    lastSwitch[i] = sw;
+    leftKey[i] = left;
+    caughtUp[i] = caught;
     lastLine[i] = ln;
   }
 
@@ -197,13 +201,10 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events }) 
     agree: 0,
     early: 0,
     wrong: 0,
+    behind: 0,
     none: 0,
-    steady: 0,
-    steadyAgree: 0,
-    steadyEarly: 0,
-    steadyWrong: 0,
-    steadyNone: 0,
     heldAgree: 0,
+    heldBehind: 0,
     heldWrong: 0,
     heldNone: 0,
     idleQuiet: 0,
@@ -235,6 +236,7 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events }) 
     if (!k) o = 'none';
     else if (humanHas(k, i - C.LAG_S, i + C.LAG_S)) o = 'agree';
     else if (humanHas(k, i + 1, i + C.EARLY_S)) o = 'early';
+    else if (k === leftKey[i] && !caughtUp[i]) o = 'behind';
     else o = 'wrong';
     outcome[i] = o;
     if (st === 'held') {
@@ -242,10 +244,6 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events }) 
       continue;
     }
     sc[o] += 1;
-    if (i - lastSwitch[i] >= C.GRACE_S) {
-      sc.steady += 1;
-      sc[`steady${o[0].toUpperCase()}${o.slice(1)}`] += 1;
-    }
     // Lines: only on agreed seconds while the sevadaar is moving lines.
     if (o === 'agree' && hverse[i] != null && i - lastLine[i] <= C.STALE_S) {
       sc.lineSeconds += 1;
@@ -297,7 +295,7 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events }) 
     });
     return seg ? { file: seg.file, offset: mmss(t - (seg.t || 0)) } : null;
   };
-  const bad = (o) => o === 'wrong' || o === 'none' || o === 'falseAlarm';
+  const bad = (o) => o === 'wrong' || o === 'none' || o === 'behind' || o === 'falseAlarm';
   const listen = [];
   for (let i = 0; i < length;) {
     if (!bad(outcome[i])) {
@@ -333,14 +331,18 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events }) 
 const pct = (a, b) => (b ? Math.round((1000 * a) / b) / 10 : null);
 const median = (xs) => (xs.length ? xs[Math.floor(xs.length / 2)] : null);
 
-// The numbers people read. "right" = agree + early.
+// The numbers people read. "right" = agree + early. The headline is how often what
+// Voice-Follow put up was right (WRONG is the failure); how long it takes to get there
+// is the switch delay, and the share of kirtan spent searching or behind.
 function summarize(sc) {
+  const right = sc.agree + sc.early;
   return {
     kirtanMin: Math.round((sc.kirtan / 60) * 10) / 10,
-    steadyRightPct: pct(sc.steadyAgree + sc.steadyEarly, sc.steady),
-    steadyWrongPct: pct(sc.steadyWrong, sc.steady),
-    steadyNonePct: pct(sc.steadyNone, sc.steady),
-    rightPct: pct(sc.agree + sc.early, sc.kirtan),
+    rightWhenShownPct: pct(right, right + sc.wrong),
+    wrongPct: pct(sc.wrong, sc.kirtan),
+    onRightShabadPct: pct(right, sc.kirtan),
+    behindPct: pct(sc.behind, sc.kirtan),
+    searchingPct: pct(sc.none, sc.kirtan),
     lineAgreePct: pct(sc.lineAgree, sc.lineSeconds),
     switches: sc.switches,
     matchedPct: pct(sc.matched, sc.switches),
