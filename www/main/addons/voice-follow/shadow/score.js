@@ -1,0 +1,385 @@
+// The one Voice-Follow shadow score. The app runs it live on the session folder (bus.js,
+// every SAVE_S) and the offline benchmark runs the same file (`node score.js <dir>`), so
+// the number a tester's laptop shows and the official benchmark can never disagree.
+//
+// Inputs (one session folder): human.jsonl, system.jsonl, activity.jsonl, events.jsonl.
+//
+// Every second gets exactly one state:
+//   paused - Voice-Follow paused (busy computer), mic down, or the computer asleep: not scored
+//   idle   - no Gurbani on the sevadaar's screen (before the service, a slide)
+//   kirtan - Gurbani on screen AND words heard within +-ACT_WIN_S: the benchmark
+//   held   - Gurbani on screen, nothing heard (katha pause, silence)
+//
+// The sevadaar's clicks are the truth, but people click late, early, or flick through
+// shabads; these rules keep human timing from being scored as system error:
+//   lag      - Voice-Follow agrees if the sevadaar showed its shabad within +-LAG_S.
+//   early    - Voice-Follow shows a shabad the sevadaar then opens within EARLY_S: correct.
+//   linger   - after the sevadaar leaves Gurbani (slide, blank), Voice-Follow still showing
+//              the shabad they had within LINGER_S is not a false alarm.
+//   blip     - a human label shown under BLIP_S (a mis-click, flicking through) is ignored.
+//   steady   - the headline % leaves out GRACE_S after each human switch; how fast
+//              Voice-Follow followed the switch is reported on its own (signed delay:
+//              negative = it got there before the sevadaar).
+//   lines    - compared within +-LINE_LAG_S, only while the sevadaar is moving lines
+//              (a line change within STALE_S).
+//   listen   - every stretch of LISTEN_MIN_S+ where the two disagree is listed with its
+//              audio file and offset, so a person can listen and settle who was right.
+/* eslint-disable no-continue */
+const fs = require('fs');
+const path = require('path');
+
+const C = {
+  LAG_S: 5,
+  ACT_WIN_S: 5,
+  LETTERS_MIN: 6, // letters recognised in a second that count as words heard
+  LEVEL_MIN: 0.003, // RMS loudness that counts as sound (a quiet room is ~0.001)
+  EARLY_S: 60,
+  LINGER_S: 60,
+  BLIP_S: 3,
+  GRACE_S: 30,
+  LINE_LAG_S: 10,
+  STALE_S: 60,
+  MATCH_CAP_S: 180, // a human switch not followed within this is missed
+  LISTEN_MIN_S: 20,
+  LISTEN_JOIN_S: 3,
+  GAP_S: 5, // the live clock jumping this far means the computer slept
+};
+
+function readJsonl(file) {
+  try {
+    return fs
+      .readFileSync(file, 'utf8')
+      .split('\n')
+      .map((l) => {
+        try {
+          return l.trim() ? JSON.parse(l) : null;
+        } catch (_) {
+          return null; // a line cut short by a crash
+        }
+      })
+      .filter(Boolean);
+  } catch (_) {
+    return [];
+  }
+}
+
+function contentKey(l) {
+  if (!l || l.slide) return null; // a slide (Waheguru, blank, announcement) shows no Gurbani
+  if (l.bani != null) return `bani:${l.bani}`;
+  if (l.ceremony != null) return `ceremony:${l.ceremony}`;
+  if (l.shabadId != null) return `shabad:${l.shabadId}`;
+  return null;
+}
+
+// Step function: the label in force at each whole second. System updates are partial.
+function perSecond(evs, length, merge) {
+  const out = [];
+  const sorted = [...evs].sort((a, b) => (a.t || 0) - (b.t || 0));
+  let cur = {};
+  let j = 0;
+  for (let s = 0; s < length; s += 1) {
+    while (j < sorted.length && (sorted[j].t || 0) <= s + 0.999) {
+      const { t, ...e } = sorted[j];
+      if (merge) {
+        cur = { ...cur, ...e };
+        if (e.shabadId != null) cur.slide = null;
+      } else cur = e;
+      j += 1;
+    }
+    out.push(cur);
+  }
+  return out;
+}
+
+const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+
+function scoreTimelines({ human: humanEv, system: systemEv, activity, events }) {
+  const ends = [...humanEv, ...systemEv, ...activity, ...events].map((e) => e.t || 0);
+  const length = ends.length ? Math.floor(Math.max(...ends)) + 1 : 0;
+  const human = perSecond(humanEv, length, false);
+  const system = perSecond(systemEv, length, true);
+
+  // blip: a human label run shorter than BLIP_S takes the label before it.
+  let hkey = human.map(contentKey);
+  for (let i = 1; i < length;) {
+    let j = i;
+    while (j < length && hkey[j] === hkey[i]) j += 1;
+    if (hkey[i] !== hkey[i - 1] && j - i < C.BLIP_S && j < length) {
+      for (let k = i; k < j; k += 1) human[k] = human[i - 1];
+    }
+    i = j;
+  }
+  hkey = human.map(contentKey);
+  const skey = system.map(contentKey);
+  const hverse = human.map((h, i) => (hkey[i] && h.verseId !== '' ? (h.verseId ?? null) : null));
+  const sverse = system.map((s, i) => (skey[i] ? (s.verseId ?? null) : null));
+
+  const level = new Array(length).fill(0);
+  const letters = new Array(length).fill(0);
+  activity.forEach((a) => {
+    const t = Math.floor(a.t || 0);
+    if (t >= 0 && t < length) {
+      level[t] = Math.max(level[t], a.level || 0);
+      letters[t] = Math.max(letters[t], a.letters || 0);
+    }
+  });
+  const haveActivity = activity.length > 0;
+
+  // paused: busy computer (paused..resumed), mic down (mic_error..mic_restarted), asleep (gap).
+  const paused = new Array(length).fill(false);
+  const mark = (from, to) => {
+    for (let k = Math.max(0, Math.floor(from)); k < Math.min(length, Math.ceil(to)); k += 1)
+      paused[k] = true;
+  };
+  let busyFrom = null;
+  let micFrom = null;
+  [...events]
+    .sort((a, b) => (a.t || 0) - (b.t || 0))
+    .forEach((e) => {
+      if (e.type === 'paused' && busyFrom == null) busyFrom = e.t;
+      if (e.type === 'resumed' && busyFrom != null) {
+        mark(busyFrom, e.t);
+        busyFrom = null;
+      }
+      if (e.type === 'mic_error' && micFrom == null) micFrom = e.t;
+      if ((e.type === 'mic_restarted' || e.type === 'audio_segment') && micFrom != null) {
+        mark(micFrom, e.t);
+        micFrom = null;
+      }
+      if (e.type === 'gap') mark(e.from, e.t);
+    });
+  if (busyFrom != null) mark(busyFrom, length);
+  if (micFrom != null) mark(micFrom, length);
+
+  const heard = (i) => {
+    if (!haveActivity) return true;
+    for (let k = Math.max(0, i - C.ACT_WIN_S); k <= Math.min(length - 1, i + C.ACT_WIN_S); k += 1)
+      if (letters[k] >= C.LETTERS_MIN && level[k] >= C.LEVEL_MIN) return true;
+    return false;
+  };
+  const states = hkey.map((k, i) => {
+    if (paused[i]) return 'paused';
+    if (!k) return 'idle';
+    return heard(i) ? 'kirtan' : 'held';
+  });
+  const humanHas = (key, from, to) => {
+    for (let k = Math.max(0, from); k <= Math.min(length - 1, to); k += 1)
+      if (hkey[k] === key) return true;
+    return false;
+  };
+
+  // Human switches to new Gurbani, and the steady/transition split.
+  const switchesAt = [];
+  for (let i = 0; i < length; i += 1) {
+    if (hkey[i] && hkey[i] !== (i ? hkey[i - 1] : null)) switchesAt.push(i);
+  }
+  const lastSwitch = new Array(length).fill(-1e9);
+  const lastLine = new Array(length).fill(-1e9);
+  let sw = -1e9;
+  let ln = -1e9;
+  let swIdx = 0;
+  for (let i = 0; i < length; i += 1) {
+    if (swIdx < switchesAt.length && switchesAt[swIdx] === i) {
+      sw = i;
+      swIdx += 1;
+    }
+    if (i === 0 || hkey[i] !== hkey[i - 1] || hverse[i] !== hverse[i - 1]) ln = i;
+    lastSwitch[i] = sw;
+    lastLine[i] = ln;
+  }
+
+  const sc = {
+    seconds: length,
+    kirtan: 0,
+    held: 0,
+    idle: 0,
+    paused: 0,
+    agree: 0,
+    early: 0,
+    wrong: 0,
+    none: 0,
+    steady: 0,
+    steadyAgree: 0,
+    steadyEarly: 0,
+    steadyWrong: 0,
+    steadyNone: 0,
+    heldAgree: 0,
+    heldWrong: 0,
+    heldNone: 0,
+    idleQuiet: 0,
+    idleEarly: 0,
+    linger: 0,
+    falseAlarm: 0,
+    lineSeconds: 0,
+    lineAgree: 0,
+    switches: 0,
+    matched: 0,
+    switchDelays: [],
+  };
+  const outcome = new Array(length).fill(null);
+  for (let i = 0; i < length; i += 1) {
+    const st = states[i];
+    sc[st] += 1;
+    if (st === 'paused') continue;
+    const k = skey[i];
+    if (st === 'idle') {
+      let o = 'idleQuiet';
+      if (k && humanHas(k, i - C.LINGER_S, i)) o = 'linger';
+      else if (k && humanHas(k, i, i + C.EARLY_S)) o = 'idleEarly';
+      else if (k) o = 'falseAlarm';
+      sc[o] += 1;
+      outcome[i] = o;
+      continue;
+    }
+    let o;
+    if (!k) o = 'none';
+    else if (humanHas(k, i - C.LAG_S, i + C.LAG_S)) o = 'agree';
+    else if (humanHas(k, i + 1, i + C.EARLY_S)) o = 'early';
+    else o = 'wrong';
+    outcome[i] = o;
+    if (st === 'held') {
+      sc[o === 'early' ? 'heldAgree' : `held${o[0].toUpperCase()}${o.slice(1)}`] += 1;
+      continue;
+    }
+    sc[o] += 1;
+    if (i - lastSwitch[i] >= C.GRACE_S) {
+      sc.steady += 1;
+      sc[`steady${o[0].toUpperCase()}${o.slice(1)}`] += 1;
+    }
+    // Lines: only on agreed seconds while the sevadaar is moving lines.
+    if (o === 'agree' && hverse[i] != null && i - lastLine[i] <= C.STALE_S) {
+      sc.lineSeconds += 1;
+      const lo = Math.max(0, i - C.LINE_LAG_S);
+      const hi = Math.min(length - 1, i + C.LINE_LAG_S);
+      const hv = new Set();
+      for (let m = lo; m <= hi; m += 1) if (hkey[m] === k && hverse[m] != null) hv.add(hverse[m]);
+      let ok = false;
+      for (let m = lo; m <= hi && !ok; m += 1) if (skey[m] === k && hv.has(sverse[m])) ok = true;
+      if (ok) sc.lineAgree += 1;
+    }
+  }
+
+  // Signed delay per switch made while words were heard: system arrival minus human click.
+  const switches = [];
+  switchesAt.forEach((i) => {
+    if (states[i] !== 'kirtan') return;
+    const key = hkey[i];
+    sc.switches += 1;
+    let at = null;
+    if (skey[i] === key) {
+      at = i;
+      while (at > 0 && at > i - C.EARLY_S && skey[at - 1] === key) at -= 1;
+    } else {
+      for (let m = i + 1; m < Math.min(length, i + C.MATCH_CAP_S); m += 1) {
+        if (skey[m] === key) {
+          at = m;
+          break;
+        }
+      }
+    }
+    const row = { t: i, at: mmss(i), human: key, delay: at == null ? null : at - i };
+    switches.push(row);
+    if (at != null) {
+      sc.matched += 1;
+      sc.switchDelays.push(at - i);
+    }
+  });
+  sc.switchDelays.sort((a, b) => a - b);
+
+  // Listen list: disagreement stretches long enough to be worth a person's ear.
+  const audio = events
+    .filter((e) => e.type === 'audio_segment')
+    .sort((a, b) => (a.t || 0) - (b.t || 0));
+  const audioAt = (t) => {
+    let seg = null;
+    audio.forEach((a) => {
+      if ((a.t || 0) <= t) seg = a;
+    });
+    return seg ? { file: seg.file, offset: mmss(t - (seg.t || 0)) } : null;
+  };
+  const bad = (o) => o === 'wrong' || o === 'none' || o === 'falseAlarm';
+  const listen = [];
+  for (let i = 0; i < length;) {
+    if (!bad(outcome[i])) {
+      i += 1;
+      continue;
+    }
+    let j = i;
+    let gap = 0;
+    let end = i;
+    while (j < length && gap <= C.LISTEN_JOIN_S) {
+      if (bad(outcome[j])) {
+        end = j;
+        gap = 0;
+      } else gap += 1;
+      j += 1;
+    }
+    if (end - i + 1 >= C.LISTEN_MIN_S) {
+      listen.push({
+        from: mmss(i),
+        to: mmss(end + 1),
+        seconds: end - i + 1,
+        kind: outcome[i],
+        human: hkey[i],
+        system: skey[i],
+        audio: audioAt(i),
+      });
+    }
+    i = end + 1;
+  }
+  return { score: sc, switches, listen, states };
+}
+
+const pct = (a, b) => (b ? Math.round((1000 * a) / b) / 10 : null);
+const median = (xs) => (xs.length ? xs[Math.floor(xs.length / 2)] : null);
+
+// The numbers people read. "right" = agree + early.
+function summarize(sc) {
+  return {
+    kirtanMin: Math.round((sc.kirtan / 60) * 10) / 10,
+    steadyRightPct: pct(sc.steadyAgree + sc.steadyEarly, sc.steady),
+    steadyWrongPct: pct(sc.steadyWrong, sc.steady),
+    steadyNonePct: pct(sc.steadyNone, sc.steady),
+    rightPct: pct(sc.agree + sc.early, sc.kirtan),
+    lineAgreePct: pct(sc.lineAgree, sc.lineSeconds),
+    switches: sc.switches,
+    matchedPct: pct(sc.matched, sc.switches),
+    medianSwitchDelayS: median(sc.switchDelays),
+    worstSwitchDelayS: sc.switchDelays.length ? sc.switchDelays[sc.switchDelays.length - 1] : null,
+    switchesBeforeHumanPct: pct(sc.switchDelays.filter((d) => d < 0).length, sc.switches),
+    heldMin: Math.round((sc.held / 60) * 10) / 10,
+    heldRightPct: pct(sc.heldAgree, sc.held),
+    idleMin: Math.round((sc.idle / 60) * 10) / 10,
+    falseAlarmPct: pct(sc.falseAlarm, sc.idle),
+    pausedMin: Math.round((sc.paused / 60) * 10) / 10,
+  };
+}
+
+function scoreDir(dir) {
+  const r = scoreTimelines({
+    human: readJsonl(path.join(dir, 'human.jsonl')),
+    system: readJsonl(path.join(dir, 'system.jsonl')),
+    activity: readJsonl(path.join(dir, 'activity.jsonl')),
+    events: readJsonl(path.join(dir, 'events.jsonl')),
+  });
+  const segments = [];
+  for (let i = 0, s = 0; i <= r.states.length; i += 1) {
+    if (i === r.states.length || r.states[i] !== r.states[s]) {
+      if (i > s) segments.push({ from: s, to: i, state: r.states[s] });
+      s = i;
+    }
+  }
+  return {
+    ...summarize(r.score),
+    raw: r.score,
+    switches: r.switches,
+    listen: r.listen,
+    segments,
+  };
+}
+
+module.exports = { C, contentKey, scoreTimelines, scoreDir, summarize };
+
+if (require.main === module) {
+  process.stdout.write(JSON.stringify(scoreDir(process.argv[2])));
+}

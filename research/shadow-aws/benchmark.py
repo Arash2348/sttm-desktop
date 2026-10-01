@@ -7,23 +7,18 @@
 
 Layout (S3 and local mirror):
     raw/<tester>/<date>/<session>/   session.json human.jsonl system.jsonl activity.jsonl events.jsonl audio-*.webm
-    derived/<session>/               segments.jsonl score.json      (recomputable from raw)
+    derived/<session>/               score.json segments.jsonl listen.jsonl   (recomputable from raw)
     index/sessions.jsonl             one line per session: who, where, when, minutes per state, score
-    reports/<date>.md                the benchmark table
+    reports/<date>.md                the benchmark table and the listen list
 
-Every second of a session gets exactly one state:
-    paused  - Voice-Follow was paused (busy computer) or the mic was down: not scored
-    idle    - no Gurbani on the sevadaar's screen (before the service, slides): a Voice-Follow
-              shabad here is a FALSE ALARM
-    kirtan  - Gurbani on screen AND singing/speech heard (activity within +-ACT_WIN_S):
-              the core benchmark
-    held    - Gurbani on screen but nothing heard (katha pause, silence): reported separately
-Scoring (kirtan seconds): Voice-Follow AGREES when its shabad/Bani is one the sevadaar showed
-within +-LAG_S; WRONG when it shows another; NONE when it shows nothing. Line agreement is
-counted only while the sevadaar is actively following (changed line within STALE_S).
+Each session is scored by www/main/addons/voice-follow/shadow/score.js, the same file the
+tester's app runs live, so live and official numbers are one computation. Its header
+documents the states (kirtan / held / idle / paused) and the human-timing rules
+(lag, early, linger, blip, steady, lines, listen).
 """
 import json
 import os
+import shutil
 import subprocess
 import sys
 from datetime import date
@@ -32,164 +27,16 @@ BUCKET = 's3://vf-shadow-sessions-680476617406'
 AWS = [os.path.expanduser('~/.local/bin/aws'), '--profile', 'gurbani-prod', '--region', 'us-east-2']
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-LAG_S = 5          # the sevadaar clicks late, Voice-Follow sometimes early
-ACT_WIN_S = 5      # "something is being heard" looks this far either side
-LETTERS_MIN = 6    # letters in a recognised window that count as words being heard
-LEVEL_MIN = 0.003  # RMS loudness that counts as sound (quiet room is ~0.001)
-STALE_S = 60       # no line change for this long: the sevadaar is not following lines
-MATCH_CAP_S = 180  # a human switch never followed within this counts as missed
-
-
-def read_jsonl(path):
-    out = []
-    if not os.path.exists(path):
-        return out
-    for line in open(path, encoding='utf-8'):
-        line = line.strip()
-        if line:
-            try:
-                out.append(json.loads(line))
-            except json.JSONDecodeError:
-                pass
-    return out
-
-
-def content_key(label):
-    if not label or label.get('slide'):
-        return None
-    if label.get('bani') is not None:
-        return f"bani:{label['bani']}"
-    if label.get('ceremony') is not None:
-        return f"ceremony:{label['ceremony']}"
-    if label.get('shabadId') is not None:
-        return f"shabad:{label['shabadId']}"
-    return None
-
-
-def per_second(events, length, merge=False):
-    """Step function: the label in force at each whole second."""
-    out, cur, j = [], {}, 0
-    events = sorted(events, key=lambda e: e.get('t', 0))
-    for sec in range(length):
-        while j < len(events) and events[j].get('t', 0) <= sec + 0.999:
-            e = {k: v for k, v in events[j].items() if k != 't'}
-            if merge:
-                cur = {**cur, **e}
-                if e.get('shabadId') is not None:
-                    cur['slide'] = None
-            else:
-                cur = e
-            j += 1
-        out.append(dict(cur))
-    return out
+SCORER = os.path.join(HERE, '..', '..', 'www', 'main', 'addons', 'voice-follow', 'shadow', 'score.js')
+SUM_KEYS = ['kirtan', 'held', 'idle', 'paused', 'agree', 'early', 'wrong', 'none', 'steady', 'steadyAgree',
+            'steadyEarly', 'steadyWrong', 'steadyNone', 'heldAgree', 'heldWrong', 'heldNone', 'idleQuiet',
+            'idleEarly', 'linger', 'falseAlarm', 'lineSeconds', 'lineAgree', 'switches', 'matched']
 
 
 def score_session(d):
-    """Score one raw session folder. Returns (segments, score)."""
-    human_ev = read_jsonl(os.path.join(d, 'human.jsonl')) or read_jsonl(os.path.join(d, 'timeline.jsonl'))
-    system_ev = read_jsonl(os.path.join(d, 'system.jsonl'))
-    act_ev = read_jsonl(os.path.join(d, 'activity.jsonl'))
-    events = read_jsonl(os.path.join(d, 'events.jsonl'))
-    ends = [e.get('t', 0) for e in human_ev + system_ev + act_ev + events]
-    length = int(max(ends)) + 1 if ends else 0
-    human = per_second(human_ev, length)
-    system = per_second(system_ev, length, merge=True)
-    level = [0.0] * length
-    letters = [0] * length
-    for a in act_ev:
-        t = int(a.get('t', 0))
-        if 0 <= t < length:
-            level[t] = max(level[t], a.get('level', 0) or 0)
-            letters[t] = max(letters[t], a.get('letters', 0) or 0)
-    have_activity = bool(act_ev)
-    paused = [False] * length
-    state_on = False
-    last = 0
-    for e in sorted(events, key=lambda x: x.get('t', 0)):
-        if e.get('type') in ('paused', 'resumed'):
-            t = min(length, int(e['t']))
-            for k in range(last, t):
-                paused[k] = state_on
-            state_on = e['type'] == 'paused'
-            last = t
-    for k in range(last, length):
-        paused[k] = state_on
-
-    hkey = [content_key(h) for h in human]
-    skey = [content_key(s) for s in system]
-    hverse = [h.get('verseId') if hkey[i] else None for i, h in enumerate(human)]
-    sverse = [s.get('verseId') if skey[i] else None for i, s in enumerate(system)]
-    # Last second the sevadaar changed line (for "actively following").
-    last_line_change = [-10 ** 9] * length
-    prev = None
-    lc = -10 ** 9
-    for i in range(length):
-        if (hkey[i], hverse[i]) != prev:
-            lc = i
-            prev = (hkey[i], hverse[i])
-        last_line_change[i] = lc
-
-    def heard(i):
-        if not have_activity:
-            return True
-        lo, hi = max(0, i - ACT_WIN_S), min(length, i + ACT_WIN_S + 1)
-        return any(letters[k] >= LETTERS_MIN and level[k] >= LEVEL_MIN for k in range(lo, hi))
-
-    states = []
-    for i in range(length):
-        if paused[i]:
-            states.append('paused')
-        elif not hkey[i]:
-            states.append('idle')
-        elif heard(i):
-            states.append('kirtan')
-        else:
-            states.append('held')
-
-    sc = {k: 0 for k in ['kirtan', 'held', 'idle', 'paused', 'agree', 'wrong', 'none', 'held_agree',
-                         'held_wrong', 'held_none', 'false_alarm', 'line_seconds', 'line_agree',
-                         'switches', 'matched']}
-    match_secs = []
-    for i in range(length):
-        st = states[i]
-        sc[st] += 1
-        lo, hi = max(0, i - LAG_S), min(length, i + LAG_S + 1)
-        hset = {hkey[k] for k in range(lo, hi) if hkey[k]}
-        if st == 'idle':
-            if skey[i] and skey[i] not in hset:
-                sc['false_alarm'] += 1
-            continue
-        if st not in ('kirtan', 'held'):
-            continue
-        pre = '' if st == 'kirtan' else 'held_'
-        if not skey[i]:
-            sc[pre + 'none'] += 1
-        elif skey[i] in hset:
-            sc[pre + 'agree'] += 1
-            if st == 'kirtan' and hverse[i] is not None and i - last_line_change[i] <= STALE_S:
-                sc['line_seconds'] += 1
-                hv = {hverse[k] for k in range(lo, hi) if hkey[k] == skey[i] and hverse[k] is not None}
-                if sverse[i] in hv or any(sverse[k] in hv for k in range(lo, hi) if skey[k] == skey[i]):
-                    sc['line_agree'] += 1
-        else:
-            sc[pre + 'wrong'] += 1
-    # Time to match: each sevadaar change to new Gurbani during kirtan.
-    for i in range(1, length):
-        if hkey[i] and hkey[i] != hkey[i - 1] and states[i] == 'kirtan':
-            sc['switches'] += 1
-            lo = max(0, i - LAG_S)
-            for k in range(lo, min(length, i + MATCH_CAP_S)):
-                if skey[k] == hkey[i]:
-                    sc['matched'] += 1
-                    match_secs.append(max(0, k - i))
-                    break
-    segments, start = [], 0
-    for i in range(1, length + 1):
-        if i == length or states[i] != states[start]:
-            segments.append({'from': start, 'to': i, 'state': states[start]})
-            start = i
-    sc['match_seconds'] = sorted(match_secs)
-    return segments, sc
+    """Score one raw session folder with the shared scorer. Returns its result dict."""
+    out = subprocess.run([shutil.which('node') or 'node', SCORER, d], capture_output=True, text=True, check=True)
+    return json.loads(out.stdout)
 
 
 def pct(a, b):
@@ -198,30 +45,29 @@ def pct(a, b):
 
 def summarize(sc):
     k = sc['kirtan']
-    ms = sc['match_seconds']
+    dl = sorted(sc['switchDelays'])
     return {
         'kirtan_min': round(k / 60, 1),
-        'agree_pct': pct(sc['agree'], k),
+        'steady_right_pct': pct(sc['steadyAgree'] + sc['steadyEarly'], sc['steady']),
+        'right_pct': pct(sc['agree'] + sc['early'], k),
         'wrong_pct': pct(sc['wrong'], k),
-        'none_pct': pct(sc['none'], k),
-        'line_agree_pct': pct(sc['line_agree'], sc['line_seconds']),
+        'line_pct': pct(sc['lineAgree'], sc['lineSeconds']),
         'switches': sc['switches'],
         'matched_pct': pct(sc['matched'], sc['switches']),
-        'median_s_to_match': ms[len(ms) // 2] if ms else None,
+        'median_delay_s': dl[len(dl) // 2] if dl else None,
+        'worst_delay_s': dl[-1] if dl else None,
         'held_min': round(sc['held'] / 60, 1),
-        'held_wrong_pct': pct(sc['held_wrong'], sc['held']),
+        'held_right_pct': pct(sc['heldAgree'], sc['held']),
         'idle_min': round(sc['idle'] / 60, 1),
-        'false_alarm_pct': pct(sc['false_alarm'], sc['idle']),
+        'false_alarm_pct': pct(sc['falseAlarm'], sc['idle']),
         'paused_min': round(sc['paused'] / 60, 1),
     }
 
 
 def add(a, b):
-    for key, v in b.items():
-        if isinstance(v, list):
-            a[key] = sorted(a.get(key, []) + v)
-        else:
-            a[key] = a.get(key, 0) + v
+    for key in SUM_KEYS:
+        a[key] = a.get(key, 0) + b[key]
+    a['switchDelays'] = sorted(a.get('switchDelays', []) + b['switchDelays'])
     return a
 
 
@@ -238,9 +84,10 @@ def sessions(root):
 
 
 def run(root, write=True):
-    index, total, by_tester, lines = [], {}, {}, []
+    index, total, by_tester, lines, listen_lines = [], {}, {}, [], []
     for tester, day, sess, d in sessions(root):
-        segments, sc = score_session(d)
+        res = score_session(d)
+        sc, segments = res['raw'], res['segments']
         try:
             meta = json.load(open(os.path.join(d, 'session.json')))
         except (OSError, json.JSONDecodeError):
@@ -252,19 +99,25 @@ def run(root, write=True):
                **summarize(sc)}
         index.append(row)
         add(total, sc)
+        for x in res['listen']:
+            a = x.get('audio') or {}
+            listen_lines.append(f"| {who} | {sess[:16]} | {x['from']}-{x['to']} ({x['seconds']} s) | {x['kind']} | "
+                                f"{x['human']} | {x['system']} | {a.get('file', '')} @ {a.get('offset', '')} |")
         add(by_tester.setdefault(who, {}), sc)
         if write:
             out = os.path.join(root, 'derived', sess)
             os.makedirs(out, exist_ok=True)
             with open(os.path.join(out, 'segments.jsonl'), 'w') as f:
                 f.writelines(json.dumps(s) + '\n' for s in segments)
-            json.dump({**row, 'raw': sc}, open(os.path.join(out, 'score.json'), 'w'), indent=1)
+            json.dump({**row, 'raw': sc, 'switches': res['switches']}, open(os.path.join(out, 'score.json'), 'w'),
+                      indent=1)
+            with open(os.path.join(out, 'listen.jsonl'), 'w') as f:
+                f.writelines(json.dumps(x) + '\n' for x in res['listen'])
     if write:
         os.makedirs(os.path.join(root, 'index'), exist_ok=True)
         with open(os.path.join(root, 'index', 'sessions.jsonl'), 'w') as f:
             f.writelines(json.dumps(r) + '\n' for r in index)
-    cols = ['kirtan_min', 'agree_pct', 'wrong_pct', 'none_pct', 'line_agree_pct', 'switches', 'matched_pct',
-            'median_s_to_match', 'held_min', 'held_wrong_pct', 'idle_min', 'false_alarm_pct', 'paused_min']
+    cols = list(summarize({**{k: 0 for k in SUM_KEYS}, 'switchDelays': []}).keys())
     lines.append('| who | ' + ' | '.join(cols) + ' |')
     lines.append('|' + '---|' * (len(cols) + 1))
     for r in index:
@@ -275,6 +128,10 @@ def run(root, write=True):
     if total:
         s = summarize(total)
         lines.append(f'| **ALL SANGAT** | ' + ' | '.join(str(s[c]) for c in cols) + ' |')
+    if listen_lines:
+        lines += ['', '**Listen list** (disagreements to settle by ear):', '',
+                  '| who | session | when | kind | human | system | audio |', '|---|---|---|---|---|---|---|']
+        lines += listen_lines
     report = '\n'.join(lines)
     if write:
         os.makedirs(os.path.join(root, 'reports'), exist_ok=True)

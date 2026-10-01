@@ -107,6 +107,19 @@ const voiceFollowRetrieval = registerRetrievalService({
 app.once('will-quit', () => {
   voiceFollowRetrieval.dispose().catch(() => {});
 });
+// Tester build: hold the quit up to 20 s to upload the session that just ended.
+let shadowFlushed = false;
+app.on('will-quit', (e) => {
+  if (shadowFlushed) return;
+  shadowFlushed = true;
+  e.preventDefault();
+  // eslint-disable-next-line global-require
+  const shadowUploader = require('./www/main/addons/voice-follow/shadow/uploader');
+  shadowUploader
+    .flush(path.join(app.getPath('userData'), 'voice-follow', 'shadow'), 20000)
+    .catch(() => {})
+    .finally(() => app.quit());
+});
 let viewerWindow = false;
 let startChangelogOpenTimer;
 let endChangelogOpenTimer;

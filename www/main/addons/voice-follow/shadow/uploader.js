@@ -127,4 +127,17 @@ function start(shadowRoot) {
   }, TICK_MS);
 }
 
-module.exports = { start, enqueue, enqueueSession };
+// The app is quitting (main process): upload whatever is still pending, for at most ms,
+// so a tester's last service reaches the bucket now and not at their next launch.
+async function flush(shadowRoot, ms) {
+  root = shadowRoot;
+  scanPending();
+  await Promise.race([
+    drain(),
+    new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    }),
+  ]);
+}
+
+module.exports = { start, enqueue, enqueueSession, flush };
