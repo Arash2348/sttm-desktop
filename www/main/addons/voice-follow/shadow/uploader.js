@@ -46,13 +46,30 @@ async function putFile(dir, file) {
   const full = path.join(dir, file);
   if (!fs.existsSync(full) || !UPLOAD_ENDPOINT) return false;
   const session = readJson(path.join(dir, 'session.json'), {});
-  const testerId = (session.tester && session.tester.id) || 'unknown';
+  const t = session.tester || {};
+  const testerId = t.id || 'unknown';
+  // Bucket folders people can browse: raw/<gurdwara>/<tester name>/<date>/<session>/
+  const slug = (x, d) =>
+    String(x || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 40) || d;
+  const gurdwara = slug(t.gurdwara, 'unknown-gurdwara');
+  const name = slug(t.name, testerId);
   const body = fs.readFileSync(full);
   const contentType = TYPES[path.extname(file)] || 'application/octet-stream';
   const res = await fetch(UPLOAD_ENDPOINT, {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-vf-key': UPLOAD_KEY },
-    body: JSON.stringify({ tester: testerId, session: path.basename(dir), file, contentType }),
+    body: JSON.stringify({
+      tester: testerId,
+      gurdwara,
+      name,
+      session: path.basename(dir),
+      file,
+      contentType,
+    }),
   });
   if (!res.ok) throw new Error(`endpoint ${res.status}`);
   const { url } = await res.json();

@@ -6,7 +6,8 @@
     python3 benchmark.py --publish  # also upload derived/ index/ reports/ back to S3
 
 Layout (S3 and local mirror):
-    raw/<tester>/<date>/<session>/   session.json human.jsonl system.jsonl activity.jsonl events.jsonl audio-*.webm
+    raw/<gurdwara>/<tester name>/<date>/<session>/   session.json human.jsonl system.jsonl activity.jsonl
+                                                      events.jsonl audio-*.webm   (older sessions: raw/<tester id>/<date>/...)
     derived/<session>/               score.json segments.jsonl listen.jsonl   (recomputable from raw)
     index/sessions.jsonl             one line per session: who, where, when, minutes per state, score
     reports/<date>.md                the benchmark table and the listen list
@@ -277,15 +278,21 @@ def scorecard(per_session, changes=()):
 
 
 def sessions(root):
+    """Every session folder under raw/ (any depth): (tester id, date, session id, folder)."""
     raw = os.path.join(root, 'raw')
-    if not os.path.isdir(raw):
-        return
-    for tester in sorted(os.listdir(raw)):
-        for day in sorted(os.listdir(os.path.join(raw, tester))):
-            for sess in sorted(os.listdir(os.path.join(raw, tester, day))):
-                d = os.path.join(raw, tester, day, sess)
-                if os.path.isdir(d):
-                    yield tester, day, sess, d
+    found = []
+    for dirpath, dirnames, filenames in os.walk(raw):
+        if 'session.json' in filenames or any(f.endswith('.jsonl') for f in filenames):
+            dirnames[:] = []
+            sess = os.path.basename(dirpath)
+            try:
+                meta = json.load(open(os.path.join(dirpath, 'session.json')))
+            except (OSError, json.JSONDecodeError):
+                meta = {}
+            tester = (meta.get('tester') or {}).get('id') or os.path.basename(os.path.dirname(os.path.dirname(dirpath)))
+            found.append((sess, tester, sess[:10], dirpath))
+    for sess, tester, day, d in sorted(found):
+        yield tester, day, sess, d
 
 
 VERIFIED_COLS = ['success_pct', 'line_success_pct', 'found_pct', 'median_delay_s', 'worst_delay_s', 'scored_min']

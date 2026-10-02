@@ -56,11 +56,13 @@ Resources:
             if ((h['x-vf-key'] || '') !== process.env.UPLOAD_KEY) return out(403, { error: 'forbidden' });
             let b;
             try { b = JSON.parse(event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString() : event.body || '{}'); } catch (e) { return out(400, { error: 'bad json' }); }
-            const { tester, session, file, contentType } = b;
+            const { tester, session, file, contentType, gurdwara, name } = b;
             if (![tester, session, file].every((x) => typeof x === 'string' && SAFE.test(x))) return out(400, { error: 'bad name' });
+            // Folders people can browse: raw/<gurdwara>/<tester name>/<date>/<session>/
+            const byPlace = [gurdwara, name].every((x) => typeof x === 'string' && SAFE.test(x));
             if (!TYPES.includes(contentType)) return out(400, { error: 'bad type' });
             const date = /^\d{4}-\d{2}-\d{2}/.test(session) ? session.slice(0, 10) : 'undated';
-            const Key = `raw/${tester}/${date}/${session}/${file}`;
+            const Key = byPlace ? `raw/${gurdwara}/${name}/${date}/${session}/${file}` : `raw/${tester}/${date}/${session}/${file}`;
             const url = await getSignedUrl(s3, new PutObjectCommand({ Bucket: process.env.BUCKET, Key, ContentType: contentType }), { expiresIn: 900 });
             return out(200, { url, key: Key });
           };

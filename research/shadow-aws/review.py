@@ -272,13 +272,12 @@ def queue():
 
 
 def session_dir(sess):
+    """(S3 prefix such as raw/renton/arashdeep-singh/2026-10-01/<session>, local folder)."""
     raw = os.path.join(HERE, 'raw')
-    for tester in os.listdir(raw):
-        for day in os.listdir(os.path.join(raw, tester)):
-            d = os.path.join(raw, tester, day, sess)
-            if os.path.isdir(d):
-                return tester, day, d
-    return None, None, None
+    for dirpath, dirnames, _ in os.walk(raw):
+        if os.path.basename(dirpath) == sess:
+            return os.path.relpath(dirpath, HERE).replace(os.sep, '/'), dirpath
+    return None, None
 
 
 def clip(it):
@@ -286,14 +285,14 @@ def clip(it):
     out = os.path.join(REVIEW, 'clips', it['id'].replace(':', '_') + '.mp3')
     if os.path.exists(out):
         return out
-    tester, day, d = session_dir(it['session'])
+    prefix, d = session_dir(it['session'])
     if not d or not it.get('audio'):
         return None
     src = os.path.join(d, it['audio'])
     if not os.path.exists(src):
         sys.path.insert(0, HERE)
         from benchmark import AWS, BUCKET  # noqa: E402
-        subprocess.run(AWS + ['s3', 'cp', f"{BUCKET}/raw/{tester}/{day}/{it['session']}/{it['audio']}", src,
+        subprocess.run(AWS + ['s3', 'cp', f"{BUCKET}/{prefix}/{it['audio']}", src,
                               '--only-show-errors'], check=False)
     if not os.path.exists(src):
         return None

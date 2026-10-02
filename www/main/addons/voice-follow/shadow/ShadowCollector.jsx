@@ -20,6 +20,32 @@ const { logDir } = require('../engine/session-log');
 //   session.json       - tester, app version, microphone, start time
 const shadowRoot = () => path.join(logDir(), 'shadow');
 
+// Test hook, never set for testers: launched with VF_TEST_WAV=<audio file>, that file
+// replaces the microphone (silently) for both the recorder and hidden Voice-Follow, so an
+// end-to-end run can be scripted without playing kirtan aloud. One shared playback, so
+// everything hears the same timeline.
+if (process.env.VF_TEST_WAV && navigator.mediaDevices) {
+  const real = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+  let shared = null;
+  navigator.mediaDevices.getUserMedia = async (c) => {
+    if (!c || !c.audio) return real(c);
+    if (!shared) {
+      shared = (async () => {
+        const ctx = new AudioContext();
+        const raw = fs.readFileSync(process.env.VF_TEST_WAV);
+        const data = raw.buffer.slice(raw.byteOffset, raw.byteOffset + raw.byteLength);
+        const src = ctx.createBufferSource();
+        src.buffer = await ctx.decodeAudioData(data);
+        const dest = ctx.createMediaStreamDestination();
+        src.connect(dest);
+        src.start();
+        return dest.stream;
+      })();
+    }
+    return shared;
+  };
+}
+
 // The screen state that names what is being shown.
 const labelOf = (nav) => ({
   shabadId: nav.activeShabadId ?? null,
