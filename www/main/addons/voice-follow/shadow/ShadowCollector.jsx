@@ -39,6 +39,12 @@ if (process.env.VF_TEST_WAV && navigator.mediaDevices) {
         const dest = ctx.createMediaStreamDestination();
         src.connect(dest);
         src.start();
+        // Keep the fake microphone producing (silent) frames after the file ends, as a
+        // real microphone would; otherwise the recorder gets nothing to write.
+        const silence = ctx.createConstantSource();
+        silence.offset.value = 0;
+        silence.connect(dest);
+        silence.start();
         return dest.stream;
       })();
     }
@@ -237,7 +243,9 @@ const ShadowCollector = () => {
       }
     };
     start();
-    const stop = () => {
+    // quitting: the main process uploads what is left (app.js will-quit), so the dying
+    // page must not race it over uploaded.json.
+    const stop = (quitting) => {
       stopped = true;
       clearInterval(segTimer);
       clearInterval(meterTimer);
@@ -260,13 +268,14 @@ const ShadowCollector = () => {
         /* already gone */
       }
       bus.end();
-      uploader.enqueueSession(s.dir);
+      if (quitting !== true) uploader.enqueueSession(s.dir);
     };
-    window.addEventListener('beforeunload', stop);
+    const onUnload = () => stop(true);
+    window.addEventListener('beforeunload', onUnload);
     uploader.start(shadowRoot());
     return () => {
-      window.removeEventListener('beforeunload', stop);
-      stop();
+      window.removeEventListener('beforeunload', onUnload);
+      stop(false);
     };
     // Once per active service (or watchdog restart); the label effect records every change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
