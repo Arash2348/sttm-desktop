@@ -62,10 +62,14 @@ if (SHADOW_BUILD && typeof window !== 'undefined' && !window.shadowDiagOn) {
           `cpus ${os.cpus().length} mem ${Math.round(os.totalmem() / 1e9)}GB db ${size} bytes ` +
           `isDbDownloaded=${localStorage.getItem('isDbDownloaded')} model=${model}`,
       );
-      // eslint-disable-next-line global-require
-      Promise.resolve(require('../../../banidb').loadShabad(2776))
-        .then((v) => diag(`${tag} db query: ok (${Array.isArray(v) ? v.length : typeof v})`))
-        .catch((e) => diag(`${tag} db query: FAILED ${(e && e.message) || e}`));
+      if (!size) diag(`${tag} db query: skipped, database not downloaded yet`);
+      else
+        // eslint-disable-next-line global-require
+        Promise.resolve(require('../../../banidb').loadShabad(2776))
+          .then((v) =>
+            diag(`${tag} db query: ok (${v && v.length != null ? v.length : typeof v} lines)`),
+          )
+          .catch((e) => diag(`${tag} db query: FAILED ${(e && e.message) || e}`));
     } catch (e) {
       diag(`${tag} check failed: ${(e && e.message) || e}`);
     }
