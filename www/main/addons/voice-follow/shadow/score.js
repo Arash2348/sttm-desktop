@@ -42,6 +42,9 @@ const C = {
   STALE_S: 60,
   MATCH_CAP_S: 180, // a human switch not followed within this is missed
   LINE_CAP_S: 30, // a sevadaar line change not followed within this is missed
+  COLD_S: 15, // a human switch this soon after the session began is a cold start: the
+  // session (and hidden Voice-Follow) started because of that click, so its delay is
+  // start-up time, reported on its own and not as a slow switch
   LINE_HOLD_S: 3, // a line held shorter than this is a flick, not a line change
   LISTEN_MIN_S: 20,
   LISTEN_JOIN_S: 3,
@@ -238,6 +241,8 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events, fi
     lineAgree: 0,
     switches: 0,
     switchesCut: 0, // human switches whose follow-up a pause cut short (not scored)
+    switchesCold: 0, // the session's opening switch (see COLD_S)
+    coldDelays: [], // seconds the model needed to show the opening shabad
     matched: 0,
     switchDelays: [],
     lineChanges: 0, // sevadaar line changes on a shabad Voice-Follow was also showing
@@ -312,6 +317,11 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events, fi
     }
     if (cut) {
       sc.switchesCut += 1;
+      return;
+    }
+    if (i < C.COLD_S && sc.switchesCold === 0 && sc.switches === 0) {
+      sc.switchesCold += 1;
+      if (at != null) sc.coldDelays.push(at - i);
       return;
     }
     sc.switches += 1;

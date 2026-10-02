@@ -2220,21 +2220,26 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     if (!SHADOW_BUILD) return undefined;
     const check = () => {
       const st = shadowStateRef.current;
-      const sample = cpuSample();
-      let busy = null;
-      if (st.cpu) {
-        const dt = sample.total - st.cpu.total;
-        busy = dt > 0 ? 1 - (sample.idle - st.cpu.idle) / dt : null;
-      }
-      st.cpu = sample;
       const nowMs = Date.now();
+      // CPU load over the last 30 s (the check itself runs every 5 s so a session that
+      // just started is followed quickly).
+      let busy = null;
+      if (!st.cpu || nowMs - st.cpuAt >= 30000) {
+        const sample = cpuSample();
+        if (st.cpu) {
+          const dt = sample.total - st.cpu.total;
+          busy = dt > 0 ? 1 - (sample.idle - st.cpu.idle) / dt : null;
+        }
+        st.cpu = sample;
+        st.cpuAt = nowMs;
+      }
       // CPU load once a minute, so a slow result can later be traced to a busy computer.
       if (busy != null && shadowBus.active() && nowMs - (st.lastCpuLog || 0) >= 60000) {
         st.lastCpuLog = nowMs;
         shadowBus.note({ type: 'cpu', busy: Math.round(busy * 100) / 100 });
       }
       // Busy means two readings in a row (a minute): one spike is not a busy computer.
-      st.busyRuns = busy != null && busy > SHADOW_CPU_PAUSE ? (st.busyRuns || 0) + 1 : 0;
+      if (busy != null) st.busyRuns = busy > SHADOW_CPU_PAUSE ? (st.busyRuns || 0) + 1 : 0;
       if (st.running && st.busyRuns >= 2 && nowMs - st.since > 60000) {
         st.paused = true;
         st.since = nowMs;
@@ -2268,8 +2273,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         stop();
       }
     };
-    const timer = setInterval(check, 30000);
-    const first = setTimeout(check, 5000);
+    const timer = setInterval(check, 5000);
+    const first = setTimeout(check, 2000);
     return () => {
       clearInterval(timer);
       clearTimeout(first);

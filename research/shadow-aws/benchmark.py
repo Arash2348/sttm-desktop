@@ -35,7 +35,7 @@ SCORER = os.path.join(HERE, '..', '..', 'www', 'main', 'addons', 'voice-follow',
 SUM_KEYS = ['kirtan', 'held', 'idle', 'paused', 'agree', 'early', 'wrong', 'behind', 'none',
             'heldAgree', 'heldBehind', 'heldWrong', 'heldNone', 'idleQuiet',
             'idleEarly', 'linger', 'falseAlarm', 'vfDown', 'switchesCut', 'lineChanges', 'lineFound',
-            'modelSwitches', 'modelSwitchesRight', 'modelLineMoves', 'modelLineMovesRight', 'lineSeconds', 'lineAgree', 'switches', 'matched']
+            'modelSwitches', 'modelSwitchesRight', 'modelLineMoves', 'modelLineMovesRight', 'switchesCold', 'lineSeconds', 'lineAgree', 'switches', 'matched']
 
 
 def score_session(d, fixes=None):
@@ -51,6 +51,18 @@ def score_session(d, fixes=None):
         if fixes:
             os.unlink(f.name)
     return json.loads(out.stdout)
+
+
+def score_session_timelines(timelines):
+    """Score in-memory timelines (tests): writes them to a temp folder and runs the scorer."""
+    d = tempfile.mkdtemp(prefix='vfscore-')
+    try:
+        for name in ('human', 'system', 'activity', 'events'):
+            with open(os.path.join(d, f'{name}.jsonl'), 'w') as f:
+                f.writelines(json.dumps(r) + '\n' for r in timelines.get(name, []))
+        return score_session(d)
+    finally:
+        shutil.rmtree(d)
 
 
 def pct(a, b):
@@ -81,7 +93,7 @@ def summarize(sc):
 def add(a, b):
     for key in SUM_KEYS:
         a[key] = a.get(key, 0) + b[key]
-    for key in ('switchDelays', 'lineDelays'):
+    for key in ('switchDelays', 'lineDelays', 'coldDelays'):
         a[key] = sorted(a.get(key, []) + b.get(key, []))
     a['testerWrong'] = a.get('testerWrong', 0) + b.get('testerWrong', 0)
     return a
@@ -147,6 +159,8 @@ def kpis(sc):
         'caught_60': score(sum(d <= 60 for d in sd), sc['switches']),
         'first': score(sum(d <= 0 for d in sd), sc['switches']),
         'median_delay_s': med(sd),
+        'cold_starts': sc.get('switchesCold', 0),
+        'median_cold_s': med(sc.get('coldDelays', [])),
         # Lines, when both are on the same shabad.
         'right_line': score(sc['lineAgree'], sc['lineSeconds']),
         'line_changes': sc['lineChanges'],
@@ -232,7 +246,9 @@ def scorecard(per_session, changes=()):
         '',
         f'Speed detail: {k["changes"]} shabad changes; caught within 15 / 30 / 60 s: {f(k["caught_15"])} / '
         f'{f(k["caught_30"])} / {f(k["caught_60"])}; the model was first on {f(k["first"])} of them; typically '
-        f'{when(k["median_delay_s"])} the person.', '',
+        f'{when(k["median_delay_s"])} the person. Cold starts (recording began with the click that opened the '
+        f'shabad, so the model was only starting up): {k["cold_starts"]}, shown typically {num(k["median_cold_s"]) if k["median_cold_s"] is not None else "n/a"} s later; '
+        'not counted as switches.', '',
         f'How answers are given: EQUIVALENT means accuracy within 1 point of the person, '
         f'{100 + SPEED_EDGES[1]}%+ of shabad changes caught within {CATCH_S} s, and {100 + LINE_EDGES[1]}%+ on the right '
         f'line with {100 + LINE_SPEED_EDGES[1]}%+ of line changes caught within {LINE_CATCH_S} s. '

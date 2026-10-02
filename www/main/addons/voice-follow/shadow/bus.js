@@ -76,6 +76,7 @@ function begin(dir, t0) {
     paused: false,
     lastSave: 0,
     lastTick: 0,
+    lastHeardAt: null,
     act: { sec: 0, level: 0, letters: 0, text: '' },
     timer: setInterval(tick, 1000),
   };
@@ -116,6 +117,7 @@ function level(rms) {
 // Text of the latest recognised window ('' = nothing recognisable was heard).
 function heard(text) {
   const letters = text.replace(/\s+/g, '').length;
+  if (S && letters >= 6) S.lastHeardAt = Date.now();
   if (S && letters > S.act.letters) {
     S.act.letters = letters;
     S.act.text = text.trim();
@@ -134,6 +136,8 @@ function setPaused(paused) {
 }
 
 const active = () => !!S;
+// When words were last heard (ms since epoch), or null.
+const lastHeardAt = () => (S ? S.lastHeardAt || null : null);
 const sessionDir = () => (S ? S.dir : null);
 
 module.exports = {
@@ -146,6 +150,7 @@ module.exports = {
   setPaused,
   note,
   active,
+  lastHeardAt,
   sessionDir,
   contentKey,
 };

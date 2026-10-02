@@ -177,6 +177,17 @@ def main():
                   (B.verdict([-8] * 50 + [-12] * 50, lambda x: B.level(x, B.SPEED_EDGES))[0],
                    'between WORSE and EQUIVALENT')]
         bad += [('band', w, g) for g, w in checks if g != w]
+        # 5. Cold start: a human switch within 15 s of the session start is start-up, not a
+        #    slow switch; a second early switch counts normally.
+        cold = B.score_session_timelines({
+            'human': [{'t': 0, 'shabadId': None, 'verseId': None, 'bani': None, 'slide': None},
+                      {'t': 1, 'shabadId': 1, 'verseId': 11, 'bani': None, 'slide': None},
+                      {'t': 10, 'shabadId': 2, 'verseId': 21, 'bani': None, 'slide': None}],
+            'system': [{'t': 7, 'shabadId': 1, 'verseId': 11}, {'t': 30, 'shabadId': 2, 'verseId': 21}],
+            'activity': [{'t': t, 'level': 0.05, 'letters': 10} for t in range(60)], 'events': []})
+        c = cold['raw']
+        if (c['switchesCold'], c['coldDelays'], c['switches'], c['switchDelays']) != (1, [6], 1, [20]):
+            bad.append(('cold start', (1, [6], 1, [20]), (c['switchesCold'], c['coldDelays'], c['switches'], c['switchDelays'])))
         # 4. An audit marked "both wrong" becomes an unknown-truth fix; "tester right" none.
         audit = {'id': 'a', 'type': 'audit', 'fromS': 50, 'toS': 80, 'system': 'shabad:1'}
         sus = {**queue[0], 'id': 's'}
@@ -186,7 +197,7 @@ def main():
         print(report)
     finally:
         shutil.rmtree(root)
-    n = len(EXPECT) + 6 + 1 + 2 + len(EXPECT_VERIFIED) + 2 + len(EXPECT) + 1 + 12 + 1 + 7 + 1
+    n = len(EXPECT) + 6 + 1 + 2 + len(EXPECT_VERIFIED) + 2 + len(EXPECT) + 1 + 12 + 1 + 7 + 1 + 1
     if bad:
         for k, want, got in bad:
             print(f'MISMATCH {k}: expected {want}, got {got}')

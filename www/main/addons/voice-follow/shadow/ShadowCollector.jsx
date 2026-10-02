@@ -7,6 +7,7 @@ const path = require('path');
 const remote = require('@electron/remote');
 const bus = require('./bus');
 const uploader = require('./uploader');
+const service = require('./service');
 const { logDir } = require('../engine/session-log');
 
 // One folder per app session under <userData>/voice-follow/shadow/<id>/:
@@ -46,13 +47,18 @@ const ShadowCollector = () => {
   const [name, setName] = useState(tester.name || '');
   const [gurdwara, setGurdwara] = useState(tester.gurdwara || '');
   const sessionRef = useRef(null);
+  // A session runs only while the sevadaar is working (see service.js).
+  const [active, setActive] = useState(false);
+  const startReasonRef = useRef('');
+  const lastChangeRef = useRef(Date.now());
   const [restarts, setRestarts] = useState(0);
   const startingRef = useRef(false); // waiting for the microphone (e.g. the permission prompt)
 
   const enabled = SHADOW_BUILD && !!tester.name && shadowRecording !== false;
+  const recording = enabled && active;
 
   useEffect(() => {
-    if (!enabled) return undefined;
+    if (!recording) return undefined;
     let stopped = false;
     let segTimer = null;
     let meterTimer = null;
@@ -85,12 +91,14 @@ const ShadowCollector = () => {
               build: 'mvp-8.1-shadow',
               platform: process.platform,
               microphone: stream.getAudioTracks()[0]?.label || '',
+              startedBy: startReasonRef.current,
             },
             null,
             1,
           ),
         );
         bus.begin(dir, t0);
+        bus.note({ type: 'session_start', reason: startReasonRef.current });
         bus.human(labelOf(nav));
         const event = (obj) => {
           try {
@@ -234,14 +242,30 @@ const ShadowCollector = () => {
       window.removeEventListener('beforeunload', stop);
       stop();
     };
-    // Start once per enable (or watchdog restart); the label effect records every screen change.
+    // Once per active service (or watchdog restart); the label effect records every change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, restarts]);
+  }, [recording, restarts]);
 
-  // Watchdog: recording should always be on while the app is open. If a session ever
-  // ended (or never started), note it and start a new one.
+  // Stop when the sevadaar has been idle long enough (service.js decides).
   useEffect(() => {
-    if (!enabled) return undefined;
+    if (!recording) return undefined;
+    const timer = setInterval(() => {
+      const reason = service.stopReason({
+        now: Date.now(),
+        lastChangeAt: lastChangeRef.current,
+        lastHeardAt: bus.lastHeardAt(),
+      });
+      if (!reason) return;
+      bus.note({ type: 'session_stop', reason });
+      setActive(false);
+    }, 20000);
+    return () => clearInterval(timer);
+  }, [recording]);
+
+  // Watchdog: while a service is active, recording must be on. If it ever stopped, note
+  // it and start again.
+  useEffect(() => {
+    if (!recording) return undefined;
     const timer = setInterval(() => {
       if (sessionRef.current || startingRef.current) return;
       try {
@@ -256,13 +280,27 @@ const ShadowCollector = () => {
       setRestarts((n) => n + 1);
     }, 60000);
     return () => clearInterval(timer);
-  }, [enabled]);
+  }, [recording]);
 
-  // Every change of what is on screen, timestamped against the audio.
+  // Every change of what is on screen, timestamped against the audio; the first change
+  // after the app opens starts a session.
   const label = labelOf(nav);
   const key = JSON.stringify(label);
+  const prevKeyRef = useRef(null);
   useEffect(() => {
+    const prev = prevKeyRef.current;
+    prevKeyRef.current = key;
     if (sessionRef.current) bus.human(label);
+    if (enabled && !active && service.shouldStart(prev, key)) {
+      let what = 'cleared';
+      if (bus.contentKey(label)) what = bus.contentKey(label);
+      else if (label.slide) what = 'slide';
+      startReasonRef.current = `screen: ${what}`;
+      lastChangeRef.current = Date.now();
+      setActive(true);
+    } else if (prev != null && key !== prev) {
+      lastChangeRef.current = Date.now();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
 
