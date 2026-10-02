@@ -77,6 +77,7 @@ function begin(dir, t0) {
     lastSave: 0,
     lastTick: 0,
     lastHeardAt: null,
+    recentLevel: 0,
     act: { sec: 0, level: 0, letters: 0, text: '' },
     timer: setInterval(tick, 1000),
   };
@@ -111,13 +112,22 @@ function system(update) {
 
 // Microphone loudness (RMS 0-1), sampled several times a second by the collector.
 function level(rms) {
-  if (S && rms > S.act.level) S.act.level = rms;
+  if (!S) return;
+  if (rms > S.act.level) S.act.level = rms;
+  // Loudness over the last few seconds (recognition lags the audio a little).
+  S.recentLevel = Math.max(rms, (S.recentLevel || 0) * 0.94);
 }
 
 // Text of the latest recognised window ('' = nothing recognisable was heard).
+// A quiet room still makes the recognizer emit nonsense letters, so words only count as
+// heard when the room is loud as well (the scorer uses the same pair of conditions).
+const HEARD_LETTERS_MIN = 6;
+const HEARD_LEVEL_MIN = 0.003;
 function heard(text) {
   const letters = text.replace(/\s+/g, '').length;
-  if (S && letters >= 6) S.lastHeardAt = Date.now();
+  if (S && letters >= HEARD_LETTERS_MIN && (S.recentLevel || 0) >= HEARD_LEVEL_MIN) {
+    S.lastHeardAt = Date.now();
+  }
   if (S && letters > S.act.letters) {
     S.act.letters = letters;
     S.act.text = text.trim();
