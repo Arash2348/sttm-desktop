@@ -13,9 +13,12 @@ const SHADOW_SLICE_MS = 5000;
 const SHADOW_SEGMENT_MS = 10 * 60 * 1000;
 // A session runs from the sevadaar's first screen change until they have made none for
 // SHADOW_IDLE_STOP_MS; while words are still being heard it waits, up to the hard stop.
-const SHADOW_IDLE_STOP_MS = 8 * 60 * 1000;
-const SHADOW_IDLE_HARD_STOP_MS = 20 * 60 * 1000;
-const SHADOW_HEARD_GRACE_MS = 2 * 60 * 1000;
+// (Scripted tests that feed audio with VF_TEST_WAV may shorten these.)
+const testMs = (name, ms) =>
+  process.env.VF_TEST_WAV && process.env[name] ? Number(process.env[name]) : ms;
+const SHADOW_IDLE_STOP_MS = testMs('VF_TEST_IDLE_STOP_MS', 8 * 60 * 1000);
+const SHADOW_IDLE_HARD_STOP_MS = testMs('VF_TEST_IDLE_HARD_STOP_MS', 20 * 60 * 1000);
+const SHADOW_HEARD_GRACE_MS = testMs('VF_TEST_HEARD_GRACE_MS', 2 * 60 * 1000);
 // Shadow scoring pauses while the computer is this busy (1-minute load per core) and
 // resumes below SHADOW_CPU_RESUME, so a Gurdwara laptop never slows down for it.
 const SHADOW_CPU_PAUSE = 0.9;
