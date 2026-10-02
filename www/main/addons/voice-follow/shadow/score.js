@@ -37,7 +37,8 @@ const C = {
   EARLY_S: 60,
   LINGER_S: 60,
   BLIP_S: 3,
-  LINE_LAG_S: 10,
+  LINE_LAG_S: 3,
+  LINE_AHEAD_S: 10, // a model line move counts as right if the sevadaar reaches that line this soon
   STALE_S: 60,
   MATCH_CAP_S: 180, // a human switch not followed within this is missed
   LINE_CAP_S: 30, // a sevadaar line change not followed within this is missed
@@ -242,6 +243,10 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events, fi
     lineChanges: 0, // sevadaar line changes on a shabad Voice-Follow was also showing
     lineFound: 0, // ...that Voice-Follow reached within LINE_CAP_S
     lineDelays: [], // seconds from each such change to Voice-Follow on that line
+    modelSwitches: 0, // shabad changes Voice-Follow made
+    modelSwitchesRight: 0, // ...to a shabad the sevadaar had (within LAG_S) or opened (within EARLY_S)
+    modelLineMoves: 0, // line moves Voice-Follow made within a shabad the sevadaar was also on
+    modelLineMovesRight: 0, // ...to a line the sevadaar had (LINE_LAG_S before) or reached (LINE_AHEAD_S)
   };
   const outcome = new Array(length).fill(null);
   for (let i = 0; i < length; i += 1) {
@@ -349,6 +354,30 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events, fi
     }
   }
   sc.lineDelays.sort((a, b) => a - b);
+
+  // Steadiness: every change Voice-Follow itself made, and whether it was a right one.
+  // Catches flicker and jumping to wrong shabads/lines, which time-based scores can hide.
+  for (let i = 1; i < length; i += 1) {
+    if (paused[i]) continue;
+    const k = skey[i];
+    if (k && k !== skey[i - 1]) {
+      sc.modelSwitches += 1;
+      if (humanHas(k, i - C.LAG_S, i + C.EARLY_S)) sc.modelSwitchesRight += 1;
+    } else if (k && k === skey[i - 1] && sverse[i] != null && sverse[i] !== sverse[i - 1]) {
+      if (states[i] !== 'kirtan' || hkey[i] !== k) continue;
+      sc.modelLineMoves += 1;
+      for (
+        let m = Math.max(0, i - C.LINE_LAG_S);
+        m <= Math.min(length - 1, i + C.LINE_AHEAD_S);
+        m += 1
+      ) {
+        if (hkey[m] === k && hverse[m] === sverse[i]) {
+          sc.modelLineMovesRight += 1;
+          break;
+        }
+      }
+    }
+  }
 
   // Listen list: disagreement stretches long enough to be worth a person's ear.
   const audio = events

@@ -34,7 +34,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SCORER = os.path.join(HERE, '..', '..', 'www', 'main', 'addons', 'voice-follow', 'shadow', 'score.js')
 SUM_KEYS = ['kirtan', 'held', 'idle', 'paused', 'agree', 'early', 'wrong', 'behind', 'none',
             'heldAgree', 'heldBehind', 'heldWrong', 'heldNone', 'idleQuiet',
-            'idleEarly', 'linger', 'falseAlarm', 'vfDown', 'switchesCut', 'lineChanges', 'lineFound', 'lineSeconds', 'lineAgree', 'switches', 'matched']
+            'idleEarly', 'linger', 'falseAlarm', 'vfDown', 'switchesCut', 'lineChanges', 'lineFound',
+            'modelSwitches', 'modelSwitchesRight', 'modelLineMoves', 'modelLineMovesRight', 'lineSeconds', 'lineAgree', 'switches', 'matched']
 
 
 def score_session(d, fixes=None):
@@ -150,6 +151,9 @@ def kpis(sc):
         'right_line': score(sc['lineAgree'], sc['lineSeconds']),
         'line_changes': sc['lineChanges'],
         'line_caught_5': score(sum(d <= LINE_CATCH_S for d in sc['lineDelays']), sc['lineChanges']),
+        # Steadiness: of the changes the model made itself, how many were right.
+        'switch_right': score(sc['modelSwitchesRight'], sc['modelSwitches']),
+        'line_move_right': score(sc['modelLineMovesRight'], sc['modelLineMoves']),
         # Quiet: with nothing to show, how often the model also showed nothing.
         'quiet': score(sc['idle'] - sc['falseAlarm'], sc['idle']),
     }
@@ -198,34 +202,40 @@ def scorecard(per_session, changes=()):
     lean = services < MIN_SERVICES
     show = lambda v: (f'{v[0]} (early lean: {services} of {MIN_SERVICES} services)' if lean and v[0] != 'NO DATA'
                       else v[0])
-    f = lambda x: 'n/a' if x is None else f'{x:.0f}' if abs(x - round(x)) < 0.05 else f'{x:.1f}'
-    gap = lambda m, p: 'n/a' if m is None or p is None else f'{m - p:+.1f}'
+    num = lambda x: f'{x:.0f}' if abs(x - round(x)) < 0.05 else f'{x:.1f}'
+    f = lambda x: 'n/a' if x is None else num(x) + '%'
+    gap = lambda m, p: 'n/a' if m is None or p is None else ('+' if m >= p else '−') + num(abs(m - p)) + ' pts'
     when = lambda d: 'n/a' if d is None else 'at the same time as' if d == 0 else (
-        f'{f(d)} s after' if d > 0 else f'{f(-d)} s before')
+        f'{num(d)} s after' if d > 0 else f'{num(-d)} s before')
     lines = [
         '## Model vs. a person', '',
         f'{services} services · {len({n for n, _, _ in per_session})} testers · '
         f'{len({g for _, g, _ in per_session if g})} Gurdwaras · {k["scored_h"]} h of singing scored', '',
-        'Every score is out of 100 and **higher is better**. The gap is model minus person: '
-        '**positive means the model did better**.', '',
+        'Every score is a percentage and **higher is better**. The gap is model minus person in '
+        'percentage points: **positive means the model did better**.', '',
         '| Question | Answer | Model | Person | Gap |', '|---|---|---|---|---|',
         f'| **Accuracy**: when a shabad is up, is it the right one? | **{show(acc)}** | {f(k["accuracy"])} '
         f'| {f(k["tester_accuracy"])} | {gap(k["accuracy"], k["tester_accuracy"])} |',
         f'| **Speed**: of the shabad changes, how many the model had within {CATCH_S} s | **{show(spd)}** '
-        f'| {f(k["caught_30"])} (typically {when(k["median_delay_s"])} the person) | 100 '
+        f'| {f(k["caught_30"])} (typically {when(k["median_delay_s"])} the person) | 100% '
         f'| {gap(k["caught_30"], 100.0 if k["caught_30"] is not None else None)} |',
-        f'| **Lines**: right line, when on the same shabad | **{show(lin)}** | {f(k["right_line"])} | 100 '
+        f'| **Lines**: right line, when on the same shabad | **{show(lin)}** | {f(k["right_line"])} | 100% '
         f'| {gap(k["right_line"], 100.0 if k["right_line"] is not None else None)} |',
-        f'| Lines: line changes caught within {LINE_CATCH_S} s | (part of Lines) | {f(k["line_caught_5"])} | 100 '
+        f'| ↳ line changes caught within {LINE_CATCH_S} s | (part of Lines) | {f(k["line_caught_5"])} | 100% '
         f'| {gap(k["line_caught_5"], 100.0 if k["line_caught_5"] is not None else None)} |',
-        f'| Quiet when there is nothing to show | (context) | {f(k["quiet"])} | 100 | |',
+        f'| **Steadiness**: of the shabad changes the model made, how many were right | (watch) '
+        f'| {f(k["switch_right"])} | 100% | {gap(k["switch_right"], 100.0 if k["switch_right"] is not None else None)} |',
+        f'| ↳ of the line moves the model made, how many were right | (watch) | {f(k["line_move_right"])} | 100% '
+        f'| {gap(k["line_move_right"], 100.0 if k["line_move_right"] is not None else None)} |',
+        f'| **Quiet**: with nothing to show, how often the model also showed nothing | (watch) | {f(k["quiet"])} '
+        f'| 100% | |',
         '',
         f'Speed detail: {k["changes"]} shabad changes; caught within 15 / 30 / 60 s: {f(k["caught_15"])} / '
-        f'{f(k["caught_30"])} / {f(k["caught_60"])}; the model was first on {f(k["first"])}; typically '
+        f'{f(k["caught_30"])} / {f(k["caught_60"])}; the model was first on {f(k["first"])} of them; typically '
         f'{when(k["median_delay_s"])} the person.', '',
         f'How answers are given: EQUIVALENT means accuracy within 1 point of the person, '
-        f'{100 + SPEED_EDGES[1]}+ of shabad changes caught within {CATCH_S} s, and {100 + LINE_EDGES[1]}+ on the right line '
-        f'with {100 + LINE_SPEED_EDGES[1]}+ of line changes caught within {LINE_CATCH_S} s. '
+        f'{100 + SPEED_EDGES[1]}%+ of shabad changes caught within {CATCH_S} s, and {100 + LINE_EDGES[1]}%+ on the right '
+        f'line with {100 + LINE_SPEED_EDGES[1]}%+ of line changes caught within {LINE_CATCH_S} s. '
         'An answer is given only when the whole 90% range of the result sits in one level.', '',
     ]
     if changes:
@@ -240,7 +250,7 @@ def scorecard(per_session, changes=()):
         e = by.setdefault((n, g), [0, {}])
         e[0] += 1
         add(e[1], sc)
-    lines += ['**Per tester** (scores out of 100, higher is better)', '',
+    lines += ['**Per tester** (percentages, higher is better)', '',
               '| Tester | Gurdwara | Services | Hours | Accuracy (model / person) | Speed: caught within 30 s '
               '| Right line | Line caught within 5 s |', '|---|---|---|---|---|---|---|---|']
     for (n, g), (cnt, sc) in sorted(by.items()):

@@ -33,16 +33,21 @@ import benchmark as B  # noqa: E402
 # States: kirtan 40-239 + 260-284 = 225, held 15, idle 0-1,6-39,305-319 = 51, paused 29.
 # Kirtan: agree 40-134, 170-199, 215-239, 260-269, 275-284 = 170; early 15; behind 35; wrong 5.
 # Lines (agreed, sevadaar moved a line within 60 s): 40-134 (95), 170-190 (21), 220-239 (20),
-# 260-269 + 275-280 (16) = 152; disagree 265-269 + 275-280 (11) -> 141.
+# 260-269 + 275-280 (16) = 152. Compared within +-3 s: disagree 133-134 (the sevadaar has
+# left shabad 1) and all of 260-269 + 275-280 (the model is on line 32) -> 152 - 18 = 134.
+# Steadiness: the model changed shabad 6 times (5 at 10, 1 at 25, 2 at 170, 3 at 200, 7 at
+# 270, 3 at 275); right: 1, 2, 3, 3 -> 4 of 6. It moved line once while both were on the
+# same shabad (12 at 72; the sevadaar was on 12 from 70) -> 1 of 1 (the move at 255 was asleep).
 EXPECT = {
     'kirtan': 225, 'held': 15, 'idle': 51, 'paused': 29, 'vfDown': 5,
     'agree': 170, 'early': 15, 'behind': 35, 'wrong': 5, 'none': 0,
     'heldAgree': 15, 'heldBehind': 0, 'heldWrong': 0, 'heldNone': 0,
     'idleQuiet': 11, 'idleEarly': 15, 'linger': 15, 'falseAlarm': 10,
-    'lineSeconds': 152, 'lineAgree': 141,
+    'lineSeconds': 152, 'lineAgree': 134,
     'switches': 3, 'matched': 3, 'switchDelays': [-20, -15, 40],
     # One sevadaar line change on a shabad the model also shows: 70 (line 11 -> 12); model at 72.
     'lineChanges': 1, 'lineFound': 1, 'lineDelays': [2],
+    'modelSwitches': 6, 'modelSwitchesRight': 4, 'modelLineMoves': 1, 'modelLineMovesRight': 1,
 }
 EXPECT_LISTEN = [{'fromS': 135, 'toS': 170, 'from': '2:15', 'to': '2:50', 'seconds': 35, 'kind': 'behind', 'human': 'shabad:2',
                   'system': 'shabad:1', 'audio': {'file': 'audio-000.webm', 'offset': '2:15'}}]
@@ -53,7 +58,8 @@ EXPECT_LISTEN = [{'fromS': 135, 'toS': 170, 'from': '2:15', 'to': '2:50', 'secon
 #   agree 170 + 35 = 205, behind 0; the switch to shabad 2 is now at 170 (delay 0);
 #   lines lose 130-134 (fixed seconds carry no line) and gain 191-199 and 215-219 (the
 #   line change now happens at 170, so the sevadaar counts as moving lines until 230):
-#   161 / 150. Words: every telling heard word (in only one of the two shabads) is
+#   161; within +-3 s they disagree on 215-216 (the sevadaar reaches shabad 3 at 220)
+#   and 260-269 + 275-280 -> 143. Words: every telling heard word (in only one of the two shabads) is
 #   shabad 1's, so the share is 1.0.
 SHABADS = {
     '1': [[11, 'ਹਮ ਅੰਧੁਲੇ ਅੰਧ ਬਿਖੈ ਬਿਖੁ ਰਾਤੇ ਕਿਉ ਚਾਲਹ ਗੁਰ ਚਾਲੀ ॥'],
@@ -65,7 +71,7 @@ EXPECT_ITEM = {'type': 'suspicious', 'reasons': ['words'], 'fromS': 135, 'toS': 
                'human': 'shabad:2', 'system': 'shabad:1', 'wordsSystem': 1.0,
                'audio': 'audio-000.webm', 'audioOffset': 135}
 EXPECT_VERIFIED = {'agree': 205, 'early': 15, 'behind': 0, 'wrong': 5, 'none': 0,
-                   'lineSeconds': 161, 'lineAgree': 150, 'switches': 3, 'matched': 3,
+                   'lineSeconds': 161, 'lineAgree': 143, 'switches': 3, 'matched': 3,
                    'switchDelays': [-20, -15, 0]}
 
 
@@ -116,10 +122,10 @@ def main():
         # 1. RAW: every rule of score.js.
         index, total, report, _, _ = B.run(root)
         bad += [(k, v, total.get(k)) for k, v in EXPECT.items() if total.get(k) != v]
-        # Headline: success = (agree 170 + early 15) / (185 + wrong 5) = 97.4%; lines 141/152.
+        # Headline: success = (agree 170 + early 15) / (185 + wrong 5) = 97.4%; lines 134/152.
         head = {k: index[0][k] for k in ('success_pct', 'line_success_pct', 'found_pct', 'scored_min',
                                          'catch_up_min', 'vf_down_min')}
-        want = {'success_pct': 97.4, 'line_success_pct': 92.8, 'found_pct': 100.0, 'scored_min': 3.2,
+        want = {'success_pct': 97.4, 'line_success_pct': 88.2, 'found_pct': 100.0, 'scored_min': 3.2,
                 'catch_up_min': 0.6, 'vf_down_min': 0.1}
         if head != want:
             bad.append(('headline', want, head))
@@ -140,10 +146,10 @@ def main():
         index, total, report, total_v, card = B.run(root)
         bad += [('verified ' + k, v, total_v.get(k)) for k, v in EXPECT_VERIFIED.items() if total_v.get(k) != v]
         bad += [('raw unchanged ' + k, v, total.get(k)) for k, v in EXPECT.items() if total.get(k) != v]
-        # Verified headline: (205 + 15) / (220 + 5) = 97.8%; lines 150/161 = 93.2%.
+        # Verified headline: (205 + 15) / (220 + 5) = 97.8%; lines 143/161 = 88.8%.
         vh = {k: index[0]['verified'][k] for k in ('success_pct', 'line_success_pct')}
-        if vh != {'success_pct': 97.8, 'line_success_pct': 93.2}:
-            bad.append(('verified headline', '97.8 / 93.2', vh))
+        if vh != {'success_pct': 97.8, 'line_success_pct': 88.8}:
+            bad.append(('verified headline', '97.8 / 88.8', vh))
         if index[0]['to_review'] != 0 or index[0]['fixes'] != 1:
             bad.append(('after verdict', '0 to review, 1 fix', (index[0]['to_review'], index[0]['fixes'])))
         # Scorecard (reviewed; one service, so every resample is the same and answers are exact).
@@ -151,13 +157,15 @@ def main():
         #   accuracy: model right 220 of 225 s with a shabad up = 97.8; person ruled wrong 40 s
         #             (130-169) -> 185/225 = 82.2; gap +15.6 -> MUCH BETTER
         #   speed: delays [-20, -15, 0], all within 30 s -> 100; gap 0 -> EQUIVALENT
-        #   lines: right line 150/161 = 93.2 (gap -6.8 -> WORSE); the one line change caught in
-        #          2 s -> 100 (EQUIVALENT); the worse of the two -> WORSE
+        #   lines: right line 143/161 = 88.8 (gap -11.2 -> MUCH WORSE); the one line change
+        #          caught in 2 s -> 100 (EQUIVALENT); the worse of the two -> MUCH WORSE
+        #   steadiness: shabad changes right 4 of 6 = 66.7; line moves right 1 of 1 = 100
         k = card['kpis']
         r1 = lambda x: None if x is None else round(x, 1)
         got = (card['accuracy'], card['speed'], card['lines'], r1(k['accuracy']), r1(k['tester_accuracy']),
-               r1(k['caught_30']), r1(k['first']), k['median_delay_s'], r1(k['right_line']), r1(k['line_caught_5']))
-        want = ('MUCH BETTER', 'EQUIVALENT', 'WORSE', 97.8, 82.2, 100.0, 100.0, -15, 93.2, 100.0)
+               r1(k['caught_30']), r1(k['first']), k['median_delay_s'], r1(k['right_line']), r1(k['line_caught_5']),
+               r1(k['switch_right']), r1(k['line_move_right']))
+        want = ('MUCH BETTER', 'EQUIVALENT', 'MUCH WORSE', 97.8, 82.2, 100.0, 100.0, -15, 88.8, 100.0, 66.7, 100.0)
         if got != want:
             bad.append(('scorecard', want, got))
         if '(early lean: 1 of 5 services)' not in report:
@@ -178,7 +186,7 @@ def main():
         print(report)
     finally:
         shutil.rmtree(root)
-    n = len(EXPECT) + 6 + 1 + 2 + len(EXPECT_VERIFIED) + 2 + len(EXPECT) + 1 + 10 + 1 + 7 + 1
+    n = len(EXPECT) + 6 + 1 + 2 + len(EXPECT_VERIFIED) + 2 + len(EXPECT) + 1 + 12 + 1 + 7 + 1
     if bad:
         for k, want, got in bad:
             print(f'MISMATCH {k}: expected {want}, got {got}')
