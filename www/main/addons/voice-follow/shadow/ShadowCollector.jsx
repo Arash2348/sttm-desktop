@@ -3,6 +3,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import { SHADOW_BUILD, SHADOW_AUDIO_BPS, SHADOW_SLICE_MS, SHADOW_SEGMENT_MS } from './config';
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const remote = require('@electron/remote');
 const bus = require('./bus');
@@ -19,6 +20,59 @@ const { logDir } = require('../engine/session-log');
 //   score.json         - live agreement totals, rewritten every 30 s
 //   session.json       - tester, app version, microphone, start time
 const shadowRoot = () => path.join(logDir(), 'shadow');
+
+// Diagnostics for machines we cannot see: a startup health line (platform, database,
+// model, a real database query) and any renderer error go to errors.log, which uploads
+// with the tester's data. This is how "it just shows a spinner" on someone's laptop
+// becomes a readable cause.
+const diag = (line) => {
+  try {
+    fs.mkdirSync(shadowRoot(), { recursive: true });
+    fs.appendFileSync(
+      path.join(shadowRoot(), 'errors.log'),
+      `${new Date().toISOString()} ${line}\n`,
+    );
+  } catch (_) {
+    /* ignore */
+  }
+};
+if (SHADOW_BUILD && typeof window !== 'undefined' && !window.shadowDiagOn) {
+  window.shadowDiagOn = true;
+  let count = 0;
+  const capped = (line) => {
+    count += 1;
+    if (count <= 100) diag(line);
+  };
+  window.addEventListener('error', (e) =>
+    capped(`error: ${e.message} @ ${e.filename}:${e.lineno}`),
+  );
+  window.addEventListener('unhandledrejection', (e) =>
+    capped(`unhandled: ${(e.reason && (e.reason.stack || e.reason.message)) || e.reason}`),
+  );
+  const health = (tag) => {
+    try {
+      const ud = remote.app.getPath('userData');
+      const db = path.join(ud, 'sttmdesktop-evergreen-v2.realm');
+      const size = fs.existsSync(db) ? fs.statSync(db).size : 0;
+      const model = fs.existsSync(
+        path.join(process.resourcesPath || '', 'voice-follow', 'model.int8.onnx'),
+      );
+      diag(
+        `${tag}: ${process.platform} ${os.arch()} app ${remote.app.getVersion()} electron ${process.versions.electron} ` +
+          `cpus ${os.cpus().length} mem ${Math.round(os.totalmem() / 1e9)}GB db ${size} bytes ` +
+          `isDbDownloaded=${localStorage.getItem('isDbDownloaded')} model=${model}`,
+      );
+      // eslint-disable-next-line global-require
+      Promise.resolve(require('../../../banidb').loadShabad(2776))
+        .then((v) => diag(`${tag} db query: ok (${Array.isArray(v) ? v.length : typeof v})`))
+        .catch((e) => diag(`${tag} db query: FAILED ${(e && e.message) || e}`));
+    } catch (e) {
+      diag(`${tag} check failed: ${(e && e.message) || e}`);
+    }
+  };
+  setTimeout(() => health('startup'), 15000);
+  setTimeout(() => health('after 3 min'), 180000);
+}
 
 // Test hook, never set for testers: launched with VF_TEST_WAV=<audio file>, that file
 // replaces the microphone (silently) for both the recorder and hidden Voice-Follow, so an
@@ -274,7 +328,7 @@ const ShadowCollector = () => {
     };
     const onUnload = () => stop(true);
     window.addEventListener('beforeunload', onUnload);
-    uploader.start(shadowRoot());
+    uploader.start(shadowRoot(), readTester(shadowTester));
     return () => {
       window.removeEventListener('beforeunload', onUnload);
       stop(false);

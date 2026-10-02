@@ -29,6 +29,7 @@ const TYPES = {
 };
 
 let root = null;
+let rootTester = null; // the registered tester, for files that live outside a session (errors.log)
 let timer = null;
 let busy = false;
 let lastLive = 0;
@@ -46,7 +47,7 @@ async function putFile(dir, file) {
   const full = path.join(dir, file);
   if (!fs.existsSync(full) || !UPLOAD_ENDPOINT) return false;
   const session = readJson(path.join(dir, 'session.json'), {});
-  const t = session.tester || {};
+  const t = session.tester || (dir === root ? rootTester : null) || {};
   const testerId = t.id || 'unknown';
   // Bucket folders people can browse: raw/<gurdwara>/<tester name>/<date>/<session>/
   const slug = (x, d) =>
@@ -66,7 +67,7 @@ async function putFile(dir, file) {
       tester: testerId,
       gurdwara,
       name,
-      session: path.basename(dir),
+      session: dir === root ? 'errors' : path.basename(dir),
       file,
       contentType,
     }),
@@ -89,6 +90,16 @@ function enqueue(dir, file) {
 // Every file of every finished session that is not uploaded at its current size.
 function scanPending() {
   if (!root || !fs.existsSync(root)) return;
+  // The diagnostics log at the root, whenever it has grown.
+  try {
+    const f = path.join(root, 'errors.log');
+    if (fs.existsSync(f)) {
+      const done = readJson(path.join(root, 'uploaded.json'), {});
+      if (done['errors.log'] !== fs.statSync(f).size) enqueue(root, 'errors.log');
+    }
+  } catch (_) {
+    /* ignore */
+  }
   fs.readdirSync(root).forEach((id) => {
     const dir = path.join(root, id);
     if (!fs.statSync(dir).isDirectory()) return;
@@ -137,8 +148,9 @@ function enqueueSession(dir) {
   drain();
 }
 
-function start(shadowRoot) {
+function start(shadowRoot, tester) {
   root = shadowRoot;
+  rootTester = tester || rootTester;
   if (timer) return;
   scanPending();
   drain();
