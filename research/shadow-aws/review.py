@@ -74,6 +74,16 @@ def norm_word(w):
     return ''.join(c for c in unicodedata.normalize('NFD', w) if '\u0a05' <= c <= '\u0a39' or c in '\u0a72\u0a73')
 
 
+def title(key):
+    """A readable name for a content key: the first words of the shabad's first line of
+    Gurbani (skipping the raag/author heading), or the key itself if unknown."""
+    lines = shabad_text(key)
+    if not lines:
+        return key or 'nothing'
+    first = next((l for l in lines[1:] if len(l.split()) > 3), lines[0])
+    return ' '.join(first.split()[:6])
+
+
 def first_letters(text):
     """Gurmukhi first letters of each word."""
     return ''.join(n[0] for n in (norm_word(w) for w in (text or '').split()) if n)

@@ -34,7 +34,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SCORER = os.path.join(HERE, '..', '..', 'www', 'main', 'addons', 'voice-follow', 'shadow', 'score.js')
 SUM_KEYS = ['kirtan', 'held', 'idle', 'paused', 'agree', 'early', 'wrong', 'behind', 'none',
             'heldAgree', 'heldBehind', 'heldWrong', 'heldNone', 'idleQuiet',
-            'idleEarly', 'linger', 'falseAlarm', 'vfDown', 'switchesCut', 'lineSeconds', 'lineAgree', 'switches', 'matched']
+            'idleEarly', 'linger', 'falseAlarm', 'vfDown', 'switchesCut', 'lineChanges', 'lineFound', 'lineSeconds', 'lineAgree', 'switches', 'matched']
 
 
 def score_session(d, fixes=None):
@@ -80,8 +80,179 @@ def summarize(sc):
 def add(a, b):
     for key in SUM_KEYS:
         a[key] = a.get(key, 0) + b[key]
-    a['switchDelays'] = sorted(a.get('switchDelays', []) + b['switchDelays'])
+    for key in ('switchDelays', 'lineDelays'):
+        a[key] = sorted(a.get(key, []) + b.get(key, []))
+    a['testerWrong'] = a.get('testerWrong', 0) + b.get('testerWrong', 0)
     return a
+
+
+# ---- The scorecard: was the model about as good as a person? -----------------------------
+# Every number is a score out of 100 where HIGHER IS BETTER, shown for the model and for the
+# person (the tester). The answer for each question comes from the GAP (model minus person,
+# in points: positive = model better), using the levels below. Change the edges here and
+# every past session is rescored.
+LEVELS = ['MUCH WORSE', 'WORSE', 'EQUIVALENT', 'BETTER', 'MUCH BETTER']
+INF = float('inf')
+# Edges on the gap: below e0 MUCH WORSE, below e1 WORSE, below e2 EQUIVALENT, below e3 BETTER.
+ACCURACY_EDGES = [-3, -1, 1, 3]        # right-shabad accuracy, within 1 point = equivalent
+SPEED_EDGES = [-25, -10, INF, INF]     # changes caught within 30 s; person = 100 by definition
+LINE_EDGES = [-10, -5, INF, INF]       # right line; person = 100 by definition
+LINE_SPEED_EDGES = [-25, -10, INF, INF]  # line changes caught within 5 s
+CATCH_S = 30
+LINE_CATCH_S = 5
+MIN_SERVICES = 5               # fewer services than this: the answer is only a lean
+RESAMPLES = 1000
+
+
+def level(gap, edges):
+    for i, e in enumerate(edges):
+        if gap < e:
+            return LEVELS[i]
+    return LEVELS[4]
+
+
+def worst(*levels):
+    return min(levels, key=LEVELS.index)
+
+
+def med(xs):
+    """Median; the average of the middle two for an even count."""
+    if not xs:
+        return None
+    xs = sorted(xs)
+    m = len(xs) // 2
+    return xs[m] if len(xs) % 2 else round((xs[m - 1] + xs[m]) / 2, 1)
+
+
+def score(a, b):
+    return None if not b else 100 * a / b
+
+
+def kpis(sc):
+    """Scores out of 100 (higher is better) from summed, reviewed counts."""
+    right = sc['agree'] + sc['early']
+    committed = right + sc['wrong']
+    singing = committed + sc['behind'] + sc['none']
+    tw = sc.get('testerWrong', 0)
+    sd = sc['switchDelays']
+    return {
+        'scored_h': round(committed / 3600, 2),
+        # Accuracy: of the time a shabad was up, how much of it was the right one.
+        'accuracy': score(right, committed),
+        'tester_accuracy': score(committed - tw, committed),
+        # Right shabad on screen: of all singing time, how much had the right shabad up.
+        'on_screen': score(right, singing),
+        'tester_on_screen': score(singing - tw, singing),
+        # Speed: of the tester's shabad changes, how many the model had within CATCH_S.
+        'changes': sc['switches'],
+        'caught_15': score(sum(d <= 15 for d in sd), sc['switches']),
+        'caught_30': score(sum(d <= CATCH_S for d in sd), sc['switches']),
+        'caught_60': score(sum(d <= 60 for d in sd), sc['switches']),
+        'first': score(sum(d <= 0 for d in sd), sc['switches']),
+        'median_delay_s': med(sd),
+        # Lines, when both are on the same shabad.
+        'right_line': score(sc['lineAgree'], sc['lineSeconds']),
+        'line_changes': sc['lineChanges'],
+        'line_caught_5': score(sum(d <= LINE_CATCH_S for d in sc['lineDelays']), sc['lineChanges']),
+        # Quiet: with nothing to show, how often the model also showed nothing.
+        'quiet': score(sc['idle'] - sc['falseAlarm'], sc['idle']),
+    }
+
+
+def gaps(k):
+    g = lambda m, p: None if m is None or p is None else m - p
+    return {
+        'accuracy': g(k['accuracy'], k['tester_accuracy']),
+        'speed': g(k['caught_30'], 100.0 if k['caught_30'] is not None else None),
+        'line': g(k['right_line'], 100.0 if k['right_line'] is not None else None),
+        'line_speed': g(k['line_caught_5'], 100.0 if k['line_caught_5'] is not None else None),
+    }
+
+
+def verdict(values, fn):
+    """(answer, low, high) from resampled values: an answer only when the whole 90% range
+    gives the same level, else 'between A and B'."""
+    vals = sorted(v for v in values if v is not None)
+    if not vals:
+        return 'NO DATA', None, None
+    lo, hi = vals[int(0.05 * (len(vals) - 1))], vals[int(0.95 * (len(vals) - 1))]
+    a, b = fn(lo), fn(hi)
+    return (a if a == b else f'between {a} and {b}'), lo, hi
+
+
+def scorecard(per_session, changes=()):
+    """per_session: [(name, gurdwara, reviewed counts)]. Returns markdown lines and the numbers."""
+    import random
+    total = {}
+    for _, _, sc in per_session:
+        add(total, sc)
+    k = kpis(total)
+    rng = random.Random(7)
+    boot = []
+    for _ in range(RESAMPLES if per_session else 0):
+        t = {}
+        for _ in per_session:
+            add(t, rng.choice(per_session)[2])
+        boot.append(gaps(kpis(t)))
+    acc = verdict([b['accuracy'] for b in boot], lambda x: level(x, ACCURACY_EDGES))
+    spd = verdict([b['speed'] for b in boot], lambda x: level(x, SPEED_EDGES))
+    lin = verdict([None if b['line'] is None or b['line_speed'] is None else (b['line'], b['line_speed'])
+                   for b in boot], lambda x: worst(level(x[0], LINE_EDGES), level(x[1], LINE_SPEED_EDGES)))
+    services = len(per_session)
+    lean = services < MIN_SERVICES
+    show = lambda v: (f'{v[0]} (early lean: {services} of {MIN_SERVICES} services)' if lean and v[0] != 'NO DATA'
+                      else v[0])
+    f = lambda x: 'n/a' if x is None else f'{x:.0f}' if abs(x - round(x)) < 0.05 else f'{x:.1f}'
+    gap = lambda m, p: 'n/a' if m is None or p is None else f'{m - p:+.1f}'
+    when = lambda d: 'n/a' if d is None else 'at the same time as' if d == 0 else (
+        f'{f(d)} s after' if d > 0 else f'{f(-d)} s before')
+    lines = [
+        '## Model vs. a person', '',
+        f'{services} services · {len({n for n, _, _ in per_session})} testers · '
+        f'{len({g for _, g, _ in per_session if g})} Gurdwaras · {k["scored_h"]} h of singing scored', '',
+        'Every score is out of 100 and **higher is better**. The gap is model minus person: '
+        '**positive means the model did better**.', '',
+        '| Question | Answer | Model | Person | Gap |', '|---|---|---|---|---|',
+        f'| **Accuracy**: when a shabad is up, is it the right one? | **{show(acc)}** | {f(k["accuracy"])} '
+        f'| {f(k["tester_accuracy"])} | {gap(k["accuracy"], k["tester_accuracy"])} |',
+        f'| **Speed**: shabad changes caught within {CATCH_S} s | **{show(spd)}** | {f(k["caught_30"])} | 100 '
+        f'| {gap(k["caught_30"], 100.0 if k["caught_30"] is not None else None)} |',
+        f'| **Lines**: right line, when on the same shabad | **{show(lin)}** | {f(k["right_line"])} | 100 '
+        f'| {gap(k["right_line"], 100.0 if k["right_line"] is not None else None)} |',
+        f'| Lines: line changes caught within {LINE_CATCH_S} s | (part of Lines) | {f(k["line_caught_5"])} | 100 '
+        f'| {gap(k["line_caught_5"], 100.0 if k["line_caught_5"] is not None else None)} |',
+        f'| Right shabad on screen, all singing time | (context) | {f(k["on_screen"])} | {f(k["tester_on_screen"])} '
+        f'| {gap(k["on_screen"], k["tester_on_screen"])} |',
+        f'| Quiet when there is nothing to show | (context) | {f(k["quiet"])} | 100 | |',
+        '',
+        f'Speed detail: {k["changes"]} shabad changes; caught within 15 / 30 / 60 s: {f(k["caught_15"])} / '
+        f'{f(k["caught_30"])} / {f(k["caught_60"])}; the model was first on {f(k["first"])}; typically '
+        f'{when(k["median_delay_s"])} the person.', '',
+        f'How answers are given: EQUIVALENT means accuracy within 1 point of the person, '
+        f'{100 + SPEED_EDGES[1]}+ of shabad changes caught within {CATCH_S} s, and {100 + LINE_EDGES[1]}+ on the right line '
+        f'with {100 + LINE_SPEED_EDGES[1]}+ of line changes caught within {LINE_CATCH_S} s. '
+        'An answer is given only when the whole 90% range of the result sits in one level.', '',
+    ]
+    if changes:
+        lines += ['**Every shabad change**', '', '| Tester | Service | When | Changed to | Model |',
+                  '|---|---|---|---|---|']
+        lines += [f'| {n} | {sess[:16]} | {c["at"]} | {review.title(c["human"])} | '
+                  f'{"not within 3 min" if c["delay"] is None else when(c["delay"]) + " the person"} |'
+                  for n, sess, c in changes]
+        lines.append('')
+    by = {}
+    for n, g, sc in per_session:
+        e = by.setdefault((n, g), [0, {}])
+        e[0] += 1
+        add(e[1], sc)
+    lines += ['**Per tester** (scores out of 100, higher is better)', '',
+              '| Tester | Gurdwara | Services | Hours | Accuracy (model / person) | Speed: caught within 30 s '
+              '| Right line | Line caught within 5 s |', '|---|---|---|---|---|---|---|---|']
+    for (n, g), (cnt, sc) in sorted(by.items()):
+        x = kpis(sc)
+        lines.append(f'| {n} | {g} | {cnt} | {x["scored_h"]} | {f(x["accuracy"])} / {f(x["tester_accuracy"])} '
+                     f'| {f(x["caught_30"])} | {f(x["right_line"])} | {f(x["line_caught_5"])} |')
+    return lines, {'kpis': k, 'accuracy': acc[0], 'speed': spd[0], 'lines': lin[0]}
 
 
 def sessions(root):
@@ -109,7 +280,7 @@ def run(root, write=True):
     """Score every session: RAW (trusting the sevadaar), the review queue, and VERIFIED
     (RAW plus the verdicts in review/verdicts.jsonl)."""
     vs = review.verdicts(os.path.join(root, 'review', 'verdicts.jsonl'))
-    index, items_all = [], []
+    index, items_all, per_session, changes = [], [], [], []
     total, total_v, by_tester, by_tester_v = {}, {}, {}, {}
     for tester, day, sess, d in sessions(root):
         res = score_session(d)
@@ -118,6 +289,7 @@ def run(root, write=True):
         items_all += items
         fixes = review.fixes_for(items, vs)
         res_v = score_session(d, fixes) if fixes else res
+        res_v['raw']['testerWrong'] = sum(f['to'] - f['from'] for f in fixes)
         try:
             meta = json.load(open(os.path.join(d, 'session.json')))
         except (OSError, json.JSONDecodeError):
@@ -130,6 +302,8 @@ def run(root, write=True):
                **summarize(sc), 'verified': summarize(res_v['raw']), 'fixes': len(fixes),
                'to_review': len(pending)}
         index.append(row)
+        per_session.append((who, row['gurdwara'], res_v['raw']))
+        changes += [(who, sess, c) for c in res_v['switches']]
         add(total, sc)
         add(total_v, res_v['raw'])
         add(by_tester.setdefault(who, {}), sc)
@@ -160,7 +334,9 @@ def run(root, write=True):
         raw_rows.append(('**ALL SANGAT**', summarize(total)))
         ver_rows.append(('**ALL SANGAT**', {**summarize(total_v), 'fixes': sum(r['fixes'] for r in index),
                                             'to_review': sum(r['to_review'] for r in index)}))
-    lines = table('RAW (trusting the sevadaar)', raw_rows, cols) + ['']
+    card, card_numbers = scorecard(per_session, changes)
+    lines = ['# Voice-Follow sangat benchmark', ''] + card + ['', '## Details', '']
+    lines += table('RAW (trusting the sevadaar)', raw_rows, cols) + ['']
     lines += table('VERIFIED (with human verdicts on suspicious stretches)', ver_rows,
                    VERIFIED_COLS + ['fixes', 'to_review'])
     pending = [it for it in items_all if it['id'] not in vs]
@@ -175,7 +351,7 @@ def run(root, write=True):
     if write:
         os.makedirs(os.path.join(root, 'reports'), exist_ok=True)
         open(os.path.join(root, 'reports', f'{date.today().isoformat()}.md'), 'w').write(report + '\n')
-    return index, total, report, total_v
+    return index, total, report, total_v, card_numbers
 
 
 def main():
@@ -185,7 +361,7 @@ def main():
                               '--only-show-errors'], check=True)
         subprocess.run(AWS + ['s3', 'cp', f'{BUCKET}/review/verdicts.jsonl', os.path.join(root, 'review', 'verdicts.jsonl'),
                               '--only-show-errors'], check=False, capture_output=True)
-    _, _, report, _ = run(root)
+    _, _, report, _, _ = run(root)
     print(report)
     if '--publish' in sys.argv:
         for part in ('derived', 'index', 'reports', 'review'):

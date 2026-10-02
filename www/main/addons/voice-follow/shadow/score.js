@@ -40,6 +40,8 @@ const C = {
   LINE_LAG_S: 10,
   STALE_S: 60,
   MATCH_CAP_S: 180, // a human switch not followed within this is missed
+  LINE_CAP_S: 30, // a sevadaar line change not followed within this is missed
+  LINE_HOLD_S: 3, // a line held shorter than this is a flick, not a line change
   LISTEN_MIN_S: 20,
   LISTEN_JOIN_S: 3,
   GAP_S: 5, // the live clock jumping this far means the computer slept
@@ -237,6 +239,9 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events, fi
     switchesCut: 0, // human switches whose follow-up a pause cut short (not scored)
     matched: 0,
     switchDelays: [],
+    lineChanges: 0, // sevadaar line changes on a shabad Voice-Follow was also showing
+    lineFound: 0, // ...that Voice-Follow reached within LINE_CAP_S
+    lineDelays: [], // seconds from each such change to Voice-Follow on that line
   };
   const outcome = new Array(length).fill(null);
   for (let i = 0; i < length; i += 1) {
@@ -313,6 +318,37 @@ function scoreTimelines({ human: humanEv, system: systemEv, activity, events, fi
     }
   });
   sc.switchDelays.sort((a, b) => a - b);
+
+  // Line delay: each sevadaar line change (same shabad, held LINE_HOLD_S+, while singing)
+  // on a shabad Voice-Follow is also showing; signed, negative = Voice-Follow was first.
+  for (let i = 1; i < length; i += 1) {
+    const key = hkey[i];
+    const v = hverse[i];
+    if (!key || v == null || hkey[i - 1] !== key || hverse[i - 1] === v) continue;
+    if (states[i] !== 'kirtan' || skey[i] !== key) continue;
+    let held = 0;
+    while (i + held < length && hkey[i + held] === key && hverse[i + held] === v) held += 1;
+    if (held < C.LINE_HOLD_S) continue;
+    sc.lineChanges += 1;
+    let at = null;
+    if (sverse[i] === v) {
+      at = i;
+      while (at > 0 && at > i - C.LINE_LAG_S && skey[at - 1] === key && sverse[at - 1] === v)
+        at -= 1;
+    } else {
+      for (let m = i + 1; m < Math.min(length, i + C.LINE_CAP_S); m += 1) {
+        if (skey[m] === key && sverse[m] === v) {
+          at = m;
+          break;
+        }
+      }
+    }
+    if (at != null) {
+      sc.lineFound += 1;
+      sc.lineDelays.push(at - i);
+    }
+  }
+  sc.lineDelays.sort((a, b) => a - b);
 
   // Listen list: disagreement stretches long enough to be worth a person's ear.
   const audio = events

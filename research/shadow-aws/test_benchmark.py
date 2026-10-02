@@ -41,6 +41,8 @@ EXPECT = {
     'idleQuiet': 11, 'idleEarly': 15, 'linger': 15, 'falseAlarm': 10,
     'lineSeconds': 152, 'lineAgree': 141,
     'switches': 3, 'matched': 3, 'switchDelays': [-20, -15, 40],
+    # One sevadaar line change on a shabad the model also shows: 70 (line 11 -> 12); model at 72.
+    'lineChanges': 1, 'lineFound': 1, 'lineDelays': [2],
 }
 EXPECT_LISTEN = [{'fromS': 135, 'toS': 170, 'from': '2:15', 'to': '2:50', 'seconds': 35, 'kind': 'behind', 'human': 'shabad:2',
                   'system': 'shabad:1', 'audio': {'file': 'audio-000.webm', 'offset': '2:15'}}]
@@ -112,7 +114,7 @@ def main():
     try:
         build(root)
         # 1. RAW: every rule of score.js.
-        index, total, report, _ = B.run(root)
+        index, total, report, _, _ = B.run(root)
         bad += [(k, v, total.get(k)) for k, v in EXPECT.items() if total.get(k) != v]
         # Headline: success = (agree 170 + early 15) / (185 + wrong 5) = 97.4%; lines 141/152.
         head = {k: index[0][k] for k in ('success_pct', 'line_success_pct', 'found_pct', 'scored_min',
@@ -135,7 +137,7 @@ def main():
         # 3. VERIFIED after "Voice-Follow right" on that item.
         with open(os.path.join(root, 'review', 'verdicts.jsonl'), 'w') as f:
             f.write(json.dumps({'id': queue[0]['id'], 'verdict': 'model'}) + '\n')
-        index, total, report, total_v = B.run(root)
+        index, total, report, total_v, card = B.run(root)
         bad += [('verified ' + k, v, total_v.get(k)) for k, v in EXPECT_VERIFIED.items() if total_v.get(k) != v]
         bad += [('raw unchanged ' + k, v, total.get(k)) for k, v in EXPECT.items() if total.get(k) != v]
         # Verified headline: (205 + 15) / (220 + 5) = 97.8%; lines 150/161 = 93.2%.
@@ -144,6 +146,29 @@ def main():
             bad.append(('verified headline', '97.8 / 93.2', vh))
         if index[0]['to_review'] != 0 or index[0]['fixes'] != 1:
             bad.append(('after verdict', '0 to review, 1 fix', (index[0]['to_review'], index[0]['fixes'])))
+        # Scorecard (reviewed; one service, so every resample is the same and answers are exact).
+        # Scores out of 100, higher is better; gap = model - person.
+        #   accuracy: model right 220 of 225 s with a shabad up = 97.8; person ruled wrong 40 s
+        #             (130-169) -> 185/225 = 82.2; gap +15.6 -> MUCH BETTER
+        #   speed: delays [-20, -15, 0], all within 30 s -> 100; gap 0 -> EQUIVALENT
+        #   lines: right line 150/161 = 93.2 (gap -6.8 -> WORSE); the one line change caught in
+        #          2 s -> 100 (EQUIVALENT); the worse of the two -> WORSE
+        k = card['kpis']
+        r1 = lambda x: None if x is None else round(x, 1)
+        got = (card['accuracy'], card['speed'], card['lines'], r1(k['accuracy']), r1(k['tester_accuracy']),
+               r1(k['caught_30']), r1(k['first']), k['median_delay_s'], r1(k['right_line']), r1(k['line_caught_5']))
+        want = ('MUCH BETTER', 'EQUIVALENT', 'WORSE', 97.8, 82.2, 100.0, 100.0, -15, 93.2, 100.0)
+        if got != want:
+            bad.append(('scorecard', want, got))
+        if '(early lean: 1 of 5 services)' not in report:
+            bad.append(('lean label', 'shown', 'missing'))
+        # Verdict bands and the "range must sit in one level" rule.
+        checks = [(B.level(0, B.ACCURACY_EDGES), 'EQUIVALENT'), (B.level(-1.5, B.ACCURACY_EDGES), 'WORSE'),
+                  (B.level(2, B.ACCURACY_EDGES), 'BETTER'), (B.level(-50, B.SPEED_EDGES), 'MUCH WORSE'),
+                  (B.level(-10, B.SPEED_EDGES), 'EQUIVALENT'), (B.worst('EQUIVALENT', 'WORSE'), 'WORSE'),
+                  (B.verdict([-8] * 50 + [-12] * 50, lambda x: B.level(x, B.SPEED_EDGES))[0],
+                   'between WORSE and EQUIVALENT')]
+        bad += [('band', w, g) for g, w in checks if g != w]
         # 4. An audit marked "both wrong" becomes an unknown-truth fix; "tester right" none.
         audit = {'id': 'a', 'type': 'audit', 'fromS': 50, 'toS': 80, 'system': 'shabad:1'}
         sus = {**queue[0], 'id': 's'}
@@ -153,7 +178,7 @@ def main():
         print(report)
     finally:
         shutil.rmtree(root)
-    n = len(EXPECT) + 6 + 1 + 2 + len(EXPECT_VERIFIED) + 2 + len(EXPECT) + 1 + 1
+    n = len(EXPECT) + 6 + 1 + 2 + len(EXPECT_VERIFIED) + 2 + len(EXPECT) + 1 + 10 + 1 + 7 + 1
     if bad:
         for k, want, got in bad:
             print(f'MISMATCH {k}: expected {want}, got {got}')
