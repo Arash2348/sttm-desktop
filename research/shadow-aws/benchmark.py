@@ -132,7 +132,6 @@ def kpis(sc):
     """Scores out of 100 (higher is better) from summed, reviewed counts."""
     right = sc['agree'] + sc['early']
     committed = right + sc['wrong']
-    singing = committed + sc['behind'] + sc['none']
     tw = sc.get('testerWrong', 0)
     sd = sc['switchDelays']
     return {
@@ -140,9 +139,6 @@ def kpis(sc):
         # Accuracy: of the time a shabad was up, how much of it was the right one.
         'accuracy': score(right, committed),
         'tester_accuracy': score(committed - tw, committed),
-        # Right shabad on screen: of all singing time, how much had the right shabad up.
-        'on_screen': score(right, singing),
-        'tester_on_screen': score(singing - tw, singing),
         # Speed: of the tester's shabad changes, how many the model had within CATCH_S.
         'changes': sc['switches'],
         'caught_15': score(sum(d <= 15 for d in sd), sc['switches']),
@@ -215,14 +211,13 @@ def scorecard(per_session, changes=()):
         '| Question | Answer | Model | Person | Gap |', '|---|---|---|---|---|',
         f'| **Accuracy**: when a shabad is up, is it the right one? | **{show(acc)}** | {f(k["accuracy"])} '
         f'| {f(k["tester_accuracy"])} | {gap(k["accuracy"], k["tester_accuracy"])} |',
-        f'| **Speed**: shabad changes caught within {CATCH_S} s | **{show(spd)}** | {f(k["caught_30"])} | 100 '
+        f'| **Speed**: of the shabad changes, how many the model had within {CATCH_S} s | **{show(spd)}** '
+        f'| {f(k["caught_30"])} (typically {when(k["median_delay_s"])} the person) | 100 '
         f'| {gap(k["caught_30"], 100.0 if k["caught_30"] is not None else None)} |',
         f'| **Lines**: right line, when on the same shabad | **{show(lin)}** | {f(k["right_line"])} | 100 '
         f'| {gap(k["right_line"], 100.0 if k["right_line"] is not None else None)} |',
         f'| Lines: line changes caught within {LINE_CATCH_S} s | (part of Lines) | {f(k["line_caught_5"])} | 100 '
         f'| {gap(k["line_caught_5"], 100.0 if k["line_caught_5"] is not None else None)} |',
-        f'| Right shabad on screen, all singing time | (context) | {f(k["on_screen"])} | {f(k["tester_on_screen"])} '
-        f'| {gap(k["on_screen"], k["tester_on_screen"])} |',
         f'| Quiet when there is nothing to show | (context) | {f(k["quiet"])} | 100 | |',
         '',
         f'Speed detail: {k["changes"]} shabad changes; caught within 15 / 30 / 60 s: {f(k["caught_15"])} / '
