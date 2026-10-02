@@ -2228,6 +2228,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       }
       st.cpu = sample;
       const nowMs = Date.now();
+      // CPU load once a minute, so a slow result can later be traced to a busy computer.
+      if (busy != null && shadowBus.active() && nowMs - (st.lastCpuLog || 0) >= 60000) {
+        st.lastCpuLog = nowMs;
+        shadowBus.note({ type: 'cpu', busy: Math.round(busy * 100) / 100 });
+      }
       // Busy means two readings in a row (a minute): one spike is not a busy computer.
       st.busyRuns = busy != null && busy > SHADOW_CPU_PAUSE ? (st.busyRuns || 0) + 1 : 0;
       if (st.running && st.busyRuns >= 2 && nowMs - st.since > 60000) {
