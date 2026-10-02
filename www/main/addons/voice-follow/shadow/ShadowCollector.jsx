@@ -121,13 +121,21 @@ const labelOf = (nav) => ({
   slide: nav.isMiscSlide ? nav.miscSlideText || true : null,
 });
 
+// The registration is a user setting, and settings become body class names at startup,
+// so it is stored URL-encoded (no spaces). Older installs stored plain JSON.
 const readTester = (raw) => {
+  if (!raw) return {};
   try {
-    return JSON.parse(raw || '{}');
+    return JSON.parse(decodeURIComponent(raw));
   } catch (_) {
-    return {};
+    try {
+      return JSON.parse(raw);
+    } catch (__) {
+      return {};
+    }
   }
 };
+const packTester = (t) => encodeURIComponent(JSON.stringify(t));
 
 const ShadowCollector = () => {
   const nav = useStoreState((state) => state.navigator);
@@ -147,6 +155,12 @@ const ShadowCollector = () => {
   const startingRef = useRef(false); // waiting for the microphone (e.g. the permission prompt)
 
   const enabled = SHADOW_BUILD && !!tester.name && shadowRecording !== false;
+
+  // An older install stored the registration as plain JSON (with spaces): re-save it packed.
+  useEffect(() => {
+    if (tester.name && shadowTester && /\s/.test(shadowTester)) setShadowTester(packTester(tester));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shadowTester]);
   const recording = enabled && active;
 
   useEffect(() => {
@@ -437,7 +451,7 @@ const ShadowCollector = () => {
             disabled={!name.trim()}
             onClick={() => {
               setShadowTester(
-                JSON.stringify({
+                packTester({
                   name: name.trim(),
                   gurdwara: gurdwara.trim(),
                   id: `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
