@@ -48,7 +48,9 @@ if (process.env.VF_TEST_WAV && navigator.mediaDevices) {
         return dest.stream;
       })();
     }
-    return shared;
+    // A fresh clone per caller, as a real microphone gives a fresh stream per request:
+    // a session stopping its tracks must not silence the next session's.
+    return (await shared).clone();
   };
 }
 
