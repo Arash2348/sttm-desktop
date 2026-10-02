@@ -4,11 +4,10 @@ import { SHADOW_BUILD, SHADOW_AUDIO_BPS, SHADOW_SLICE_MS, SHADOW_SEGMENT_MS } fr
 
 const fs = require('fs');
 const path = require('path');
+const remote = require('@electron/remote');
 const bus = require('./bus');
 const uploader = require('./uploader');
 const { logDir } = require('../engine/session-log');
-
-const remote = require('@electron/remote');
 
 // One folder per app session under <userData>/voice-follow/shadow/<id>/:
 //   audio-000.webm ... - what the microphone heard, one file per SHADOW_SEGMENT_MS
@@ -47,6 +46,7 @@ const ShadowCollector = () => {
   const [name, setName] = useState(tester.name || '');
   const [gurdwara, setGurdwara] = useState(tester.gurdwara || '');
   const sessionRef = useRef(null);
+  const [restarts, setRestarts] = useState(0);
 
   const enabled = SHADOW_BUILD && !!tester.name && shadowRecording !== false;
 
@@ -230,8 +230,28 @@ const ShadowCollector = () => {
       window.removeEventListener('beforeunload', stop);
       stop();
     };
-    // Start once per enable; the label effect below records every screen change.
+    // Start once per enable (or watchdog restart); the label effect records every screen change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, restarts]);
+
+  // Watchdog: recording should always be on while the app is open. If a session ever
+  // ended (or never started), note it and start a new one.
+  useEffect(() => {
+    if (!enabled) return undefined;
+    const timer = setInterval(() => {
+      if (sessionRef.current) return;
+      try {
+        fs.mkdirSync(shadowRoot(), { recursive: true });
+        fs.appendFileSync(
+          path.join(shadowRoot(), 'errors.log'),
+          `${new Date().toISOString()} recording was not running; restarted\n`,
+        );
+      } catch (_) {
+        /* ignore */
+      }
+      setRestarts((n) => n + 1);
+    }, 60000);
+    return () => clearInterval(timer);
   }, [enabled]);
 
   // Every change of what is on screen, timestamped against the audio.
