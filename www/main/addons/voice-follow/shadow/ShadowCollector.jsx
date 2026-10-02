@@ -47,6 +47,7 @@ const ShadowCollector = () => {
   const [gurdwara, setGurdwara] = useState(tester.gurdwara || '');
   const sessionRef = useRef(null);
   const [restarts, setRestarts] = useState(0);
+  const startingRef = useRef(false); // waiting for the microphone (e.g. the permission prompt)
 
   const enabled = SHADOW_BUILD && !!tester.name && shadowRecording !== false;
 
@@ -57,6 +58,7 @@ const ShadowCollector = () => {
     let meterTimer = null;
     let meterCtx = null;
     const start = async () => {
+      startingRef.current = true;
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           audio: { channelCount: 1, echoCancellation: false, noiseSuppression: false },
@@ -71,6 +73,7 @@ const ShadowCollector = () => {
         const t0 = Date.now();
         const s = { dir, t0, stream, recorder: null, seg: 0 };
         sessionRef.current = s;
+        startingRef.current = false;
         fs.writeFileSync(
           path.join(dir, 'session.json'),
           JSON.stringify(
@@ -187,6 +190,7 @@ const ShadowCollector = () => {
           }
         }, 20000);
       } catch (e) {
+        startingRef.current = false;
         try {
           fs.mkdirSync(shadowRoot(), { recursive: true });
           fs.appendFileSync(
@@ -239,7 +243,7 @@ const ShadowCollector = () => {
   useEffect(() => {
     if (!enabled) return undefined;
     const timer = setInterval(() => {
-      if (sessionRef.current) return;
+      if (sessionRef.current || startingRef.current) return;
       try {
         fs.mkdirSync(shadowRoot(), { recursive: true });
         fs.appendFileSync(
