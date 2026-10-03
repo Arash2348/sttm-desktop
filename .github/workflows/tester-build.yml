@@ -11,7 +11,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: windows-latest
+          # windows-2022: node-gyp 9 (pinned by the lockfile) does not recognise the Visual
+          # Studio 2026 on windows-latest, so native modules (mdns) fail to compile there.
+          - os: windows-2022
             platform: win
           - os: macos-14
             platform: mac
