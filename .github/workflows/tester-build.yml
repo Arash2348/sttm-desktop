@@ -20,6 +20,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      # The 184 MB model does not compress; "store" keeps the installers a little larger but
+      # takes minutes instead of an hour on a 2-core runner. DEBUG makes a stall readable.
+      DEBUG: electron-builder
       BONJOUR_SDK_HOME: 'C:\Program Files\Bonjour SDK'
     steps:
       - uses: actions/checkout@v4
@@ -77,11 +80,13 @@ jobs:
 
       - name: Package (Windows)
         if: matrix.platform == 'win'
-        run: npx electron-builder --win --x64 --publish never
+        timeout-minutes: 40
+        run: npx electron-builder --win --x64 --publish never -c.compression=store
 
       - name: Package (macOS, unsigned, Apple Silicon and Intel; zip, since DMG creation hangs on headless runners)
         if: matrix.platform == 'mac'
-        run: npx electron-builder --mac zip --arm64 --x64 --publish never
+        timeout-minutes: 40
+        run: npx electron-builder --mac zip --arm64 --x64 --publish never -c.compression=store
 
       - name: Checks on the output
         shell: bash
