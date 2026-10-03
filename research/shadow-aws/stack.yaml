@@ -4,6 +4,11 @@ Parameters:
   UploadKey:
     Type: String
     NoEcho: true
+  PreviousUploadKey:
+    Type: String
+    NoEcho: true
+    Default: ''
+    Description: Still accepted while already-installed apps move to the new key
 Resources:
   Bucket:
     Type: AWS::S3::Bucket
@@ -42,7 +47,7 @@ Resources:
       Timeout: 10
       Role: !GetAtt FnRole.Arn
       Environment:
-        Variables: { BUCKET: !Ref Bucket, UPLOAD_KEY: !Ref UploadKey }
+        Variables: { BUCKET: !Ref Bucket, UPLOAD_KEY: !Ref UploadKey, PREVIOUS_UPLOAD_KEY: !Ref PreviousUploadKey }
       Code:
         ZipFile: |
           const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
@@ -53,7 +58,9 @@ Resources:
           const out = (code, body) => ({ statusCode: code, headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
           exports.handler = async (event) => {
             const h = event.headers || {};
-            if ((h['x-vf-key'] || '') !== process.env.UPLOAD_KEY) return out(403, { error: 'forbidden' });
+            const key = h['x-vf-key'] || '';
+            const ok = key === process.env.UPLOAD_KEY || (process.env.PREVIOUS_UPLOAD_KEY && key === process.env.PREVIOUS_UPLOAD_KEY);
+            if (!ok) return out(403, { error: 'forbidden' });
             let b;
             try { b = JSON.parse(event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString() : event.body || '{}'); } catch (e) { return out(400, { error: 'bad json' }); }
             const { tester, session, file, contentType, gurdwara, name } = b;

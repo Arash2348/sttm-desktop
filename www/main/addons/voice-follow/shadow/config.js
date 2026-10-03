@@ -27,7 +27,9 @@ const SHADOW_CPU_RESUME = 0.6;
 // Upload endpoint (API Gateway + Lambda issuing presigned S3 PUT URLs) and its key,
 // which only allows uploads into the sessions/ prefix. Filled in when the stack is up.
 const UPLOAD_ENDPOINT = 'https://3fpf1zwng1.execute-api.us-east-2.amazonaws.com';
-const UPLOAD_KEY = '609483a6b3890d4145716c0bf2e75f5eadaf7e15b86cee5e';
+// The real key is never committed: the build replaces this placeholder in the compiled
+// file (build-shadow.sh / build-windows.ps1 from VF_UPLOAD_KEY, CI from a repository secret).
+const UPLOAD_KEY = '__VF_UPLOAD_KEY__';
 
 module.exports = {
   SHADOW_BUILD,
