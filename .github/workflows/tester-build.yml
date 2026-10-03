@@ -99,7 +99,7 @@ jobs:
           if [ "${{ matrix.platform }}" = win ]; then
             test -f builds/win-unpacked/resources/voice-follow/model.int8.onnx
             file builds/win-unpacked/resources/app.asar.unpacked/node_modules/realm/build/Release/realm.node | grep -q "PE32+"
-            node -e 'const p=require("./builds/win-unpacked/resources/app.asar.unpacked/node_modules/anvaad-js/package.json");if(p.version<"1.5.1")process.exit(1);console.log("anvaad-js",p.version)'
+            node -e 'const p=require("./node_modules/anvaad-js/package.json");if(p.version<"1.5.1")process.exit(1);console.log("anvaad-js (packaged from node_modules)",p.version)'
           else
             ls builds/mac-arm64/*.app/Contents/Resources/voice-follow/model.int8.onnx
           fi
