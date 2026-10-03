@@ -33,7 +33,7 @@ AWS = [os.path.expanduser('~/.local/bin/aws'), '--profile', 'gurbani-prod', '--r
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 SCORER = os.path.join(HERE, '..', '..', 'www', 'main', 'addons', 'voice-follow', 'shadow', 'score.js')
-SUM_KEYS = ['kirtan', 'held', 'idle', 'paused', 'agree', 'early', 'wrong', 'behind', 'none',
+SUM_KEYS = ['baniSameVerse', 'kirtan', 'held', 'idle', 'paused', 'agree', 'early', 'wrong', 'behind', 'none',
             'heldAgree', 'heldBehind', 'heldWrong', 'heldNone', 'idleQuiet',
             'idleEarly', 'linger', 'falseAlarm', 'vfDown', 'switchesCut', 'lineChanges', 'lineFound',
             'modelSwitches', 'modelSwitchesRight', 'modelLineMoves', 'modelLineMovesRight', 'switchesCold', 'lineSeconds', 'lineAgree', 'switches', 'matched']
@@ -88,6 +88,7 @@ def summarize(sc):
         'paused_min': round(sc['paused'] / 60, 1),
         'vf_down_min': round(sc.get('vfDown', 0) / 60, 1),
         'false_alarm_pct': pct(sc['falseAlarm'], sc['idle']),
+        'bani_same_verse_s': sc.get('baniSameVerse', 0),
     }
 
 
