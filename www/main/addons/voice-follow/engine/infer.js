@@ -30,7 +30,15 @@ class Infer {
   constructor(sess, vocab) { this.sess = sess; this.vocab = vocab; }
 
   static async create(modelPath, vocab = VOCAB) {
-    const sess = await ort.InferenceSession.create(modelPath);
+    // Two threads and no spinning: one recognizer step takes ~140 ms of a 600 ms hop even
+    // at 2 threads, while the default (every core, spinning between runs) burned 8 cores
+    // on a 20-core PC and would take the whole CPU of a Gurdwara laptop. Compute only; no
+    // change to what the model outputs.
+    const sess = await ort.InferenceSession.create(modelPath, {
+      intraOpNumThreads: 2,
+      interOpNumThreads: 1,
+      extra: { session: { 'session.intra_op.allow_spinning': '0' } },
+    });
     return new Infer(sess, vocab);
   }
 
