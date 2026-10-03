@@ -81,12 +81,14 @@ jobs:
       - name: Package (Windows)
         if: matrix.platform == 'win'
         timeout-minutes: 40
-        run: npx electron-builder --win --x64 --publish never -c.compression=store
+        # npmRebuild=false: npm ci's postinstall already built the native modules for Electron;
+        # electron-builder's second rebuild hangs on the runner (downloading sharp's binary).
+        run: npx electron-builder --win --x64 --publish never -c.compression=store -c.npmRebuild=false
 
-      - name: Package (macOS, unsigned, Apple Silicon and Intel; zip, since DMG creation hangs on headless runners)
+      - name: Package (macOS, unsigned, Apple Silicon; zip, since DMG creation is done locally)
         if: matrix.platform == 'mac'
         timeout-minutes: 40
-        run: npx electron-builder --mac zip --arm64 --x64 --publish never -c.compression=store
+        run: npx electron-builder --mac zip --arm64 --publish never -c.compression=store -c.npmRebuild=false
 
       - name: Checks on the output
         shell: bash
