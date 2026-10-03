@@ -79,14 +79,14 @@ jobs:
         if: matrix.platform == 'win'
         run: npx electron-builder --win --x64 --publish never
 
-      - name: Package (macOS, unsigned, Apple Silicon and Intel)
+      - name: Package (macOS, unsigned, Apple Silicon and Intel; zip, since DMG creation hangs on headless runners)
         if: matrix.platform == 'mac'
-        run: npx electron-builder --mac dmg --arm64 --x64 --publish never
+        run: npx electron-builder --mac zip --arm64 --x64 --publish never
 
       - name: Checks on the output
         shell: bash
         run: |
-          ls -la builds/ | grep -E "\.exe$|\.dmg$"
+          ls -la builds/ | grep -E "\.exe$|\.dmg$|\.zip$"
           if [ "${{ matrix.platform }}" = win ]; then
             test -f builds/win-unpacked/resources/voice-follow/model.int8.onnx
             file builds/win-unpacked/resources/app.asar.unpacked/node_modules/realm/build/Release/realm.node | grep -q "PE32+"
@@ -101,5 +101,6 @@ jobs:
           path: |
             builds/*.exe
             builds/*.dmg
+            builds/*.zip
           if-no-files-found: error
           retention-days: 30
