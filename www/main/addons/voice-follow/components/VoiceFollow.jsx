@@ -17,6 +17,7 @@ const { SP: AcousticSP } = require('../engine/sentencepiece');
 const { createRendererRetrieval } = require('../engine/retrieval/renderer-client');
 const sessionLog = require('../engine/session-log');
 const shadowBus = require('../shadow/bus');
+const { diag } = require('../shadow/diag');
 const { SHADOW_BUILD, SHADOW_CPU_PAUSE, SHADOW_CPU_RESUME } = require('../shadow/config');
 const os = require('os'); // eslint-disable-line import/order
 
@@ -869,12 +870,18 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         flIndexRef.current = client;
         return client;
       })
-      .catch(() => {
+      .catch((error) => {
         if (session === sessionRef.current && retrievalOwnerRef.current === client) {
           flIndexFailAtRef.current = Date.now();
           retrievalOwnerRef.current = null;
         }
         client.dispose().catch(() => {});
+        // Diagnostics only: a tester's events.jsonl and errors.log say why no shabad came.
+        if (SHADOW_BUILD) {
+          const message = (error && error.message) || String(error);
+          shadowBus.note({ type: 'vf_retrieval_failed', stage: 'prepare', error: message });
+          diag(`vf retrieval prepare failed: ${message}`);
+        }
         return null;
       });
     flIndexLoadingRef.current = p;
@@ -896,6 +903,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           flIndexRef.current = null;
           flIndexFailAtRef.current = Date.now();
           client.dispose().catch(() => {});
+          if (SHADOW_BUILD) {
+            shadowBus.note({ type: 'vf_retrieval_failed', stage: 'search', error: error.message });
+            diag(`vf retrieval search failed: ${error.message}`);
+          }
         }
         return null;
       }
