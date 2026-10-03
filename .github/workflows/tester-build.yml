@@ -81,8 +81,10 @@ jobs:
       - name: Package (Windows)
         if: matrix.platform == 'win'
         timeout-minutes: 40
+        # bash, not PowerShell: pwsh splits "-c.compression=store" into separate tokens.
         # npmRebuild=false: npm ci's postinstall already built the native modules for Electron;
         # electron-builder's second rebuild hangs on the runner (downloading sharp's binary).
+        shell: bash
         run: npx electron-builder --win --x64 --publish never -c.compression=store -c.npmRebuild=false
 
       - name: Package (macOS, unsigned, Apple Silicon; zip, since DMG creation is done locally)
