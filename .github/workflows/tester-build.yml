@@ -88,18 +88,21 @@ jobs:
           node -e 'const fs=require("fs");const f=process.argv[1];const s=fs.readFileSync(f,"utf8");if(!s.includes("__VF_UPLOAD_KEY__"))process.exit(2);fs.writeFileSync(f,s.replace("__VF_UPLOAD_KEY__",process.env.VF_UPLOAD_KEY))' "$f"
           grep -q "__VF_UPLOAD_KEY__" "$f" && exit 1 || echo "key injected"
 
-      # The electron-builder half of pack:win / pack:macArm, with publishing off.
+      # The electron-builder half of pack:win / pack:macArm, with publishing off, plus
+      # npmRebuild=false: the postinstall (electron-builder install-app-deps) already built the
+      # native modules for Electron, and electron-builder's second rebuild stalls on GitHub's
+      # runners while fetching sharp's binary (runs 1-5 and 10 hung there).
       - name: Package (Windows, as pack:win)
         if: matrix.platform == 'win'
         timeout-minutes: 60
         shell: bash
-        run: npx electron-builder --win --x64 --publish never
+        run: npx electron-builder --win --x64 --publish never -c.npmRebuild=false
 
       - name: Package (macOS Apple Silicon, as pack:macArm, unsigned)
         if: matrix.platform == 'macArm'
         timeout-minutes: 60
         shell: bash
-        run: npx electron-builder -c packaging/electron-builder.macArm.yml --mac --arm64 --publish never
+        run: npx electron-builder -c packaging/electron-builder.macArm.yml --mac --arm64 --publish never -c.npmRebuild=false
 
       - name: Checks on the output
         shell: bash
