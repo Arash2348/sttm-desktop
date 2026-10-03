@@ -106,14 +106,17 @@ jobs:
 
       - name: Checks on the output
         shell: bash
+        # pack:win writes to builds/ (package.json); pack:macArm's config writes to dist/.
         run: |
-          ls -la builds/ | grep -E "\.exe$|\.dmg$|\.zip$"
+          OUT=builds; [ "${{ matrix.platform }}" = win ] || OUT=dist
+          ls -la "$OUT"/ | grep -E "\.exe$|\.dmg$|\.zip$"
           node -e 'const p=require("./node_modules/anvaad-js/package.json");if(p.version<"1.5.1")process.exit(1);console.log("anvaad-js",p.version)'
           if [ "${{ matrix.platform }}" = win ]; then
             test -f builds/win-unpacked/resources/voice-follow/model.int8.onnx
             file builds/win-unpacked/resources/app.asar.unpacked/node_modules/realm/build/Release/realm.node | grep -q "PE32+"
           else
-            ls builds/mac-arm64/*.app/Contents/Resources/voice-follow/model.int8.onnx
+            ls dist/mac-arm64/*.app/Contents/Resources/voice-follow/model.int8.onnx
+            file dist/mac-arm64/*.app/Contents/Resources/app.asar.unpacked/node_modules/realm/build/Release/realm.node | grep -q "arm64"
           fi
 
       - uses: actions/upload-artifact@v4
@@ -121,7 +124,7 @@ jobs:
           name: tester-${{ matrix.platform }}
           path: |
             builds/*.exe
-            builds/*.dmg
-            builds/*.zip
+            dist/*.dmg
+            dist/*.zip
           if-no-files-found: error
           retention-days: 30
