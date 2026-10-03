@@ -281,28 +281,54 @@ def session_dir(sess):
 
 
 def clip(it):
-    """A short mp3 of the item, cut from its audio segment (downloaded from S3 if needed)."""
+    """A short mp3 of the item, cut from the session's audio (2-minute segments, joined when
+    the clip crosses a boundary; segments are downloaded from S3 if missing)."""
     out = os.path.join(REVIEW, 'clips', it['id'].replace(':', '_') + '.mp3')
     if os.path.exists(out):
         return out
     prefix, d = session_dir(it['session'])
-    if not d or not it.get('audio'):
+    if not d:
         return None
-    src = os.path.join(d, it['audio'])
-    if not os.path.exists(src):
-        sys.path.insert(0, HERE)
-        from benchmark import AWS, BUCKET  # noqa: E402
-        subprocess.run(AWS + ['s3', 'cp', f"{BUCKET}/{prefix}/{it['audio']}", src,
-                              '--only-show-errors'], check=False)
-    if not os.path.exists(src):
+    segs = sorted((e for e in read_jsonl(os.path.join(d, 'events.jsonl')) if e.get('type') == 'audio_segment'),
+                  key=lambda e: e.get('t', 0))
+    if not segs:
+        return None
+    start = max(0, it['fromS'] - CLIP_PAD_S)
+    length = min(it['seconds'] + 2 * CLIP_PAD_S, CLIP_MAX_S)
+    end = start + length
+    # Segments overlapping [start, end): each runs from its t to the next segment's t.
+    use = [s for i, s in enumerate(segs)
+           if s.get('t', 0) < end and (i + 1 == len(segs) or segs[i + 1].get('t', 0) > start)]
+    if not use:
+        return None
+    sys.path.insert(0, HERE)
+    from benchmark import AWS, BUCKET  # noqa: E402
+    files = []
+    for s in use:
+        f = os.path.join(d, s['file'])
+        if not os.path.exists(f):
+            subprocess.run(AWS + ['s3', 'cp', f"{BUCKET}/{prefix}/{s['file']}", f, '--only-show-errors'], check=False)
+        if os.path.exists(f):
+            files.append(f)
+    if not files:
         return None
     os.makedirs(os.path.dirname(out), exist_ok=True)
-    start = max(0, it['audioOffset'] - CLIP_PAD_S)
-    length = min(it['seconds'] + 2 * CLIP_PAD_S, CLIP_MAX_S)
-    subprocess.run([FFMPEG, '-loglevel', 'error', '-y', '-i', src, '-ss', str(start), '-t', str(length),
+    if len(files) == 1:
+        src = files[0]
+    else:
+        lst = out + '.txt'
+        with open(lst, 'w') as f:
+            f.writelines(f"file '{x}'\n" for x in files)
+        src = out + '.joined.webm'
+        subprocess.run([FFMPEG, '-loglevel', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', lst, '-c', 'copy', src],
+                       check=False)
+        os.unlink(lst)
+    offset = start - use[0].get('t', 0)
+    subprocess.run([FFMPEG, '-loglevel', 'error', '-y', '-i', src, '-ss', str(max(0, offset)), '-t', str(length),
                     '-ac', '1', '-b:a', '64k', out], check=False)
+    if src != files[0] and os.path.exists(src):
+        os.unlink(src)
     return out if os.path.exists(out) else None
-
 
 class Handler(http.server.BaseHTTPRequestHandler):
     def log_message(self, *a):

@@ -9,8 +9,9 @@ const SHADOW_AUDIO_BPS = 32000;
 // MediaRecorder hands over audio this often (ms); each piece is appended at once, so a
 // crash or power cut loses at most this much.
 const SHADOW_SLICE_MS = 5000;
-// A new self-contained audio file this often, so finished ones upload during the service.
-const SHADOW_SEGMENT_MS = 10 * 60 * 1000;
+// A new self-contained audio file this often; each finished one uploads within a minute,
+// so a laptop dying mid-service loses at most a few minutes. Nobody has to quit the app.
+const SHADOW_SEGMENT_MS = 2 * 60 * 1000;
 // A session runs from the sevadaar's first screen change until they have made none for
 // SHADOW_IDLE_STOP_MS; while words are still being heard it waits, up to the hard stop.
 // (Scripted tests that feed audio with VF_TEST_WAV may shorten these.)

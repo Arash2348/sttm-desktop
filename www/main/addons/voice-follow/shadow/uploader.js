@@ -3,7 +3,8 @@
 // URL per file (sending UPLOAD_KEY, which only allows uploads into sessions/), then
 // PUTs the file. Each session folder keeps uploaded.json (file -> size uploaded), so
 // a restart, a sleep or Gurdwara Wi-Fi dropping out just resumes later. Live files
-// (score, timelines) are re-sent every LIVE_EVERY_MS while the service is running.
+// (score, timelines) are re-sent every LIVE_EVERY_MS while the service is running, so the
+// bucket is never more than a couple of minutes behind what is on the laptop.
 const fs = require('fs');
 const path = require('path');
 const { UPLOAD_ENDPOINT, UPLOAD_KEY } = require('./config');
@@ -13,7 +14,7 @@ const { UPLOAD_ENDPOINT, UPLOAD_KEY } = require('./config');
 const fetch = global.fetch || require('node-fetch');
 
 const TICK_MS = 60 * 1000;
-const LIVE_EVERY_MS = 10 * 60 * 1000;
+const LIVE_EVERY_MS = 2 * 60 * 1000;
 const LIVE_FILES = [
   'session.json',
   'score.json',
