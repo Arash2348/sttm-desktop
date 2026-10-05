@@ -18,9 +18,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # windows-2022: node-gyp 9 (pinned by the lockfile) does not recognise the Visual
-          # Studio on windows-latest.
-          - os: windows-2022
+          # windows-2025 (Visual Studio 2022): node-gyp 9, pinned by the lockfile, does not
+          # recognise the Visual Studio on windows-latest, and GitHub could not provision
+          # windows-2022 at all ("not acquired by Runner of type hosted").
+          - os: windows-2025
             platform: win
           - os: macos-14
             platform: macArm
