@@ -18,13 +18,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # windows-2025 (Visual Studio 2022): node-gyp 9, pinned by the lockfile, does not
-          # recognise the Visual Studio on windows-latest, and GitHub could not provision
-          # windows-2022 at all ("not acquired by Runner of type hosted").
+          # windows-2022 (Visual Studio 2022) is the proven recipe: Node 18 and the lockfile's
+          # node-gyp 9. GitHub sometimes cannot provision it ("not acquired by Runner of type
+          # hosted"), so windows-2025 (Visual Studio 2026 only) runs as well, with Node 20 and
+          # node-gyp 12, the oldest node-gyp that knows VS 2026 (none that knows it runs on
+          # Node 18). Either Windows job yields the installer.
+          - os: windows-2022
+            platform: win
+            node: '18.18.0'
           - os: windows-2025
             platform: win
+            node: '20.19.0'
+            gyp: '12'
           - os: macos-14
             platform: macArm
+            node: '18.18.0'
     runs-on: ${{ matrix.os }}
     env:
       CSC_IDENTITY_AUTO_DISCOVERY: 'false'
@@ -47,7 +55,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18.18.0'
+          node-version: ${{ matrix.node }}
 
       - name: Install Bonjour SDK
         if: matrix.platform == 'win'
@@ -61,10 +69,26 @@ jobs:
           Remove-Item bonjoursdksetup.exe
 
       - name: Install dependencies
+        if: '!matrix.gyp'
         shell: bash
         run: |
           npm install -g npm@9.8.1
           npm install --legacy-peer-deps
+
+      # Visual Studio 2026 runner: npm's and the tree's node-gyp must both be a version that
+      # knows VS 2026, so install without scripts, swap in node-gyp, then run the native builds.
+      - name: Install dependencies (node-gyp ${{ matrix.gyp }} for Visual Studio 2026)
+        if: matrix.gyp
+        shell: bash
+        run: |
+          npm install -g npm@9.8.1 node-gyp@${{ matrix.gyp }}
+          echo "npm_config_node_gyp=$(npm root -g)/node-gyp/bin/node-gyp.js" >> "$GITHUB_ENV"
+          export npm_config_node_gyp="$(npm root -g)/node-gyp/bin/node-gyp.js"
+          npm install --legacy-peer-deps --ignore-scripts
+          npm install --no-save --legacy-peer-deps --ignore-scripts node-gyp@${{ matrix.gyp }}
+          node -e 'console.log("tree node-gyp", require("node-gyp/package.json").version)'
+          npm rebuild
+          npx electron-builder install-app-deps
 
       - name: Speech model (bundled into the installer)
         shell: bash
@@ -132,7 +156,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: sttm-8.6c-${{ matrix.platform }}
+          name: sttm-8.6c-${{ matrix.os }}
           path: |
             builds/*.exe
             builds/*.dmg
