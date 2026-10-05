@@ -26,6 +26,17 @@ const realmConfig = {
 
 let initialized = false;
 
+// Every query opens the database read-only and closes it again. On Windows two such opens
+// at the same moment (several at startup) can fail with "Failed to open: The system cannot
+// find the file specified. (0x2)" while the other open still holds the lock file. One short
+// retry covers it.
+const openRealm = () =>
+  Realm.open(realmConfig).catch(() => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, 300);
+    }).then(() => Realm.open(realmConfig));
+  });
+
 const init = () => {
   try {
     const realmSchema = require(realmSchemaPath);
@@ -178,7 +189,7 @@ const query = (searchQuery, searchType, searchSource, resultRows = 20) =>
         break;
     }
     const orderArray = Array.from(order, (el) => [el, false]);
-    Realm.open(realmConfig)
+    openRealm()
       .then((realm) => {
         const rows = realm.objects('Verse').filtered(condition).sorted(orderArray);
         resolve(rows.slice(0, howManyRows));
@@ -214,7 +225,7 @@ const loadFirstLetterIndex = () =>
     if (!initialized) {
       init();
     }
-    Realm.open(realmConfig)
+    openRealm()
       .then((realm) => {
         const out = [];
         const rows = realm.objects('Verse').sorted('ID');
@@ -243,7 +254,7 @@ const loadShabad = (ShabadID) =>
     if (!initialized) {
       init();
     }
-    Realm.open(realmConfig)
+    openRealm()
       .then((realm) => {
         const rows = realm
           .objects('Verse')
@@ -271,7 +282,7 @@ const loadBani = (BaniID, BaniLength) =>
     if (!initialized) {
       init();
     }
-    Realm.open(realmConfig)
+    openRealm()
       .then((realm) => {
         const condition = `Bani.ID == ${BaniID} AND ${BaniLength} == true`;
         // Always answer, even with no rows: a Bani with nothing at this length
@@ -298,7 +309,7 @@ const loadBaniIndex = (BaniLength) =>
     if (!initialized) {
       init();
     }
-    Realm.open(realmConfig)
+    openRealm()
       .then((realm) => {
         const rows = realm.objects('Banis_Shabad').filtered(`${BaniLength} == true`).sorted('Seq');
         const index = {};
@@ -330,7 +341,7 @@ const loadCeremony = (ceremonyID) =>
     if (!initialized) {
       init();
     }
-    Realm.open(realmConfig)
+    openRealm()
       .then((realm) => {
         const rows = realm
           .objects('Ceremonies_Shabad')
@@ -357,7 +368,7 @@ const loadBanis = () =>
     if (!initialized) {
       init();
     }
-    Realm.open(realmConfig)
+    openRealm()
       .then((realm) => {
         const rows = realm.objects('Banis').filtered('ID < 10000').sorted('ID');
         if (rows.length > 0) {
@@ -382,7 +393,7 @@ const loadCeremonies = () =>
     if (!initialized) {
       init();
     }
-    Realm.open(realmConfig)
+    openRealm()
       .then((realm) => {
         const rows = realm.objects('Ceremonies').sorted('ID');
         if (rows.length > 0) {
@@ -406,7 +417,7 @@ const getAng = (ShabadID) =>
     if (!initialized) {
       init();
     }
-    Realm.open(realmConfig)
+    openRealm()
       .then((realm) => {
         const row = realm.objects('Verse').filtered('ANY Shabads.ShabadID == $0', ShabadID)[0];
         const { PageNo, Source } = row;
@@ -435,7 +446,7 @@ const loadAng = (PageNo, SourceID = 'G') =>
     if (!initialized) {
       init();
     }
-    Realm.open(realmConfig)
+    openRealm()
       .then((realm) => {
         const rows = realm
           .objects('Verse')
@@ -465,7 +476,7 @@ const getShabad = (VerseID) =>
     if (!initialized) {
       init();
     }
-    Realm.open(realmConfig)
+    openRealm()
       .then((realm) => {
         const shabad = realm.objects('Verse').filtered('ID = $0', VerseID)[0];
         resolve(shabad.Shabads[0].ShabadID);
@@ -486,7 +497,7 @@ const getShabad = (VerseID) =>
  */
 const randomShabad = (SourceID = 'G') =>
   new Promise((resolve, reject) => {
-    Realm.open(realmConfig)
+    openRealm()
       .then((realm) => {
         const rows = realm.objects('Verse').filtered('Source.SourceID = $0', SourceID);
         const row = rows[Math.floor(Math.random() * rows.length)];
@@ -509,7 +520,7 @@ const randomShabad = (SourceID = 'G') =>
  */
 const getVerse = (shabadId, verseId) =>
   new Promise((resolve, reject) => {
-    Realm.open(realmConfig)
+    openRealm()
       .then((realm) => {
         if (verseId) {
           const rows = realm.objects('Verse').filtered('ID = $0', verseId);
@@ -558,7 +569,7 @@ const getFilterOption = (type, idArray) =>
         resolve({ error: `Unable to find a filter option with type: ${type}` });
     }
 
-    Realm.open(realmConfig)
+    openRealm()
       .then((realm) => {
         const idsQuery = idArray
           .map((id) => (type === 'source' ? `${columnName} = '${id}'` : `${columnName} = ${id}`))

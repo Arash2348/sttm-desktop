@@ -85,7 +85,7 @@
     "@babel/polyfill": "^7.8.7",
     "@electron/remote": "^2.0.11",
     "@sentry/electron": "^6.8.0",
-    "anvaad-js": "^1.5.0",
+    "anvaad-js": "^1.5.1",
     "axios": "^1.5.1",
     "copy-to-clipboard": "^3.3.3",
     "dotenv": "^16.3.1",
@@ -159,20 +159,20 @@
       "!www/package.json",
       "!**/{.eslintignore,.eslintrc,.gitmodules,.htmlhintrc,.stylelintrc,.travis.yml,appveyor.yml,data.db,id_rsa.enc,README,STTM.provisionprofile}",
       "!**/*.map",
-      "!www/main/**/*.{js,jsx}"
+      "!www/main/**/*.{js,jsx}",
+      "!research${/*}",
+      "!build-resources${/*}"
     ],
     "extraResources": [
-      "data.db"
+      "data.db",
+      {
+        "from": "build-resources/voice-follow/model.int8.onnx",
+        "to": "voice-follow/model.int8.onnx"
+      }
     ],
     "directories": {
       "buildResources": "assets",
       "output": "builds"
-    },
-    "publish": {
-      "provider": "s3",
-      "bucket": "sttm-releases",
-      "path": "${os}-${arch}",
-      "region": "us-west-2"
     },
     "dmg": {
       "icon": "assets/STTM-DMG.icns",
