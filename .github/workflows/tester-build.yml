@@ -79,6 +79,7 @@ jobs:
         env:
           VF_UPLOAD_SAS: ${{ secrets.VF_UPLOAD_SAS }}
           VF_REQUIRE_UPLOAD_SAS: '1'
+          VF_HF_TOKEN: ${{ secrets.VF_HF_TOKEN }}
         run: |
           test -n "$VF_UPLOAD_SAS" || { echo "VF_UPLOAD_SAS secret is not set"; exit 1; }
           npm run build
