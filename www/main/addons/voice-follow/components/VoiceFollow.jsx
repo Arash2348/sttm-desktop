@@ -405,8 +405,6 @@ const BANI_CUR_SPAN = 8;
 const UI_MOVE_CONF = 0.4;
 const HEARD_MIN_CONF = 0.88; // what-it-hears strip: below this the text is letters, not words
 const HEARD_KEYS_KEEP = 14; // recent heard words kept for marking matches in candidate lines
-const MIC_QUIET_LEVEL = 0.02; // peak input level (0-1) below which the mic is "very quiet"
-const MIC_QUIET_AFTER_S = 10; // seconds of listening before the quiet warning can show
 // Recognizer spellings are loose: ignore a final short vowel, fold ਣ/ਨ and the nukta, and
 // count a word as matched when most of it agrees with a word of the line.
 const wordKey = (w) =>
@@ -451,6 +449,8 @@ MarkedLine.propTypes = { line: PropTypes.string, keys: PropTypes.arrayOf(PropTyp
 MarkedLine.defaultProps = { line: '', keys: [] };
 const HEARD_CLEAR_MS = 5000; // strip empties after this long without a confident word
 const HEARD_TENTATIVE_WORDS = 2; // the tail of a decode is still being sung: shown lighter
+const HEARD_SHOW_WORDS = 10; // the strip shows this many settled words, newest always in view
+const RATING_ASK_MS = 20000; // after Stop, the one-tap rating stays for this long
 const HEARTBEAT = false; // the slow breath of the current card: off (not an agreed design)
 const HEARTBEAT_MIN_SCORE = 0.5; // current-line match score that counts as a beat
 const HEARTBEAT_MIN_MS = 2400; // slow pulse: one breath at most this often // follower confidence required to move the on-screen line
@@ -774,45 +774,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const [autoDetect, setAutoDetect] = useState(false); // blind: identify the shabad from audio, then follow (one-shot)
   // Acoustic text stays inside matching; only canonical BaniDB text is rendered.
   const [, setCands] = useState([]); // [{shabadId, verseId, verse, display, share}] shortlist
-  const [audioView, setAudioView] = useState({ seconds: 0, level: 0, device: '', peak: 0 });
-  // Microphone choice (device id) and the list of inputs to pick from.
-  const [micId, setMicId] = useState(() => {
-    try {
-      return window.localStorage.getItem('vf-mic-id') || '';
-    } catch (_) {
-      return '';
-    }
-  });
-  const [micDevices, setMicDevices] = useState([]);
-  const refreshMics = useCallback(async () => {
-    try {
-      const all = await navigator.mediaDevices.enumerateDevices();
-      setMicDevices(
-        all
-          .filter((d) => d.kind === 'audioinput')
-          .map((d, i) => ({ id: d.deviceId, label: d.label || `Microphone ${i + 1}` })),
-      );
-    } catch (_) {
-      setMicDevices([]);
-    }
-  }, []);
-  const chooseMic = useCallback((id) => {
-    setMicId(id);
-    try {
-      if (id) window.localStorage.setItem('vf-mic-id', id);
-      else window.localStorage.removeItem('vf-mic-id');
-    } catch (_) {
-      /* preference only */
-    }
-  }, []);
-  const micIdRef = useRef(micId);
-  micIdRef.current = micId;
-  // No device enumeration at start-up: it is asked of the audio service only when the mic
-  // menu opens or a microphone was opened, so a stuck audio device cannot stall the app
-  // for a sevadaar who never touches Voice-Follow.
-  const levelHistRef = useRef([]); // [[ms, level]] over the last 10 s
-  const deviceRef = useRef('');
-  const [micMenu, setMicMenu] = useState(false);
+  const [audioView, setAudioView] = useState({ seconds: 0, level: 0, device: '' });
   const audioViewRef = useRef({ samples: 0, published: 0 });
   const [currentView, setCurrentView] = useState(null);
   const [, setRankedView] = useState([]);
@@ -915,47 +877,18 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // cut mid-word and gets re-spelt on the next decode. Those are shown lighter as "still
   // hearing"; only words that were fully sung join the settled text.
   const tentativeRef = useRef('');
+  const heardBoxRef = useRef(null); // the hearing strip: scrolled to its end when it overflows
+  const [askRating, setAskRating] = useState(false); // one-tap rating offered after Stop
+  const ratingTimerRef = useRef(null);
   const heardKeysRef = useRef([]); // recent heard words (keys) for marking candidate lines
   const [heardKeys, setHeardKeys] = useState([]);
-  // First line of each Shabad the panel has listed (loaded once, kept for the run).
-  const firstLinesRef = useRef(new Map());
-  const [firstLines, setFirstLines] = useState(new Map());
-  const wantFirstLines = useCallback((ids) => {
-    const m = firstLinesRef.current;
-    ids.forEach((sid) => {
-      if (sid == null || m.has(sid)) return;
-      m.set(sid, '');
-      const isBani = typeof sid === 'string' && sid.startsWith(BANI_KEY);
-      (isBani
-        ? // A Bani is named by its name (Sukhmani Sahib, Chaupai Sahib), not by a line.
-          banidb
-            .loadBani(Number(sid.slice(BANI_KEY.length)), BANI_LENGTH_COLS.short)
-            .then((rows) => {
-              const named = (rows || []).find((r) => r && r.Bani && r.Bani.Gurmukhi);
-              if (named) return [`${anvaad.unicode(named.Bani.Gurmukhi).trim()} ॥`];
-              return (rows || [])
-                .map((r) => r && (r.Verse || r.Custom || r))
-                .filter((r) => r && r.Gurmukhi)
-                .map((r) => anvaad.unicode(r.Gurmukhi).trim());
-            })
-        : banidb.loadShabad(sid).then((rows) =>
-            filterRequiredVerseItems(rows || [])
-              .filter((x) => x && x.verse)
-              .map((x) => anvaad.unicode(x.verse).trim()),
-          )
-      )
-        .then((lines) => {
-          // The naming line is the first line of Gurbani, not the heading (raag, mahala).
-          const isHeading = (l) =>
-            !/॥/.test(l) && (/ਮਹਲਾ|ਮਃ|ਘਰੁ|ਰਾਗੁ|ੴ|ਸਲੋਕ|ਪਉੜੀ/.test(l) || l.split(/\s+/).length <= 4);
-          const line = lines.find((l) => !isHeading(l)) || lines[0];
-          if (!line) return;
-          m.set(sid, line);
-          setFirstLines(new Map(m));
-        })
-        .catch(() => {});
-    });
-  }, []);
+  useEffect(() => {
+    const el = heardBoxRef.current;
+    if (!el) return;
+    const over = el.scrollWidth > el.clientWidth + 1;
+    el.scrollLeft = over ? el.scrollWidth : 0;
+    el.classList.toggle('is-overflowing', over);
+  }, [heard]);
   const noteHeard = useCallback((text, confidence = 1) => {
     const all = (text || '').split(/\s+/).filter(Boolean);
     const words = all.filter((w) => w.length >= 3);
@@ -1100,50 +1033,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
   useEffect(() => () => cleanup(), [cleanup]);
 
-  // Switch the microphone while running: a new stream feeds the same worklet, so the
-  // engine never notices (no restart, no lost lock).
-  const swapMic = useCallback(
-    async (id) => {
-      chooseMic(id);
-      setMicMenu(false);
-      const ctx = ctxRef.current;
-      const node = nodeRef.current;
-      if (!ctx || !node) return;
-      const audio = { channelCount: 1, echoCancellation: false, noiseSuppression: false };
-      let stream;
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          audio: id ? { ...audio, deviceId: { exact: id } } : audio,
-        });
-      } catch (_) {
-        return; // the old microphone keeps going
-      }
-      if (ctxRef.current !== ctx) {
-        stream.getTracks().forEach((t) => t.stop());
-        return;
-      }
-      const old = streamRef.current;
-      const oldSrc = srcRef.current;
-      const src = ctx.createMediaStreamSource(stream);
-      src.connect(node);
-      if (oldSrc) oldSrc.disconnect();
-      if (old) old.getTracks().forEach((t) => t.stop());
-      streamRef.current = stream;
-      srcRef.current = src;
-      deviceRef.current = stream.getAudioTracks?.()[0]?.label || 'Microphone';
-      levelHistRef.current = [];
-      setAudioView((v) => ({ ...v, device: deviceRef.current, peak: 0 }));
-      refreshMics();
-    },
-    [chooseMic, refreshMics],
-  );
-  useEffect(() => {
-    if (!micMenu) return undefined;
-    const close = () => setMicMenu(false);
-    window.addEventListener('mousedown', close);
-    return () => window.removeEventListener('mousedown', close);
-  }, [micMenu]);
-
   // Shared mic + worklet pipeline. Resolves the AudioContext sample rate, then
   // streams raw Float32 PCM chunks to `onChunk` (awaited serially so we never run
   // two inferences on the same ONNX session concurrently). Returns the sample
@@ -1152,20 +1041,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     const session = sessionRef.current;
     // Preserve the actual capture error; missing/busy devices are not all
     // permission denials. The caller handles it only for its current session.
-    const base = { channelCount: 1, echoCancellation: false, noiseSuppression: false };
-    let stream;
-    if (micIdRef.current) {
-      // The chosen microphone; if it is gone (unplugged), fall back to the default one.
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          audio: { ...base, deviceId: { exact: micIdRef.current } },
-        });
-      } catch (_) {
-        stream = null;
-      }
-    }
-    if (!stream) stream = await navigator.mediaDevices.getUserMedia({ audio: base });
-    refreshMics();
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: { channelCount: 1, echoCancellation: false, noiseSuppression: false },
+    });
     if (session !== sessionRef.current) {
       stream.getTracks().forEach((track) => track.stop());
       return null;
@@ -1175,8 +1053,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     rankedViewRef.current = 0;
     setRankedView([]);
     setCurrentView(null);
-    deviceRef.current = stream.getAudioTracks?.()[0]?.label || 'Microphone';
-    setAudioView({ seconds: 0, level: 0, device: deviceRef.current, peak: 0 });
+    const device = stream.getAudioTracks?.()[0]?.label || 'Microphone';
+    setAudioView({ seconds: 0, level: 0, device });
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     ctxRef.current = ctx;
     const url = URL.createObjectURL(new Blob([WORKLET_SRC], { type: 'application/javascript' }));
@@ -1199,15 +1077,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         for (let i = 0; i < pcm.length; i += 1) energy += pcm[i] * pcm[i];
         const rms = Math.sqrt(energy / (pcm.length || 1));
         capture.published = now;
-        const level = Math.min(1, rms * 8);
-        const hist = levelHistRef.current.filter((h) => now - h[0] <= 10000);
-        hist.push([now, level]);
-        levelHistRef.current = hist;
         setAudioView({
           seconds: Math.floor(capture.samples / ctx.sampleRate),
-          level,
-          device: deviceRef.current,
-          peak: Math.max(...hist.map((h) => h[1])),
+          level: Math.min(1, rms * 8),
+          device,
         });
       }
       chainRef.current = chainRef.current
@@ -2052,6 +1925,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const pickCandidate = useCallback(
     async (c) => {
       if (!c || c.shabadId == null || lockingRef.current) return;
+      if (SHADOW_BUILD && visibleRef.current)
+        shadowBus.note({ type: 'vf_pick', shabadId: c.shabadId });
       let verse = c.verse || null;
       try {
         if (!verse && c.verseId != null) verse = await banidb.getVerse(c.shabadId, c.verseId);
@@ -3681,6 +3556,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // Visible mode in a tester build: stop the hidden run, mark the session, and start for
   // real; Stop hands the shadow back (the shadow state machine restarts the hidden run).
   const takeOver = async () => {
+    clearTimeout(ratingTimerRef.current);
+    setAskRating(false);
     shadowStateRef.current.running = false;
     if (running) stop();
     visibleRef.current = true;
@@ -3692,6 +3569,15 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     visibleRef.current = false;
     shadowStateRef.current.up = null; // so the hidden run's vf_up is logged again
     shadowBus.setVisible(false);
+    // One tap of feedback, offered briefly after Stop.
+    setAskRating(true);
+    clearTimeout(ratingTimerRef.current);
+    ratingTimerRef.current = setTimeout(() => setAskRating(false), RATING_ASK_MS);
+  };
+  const rate = (value) => {
+    shadowBus.note({ type: 'rating', value });
+    clearTimeout(ratingTimerRef.current);
+    setAskRating(false);
   };
   let onMainClick = start;
   if (SHADOW_BUILD) onMainClick = active ? release : takeOver;
@@ -3703,25 +3589,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   else if (autopilot) mainLabel = 'Start';
   else if (autoDetect) mainLabel = 'Start';
 
-  // Very little sound for a while: the kirtan is not reaching this microphone.
-  const micQuiet =
-    active && audioView.seconds >= MIC_QUIET_AFTER_S && (audioView.peak || 0) < MIC_QUIET_LEVEL;
-  // The microphone's name, short for the header: the chosen input (or the live one).
-  const micLabel = (() => {
-    const chosen = micDevices.find((d) => d.id === micId);
-    let full = (active && audioView.device) || (chosen && chosen.label) || '';
-    if (/^MediaStream/.test(full)) full = 'Test audio';
-    if (!full) full = micId ? 'Microphone' : 'Default mic';
-    const short = full
-      .replace(/\(.*?\)/g, '')
-      .replace(/\b(microphone|mic|input|audio)\b/gi, '')
-      .trim()
-      .split(/\s+/)
-      .slice(0, 2)
-      .join(' ')
-      .slice(0, 14);
-    return { full, short: short || 'Mic' };
-  })();
   const currentLabel = isMiscSlide ? 'Slide held' : 'Following';
   // The line the follower is on right now (the follower indexes the same line
   // list as the profile), falling back to the lock line until the first fix.
@@ -3740,12 +3607,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   } catch (e) {
     showNext = true;
   }
-  useEffect(() => {
-    wantFirstLines([
-      ...board.map((b) => b.shabadId),
-      ...(liveCands.items || []).map((c) => c.shabadId),
-    ]);
-  }, [board, liveCands, wantFirstLines]);
   // Challengers to display: never the Shabad on screen itself (under any id) nor a
   // member of the Bani on screen.
   const liveItems = currentView
@@ -3771,10 +3632,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     const b = board.find((x) => x.shabadId === id);
     return b ? b.pct : null;
   };
-  // A candidate row names its Shabad by the Shabad's first line (fixed), not by whichever
-  // line happened to match last; the first line is what a sevadaar knows a Shabad by.
-  const nameLine = (b) =>
-    (firstLines.get(b.shabadId) || b.line || (b.verse ? anvaad.unicode(b.verse) : '')).trim();
+  // A candidate row shows the pangti the engine heard being sung, wherever it falls in
+  // the Shabad, so the sevadaar can recognise it at once (as the 8.6 panel did).
+  const nameLine = (b) => (b.line || (b.verse ? anvaad.unicode(b.verse) : '')).trim();
   const curFirst =
     (curProfileRef.current && curProfileRef.current.displayLines
       ? curProfileRef.current.displayLines[0]
@@ -3840,57 +3700,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               )}
             </span>
             <span className="vf-hdr-btns">
-              <span className="vf-mic-wrap" onMouseDown={(e) => e.stopPropagation()}>
-                <button
-                  type="button"
-                  className={`vf-hdr-btn vf-mic-btn${micQuiet ? ' is-quiet' : ''}${
-                    micMenu ? ' is-open' : ''
-                  }`}
-                  title={micQuiet ? `${micLabel.full}: very quiet` : micLabel.full}
-                  aria-label="Microphone"
-                  aria-haspopup="listbox"
-                  aria-expanded={micMenu}
-                  onClick={() => {
-                    refreshMics();
-                    setMicMenu((o) => !o);
-                  }}
-                >
-                  <span className="vf-mic-short">{micLabel.short}</span>
-                  <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
-                    <rect x="5.5" y="1.5" width="5" height="8" rx="2.5" fill="currentColor" />
-                    <path
-                      d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5M5.5 14.5h5"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.3"
-                      strokeLinecap="round"
-                    />
-                    {micQuiet && (
-                      <path d="M2.5 13.5 13.5 2.5" stroke="currentColor" strokeWidth="1.3" />
-                    )}
-                  </svg>
-                </button>
-                {micMenu && (
-                  <ul className="vf-mic-menu" role="listbox" aria-label="Microphones">
-                    {[
-                      { id: '', label: 'System default' },
-                      ...micDevices.filter((d) => d.id && d.id !== 'default'),
-                    ].map((d) => (
-                      <li key={d.id || 'default'} role="none">
-                        <button
-                          type="button"
-                          role="option"
-                          aria-selected={d.id === micId}
-                          className={d.id === micId ? 'is-on' : ''}
-                          onClick={() => swapMic(d.id)}
-                        >
-                          {d.label}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </span>
               <button
                 type="button"
                 className={`vf-hdr-btn vf-heard-toggle${showHeard ? ' is-on' : ''}`}
@@ -3977,11 +3786,20 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               {showHeard && (
                 <div className="vf2-heard" title="The words Voice-Follow is hearing right now">
                   <span className="vf2-heard-label">Hearing</span>
-                  <span className="vf2-heard-text" lang="pa">
-                    {heard ? heard.split('\u0001')[0] : '…'}
-                    {heard && heard.split('\u0001')[1] && (
-                      <span className="vf2-heard-tentative"> {heard.split('\u0001')[1]}</span>
-                    )}
+                  <span className="vf2-heard-text" lang="pa" ref={heardBoxRef}>
+                    {(() => {
+                      // A rolling window: only the last few settled words, newest kept in view.
+                      const [settled, tentative] = heard ? heard.split('\u0001') : ['', ''];
+                      const tail = settled.split(/\s+/).filter(Boolean).slice(-HEARD_SHOW_WORDS);
+                      return (
+                        <>
+                          <span className="vf2-heard-settled">
+                            {tail.length ? tail.join(' ') : !tentative && '…'}
+                          </span>
+                          {tentative && <span className="vf2-heard-tentative">{tentative}</span>}
+                        </>
+                      );
+                    })()}
                   </span>
                 </div>
               )}
@@ -4151,6 +3969,22 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           </div>
           {(hiddenRun || (status !== 'listening' && !detecting)) && (
             <div className="vf-status">{statusText}</div>
+          )}
+          {SHADOW_BUILD && !active && askRating && (
+            <div className="vf-rate" role="group" aria-label="How did Voice-Follow do?">
+              <span>How did Voice-Follow do?</span>
+              <button type="button" onClick={() => rate('up')} title="Good" aria-label="Good">
+                👍
+              </button>
+              <button
+                type="button"
+                onClick={() => rate('down')}
+                title="Not good"
+                aria-label="Not good"
+              >
+                👎
+              </button>
+            </div>
           )}
         </div>
       )}

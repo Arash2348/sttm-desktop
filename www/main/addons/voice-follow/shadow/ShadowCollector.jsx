@@ -8,6 +8,8 @@ const path = require('path');
 const remote = require('@electron/remote');
 const bus = require('./bus');
 const uploader = require('./uploader');
+const hf = require('./hf');
+const { HF_TOKEN } = require('./config');
 const service = require('./service');
 const { logDir } = require('../engine/session-log');
 
@@ -139,10 +141,14 @@ const packTester = (t) => encodeURIComponent(JSON.stringify(t));
 
 const ShadowCollector = () => {
   const nav = useStoreState((state) => state.navigator);
-  const { shadowRecording, shadowTester } = useStoreState((state) => state.userSettings);
-  const { setShadowRecording, setShadowTester } = useStoreActions(
+  const { shadowRecording, shadowTester, hfToken } = useStoreState((state) => state.userSettings);
+  const { setShadowRecording, setShadowTester, setHfToken } = useStoreActions(
     (actions) => actions.userSettings,
   );
+  const [hfTokenInput, setHfTokenInput] = useState('');
+  // The Hugging Face write token: the one entered on the card, else one baked in at build.
+  const hfTokenRef = useRef('');
+  hfTokenRef.current = (hfToken || '').trim() || (HF_TOKEN.startsWith('__') ? '' : HF_TOKEN);
   const tester = readTester(shadowTester);
   const [name, setName] = useState(tester.name || '');
   const [gurdwara, setGurdwara] = useState(tester.gurdwara || '');
@@ -159,7 +165,10 @@ const ShadowCollector = () => {
   // The uploader runs from the moment a registered tester opens the app, so a session left
   // on disk by a crash or a killed app reaches S3 even if the sevadaar never records again.
   useEffect(() => {
-    if (enabled) uploader.start(shadowRoot(), tester);
+    if (enabled) {
+      uploader.start(shadowRoot(), tester);
+      hf.start(shadowRoot(), () => hfTokenRef.current, diag);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled]);
 
@@ -426,12 +435,11 @@ const ShadowCollector = () => {
   return (
     <div className="shadow-consent">
       <div className="shadow-consent-card">
-        <h2>Voice-Follow test build</h2>
+        <h2>Voice-Follow experimental build</h2>
         <p>
-          Thank you for helping. While you use this app as normal, it records the Gurdwara audio and
-          which Shabad and line you show, and quietly checks how Voice-Follow would have done.
-          Recordings are uploaded to the Voice-Follow team only. You can stop at any time in
-          Settings.
+          This build records the kirtan audio and what is shown on screen, and sends it to the
+          Voice-Follow team to make Voice-Follow better. Nothing else is collected. You can turn
+          this off any time in Settings.
         </p>
         <label htmlFor="shadow-name">
           Your name
@@ -451,6 +459,16 @@ const ShadowCollector = () => {
             onChange={(e) => setGurdwara(e.target.value)}
           />
         </label>
+        <label htmlFor="shadow-hf-token">
+          Hugging Face token (optional, from the Voice-Follow team)
+          <input
+            id="shadow-hf-token"
+            className="disable-kb-shortcuts"
+            type="password"
+            value={hfTokenInput}
+            onChange={(e) => setHfTokenInput(e.target.value)}
+          />
+        </label>
         <div className="shadow-consent-actions">
           <button
             type="button"
@@ -464,10 +482,11 @@ const ShadowCollector = () => {
                   id: `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
                 }),
               );
+              if (hfTokenInput.trim()) setHfToken(hfTokenInput.trim());
               setShadowRecording(true);
             }}
           >
-            I agree, start
+            I agree, continue
           </button>
         </div>
       </div>
