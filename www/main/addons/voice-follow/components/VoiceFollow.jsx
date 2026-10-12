@@ -299,6 +299,22 @@ const baniLengthFor = (baniId, userLength) => {
   const min = BANI_MIN_LENGTH[baniId];
   return min && LENGTH_ORDER.indexOf(userLength) < LENGTH_ORDER.indexOf(min) ? min : userLength;
 };
+// Stop never moves the screen: the length Voice-Follow raised for a Bani (Rehras long,
+// Aarti extra-long) stays while that Bani is still up, because putting the user's length
+// back reloads the Bani and the pane jumps to its first line (Renton, Oct 2026: a
+// sevadaar pressed Stop mid-Rehras and had to scroll back down to the line). The user's
+// length comes back once the screen has moved on. pending = { prev, to, baniId }.
+//   'keep'    the raised Bani is still on screen at the raised length: leave it.
+//   'restore' the screen shows something else now: put the user's length back.
+//   'drop'    the length was changed by hand since: the user's choice stands.
+const PENDING_LENGTH_KEY = 'vf-length-restore';
+export const pendingLengthAction = (pending, nav) => {
+  if (!pending) return 'keep';
+  if (nav.baniLength && pending.to && nav.baniLength !== pending.to) return 'drop';
+  const sameBani =
+    nav.isSundarGutkaBani && !nav.isCeremonyBani && nav.sundarGutkaBaniId === pending.baniId;
+  return sameBani ? 'keep' : 'restore';
+};
 // Of the long Rehras's extra shabads, only its opening (Har jug jug bhagat upaya and the
 // salok after it) may open Rehras by the reading rule: its closing saloks and pauris
 // (e.g. 1944) are sung as kirtan in their own right (Level 2 clip04).
@@ -688,8 +704,29 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const setBaniLength = useStoreActions((actions) => actions.userSettings.setBaniLength);
   const setBaniLengthRef = useRef(null);
   setBaniLengthRef.current = (...a) => (shadowing() ? shadowNoop() : setBaniLength(...a));
-  // { prev }: the user's own Bani length while Voice-Follow has raised it for Rehras.
+  // { prev, to, baniId, real }: the user's own Bani length while Voice-Follow has raised it
+  // for Rehras (real: raised on the real screen, not only in the hidden shadow run).
   const lengthOverrideRef = useRef(null);
+  // A raised length left in place by Stop (see pendingLengthAction), kept across restarts.
+  const pendingLengthRef = useRef(undefined);
+  if (pendingLengthRef.current === undefined) {
+    pendingLengthRef.current = null;
+    try {
+      const saved = JSON.parse(window.localStorage.getItem(PENDING_LENGTH_KEY) || 'null');
+      if (saved && saved.prev) pendingLengthRef.current = saved;
+    } catch (_) {
+      /* No storage: the pending length lives for this run only. */
+    }
+  }
+  const setPendingLength = (p) => {
+    pendingLengthRef.current = p;
+    try {
+      if (p) window.localStorage.setItem(PENDING_LENGTH_KEY, JSON.stringify(p));
+      else window.localStorage.removeItem(PENDING_LENGTH_KEY);
+    } catch (_) {
+      /* No storage. */
+    }
+  };
   // Opening a Bani is the same four navigator actions the Sundar Gutka screen uses; in
   // shadow mode they become one system update ("bani:<id>" at a line), nothing on screen.
   const setIsSundarGutkaBani = useCallback(
@@ -753,9 +790,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const vetoRef = useRef(null); // { id, left }: shabad a tap just left, and judged decodes remaining
   const baniLengthRef = useRef('short');
   baniLengthRef.current = baniLength;
-  // The user's own length (what they chose), even while Rehras has it raised.
+  // The user's own length (what they chose), even while Rehras has it raised (by this run,
+  // or by an earlier one that Stop left on screen).
   const userLength = () =>
-    (lengthOverrideRef.current && lengthOverrideRef.current.prev) || baniLengthRef.current;
+    (lengthOverrideRef.current && lengthOverrideRef.current.prev) ||
+    (pendingLengthRef.current && pendingLengthRef.current.prev) ||
+    baniLengthRef.current;
   const restoreBaniLength = () => {
     const o = lengthOverrideRef.current;
     if (!o) return;
@@ -766,6 +806,38 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       /* Closing store. */
     }
   };
+  // Stop: the raised length stays on screen (pending); only a hidden run's own bookkeeping
+  // (never applied to the real setting) is simply dropped.
+  const parkBaniLength = () => {
+    const o = lengthOverrideRef.current;
+    lengthOverrideRef.current = null;
+    if (o && o.real) setPendingLength({ prev: o.prev, to: o.to, baniId: o.baniId });
+  };
+  // Once the screen has moved on from the Bani Stop left raised (the sevadaar opened a
+  // shabad or another Bani), put the user's own length back; if they changed the length by
+  // hand meanwhile, theirs stands.
+  const settlePendingLength = () => {
+    const action = pendingLengthAction(pendingLengthRef.current, {
+      baniLength,
+      isSundarGutkaBani,
+      isCeremonyBani,
+      sundarGutkaBaniId,
+    });
+    if (action === 'keep') return action;
+    const { prev } = pendingLengthRef.current;
+    setPendingLength(null);
+    if (action === 'restore') {
+      try {
+        setBaniLength(prev);
+      } catch (_) {
+        /* Closing store. */
+      }
+    }
+    return action;
+  };
+  useEffect(() => {
+    settlePendingLength();
+  }, [baniLength, isSundarGutkaBani, isCeremonyBani, sundarGutkaBaniId, activeShabadId]);
   const baniIndexRef = useRef(null); // { col, promise } shabad<->Bani index, built once per length
   const curBaniShabadsRef = useRef(null); // Set of shabads inside the Bani being followed
   const seqReadRef = useRef({ id: null, last: -1, lines: new Set(), fired: false }); // PAATH_READ_LINES
@@ -1159,7 +1231,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   }, []);
 
   const stop = useCallback(() => {
-    restoreBaniLength();
+    // Never move the screen on Stop: same Bani, same length, same line (see
+    // pendingLengthAction). The user's own length comes back once the screen moves on.
+    parkBaniLength();
     if (sessionIdRef.current) {
       sessionLog.logEvent('session_end', {
         session: sessionIdRef.current,
@@ -1823,12 +1897,25 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               cand.shabadId,
             ].slice(-RECENT_SHABADS);
           }
+          // A visible run takes over a length an earlier Stop left raised on screen.
+          if (!shadowing() && pendingLengthRef.current) {
+            if (!lengthOverrideRef.current)
+              lengthOverrideRef.current = { ...pendingLengthRef.current, real: true };
+            setPendingLength(null);
+          }
           const wantLength = baniId != null ? baniLengthFor(baniId, userLength()) : null;
           if (wantLength && wantLength !== baniLengthRef.current) {
             if (!lengthOverrideRef.current) lengthOverrideRef.current = { prev: userLength() };
+            Object.assign(lengthOverrideRef.current, {
+              to: wantLength,
+              baniId,
+              real: !shadowing(),
+            });
             setBaniLengthRef.current(wantLength);
           } else if (!wantLength || wantLength === userLength()) {
             restoreBaniLength();
+          } else if (lengthOverrideRef.current) {
+            lengthOverrideRef.current.baniId = baniId;
           }
           if (baniId != null) {
             // Same actions the Sundar Gutka screen uses to open a Bani, plus the
