@@ -18,7 +18,8 @@ const { partialRatio } = require('./fuzz');
 const modelManager = require('./model-manager');
 
 let inferPromise = null; // shared session (load the model once)
-let sp = null;           // tokenizer is cheap + stateless, share it too
+let sp = null; // tokenizer is cheap + stateless, share it too
+let loadedInfer = null; // the shared session once it is up (for perfStats)
 
 // Ensure the model is present and the ONNX session is loaded. onProgress(0..1)
 // is called during download only. Safe to call repeatedly — work happens once.
@@ -26,10 +27,13 @@ async function ready(onProgress) {
   if (!inferPromise) {
     inferPromise = (async () => {
       const modelPath = await modelManager.ensureModel(onProgress);
-      return Infer.create(modelPath);
+      loadedInfer = await Infer.create(modelPath);
+      return loadedInfer;
     })();
     // If loading fails, clear the cache so a later call can retry.
-    inferPromise.catch(() => { inferPromise = null; });
+    inferPromise.catch(() => {
+      inferPromise = null;
+    });
   }
   if (!sp) sp = SP.load();
   return inferPromise;
@@ -37,6 +41,11 @@ async function ready(onProgress) {
 
 function isReady() {
   return modelManager.isReady();
+}
+
+// Model-pass timing since the last call (null until the session is loaded); see Infer.
+function perfStats() {
+  return loadedInfer ? loadedInfer.perfStats() : null;
 }
 
 async function createRecognizer(opts = {}) {
@@ -53,6 +62,7 @@ async function createFollower(lines, opts = {}) {
 module.exports = {
   ready,
   isReady,
+  perfStats,
   createRecognizer,
   createFollower,
   // Text helpers reused by the supervisor for acoustic switch-scoring: `norm`

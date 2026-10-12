@@ -143,6 +143,15 @@ const AP_SEARCH_WIN_S = 10; // recognizer window while SEARCHING (matches standa
 // recall 85->83) and was ~a wash on the 9s stress stream — not voice-agnostic, so 4 stays.
 const AP_FOLLOW_WIN_S = 4; // recognizer window while FOLLOWING (fast switching)
 const AP_REC_HOP_S = 0.5; // recognizer decode hop while in autopilot
+// Audio the engines have not consumed yet is a backlog: recognised text (and the screen)
+// is that far behind the room. On a computer that decodes slower than real time it
+// would grow without limit (5-10 s per minute at a Gurdwara PC, 50-84 s by the end of a
+// Bani) and only a Stop/Start cleared it. Past this bound every chunk still waiting is
+// handed to the engines in ONE push: their sliding windows stay contiguous (no audio is
+// dropped, so no spliced window can match a wrong page) and each decodes once, on the
+// newest window, instead of once per hop over audio that is already stale.
+const AUDIO_BACKLOG_S = 1.0;
+const AUDIO_BACKLOG_NOTE_MS = 10000; // backlog events at most this often
 
 // Acoustic switch test (runs while following). Each recognizer decode we score the
 // recent decoded audio against the CURRENT shabad's lines and against a proposed
@@ -801,6 +810,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const followerRef = useRef(null); // Follower (track a known shabad/bani)
   const recognizerRef = useRef(null); // Recognizer (blind auto-detect)
   const chainRef = useRef(Promise.resolve()); // serialize async inference per chunk
+  // Audio captured but not yet handed to the engines (see AUDIO_BACKLOG_S).
+  const backlogRef = useRef({ chunks: [], samples: 0, seconds: 0, peak: 0, merges: 0, notedAt: 0 });
   const sessionRef = useRef(0); // invalidates asynchronous work after cleanup/restart
   const transcriptSeqRef = useRef(0);
   const transcriptAbortRef = useRef(null);
@@ -1020,6 +1031,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     followerRef.current = null;
     recognizerRef.current = null;
     chainRef.current = Promise.resolve();
+    backlogRef.current = { chunks: [], samples: 0, seconds: 0, peak: 0, merges: 0, notedAt: 0 };
     // Take down our seeking slide if we put one up; never touch the user's own.
     if (seekingRef.current) {
       seekingRef.current = false;
@@ -1066,6 +1078,56 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     if (session !== sessionRef.current) return null;
     const node = new AudioWorkletNode(ctx, 'voice-follow-pcm');
     chainRef.current = Promise.resolve();
+    const backlog = { chunks: [], samples: 0, seconds: 0, peak: 0, merges: 0, notedAt: 0 };
+    backlogRef.current = backlog;
+    let draining = false;
+    // Chunks wait here until the engines are free; one loop feeds them in order. Under
+    // the bound each chunk is pushed on its own, exactly as the microphone delivered it;
+    // past it everything waiting goes in one push (see AUDIO_BACKLOG_S).
+    const drain = async () => {
+      draining = true;
+      try {
+        while (backlog.chunks.length && session === sessionRef.current) {
+          let pcm;
+          if (backlog.samples > AUDIO_BACKLOG_S * ctx.sampleRate) {
+            const seconds = backlog.samples / ctx.sampleRate;
+            pcm = new Float32Array(backlog.samples);
+            let at = 0;
+            backlog.chunks.forEach((c) => {
+              pcm.set(c, at);
+              at += c.length;
+            });
+            backlog.chunks = [];
+            backlog.merges += 1;
+            backlog.peak = Math.max(backlog.peak, seconds);
+            const nowMs = Date.now();
+            if (nowMs - backlog.notedAt >= AUDIO_BACKLOG_NOTE_MS) {
+              backlog.notedAt = nowMs;
+              const fields = {
+                seconds: Math.round(seconds * 100) / 100,
+                peak: Math.round(backlog.peak * 100) / 100,
+                merges: backlog.merges,
+              };
+              sessionLog.logEvent('audio_backlog', fields);
+              if (SHADOW_BUILD && shadowBus.active())
+                shadowBus.note({ type: 'audio_backlog', ...fields });
+            }
+          } else {
+            pcm = backlog.chunks.shift();
+          }
+          backlog.samples -= pcm.length;
+          backlog.seconds = backlog.samples / ctx.sampleRate;
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            await onChunk(pcm);
+          } catch (_) {
+            /* one bad chunk must not stop the microphone */
+          }
+        }
+      } finally {
+        draining = false;
+      }
+    };
     node.port.onmessage = (ev) => {
       if (session !== sessionRef.current) return;
       const pcm = new Float32Array(ev.data);
@@ -1083,9 +1145,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           device,
         });
       }
-      chainRef.current = chainRef.current
-        .then(() => (session === sessionRef.current ? onChunk(pcm) : undefined))
-        .catch(() => {});
+      backlog.chunks.push(pcm);
+      backlog.samples += pcm.length;
+      backlog.seconds = backlog.samples / ctx.sampleRate;
+      if (!draining) chainRef.current = drain();
     };
     const src = ctx.createMediaStreamSource(stream);
     nodeRef.current = node;
@@ -3374,6 +3437,23 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     const check = () => {
       const st = shadowStateRef.current;
       const nowMs = Date.now();
+      // Once a minute while Voice-Follow listens (hidden or from the panel): how long a
+      // model pass takes, how many it finishes per second and how far the audio backlog
+      // is, so the data shows how close this computer is to falling behind.
+      if (shadowBus.active() && autopilotRef.current && nowMs - (st.lastPerfLog || 0) >= 60000) {
+        st.lastPerfLog = nowMs;
+        const perf = engine.perfStats ? engine.perfStats() : null;
+        if (perf) {
+          const b = backlogRef.current;
+          shadowBus.note({
+            type: 'perf',
+            ...perf,
+            backlogSec: Math.round(b.seconds * 100) / 100,
+            backlogPeak: Math.round(b.peak * 100) / 100,
+            merges: b.merges,
+          });
+        }
+      }
       // The sevadaar is driving Voice-Follow from the panel: no hidden run until they stop.
       if (visibleRef.current) {
         st.running = false;
