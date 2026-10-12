@@ -3784,9 +3784,17 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     const verseId = lastVerseRef.current ?? locked.verseId ?? null;
     const baniId = baniIdOf(id);
     if (baniId != null) {
+      // Same length bookkeeping as a visible lock, so Stop parks this raise (stop branch)
+      // and the user's own length comes back once the screen moves on.
+      if (pendingLengthRef.current) {
+        if (!lengthOverrideRef.current)
+          lengthOverrideRef.current = { ...pendingLengthRef.current, real: true };
+        setPendingLength(null);
+      }
       const wantLength = baniLengthFor(baniId, userLength());
       if (wantLength && wantLength !== baniLengthRef.current) {
         if (!lengthOverrideRef.current) lengthOverrideRef.current = { prev: userLength() };
+        Object.assign(lengthOverrideRef.current, { to: wantLength, baniId, real: true });
         setBaniLengthRef.current(wantLength);
       }
       updatePaneRef.current('bani', baniId, verseId);
