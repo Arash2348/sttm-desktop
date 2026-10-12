@@ -14,6 +14,8 @@ const { Infer, norm } = require('./infer');
 const { SP } = require('./sentencepiece');
 const { Recognizer } = require('./recognizer');
 const { Follower } = require('./follower');
+const { FollowerV2 } = require('./follower2');
+const NITNEM = require('./assets/nitnem-lines');
 const { partialRatio } = require('./fuzz');
 const modelManager = require('./model-manager');
 
@@ -59,12 +61,26 @@ async function createFollower(lines, opts = {}) {
   return new Follower(infer, sp, lines, opts);
 }
 
+// Paath follower (Banis only): tracks the reader's position in the whole Bani, with a
+// strong next-line prior, so fast reading never falls behind. lines carry
+// { verseId, words, text } (text = the line's Unicode Gurmukhi, numerals intact).
+// opts.baniId: the Bani being followed, left out of the "other Gurbani" it is checked
+// against. Shabads (kirtan, Hukamnama) keep createFollower.
+async function createPaathFollower(lines, opts = {}) {
+  const infer = await ready(opts.onProgress);
+  const background = Object.entries(NITNEM)
+    .filter(([id]) => Number(id) !== Number(opts.baniId))
+    .flatMap(([, l]) => l);
+  return new FollowerV2(infer, lines, { background, ...opts });
+}
+
 module.exports = {
   ready,
   isReady,
   perfStats,
   createRecognizer,
   createFollower,
+  createPaathFollower,
   // Text helpers reused by the supervisor for acoustic switch-scoring: `norm`
   // strips whitespace/punctuation the way the follower does, and `partialRatio`
   // is the same fuzzy matcher, so a shabad scored here is comparable to the

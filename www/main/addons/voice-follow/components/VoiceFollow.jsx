@@ -1306,6 +1306,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         verses = filtered.map((r) => ({
           verseId: r.ID,
           words: tokenize(anvaad.unicode(r.Gurmukhi)),
+          text: anvaad.unicode(r.Gurmukhi),
         }));
       } else {
         const rows = await banidb.loadShabad(activeShabadId);
@@ -1387,7 +1388,13 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
     if (session !== sessionRef.current) return;
     try {
-      const follower = await engine.createFollower(verses, { inputSr: sampleRate });
+      // Paath (a Bani) uses the position follower; Shabads (kirtan) the line follower.
+      const follower = isBani
+        ? await engine.createPaathFollower(verses, {
+            inputSr: sampleRate,
+            baniId: sundarGutkaBaniId,
+          })
+        : await engine.createFollower(verses, { inputSr: sampleRate });
       if (session !== sessionRef.current) return;
       followerRef.current = follower;
     } catch (e) {
@@ -1575,6 +1582,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     const verses = filtered.map((r) => ({
       verseId: r.ID,
       words: tokenize(anvaad.unicode(r.Gurmukhi)),
+      text: anvaad.unicode(r.Gurmukhi),
     }));
     const linesNorm = verses.map((v) => vfNorm((v.words || []).join(' ')));
     const displayLines = filtered.map((r) => anvaad.unicode(r.Gurmukhi));
@@ -1783,9 +1791,17 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
         let follower;
         try {
-          follower = await engine.createFollower(profile.verses, {
-            inputSr: sampleRateRef.current,
-          });
+          // Paath (a Bani) uses the position follower; Shabads (kirtan) the line follower.
+          follower =
+            baniId != null
+              ? await engine.createPaathFollower(profile.verses, {
+                  inputSr: sampleRateRef.current,
+                  baniId,
+                  startLine: profile.verses.findIndex((v) => v.verseId === cand.verseId),
+                })
+              : await engine.createFollower(profile.verses, {
+                  inputSr: sampleRateRef.current,
+                });
         } catch (e) {
           if (session !== sessionRef.current) return;
           setDetail(`engine init failed: ${e?.message || e}`);

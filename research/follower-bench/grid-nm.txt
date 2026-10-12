@@ -1,0 +1,4 @@
+{"hopS":0.25,"lockDwell":2,"backDwell":3,"jumpDwell":3,"releaseHops":20}
+{"hopS":0.25,"lockDwell":2,"backDwell":3,"jumpDwell":3,"releaseHops":20,"noMatchHops":24}
+{"hopS":0.25,"lockDwell":2,"backDwell":3,"jumpDwell":3,"releaseHops":20,"noMatchHops":40}
+{"hopS":0.25,"lockDwell":2,"backDwell":3,"jumpDwell":3,"releaseHops":20,"noMatchHops":60}

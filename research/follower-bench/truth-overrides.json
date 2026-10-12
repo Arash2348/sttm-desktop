@@ -1,0 +1,11 @@
+{
+  "_note": "Time ranges (s) left out of scoring: speech that is not the Bani or truth the spot-check found wrong (2026-10-01 audit of 637 segments).",
+  "bn05_CJms83eJ88Q_0-206": [[153.8, 206], "closing Salok ਪਵਣੁ ਗੁਰੂ… and Fateh, not in Anand Sahib"],
+  "bn04_UrDfndbuWyE_0-473": [[455.4, 473], "Fateh"],
+  "bn03_jkwTfDew37g_0-324": [[316.2, 324], "Fateh"],
+  "bn01_dy1bAclA25k_0-520": [[19.9, 25.0], "ੴ ਸਤਿਗੁਰ ਪ੍ਰਸਾਦਿ said out of text order; header boundary off"],
+  "pt54_SC1gipmk214_0-55": [[2.1, 5.0], "title announcement ਜਪੁਜੀ ਸਾਹਿਬ"],
+  "pt58_JjW_SU0oBwU_277-347": [[21.7, 23.4], "line 168 missing from truth"],
+  "pt12_YPPSuG2Kxt8_10-80": [[12.2, 15.5], "line 5 start ~3 s early"],
+  "bn02_6xT3M6QsmGs_0-520": [[5.4, 6.3], "title announcement"]
+}

@@ -1,0 +1,4 @@
+{}
+{"lockDwell":4,"backDwell":6,"jumpDwell":6,"releaseHops":40}
+{"lockDwell":3,"backDwell":4,"jumpDwell":4,"releaseHops":40}
+{"lockDwell":4,"backDwell":6,"jumpDwell":6,"releaseHops":40,"skipDwell":2}
