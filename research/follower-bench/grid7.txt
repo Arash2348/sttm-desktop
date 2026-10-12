@@ -1,0 +1,6 @@
+{}
+{"releaseMargin":0.1}
+{"releaseMargin":0.2}
+{"releaseHops":40}
+{"releaseHops":40,"releaseMargin":0.1}
+{"releaseHops":1000000}

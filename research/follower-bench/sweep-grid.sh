@@ -1,0 +1,29 @@
+# Each line: one JSON of v2 option overrides.
+cat <<'G'
+{}
+{"minScore":0.35}
+{"minScore":0.4}
+{"minScore":0.5}
+{"enterLetters":1}
+{"enterLetters":3}
+{"enterGain":2}
+{"enterGain":4}
+{"enterGain":6}
+{"ahead":3}
+{"ahead":10}
+{"back":1}
+{"back":4}
+{"distCost":0}
+{"distCost":0.06}
+{"distCost":0.1}
+{"skipDwell":1}
+{"skipDwell":3}
+{"backDwell":3}
+{"jumpDwell":2}
+{"jumpDwell":5}
+{"jumpMargin":0.25}
+{"minHyp":2}
+{"minHyp":6}
+{"tieSlack":0.1}
+{"tieSlack":0}
+G
