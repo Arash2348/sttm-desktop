@@ -61,8 +61,8 @@ async function run(name, engine, pcm) {
   }
   const wall = performance.now() - w0;
   const cpu = process.cpuUsage(cpu0);
+  const modelMs = engine.infer.perf.ms.reduce((a, b) => a + b, 0);
   const perf = engine.infer.perfStats();
-  const modelMs = engine.infer.perf.lastSum;
   const audioS = pcm.length / SR;
   return {
     name, audioS: +audioS.toFixed(1), windows: perf.windows, outputs: outs,
@@ -79,11 +79,6 @@ async function run(name, engine, pcm) {
     extra: { session: { 'session.intra_op.allow_spinning': String(SPIN) } },
   });
   const infer = new Infer(sess, VOCAB);
-  // Keep the sum of model wall ms alongside the Infer's own record.
-  const emis = infer.emissions.bind(infer);
-  infer.emissions = async (buf) => { const t = performance.now(); const r = await emis(buf); infer.perf.lastSum = (infer.perf.lastSum || 0) + (performance.now() - t); return r; };
-  const origStats = infer.perfStats.bind(infer);
-  infer.perfStats = () => { const s = origStats(); infer.perf.lastSum = 0; return s; };
   const sp = SP.load();
   const kirtan = readWav(path.join(CLIPS, `${arg('clip', 'rt11_kirtan1')}.wav`)).subarray(0, SECONDS * SR);
   const rehras = readWav(path.join(CLIPS, `${arg('rehras', 'rt11_rehras')}.wav`)).subarray(0, SECONDS * SR);
