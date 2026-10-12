@@ -100,7 +100,10 @@ async function followUntil(driver, pcm, from, events, done) {
   console.log(`  at ${(p / SR).toFixed(0)} s: on screen ${JSON.stringify(before)}`);
   check(before.bani === 'bani:21', 'Rehras (bani 21) locked');
   check(versesSinceRehras() >= LINES_AFTER_LOCK, `followed >= ${LINES_AFTER_LOCK} Rehras lines`);
-  const wantLength = USER_LENGTH === 'short' || USER_LENGTH === 'medium' ? 'long' : USER_LENGTH;
+  // Rehras is raised to REHRAS_LENGTH (long on the stop branch, extra-long since 61488e2c), never lowered.
+  const REHRAS_LEN = process.env.VF_TEST_REHRAS_LENGTH || 'extralong';
+  const ORDER = ['short', 'medium', 'long', 'extralong'];
+  const wantLength = ORDER.indexOf(USER_LENGTH) < ORDER.indexOf(REHRAS_LEN) ? REHRAS_LEN : USER_LENGTH;
   check(before.length === wantLength, `Rehras shown at ${wantLength} (user ${USER_LENGTH})`);
   const n0 = events.length;
   await driver.stopSession();
