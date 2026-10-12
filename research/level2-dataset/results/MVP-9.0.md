@@ -117,7 +117,16 @@ L2 subset (12 of 12 identical), so they stand for base.
 Early 9.0 read (605b000c, broken driver, kirtan-only signal): L2 wrong 0.84 -> 0.99% because clip20 locks 2072 in
 the lead-in (29 s wrong). Treated as a regression until the kirtan FINAL lands.
 
-## 5. Stop keeps the screen — pending (stop-keeps-screen-test, short / medium / long)
+## 5. Stop keeps the screen (stop-keeps-screen-test on 9f3502ed; Rehras clip, user length short / medium / long)
+
+| user length | Base (tonight's build, 265da34e) | MVP 9.0 |
+|---|---|---|
+| short | Stop restores short: Rehras reloads, pane jumps to line 1 (the Renton bug) | ALL PASS (17 checks): Stop changes nothing on screen; Rehras stays at extra-long on the same line; short comes back once the screen moves on |
+| medium | same bug | pending |
+| long | same bug | pending |
+
+The test's first run failed only because it expected Rehras at 'long'; since 61488e2c Rehras is raised to extra-long.
+The test now expects extra-long (commit on vf-mvp-9.0); app behaviour unchanged.
 
 ## 6. Asa di Vaar (Newton) — pending (suite from the asa agent: base vs 9.0 vs 9.0 + asa)
 
@@ -131,7 +140,7 @@ the lead-in (29 s wrong). Treated as a regression until the kirtan FINAL lands.
 | Aarti behind / wrong page | median line lag; wrong page | tonight 5.1 s, 5.2% wrong; slowed 30.4 s; normal 2.3 s | slowed 2.0 s; normal 1.0 s; 0% wrong | YES |
 | Kirtan taps (5299, 5238) | first on screen | 727 / 1091 s (taps) | 5299 at 551 via Start keeping the hidden lock; 5238 1039 s | YES |
 | Hukamnama stays good | first on screen, wrong page | 3945.2 s, 0 | 3945.2 s, 0 (identical) | YES |
-| Stop moves the screen | stop-keeps-screen test | moves (base restores length) | pending | pending |
+| Stop moves the screen | stop-keeps-screen test | moves (base restores length) | short: ALL PASS; medium/long pending | YES (short) |
 | Renton reads Rehras extra-long | lines the app can show | long (442 rows) | extra-long (61488e2c) | YES (code) |
 | New: Rehras wrong page at the Fateh before extra-long Chaupai | wrong page | 0.6% | 0.9% (30080, 5.7 s) | REGRESSION, with paath agent |
 
