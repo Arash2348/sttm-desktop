@@ -65,9 +65,10 @@ function paath(run, part) {
   const vev = ev.filter((e) => e.type === 'verse');
   const lags = [];
   let reached = 0;
+  let lastHit = -Infinity; // repeats/refrains: a line's hit must come after the previous line's hit
   for (const l of L) {
-    const hit = vev.find((e) => e.verseId === l.appVerseId && e.t >= l.start - 5 && e.t <= l.start + 60);
-    if (hit) { reached++; lags.push(hit.t - l.start); }
+    const hit = vev.find((e) => e.verseId === l.appVerseId && e.t >= Math.max(l.start - 5, lastHit) && e.t <= l.start + 60);
+    if (hit) { reached++; lags.push(hit.t - l.start); lastHit = hit.t; }
   }
   return { part, scored_s: +T.toFixed(0), firstBani_s: firstBani == null ? null : +firstBani.toFixed(1), baniRight: pct(bani, T), wrong: pct(wrong, T), none: pct(none, T),
     lineExact: pct(exact, T), lineWithin1: pct(near, T), linesReached: `${reached}/${L.length}`, lagMedian: q(lags, 0.5), lagP90: q(lags, 0.9),
@@ -80,7 +81,7 @@ function kirtan(run, part) {
   const targets = K.targets.filter((x) => (x.clip || '').startsWith(part) || (part === 'rt11_sohila' && [1958, 49].includes(x.shabadId)))
     .filter((x) => x.kind !== 'parmaan' && (x.startedSec == null || x.startedSec >= off - 30));
   const rows = targets.map((x) => {
-    const acc = x.shabadId === 49 ? new Set(BANI_OK[23]) : new Set([x.shabadId]);
+    const acc = x.shabadId === 49 ? new Set([49, 'bani:23']) : new Set([x.shabadId]);
     const e = ev.find((y) => y.type === 'shabad' && acc.has(y.shabadId));
     const at = e ? +(off + e.t).toFixed(1) : null;
     const tap = x.firstOnScreenSec;
@@ -105,7 +106,7 @@ for (const dir of process.argv.slice(2)) {
   }
   all[dir] = res;
   console.log(`\n### ${dir}`);
-  console.log('| part | first Bani (s) | Bani right | wrong | none | line exact | within 1 | lines reached | lag median | lag p90 | >1 behind | longest behind | stretches >5 s |');
+  console.log('| part | first Bani (s) | Bani right | wrong | none | line exact | within 1 | lines reached | lag median | lag p90 | off the read line (>1 behind, wrong or none) | longest off | stretches >5 s |');
   console.log('|---|---|---|---|---|---|---|---|---|---|---|---|---|');
   for (const r of res.paath) console.log(`| ${r.part} | ${r.firstBani_s} | ${r.baniRight}% | ${r.wrong}% | ${r.none}% | ${r.lineExact}% | ${r.lineWithin1}% | ${r.linesReached} | ${r.lagMedian} s | ${r.lagP90} s | ${r.behindPct}% | ${r.longestBehind_s} s | ${r.stretchesOver5s} |`);
   console.log('\n| part | shabad | kind | sung from | tonight on screen | now on screen | vs tonight | wrong s (clip) |');
