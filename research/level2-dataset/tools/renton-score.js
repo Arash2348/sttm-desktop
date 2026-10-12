@@ -17,7 +17,7 @@ const mem = JSON.parse(fs.readFileSync(path.join(DS, 'aarti/bani-members.json'))
 const K = JSON.parse(fs.readFileSync(path.join(V, 'data/kirtan-targets.json')));
 const STEP = 0.1;
 const PAATH = { rt11_rehras: 21, rt11_aarti: 22, rt11_sohila: 23 };
-const BANI_OK = { 21: ['bani:21', 'bani:9', 'bani:10', 'bani:1000', ...mem['21']], 22: ['bani:22', ...mem['22']], 23: ['bani:23', ...mem['23']] };
+const BANI_OK = { 21: ['bani:21', 'bani:9', 'bani:10', 'bani:1000', ...mem['21']], 22: ['bani:22', ...mem['22'], 51 /* Sohila's Gagan mai thaal = same text as the Aarti piece */], 23: ['bani:23', ...mem['23']] };
 const KIRTAN_OK = { rt11_kirtan1: [2053], rt11_fareed1: [5299, 5286], rt11_fareed2: [5238], rt11_hukamnama: [3048], rt11_sohila: [1958, ...BANI_OK[23]] };
 const pct = (a, b) => (b ? +(100 * a / b).toFixed(1) : null);
 const q = (a, p) => { if (!a.length) return null; const s = [...a].sort((x, y) => x - y); return +s[Math.min(s.length - 1, Math.floor(p * s.length))].toFixed(1); };
@@ -28,12 +28,12 @@ function timeline(events) {
 function paath(run, part) {
   const baniId = PAATH[part];
   const tf = part === 'rt11_rehras' && process.env.REHRAS_TRUTH ? process.env.REHRAS_TRUTH : path.join(V, `data/truth/${part}.truth.json`);
-  const L = JSON.parse(fs.readFileSync(tf)).lines.filter((l) => l.confident && l.appVerseId != null).sort((a, b) => a.start - b.start);
+  const L = JSON.parse(fs.readFileSync(tf)).lines.filter((l) => l.confident && l.appVerseId != null && l.start < run.dur - 2).sort((a, b) => a.start - b.start);
   const ok = new Set(BANI_OK[baniId]);
   const idxOf = new Map(); // app verse id -> Bani line indexes
   for (const l of L) { if (!idxOf.has(l.appVerseId)) idxOf.set(l.appVerseId, new Set()); idxOf.get(l.appVerseId).add(l.lineIndex); }
   const ev = timeline(run.events);
-  const t0 = L[0].start, t1 = L[L.length - 1].end;
+  const t0 = L[0].start, t1 = Math.min(L[L.length - 1].end, run.dur);
   let sid = null, seeking = false, verse = null, i = 0, k = -1;
   let T = 0, bani = 0, wrong = 0, none = 0, exact = 0, near = 0, behind = 0, cur = 0, longest = 0;
   const stretches = [];

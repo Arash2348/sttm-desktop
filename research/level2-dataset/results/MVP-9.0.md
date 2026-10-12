@@ -24,19 +24,28 @@ Test: tonight's audio fed at microphone pace (the app never waits), on an engine
 | Kirtan, Fareed 2 (435 s) | 73.1 s (still growing) | 0.9 s | PASS |
 
 MVP 9.0 column above = bounded-lag build (measured on 605b000c; the queue code is unchanged since).
-Line-level lag under the same slowdown with the real paath follower: pending (re-running on dfc22708).
+Line level under the same slowdown, with the real paath follower (dfc22708). Rehras scored on the truth realigned
+at extra-long (results/rt11_rehrasX.truth.json). Both builds had a brief wrong page 9475 near 106 s.
+Aarti scoring counts Sohila's Gagan mai thaal (shabad 51, same text) as right; its lines carry Sohila verse ids, so
+the 25-122 s stretch on 51 counts as off the line in both builds (longest off-line 150 s in both).
 
 | Rehras / Aarti line lag, slowed PC | Base (tonight's build, 265da34e) | MVP 9.0 | pass? |
 |---|---|---|---|
-| Rehras median line lag (lines reached within 60 s) | 39 s | pending | |
-| Rehras p90 line lag | 57 s | pending | |
-| Rehras line within 1 of the reader | 3.5% | pending | |
-| Rehras longest stretch off the read line | 489 s | pending | |
-| Aarti median line lag | 30.4 s | pending | |
-| Aarti line within 1 | 4.2% | pending | |
+| Rehras median line lag (lines reached within 60 s) | 39 s | 1.2 s | PASS |
+| Rehras p90 line lag | 57 s | 1.8 s | PASS |
+| Rehras lines reached within 60 s | 46/121 | 114/121 | PASS |
+| Rehras line exact | 0.2% | 64.7% | PASS |
+| Rehras line within 1 of the reader | 3.5% | 88.2% | PASS |
+| Rehras longest stretch off the read line | 489 s | 22 s | PASS |
+| Rehras right Bani / wrong page | 98.0% / 1.9% | 98.3% / 1.6% | PASS |
+| Aarti median line lag | 30.4 s | 2.0 s | PASS |
+| Aarti p90 line lag | 56.1 s | 3.7 s | PASS |
+| Aarti lines reached within 60 s | 26/47 | 46/47 | PASS |
+| Aarti line within 1 | 10.5% | 45.6% | PASS |
+| Aarti right Bani / wrong page | 98.6% / 0% | 98.6% / 0% | PASS (equal) |
 
 What the sangat saw tonight (real screen log, same scoring): Rehras median line lag 8.1 s, p90 29 s,
-line within 1 28.5%, longest off-line 256 s; Aarti lag 5.1 s, within 1 24.2%, wrong page 15.7%;
+line within 1 28.5%, longest off-line 256 s; Aarti lag 5.1 s, within 1 33.4%, wrong page 5.2%;
 Sohila lag 6 s, within 1 14.4%.
 
 ## 2. Renton parts, normal speed (follower logic alone; no backlog possible)
@@ -97,7 +106,7 @@ the lead-in (29 s wrong). Treated as a regression until the kirtan FINAL lands.
 | Paath/Aarti slow and behind on the Gurdwara PC | audio waiting, slowed engine: Rehras / Aarti / kirtan | 154 / 159 / 73 s, growing without limit | 1.7 / 1.4 / 0.9 s, bounded | YES |
 | Rehras screen behind the reader | median line lag | tonight 8.1 s (real screen); slowed bench 39 s | pending | pending |
 | Rehras > 1 line behind for > 5 s | stretches off the line | tonight 26, longest 256 s | pending | pending |
-| Aarti behind / wrong page | line lag, wrong page | tonight 5.1 s, 15.7% wrong | pending | pending |
+| Aarti behind / wrong page | median line lag; wrong page | tonight 5.1 s, 5.2% wrong; slowed bench 30.4 s | slowed 2.0 s, 0% wrong | YES (lag 2 s, not < 1 s) |
 | Kirtan taps (5299, 5238) | first on screen | 727 / 1091 s (taps) | pending | pending |
 | Hukamnama stays good | first on screen | 3941.4 s | pending | pending |
 | Stop moves the screen | stop-keeps-screen test | moves (base restores length) | pending | pending |
