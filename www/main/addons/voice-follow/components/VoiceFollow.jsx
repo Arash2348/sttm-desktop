@@ -274,12 +274,15 @@ const PAATH_POOL_HITS = 5;
 // the same score floor fires on no kirtan cold start (41 Level 2 clips) that 5 of 8 did not.
 const PAATH_POOL_HITS_BY_BANI = { [AARTI_BANI]: 4 };
 const PAATH_POOL_TEXT_MIN = 0.2; // minimum full-text score of that top line
-// Rehras is followed at the long length by default: the long Rehras contains the short
-// one plus long readers' opening ("Har jug jug bhagat upaya" and its salok) and the extra
-// Dasam shabads, so both kinds of reader are followed from the first line. While Rehras
-// is open the Bani length is raised to this (never lowered) and restored when it ends.
+// Rehras is followed at the extra-long length by default: it contains every shorter
+// Rehras (the long readers' opening "Har jug jug bhagat upaya" and its salok, the extra
+// Dasam shabads) plus the Chaupai pauris and dohras some gurdwaras (Renton) read; a
+// reader of any length is then followed from the first line, and the paath follower
+// steps over the lines a shorter reader leaves out. (The Taksal list's only lines the
+// extra-long one lacks are three headers and a repeated dohra.) While Rehras is open the
+// Bani length is raised to this (never lowered) and restored when it ends.
 const REHRAS_BANI = 21;
-const REHRAS_LENGTH = 'long';
+const REHRAS_LENGTH = 'extralong';
 const LENGTH_ORDER = ['short', 'medium', 'long', 'extralong'];
 // Aarti likewise is followed at the extra-long length: a sung Aarti (Renton) runs through
 // pieces the short list lacks (Kabir's Sorath "Bhookhe bhagat na keejai", the opening
