@@ -125,6 +125,20 @@ const AP_LOCK_STABLE = 2; // hold the lead this many decodes before the first lo
 // coin flip that then costs ~40 s to undo. Level 2 benchmark: every correct first
 // lock had a margin >= 0.12 over the runner-up; the one wrong lock had 0.00.
 const AP_LOCK_TEXT_MARGIN = 0.08;
+// Kirtan dwells on one pangti (and a 2-line Salok has only two), so a Shabad being sung is often
+// heard on a single verse for a long time. Besides two different verses or one decisive decode
+// (anchor), the first lock also accepts one verse won outright this many times (distinct
+// hypotheses, each with the Shabad as the unique full-text leader) across this many entries.
+const ONE_LINE_LOCK_WINS = 6;
+const ONE_LINE_LOCK_COUNT = 7;
+// A Shabad that has been the unique leader this many times may lock on a decode whose own
+// margin is small (a quiet or partly heard pangti), as long as it still leads that decode.
+const MANY_WINS_LOCK = 8;
+const MANY_WINS_MARGIN = 0.02;
+const lineEvidenceOk = (c) =>
+  c.anchor ||
+  c.verses.size >= 2 ||
+  (c.wins >= ONE_LINE_LOCK_WINS && c.count >= ONE_LINE_LOCK_COUNT);
 const VOTE_CAP = 60; // clamp votes so a long shabad can't become impossible to switch away from
 // The recognizer WINDOW is a two-sided lever, so autopilot uses a DIFFERENT one
 // per phase (goal: each capability as good as its dedicated feature):
@@ -346,6 +360,18 @@ function poolPaathVotes(ranked, index) {
   if (pool / (pool + other) < AUTO_LOCK_CONF) return null;
   return { bani, sid: bestSid };
 }
+// True when the full-text search (the entries the context lock tallies) recently put a
+// shabad of `bani` among its leaders with a real score.
+function poolTextAgrees(bani, index, memory) {
+  const entries = (memory && memory.entries) || [];
+  return entries.some((e) =>
+    e.candidates.some(
+      (c) =>
+        c.score >= PAATH_POOL_TEXT_MIN &&
+        (index.byShabad.get(c.shabadId) || []).some((x) => x.bani === bani),
+    ),
+  );
+}
 // The Bani in which `nextId` follows `prevId` most closely, in order; else null.
 // Two Banis can hold the same pair in order (the Savaiya and Dohra close both the long
 // Rehras and the Aarti): then the Bani that also holds the shabads shown just before
@@ -476,6 +502,9 @@ const HEARD_CLEAR_MS = 5000; // strip empties after this long without a confiden
 const HEARD_TENTATIVE_WORDS = 2; // the tail of a decode is still being sung: shown lighter
 const HEARD_SHOW_WORDS = 10; // the strip shows this many settled words, newest always in view
 const RATING_ASK_MS = 20000; // after Stop, the one-tap rating stays for this long
+// Start while the hidden run is following: its Shabad goes straight on screen when the panel
+// (calibrated posterior) is at least this sure of it; otherwise Start searches afresh.
+const ADOPT_MIN_PCT = 0.9;
 const HEARTBEAT = false; // the slow breath of the current card: off (not an agreed design)
 const HEARTBEAT_MIN_SCORE = 0.5; // current-line match score that counts as a beat
 const HEARTBEAT_MIN_MS = 2400; // slow pulse: one breath at most this often // follower confidence required to move the on-screen line
@@ -962,6 +991,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const tentativeRef = useRef('');
   const heardBoxRef = useRef(null); // the hearing strip: scrolled to its end when it overflows
   const [askRating, setAskRating] = useState(false); // one-tap rating offered after Stop
+  const [, setVisTick] = useState(0); // re-render when Start adopts the hidden run
   const ratingTimerRef = useRef(null);
   const heardKeysRef = useRef([]); // recent heard words (keys) for marking candidate lines
   const [heardKeys, setHeardKeys] = useState([]);
@@ -1044,6 +1074,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const srcRef = useRef(null);
   const linesRef = useRef([]); // [{ verseId }] indexed by aligner lineIndex
   const lastVerseRef = useRef(null);
+  const lockedVerseRef = useRef(null); // { verseId, verse } the current Shabad was locked at
   const followingKeyRef = useRef(null); // session key: `shabad:<id>` or `bani:<id>`
   const panelRef = useRef(null); // flyout panel, for click-outside dismissal
   // Blind-detect session state (mutable, avoids re-render churn per decode).
@@ -1841,6 +1872,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           (v.words || []).map(vfNorm).filter(Boolean),
         );
         setCurrentView({ id: cand.shabadId, line: anvaad.unicode(cand.verse) });
+        lockedVerseRef.current = { verseId: cand.verseId, verse: cand.verse };
         curCursorRef.current = null; // new shabad — cursor unknown until the follower reports
         // Seed the panel's position at the verse we locked on. Without this the
         // stale fix from the previous shabad (or line 1) shows for a beat until
@@ -2359,8 +2391,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                 if (!cur || p > cur.p) prog.set(id, { p, verseId: verseId ?? cur?.verseId });
               };
               rankedContext.forEach((c) => {
-                const p =
-                  Math.min(c.count / 6, c.wins / 4) * (c.anchor || c.verses.size >= 2 ? 1 : 0.7);
+                // Same gates as the lock below, so a full bar means a lock is due.
+                const p = Math.min(c.count / 6, c.wins / 4) * (lineEvidenceOk(c) ? 1 : 0.7);
                 bump(c.id, (leaders.find((l) => l.shabadId === c.id) || {}).verseId, p);
               });
               if (poolBani != null)
@@ -2397,10 +2429,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             }
             if (
               winner?.id === top.shabadId &&
-              margin >= AP_LOCK_TEXT_MARGIN &&
+              (margin >= AP_LOCK_TEXT_MARGIN ||
+                (winner.wins >= MANY_WINS_LOCK && margin >= MANY_WINS_MARGIN)) &&
               winner.count >= 6 &&
               winner.wins >= 4 &&
-              (winner.anchor || winner.verses.size >= 2) &&
+              lineEvidenceOk(winner) &&
               winner.score - (rankedContext[1]?.score || 0) >= 1
             ) {
               let profile;
@@ -2606,7 +2639,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (fl.length >= AP_LOCK_MIN_LETTERS) {
             const index = await getBaniIndex().catch(() => null);
             if (!isCurrentTranscript() || lockingRef.current) return;
-            const pooled = index && poolPaathVotes(ranked, index);
+            let pooled = index && poolPaathVotes(ranked, index);
+            // First-letter grams of ordinary speech can pool onto a Bani (tonight's Fareed talk
+            // pooled onto the Aarti and opened it): the full-text route must have seen a member
+            // of that Bani recently, as it always does when the Bani is really being recited.
+            if (pooled && !poolTextAgrees(pooled.bani, index, contextEvidenceRef.current))
+              pooled = null;
             const ps = poolStableRef.current;
             if (!pooled) poolStableRef.current = { bani: null, count: 0 };
             else if (ps.bani === pooled.bani) ps.count += 1;
@@ -3738,10 +3776,48 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // hands-free experience; manual follow / one-shot detect are the fallbacks.
   // Visible mode in a tester build: stop the hidden run, mark the session, and start for
   // real; Stop hands the shadow back (the shadow state machine restarts the hidden run).
+  // Start adopting a hidden run that is following: put its Shabad (or Bani) and line on the
+  // real screen with the same actions a lock uses (in shadow mode they only went to the bus).
+  const projectCurrent = () => {
+    const id = currentShabadIdRef.current;
+    const locked = lockedVerseRef.current || {};
+    const verseId = lastVerseRef.current ?? locked.verseId ?? null;
+    const baniId = baniIdOf(id);
+    if (baniId != null) {
+      const wantLength = baniLengthFor(baniId, userLength());
+      if (wantLength && wantLength !== baniLengthRef.current) {
+        if (!lengthOverrideRef.current) lengthOverrideRef.current = { prev: userLength() };
+        setBaniLengthRef.current(wantLength);
+      }
+      updatePaneRef.current('bani', baniId, verseId);
+      setIsCeremonyBani(false);
+      setSingleDisplayActiveTab('shabad');
+      setIsSundarGutkaBani(true);
+      setSundarGutkaBaniId(baniId);
+      if (verseId != null) setActiveVerseId(verseId);
+    } else {
+      openShabadRef.current(id, verseId, verseId === locked.verseId ? locked.verse : undefined);
+    }
+  };
   const takeOver = async () => {
     clearTimeout(ratingTimerRef.current);
     setAskRating(false);
     shadowStateRef.current.running = false;
+    // The hidden run is already listening: keep it (its evidence, its recognizer, its
+    // retrieval index) instead of restarting from nothing. Restarting threw away a lock
+    // the hidden run had made seconds earlier and sent every Start back to a cold search.
+    if (hiddenRun && autopilotRef.current && !lockingRef.current) {
+      const following = phaseRef.current === 'following' && currentShabadIdRef.current != null;
+      const cur = following ? boardRef.current.snapshot().find((b) => b.role === 'current') : null;
+      if (!following || (cur && cur.pct >= ADOPT_MIN_PCT)) {
+        visibleRef.current = true;
+        window.dispatchEvent(new CustomEvent('vf-shadow-start'));
+        shadowBus.setVisible(true);
+        if (following) projectCurrent();
+        setVisTick((n) => n + 1);
+        return;
+      }
+    }
     if (running) stop();
     visibleRef.current = true;
     // A shadow session starts now if none is running, so this whole run is recorded.
