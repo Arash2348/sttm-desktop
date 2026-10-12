@@ -335,6 +335,18 @@ function poolPaathVotes(ranked, index) {
   if (pool / (pool + other) < AUTO_LOCK_CONF) return null;
   return { bani, sid: bestSid };
 }
+// True when the full-text search (the entries the context lock tallies) recently put a
+// shabad of `bani` among its leaders with a real score.
+function poolTextAgrees(bani, index, memory) {
+  const entries = (memory && memory.entries) || [];
+  return entries.some((e) =>
+    e.candidates.some(
+      (c) =>
+        c.score >= PAATH_POOL_TEXT_MIN &&
+        (index.byShabad.get(c.shabadId) || []).some((x) => x.bani === bani),
+    ),
+  );
+}
 // The Bani in which `nextId` follows `prevId` most closely, in order; else null.
 // Two Banis can hold the same pair in order (the Savaiya and Dohra close both the long
 // Rehras and the Aarti): then the Bani that also holds the shabads shown just before
@@ -2461,7 +2473,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (fl.length >= AP_LOCK_MIN_LETTERS) {
             const index = await getBaniIndex().catch(() => null);
             if (!isCurrentTranscript() || lockingRef.current) return;
-            const pooled = index && poolPaathVotes(ranked, index);
+            let pooled = index && poolPaathVotes(ranked, index);
+            // First-letter grams of ordinary speech can pool onto a Bani (tonight's Fareed talk
+            // pooled onto the Aarti and opened it): the full-text route must have seen a member
+            // of that Bani recently, as it always does when the Bani is really being recited.
+            if (pooled && !poolTextAgrees(pooled.bani, index, contextEvidenceRef.current))
+              pooled = null;
             const ps = poolStableRef.current;
             if (!pooled) poolStableRef.current = { bani: null, count: 0 };
             else if (ps.bani === pooled.bani) ps.count += 1;
