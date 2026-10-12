@@ -26,7 +26,7 @@ Test: tonight's audio fed at microphone pace (the app never waits), on an engine
 
 MVP 9.0 column above = bounded-lag build (measured on 605b000c; the queue code is unchanged since).
 Line level under the same slowdown, with the real paath follower (dfc22708). Rehras scored on the truth realigned
-at extra-long (results/rt11_rehrasX.truth.json). Both builds had a brief wrong page 9475 near 106 s.
+at extra-long with the app's own verse ids (results/rt11_rehrasX.app.truth.json). Both builds had a brief wrong page 9475 near 106 s.
 Aarti scoring counts Sohila's Gagan mai thaal (shabad 51, same text) as right; its lines carry Sohila verse ids, so
 the 25-122 s stretch on 51 counts as off the line in both builds (longest off-line 150 s in both).
 
@@ -34,10 +34,10 @@ the 25-122 s stretch on 51 counts as off the line in both builds (longest off-li
 |---|---|---|---|
 | Rehras median line lag (lines reached within 60 s) | 39 s | 1.2 s | PASS |
 | Rehras p90 line lag | 57 s | 1.8 s | PASS |
-| Rehras lines reached within 60 s | 46/121 | 114/121 | PASS |
-| Rehras line exact | 0.2% | 64.7% | PASS |
-| Rehras line within 1 of the reader | 3.5% | 88.2% | PASS |
-| Rehras longest stretch off the read line | 489 s | 22 s | PASS |
+| Rehras lines reached within 60 s | 46/121 | 118/121 | PASS |
+| Rehras line exact | 0.2% | 66.6% | PASS |
+| Rehras line within 1 of the reader | 4.3% | 96.1% | PASS |
+| Rehras longest stretch off the read line | 489 s | 9.9 s | PASS |
 | Rehras right Bani / wrong page | 98.0% / 1.9% | 98.3% / 1.6% | PASS |
 | Aarti median line lag | 30.4 s | 2.0 s | PASS |
 | Aarti p90 line lag | 56.1 s | 3.7 s | PASS |
@@ -45,33 +45,33 @@ the 25-122 s stretch on 51 counts as off the line in both builds (longest off-li
 | Aarti line within 1 | 10.5% | 45.6% | PASS |
 | Aarti right Bani / wrong page | 98.6% / 0% | 98.6% / 0% | PASS (equal) |
 
-What the sangat saw tonight (real screen log, same scoring): Rehras median line lag 8.1 s, p90 29 s,
-line within 1 28.5%, longest off-line 256 s; Aarti lag 5.1 s, within 1 33.4%, wrong page 5.2%;
+What the sangat saw tonight (real screen log, same scoring): Rehras median line lag 8.3 s, p90 28.6 s,
+line within 1 34.7%, longest off-line 256 s; Aarti lag 5.1 s, within 1 34%, wrong page 5.2%;
 Sohila lag 6 s, within 1 14.4%.
 
 ## 2. Renton parts, normal speed (no handicap; follower logic alone)
 
 Section 1 used an artificial handicap (1 thread + 120 ms per model pass) to reproduce the slow PC. Here the same
 parts run un-handicapped: fresh Start at the start of each part, `--fast` (every chunk awaited, so no backlog).
-MVP 9.0 = 9f3502ed. Rehras scored on the truth realigned at extra-long. Lines the app has no id for (extra-long
-Chaupai pauris absent from the app's text map) count as "off the line" for both builds.
+MVP 9.0 = 9f3502ed. Rehras scored on the truth realigned at extra-long, with app verse ids taken from the app's own
+Bani 21 rows (results/rt11_rehrasX.app.truth.json, by the paath agent). Only confident truth time is scored.
 
 | part / metric | Base (tonight's build, 265da34e) | MVP 9.0 | pass? |
 |---|---|---|---|
-| Rehras median / p90 line lag | 1.9 / 2.8 s | 0.4 / 0.9 s | PASS (target < 1 s met) |
-| Rehras line exact | 43.7% | 64.9% | PASS |
-| Rehras line within 1 | 74.1% | 72.8% | FAIL (small) |
-| Rehras lines reached | 311/346 | 320/346 | PASS |
-| Rehras stretches > 5 s off the line | 11 (longest 74 s) | 16 (longest 79 s) | FAIL |
+| Rehras median / p90 line lag | 1.8 / 2.8 s | 0.4 / 1.0 s | PASS (target < 1 s met) |
+| Rehras line exact | 50.2% | 77.2% | PASS |
+| Rehras line within 1 | 88.1% | 93.5% | PASS |
+| Rehras lines reached | 351/390 | 377/390 | PASS |
+| Rehras stretches > 5 s off the line | 8 (longest 32.5 s) | 5 (longest 32.5 s) | PASS |
 | Rehras right Bani | 97.7% | 97.3% | FAIL (small, = the 30080 page) |
 | Rehras wrong page | 0.6% (9475, 10 s) | 0.9% (9475 10 s + 30080 5.7 s) | FAIL — sent to paath |
 | Aarti median / p90 line lag | 2.3 / 3.3 s | 1.0 / 2.8 s | PASS |
 | Aarti line exact | 31.9% | 38.2% | PASS |
-| Aarti line within 1 | 45.1% | 45.0% | equal |
+| Aarti line within 1 | 45.8% | 45.2% | FAIL (small, -0.6) |
 | Aarti right Bani / wrong | 98.0% / 0% | 98.0% / 0% | PASS (equal) |
 | Sohila median / p90 line lag | 1.9 / 2.7 s | 0.4 / 0.9 s | PASS |
 | Sohila line exact | 60.4% | 84.1% | PASS |
-| Sohila line within 1 | 93.3% | 93.5% | PASS |
+| Sohila line within 1 | 94.3% | 94.8% | PASS |
 | Sohila right Bani / wrong | 99.8% / 0% | 99.8% / 0% | PASS (equal) |
 
 New wrong page on Rehras: at 653-658 s the reader says "Ik Oankar Sri Vaheguru ji ki fateh, Patshahi 10" and goes
@@ -126,8 +126,8 @@ the lead-in (29 s wrong). Treated as a regression until the kirtan FINAL lands.
 | problem | measure | before | after | solved? |
 |---|---|---|---|---|
 | Paath/Aarti slow and behind on the Gurdwara PC | audio waiting, slowed engine: Rehras / Aarti / kirtan | 154 / 159 / 73 s, growing without limit | 1.7 / 1.4 / 0.9 s, bounded | YES |
-| Rehras screen behind the reader | median line lag | tonight 8.1 s (real screen); slowed bench 39 s; normal bench 1.9 s | slowed 1.2 s; normal 0.4 s | YES (< 1 s at normal speed) |
-| Rehras > 1 line behind for > 5 s | stretches off the line | tonight 26, longest 256 s; slowed bench longest 489 s | slowed longest 22 s; normal 16 stretches (base 11), longest 79 s | PARTLY (most are extra-long lines with no app id; see 2) |
+| Rehras screen behind the reader | median line lag | tonight 8.3 s (real screen); slowed bench 39 s; normal bench 1.8 s | slowed 1.2 s; normal 0.4 s | YES (< 1 s at normal speed) |
+| Rehras > 1 line behind for > 5 s | stretches off the line | tonight 22, longest 256 s; slowed bench longest 489 s; normal 8 | slowed 2, longest 9.9 s; normal 5, longest 32.5 s (start-up, 9475, 30080, two reader skips) | YES vs base; not zero |
 | Aarti behind / wrong page | median line lag; wrong page | tonight 5.1 s, 5.2% wrong; slowed 30.4 s; normal 2.3 s | slowed 2.0 s; normal 1.0 s; 0% wrong | YES |
 | Kirtan taps (5299, 5238) | first on screen | 727 / 1091 s (taps) | 5299 at 551 via Start keeping the hidden lock; 5238 1039 s | YES |
 | Hukamnama stays good | first on screen, wrong page | 3945.2 s, 0 | 3945.2 s, 0 (identical) | YES |

@@ -12,7 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const V = process.env.VF || '/private/tmp/claude-501/-Users-asingh02-personal-sttm-desktop/7dc20a33-cab3-495f-b630-6acf57f0287c/scratchpad/vf-fix';
-const DS = path.join(__dirname, '..');
+const DS = process.env.DS || path.join(__dirname, '..');
 const mem = JSON.parse(fs.readFileSync(path.join(DS, 'aarti/bani-members.json'))).members;
 const K = JSON.parse(fs.readFileSync(path.join(V, 'data/kirtan-targets.json')));
 const STEP = 0.1;
@@ -31,7 +31,9 @@ function paath(run, part) {
   const L = JSON.parse(fs.readFileSync(tf)).lines.filter((l) => l.confident && l.appVerseId != null && l.start < run.dur - 2).sort((a, b) => a.start - b.start);
   const ok = new Set(BANI_OK[baniId]);
   const idxOf = new Map(); // app verse id -> Bani line indexes
-  for (const l of L) { if (!idxOf.has(l.appVerseId)) idxOf.set(l.appVerseId, new Set()); idxOf.get(l.appVerseId).add(l.lineIndex); }
+  // Positions of every mapped truth row, confident or not: showing the right line whose truth
+  // row is unconfident is not 'off the line' (only confident time is scored).
+  for (const l of JSON.parse(fs.readFileSync(tf)).lines.filter((x) => x.appVerseId != null)) { if (!idxOf.has(l.appVerseId)) idxOf.set(l.appVerseId, new Set()); idxOf.get(l.appVerseId).add(l.lineIndex); }
   const ev = timeline(run.events);
   const t0 = L[0].start, t1 = Math.min(L[L.length - 1].end, run.dur);
   let sid = null, seeking = false, verse = null, i = 0, k = -1;
