@@ -125,20 +125,12 @@ const AP_LOCK_STABLE = 2; // hold the lead this many decodes before the first lo
 // coin flip that then costs ~40 s to undo. Level 2 benchmark: every correct first
 // lock had a margin >= 0.12 over the runner-up; the one wrong lock had 0.00.
 const AP_LOCK_TEXT_MARGIN = 0.08;
-// Kirtan dwells on one pangti (and a 2-line Salok has only two), so a Shabad being sung is often
-// heard on a single verse for a long time. Besides two different verses or one decisive decode
-// (anchor), the first lock also accepts one verse won outright this many times (distinct
-// hypotheses, each with the Shabad as the unique full-text leader) across this many entries.
-const ONE_LINE_LOCK_WINS = 6;
-const ONE_LINE_LOCK_COUNT = 7;
-// A Shabad that has been the unique leader this many times may lock on a decode whose own
-// margin is small (a quiet or partly heard pangti), as long as it still leads that decode.
-const MANY_WINS_LOCK = 8;
-const MANY_WINS_MARGIN = 0.02;
-const lineEvidenceOk = (c) =>
-  c.anchor ||
-  c.verses.size >= 2 ||
-  (c.wins >= ONE_LINE_LOCK_WINS && c.count >= ONE_LINE_LOCK_COUNT);
+// First-lock line evidence: two different verses of the Shabad, or one decisive decode
+// (anchor). The panel's progress uses the same gate, so it only reaches 100% when a lock can
+// fire (without it the bar stops at 70%). A one-verse route was tried for kirtan that dwells on
+// one pangti (Fremont first locks 105 -> 40 s) but wrong-locked a Sep 27 Aarti clip (3732 for
+// 8875) that no text-only check separated; it needs an independent (acoustic) check first.
+const lineEvidenceOk = (c) => c.anchor || c.verses.size >= 2;
 const VOTE_CAP = 60; // clamp votes so a long shabad can't become impossible to switch away from
 // The recognizer WINDOW is a two-sided lever, so autopilot uses a DIFFERENT one
 // per phase (goal: each capability as good as its dedicated feature):
@@ -2432,8 +2424,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
             }
             if (
               winner?.id === top.shabadId &&
-              (margin >= AP_LOCK_TEXT_MARGIN ||
-                (winner.wins >= MANY_WINS_LOCK && margin >= MANY_WINS_MARGIN)) &&
+              margin >= AP_LOCK_TEXT_MARGIN &&
               winner.count >= 6 &&
               winner.wins >= 4 &&
               lineEvidenceOk(winner) &&
