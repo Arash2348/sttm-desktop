@@ -31,7 +31,7 @@ async function run(part, baniId, vname) {
   const lines = verses.map((v) => ({ verseId: v.verseId, words: tokenize(v.unicode), text: v.unicode }));
   const idx = new Map(verses.map((v, i) => [v.verseId, i]));
   const extra = vname !== 'c8' && HOP === 0.25 ? { catchHops: vname === 'paathNoCatch' ? 0 : 4 } : undefined;
-  const f = VARIANTS[vname.replace(/25$/, '')](new CachedInfer(cache.hyps), lines, { baniId: Number(baniId) === 2101 ? 21 : Number(baniId), hop: HOP, extra });
+  const f = VARIANTS[vname.replace(/25$/, '')](new CachedInfer(cache.hyps), lines, { baniId: Number(baniId) >= 2100 ? 21 : Number(baniId), hop: HOP, extra });
   const chunk = new Float32Array(Math.round(16000 * HOP));
   const shown = [];
   let cur;
