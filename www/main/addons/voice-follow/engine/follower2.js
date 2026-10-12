@@ -63,6 +63,18 @@ const DEFAULTS = {
   catchHops: 4,
   catchScore: 0.5, // ...each of those windows matching at least this well (per letter)
 };
+// Sung Banis (kirtan-style, not read): Asa di Vaar (BaniDB Bani 90). Ragis repeat a pauri
+// or a chhant stanza from its top (a jump 4-6 lines back, which the recited profile treats
+// as a far jump needing a clear margin and a long dwell), dwell on a line, and sing the
+// chhant refrain over and over. Measured on Khalsa School Newton (Oct 11, 2026) and a
+// YouTube Asa di Vaar (research: scratchpad asa/sweep*.txt): the local window reaches back
+// to the pauri's start, a backward move confirms in 2 windows, the next-line prior is
+// weaker, a 2-line skip needs less gain, and a pause (alaap, a held note) must last 12 s,
+// not 6, before the line is let go. Recited Banis keep DEFAULTS untouched.
+// Keyed by opts.baniId, so the engine and the headless bench build the same follower.
+const SUNG_BANIS = {
+  90: { back: 8, backDwell: 2, distCost: 0.01, skipGain: 3, noMatchHops: 48 },
+};
 
 // Letters only, with marks that recognition often drops or adds removed, so that
 // spelling noise costs little.
@@ -77,7 +89,7 @@ const GAP = -1;
 class FollowerV2 {
   constructor(infer, lines, opts = {}) {
     this.infer = infer;
-    this.c = { ...DEFAULTS, ...opts };
+    this.c = { ...DEFAULTS, ...(SUNG_BANIS[opts.baniId] || {}), ...opts };
     this.inputSr = opts.inputSr || 48000;
     this.verseIds = lines.map((l) => l.verseId);
     // Stream of letters; lineAt[k] = line of letter k; lineStart[i] = first letter.
@@ -138,6 +150,13 @@ class FollowerV2 {
     // Where the app locked on (index into lines): a first match that is equally good in
     // several places (refrains) picks the one nearest this.
     if (Number.isInteger(opts.startLine) && opts.startLine >= 0) this.lastCur = opts.startLine;
+    // A Bani opened from a line the app was already following (the two-shabads rule, the
+    // reading rule) starts AT that line instead of re-locking from nothing: on poor audio
+    // (Newton, a laptop mic in a hall) the fresh lock took tens of seconds, during which the
+    // Bani pane sat on its first line.
+    if (opts.startAt && Number.isInteger(opts.startLine) && opts.startLine >= 0) {
+      this.cur = Math.min(opts.startLine, lines.length - 1);
+    }
     this.tick = 0;
   }
 
