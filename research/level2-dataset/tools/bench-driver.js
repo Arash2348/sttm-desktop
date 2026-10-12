@@ -141,6 +141,28 @@ async function createDriver({
       return wrappedFol;
     },
   };
+  // Paath follower (Banis), when this build's engine has one: same construction as
+  // engine.createPaathFollower.
+  try {
+    const { FollowerV2 } = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/follower2'));
+    const NITNEM = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/assets/nitnem-lines'));
+    nativeEngine.createPaathFollower = async (lines, opts = {}) => {
+      const background = Object.entries(NITNEM)
+        .filter(([id]) => Number(id) !== Number(opts.baniId))
+        .flatMap(([, l]) => l);
+      const fol = new FollowerV2(infer, lines, { background, ...opts });
+      emit('paath-follower', { baniId: opts.baniId, lines: lines.length });
+      const wrappedFol = Object.create(fol);
+      wrappedFol.push = async (pcm) => {
+        const out = await fol.push(pcm);
+        if (out) emit('follower', out);
+        return out;
+      };
+      return wrappedFol;
+    };
+  } catch (e) {
+    if (e.code !== 'MODULE_NOT_FOUND') throw e;
+  }
   const engine = engineOverride ? { norm, partialRatio, ...engineOverride } : nativeEngine;
   class AudioContext {
     constructor() {
