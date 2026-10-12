@@ -16,12 +16,14 @@
 const { resampleTo16k, SR } = require('./infer');
 const { spoken } = require('./spoken');
 
-// Tuned on research/follower-bench at a 0.125 s listening step (the native model takes
-// ~46 ms per window); dwell counts are in windows. On a slower device windows are
-// merged, so the same counts simply cover more time.
+// Tuned on research/follower-bench at a 0.125 s listening step; ships at 0.25 s, the same
+// model cost as the line follower (a gurdwara PC that already decodes slower than real
+// time cannot afford twice the passes). At 0.25 s: Renton Rehras median lag 0.39 s vs
+// 0.29 s at 0.125 s, 55 recited clips within one line 97.4% vs 97.9%. Dwell counts are
+// in windows; on a slower device windows are merged, so they simply cover more time.
 const DEFAULTS = {
   windowS: 4.0,
-  hopS: 0.125,
+  hopS: 0.25,
   minHyp: 4, // letters heard before anything is decided
   back: 4, // lines before the current one searched locally
   ahead: 6, // lines after the current one searched locally
@@ -56,9 +58,9 @@ const DEFAULTS = {
   noMatchHops: 24, // windows with words heard (3 s of speech at the 0.125 s step)
   // Catch-up: in paath the reader almost always just moves on. If the local match keeps
   // landing on a line further ahead (even without a clear gain over the next line), go
-  // there after this many windows in a row (~1 s at the 0.125 s step), so lag can never
+  // there after this many windows in a row (1 s at the 0.25 s step), so lag can never
   // compound. 0 = off.
-  catchHops: 8,
+  catchHops: 4,
   catchScore: 0.5, // ...each of those windows matching at least this well (per letter)
 };
 
