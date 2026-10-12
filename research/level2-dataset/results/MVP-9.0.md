@@ -122,8 +122,8 @@ the lead-in (29 s wrong). Treated as a regression until the kirtan FINAL lands.
 | user length | Base (tonight's build, 265da34e) | MVP 9.0 |
 |---|---|---|
 | short | Stop restores short: Rehras reloads, pane jumps to line 1 (the Renton bug) | ALL PASS (17 checks): Stop changes nothing on screen; Rehras stays at extra-long on the same line; short comes back once the screen moves on |
-| medium | same bug | pending |
-| long | same bug | pending |
+| medium | same bug | ALL PASS (Rehras raised medium -> extra-long, parked, restored when the screen moves on) |
+| long | same bug | ALL PASS (Rehras raised long -> extra-long, parked, restored when the screen moves on) |
 
 The test's first run failed only because it expected Rehras at 'long'; since 61488e2c Rehras is raised to extra-long.
 The test now expects extra-long (commit on vf-mvp-9.0); app behaviour unchanged.
@@ -140,7 +140,7 @@ The test now expects extra-long (commit on vf-mvp-9.0); app behaviour unchanged.
 | Aarti behind / wrong page | median line lag; wrong page | tonight 5.1 s, 5.2% wrong; slowed 30.4 s; normal 2.3 s | slowed 2.0 s; normal 1.0 s; 0% wrong | YES |
 | Kirtan taps (5299, 5238) | first on screen | 727 / 1091 s (taps) | 5299 at 551 via Start keeping the hidden lock; 5238 1039 s | YES |
 | Hukamnama stays good | first on screen, wrong page | 3945.2 s, 0 | 3945.2 s, 0 (identical) | YES |
-| Stop moves the screen | stop-keeps-screen test | moves (base restores length) | short: ALL PASS; medium/long pending | YES (short) |
+| Stop moves the screen | stop-keeps-screen test | moves (base restores length) | ALL PASS at short, medium, long | YES |
 | Renton reads Rehras extra-long | lines the app can show | long (442 rows) | extra-long (61488e2c) | YES (code) |
 | New: Rehras wrong page at the Fateh before extra-long Chaupai | wrong page | 0.6% | 0.9% (30080, 5.7 s) | REGRESSION, with paath agent |
 
