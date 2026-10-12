@@ -498,6 +498,63 @@ const BANI_LENGTH_COLS = {
   long: 'existsTaksal',
   extralong: 'existsBuddhaDal',
 };
+// Rows a Bani is FOLLOWED with. Usually the rows on screen; but the extra-long Rehras puts
+// the "Sri Vaheguru ji ki fateh / Patshahi 10" header before Chaupai some 40 lines later
+// (after its extra pauris) than the long list does, and Renton reads it in the long
+// position, right after "Saran pare ki rakhahu sarma". Missing there, the header pulled the
+// app onto Bhai Nand Lal's Ganj Nama (which opens with it). So the extra-long Rehras is
+// followed with the long list's own rows merged in (each placed before the next row both
+// lists share; matched in order, since header rows repeat and share ids). Those rows are
+// followed and judged but never shown: the screen holds its line while they are read.
+// screenLine = the row's 0-based line among on-screen rows.
+async function loadFollowRows(baniId, col) {
+  const rows = ((await loadBaniRows(baniId, col)) || []).filter(
+    (r) => r && r.ID != null && r.Gurmukhi,
+  );
+  // Rows are Realm objects (fields are getters, not own properties): keep them whole.
+  let merged = rows.map((row) => ({ row, off: false }));
+  if (Number(baniId) === REHRAS_BANI && col === BANI_LENGTH_COLS.extralong) {
+    const long = ((await loadBaniRows(baniId, BANI_LENGTH_COLS.long).catch(() => [])) || []).filter(
+      (r) => r && r.ID != null && r.Gurmukhi,
+    );
+    // Longest common subsequence of the two lists by row id: the shared rows, in order.
+    const n = rows.length;
+    const m = long.length;
+    const L = Array.from({ length: m + 1 }, () => new Uint16Array(n + 1));
+    for (let j = m - 1; j >= 0; j -= 1) {
+      for (let i = n - 1; i >= 0; i -= 1) {
+        L[j][i] =
+          long[j].ID === rows[i].ID ? L[j + 1][i + 1] + 1 : Math.max(L[j + 1][i], L[j][i + 1]);
+      }
+    }
+    const before = new Map(); // index in rows -> long-only rows read just before it
+    let pending = [];
+    let i = 0;
+    let j = 0;
+    while (j < m) {
+      if (i < n && long[j].ID === rows[i].ID && L[j][i] === L[j + 1][i + 1] + 1) {
+        if (pending.length) before.set(i, pending);
+        pending = [];
+        i += 1;
+        j += 1;
+      } else if (i < n && L[j][i + 1] >= L[j + 1][i]) i += 1;
+      else {
+        pending.push({ row: long[j], off: true });
+        j += 1;
+      }
+    }
+    merged = [];
+    rows.forEach((row, k) => {
+      merged.push(...(before.get(k) || []), { row, off: false });
+    });
+    merged.push(...pending);
+  }
+  let k = -1;
+  return merged.map(({ row, off }) => {
+    if (!off) k += 1;
+    return { row, offScreen: off, screenLine: Math.max(0, k) };
+  });
+}
 
 // Split a Unicode Gurmukhi line into word tokens for the aligner. The server
 // normalizes further (strips punctuation/matras irrelevant to matching); this
@@ -1165,10 +1222,14 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     try {
       if (isBani) {
         const col = BANI_LENGTH_COLS[baniLength] || BANI_LENGTH_COLS.short;
-        const rows = await loadBaniRows(sundarGutkaBaniId, col);
+        const follow = await loadFollowRows(sundarGutkaBaniId, col);
         if (session !== sessionRef.current) return;
-        const filtered = (rows || []).filter((r) => r && r.ID != null && r.Gurmukhi);
-        linesRef.current = filtered.map((r) => ({ verseId: r.ID }));
+        const filtered = follow.map((f) => f.row);
+        linesRef.current = follow.map((f) => ({
+          verseId: f.row.ID,
+          offScreen: f.offScreen,
+          screenLine: f.screenLine,
+        }));
         verses = filtered.map((r) => ({
           verseId: r.ID,
           words: tokenize(anvaad.unicode(r.Gurmukhi)),
@@ -1229,6 +1290,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         const out = await f.push(pcm);
         // A stop or content change can replace the follower during inference.
         if (!out || followerRef.current !== f) return;
+        // A followed row that is not on screen (see loadFollowRows): hold the line.
+        if (typeof out.lineIndex === 'number' && linesRef.current[out.lineIndex]?.offScreen) return;
         setPos({
           lineIndex: out.lineIndex,
           wordIndex: out.wordIndex,
@@ -1240,7 +1303,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (line && line.verseId != null && line.verseId !== lastVerseRef.current) {
             lastVerseRef.current = line.verseId;
             setActiveVerseId(line.verseId);
-            setLineNumber(out.lineIndex + 1);
+            setLineNumber((line.screenLine ?? out.lineIndex) + 1);
           }
         }
       });
@@ -1443,8 +1506,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
   const loadBaniProfile = useCallback(async (baniId) => {
     const col = BANI_LENGTH_COLS[baniLengthFor(baniId, userLength())] || BANI_LENGTH_COLS.short;
-    const rows = await loadBaniRows(baniId, col);
-    const filtered = (rows || []).filter((r) => r && r.ID != null && r.Gurmukhi);
+    const follow = await loadFollowRows(baniId, col);
+    const filtered = follow.map((f) => f.row);
+    // Rows followed but not shown (indexes; none except the extra-long Rehras), and each
+    // row's line number on screen.
+    const offScreen = new Set(follow.flatMap((f, k) => (f.offScreen ? [k] : [])));
+    const screenLines = follow.map((f) => f.screenLine);
     const verses = filtered.map((r) => ({
       verseId: r.ID,
       words: tokenize(anvaad.unicode(r.Gurmukhi)),
@@ -1461,7 +1528,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       BANI_LENGTH_ALL.map((c) => banidb.loadBaniIndex(c).catch(() => ({}))),
     );
     all.forEach((idx) => ((idx && idx[baniId]) || []).forEach((sid) => shabadIds.add(sid)));
-    return { verses, linesNorm, displayLines, rawLines, shabadIds };
+    return { verses, linesNorm, displayLines, rawLines, shabadIds, offScreen, screenLines };
   }, []);
 
   const loadShabadProfile = useCallback(async (shabadId) => {
@@ -3194,6 +3261,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           // Remember where we are so the switch test can score the current shabad
           // relative to the cursor (not as a global max over all its lines).
           curCursorRef.current = out.lineIndex;
+          // A followed row that is not on screen (see loadFollowRows): the switch test
+          // already scores from it; the screen holds its line.
+          const curProf = curProfileRef.current;
+          if (curProf && curProf.offScreen && curProf.offScreen.has(out.lineIndex)) return;
           // Don't chase the highlight onto a similar-worded line of the OLD shabad:
           // hold position on low-confidence frames, and freeze entirely while a
           // switch is being evaluated (the current shabad is likely being left).
@@ -3208,7 +3279,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (out.verseId != null && out.verseId !== lastVerseRef.current) {
             lastVerseRef.current = out.verseId;
             setActiveVerseId(out.verseId);
-            setLineNumber(out.lineIndex + 1);
+            setLineNumber(
+              ((curProf && curProf.screenLines && curProf.screenLines[out.lineIndex]) ??
+                out.lineIndex) + 1,
+            );
           }
           // Straight-through reading of a Rehras or Sohila shabad: open the Bani.
           const sid = currentShabadIdRef.current;
