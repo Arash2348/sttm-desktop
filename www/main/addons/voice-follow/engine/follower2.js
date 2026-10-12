@@ -103,7 +103,11 @@ class FollowerV2 {
       // The line as it is said aloud (ੴ, ਮਹਲਾ ੧ ...), letters only. Each written word is
       // expanded on its own, so wordAt maps every spoken letter to the word that says it
       // (a numeral after ਮਹਲਾ belongs to the ਮਹਲਾ word; verse numbers say nothing).
-      const written = (l.text || (l.words || []).join(' ')).split(/[\s॥।]+/).filter(Boolean);
+      let written = (l.text || (l.words || []).join(' ')).split(/[\s॥।]+/).filter(Boolean);
+      // A row with no Gurmukhi letter at all (Asa di Vaar's 24 "❁" dividers) is never said:
+      // as a one-letter line it was the "next line" after every pauri, so the screen left
+      // the pauri's last line for the divider while that line was still being sung.
+      if (!/[਀-੿]/.test(simplify(spoken(written.join(' '))))) written = [];
       const shown = (l.words && l.words.length ? l.words : written).map((x) => simplify(spoken(x)));
       let wi = 0;
       written.forEach((wd, k) => {
