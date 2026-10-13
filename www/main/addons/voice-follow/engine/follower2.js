@@ -82,6 +82,7 @@ const DEFAULTS = {
   antPaceTol: 0.25,
   antPaceMargin: 0.25,
   readBackDwell: 2, // read Banis (anticipate on): windows a step back needs (0 = backDwell)
+  endHold: 1, // read Banis: after the last line, no far jump back into the Bani
   repeatLast: 1, // the last two lines of every read Bani are expected to be read twice
   repeatDwell: 1, // windows an expected repeat (BANI_REPEATS) needs to be followed back
   antOnward: 2, // shown ahead, but this many new letters of the line heard: still reading it, step back
@@ -205,6 +206,7 @@ class FollowerV2 {
       });
       // the last two (spoken) lines of the Bani
       const real = said.map((x, i) => i).filter((i) => said[i].length >= this.c.antMinLetters);
+      if (real.length) this.lastReal = real[real.length - 1];
       if (this.c.repeatLast && real.length >= 2) {
         this.repeatTo.set(real[real.length - 1], real[real.length - 2]);
       }
@@ -402,6 +404,7 @@ class FollowerV2 {
     }
     if (this.pos >= 0 && this.lineAt[this.pos] === this.cur && this.pos > this.peak)
       this.peak = this.pos;
+    if (this.cur === this.lastReal && this.peak >= this.lineEnd[this.cur] - 3) this.ended = true;
     const needGlobal =
       !Lc || Lc.score < c.minScore + c.jumpMargin || this.tick % c.globalEvery === 0 || this.cand;
     const G = needGlobal ? this.align(h, 0, last, null, this.cur) : null;
@@ -410,6 +413,9 @@ class FollowerV2 {
       G &&
       G.score >= Math.max(c.minScore, c.jumpScore) &&
       (G.end < a || G.end > b) &&
+      // read paath that has reached the Bani's last line (read to its end): the reader is
+      // closing (Fateh), not starting the Bani over; no far jump back into it
+      !(c.anticipate && c.endHold && this.ended && G.end < a) &&
       (!Lc || G.score >= Lc.score + c.jumpMargin) &&
       G.score - bg() >= c.lockMargin
     ) {
