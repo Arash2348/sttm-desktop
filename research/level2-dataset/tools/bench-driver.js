@@ -501,6 +501,12 @@ async function createDriver({
       }
       if (id.startsWith('.') && file.includes('/banidb/')) return load(localRequire.resolve(id));
       if (id.endsWith('/filter-verse-items')) return load(localRequire.resolve(id));
+      // Autopilot panel redesign (experimental-release 58b6e170): UI-only imports.
+      if (id.endsWith('/common/i18n')) return { i18n: { t: (key) => key } };
+      if (id.endsWith('/common/sttm-ui')) return { VoiceWave: () => null };
+      if (id === 'react-dom') return { createPortal: (el) => el };
+      if (id === './autopilotSlot') return { useAutopilotSlot: () => null, setAutopilotSlot: () => {} };
+      if (id === './AudioCaptureIcon.jsx' || id === './AudioCaptureIcon') return { AudioCaptureIcon: () => null, default: () => null };
       return localRequire(id);
     }
     let code = componentSource || fs.readFileSync(file, 'utf8');
