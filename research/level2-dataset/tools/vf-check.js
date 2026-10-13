@@ -321,7 +321,8 @@ async function record() {
       // polite (default): one clip per lock turn, only when nobody else is waiting; --greedy: one turn per suite
       const batches = flag('greedy') ? [tasks] : tasks.map((t) => [t]);
       for (const [bi, batch] of batches.entries()) {
-        if (!flag('greedy')) await politeTurn();
+        // --queue: take ordinary turns on the lock (still one clip per turn) instead of waiting for an empty queue
+        if (!flag('greedy') && !flag('queue')) await politeTurn();
         const st = await runLocked({ jobs: 1, tasks: batch, verbose: true }, path.join(outRoot, `record-${side}-${s}-${bi}.plan.json`), { threads: 3 });
         all.wall += st.wall;
         all.lockWait += st.lockWait;
