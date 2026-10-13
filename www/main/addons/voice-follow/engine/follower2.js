@@ -33,6 +33,7 @@ const DEFAULTS = {
   skipDwell: 1, // windows a move past the next line must persist
   skipGain: 6, // ...and how much better it must match than staying within the next line
   backDwell: 4, // windows a backward move (repeat) must persist
+  backDwell1: 0, // ...a step back of exactly one line (0 = same as backDwell)
   jumpDwell: 4, // windows a far jump must persist
   jumpMargin: 0.15, // a far jump must beat the local match by this (per letter)
   jumpScore: 0.35, // ...and match at least this well
@@ -68,12 +69,13 @@ const DEFAULTS = {
 // as a far jump needing a clear margin and a long dwell), dwell on a line, and sing the
 // chhant refrain over and over. Measured on Khalsa School Newton (Oct 11, 2026) and a
 // YouTube Asa di Vaar (research: scratchpad asa/sweep*.txt): the local window reaches back
-// to the pauri's start, a backward move confirms in 2 windows, the next-line prior is
+// to the pauri's start, a move back of 2+ lines (a repeat) confirms in 2 windows while a
+// one-line step back keeps the recited 4 (it is a flicker, not a repeat), the next-line prior is
 // weaker, a 2-line skip needs less gain, and a pause (alaap, a held note) must last 12 s,
 // not 6, before the line is let go. Recited Banis keep DEFAULTS untouched.
 // Keyed by opts.baniId, so the engine and the headless bench build the same follower.
 const SUNG_BANIS = {
-  90: { back: 8, backDwell: 2, distCost: 0.01, skipGain: 3, noMatchHops: 48 },
+  90: { back: 8, backDwell: 2, backDwell1: 4, distCost: 0.01, skipGain: 3, noMatchHops: 48 },
 };
 
 // Letters only, with marks that recognition often drops or adds removed, so that
@@ -378,7 +380,8 @@ class FollowerV2 {
       }
       return null;
     }
-    if (this.confirm(line, c.backDwell)) {
+    // A one-line step back (a flicker between neighbours) may need longer than a real repeat.
+    if (this.confirm(line, line === this.cur - 1 && c.backDwell1 ? c.backDwell1 : c.backDwell)) {
       this.cur = line;
       this.noMatch = 0;
       this.cand = null;
