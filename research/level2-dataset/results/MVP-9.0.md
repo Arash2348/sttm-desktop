@@ -138,7 +138,21 @@ The 7 clips that changed (all are later first locks; none shows a wrong page):
 Watch items from the paath agent's 0.25 s bench (pt35 within-1, pt26 / pt28 wrong): on this suite pt26, pt28 and pt35
 are event-identical to base (Bani-level scoring; no wrong page).
 
-### Level-2 kirtan 41 — pending (running on 9f3502ed)
+### Level-2 kirtan 41 — MVP 9.0 = 9f3502ed (copy-aware rescore, tools/rescore.js)
+
+| metric | Base (tonight's build, 265da34e) | MVP 9.0 | pass? |
+|---|---|---|---|
+| right page | 97.51% | 97.55% | PASS |
+| wrong page | 0.84% | 0.84% | PASS (equal) |
+| searching | 1.67% | 1.62% | PASS |
+| found <= 10 s | 35/41 | 36/41 | PASS |
+| found <= 20 s / <= 30 s | 39/41 / 39/41 | 39/41 / 39/41 | equal |
+| never found | 1 | 1 | equal |
+| longest wrong | 120.1 s | 120.1 s | equal |
+
+35 of 41 clips have identical screen events. Changed: clip32 found at 2.4 s (base 10.6 s); clip15 +1.0 s; clip23/30/38
+within 0.5 s; clip19 (lead-in only, outside the scored window): base shows the right Shabad 2908 at -25.3 s; 9.0 first shows 5478
+for 5.6 s, then 2908 at -13.5 s. A lead-in wrong page, not scored; listed as a watch item.
 
 ### Aarti 50 — pending (running on 7165bd24)
 
