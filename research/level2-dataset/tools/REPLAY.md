@@ -131,3 +131,12 @@ Env: `VF_EMIS_CACHE`, `VF_EMIS_MODE=replay|record`, `VF_EMIS_CODEC=q16|f32`, `VF
   (Aarti), recorded with the exact f32 codec into a scratch cache. Plan: replay f32 == record
   (determinism), transcode to q16 and replay == record (codec), compare with release's real --fast run.
   No full-suite recording until these pass.
+- 2026-10-12 23:00. SMALL-FIRST VALIDATION PASSED. Record (real model, f32 codec) of clip02, clip05, pt01,
+  pt54, aa28 on c119a80c (= MVP 9.0 app code): ~0.45x real time. Replay from cache, f32 AND q16:
+  5/5 clips event-for-event IDENTICAL to the record (every transcript, retrieval, judge trace, screen
+  event). Replay speed ~0.08 s per audio second (+3.5 s process start). q16 cache = 56% of f32.
+  Against release's real --fast runs: clip05 identical; pt01, pt54 identical (replayed on the
+  release-next tree 7165bd24 from the c119a80c cache: no misses); clip02 same lock (2567) 0.128 s =
+  one audio chunk earlier (9.94 vs 10.06 s): the deterministic driver finishes a decision before the
+  next chunk, --fast finished this one during the next chunk. Expected divergence; it can flip a
+  threshold metric (found <= 10 s) on a clip right at the boundary.
