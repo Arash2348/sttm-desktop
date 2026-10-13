@@ -99,10 +99,16 @@ Start adopts the hidden run that had locked it at 523.7 s.
 Note: base on a fresh Start already finds 5299 and 5238 long before tonight's taps. Tonight's taps came after a
 visible Start that threw away the hidden run's lock; the kirtan change makes Start keep it.
 
-## 3. Fremont (Jaspal's 5 recordings, line level) — pending on the kirtan FINAL head
+## 3. Fremont (Jaspal's 5 recordings, line level) — MVP 9.0 = 9f3502ed
 
-Base (tonight's build, 265da34e): Shabad right 86.1%, wrong 4.6%, searching 9.3%, line same 46.6% (arbiter),
-line within 1 66.3%, verses reached 54/85, median line lag 3.1 s.
+| metric | Base (tonight's build, 265da34e) | MVP 9.0 | pass? |
+|---|---|---|---|
+| Shabad right / wrong / searching | 86.1 / 4.6 / 9.3% | 86.1 / 4.6 / 9.3% | equal |
+| line same (arbiter) / with singing credit | 46.6 / 47.3% | 46.6 / 47.3% | equal |
+| line within 1 / verses reached / median lag | 66.3% / 54 of 85 / 3.1 s | same | equal |
+
+All 5 recordings have identical screen events. The kirtan agent's earlier Fremont gain (right 91.2%) came from the
+one-verse first-lock route, which was dropped because it wrong-locked L2 clip20 and Sep 27 Aarti.
 
 ## 4. Level-2 kirtan 41 / paath 60 / Aarti 50
 
@@ -130,7 +136,7 @@ The 7 clips that changed (all are later first locks; none shows a wrong page):
 
 | clip | Base (tonight's build, 265da34e) | MVP 9.0 | right text |
 |---|---|---|---|
-| pt58 Japji | 19 and Japji at -17.2 s | 20 and Japji at 13.5 s | 82% -> 38% — WATCH, being bisected |
+| pt58 Japji | 19 and Japji at -17.2 s | 20 and Japji at 13.5 s | 82% -> 38% — WATCH: the kirtan-only build (f4cadff6) gives the same 20@13.5, so it comes from the Paath-pool guard, not the paath follower |
 | pt06 Jaap | Jaap at -18.2 s | Jaap at -7.5 s (Paath-pool guard; still before the truth window) | 83% -> 68% (whole-clip scoring) |
 | pt01 Japji | first shabad -14.1 s | -10.5 s | 77% -> 72% |
 | pt12 / pt39 / pt60 / pt63 | | within 0.5 s of base | equal or -1 pt |
