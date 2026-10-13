@@ -134,6 +134,9 @@ jobs:
           pkill -INT ffmpeg || true
           sleep 3
           cp sttm.log out/ 2>/dev/null || true
+          cp -r ~/.config/*/voice-follow/events.jsonl out/ 2>/dev/null || true
+          cp -r ~/.config/*/logs out/app-logs 2>/dev/null || true
+          ls ~/.config/*/ > out/userdata-listing.txt 2>&1 || true
           cp kiosk-screen.mp4 out/ 2>/dev/null || true
           ls -la out || true
 

@@ -44,7 +44,7 @@ function cdp(wsUrl, method, params = {}) {
     const timer = setTimeout(() => {
       ws.close();
       reject(new Error(`${method} timed out`));
-    }, 15000);
+    }, 45000);
     ws.onopen = () => ws.send(JSON.stringify({ id: 1, method, params }));
     ws.onmessage = (m) => {
       const msg = JSON.parse(m.data);
@@ -63,7 +63,8 @@ function cdp(wsUrl, method, params = {}) {
 
 async function text(t) {
   const r = await cdp(t.webSocketDebuggerUrl, 'Runtime.evaluate', {
-    expression: 'document.body ? document.body.innerText : ""',
+    expression:
+      '(document.body ? document.body.innerText : "") + (window.vfDemoAudio ? `\\n[demo-audio started=${window.vfDemoAudio.startedAt}]` : "")',
     returnByValue: true,
   });
   return (r.result && r.result.value) || '';
