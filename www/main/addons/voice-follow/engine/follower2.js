@@ -37,6 +37,16 @@ const DEFAULTS = {
   jumpDwell: 4, // windows a far jump must persist
   jumpMargin: 0.15, // a far jump must beat the local match by this (per letter)
   jumpScore: 0.35, // ...and match at least this well
+  // Re-acquire after a reader's skip (read paath): once the local match has failed, or
+  // the position sits on a header row ('Dohra', 'Chaupai', a fateh: short lines that recur
+  // all over the Bani, so the local copy absorbs them), the local evidence says nothing
+  // about where the reader went. A jump of at most reacquireRows rows (a section skipped
+  // or inserted: a shorter Rehras read on the extra-long profile) then needs no margin
+  // over that local match and confirms in reacquireDwell windows instead of jumpDwell;
+  // the margin over other Gurbani (lockMargin) stays, a smaller one made a wrong jump.
+  // Very far jumps keep the strict rule. 0 = off (sung Banis).
+  reacquireDwell: 2,
+  reacquireRows: 150,
   lockDwell: 3, // windows the first position must persist
   lockScore: 0.6, // ...and how well it must match (a wrong first line is worse than a moment of nothing)
   // Next-line prior: within the local search, each line further than the next one
@@ -106,10 +116,11 @@ const SUNG_BANIS = {
     skipGain: 3,
     noMatchHops: 48,
     anticipate: 0,
+    reacquireDwell: 0,
   },
   // Aarti (sung): followed with the recited profile, but a sung line is held and repeated,
   // so its end says little about when the next one starts: no anticipation.
-  22: { anticipate: 0 },
+  22: { anticipate: 0, reacquireDwell: 0 },
 };
 // Expected repeats in the usual reading of a paath: the reader finishes the first line of a
 // pair and goes back to the second (a block read twice). There the next line is not shown
@@ -303,6 +314,12 @@ class FollowerV2 {
     return { end: best.end, score: best.raw / (MATCH * n), raw: best.raw, ends, a };
   }
 
+  // A header row: too short to be a pangti ('ਦੋਹਰਾ ॥', 'ਚੌਪਈ ॥', 'ਪਾਤਿਸ਼ਾਹੀ ੧੦ ॥').
+  isHeader(line) {
+    if (line === null || line === undefined || line < 0) return false;
+    return this.lineEnd[line] - this.lineStart[line] + 1 < this.c.antMinLetters;
+  }
+
   // How much better ending at `end` is than ending anywhere up to the end of line `upto`
   // (raw alignment score): real evidence of having moved on, not a stray matched mark.
   gainOver(r, upto) {
@@ -409,6 +426,14 @@ class FollowerV2 {
       !Lc || Lc.score < c.minScore + c.jumpMargin || this.tick % c.globalEvery === 0 || this.cand;
     const G = needGlobal ? this.align(h, 0, last, null, this.cur) : null;
     // Far jump: the whole-Bani match is elsewhere and clearly better.
+    // Re-acquire: the local evidence is gone, or is only a header row (see DEFAULTS).
+    const lost =
+      c.reacquireDwell > 0 &&
+      (!Lc ||
+        Lc.score < c.minScore ||
+        this.isHeader(this.cur) ||
+        this.isHeader(this.lineAt[Lc.end]));
+    const near = (line) => Math.abs(line - this.cur) <= c.reacquireRows;
     if (
       G &&
       G.score >= Math.max(c.minScore, c.jumpScore) &&
@@ -416,11 +441,12 @@ class FollowerV2 {
       // read paath that has reached the Bani's last line (read to its end): the reader is
       // closing (Fateh), not starting the Bani over; no far jump back into it
       !(c.anticipate && c.endHold && this.ended && G.end < a) &&
-      (!Lc || G.score >= Lc.score + c.jumpMargin) &&
+      (!Lc || G.score >= Lc.score + c.jumpMargin || (lost && near(this.lineAt[G.end]))) &&
       G.score - bg() >= c.lockMargin
     ) {
       const line = this.lineAt[G.end];
-      if (this.confirm(line, c.jumpDwell)) {
+      const need = lost && near(line) ? c.reacquireDwell : c.jumpDwell;
+      if (this.confirm(line, need)) {
         this.cur = line;
         this.noMatch = 0;
         this.cand = null;
