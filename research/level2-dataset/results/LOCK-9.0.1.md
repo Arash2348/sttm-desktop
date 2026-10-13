@@ -85,3 +85,16 @@ confidence, the sangat starts the Aarti. Base: 95 s. Fix: 3.9 s.
 
 Smoke tier (10 clips across L2, paath, Aarti, Fremont, Renton): PASS, every metric identical, screen events
 identical on 10/10 clips (pt28: 47 judge-trace events differ, 0 screen events).
+
+Cached suites on the Mac (vf-check, `--only` the clips present in the local cache after `cache pull`, which added
+only pt52; the other agent's recording still holds the bench lock, so nothing new was recorded here):
+
+| suite (clips replayed) | base -> fix | screen events |
+|---|---|---|
+| L2 kirtan 39 of 41 (clip34, clip37 not cached) | 38 clips identical; clip35 differs: the fix switches to So Purakh 53 at 902.7 s where the base vetoed the 53/644 tie, showed a WRONG 1658 at 911.9 s and reached 53 only at 929.8 s. The candidate's replay then hit a cache miss (new follower windows), so its clip35 tail is unscored until the `--fill` queued on the lock completes (see below) | 38/39 identical |
+| Aarti 21 of 50 (aa01-08, 11, 14-18, 20, 21, 24-26, 28, 41) | identical, every metric same | 21/21, 0 of 543 events differ |
+| paath 6 of 65 (pt01, 19, 28, 35, 52, 54) | identical (wrong 0 -> 0) | 6/6 |
+| Fremont 5 | identical | 5/5, 0 of 126 |
+| Renton Oct 11 parts 7 | identical | 7/7, 0 of 629 |
+| smoke tier 10 | identical | 10/10 |
+
