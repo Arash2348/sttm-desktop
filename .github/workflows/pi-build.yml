@@ -105,7 +105,7 @@ jobs:
       - name: Test tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y xvfb ffmpeg dbus dbus-x11
+          sudo apt-get install -y xvfb ffmpeg dbus dbus-x11 gdb
 
       - name: Install the way a Pi would (setup-pi.sh)
         env:
@@ -133,6 +133,12 @@ jobs:
           # Every 30 s: which threads use the CPU, and how far the Gurbani database got.
           ( for i in $(seq 1 18); do sleep 30; { echo "== $((i*30))s"; top -b -H -n1 -w 200 | head -22;
             ls -la ~/.config/SikhiToTheMax/ ~/.config/SikhiToTheMax/new-db 2>&1 | grep -i "realm\|zip\|new-db"; } >> out/watch.txt; done ) &
+          # At 150 s: native stacks of every STTM renderer (a JavaScript debugger cannot pause a
+          # renderer that is blocked inside native code).
+          ( sleep 150; for p in $(pgrep -f 'sttm-desktop.*--type=renderer'); do
+              echo "=== renderer $p: $(tr '\0' ' ' < /proc/$p/cmdline | grep -o 'renderer-client-id=[0-9]*')";
+              sudo gdb -p "$p" -batch -ex 'thread apply all bt 25' 2>/dev/null | grep -v '^\[' | head -400;
+            done > out/native-stacks.txt 2>&1 ) &
 
       - name: Projector shows the Shabad by itself
         run: |
