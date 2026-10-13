@@ -129,7 +129,27 @@ the lead-in (29 s wrong). Treated as a regression until the kirtan FINAL lands.
 The test's first run failed only because it expected Rehras at 'long'; since 61488e2c Rehras is raised to extra-long.
 The test now expects extra-long (commit on vf-mvp-9.0); app behaviour unchanged.
 
-## 6. Asa di Vaar (Newton) — pending (suite from the asa agent: base vs 9.0 vs 9.0 + asa)
+## 6. Asa di Vaar (Khalsa School Newton, Oct 11) — asa agent's suite (tools/nw-bench.js + nw-score.js)
+
+Columns: Base (tonight's build, 265da34e) / MVP 9.0 without the asa commit (92b93d86) / MVP 9.0 (7165bd24).
+Session replay with his taps; Newton audio is hard for the model (11% of lines clearly heard vs 84% on YouTube).
+
+| metric | Base (tonight's build, 265da34e) | 9.0 without asa | MVP 9.0 | pass? |
+|---|---|---|---|---|
+| Newton part 1 within one line | 24.0% | 37.5% | 66.7% | PASS |
+| Newton part 1 exact line | 9.1% | 24.6% | 43.0% | PASS |
+| Newton part 1 lines reached (of 83) | 20 | 37 | 56 | PASS |
+| Newton part 1 lag median / p90 | 3.2 / 11.1 s | 2.0 / 9.1 s | 2.0 / 5.8 s | PASS |
+| Newton part 1 more than one line behind | 75.4% | 61.5% | 30.8% | PASS |
+| Newton part 1 longest stall | 229 s | 216 s | none | PASS |
+| Newton part 2 within one line | 36.8% | 26.8% | 27.3% | FAIL (not fixed: nothing reopens the Bani after a chhant is locked as a Shabad) |
+| Newton part 2 lines reached (of 30) | 7 | 9 | 9 | PASS |
+| YouTube Asa di Vaar within one line | 79.3% | 89.9% | 97.2% | PASS |
+| YouTube lines reached (of 160) | 131 | 156 | 158 | PASS |
+| YouTube left a line early | 0 | 4 | 2 | FAIL (small; base never moved early, but lagged 2.0 s vs 0.45 s) |
+| taps, interleaved Shabads, Bani open | | identical | identical | equal |
+
+Real screen on his Mac (8.6c), part 1: 33% within one line, 28/83 lines reached, a 229 s stall.
 
 ## Problems from Renton
 
