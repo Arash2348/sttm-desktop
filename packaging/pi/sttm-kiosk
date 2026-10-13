@@ -39,6 +39,20 @@ if [ -z "$BIN" ]; then
   exit 1
 fi
 
+# First start: put the Gurbani database bundled in the package where STTM looks for it, so
+# Voice-Follow works without internet. STTM still checks for a newer one in the background.
+APPDIR=$(dirname "$BIN")
+USERDATA="${XDG_CONFIG_HOME:-$HOME/.config}/$(basename "$APPDIR")"
+BUNDLED="$APPDIR/resources/banidb/sttmdesktop-evergreen-v2.zip"
+if [ ! -s "$USERDATA/sttmdesktop-evergreen-v2.realm" ] && [ -s "$BUNDLED" ]; then
+  mkdir -p "$USERDATA"
+  if unzip -o -q "$BUNDLED" -d "$USERDATA"; then
+    echo "sttm-kiosk: installed the bundled Gurbani database"
+  else
+    echo "sttm-kiosk: could not unpack the bundled Gurbani database" >&2
+  fi
+fi
+
 # Let the desktop, audio server and USB microphone finish starting after login.
 sleep "${STTM_KIOSK_BOOT_WAIT:-5}"
 

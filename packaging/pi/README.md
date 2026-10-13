@@ -40,9 +40,8 @@ and mouse and use STTM normally at any time.
 3. With only the projector connected, the presenter view fills it. With two screens, the
    controller opens on the first screen and the projector shows the presenter view, as on
    any computer.
-4. On the very first boot STTM downloads its Gurbani database, so the Pi needs internet
-   once; Voice-Follow waits for it. After that, about 8 seconds after start-up Voice-Follow
-   starts listening. If it stops on its own, for example
+4. The Gurbani database ships inside the package, so no internet is needed to start. About
+   8 seconds after start-up Voice-Follow starts listening. If it stops on its own, for example
    when the microphone is unplugged, it tries again every 15 seconds.
 5. If STTM closes or crashes, the launcher opens it again.
 

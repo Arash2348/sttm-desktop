@@ -51,6 +51,15 @@ jobs:
           SIZE=$(wc -c < build-resources/voice-follow/model.int8.onnx | tr -d ' ')
           echo "model bytes: $SIZE"; test "$SIZE" -gt 180000000
 
+      - name: Gurbani database (bundled, so a kiosk works offline from its first boot)
+        run: |
+          mkdir -p build-resources/banidb
+          curl -fL --retry 3 -o build-resources/banidb/sttmdesktop-evergreen-v2.zip \
+            https://banidb.blob.core.windows.net/database/sttmdesktop-evergreen-v2.zip
+          curl -fsSL -o build-resources/banidb/sttmdesktop-evergreen-v2.md5 \
+            https://banidb.blob.core.windows.net/database/sttmdesktop-evergreen-v2.md5
+          unzip -l build-resources/banidb/sttmdesktop-evergreen-v2.zip
+
       - name: Build
         run: npm run build
 
@@ -61,6 +70,7 @@ jobs:
         # app.asar cannot be loaded on Linux, which left the main window blank.
         run: |
           npm pkg set 'build.asarUnpack[1]=node_modules/sharp/**/*'
+          npm pkg set 'build.extraResources[2].from=build-resources/banidb' 'build.extraResources[2].to=banidb'
           npx electron-builder --linux deb --arm64 --publish never
 
       - uses: actions/upload-artifact@v4
