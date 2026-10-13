@@ -526,6 +526,23 @@ async function check() {
     report.suites[s] = { pass: suitePass, metrics: rows, clipDiffs, notReplayed: bad.map((t) => t.key) };
   }
   if (diffLines.length) { say(''); say('Event diff (base vs candidate, per clip):'); diffLines.forEach((l) => say(l)); }
+  // Line level, for every clip with line truth (line-truth.js): one table, better / worse per clip and line
+  {
+    const { diffClip } = require('./line-diff');
+    const rows = [];
+    for (const j of jobs) {
+      const d = diffClip(path.join(CACHE, 'line-truth', 'truth', `${j.id}.json`),
+        path.join(outRoot, 'base', j.suite, 'trace', `${j.id}.events.jsonl`), path.join(outRoot, 'cand', j.suite, 'trace', `${j.id}.events.jsonl`));
+      if (d) rows.push({ j, d });
+    }
+    if (rows.length) {
+      say('');
+      say('| clip | lines | line exact % base -> cand | within 1 % | median lag s | lines reached | lines better | lines worse |');
+      say('|---|---|---|---|---|---|---|---|');
+      for (const { j, d } of rows) say(`| ${j.suite}/${j.clip} | ${d.base.lines} | ${d.base.exact} -> ${d.cand.exact} | ${d.base.within1} -> ${d.cand.within1} | ${d.base.lagMedian} -> ${d.cand.lagMedian} | ${d.base.reached} -> ${d.cand.reached} | ${d.better} | ${d.worse} |`);
+      report.lines = rows.map(({ j, d }) => ({ suite: j.suite, clip: j.clip, ...d }));
+    }
+  }
   if (missed.length) { say(''); say(`CACHE MISSES (no model was run; rerun with --fill or vf-check --record): ${missed.map((t) => t.key).join(' ')}`); }
   if (failed.length) { say(''); say('ERRORS:'); for (const t of failed) say(`  ${t.key}: ${t.err}`); }
   const scoreWall = now() - t2;
@@ -569,4 +586,4 @@ if (require.main === module) {
   })().catch((e) => { console.error(e.stack || e); process.exit(2); });
 }
 
-module.exports = { editDistance, diffTraces, changedAreas };
+module.exports = { editDistance, diffTraces, changedAreas, politeTurn, selectJobs };
