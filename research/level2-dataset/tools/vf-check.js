@@ -98,8 +98,11 @@ function runLocked(plan, file, { threads } = {}) {
   return new Promise((resolve, reject) => {
     const envArgs = threads ? ['env', `VF_ORT_THREADS=${threads}`] : [];
     const waitStart = now();
-    process.stderr.write(`  waiting for ${LOCK} ...\n`);
-    const child = spawn('lockf', ['-k', LOCK, 'nice', '-n', '19', ...envArgs, process.execPath, __filename, '--pool', file], { stdio: ['ignore', 'inherit', 'inherit'] });
+    if (!(flag('no-lock') && !threads)) process.stderr.write(`  waiting for ${LOCK} ...\n`);
+    // --no-lock: only for a few-clip replay (no model) while the lock is busy; never with record/fill
+    const noLock = flag('no-lock') && !threads;
+    const cmd = noLock ? ['nice', ['-n', '19', ...envArgs, process.execPath, __filename, '--pool', file]] : ['lockf', ['-k', LOCK, 'nice', '-n', '19', ...envArgs, process.execPath, __filename, '--pool', file]];
+    const child = spawn(cmd[0], cmd[1], { stdio: ['ignore', 'inherit', 'inherit'] });
     child.on('close', (code) => {
       if (code) return reject(new Error(`pool exited ${code}`));
       const st = JSON.parse(fs.readFileSync(`${file}.status.json`, 'utf8'));
@@ -377,6 +380,9 @@ async function check() {
 
   // reuse saved replays of an unchanged, committed app tree (same harness, model, codec)
   const hk = harnessKey();
+  // scorers + suite definitions also key the stored metrics
+  const scoreKey = sha1([hk, ...['vf-suites.js', 'rescore.js', 'bani-aware.js', 'paath-score.js', '../aarti/aarti-score.js', 'khalis-arbiter.js', 'renton-score.js', 'nw-score.js']
+    .map((f) => fs.readFileSync(path.join(TOOLS, f), 'utf8'))].join('\0'));
   const msha = modelSha(MODEL, CACHE);
   const savedDir = (root) => { const tk = treeKey(root); return tk ? path.join(CACHE, 'replays', sha1(`${tk}|${hk}|${msha}|${CODEC}`).slice(0, 16)) : null; };
   const roots = { base, cand };
@@ -459,7 +465,7 @@ async function check() {
     const resultFile = (root) => {
       const tk = treeKey(root);
       const ok = !bad.length && !flag('no-reuse');
-      return tk && ok ? path.join(CACHE, 'results', `${tk.slice(0, 12)}-${hk.slice(0, 8)}`, `${s}-${sha1(sj.map((j) => j.id).sort().join(',')).slice(0, 8)}.json`) : null;
+      return tk && ok ? path.join(CACHE, 'results', `${tk.slice(0, 12)}-${scoreKey.slice(0, 8)}`, `${s}-${sha1(sj.map((j) => j.id).sort().join(',')).slice(0, 8)}.json`) : null;
     };
     const scoreSide = (root, dir, label) => {
       const f = resultFile(root);

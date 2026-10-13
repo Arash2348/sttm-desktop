@@ -17,7 +17,7 @@ const durOf = (wav) => {
 };
 const node = (args, env = {}) =>
   execFileSync(process.execPath, args, { cwd: TOOLS, env: { ...process.env, ...env }, encoding: 'utf8', maxBuffer: 64 << 20, stdio: ['ignore', 'pipe', 'pipe'] });
-const num = (s) => (s == null || s === '-' ? null : Number(String(s).replace(/[^\d.-]/g, '')));
+const num = (s) => { const t = s == null ? '' : String(s).replace(/[^\d.-]/g, ''); return t === '' || t === '-' ? null : Number(t); };
 const pick = (text, re) => { const m = text.match(re); return m ? m.slice(1).map(num) : []; };
 
 // bench-runner.js truth sheets: same clip naming and skip rules as the runner.
@@ -72,7 +72,7 @@ const SUITES = {
     score(dir) {
       const out = node([path.join(DS, 'aarti/aarti-score.js'), dir]);
       const line = out.split('\n').find((l) => l.startsWith('RIGHT (Aarti text up)')) || '';
-      const [right, wrong, none, piece, heard] = pick(line, /RIGHT \(Aarti text up\) ([\d.]+)% \| WRONG ([\d.]+)% \| NONE ([\d.]+)% \| piece-exact ([\d.-]+)% \| heard-line ([\d.-]+)%/);
+      const [right, wrong, none, piece, heard] = pick(line, /RIGHT \(Aarti text up\) ([\d.]+)% \| WRONG ([\d.]+)% \| NONE ([\d.]+)% \| piece-exact ([\w.-]+)% \| heard-line ([\w.-]+)%/).map((x) => (Number.isNaN(x) ? null : x));
       const [found, , w30, w60, med] = pick(line, /found (\d+)\/(\d+), within 30 s (\d+), within 60 s (\d+), median ([\d.-]+) s/);
       const [ws] = pick(line, /wrong switches (\d+)/);
       return { 'right %': right, 'wrong %': wrong, 'none %': none, 'piece exact %': piece, 'heard line %': heard, found, 'found <=30 s': w30, 'found <=60 s': w60, 'median find s': med, 'wrong switches': ws };
