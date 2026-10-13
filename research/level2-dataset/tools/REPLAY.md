@@ -162,3 +162,5 @@ Env: `VF_EMIS_CACHE`, `VF_EMIS_MODE=replay|record`, `VF_EMIS_CODEC=q16|f32`, `VF
 - 2026-10-13 06:18. FULL CACHE BUILT: 170 clips, 12.2 h of audio, two roots, 4.0 h wall (3 clips in parallel when the lock was
   free, 1 when others waited), 0 failures. Azure bench-cache/ 8.34 GB (311 blobs), ~$0.17/month hot LRS.
   | suite | clips | audio h |  renton 7 / 1.23 | L2 41 / 5.19 | Fremont 5 / 0.74 | paath 60 / 1.15 | Aarti 50 / 2.10 | Asa 7 / 1.83
+- 2026-10-13 12:45. First full-tier check from the cache (6 suites, 170 clips, both sides): 8.4 min wall, 7 workers, with 99 of
+  241 clip runs reused. Old way: ~3.5 h per side. Smoke tier: 67 s (busy machine). A rerun of two unchanged trees: seconds.
