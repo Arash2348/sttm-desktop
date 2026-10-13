@@ -4137,7 +4137,15 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           )}
 
           {dlProgress != null && (
-            <div className="vf-dl" title="Downloading the recognition model (one time)">
+            <div
+              className="vf-dl"
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.round(dlProgress * 100)}
+              aria-label="Preparing the voice model (one time)"
+              title="Preparing the voice model (one time)"
+            >
               <span className="vf-dl-bar" style={{ width: `${Math.round(dlProgress * 100)}%` }} />
             </div>
           )}
