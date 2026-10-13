@@ -77,6 +77,7 @@ const DEFAULTS = {
   antMinLetters: 10, // lines shorter than this (headers, 'Dohra') are not anticipated
   backFrac: 0.5, // shown ahead, but the position is back in the first half of the line...
   backS: 0.25, // ...for this long: the reader is repeating it, step back
+  readBackDwell: 2, // read Banis (anticipate on): windows a step back needs (0 = backDwell)
   repeatLast: 1, // the last two lines of every read Bani are expected to be read twice
   repeatDwell: 1, // windows an expected repeat (BANI_REPEATS) needs to be followed back
   antOnward: 2, // shown ahead, but this many new letters of the line heard: still reading it, step back
@@ -470,6 +471,8 @@ class FollowerV2 {
       line < this.cur &&
       this.peak >= this.lineEnd[this.cur] - 3;
     let need = line === this.cur - 1 && c.backDwell1 ? c.backDwell1 : c.backDwell;
+    // read paath: a step back is a deliberate re-read, followed sooner
+    if (c.anticipate && c.readBackDwell) need = Math.min(need, c.readBackDwell);
     if (expected) need = c.repeatDwell;
     if (this.confirm(line, need)) {
       if (expected) this.repeated.add(this.cur);
