@@ -119,6 +119,10 @@ jobs:
             STTM_EXTRA_FLAGS="--no-sandbox --disable-gpu --remote-debugging-port=9222" \
             nohup taskset -c 0-$LAST /usr/local/bin/sttm-kiosk > sttm.log 2>&1 &
           echo "started on cores 0-$LAST"
+          mkdir -p out
+          # Every 30 s: which threads use the CPU, and how far the Gurbani database got.
+          ( for i in $(seq 1 18); do sleep 30; { echo "== $((i*30))s"; top -b -H -n1 -w 200 | head -22;
+            ls -la ~/.config/SikhiToTheMax/ ~/.config/SikhiToTheMax/new-db 2>&1 | grep -i "realm\|zip\|new-db"; } >> out/watch.txt; done ) &
 
       - name: Projector shows the Shabad by itself
         run: |
@@ -134,7 +138,7 @@ jobs:
           pkill -INT ffmpeg || true
           sleep 3
           cp sttm.log out/ 2>/dev/null || true
-          cp -r ~/.config/*/voice-follow/events.jsonl out/ 2>/dev/null || true
+          cp -r ~/.config/*/voice-follow out/voice-follow 2>/dev/null || true
           cp -r ~/.config/*/logs out/app-logs 2>/dev/null || true
           ls ~/.config/*/ > out/userdata-listing.txt 2>&1 || true
           cp kiosk-screen.mp4 out/ 2>/dev/null || true
