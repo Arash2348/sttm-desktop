@@ -616,6 +616,8 @@ function sendToViewerWindows(channel, ...args) {
 }
 
 function showChangelog() {
+  // A kiosk has nobody to read or close a changelog window.
+  if (KIOSK) return false;
   // Experimental builds don't have changelog entries of their own
   if (appVersion.includes('experimental')) {
     return false;
