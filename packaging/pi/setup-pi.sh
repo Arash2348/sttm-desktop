@@ -21,7 +21,8 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 
 echo "== Installing SikhiToTheMax"
 sudo apt-get update -qq
-sudo apt-get install -y "$DEB"
+# libavahi-compat-libdnssd1: Bonjour discovery used by STTM's Bani Controller (mdns).
+sudo apt-get install -y libavahi-compat-libdnssd1 "$DEB"
 
 echo "== Installing the kiosk launcher"
 sudo install -m 755 "$HERE/sttm-kiosk" /usr/local/bin/sttm-kiosk
