@@ -588,4 +588,4 @@ if (require.main === module) {
   })().catch((e) => { console.error(e.stack || e); process.exit(2); });
 }
 
-module.exports = { editDistance, diffTraces, changedAreas, politeTurn, selectJobs };
+module.exports = { editDistance, diffTraces, changedAreas, politeTurn, selectJobs, makeTasks, runLocked, foreignWaiters, CACHE, CODEC, MODEL };
