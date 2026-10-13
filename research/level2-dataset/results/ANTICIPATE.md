@@ -224,3 +224,9 @@ oracle tops out at 94.8% (96.9% from the first lock), and premature <= 1% needs 
 letter (pace prediction does not shorten it, Step 18) while a third of Renton pauses are < 0.3 s.
 Real-time confirmation: vf-check replay of the whole app (renton, paath, aarti, asa suites, cache, no model) queued on the
 lock: results/vf-check-anticipate(.log).
+vf-check (cache replay of the whole app, ~/personal/sttm-replay, base 7165bd24 = sttm-release-next vs this branch): NOT a
+valid confirmation yet. The model-output cache is missing most clips for BOTH sides (renton 14/14, paath 114, aarti 98, asa 14
+clip runs: cache miss). What did replay: Aarti 50/50 clips event-identical; paath 58/60 identical, pt54 line exact
+60.2 -> 61.9 (within-1 72 -> 72, lag same), pt01 screen events 11 -> 13. Filling the cache needs the model under the lock
+(`node vf-check.js --base ~/personal/sttm-release-next --cand ~/personal/sttm-anticipate --suites renton,paath,aarti,asa --fill`);
+not run. Log: results/vf-check-anticipate.log.
