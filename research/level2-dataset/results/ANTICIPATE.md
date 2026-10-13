@@ -198,3 +198,29 @@ line, trusted when the end is heard within antPaceTol of the prediction, flip at
 | off (shipped) | - | 88.2 | 3 (0.8%) |
 Same frontier as the delay rules (+1 point voiced costs ~+1 point premature). Pace knows when the letters run out, not
 whether the reader is still holding the last syllable. Left OFF (antPace 0).
+
+Step 19. End of Rehras (user: hand over to the search, do not hold or wander). Replay after the last line (1706 s) and the
+closing Fateh: base jumps back into the Bani at 1713 s (the Fateh matches the extra-long header rows 212/213); cand
+(endHold: once the Bani's last line has been read to its end, no far jump back into it) releases at 1715 s instead
+(the app holds the screen on a release and its switch test / search takes over). Sohila / 55 clips / sung: unchanged.
+
+## FINAL (commit 05ff0544, ship state, cached-window replay; base = 7165bd24)
+| set | build | voiced % | strict exact % | within-1 % | premature (strict; conf >= -2.5) | lag median / p90 s | step-backs followed |
+|---|---|---|---|---|---|---|---|
+| Rehras (tuning) | base | 79.6 | 84.2 | 95.9 | 3/373 = 0.8% (1) | 0.38 / 0.89 | 7/8, median 2.0 s |
+| Rehras (tuning) | cand | 88.2 | 75.9 | 96.1 | 3/363 = 0.8% (1) | 0.15 / 0.54 | 7/8, median 1.4 s |
+| Rehras from first lock | base / cand | 80.8 / 89.8 | | | | | |
+| Sohila | base | 89.9 | 91.4 | 99.2 | 0/54 = 0% | 0.35 / 0.87 | 1/1, 1.49 s |
+| Sohila | cand | 96.6 | 91.9 | 99.2 | 1/55 = 1.8% (1) | -0.19 / 0.38 | 1/1, 0.74 s |
+| 55 recited | base | 84.8 | 87.2 | 97.4 | 2/1140 = 0.2% (1) | 0.35 / 0.93 | 3/3 |
+| 55 recited | cand | 90.6 | 87.6 | 97.5 | 11/1136 = 1.0% (10) | 0.15 / 0.65 | 3/3 (no clip worse) |
+| slowed Rehras (0.5 s decodes) | base | 74.8 | 80.6 | 96.5 | 3/373 = 0.8% (1) | 0.54 / 1.22 | 6/8 |
+| slowed Rehras | cand | 86.8 | 76.3 | 96.9 | 3/364 = 0.8% (1) | 0.20 / 0.74 | 6/8 |
+| Aarti / Asa (6 recordings) | cand vs base | IDENTICAL shown sequences | | | | | |
+| reader skips extra-long sections (Renton, 20-45 rows) | base = cand | crossing 1.2-2.4 s to the first real line | | | | | |
+| end of Rehras | base / cand | jumps back into Bani at 1713 s / releases at 1715 s | | | | | |
+Target >= 95% voiced is NOT reached on Rehras (88.2%; 89.8% from the first lock). Proof (Step 12): even a zero-delay
+oracle tops out at 94.8% (96.9% from the first lock), and premature <= 1% needs >= 0.5-1.0 s of evidence after the last
+letter (pace prediction does not shorten it, Step 18) while a third of Renton pauses are < 0.3 s.
+Real-time confirmation: vf-check replay of the whole app (renton, paath, aarti, asa suites, cache, no model) queued on the
+lock: results/vf-check-anticipate(.log).
