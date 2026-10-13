@@ -1272,6 +1272,9 @@ app.on('ready', () => {
       nodeIntegrationInSubFrames: true,
       nodeIntegrationInWorker: true,
       media: true,
+      // A kiosk's controller sits behind the presenter all day; it still downloads the
+      // Gurbani database and runs Voice-Follow, so Chromium must not throttle it.
+      backgroundThrottling: !KIOSK,
     },
   });
   // Dev + multi-display cover can leave the process as LSUIElement (no Cmd+Tab).

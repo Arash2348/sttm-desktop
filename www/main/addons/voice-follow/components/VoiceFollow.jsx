@@ -24,7 +24,7 @@ installDemoAudio(); // developer demos only (VF_DEMO_WAV); a no-op otherwise
 const shadowBus = require('../shadow/bus');
 const { diag } = require('../shadow/diag');
 const { SHADOW_BUILD, SHADOW_CPU_PAUSE, SHADOW_CPU_RESUME } = require('../shadow/config');
-const { KIOSK, KIOSK_START_DELAY_MS, KIOSK_RETRY_MS } = require('../kiosk');
+const { KIOSK, KIOSK_START_DELAY_MS, KIOSK_RETRY_MS, kioskDbReady } = require('../kiosk');
 const os = require('os'); // eslint-disable-line import/order
 
 // Shadow mode (tester builds): Voice-Follow runs with no panel and never touches the
@@ -3593,6 +3593,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     // visible Voice-Follow the projector needs, so take it over.
     const following = autopilotRef.current && (!SHADOW_BUILD || visibleRef.current);
     if (kioskStoppedRef.current || following) return;
+    // First boot: the Gurbani database is still downloading. Starting now would search an
+    // empty database and slow the download; the retry timer starts it once it is there.
+    if (!kioskDbReady()) return;
     if (SHADOW_BUILD) takeOver();
     else startAutopilot();
   };

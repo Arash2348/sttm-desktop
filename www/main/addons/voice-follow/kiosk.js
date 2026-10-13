@@ -20,4 +20,19 @@ const KIOSK_START_DELAY_MS = 8000;
 // If Voice-Follow stops on its own (microphone unplugged, model error), try again this often.
 const KIOSK_RETRY_MS = 15000;
 
-module.exports = { KIOSK, KIOSK_TESTER, KIOSK_START_DELAY_MS, KIOSK_RETRY_MS };
+// The Gurbani database STTM downloads on first run (see www/main/desktop_scripts.js).
+function kioskDbReady() {
+  try {
+    /* eslint-disable global-require */
+    const fs = require('fs');
+    const path = require('path');
+    const remote = require('@electron/remote');
+    /* eslint-enable global-require */
+    const db = path.join(remote.app.getPath('userData'), 'sttmdesktop-evergreen-v2.realm');
+    return fs.existsSync(db) && fs.statSync(db).size > 0;
+  } catch (_) {
+    return false;
+  }
+}
+
+module.exports = { KIOSK, KIOSK_TESTER, KIOSK_START_DELAY_MS, KIOSK_RETRY_MS, kioskDbReady };
