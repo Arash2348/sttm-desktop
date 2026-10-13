@@ -77,6 +77,7 @@ const DEFAULTS = {
   antMinLetters: 10, // lines shorter than this (headers, 'Dohra') are not anticipated
   backFrac: 0.5, // shown ahead, but the position is back in the first half of the line...
   backS: 0.25, // ...for this long: the reader is repeating it, step back
+  antOnward: 2, // shown ahead, but this many new letters of the line heard: still reading it, step back
 };
 // Sung Banis (kirtan-style, not read): Asa di Vaar (BaniDB Bani 90). Ragis repeat a pauri
 // or a chhant stanza from its top (a jump 4-6 lines back, which the recited profile treats
@@ -511,6 +512,16 @@ class FollowerV2 {
         if (this.lowT == null) this.lowT = now;
       } else this.lowT = null;
       const earlier = p >= 0 && this.lineAt[p] < line;
+      // still reading this line: new letters of it heard since the screen moved ahead
+      const onward = c.antOnward && inLine && p >= this.antAtP + c.antOnward;
+      if (onward) {
+        this.ant = null;
+        this.lowT = null;
+        this.antSpent = -1;
+        this.endT = null;
+        this.quietT = null;
+        return res || this.out(line, this.lastScore || c.minScore, p);
+      }
       if (this.lowT != null && (earlier || now - this.lowT >= c.backS - 1e-6)) {
         this.ant = null;
         this.lowT = null;
@@ -549,6 +560,7 @@ class FollowerV2 {
     ) {
       this.ant = line;
       this.antSpent = line;
+      this.antAtP = inLine ? p : this.lineEnd[line];
       this.lowT = null;
       return this.ahead1(res, line);
     }
