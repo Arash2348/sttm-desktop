@@ -63,20 +63,20 @@ const DEFAULTS = {
   // compound. 0 = off.
   catchHops: 4,
   catchScore: 0.5, // ...each of those windows matching at least this well (per letter)
-  // Anticipation (read paath only; see present()). 0 = off.
-  anticipate: 0,
-  antFrac: 1.0, // share of the current line's letters heard before it counts as finished
-  antDelay: 0, // further windows the position must stay at that point (no new letters: a pause)
-  antSlack: 0, // ...or all but this many of its last letters (often dropped by recognition)
-  antEnter: 0, // 1: after a window at the line's end, the next line's first letters flip at once
-  antStall: 0, // windows the position may sit still past antStallFrac of the line: a pause (0 = off)
+  // Anticipation (read paath only; see present()). 0 = off; off for the sung Banis below.
+  // Times are seconds of audio, so a slow PC that merges windows waits as long as a fast one.
+  anticipate: 1,
+  antSlack: 1, // the line counts as heard to its end with all but this many last letters
+  antDelayS: 1.0, // ...and the position must stay there this long (no new letters: a pause)
+  antMono: 1, // ...without moving back meanwhile
+  antQuiet: 0.2, // or sooner: the audio's last antQuietS is this much quieter than its speech
+  antQuietS: 0.3,
+  antQuietMinS: 0.5, // ...but not sooner than this after the end was heard
+  antQuietRunS: 0.5, // or: quiet this long with the position past antStallFrac of the line
   antStallFrac: 0.8,
-  antQuiet: 0, // the last antQuietS of audio this much quieter than the window's speech: a pause (0 = off)
-  antQuietS: 0.15,
-  antQuietHops: 0, // ...or quiet this many windows in a row with the position past antStallFrac (0 = off)
   antMinLetters: 10, // lines shorter than this (headers, 'Dohra') are not anticipated
   backFrac: 0.5, // shown ahead, but the position is back in the first half of the line...
-  backHops: 2, // ...for this many windows: the reader is repeating it, step back
+  backS: 0.25, // ...for this long: the reader is repeating it, step back
 };
 // Sung Banis (kirtan-style, not read): Asa di Vaar (BaniDB Bani 90). Ragis repeat a pauri
 // or a chhant stanza from its top (a jump 4-6 lines back, which the recited profile treats
@@ -89,7 +89,18 @@ const DEFAULTS = {
 // not 6, before the line is let go. Recited Banis keep DEFAULTS untouched.
 // Keyed by opts.baniId, so the engine and the headless bench build the same follower.
 const SUNG_BANIS = {
-  90: { back: 8, backDwell: 2, backDwell1: 4, distCost: 0.01, skipGain: 3, noMatchHops: 48 },
+  90: {
+    back: 8,
+    backDwell: 2,
+    backDwell1: 4,
+    distCost: 0.01,
+    skipGain: 3,
+    noMatchHops: 48,
+    anticipate: 0,
+  },
+  // Aarti (sung): followed with the recited profile, but a sung line is held and repeated,
+  // so its end says little about when the next one starts: no anticipation.
+  22: { anticipate: 0 },
 };
 
 // Letters only, with marks that recognition often drops or adds removed, so that
@@ -443,6 +454,7 @@ class FollowerV2 {
       if (merged.length > this.win) merged = merged.slice(merged.length - this.win);
       this.buf = merged;
       this.acc += res.length;
+      this.clock = (this.clock || 0) + res.length / SR;
     }
     if (this.acc < this.hop || this.buf.length < SR) return null;
     this.acc = 0;
@@ -454,63 +466,82 @@ class FollowerV2 {
     }
     const out = this.decide(h);
     if (!this.c.anticipate) return out;
-    if (this.c.antQuiet) this.quiet = this.tailQuiet();
+    this.quiet = this.c.antQuiet ? this.tailQuiet() : false;
     return this.present(out);
   }
 
-  // What the screen shows, given the tracker (anticipation): once the current line has
-  // been heard to its end (antFrac of its letters) and the position then stays there for
-  // antDelay more windows, show the next line, so it is there as the reader starts it.
-  // One anticipation per reading of a line; if the position falls back into the first
-  // part of the line instead (a repeat), the screen steps back to it.
+  // What the screen shows, given the tracker (anticipation). Once the current line has been
+  // heard to its end (all but antSlack letters) and the position then stays there for
+  // antDelayS (no new letters: the reader has paused), or the audio itself has gone quiet,
+  // show the next line, so it is there as the reader starts it. "Heard to its last letter"
+  // alone comes at the same moment as the last syllable's own spike, so it cannot tell a
+  // held final vowel from a pause. One anticipation per reading of a line; if the position
+  // falls back into the first part of the line instead (a repeat), the screen steps back.
   present(res) {
     const { c } = this;
     const line = this.cur;
+    const now = this.clock || 0;
     if (line === null || (res && (res.lineIndex == null || res.verseIndex === -1))) {
       this.ant = null;
-      this.antRun = 0;
+      this.endT = null;
+      this.quietT = null;
       return res;
     }
     const p = this.pos;
     const inLine = p >= 0 && this.lineAt[p] === line;
     const len = this.lineEnd[line] - this.lineStart[line] + 1;
     const frac = inLine ? (p - this.lineStart[line] + 1) / len : null;
-    if (frac !== null && frac < c.backFrac && this.antSpent === line && this.ant === null) {
+    if (frac !== null && frac < c.backFrac && this.antSpent === line && this.ant == null) {
       this.antSpent = -1; // a new reading of this line
+    }
+    if (line !== this.runLine) {
+      // a new current line: end / quiet runs start over
+      this.runLine = line;
+      this.endT = null;
+      this.quietT = null;
     }
     if (this.ant != null) {
       if (line !== this.ant) {
         this.ant = null; // the tracker caught up (or moved elsewhere)
-        this.lowRun = 0;
         return res;
       }
-      this.lowRun = frac !== null && frac < c.backFrac ? (this.lowRun || 0) + 1 : 0;
-      if (this.lowRun >= c.backHops) {
+      // the reader is back near the start of this line, or in an earlier one (a repeat)
+      const back = (frac !== null && frac < c.backFrac) || (p >= 0 && this.lineAt[p] < line);
+      if (back) {
+        if (this.lowT == null) this.lowT = now;
+      } else this.lowT = null;
+      const earlier = p >= 0 && this.lineAt[p] < line;
+      if (this.lowT != null && (earlier || now - this.lowT >= c.backS - 1e-6)) {
         this.ant = null;
-        this.lowRun = 0;
+        this.lowT = null;
         this.antSpent = -1;
         return res || this.out(line, this.lastScore || c.minScore, p);
       }
       return this.ahead1(res, line);
     }
-    // finished-line run: position at the end of the line (or just past it, not yet entered)
-    const entering = p >= 0 && this.lineAt[p] === line + 1 && this.antRun > 0;
+    // At the end: the position on the line's last letters (or just into the next line,
+    // not yet entered by the tracker, once the end was seen).
     const atEnd =
       (inLine &&
-        (frac >= c.antFrac - 1e-9 || this.lineEnd[line] - p <= c.antSlack) &&
-        (!this.antRun || p >= this.antP)) ||
-      entering;
-    this.antRun = atEnd ? (this.antRun || 0) + 1 : 0;
-    // stall: the position sits still late in the line (no new letters heard)
-    this.stallRun = inLine && frac >= c.antStallFrac && p === this.antP ? (this.stallRun || 0) + 1 : 0;
-    this.quietRun = inLine && frac >= c.antStallFrac && this.quiet ? (this.quietRun || 0) + 1 : 0;
+        this.lineEnd[line] - p <= c.antSlack &&
+        (!c.antMono || this.endT == null || p >= this.antP)) ||
+      (p >= 0 && this.lineAt[p] === line + 1 && this.endT != null);
+    if (!atEnd) this.endT = null;
+    else if (this.endT == null) this.endT = now;
+    const late = inLine && frac >= c.antStallFrac && this.quiet;
+    if (!late) this.quietT = null;
+    else if (this.quietT == null) this.quietT = now;
     this.antP = p;
+    const ready =
+      (this.endT != null && now - this.endT >= c.antDelayS - 1e-6) ||
+      (c.antQuiet &&
+        this.quiet &&
+        inLine &&
+        this.endT != null &&
+        now - this.endT >= c.antQuietMinS - 1e-6) ||
+      (c.antQuiet && this.quietT != null && now - this.quietT >= c.antQuietRunS - 1e-6);
     if (
-      (this.antRun > c.antDelay ||
-        (c.antQuiet && this.quiet && inLine && this.antRun > 0) ||
-        (c.antEnter && entering) ||
-        (c.antStall && this.stallRun >= c.antStall) ||
-        (c.antQuietHops && this.quietRun >= c.antQuietHops)) &&
+      ready &&
       len >= c.antMinLetters &&
       this.antSpent !== line &&
       line + 1 < this.verseIds.length &&
@@ -518,7 +549,7 @@ class FollowerV2 {
     ) {
       this.ant = line;
       this.antSpent = line;
-      this.lowRun = 0;
+      this.lowT = null;
       return this.ahead1(res, line);
     }
     return res;

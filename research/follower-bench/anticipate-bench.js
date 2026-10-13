@@ -101,6 +101,7 @@ async function replay(variant, it) {
   const f = makeFollower(variant, new CachedInfer(it.hyps), it);
   const N = Math.round(16000 * hop);
   const pcm = process.env.PCM ? wavOf(it) : null;
+  if (process.env.PCM && !pcm) throw new Error(`no audio for ${it.name}`);
   const zero = new Float32Array(N);
   const shown = [];
   let cur;
@@ -153,7 +154,7 @@ function score(it, shown) {
     if (!a.ok) return;
     if (b && s.i === b.i && p === a.i) { // to the next line while on the current
       if (!b.ok) return;
-      if (s.t < a.end) { fl.premature++; fl.early.push(+(a.end - s.t).toFixed(2)); } else { fl.good++; if (s.t - a.end < 0.2) fl.goodNearEnd++; }
+      if (s.t < a.end) { fl.premature++; fl.early.push(+(a.end - s.t).toFixed(2)); if (a.conf >= CONF_MIN) fl.premHi = (fl.premHi || 0) + 1; } else { fl.good++; if (s.t - a.end < 0.2) fl.goodNearEnd++; }
     } else if (s.i === a.i && p === (kk > 0 ? L[kk - 1].i : -1)) { fl.lag++; fl.lags.push(+(s.t - a.start).toFixed(2)); } else fl.other++;
   });
   // Per-line lag (first show of the line from 3 s before its start / after the previous hit).
@@ -189,9 +190,9 @@ function score(it, shown) {
     voicedS: +(V * STEP).toFixed(0), voiced: +(100 * vOk / V).toFixed(1), aheadV: +(100 * vAhead / V).toFixed(2),
     exact: +(100 * ex / T).toFixed(1), within1: +(100 * w1 / T).toFixed(1),
     flips, premature: fl.premature, good: fl.good, lagFlips: fl.lag, other: fl.other,
-    prematurePct: flips ? +(100 * fl.premature / flips).toFixed(1) : 0, goodNearEnd: fl.goodNearEnd,
+    prematurePct: flips ? +(100 * fl.premature / flips).toFixed(1) : 0, premHi: fl.premHi || 0, goodNearEnd: fl.goodNearEnd,
     lagMed: q(lag, 0.5), lagP90: q(lag, 0.9), lagHiMed: q(lagHi, 0.5), lagHiP90: q(lagHi, 0.9), missed,
-    backs, backOk, backMed: q(backT, 0.5), _lagFlips: fl.lags, _early: fl.early, _pauses: pausePairs,
+    backs, backOk, backMed: q(backT, 0.5), _lag: lag, _lagFlips: fl.lags, _early: fl.early, _pauses: pausePairs,
   };
 }
 
@@ -200,11 +201,12 @@ function sum(rows) {
   const tw = (k, w) => +(rows.reduce((a, r) => a + r[k] * r[w], 0) / rows.reduce((a, r) => a + r[w], 0)).toFixed(2);
   const s = (k) => rows.reduce((a, r) => a + r[k], 0);
   return { name: `ALL(${rows.length})`, voicedS: s('voicedS'), voiced: tw('voiced', 'voicedS'), aheadV: tw('aheadV', 'voicedS'), exact: tw('exact', 'voicedS'), within1: tw('within1', 'voicedS'),
-    flips: s('flips'), premature: s('premature'), good: s('good'), lagFlips: s('lagFlips'), other: s('other'), prematurePct: +(100 * s('premature') / Math.max(1, s('flips'))).toFixed(1),
-    goodNearEnd: s('goodNearEnd'), missed: s('missed'), backs: s('backs'), backOk: s('backOk') };
+    flips: s('flips'), premature: s('premature'), good: s('good'), lagFlips: s('lagFlips'), other: s('other'), prematurePct: +(100 * s('premature') / Math.max(1, s('flips'))).toFixed(1), premHi: s('premHi'),
+    goodNearEnd: s('goodNearEnd'), lagMed: q(rows.flatMap((r) => r._lag), 0.5), lagP90: q(rows.flatMap((r) => r._lag), 0.9), missed: s('missed'), backs: s('backs'), backOk: s('backOk') };
 }
 
-(async () => {
+module.exports = { score };
+if (require.main === module) (async () => {
   const [set, ...vs] = process.argv.slice(2);
   const variants = vs.length ? vs : ['base', 'cand'];
   let items;
