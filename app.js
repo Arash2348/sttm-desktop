@@ -134,6 +134,7 @@ app.on('will-quit', (e) => {
   }
 });
 let viewerWindow = false;
+let lastPresenterViewAt = 0; // see ipcMain 'presenter-view'
 let projectionWindow = false;
 /** Embedded controller <webview> (in-app preview) — kept separate from external BrowserWindows */
 let embeddedViewerWebContents = null;
@@ -1651,6 +1652,14 @@ ipcMain.on('dual-display-state-request', () => {
 });
 
 ipcMain.on('presenter-view', (event, arg) => {
+  // Placing the presenter emits 'resize', which sends the controller the display size, and
+  // the controller answers with this message again. Where full screen does not stick (an X
+  // server with no window manager) that echo re-placed the window about a thousand times a
+  // second and starved the main process. The echo arrives within milliseconds; a person
+  // toggles presenter view at most every few seconds, so a repeat inside a second is the echo.
+  const now = Date.now();
+  if (arg && now - lastPresenterViewAt < 1000) return;
+  lastPresenterViewAt = now;
   if (viewerWindow && !viewerWindow.isDestroyed()) {
     if (!arg) {
       viewerWindow.hide();
