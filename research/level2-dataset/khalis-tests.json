@@ -1,0 +1,780 @@
+[
+ {
+  "name": "kh01_sttm_desktop_2026_10_08T03_18_48_617Z",
+  "dataset": "sttm_desktop_2026_10_08T03_18_48_617Z",
+  "timeline": [
+   {
+    "t": 13.073,
+    "verseId": 21768,
+    "shabadId": 1802,
+    "line": 4,
+    "lines": 11
+   },
+   {
+    "t": 26.789,
+    "verseId": 21767,
+    "shabadId": 1802,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 43.005,
+    "verseId": 21768,
+    "shabadId": 1802,
+    "line": 4,
+    "lines": 11
+   },
+   {
+    "t": 55.515,
+    "verseId": 21767,
+    "shabadId": 1802,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 88.797,
+    "verseId": 21765,
+    "shabadId": 1802,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 103.22,
+    "verseId": 21766,
+    "shabadId": 1802,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 113.629,
+    "verseId": 21765,
+    "shabadId": 1802,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 127.456,
+    "verseId": 21766,
+    "shabadId": 1802,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 136.302,
+    "verseId": 21767,
+    "shabadId": 1802,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 153.668,
+    "verseId": 21768,
+    "shabadId": 1802,
+    "line": 4,
+    "lines": 11
+   },
+   {
+    "t": 169.38,
+    "verseId": 21767,
+    "shabadId": 1802,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 186.819,
+    "verseId": 21769,
+    "shabadId": 1802,
+    "line": 5,
+    "lines": 11
+   },
+   {
+    "t": 201.912,
+    "verseId": 21770,
+    "shabadId": 1802,
+    "line": 6,
+    "lines": 11
+   },
+   {
+    "t": 226.843,
+    "verseId": 21771,
+    "shabadId": 1802,
+    "line": 7,
+    "lines": 11
+   },
+   {
+    "t": 251.007,
+    "verseId": 21772,
+    "shabadId": 1802,
+    "line": 8,
+    "lines": 11
+   },
+   {
+    "t": 265.06,
+    "verseId": 21767,
+    "shabadId": 1802,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 286.158,
+    "verseId": 21768,
+    "shabadId": 1802,
+    "line": 4,
+    "lines": 11
+   },
+   {
+    "t": 303.402,
+    "verseId": 21767,
+    "shabadId": 1802,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 351.707,
+    "verseId": 21768,
+    "shabadId": 1802,
+    "line": 4,
+    "lines": 11
+   },
+   {
+    "t": 364.927,
+    "verseId": 21767,
+    "shabadId": 1802,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 385.968,
+    "verseId": 21773,
+    "shabadId": 1802,
+    "line": 9,
+    "lines": 11
+   },
+   {
+    "t": 437.827,
+    "verseId": 21774,
+    "shabadId": 1802,
+    "line": 10,
+    "lines": 11
+   },
+   {
+    "t": 446.731,
+    "verseId": 21773,
+    "shabadId": 1802,
+    "line": 9,
+    "lines": 11
+   },
+   {
+    "t": 539.685,
+    "verseId": 21774,
+    "shabadId": 1802,
+    "line": 10,
+    "lines": 11
+   },
+   {
+    "t": 547.26,
+    "verseId": 21767,
+    "shabadId": 1802,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 555.625,
+    "verseId": 21768,
+    "shabadId": 1802,
+    "line": 4,
+    "lines": 11
+   },
+   {
+    "t": 562.386,
+    "verseId": 21767,
+    "shabadId": 1802,
+    "line": 3,
+    "lines": 11
+   }
+  ],
+  "shabads": [
+   1802
+  ],
+  "clip": "kh01_sttm_desktop_2026_10_08T03_18_48_617Z.wav",
+  "seconds": 572.67
+ },
+ {
+  "name": "kh02_sttm_desktop_2026_10_08T03_30_14_004Z",
+  "dataset": "sttm_desktop_2026_10_08T03_30_14_004Z",
+  "timeline": [
+   {
+    "t": 103.251,
+    "verseId": 29358,
+    "shabadId": 2593,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 201.379,
+    "verseId": 29360,
+    "shabadId": 2593,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 232.697,
+    "verseId": 29361,
+    "shabadId": 2593,
+    "line": 4,
+    "lines": 7
+   },
+   {
+    "t": 250.143,
+    "verseId": 29359,
+    "shabadId": 2593,
+    "line": 2,
+    "lines": 7
+   },
+   {
+    "t": 351.591,
+    "verseId": 29362,
+    "shabadId": 2593,
+    "line": 5,
+    "lines": 7
+   },
+   {
+    "t": 486.834,
+    "verseId": 29363,
+    "shabadId": 2593,
+    "line": 6,
+    "lines": 7
+   },
+   {
+    "t": 505.374,
+    "verseId": 29359,
+    "shabadId": 2593,
+    "line": 2,
+    "lines": 7
+   }
+  ],
+  "shabads": [
+   2593
+  ],
+  "clip": "kh02_sttm_desktop_2026_10_08T03_30_14_004Z.wav",
+  "seconds": 594.09
+ },
+ {
+  "name": "kh03_sttm_desktop_2026_10_08T03_40_41_289Z",
+  "dataset": "sttm_desktop_2026_10_08T03_40_41_289Z",
+  "timeline": [
+   {
+    "t": 2.804,
+    "verseId": 29318,
+    "shabadId": 2587,
+    "line": 4,
+    "lines": 8
+   },
+   {
+    "t": 22.996,
+    "verseId": 29319,
+    "shabadId": 2587,
+    "line": 5,
+    "lines": 8
+   },
+   {
+    "t": 47.432,
+    "verseId": 29318,
+    "shabadId": 2587,
+    "line": 4,
+    "lines": 8
+   },
+   {
+    "t": 66.38,
+    "verseId": 29319,
+    "shabadId": 2587,
+    "line": 5,
+    "lines": 8
+   },
+   {
+    "t": 88.804,
+    "verseId": 29318,
+    "shabadId": 2587,
+    "line": 4,
+    "lines": 8
+   },
+   {
+    "t": 129.255,
+    "verseId": 29316,
+    "shabadId": 2587,
+    "line": 2,
+    "lines": 8
+   },
+   {
+    "t": 167.256,
+    "verseId": 29317,
+    "shabadId": 2587,
+    "line": 3,
+    "lines": 8
+   },
+   {
+    "t": 198.979,
+    "verseId": 29319,
+    "shabadId": 2587,
+    "line": 5,
+    "lines": 8
+   },
+   {
+    "t": 222.331,
+    "verseId": 29318,
+    "shabadId": 2587,
+    "line": 4,
+    "lines": 8
+   },
+   {
+    "t": 271.229,
+    "verseId": 29320,
+    "shabadId": 2587,
+    "line": 6,
+    "lines": 8
+   },
+   {
+    "t": 377.695,
+    "verseId": 29321,
+    "shabadId": 2587,
+    "line": 7,
+    "lines": 8
+   },
+   {
+    "t": 404.705,
+    "verseId": 29320,
+    "shabadId": 2587,
+    "line": 6,
+    "lines": 8
+   },
+   {
+    "t": 430.727,
+    "verseId": 29321,
+    "shabadId": 2587,
+    "line": 7,
+    "lines": 8
+   },
+   {
+    "t": 460.123,
+    "verseId": 29319,
+    "shabadId": 2587,
+    "line": 5,
+    "lines": 8
+   },
+   {
+    "t": 478.563,
+    "verseId": 29318,
+    "shabadId": 2587,
+    "line": 4,
+    "lines": 8
+   },
+   {
+    "t": 497.685,
+    "verseId": 29319,
+    "shabadId": 2587,
+    "line": 5,
+    "lines": 8
+   },
+   {
+    "t": 517.335,
+    "verseId": 29318,
+    "shabadId": 2587,
+    "line": 4,
+    "lines": 8
+   }
+  ],
+  "shabads": [
+   2587
+  ],
+  "clip": "kh03_sttm_desktop_2026_10_08T03_40_41_289Z.wav",
+  "seconds": 526.25
+ },
+ {
+  "name": "kh04_sttm_desktop_2026_10_08T03_51_10_447Z",
+  "dataset": "sttm_desktop_2026_10_08T03_51_10_447Z",
+  "timeline": [
+   {
+    "t": 32.615,
+    "verseId": 41413,
+    "shabadId": 3590,
+    "line": 1,
+    "lines": 9
+   },
+   {
+    "t": 54.857,
+    "verseId": 41412,
+    "shabadId": 3590,
+    "line": 0,
+    "lines": 9
+   },
+   {
+    "t": 80.064,
+    "verseId": 41413,
+    "shabadId": 3590,
+    "line": 1,
+    "lines": 9
+   },
+   {
+    "t": 103.05,
+    "verseId": 41412,
+    "shabadId": 3590,
+    "line": 0,
+    "lines": 9
+   },
+   {
+    "t": 137.156,
+    "verseId": 41414,
+    "shabadId": 3590,
+    "line": 2,
+    "lines": 9
+   },
+   {
+    "t": 173.157,
+    "verseId": 41415,
+    "shabadId": 3590,
+    "line": 3,
+    "lines": 9
+   },
+   {
+    "t": 195.078,
+    "verseId": 41412,
+    "shabadId": 3590,
+    "line": 0,
+    "lines": 9
+   },
+   {
+    "t": 249.482,
+    "verseId": 41416,
+    "shabadId": 3590,
+    "line": 4,
+    "lines": 9
+   },
+   {
+    "t": 275.253,
+    "verseId": 41417,
+    "shabadId": 3590,
+    "line": 5,
+    "lines": 9
+   },
+   {
+    "t": 298.457,
+    "verseId": 41413,
+    "shabadId": 3590,
+    "line": 1,
+    "lines": 9
+   },
+   {
+    "t": 319.803,
+    "verseId": 41412,
+    "shabadId": 3590,
+    "line": 0,
+    "lines": 9
+   },
+   {
+    "t": 388.048,
+    "verseId": 41418,
+    "shabadId": 3590,
+    "line": 6,
+    "lines": 9
+   },
+   {
+    "t": 415.01,
+    "verseId": 57964,
+    "shabadId": 4967,
+    "line": 38,
+    "lines": 94
+   },
+   {
+    "t": 425.112,
+    "verseId": 57965,
+    "shabadId": 4967,
+    "line": 39,
+    "lines": 94
+   },
+   {
+    "t": 435.2,
+    "verseId": 57966,
+    "shabadId": 4967,
+    "line": 40,
+    "lines": 94
+   },
+   {
+    "t": 447.278,
+    "verseId": 57967,
+    "shabadId": 4967,
+    "line": 41,
+    "lines": 94
+   },
+   {
+    "t": 475.769,
+    "verseId": 26952,
+    "shabadId": 2356,
+    "line": 6,
+    "lines": 18
+   },
+   {
+    "t": 485.574,
+    "verseId": 41418,
+    "shabadId": 3590,
+    "line": 6,
+    "lines": 9
+   },
+   {
+    "t": 487.868,
+    "verseId": 41412,
+    "shabadId": 3590,
+    "line": 0,
+    "lines": 9
+   },
+   {
+    "t": 524.588,
+    "verseId": 41418,
+    "shabadId": 3590,
+    "line": 6,
+    "lines": 9
+   },
+   {
+    "t": 544.446,
+    "verseId": 41419,
+    "shabadId": 3590,
+    "line": 7,
+    "lines": 9
+   },
+   {
+    "t": 571.314,
+    "verseId": 59182,
+    "shabadId": 5393,
+    "line": 0,
+    "lines": 4
+   },
+   {
+    "t": 572.442,
+    "verseId": 59183,
+    "shabadId": 5393,
+    "line": 1,
+    "lines": 4
+   },
+   {
+    "t": 582.083,
+    "verseId": 59185,
+    "shabadId": 5393,
+    "line": 3,
+    "lines": 4
+   },
+   {
+    "t": 600.732,
+    "verseId": 41419,
+    "shabadId": 3590,
+    "line": 7,
+    "lines": 9
+   },
+   {
+    "t": 621.153,
+    "verseId": 41420,
+    "shabadId": 3590,
+    "line": 8,
+    "lines": 9
+   },
+   {
+    "t": 632.487,
+    "verseId": 41412,
+    "shabadId": 3590,
+    "line": 0,
+    "lines": 9
+   },
+   {
+    "t": 653.253,
+    "verseId": 41413,
+    "shabadId": 3590,
+    "line": 1,
+    "lines": 9
+   },
+   {
+    "t": 680.477,
+    "verseId": 41412,
+    "shabadId": 3590,
+    "line": 0,
+    "lines": 9
+   }
+  ],
+  "shabads": [
+   3590,
+   4967,
+   2356,
+   5393
+  ],
+  "clip": "kh04_sttm_desktop_2026_10_08T03_51_10_447Z.wav",
+  "seconds": 793.43
+ },
+ {
+  "name": "kh05_sttm_desktop_2026_10_08T04_05_00_105Z",
+  "dataset": "sttm_desktop_2026_10_08T04_05_00_105Z",
+  "timeline": [
+   {
+    "t": 6.287,
+    "verseId": 23131,
+    "shabadId": 1967,
+    "line": 1,
+    "lines": 3
+   },
+   {
+    "t": 21.573,
+    "verseId": 23132,
+    "shabadId": 1967,
+    "line": 2,
+    "lines": 3
+   },
+   {
+    "t": 65.714,
+    "verseId": 23131,
+    "shabadId": 1967,
+    "line": 1,
+    "lines": 3
+   },
+   {
+    "t": 96.939,
+    "verseId": 23132,
+    "shabadId": 1967,
+    "line": 2,
+    "lines": 3
+   },
+   {
+    "t": 148.313,
+    "verseId": 23131,
+    "shabadId": 1967,
+    "line": 1,
+    "lines": 3
+   }
+  ],
+  "shabads": [
+   1967
+  ],
+  "clip": "kh05_sttm_desktop_2026_10_08T04_05_00_105Z.wav",
+  "seconds": 189.27
+ },
+ {
+  "name": "kh06_sttm_desktop_2026_10_09T03_56_15_071Z",
+  "dataset": "sttm_desktop_2026_10_09T03_56_15_071Z",
+  "timeline": [
+   {
+    "t": 13.01,
+    "verseId": 23117,
+    "shabadId": 1964,
+    "line": 2,
+    "lines": 3
+   },
+   {
+    "t": 75.328,
+    "verseId": 23115,
+    "shabadId": 1964,
+    "line": 0,
+    "lines": 3
+   },
+   {
+    "t": 79.905,
+    "verseId": 23117,
+    "shabadId": 1964,
+    "line": 2,
+    "lines": 3
+   },
+   {
+    "t": 87.515,
+    "verseId": 23115,
+    "shabadId": 1964,
+    "line": 0,
+    "lines": 3
+   },
+   {
+    "t": 88.405,
+    "verseId": 23116,
+    "shabadId": 1964,
+    "line": 1,
+    "lines": 3
+   },
+   {
+    "t": 139.046,
+    "verseId": 23117,
+    "shabadId": 1964,
+    "line": 2,
+    "lines": 3
+   },
+   {
+    "t": 210.398,
+    "verseId": 23118,
+    "shabadId": 1965,
+    "line": 0,
+    "lines": 3
+   },
+   {
+    "t": 211.736,
+    "verseId": 23119,
+    "shabadId": 1965,
+    "line": 1,
+    "lines": 3
+   },
+   {
+    "t": 223.158,
+    "verseId": 23120,
+    "shabadId": 1965,
+    "line": 2,
+    "lines": 3
+   },
+   {
+    "t": 243.958,
+    "verseId": 23115,
+    "shabadId": 1964,
+    "line": 0,
+    "lines": 3
+   },
+   {
+    "t": 245.316,
+    "verseId": 23117,
+    "shabadId": 1964,
+    "line": 2,
+    "lines": 3
+   },
+   {
+    "t": 297.64,
+    "verseId": 41277,
+    "shabadId": 3571,
+    "line": 5,
+    "lines": 9
+   },
+   {
+    "t": 298.896,
+    "verseId": 41278,
+    "shabadId": 3571,
+    "line": 6,
+    "lines": 9
+   },
+   {
+    "t": 305.271,
+    "verseId": 41279,
+    "shabadId": 3571,
+    "line": 7,
+    "lines": 9
+   },
+   {
+    "t": 311.977,
+    "verseId": 41280,
+    "shabadId": 3571,
+    "line": 8,
+    "lines": 9
+   },
+   {
+    "t": 321.358,
+    "verseId": 23117,
+    "shabadId": 1964,
+    "line": 2,
+    "lines": 3
+   }
+  ],
+  "shabads": [
+   1964,
+   1965,
+   3571
+  ],
+  "clip": "kh06_sttm_desktop_2026_10_09T03_56_15_071Z.wav",
+  "seconds": 348.02
+ }
+]

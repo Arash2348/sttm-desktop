@@ -14,8 +14,60 @@ const DRIVER_SHA256 = require('crypto')
   .update(fs.readFileSync(__filename))
   .digest('hex');
 
-const ROOT = path.resolve(__dirname, '../../..');
+// App code under test: VF_DRIVER_ROOT (a worktree) or this worktree. The harness (this file,
+// runners, scorers, truth) stays fixed, so base and candidate run under the same harness.
+const ROOT = process.env.VF_DRIVER_ROOT
+  ? path.resolve(process.env.VF_DRIVER_ROOT)
+  : path.resolve(__dirname, '../../..');
+// Cached deterministic replay (REPLAY.md): VF_EMIS_CACHE=<cache root> turns it on.
+//   VF_EMIS_MODE=replay (default)  every model pass is served from the cache; a miss is a hard error
+//   VF_EMIS_MODE=record            the real model runs for windows not yet cached and stores them
+// Either way the run is DETERMINISTIC: every decision completes before the next chunk, model
+// results return in call order after all other pending work (as when a pass takes ~50-100 ms),
+// and the component's Date follows the audio clock.
+const EMIS_CACHE = process.env.VF_EMIS_CACHE || '';
+const EMIS_MODE = process.env.VF_EMIS_MODE || 'replay';
+const DETERMINISTIC = !!EMIS_CACHE || process.env.VF_DETERMINISTIC === '1';
+const DATE0 = Date.UTC(2026, 0, 1);
 const COMPONENT = path.join(ROOT, 'www/main/addons/voice-follow/components/VoiceFollow.jsx');
+
+// Deterministic mode only: build the canonical corpus index once per process (the TextIndex is
+// read-only after construction) and keep its rows on disk, keyed by the Realm file + reader
+// source; compile the component once per source text. Saves ~20 s of start-up per clip.
+const CORPUS = new Map();
+function sharedCorpus(readCorpus, TextIndex, userData, retainRealm) {
+  const realmFile = path.join(userData, 'sttmdesktop-evergreen-v2.realm');
+  const st = fs.statSync(realmFile);
+  const src = fs.readFileSync(path.join(ROOT, 'test/voice-follow/canonical-corpus.js'), 'utf8');
+  const memo = `${ROOT}|${userData}`;
+  if (!CORPUS.has(memo)) {
+    const key = require('crypto').createHash('sha1').update(`${realmFile}|${st.size}|${st.mtimeMs}|${src}`).digest('hex').slice(0, 16);
+    const file = path.join(EMIS_CACHE || require('os').tmpdir(), 'corpus', `${key}.json`);
+    CORPUS.set(memo, (async () => {
+      let rows;
+      if (fs.existsSync(file)) rows = JSON.parse(fs.readFileSync(file, 'utf8'));
+      else {
+        rows = await readCorpus(userData, { retainRealm });
+        fs.mkdirSync(path.dirname(file), { recursive: true });
+        fs.writeFileSync(`${file}.${process.pid}`, JSON.stringify(rows));
+        fs.renameSync(`${file}.${process.pid}`, file);
+      }
+      return { rows, index: new TextIndex(rows) };
+    })());
+  }
+  return CORPUS.get(memo);
+}
+function compileCached(code, file, transform) {
+  if (!DETERMINISTIC) return transform();
+  const key = require('crypto').createHash('sha1').update(`${require('@babel/core').version}|${file}|${code}`).digest('hex');
+  const f = path.join(EMIS_CACHE || require('os').tmpdir(), 'babel', `${key}.js`);
+  if (fs.existsSync(f)) return fs.readFileSync(f, 'utf8');
+  const out = transform();
+  fs.mkdirSync(path.dirname(f), { recursive: true });
+  fs.writeFileSync(`${f}.${process.pid}`, out);
+  fs.renameSync(`${f}.${process.pid}`, f);
+  return out;
+}
 
 async function createDriver({
   model,
@@ -31,6 +83,7 @@ async function createDriver({
   retrievalHooks = {},
   eventClock,
   traceRecognizerInputs = false,
+  cacheId = process.env.VF_EMIS_ID || '',
 } = {}) {
   const { Infer, norm } = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/infer'));
   const { Recognizer } = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/recognizer'));
@@ -39,37 +92,120 @@ async function createDriver({
   const { partialRatio } = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/fuzz'));
   // Thread cap: ORT defaults intraOp threads to all cores; several benchmark
   // processes then oversubscribe the machine. VF_ORT_THREADS (default 4) caps it.
-  const infer = engineOverride
-    ? null
-    : await (async () => {
-        const ort = require(path.join(ROOT, 'node_modules/onnxruntime-node'));
-        const VOCAB = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/assets/vocab'));
-        const n = parseInt(process.env.VF_ORT_THREADS || '4', 10);
-        const sess = await ort.InferenceSession.create(model, { intraOpNumThreads: n, interOpNumThreads: 1 });
-        return new Infer(sess, VOCAB);
-      })();
+  const realInfer = async () => {
+    const ort = require(path.join(ROOT, 'node_modules/onnxruntime-node'));
+    const VOCAB = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/assets/vocab'));
+    const n = parseInt(process.env.VF_ORT_THREADS || '4', 10);
+    const sess = await ort.InferenceSession.create(model, { intraOpNumThreads: n, interOpNumThreads: 1 });
+    return new Infer(sess, VOCAB);
+  };
+  let cache = null;
+  let infer = null;
+  if (!engineOverride && EMIS_CACHE) {
+    if (!cacheId) throw new Error('VF_EMIS_CACHE needs a clip id (createDriver cacheId / VF_EMIS_ID)');
+    const { Store, storeDir, windowKey, CacheMiss } = require(path.join(__dirname, 'emis-cache'));
+    const codec = process.env.VF_EMIS_CODEC || 'q16';
+    const dir = storeDir({ root: EMIS_CACHE, model, codec, clip: cacheId });
+    const store = new Store(dir, { write: EMIS_MODE === 'record', codec });
+    const VOCAB = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/assets/vocab'));
+    infer = new Infer(null, VOCAB);
+    const real = EMIS_MODE === 'record' ? await realInfer() : null;
+    cache = { store, dir, hits: 0, misses: 0, recorded: 0, missErrors: [], real };
+    // FIFO: results come back in call order in both modes (ORT may finish two concurrent
+    // passes in either order; the app's outcome must not depend on that here).
+    let fifo = Promise.resolve();
+    infer.emissions = (buf) => {
+      const key = windowKey(buf);
+      const job = fifo.then(async () => {
+        let out = store.get(key);
+        if (out) cache.hits += 1;
+        else if (real) {
+          out = await real.emissions(buf); // the true f32 output: a record run is a real run
+          store.put(key, out);
+          cache.recorded += 1;
+        } else {
+          cache.misses += 1;
+          const err = new CacheMiss(key, cacheId);
+          cache.missErrors.push(err);
+          throw err;
+        }
+        await quiesce();
+        return out;
+      }).catch((e) => {
+        // The component swallows per-chunk errors; a broken model pass must still stop the run.
+        if (!cache.missErrors.includes(e)) cache.missErrors.push(e);
+        throw e;
+      });
+      fifo = job.catch(() => {});
+      return job;
+    };
+  } else if (!engineOverride) infer = await realInfer();
   const sp = SP.load();
   const modules = new Map();
   const realmHandles = new Set();
   const pending = new Set();
+  const ioPending = new Set(); // database / retrieval work only (what a model pass waits behind)
   let bridge;
   let port;
   let now = 0;
   const errors = [];
-  const emit = (type, fields = {}) =>
-    onEvent({ t: eventClock ? eventClock() : now, type, ...fields });
-  const track = (p) => {
+  const traceFile = process.env.VF_EVENT_TRACE && cacheId
+    ? path.join(process.env.VF_EVENT_TRACE, `${cacheId}.events.jsonl`)
+    : null;
+  const traceLines = [];
+  const flushTrace = () => {
+    if (!traceFile) return;
+    fs.mkdirSync(path.dirname(traceFile), { recursive: true });
+    fs.writeFileSync(traceFile, traceLines.length ? `${traceLines.join('\n')}\n` : '');
+  };
+  const emit = (type, fields = {}) => {
+    const ev = { t: eventClock ? eventClock() : now, type, ...fields };
+    if (traceFile) {
+      // wall-clock fields are never compared
+      const { inferenceMs, stack, ...keep } = ev;
+      traceLines.push(JSON.stringify(keep));
+    }
+    return onEvent(ev);
+  };
+  const track = (p, io = true) => {
     pending.add(p);
+    if (io) ioPending.add(p);
     p.then(
-      () => pending.delete(p),
+      () => {
+        pending.delete(p);
+        ioPending.delete(p);
+      },
       (e) => {
         pending.delete(p);
+        ioPending.delete(p);
         errors.push(e);
         emit('component-error', { message: String(e), stack: e.stack });
       },
     );
     return p;
   };
+  // Deterministic mode bookkeeping for calls the component handles itself (a rejection is the
+  // component's business, as before): tracked for settle()/quiesce(), never reported.
+  const trackQuiet = (p) => {
+    const q = Promise.resolve(p).then(() => {}, () => {});
+    pending.add(q);
+    ioPending.add(q);
+    q.then(() => {
+      pending.delete(q);
+      ioPending.delete(q);
+    });
+    return p;
+  };
+  // Deterministic mode: a model pass returns only once every other piece of pending
+  // database/retrieval work has finished (as on a real machine, where a pass takes
+  // 50-100 ms and that work a few ms), so interleavings never depend on timing.
+  async function quiesce() {
+    for (let i = 0; i < 50; i += 1) {
+      await new Promise(setImmediate);
+      if (!ioPending.size) return;
+      await Promise.allSettled([...ioPending]);
+    }
+  }
   const actions = {
     userSettings: { setBaniLength: (length) => emit('length', { length }) },
     navigator: {
@@ -184,7 +320,21 @@ async function createDriver({
     }
     disconnect() {}
   }
+  // Deterministic mode: the component's clock is the audio clock (live, wall time ~= audio
+  // time; under --fast wall time runs 3-10x faster than the audio and varies run to run).
+  const RealDate = Date;
+  class AudioDate extends RealDate {
+    constructor(...a) {
+      if (a.length) super(...a);
+      else super(DATE0 + Math.round(now * 1000));
+    }
+
+    static now() {
+      return DATE0 + Math.round(now * 1000);
+    }
+  }
   const context = vm.createContext({
+    ...(DETERMINISTIC ? { Date: AudioDate } : {}),
     console,
     Buffer,
     Float32Array,
@@ -212,7 +362,7 @@ async function createDriver({
     },
     __recordSwitch: (value) => emit('switch-comparison', value),
     __recordBackstop: (value) => emit('backstop-diagnostic', value),
-    __trackDecision: (promise) => track(promise),
+    __trackDecision: (promise) => track(promise, false),
   });
   function load(file, componentSource) {
     if (modules.has(file)) return modules.get(file).exports;
@@ -241,13 +391,16 @@ async function createDriver({
       if (id.endsWith('/utils/load-bani')) {
         // Real Bani rows, mapped exactly as navigator/utils/load-bani.js does.
         return {
-          loadBani: async (baniId, baniLength) => {
-            const db = load(path.join(ROOT, 'www/main/banidb/index.js'));
-            const rows = await db.loadBani(baniId, baniLength);
-            return Array.from(rows)
-              .filter((r) => r.MangalPosition !== 'above')
-              .map((r) => r.Custom || r.Verse || r)
-              .filter(Boolean);
+          loadBani: (baniId, baniLength) => {
+            const job = (async () => {
+              const db = load(path.join(ROOT, 'www/main/banidb/index.js'));
+              const rows = await db.loadBani(baniId, baniLength);
+              return Array.from(rows)
+                .filter((r) => r.MangalPosition !== 'above')
+                .map((r) => r.Custom || r.Verse || r)
+                .filter(Boolean);
+            })();
+            return DETERMINISTIC ? trackQuiet(job) : job;
           },
         };
       }
@@ -276,11 +429,14 @@ async function createDriver({
             } = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/retrieval/text-index'));
             let index;
             const client = { state: 'starting', size: 0 };
-            client.ready = readCorpus(userData, {
-              retainRealm: (realm) => realmHandles.add(realm),
-            }).then((rows) => {
+            client.ready = (DETERMINISTIC
+              ? sharedCorpus(readCorpus, TextIndex, userData, (realm) => realmHandles.add(realm))
+              : readCorpus(userData, {
+                  retainRealm: (realm) => realmHandles.add(realm),
+                }).then((rows) => ({ rows, index: new TextIndex(rows) }))
+            ).then(({ rows, index: built }) => {
               if (client.state === 'closed') throw new Error('Retrieval closed');
-              index = new TextIndex(rows);
+              index = built;
               client.state = 'ready';
               client.size = new Set(rows.map((row) => row.shabadId)).size;
               return { rows: rows.length };
@@ -312,6 +468,16 @@ async function createDriver({
       if (id === '../../../banidb') {
         const db = load(path.join(ROOT, 'www/main/banidb/index.js'));
         const wrapped = { ...db };
+        if (DETERMINISTIC) {
+          // every database call is tracked, so settle()/quiesce() wait for it
+          for (const [key, fn] of Object.entries(db)) {
+            if (typeof fn !== 'function') continue;
+            wrapped[key] = (...args) => {
+              const r = fn(...args);
+              return r && typeof r.then === 'function' ? trackQuiet(r) : r;
+            };
+          }
+        }
         for (const key of ['query', 'loadShabad', 'loadFirstLetterIndex', 'getVerse']) {
           wrapped[key] = (...args) =>
             track(
@@ -339,12 +505,15 @@ async function createDriver({
     }
     let code = componentSource || fs.readFileSync(file, 'utf8');
     if (file === COMPONENT) {
-      if (eventClock) {
+      if (eventClock || DETERMINISTIC) {
         // Tracking only affects final draining; live delivery never awaits it.
+        // Deterministic mode: settle() waits for each decision before the next chunk.
+        const n = code.split(/handleTranscript\((r?out\.text)\)/).length;
         code = code.replace(
           /handleTranscript\((r?out\.text)\)/g,
           '__trackDecision(handleTranscript($1))',
         );
+        if (DETERMINISTIC && n < 3) throw new Error('handleTranscript call anchor changed; update bench-driver.');
       }
       const comparisonMarker = '        setSwitchView({';
       if (code.split(comparisonMarker).length !== 2)
@@ -505,7 +674,8 @@ ${full}`);
         if (rc.min != null) code = code.replace(/const RETURN_MIN = [0-9.]+;/, `const RETURN_MIN = ${rc.min};`);
         if (rc.margin != null) code = code.replace(/const RETURN_MARGIN = [0-9.]+;/, `const RETURN_MARGIN = ${rc.margin};`);
       }
-      code = babel.transformSync(code, {
+      const source = code;
+      code = compileCached(source, file, () => babel.transformSync(source, {
         filename: file,
         configFile: false,
         babelrc: false,
@@ -513,7 +683,7 @@ ${full}`);
           [require.resolve('@babel/preset-env'), { targets: { node: '18' } }],
           require.resolve('@babel/preset-react'),
         ],
-      }).code;
+      }).code);
     }
     vm.runInContext(`(function(require,module,exports){${code}\n})`, context, { filename: file })(
       requireForTest,
@@ -555,8 +725,16 @@ ${full}`);
       port.onmessage({ data: pcm.buffer.slice(pcm.byteOffset, pcm.byteOffset + pcm.byteLength) });
       await bridge.chainRef.current;
       await settle();
+      // The component swallows per-chunk errors (one bad chunk must not stop the mic), so a
+      // cache miss is surfaced here: replay never falls back to the model.
+      if (cache && cache.missErrors.length) {
+        flushTrace(); // keep the events up to the miss for diagnosis
+        throw cache.missErrors[0];
+      }
       return bridge.snapshot();
     },
+    cacheStats: () =>
+      cache && { dir: cache.dir, hits: cache.hits, misses: cache.misses, recorded: cache.recorded },
     // Wall-paced producers must deliver without waiting for either inference or
     // decisions. This preserves the component's own queue/backlog behavior.
     enqueue: (pcm, t) => {
@@ -575,8 +753,8 @@ ${full}`);
       await settle();
       return bridge.snapshot();
     },
-    lock: async (candidate) => {
-      await bridge.autopilotLock(candidate);
+    lock: async (candidate, opts) => {
+      await bridge.autopilotLock(candidate, opts);
       await settle();
     },
     stopSession: async () => {
@@ -593,8 +771,16 @@ ${full}`);
         // settle awaits tracked work before surfacing its error. Native resources
         // still need releasing when a completed decision failed.
         try {
-          if (infer) await infer.sess.release();
+          if (infer && infer.sess) await infer.sess.release();
+          if (cache && cache.real) await cache.real.sess.release();
+          if (cache) {
+            if (cache.missErrors.length) throw cache.missErrors[0];
+            if (process.env.VF_EMIS_STATS !== '0')
+              console.error(`[emis-cache] ${cacheId} ${EMIS_MODE} hits ${cache.hits} recorded ${cache.recorded} misses ${cache.misses}`);
+            cache.store.close();
+          }
         } finally {
+          flushTrace();
           for (const realm of realmHandles) if (!realm.isClosed) realm.close();
           realmHandles.clear();
         }

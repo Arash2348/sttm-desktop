@@ -29,7 +29,7 @@ function readWav(file) {
     if (ONLY && !ONLY.has(part)) continue;
     const pcm = readWav(path.join(CLIPS, `${part}.wav`));
     const events = []; const t0 = Date.now();
-    const driver = await createDriver({ model: MODEL, userData: USERDATA, onEvent: (ev) => {
+    const driver = await createDriver({ model: MODEL, userData: USERDATA, cacheId: part, onEvent: (ev) => {
       if (['shabad', 'seeking', 'verse', 'length', 'pane', 'component-error'].includes(ev.type)) events.push({ t: ev.t, type: ev.type, shabadId: ev.shabadId, verseId: ev.verseId, visible: ev.visible, length: ev.length, message: ev.message });
     } });
     await driver.start();

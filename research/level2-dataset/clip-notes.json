@@ -1,0 +1,956 @@
+{
+ "_note": "Fable-side annotations for benchmark scoring. The user's Human-Fully Sheet tab is never edited; corrections the user tells me verbally go here.",
+ "clip04": {
+  "kind": "two-shabad-weave",
+  "also_correct": [
+   628
+  ],
+  "reason": "User (2026-09-16): kirtani wove 'Rakhe rakhanhaar' (1944) with 'Thir ghar baisahu' (628); both count as right page and switches between them are not flip-flops."
+ },
+ "clip22": {
+  "kind": "id-corrected",
+  "truth_override": 4563,
+  "reason": "User confirmed by ear (2026-09-16): 'Har jan bolat Sri Ram naama' (4563, Malhar M4) is sung; row line came from my Harmandir file pairing the wrong twin (4571)."
+ },
+ "clip12": {
+  "kind": "end-corrected",
+  "end_override_s": 736,
+  "reason": "User confirmed (2026-09-16): a different shabad begins at 12:16 (video AhRd4zcvGwA); score 7:25-12:16 only.",
+  "wrong_check": {
+   "clip12@283": {
+    "answer": "App right",
+    "shown": [
+     2376
+    ],
+    "parts": [
+     "clip12@283"
+    ]
+   }
+  },
+  "also_correct": [
+   2376
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "clip17": {
+  "kind": "end-corrected",
+  "end_override_s": 6110,
+  "reason": "User confirmed (2026-09-16): 'Dhan dhan Ramdas gur' is being sung at 1:41:50 (video eYgMiglXTpk); score 1:34:28-1:41:50 only."
+ },
+ "clip31": {
+  "kind": "id-corrected",
+  "truth_override": 4873,
+  "reason": "User confirmed by ear (2026-09-16): 'Amrit baani sunat nihaal' is sung -> Prabhati M5 (4873); row line was 4592's variant of the couplet's second line."
+ },
+ "clip21": {
+  "kind": "pramaan-detour",
+  "reason": "User confirmed (2026-09-16): at ~7:59 the kirtani briefly quoted another shabad ('Mohi laalan sio preet', 3120) then returned to 639. Scored conservatively: the detour still counts as wrong page, so fast RETURN is the app behaviour to improve. No also_correct granted.",
+  "also_correct": [
+   3120
+  ],
+  "note": "User 2026-09-16: 3120 line IS sung at 8:00 (pramaan); 2156 at 10:54 NOT sung."
+ },
+ "clip35": {
+  "kind": "pramaan-weave",
+  "also_correct": [
+   645,
+   53,
+   2275,
+   358,
+   5480,
+   749,
+   2590,
+   1658,
+   194
+  ],
+  "note": "User ear-check 2026-09-16: the 645 line (28:40) and the 53 line (33:50) ARE sung as pramaan; 749 (19:30) is NOT sung (mis-hear). 645 and 53 count as correct while shown. Also confirmed sung: 2275 line at 29:35 and 358 line at 35:40 (user, 2026-09-16). 5480 line at 35:15 IS sung (yes). 749, 1658 (x2), 194, 2590 hops: a pramaan was sung but the app picked the wrong shabad for it (user).",
+  "verified_2026_09_20": "User by ear 2026-09-20: 749 sung at 19:30 (latter half of the line, then next pankti); 2590 sung at 36:25; 1658 sung at 29:39; 194 sung at 34:37 (mid pangti). App was right in all four; sheet window was wrong. "
+ },
+ "clip05": {
+  "also_correct": [
+   8096
+  ],
+  "kind": "pramaan",
+  "note": "User 2026-09-16: 8096 line IS sung at 17:36 (yes); 8095 at 17:24 NOT sung (no)."
+ },
+ "clip10": {
+  "also_correct": [
+   2875
+  ],
+  "kind": "pramaan",
+  "note": "User 2026-09-16: 2875 line IS sung at 34:15 (pramaan)."
+ },
+ "clip34": {
+  "note": "User 2026-09-16: 7423 line NOT sung at 16:55 (app lingered on the Aarti piece)."
+ },
+ "clip40": {
+  "kind": "pramaan",
+  "also_correct": [
+   5029,
+   2289,
+   40629
+  ],
+  "note": "User 2026-09-16: at 6:32:44 the 5029 Kabir line IS sung (yes); 3968 at 6:31:03, 40629 at 6:31:23, 2289 at 6:32:01 NOT sung.",
+  "verified_2026_09_20": "User by ear 2026-09-20: 2289 sung at 6:32:01 (latter half of the shabad). App was right. User by ear 2026-09-20: 40629 IS sung at 6:31:24, interleaved with other pankhtis. App was right. "
+ },
+ "clip39": {
+  "kind": "pramaan",
+  "note": "User 2026-09-16: hops to 40629 (6:29:51) and 5475 (6:31:19) — pramaan sung but app picked the wrong shabad.",
+  "also_correct": [
+   40629
+  ],
+  "verified_2026_09_20": "User by ear 2026-09-20: Bhai Gurdas vaar line ਸਿਰੁ ਦੀਜੈ ਕਾਣ ਨ ਕੀਜੈ (40629) IS sung at 6:29:51, interleaved with other pankhtis and returned to. App was right. "
+ },
+ "rn78": {
+  "wrong_check": {
+   "rn78@337": {
+    "answer": "Vichar mid-shabad",
+    "note": "Stopped kirtan in the middle to talk and do contemplation on the shabad",
+    "shown": 40551
+   }
+  },
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "yuba07": {
+  "wrong_check": {
+   "yuba07@278": {
+    "answer": "App right",
+    "shown": 40531
+   }
+  },
+  "also_correct": [
+   40531
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "yuba13": {
+  "wrong_check": {
+   "yuba13@112": {
+    "answer": "App right",
+    "note": "I hear \"sur nar mun jan amirit khojate; so amrit gur thae paayee\"",
+    "shown": 3375
+   }
+  },
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check.",
+  "also_correct": [
+   3375
+  ],
+  "reason_heard": "User's Wrong Switch Check note (2026-09-26) at yuba13 1:52: heard 'sur nar mun jan amrit khojate, so amrit gur te paaya' = ਸੁਰਿ ਨਰ ਮੁਨਿ ਜਨ ਅੰਮ੍ਰਿਤੁ ਖੋਜਦੇ ਸੁ ਅੰਮ੍ਰਿਤੁ ਗੁਰ ਤੇ ਪਾਇਆ (ang 918), a line of the SHOWN shabad 3375 (Anand Sahib) -> app right; confirm with user."
+ },
+ "rn16": {
+  "wrong_check": {
+   "rn16@155": {
+    "answer": "No kirtan/katha",
+    "note": "no kirtan/katha happening",
+    "shown": 7565
+   }
+  },
+  "exclude": [
+   [
+    8690,
+    8764
+   ]
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn20": {
+  "wrong_check": {
+   "rn20@214": {
+    "answer": "App right",
+    "shown": 283
+   }
+  },
+  "also_correct": [
+   283
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn34": {
+  "wrong_check": {
+   "rn34@0": {
+    "answer": "App right",
+    "shown": 3724
+   },
+   "rn33@854": {
+    "answer": "App right",
+    "shown": 3724
+   }
+  },
+  "also_correct": [
+   3724
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn47": {
+  "wrong_check": {
+   "rn47@145": {
+    "answer": "Ardas",
+    "note": "app was right, but this was beginning of ardaas, which takes a couple of pangti first from \"chandi di vaar\"",
+    "shown": 7738
+   },
+   "rn47@119": {
+    "answer": "Ardas",
+    "note": "app was right, but this was beginning of ardaas, which takes a couple of pangti first from \"chandi di vaar\"",
+    "shown": 7738
+   },
+   "rn47@472": {
+    "answer": "App right",
+    "note": "yes, app was right, but this is the dohra after ardaas which is a shabad, but good to know that this is still apart of ardaas",
+    "shown": 31092
+   },
+   "rn47@66": {
+    "answer": "App right",
+    "shown": 906
+   }
+  },
+  "end_override_s": 10979,
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check.",
+  "also_correct": [
+   31092,
+   906
+  ]
+ },
+ "rn49": {
+  "wrong_check": {
+   "rn49@58": {
+    "answer": "Kirtan ended",
+    "note": "at this start stops kirtan",
+    "shown": 7738
+   },
+   "rn49@259": {
+    "answer": "Kirtan ended",
+    "note": "Just declaring Fateh with \"Vaheguru Ji Ka Khalsa Vaheguru Ji Ki Fateh\". this happens a lot where there isn't a slide, so the best match is \"sri vaheguru ji ki fateh\" usually in \"chandi di vaar\" which is what the app showed",
+    "shown": 7738
+   }
+  },
+  "end_override_s": 11853,
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn57": {
+  "wrong_check": {
+   "rn57@128": {
+    "answer": "Kirtan ended",
+    "note": "\"vaheguru ji ka khalsa vaheguru ji ki fateh\" to talk after",
+    "shown": [
+     12799
+    ],
+    "parts": [
+     "rn57@128"
+    ]
+   }
+  },
+  "end_override_s": 10608,
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn75": {
+  "wrong_check": {
+   "rn75@317": {
+    "answer": "Kirtan ended",
+    "note": "kirtan ended and not gurbani but contemplation and speaking on the bani",
+    "shown": 40544
+   },
+   "rn75@261": {
+    "answer": "Kirtan ended",
+    "note": "kirtan ended and not gurbani but contemplation and speaking on the bani",
+    "shown": 40544
+   },
+   "rn75@203": {
+    "answer": "Vichar mid-shabad",
+    "shown": 1077
+   }
+  },
+  "end_override_s": 6626,
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn76": {
+  "wrong_check": {
+   "rn76@443": {
+    "answer": "Vichar mid-shabad",
+    "note": "kirtan stop and contemplation is done with sevaadar stopping in the middle to speak about the guru sahib ji's pangti that was sung",
+    "shown": 1791
+   },
+   "rn76@524": {
+    "answer": "Vichar mid-shabad",
+    "shown": 1791
+   },
+   "rn76@375": {
+    "answer": "No kirtan/katha",
+    "note": "\"dhan guru arjan dev ji\" simran; praise of guru as bani pangti (not in bani)",
+    "shown": [
+     3746,
+     1171
+    ],
+    "parts": [
+     "rn76@375",
+     "rn76@398"
+    ]
+   }
+  },
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check.",
+  "exclude": [
+   [
+    7270,
+    7317
+   ]
+  ]
+ },
+ "rn77": {
+  "wrong_check": {
+   "rn77@936": {
+    "answer": "Kirtan ended",
+    "note": "I hear \"gur seetal naam deeooo\" it is kirtan though",
+    "shown": [
+     40544
+    ],
+    "parts": [
+     "rn77@936"
+    ]
+   }
+  },
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check.",
+  "end_override_s": 8401
+ },
+ "rn81": {
+  "wrong_check": {
+   "rn81@88": {
+    "answer": "No kirtan/katha",
+    "note": "no kirtan/katha happening",
+    "shown": 40047
+   },
+   "rn81@28": {
+    "answer": "No kirtan/katha",
+    "note": "\"dhan guru arjan dev ji\" simran; praise of guru as bani pangti (not in bani)",
+    "shown": [
+     40047
+    ],
+    "parts": [
+     "rn81@28"
+    ]
+   }
+  },
+  "exclude": [
+   [
+    10738,
+    10810
+   ],
+   [
+    10678,
+    10810
+   ]
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "yuba17": {
+  "wrong_check": {
+   "yuba17@245": {
+    "answer": "App right",
+    "shown": 4894
+   },
+   "yuba17@105": {
+    "answer": "App right",
+    "shown": 2638
+   },
+   "yuba17@416": {
+    "answer": "App right",
+    "shown": 7596
+   },
+   "yuba17@5": {
+    "answer": "App right",
+    "shown": [
+     2862
+    ],
+    "parts": [
+     "yuba17@5"
+    ]
+   }
+  },
+  "also_correct": [
+   4894,
+   2638,
+   7596,
+   2862
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn14": {
+  "wrong_check": {
+   "rn14@732": {
+    "answer": "Kirtan ended",
+    "note": "\"vaheguru ji ka khalsa vaheguru ji ki fateh\" to talk after",
+    "shown": [
+     7565,
+     30080
+    ],
+    "parts": [
+     "rn14@732",
+     "rn14@786"
+    ]
+   }
+  },
+  "end_override_s": 8012,
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn29": {
+  "wrong_check": {
+   "rn29@466": {
+    "answer": "App right",
+    "shown": 3950
+   }
+  },
+  "also_correct": [
+   3950
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn46": {
+  "wrong_check": {
+   "rn46@0": {
+    "answer": "Note only",
+    "note": "the label is right here, but after a bit",
+    "shown": 2312
+   }
+  },
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn10": {
+  "wrong_check": {
+   "rn10@329": {
+    "answer": "Kirtan ended",
+    "note": "\"vaheguru ji ki fateh\" and annoucements after for a bit",
+    "shown": 7738
+   }
+  },
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check.",
+  "end_override_s": 6149
+ },
+ "rn40": {
+  "wrong_check": {
+   "rn40@1030": {
+    "answer": "App right",
+    "shown": 3968
+   },
+   "rn40@984": {
+    "answer": "App right",
+    "shown": 2803
+   }
+  },
+  "also_correct": [
+   3968,
+   2803
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn55": {
+  "wrong_check": {
+   "rn55@126": {
+    "answer": "Kirtan ended",
+    "shown": 3632
+   }
+  },
+  "end_override_s": 7096,
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn58": {
+  "wrong_check": {
+   "rn58@178": {
+    "answer": "Kirtan ended",
+    "shown": 8097
+   },
+   "rn58@226": {
+    "answer": "App right",
+    "note": "I hear neither shabad I hear \"jai kee ram naam liv laagee\"",
+    "shown": 527
+   },
+   "rn58@137": {
+    "answer": "App right",
+    "shown": [
+     1152
+    ],
+    "parts": [
+     "rn58@137"
+    ]
+   }
+  },
+  "end_override_s": 11048,
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check.",
+  "also_correct": [
+   1152,
+   527
+  ]
+ },
+ "rn73": {
+  "wrong_check": {
+   "rn73@70": {
+    "answer": "Kirtan ended",
+    "note": "was kirtan and was \"aaise gur kau bal bal jaaayai\"",
+    "shown": [
+     3102
+    ],
+    "parts": [
+     "rn73@70"
+    ]
+   }
+  },
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check.",
+  "end_override_s": 3545
+ },
+ "yuba10": {
+  "wrong_check": {
+   "yuba10@770": {
+    "answer": "App wrong",
+    "shown": 4234
+   }
+  },
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn44": {
+  "wrong_check": {
+   "rn44@844": {
+    "answer": "App right",
+    "shown": [
+     1484,
+     7565
+    ],
+    "parts": [
+     "rn44@844",
+     "rn44@872"
+    ]
+   }
+  },
+  "also_correct": [
+   1484,
+   7565
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn56": {
+  "wrong_check": {
+   "rn56@153": {
+    "answer": "App right",
+    "shown": [
+     2614
+    ],
+    "parts": [
+     "rn56@153"
+    ]
+   }
+  },
+  "also_correct": [
+   2614
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn03": {
+  "wrong_check": {
+   "rn03@259": {
+    "answer": "App right",
+    "shown": [
+     2195
+    ],
+    "parts": [
+     "rn03@259"
+    ]
+   },
+   "rn03@0": {
+    "answer": "No kirtan/katha",
+    "note": "Waheguru Simran done here",
+    "shown": [
+     30080
+    ],
+    "parts": [
+     "rn03@0"
+    ]
+   }
+  },
+  "also_correct": [
+   2195
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check.",
+  "exclude": [
+   [
+    3050,
+    3056
+   ]
+  ]
+ },
+ "rn23": {
+  "wrong_check": {
+   "rn23@172": {
+    "answer": "App right",
+    "shown": [
+     2367,
+     3085
+    ],
+    "parts": [
+     "rn23@172",
+     "rn23@191"
+    ]
+   }
+  },
+  "also_correct": [
+   2367,
+   3085
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn59": {
+  "wrong_check": {
+   "rn59@365": {
+    "answer": "App right",
+    "shown": [
+     3104
+    ],
+    "parts": [
+     "rn59@365"
+    ]
+   }
+  },
+  "also_correct": [
+   3104
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn61": {
+  "wrong_check": {
+   "rn61@19": {
+    "answer": "App wrong",
+    "note": "This was mool mantar throughout",
+    "shown": [
+     1233
+    ],
+    "parts": [
+     "rn61@19"
+    ]
+   }
+  },
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn67": {
+  "wrong_check": {
+   "rn67@438": {
+    "answer": "App right",
+    "shown": [
+     40621
+    ],
+    "parts": [
+     "rn67@438"
+    ]
+   }
+  },
+  "also_correct": [
+   40621
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn70": {
+  "wrong_check": {
+   "rn70@598": {
+    "answer": "App right",
+    "shown": [
+     4713
+    ],
+    "parts": [
+     "rn70@598"
+    ]
+   }
+  },
+  "also_correct": [
+   4713
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn32": {
+  "wrong_check": {
+   "rn32@199": {
+    "answer": "App right",
+    "shown": [
+     2886
+    ],
+    "parts": [
+     "rn32@199"
+    ]
+   }
+  },
+  "also_correct": [
+   2886
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn72": {
+  "wrong_check": {
+   "rn72@1074": {
+    "answer": "App right",
+    "shown": [
+     2883
+    ],
+    "parts": [
+     "rn72@1074"
+    ]
+   }
+  },
+  "also_correct": [
+   2883
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn17": {
+  "wrong_check": {
+   "rn17@651": {
+    "answer": "App right",
+    "shown": [
+     3375
+    ],
+    "parts": [
+     "rn17@651"
+    ]
+   }
+  },
+  "also_correct": [
+   3375
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn24": {
+  "wrong_check": {
+   "rn24@0": {
+    "answer": "App right",
+    "shown": [
+     2533
+    ],
+    "parts": [
+     "rn24@0"
+    ]
+   }
+  },
+  "also_correct": [
+   2533
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn53": {
+  "wrong_check": {
+   "rn53@25": {
+    "answer": "App right",
+    "shown": [
+     1123
+    ],
+    "parts": [
+     "rn53@25"
+    ]
+   }
+  },
+  "also_correct": [
+   1123
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn71": {
+  "wrong_check": {
+   "rn71@662": {
+    "answer": "App right",
+    "shown": [
+     3694
+    ],
+    "parts": [
+     "rn71@662"
+    ]
+   }
+  },
+  "also_correct": [
+   3694
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn05": {
+  "wrong_check": {
+   "rn05@114": {
+    "answer": "No kirtan/katha",
+    "note": "vaheguru simran",
+    "shown": [
+     12323
+    ],
+    "parts": [
+     "rn05@114"
+    ]
+   }
+  },
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check.",
+  "exclude": [
+   [
+    3894,
+    3900
+   ]
+  ]
+ },
+ "rn33": {
+  "wrong_check": {
+   "rn33@854": {
+    "answer": "App right",
+    "shown": [
+     3724
+    ],
+    "parts": [
+     "rn33@854"
+    ]
+   }
+  },
+  "also_correct": [
+   3724
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn45": {
+  "wrong_check": {
+   "rn45@614": {
+    "answer": "Kirtan ended",
+    "shown": [
+     732
+    ],
+    "parts": [
+     "rn45@614"
+    ]
+   }
+  },
+  "end_override_s": 10584,
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn64": {
+  "wrong_check": {
+   "rn64@374": {
+    "answer": "App right",
+    "shown": [
+     2782
+    ],
+    "parts": [
+     "rn64@374"
+    ]
+   }
+  },
+  "also_correct": [
+   2782
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "yuba16": {
+  "wrong_check": {
+   "yuba16@5": {
+    "answer": "App right",
+    "shown": [
+     2862
+    ],
+    "parts": [
+     "yuba16@5"
+    ]
+   }
+  },
+  "also_correct": [
+   2862
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn06": {
+  "wrong_check": {
+   "rn06@291": {
+    "answer": "Kirtan ended",
+    "note": "\"vaheguru ji ki fateh\" and annoucements after for a bit",
+    "shown": [
+     31020
+    ],
+    "parts": [
+     "rn06@291"
+    ]
+   }
+  },
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check.",
+  "end_override_s": 4351
+ },
+ "rn21": {
+  "wrong_check": {
+   "rn21@401": {
+    "answer": "Kirtan ended",
+    "note": "\"vaheguru ji ki fateh\" (beginning start to singing any shabad, usually as an introduction), but then a differnet shabad of \"daaras teri ki pyaas man lagee\"",
+    "shown": [
+     12797
+    ],
+    "parts": [
+     "rn21@401"
+    ]
+   }
+  },
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check.",
+  "end_override_s": 11921
+ },
+ "rn04": {
+  "wrong_check": {
+   "rn04@264": {
+    "answer": "Kirtan ended",
+    "note": "\"vaheguru ji ki fateh\" to mool mantar for a bit",
+    "shown": [
+     702
+    ],
+    "parts": [
+     "rn04@264"
+    ]
+   }
+  },
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check.",
+  "end_override_s": 3599
+ },
+ "rn12": {
+  "wrong_check": {
+   "rn12@439": {
+    "answer": "App right",
+    "shown": [
+     4073
+    ],
+    "parts": [
+     "rn12@439"
+    ]
+   }
+  },
+  "also_correct": [
+   4073
+  ],
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn38": {
+  "wrong_check": {
+   "rn38@20": {
+    "answer": "App wrong",
+    "note": "kirtan but is \"eeikai eeikai eikh toonhi\"",
+    "shown": [
+     1481
+    ],
+    "parts": [
+     "rn38@20"
+    ]
+   }
+  },
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ },
+ "rn54": {
+  "wrong_check": {
+   "rn54@482": {
+    "answer": "App wrong",
+    "note": "kirtan of \"chaad singhshan har jeee aaaye \"",
+    "shown": [
+     3691
+    ],
+    "parts": [
+     "rn54@482"
+    ]
+   },
+   "rn54@526": {
+    "answer": "App wrong",
+    "note": "kirtan of \"chaad singhshan har jeee aaaye \"",
+    "shown": [
+     3691
+    ],
+    "parts": [
+     "rn54@526"
+    ]
+   }
+  },
+  "reason_wrong_check": "User by ear in Wrong Switch Check (2026-09-26); see wrong_check."
+ }
+}

@@ -1,7 +1,8 @@
 // Benchmark only: load the shadow config with SHADOW_BUILD off so the headless harness sees
 // the real screen actions (in a shadow build they go to the shadow bus instead).
-// Resolved relative to this worktree, so every worktree patches its own config.
+// Patches the app under test: VF_DRIVER_ROOT (see bench-driver.js), else this worktree.
 const path = require('path');
-const p = require.resolve(path.resolve(__dirname, '../../../www/main/addons/voice-follow/shadow/config.js'));
+const root = process.env.VF_DRIVER_ROOT ? path.resolve(process.env.VF_DRIVER_ROOT) : path.resolve(__dirname, '../../..');
+const p = require.resolve(path.join(root, 'www/main/addons/voice-follow/shadow/config.js'));
 const real = require(p);
 require.cache[p].exports = { ...real, SHADOW_BUILD: false };

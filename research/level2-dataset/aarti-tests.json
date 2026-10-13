@@ -1,0 +1,752 @@
+[
+ {
+  "gurdwara": "Renton Wed Aarti (11 verified pieces)",
+  "type": "AARTI",
+  "start_s": 0,
+  "end_s": 450,
+  "line": "start 0s",
+  "video_id": "r1aarti",
+  "link_t": 0,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "r1aarti",
+  "offset": 0
+ },
+ {
+  "gurdwara": "Renton Wed Aarti (11 verified pieces)",
+  "type": "AARTI",
+  "start_s": 45,
+  "end_s": 450,
+  "line": "start 45s",
+  "video_id": "r1aarti",
+  "link_t": 45,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "r1aarti",
+  "offset": 45
+ },
+ {
+  "gurdwara": "Renton Wed Aarti (11 verified pieces)",
+  "type": "AARTI",
+  "start_s": 90,
+  "end_s": 450,
+  "line": "start 90s",
+  "video_id": "r1aarti",
+  "link_t": 90,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "r1aarti",
+  "offset": 90
+ },
+ {
+  "gurdwara": "Renton Wed Aarti (11 verified pieces)",
+  "type": "AARTI",
+  "start_s": 135,
+  "end_s": 450,
+  "line": "start 135s",
+  "video_id": "r1aarti",
+  "link_t": 135,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "r1aarti",
+  "offset": 135
+ },
+ {
+  "gurdwara": "Renton Wed Aarti (11 verified pieces)",
+  "type": "AARTI",
+  "start_s": 180,
+  "end_s": 450,
+  "line": "start 180s",
+  "video_id": "r1aarti",
+  "link_t": 180,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "r1aarti",
+  "offset": 180
+ },
+ {
+  "gurdwara": "Renton Wed Aarti (11 verified pieces)",
+  "type": "AARTI",
+  "start_s": 225,
+  "end_s": 450,
+  "line": "start 225s",
+  "video_id": "r1aarti",
+  "link_t": 225,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "r1aarti",
+  "offset": 225
+ },
+ {
+  "gurdwara": "Renton Wed Aarti (11 verified pieces)",
+  "type": "AARTI",
+  "start_s": 270,
+  "end_s": 390,
+  "line": "start 270s",
+  "video_id": "r1aarti",
+  "link_t": 270,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "r1aarti",
+  "offset": 270
+ },
+ {
+  "gurdwara": "Renton Wed Aarti (11 verified pieces)",
+  "type": "AARTI",
+  "start_s": 315,
+  "end_s": 435,
+  "line": "start 315s",
+  "video_id": "r1aarti",
+  "link_t": 315,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "r1aarti",
+  "offset": 315
+ },
+ {
+  "gurdwara": "Renton Wed Aarti (11 verified pieces)",
+  "type": "AARTI",
+  "start_s": 360,
+  "end_s": 450,
+  "line": "start 360s",
+  "video_id": "r1aarti",
+  "link_t": 360,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "r1aarti",
+  "offset": 360
+ },
+ {
+  "gurdwara": "Renton Fri Aarti pieces (2642, 7596, 8095)",
+  "type": "AARTI",
+  "start_s": 0,
+  "end_s": 120,
+  "line": "start 0s",
+  "video_id": "r6aarti",
+  "link_t": 0,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "r6aarti",
+  "offset": 0
+ },
+ {
+  "gurdwara": "Renton Fri Aarti pieces (2642, 7596, 8095)",
+  "type": "AARTI",
+  "start_s": 60,
+  "end_s": 180,
+  "line": "start 60s",
+  "video_id": "r6aarti",
+  "link_t": 60,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "r6aarti",
+  "offset": 60
+ },
+ {
+  "gurdwara": "Renton Fri Aarti pieces (2642, 7596, 8095)",
+  "type": "AARTI",
+  "start_s": 120,
+  "end_s": 190,
+  "line": "start 120s",
+  "video_id": "r6aarti",
+  "link_t": 120,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "r6aarti",
+  "offset": 120
+ },
+ {
+  "gurdwara": "Renton prod Sep 27 Aarti (0:14-10:44)",
+  "type": "AARTI",
+  "start_s": 14,
+  "end_s": 134,
+  "line": "start 14s",
+  "video_id": "sep27",
+  "link_t": 14,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "sep27",
+  "offset": 14
+ },
+ {
+  "gurdwara": "Renton prod Sep 27 Aarti (0:14-10:44)",
+  "type": "AARTI",
+  "start_s": 74,
+  "end_s": 194,
+  "line": "start 74s",
+  "video_id": "sep27",
+  "link_t": 74,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "sep27",
+  "offset": 74
+ },
+ {
+  "gurdwara": "Renton prod Sep 27 Aarti (0:14-10:44)",
+  "type": "AARTI",
+  "start_s": 134,
+  "end_s": 254,
+  "line": "start 134s",
+  "video_id": "sep27",
+  "link_t": 134,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "sep27",
+  "offset": 134
+ },
+ {
+  "gurdwara": "Renton prod Sep 27 Aarti (0:14-10:44)",
+  "type": "AARTI",
+  "start_s": 194,
+  "end_s": 314,
+  "line": "start 194s",
+  "video_id": "sep27",
+  "link_t": 194,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "sep27",
+  "offset": 194
+ },
+ {
+  "gurdwara": "Renton prod Sep 27 Aarti (0:14-10:44)",
+  "type": "AARTI",
+  "start_s": 254,
+  "end_s": 374,
+  "line": "start 254s",
+  "video_id": "sep27",
+  "link_t": 254,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "sep27",
+  "offset": 254
+ },
+ {
+  "gurdwara": "Renton prod Sep 27 Aarti (0:14-10:44)",
+  "type": "AARTI",
+  "start_s": 314,
+  "end_s": 434,
+  "line": "start 314s",
+  "video_id": "sep27",
+  "link_t": 314,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "sep27",
+  "offset": 314
+ },
+ {
+  "gurdwara": "Renton prod Sep 27 Aarti (0:14-10:44)",
+  "type": "AARTI",
+  "start_s": 374,
+  "end_s": 480,
+  "line": "start 374s",
+  "video_id": "sep27",
+  "link_t": 374,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "sep27",
+  "offset": 374
+ },
+ {
+  "gurdwara": "Renton prod Sep 27 Aarti (0:14-10:44)",
+  "type": "AARTI",
+  "start_s": 434,
+  "end_s": 554,
+  "line": "start 434s",
+  "video_id": "sep27",
+  "link_t": 434,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "sep27",
+  "offset": 434
+ },
+ {
+  "gurdwara": "Renton prod Sep 27 Aarti (0:14-10:44)",
+  "type": "AARTI",
+  "start_s": 494,
+  "end_s": 614,
+  "line": "start 494s",
+  "video_id": "sep27",
+  "link_t": 494,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "sep27",
+  "offset": 494
+ },
+ {
+  "gurdwara": "Renton prod Sep 27 Aarti (0:14-10:44)",
+  "type": "AARTI",
+  "start_s": 554,
+  "end_s": 644,
+  "line": "start 554s",
+  "video_id": "sep27",
+  "link_t": 554,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "sep27",
+  "offset": 554
+ },
+ {
+  "gurdwara": "Hall test Sep 25, end of long Aarti",
+  "type": "AARTI",
+  "start_s": 0,
+  "end_s": 120,
+  "line": "start 0s",
+  "video_id": "hall",
+  "link_t": 0,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "hall",
+  "offset": 0
+ },
+ {
+  "gurdwara": "Hall test Sep 25, end of long Aarti",
+  "type": "AARTI",
+  "start_s": 60,
+  "end_s": 180,
+  "line": "start 60s",
+  "video_id": "hall",
+  "link_t": 60,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "hall",
+  "offset": 60
+ },
+ {
+  "gurdwara": "Hall test Sep 25, end of long Aarti",
+  "type": "AARTI",
+  "start_s": 120,
+  "end_s": 240,
+  "line": "start 120s",
+  "video_id": "hall",
+  "link_t": 120,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "hall",
+  "offset": 120
+ },
+ {
+  "gurdwara": "Hall test Sep 25, end of long Aarti",
+  "type": "AARTI",
+  "start_s": 180,
+  "end_s": 300,
+  "line": "start 180s",
+  "video_id": "hall",
+  "link_t": 180,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "hall",
+  "offset": 180
+ },
+ {
+  "gurdwara": "Hall test Sep 25, end of long Aarti",
+  "type": "AARTI",
+  "start_s": 240,
+  "end_s": 338,
+  "line": "start 240s",
+  "video_id": "hall",
+  "link_t": 240,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "hall",
+  "offset": 240
+ },
+ {
+  "gurdwara": "YouTube Aarti T8Qa1qq28IE (Yes)",
+  "type": "AARTI",
+  "start_s": 60,
+  "end_s": 90,
+  "line": "Aarti",
+  "video_id": "T8Qa1qq28IE",
+  "link_t": 60,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "pt35",
+  "offset": 60
+ },
+ {
+  "gurdwara": "YouTube Aarti T8Qa1qq28IE (Yes)",
+  "type": "AARTI",
+  "start_s": 250,
+  "end_s": 280,
+  "line": "Aarti",
+  "video_id": "T8Qa1qq28IE",
+  "link_t": 250,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "pt36",
+  "offset": 250
+ },
+ {
+  "gurdwara": "YouTube Aarti 1dMpII7oxEg (Yes)",
+  "type": "AARTI",
+  "start_s": 60,
+  "end_s": 90,
+  "line": "Aarti",
+  "video_id": "1dMpII7oxEg",
+  "link_t": 60,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "pt37",
+  "offset": 60
+ },
+ {
+  "gurdwara": "YouTube Aarti 1dMpII7oxEg (Yes)",
+  "type": "AARTI",
+  "start_s": 250,
+  "end_s": 280,
+  "line": "Aarti",
+  "video_id": "1dMpII7oxEg",
+  "link_t": 250,
+  "human": "Yes",
+  "shabad_ids": [
+   1
+  ],
+  "src": "pt38",
+  "offset": 250
+ },
+ {
+  "gurdwara": "YouTube Aarti Rvcw3XFSQbc (pending)",
+  "type": "AARTI",
+  "start_s": 60,
+  "end_s": 90,
+  "line": "Aarti",
+  "video_id": "Rvcw3XFSQbc",
+  "link_t": 60,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "pt39",
+  "offset": 60
+ },
+ {
+  "gurdwara": "YouTube Aarti Rvcw3XFSQbc (pending)",
+  "type": "AARTI",
+  "start_s": 249,
+  "end_s": 279,
+  "line": "Aarti",
+  "video_id": "Rvcw3XFSQbc",
+  "link_t": 249,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "pt40",
+  "offset": 249
+ },
+ {
+  "gurdwara": "YouTube Aarti Rvcw3XFSQbc (pending)",
+  "type": "AARTI",
+  "start_s": 438,
+  "end_s": 468,
+  "line": "Aarti",
+  "video_id": "Rvcw3XFSQbc",
+  "link_t": 438,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "pt41",
+  "offset": 438
+ },
+ {
+  "gurdwara": "YouTube Aarti Rvcw3XFSQbc (pending)",
+  "type": "AARTI",
+  "start_s": 627,
+  "end_s": 657,
+  "line": "Aarti",
+  "video_id": "Rvcw3XFSQbc",
+  "link_t": 627,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "pt42",
+  "offset": 627
+ },
+ {
+  "gurdwara": "YouTube Aarti TgoswO8AtpY (pending)",
+  "type": "AARTI",
+  "start_s": 60,
+  "end_s": 90,
+  "line": "Aarti",
+  "video_id": "TgoswO8AtpY",
+  "link_t": 60,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "pt43",
+  "offset": 60
+ },
+ {
+  "gurdwara": "YouTube Aarti TgoswO8AtpY (pending)",
+  "type": "AARTI",
+  "start_s": 256,
+  "end_s": 286,
+  "line": "Aarti",
+  "video_id": "TgoswO8AtpY",
+  "link_t": 256,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "pt44",
+  "offset": 256
+ },
+ {
+  "gurdwara": "YouTube Aarti TgoswO8AtpY (pending)",
+  "type": "AARTI",
+  "start_s": 453,
+  "end_s": 483,
+  "line": "Aarti",
+  "video_id": "TgoswO8AtpY",
+  "link_t": 453,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "pt45",
+  "offset": 453
+ },
+ {
+  "gurdwara": "YouTube Aarti TgoswO8AtpY (pending)",
+  "type": "AARTI",
+  "start_s": 650,
+  "end_s": 680,
+  "line": "Aarti",
+  "video_id": "TgoswO8AtpY",
+  "link_t": 650,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "pt46",
+  "offset": 650
+ },
+ {
+  "gurdwara": "YouTube Aarti aRvTXC1DRt0 (pending)",
+  "type": "AARTI",
+  "start_s": 60,
+  "end_s": 90,
+  "line": "Aarti",
+  "video_id": "aRvTXC1DRt0",
+  "link_t": 60,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "pt51",
+  "offset": 60
+ },
+ {
+  "gurdwara": "YouTube Aarti aRvTXC1DRt0 (pending)",
+  "type": "AARTI",
+  "start_s": 217,
+  "end_s": 247,
+  "line": "Aarti",
+  "video_id": "aRvTXC1DRt0",
+  "link_t": 217,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "pt52",
+  "offset": 217
+ },
+ {
+  "gurdwara": "YouTube Aarti aRvTXC1DRt0 (pending)",
+  "type": "AARTI",
+  "start_s": 374,
+  "end_s": 404,
+  "line": "Aarti",
+  "video_id": "aRvTXC1DRt0",
+  "link_t": 374,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "pt53",
+  "offset": 374
+ },
+ {
+  "gurdwara": "Renton Oct 5 Aarti (board feed, shadow session)",
+  "type": "AARTI",
+  "start_s": 0,
+  "end_s": 120,
+  "line": "start 0s",
+  "video_id": "oct5",
+  "link_t": 0,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "oct5",
+  "offset": 0
+ },
+ {
+  "gurdwara": "Renton Oct 5 Aarti (board feed, shadow session)",
+  "type": "AARTI",
+  "start_s": 60,
+  "end_s": 180,
+  "line": "start 60s",
+  "video_id": "oct5",
+  "link_t": 60,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "oct5",
+  "offset": 60
+ },
+ {
+  "gurdwara": "Renton Oct 5 Aarti (board feed, shadow session)",
+  "type": "AARTI",
+  "start_s": 120,
+  "end_s": 240,
+  "line": "start 120s",
+  "video_id": "oct5",
+  "link_t": 120,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "oct5",
+  "offset": 120
+ },
+ {
+  "gurdwara": "Renton Oct 5 Aarti (board feed, shadow session)",
+  "type": "AARTI",
+  "start_s": 180,
+  "end_s": 300,
+  "line": "start 180s",
+  "video_id": "oct5",
+  "link_t": 180,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "oct5",
+  "offset": 180
+ },
+ {
+  "gurdwara": "Renton Oct 5 Aarti (board feed, shadow session)",
+  "type": "AARTI",
+  "start_s": 240,
+  "end_s": 360,
+  "line": "start 240s",
+  "video_id": "oct5",
+  "link_t": 240,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "oct5",
+  "offset": 240
+ },
+ {
+  "gurdwara": "Renton Oct 5 Aarti (board feed, shadow session)",
+  "type": "AARTI",
+  "start_s": 300,
+  "end_s": 420,
+  "line": "start 300s",
+  "video_id": "oct5",
+  "link_t": 300,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "oct5",
+  "offset": 300
+ },
+ {
+  "gurdwara": "Renton Oct 5 Aarti (board feed, shadow session)",
+  "type": "AARTI",
+  "start_s": 360,
+  "end_s": 480,
+  "line": "start 360s",
+  "video_id": "oct5",
+  "link_t": 360,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "oct5",
+  "offset": 360
+ },
+ {
+  "gurdwara": "Renton Oct 5 Aarti (board feed, shadow session)",
+  "type": "AARTI",
+  "start_s": 420,
+  "end_s": 506,
+  "line": "start 420s",
+  "video_id": "oct5",
+  "link_t": 420,
+  "human": "pending",
+  "shabad_ids": [
+   1
+  ],
+  "src": "oct5",
+  "offset": 420
+ }
+]
