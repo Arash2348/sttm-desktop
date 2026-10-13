@@ -32,6 +32,7 @@ const argv = process.argv.slice(2);
 const flag = (n) => argv.includes(`--${n}`);
 const arg = (n, d) => { const i = argv.indexOf(`--${n}`); return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
 const CACHE = path.resolve(arg('cache', process.env.VF_EMIS_CACHE || DEFAULT_ROOT));
+const TIER = arg('tier', 'full'); // smoke: ~10 clips across all suites, after every edit; full: everything
 const JOBS = Number(arg('jobs', Math.max(1, Math.floor(os.cpus().length / 2))));
 const sh = (cmd, args, opts = {}) => execFileSync(cmd, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...opts }).trim();
 const sha1 = (s) => crypto.createHash('sha1').update(s).digest('hex');
@@ -121,15 +122,15 @@ function harnessKey() {
   const files = ['bench-driver.js', 'emis-cache.js', 'bench-runner.js', 'khalis-bench.js', 'renton-bench.js', 'nw-bench.js', 'no-shadow-preload.js'];
   return sha1(files.map((f) => fs.readFileSync(path.join(TOOLS, f), 'utf8')).join('\0'));
 }
-function ensureWorktree(rev) {
-  const sha = sh('git', ['-C', MAIN_REPO, 'rev-parse', '--verify', `${rev}^{commit}`]);
+function ensureWorktree(rev, repo = MAIN_REPO) {
+  const sha = sh('git', ['-C', repo, 'rev-parse', '--verify', `${rev}^{commit}`]);
   const dir = path.join(CACHE, 'worktrees', sha.slice(0, 12));
   if (!fs.existsSync(path.join(dir, 'www'))) {
     fs.mkdirSync(path.dirname(dir), { recursive: true });
-    sh('git', ['-C', MAIN_REPO, 'worktree', 'add', '--detach', dir, sha]);
+    sh('git', ['-C', repo, 'worktree', 'add', '--detach', dir, sha]);
   }
   const nm = path.join(dir, 'node_modules');
-  if (!fs.existsSync(nm)) fs.symlinkSync(path.join(MAIN_REPO, 'node_modules'), nm);
+  if (!fs.existsSync(nm)) fs.symlinkSync(process.env.VF_NODE_MODULES || path.join(MAIN_REPO, 'node_modules'), nm);
   return dir;
 }
 
@@ -240,6 +241,7 @@ function selectJobs(suiteNames, { only, sentinel }) {
     if (!suite) throw new Error(`unknown suite ${s} (have ${Object.keys(SUITES).join(', ')})`);
     let jobs = suite.jobs();
     if (sentinel === true || (Array.isArray(sentinel) && sentinel.includes(s))) jobs = jobs.filter((j) => suite.sentinel.includes(j.clip) || suite.sentinel.includes(j.id));
+    if (TIER === 'smoke') jobs = jobs.filter((j) => (suite.smoke || []).includes(j.clip) || (suite.smoke || []).includes(j.id));
     if (only) jobs = jobs.filter((j) => only.has(j.clip) || only.has(j.id));
     out.push(...jobs.map((j) => ({ ...j, suite: s })));
   }
@@ -349,7 +351,8 @@ async function check() {
       sentinel = scope.sentinels;
     }
   }
-  if (!base || !cand) throw new Error('need --base and --cand worktrees (or --changed A..B)');
+  if (!base && arg('base-rev')) base = ensureWorktree(arg('base-rev'), cand ? path.resolve(cand) : MAIN_REPO);
+  if (!base || !cand) throw new Error('need --base and --cand worktrees (or --base-rev <rev>, or --changed A..B)');
   base = path.resolve(base);
   cand = path.resolve(cand);
   suites = suites || Object.keys(SUITES);
@@ -451,8 +454,24 @@ async function check() {
     const bad = [...missed, ...failed].filter((t) => t.suite === s);
     let mb = {};
     let mc = {};
-    try { mb = suite.score(dirB); } catch (e) { say(`| ${s} | (scorer failed on base: ${String(e.message).split('\n')[0]}) | | | FAIL |`); allPass = false; }
-    try { mc = suite.score(dirC); } catch (e) { say(`| ${s} | (scorer failed on candidate: ${String(e.message).split('\n')[0]}) | | | FAIL |`); allPass = false; }
+    // Baseline cache: metrics per (app tree, harness, suite, clip set) in <cache>/results/; an app
+    // tree scored before returns at once. Only clean committed trees with every clip replayed.
+    const resultFile = (root) => {
+      const tk = treeKey(root);
+      const ok = !bad.length && !flag('no-reuse');
+      return tk && ok ? path.join(CACHE, 'results', `${tk.slice(0, 12)}-${hk.slice(0, 8)}`, `${s}-${sha1(sj.map((j) => j.id).sort().join(',')).slice(0, 8)}.json`) : null;
+    };
+    const scoreSide = (root, dir, label) => {
+      const f = resultFile(root);
+      if (f && fs.existsSync(f)) return JSON.parse(fs.readFileSync(f, 'utf8')).metrics;
+      try {
+        const m = suite.score(dir);
+        if (f) { fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, JSON.stringify({ root, tree: treeKey(root), suite: s, clips: sj.map((j) => j.id), metrics: m, at: new Date().toISOString() }, null, 1)); }
+        return m;
+      } catch (e) { say(`| ${s} | (scorer failed on ${label}: ${String(e.message).split('\n')[0]}) | | | FAIL |`); allPass = false; return {}; }
+    };
+    mb = scoreSide(base, dirB, 'base');
+    mc = sameTree && !bad.length ? mb : scoreSide(cand, dirC, 'candidate');
     const names = suite.metrics ? suite.metrics.map(([n]) => n) : [...new Set([...Object.keys(mb), ...Object.keys(mc)])];
     const dirOf = (n) => (suite.metrics ? suite.metrics.find(([x]) => x === n)[1] : suite.direction(n));
     let suitePass = !bad.length;

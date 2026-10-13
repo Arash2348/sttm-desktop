@@ -3,6 +3,7 @@
 // the runner is called as <args> --only <only,only,...> --out <dir> and writes <outFile> per clip),
 // score(dir) -> { metric: value } using the suite's existing scorer, and metrics: [[name, dir]],
 // where dir is +1 (higher is better), -1 (lower is better) or 0 (informational, never fails).
+// smoke = the ~10-clip after-every-edit tier (vf-check --tier smoke, < 1 min); sentinel = per-suite subset.
 // Runners/scorers are the existing tools; jobs run with --fast (every chunk awaited) and a cache.
 const fs = require('fs');
 const path = require('path');
@@ -39,6 +40,7 @@ function sheetJobs(truthFile, prefix, extra = []) {
 const SUITES = {
   l2: {
     title: 'Level-2 kirtan (41)',
+    smoke: ['clip02', 'clip05', 'clip13'],
     sentinel: ['clip01', 'clip05', 'clip09', 'clip13', 'clip17', 'clip21', 'clip25', 'clip29', 'clip33', 'clip37', 'clip40', 'clip41'],
     jobs: () => sheetJobs('human-fully-sheet.json', 'clip'),
     metrics: [['right %', 1], ['wrong %', -1], ['searching %', -1], ['found <=10 s', 1], ['found <=20 s', 1], ['found <=30 s', 1], ['never found', -1], ['longest wrong s', -1]],
@@ -51,6 +53,7 @@ const SUITES = {
   },
   paath: {
     title: 'Paath (60 with audio)',
+    smoke: ['pt01', 'pt19', 'pt28'],
     sentinel: ['pt01', 'pt05', 'pt09', 'pt12', 'pt15', 'pt19', 'pt23', 'pt28', 'pt35', 'pt41'],
     jobs: () => sheetJobs('paath-tests.json', 'pt'),
     metrics: [['Bani %', 1], ['sub-Bani %', 0], ['member shabad %', 0], ['wrong %', -1], ['none %', -1]],
@@ -62,6 +65,7 @@ const SUITES = {
   },
   aarti: {
     title: 'Aarti (50)',
+    smoke: ['aa28', 'aa41'],
     sentinel: ['aa01', 'aa10', 'aa20', 'aa30', 'aa40', 'aa45', 'aa50'],
     jobs: () => sheetJobs('aarti-tests.json', 'aa', ['--trace-all']),
     metrics: [['right %', 1], ['wrong %', -1], ['none %', -1], ['piece exact %', 1], ['heard line %', 1], ['found', 1], ['found <=30 s', 1], ['found <=60 s', 1], ['median find s', -1], ['wrong switches', -1]],
@@ -76,6 +80,7 @@ const SUITES = {
   },
   fremont: {
     title: 'Fremont line-level (5)',
+    smoke: ['kh05'],
     sentinel: ['kh01', 'kh03', 'kh05'],
     jobs: () => {
       const tests = JSON.parse(fs.readFileSync(path.join(DS, 'khalis-tests.json')));
@@ -101,6 +106,7 @@ const SUITES = {
   },
   renton: {
     title: 'Renton Oct 11 parts (7)',
+    smoke: ['rt11_hukamnama'],
     sentinel: ['rt11_sohila', 'rt11_hukamnama', 'rt11_kirtan1'],
     jobs: () => ['rt11_rehras', 'rt11_aarti', 'rt11_sohila', 'rt11_hukamnama', 'rt11_kirtan1', 'rt11_fareed1', 'rt11_fareed2'].map((p) => {
       const wav = path.join(CLIPS, `${p}.wav`);
@@ -127,6 +133,7 @@ const SUITES = {
   },
   asa: {
     title: 'Asa di Vaar Newton + YouTube',
+    smoke: [],
     sentinel: ['nw11_asa1', 'ytasa1_4IXk2t_Irqo_900-1620'],
     jobs: () => {
       const parts = ['nw11_asa1', 'nw11_asa2', 'nw11_kirtan2', 'nw11_kirtan3', 'nw11_kirtan4', 'ytasa1_4IXk2t_Irqo_900-1620'];

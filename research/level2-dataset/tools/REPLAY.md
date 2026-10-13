@@ -6,6 +6,25 @@ suite with the model's outputs served from a cache, runs ALL decision code for r
 `VoiceFollow.jsx`, recognizer/follower/follower2 logic, Realm search, judge, Bani rules), and scores
 base and candidate with the suites' own scorers.
 
+## How to benchmark a change (every agent, every change)
+
+1. **One branch.** Make your worktree from the current release head, commit your change there
+   (`git -C ~/personal/sttm-desktop worktree add ~/personal/<name> -b <branch> <head>`; symlink node_modules).
+2. **Smoke after every edit (< 1 min, no model):**
+   `node research/level2-dataset/tools/vf-check.js --base <release worktree> --cand <your worktree> --tier smoke`
+   10 clips across L2 kirtan, paath, Aarti, Fremont, Renton. Uncommitted edits are fine (dirty trees are
+   just never cached). Exit 0 = no smoke metric worse. Read the per-clip event diff, not only the table.
+3. **One final run on the candidate you would ship:**
+   `node .../vf-check.js --base <release worktree> --cand <your worktree>` (full tier), or
+   `--changed <release head>..<your head>` to run only the suites your diff can affect.
+   If clips report a CACHE MISS your change altered what the model is asked to hear (that is fine):
+   add `--fill` — it records just those clips with the model under the bench lock, then replays them.
+4. **Live-paced only for timing changes** (audio queue/backlog, Start/Stop): vf-check prints
+   "NEEDS LIVE-PACED CHECK" with the command when your diff touches those areas.
+Never run the model outside `lockf -k /tmp/vf-bench.lock nice -n 19` (vf-check does this itself).
+Results of a committed, unchanged app tree are kept per tree hash (`<cache>/results/`,
+`<cache>/replays/`), so the base side of a check is usually instant.
+
 ## How it works
 
 * **Seam:** `Infer.emissions(buf)` (one ONNX pass over one audio window -> CTC log-probs). The

@@ -1,0 +1,39 @@
+# Nightly Voice-Follow regression check by cached deterministic replay (research/level2-dataset/tools/REPLAY.md).
+# NOT ENABLED: it needs a self-hosted macOS runner (label sttm-bench) that holds the clips, the BaniDB
+# Realm and the emissions cache (~/personal/live-darbar-venues/cache). Nothing is uploaded except the
+# metrics report (no audio, no model outputs, no secrets).
+name: vf-nightly-replay
+on:
+  schedule:
+    - cron: '30 10 * * *' # 03:30 Pacific
+  workflow_dispatch:
+    inputs:
+      base:
+        description: 'Base revision to compare against'
+        default: 'origin/dev'
+      tier:
+        description: 'smoke or full'
+        default: 'full'
+permissions:
+  contents: read
+jobs:
+  replay:
+    runs-on: [self-hosted, macOS, sttm-bench]
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Cached replay (base vs this commit)
+        env:
+          VF_TIER: ${{ github.event.inputs.tier || 'full' }}
+          VF_CI_OUT: ${{ runner.temp }}/vf-ci
+        run: research/level2-dataset/tools/vf-ci.sh "${{ github.event.inputs.base || 'origin/dev' }}"
+      - name: Keep the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vf-replay-report
+          path: |
+            ${{ runner.temp }}/vf-ci/report.md
+            ${{ runner.temp }}/vf-ci/report.json
