@@ -14,10 +14,10 @@ const ROOT = path.resolve(arg('root', path.resolve(__dirname, '../../..')));
 process.env.VF_DRIVER_ROOT = ROOT;
 { const cfg = require.resolve(path.join(ROOT, 'www/main/addons/voice-follow/shadow/config.js')); const real = require(cfg); require.cache[cfg].exports = { ...real, SHADOW_BUILD: false }; }
 const { createDriver } = require(path.join(__dirname, 'nw-driver'));
-const S = '/private/tmp/claude-501/-Users-asingh02-personal-sttm-desktop/7dc20a33-cab3-495f-b630-6acf57f0287c/scratchpad';
+const NW = path.join(__dirname, '../newton'); // taps, truth, Bani 90 row maps (committed)
 const CLIPS = '/Users/asingh02/personal/live-darbar-venues/clips';
-const SESSION = path.join(S, 'newton/nw11.full16k.wav');
-const TAPS = JSON.parse(fs.readFileSync(path.join(S, 'asa/taps.json')));
+const SESSION = path.join(CLIPS, 'nw11_session.wav'); // stitched 16 kHz session (2953 s)
+const TAPS = JSON.parse(fs.readFileSync(path.join(NW, 'taps.json')));
 const MODEL = process.env.MODEL || '/Users/asingh02/AAI/models/karansea-shabad-ctc/model.int8.onnx';
 const USERDATA = process.env.VF_BANIDB_USER_DATA || path.join(process.env.HOME, 'Library/Application Support/SikhiToTheMax');
 const SR = 16000, CHUNK = 2048;
