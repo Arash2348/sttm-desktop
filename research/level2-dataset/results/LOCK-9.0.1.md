@@ -113,7 +113,7 @@ paath-65 (60 with audio) + clip35, vf-check with the VM's own cache (never pushe
 | paath-60 | Bani % | 69.9 | 70.1 |
 | paath-60 | wrong Bani % | 2.9 | 2.9 (same) |
 | paath-60 | none % | 14.1 | 14.1 |
-| paath-60 | screen events | | 59/60 clips identical, 8 of 1141 events differ (pt? one clip reaches its page earlier) |
+| paath-60 | screen events | | 59/60 clips identical; pt29 (Kirtan Sohila read, truth bani:23) differs: base stayed on Sohila's Gagan mai thaal copy 51 for the whole clip (its next shabad ties with its SGGS copy), the fix switches to 52 and opens Sohila (bani:23) at 31.4 s = the right Bani, hence Bani % 69.9 -> 70.1 |
 | L2 clip35 | right / wrong / searching % | 95.74 / 1.19 / 3.06 | 97.97 / 1.19 / 0.84 |
 
 RESULT: PASS, no metric worse. Wrong Bani did not rise.
@@ -133,4 +133,9 @@ RESULT: PASS, no metric worse. Wrong Bani did not rise.
 - Both user sessions still show an unrelated tail event (41562 at 692.7 s / 671 s) in base and fix alike.
 - The real app's So Dar case in session 9.0 was also a 45 s wait (the headless base happened to recover it through the
   return slot because it had shown shabad 40 at 8.7 s on the pre-roll); session 9.1 reproduces the never-switch exactly.
+- Tests: `node --test www/main/addons/voice-follow/components/` 35/35 pass. `test/voice-follow/component-switch-ambiguity.test.js`
+  (8 tests) fails on the UNMODIFIED base tree exactly as on the fix with "Cannot use import statement outside a module"
+  (its own component-driver cannot load the current component in this Node/Babel setup): pre-existing harness breakage,
+  not this change. Its tied-leader contract ("a tied nominee loses prior wins") is kept for ties between DIFFERENT texts;
+  the headless vf-check driver (the real harness) ran the real component on every suite above.
 
