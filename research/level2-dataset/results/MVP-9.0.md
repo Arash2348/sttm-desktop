@@ -2,13 +2,18 @@
 
 Branch `vf-mvp-9.0` (worktree ~/personal/sttm-release). Base = tonight's build, 265da34e.
 All runs on this Mac, headless, one job at a time (`lockf` + `nice 19`). No AWS. package.json untouched.
-Status: IN PROGRESS. Rows marked "pending" are still queued.
+Status: COMPLETE. Final build: vf-mvp-9.0 @ 4ff68d0d (code identical to 308b58cb).
 
-Final candidate: 9f3502ed = bounded-lag 48967e02 (+ tools 0b116930) + Stop ed954ced + paath FINAL 61488e2c
-(paath follower for every Bani incl. Aarti, Rehras at extra-long, 0.25 s step) + kirtan FINAL f4cadff6 (Start keeps the
-hidden run; Paath pool needs full-text agreement; panel honesty; no one-pangti lock) + merge fix 605b000c + bench-driver fix.
-Not taken: 73252afc (model-window memo; withdrawn by its owner, not verified).
-Slowdown stress rows were measured on dfc22708 (same code minus f4cadff6, which only changes search-phase locking).
+MVP 9.0 = bounded audio backlog 48967e02 (+ tools 0b116930) + Stop keeps the screen ed954ced + paath follower for read
+Banis 61488e2c/e7ff6324 (Rehras at extra-long, 0.25 s step, long-list headers merged) + kirtan f4cadff6 (Start keeps the
+hidden run; Paath-pool guard) + Asa di Vaar c212c736 + merge fix 605b000c + Aarti back on the line follower 308b58cb.
+Not taken: 73252afc (memo, withdrawn), a4d15a8f (anticipation: exact-line time 84 -> 70%), 787c41bb (Aarti jump: new
+Rehras false jump). package.json untouched.
+
+Which commit each suite ran on: slowdown stress dfc22708; Renton paath parts 7165bd24 (Aarti part 308b58cb);
+Renton kirtan parts, stop tests, L2-41, Fremont 9f3502ed; paath-60 7165bd24; Aarti-50 308b58cb.
+The later commits touch only Bani profiles (paath, asa) or only Aarti (308b58cb). Proof: a 13-clip L2 spot check on
+308b58cb is event-identical to both base and the 9f3502ed run (13 of 13); Fremont never opens a Bani.
 
 ## 1. The #1 Renton problem: paath and Aarti slow and behind on the Gurdwara PC — PROVEN FIXED
 
@@ -66,9 +71,9 @@ Bani 21 rows (results/rt11_rehrasX.app.truth.json, by the paath agent). Only con
 | Rehras stretches > 5 s off the line | 8 (longest 32.5 s) | 3 (longest 32.5 s) | PASS |
 | Rehras right Bani | 97.7% | 98.3% | PASS |
 | Rehras wrong page | 0.6% (9475, 10 s) | 0% | PASS |
-| Aarti median / p90 line lag | 2.3 / 3.3 s | 1.0 / 2.8 s | PASS |
-| Aarti line exact | 31.9% | 38.2% | PASS |
-| Aarti line within 1 | 45.8% | 45.2% | FAIL (small, -0.6 pt; exact and lag better) |
+| Aarti median / p90 line lag | 2.3 / 3.3 s | 2.3 / 3.3 s (1.0 / 2.8 s with the paath follower, given up for the wrong-page rule) | equal |
+| Aarti line exact | 31.9% | 31.9% | equal |
+| Aarti line within 1 | 45.8% | 45.8% | equal (Aarti part identical to base on 308b58cb) |
 | Aarti right Bani / wrong | 98.0% / 0% | 98.0% / 0% | PASS (equal) |
 | Sohila median / p90 line lag | 1.9 / 2.7 s | 0.4 / 0.9 s | PASS |
 | Sohila line exact | 60.4% | 84.1% | PASS |
@@ -160,23 +165,26 @@ are event-identical to base (Bani-level scoring; no wrong page).
 within 0.5 s; clip19 (lead-in only, outside the scored window): base shows the right Shabad 2908 at -25.3 s; 9.0 first shows 5478
 for 5.6 s, then 2908 at -13.5 s. A lead-in wrong page, not scored; listed as a watch item.
 
-### Aarti 50 (45 scored) — MVP 9.0 = 7165bd24 (aarti/aarti-score.js)
+### Aarti 50 (45 scored) — MVP 9.0 = 308b58cb (Aarti back on the line follower)
 
-| metric | Base (tonight's build, 265da34e) | MVP 9.0 | pass? |
-|---|---|---|---|
-| right (Aarti text up) | 84.8% | 84.2% | FAIL (small) |
-| wrong page | 0.3% | 0.6% | FAIL — with the paath agent |
-| nothing | 14.9% | 15.2% | FAIL (small) |
-| heard line | 73.7% | 70.0% | FAIL |
-| piece exact | 60% | 56% | FAIL |
-| found | 42/45 | 43/45 | PASS |
-| found within 30 s / 60 s, median | 33 / 38, 8 s | 33 / 39, 8 s | PASS |
-| wrong switches / longest wrong | 3 / 8 s | 6 / 8 s | FAIL |
+On 7165bd24 Aarti used the paath follower and the wrong page rose 0.3 -> 0.6% (it would not jump from "Teen lok jai jai
+karai" to the closing "Chatr chakr varti" lines, which Jaap Sahib also contains, and the judge opened Jaap's 7752).
+Decision (user: Aarti is sung like kirtan): Aarti keeps the line follower; the paath follower is for read Banis.
+Commit 308b58cb changes only that (VoiceFollow.jsx, two call sites), so no other suite needed a rerun.
 
-By set: Sep 27 right 67.3 -> 70.4% (wrong 0.6 -> 0), r1aarti 92.7 -> 90.4% (wrong 0.3 -> 1.1%), Oct 5 98.7 -> 98.1%
-(wrong 0 -> 0.7%), YouTube heard-line 93.3 -> 95.8%. New wrong pages while Bani 22 is up: 7752 for ~5 s in aa03, aa08,
-aa09 (lead-in), aa50; 5478 for 8 s in aa04. The Aarti profile now uses the paath follower; it lets go and the judge
-switches. Sent to the paath agent (clips and times). 35 of 50 clips identical.
+| metric | Base (tonight's build, 265da34e) | 7165bd24 (paath follower) | MVP 9.0 (308b58cb) | pass? |
+|---|---|---|---|---|
+| right (Aarti text up) | 84.8% | 84.2% | 85.3% | PASS |
+| wrong page | 0.3% | 0.6% | 0.2% | PASS |
+| nothing | 14.9% | 15.2% | 14.5% | PASS |
+| piece exact | 60% | 56% | 60.2% | PASS |
+| heard line | 73.7% | 70.0% | 73.2% | FAIL (small, -0.5 pt; Sep 27 set 30.1 -> 28.3%) |
+| found / within 60 s | 42 / 38 | 43 / 39 | 43 / 39 | PASS |
+| wrong switches | 3 | 6 | 2 | PASS |
+
+41 of 50 clips identical to base; the rest are first locks within 1 s, aa20 found 40 s earlier, aa13/aa14 without a
+brief detour. Note: a cache job ran alongside part of this run (machine load ~10); --fast awaits every chunk, so
+decisions do not depend on timing.
 
 ## 5. Stop keeps the screen (stop-keeps-screen-test on 9f3502ed; Rehras clip, user length short / medium / long)
 
@@ -218,7 +226,7 @@ Real screen on his Mac (8.6c), part 1: 33% within one line, 28/83 lines reached,
 | Paath/Aarti slow and behind on the Gurdwara PC | audio waiting, slowed engine: Rehras / Aarti / kirtan | 154 / 159 / 73 s, growing without limit | 1.7 / 1.4 / 0.9 s, bounded | YES |
 | Rehras screen behind the reader | median line lag | tonight 8.3 s (real screen); slowed bench 39 s; normal bench 1.8 s | slowed 1.2 s; normal 0.4 s | YES (< 1 s at normal speed) |
 | Rehras > 1 line behind for > 5 s | stretches off the line | tonight 22, longest 256 s; slowed bench longest 489 s; normal 8 | slowed 2, longest 9.9 s; normal 5, longest 32.5 s (start-up, 9475, 30080, two reader skips) | YES vs base; not zero |
-| Aarti behind / wrong page | median line lag; wrong page | tonight 5.1 s, 5.2% wrong; slowed 30.4 s; normal 2.3 s | slowed 2.0 s; normal 1.0 s; 0% wrong | YES |
+| Aarti behind / wrong page | median line lag; wrong page | tonight 5.1 s, 5.2% wrong; slowed 30.4 s; normal 2.3 s | slowed 2.0 s (backlog fix); normal 2.3 s; 0% wrong | YES for the PC backlog; follower lag unchanged (Aarti stays on the line follower) |
 | Kirtan taps (5299, 5238) | first on screen | 727 / 1091 s (taps) | 5299 at 551 via Start keeping the hidden lock; 5238 1039 s | YES |
 | Hukamnama stays good | first on screen, wrong page | 3945.2 s, 0 | 3945.2 s, 0 (identical) | YES |
 | Stop moves the screen | stop-keeps-screen test | moves (base restores length) | ALL PASS at short, medium, long | YES |
@@ -236,3 +244,11 @@ Real screen on his Mac (8.6c), part 1: 33% within one line, 28/83 lines reached,
 | ec919ac1, 326643e0 | kirtan: Start keeps the hidden run; one-pangti first lock; pool guard (kirtan, not FINAL) |
 | 605b000c | merge fix: Start-adopt records the length raise, so Stop parks it |
 | 679c0095 ... 222adf1c | release tools; bench driver provides the paath follower |
+
+## Follow-ups (not in 9.0)
+
+- Aarti on the paath follower (lag 2.3 -> 1.0 s on Renton) once its far-jump rule (787c41bb) stops the new Rehras false jump.
+- Paath-pool guard costs Jaap pt06 11 s and Japji pt58 30 s on first lock (wrong page unchanged); kirtan side.
+- Newton part 2: reopen a Bani already followed this session after a chhant locks as a Shabad (asa).
+- aa04: judge picks 5478/4967 for a Ramdas Sarovar shabad after Aarti (kirtan judge).
+- L2 clip19: 5478 for 5.6 s in the unscored lead-in.
