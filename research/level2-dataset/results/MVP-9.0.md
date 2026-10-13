@@ -154,7 +154,23 @@ are event-identical to base (Bani-level scoring; no wrong page).
 within 0.5 s; clip19 (lead-in only, outside the scored window): base shows the right Shabad 2908 at -25.3 s; 9.0 first shows 5478
 for 5.6 s, then 2908 at -13.5 s. A lead-in wrong page, not scored; listed as a watch item.
 
-### Aarti 50 — pending (running on 7165bd24)
+### Aarti 50 (45 scored) — MVP 9.0 = 7165bd24 (aarti/aarti-score.js)
+
+| metric | Base (tonight's build, 265da34e) | MVP 9.0 | pass? |
+|---|---|---|---|
+| right (Aarti text up) | 84.8% | 84.2% | FAIL (small) |
+| wrong page | 0.3% | 0.6% | FAIL — with the paath agent |
+| nothing | 14.9% | 15.2% | FAIL (small) |
+| heard line | 73.7% | 70.0% | FAIL |
+| piece exact | 60% | 56% | FAIL |
+| found | 42/45 | 43/45 | PASS |
+| found within 30 s / 60 s, median | 33 / 38, 8 s | 33 / 39, 8 s | PASS |
+| wrong switches / longest wrong | 3 / 8 s | 6 / 8 s | FAIL |
+
+By set: Sep 27 right 67.3 -> 70.4% (wrong 0.6 -> 0), r1aarti 92.7 -> 90.4% (wrong 0.3 -> 1.1%), Oct 5 98.7 -> 98.1%
+(wrong 0 -> 0.7%), YouTube heard-line 93.3 -> 95.8%. New wrong pages while Bani 22 is up: 7752 for ~5 s in aa03, aa08,
+aa09 (lead-in), aa50; 5478 for 8 s in aa04. The Aarti profile now uses the paath follower; it lets go and the judge
+switches. Sent to the paath agent (clips and times). 35 of 50 clips identical.
 
 ## 5. Stop keeps the screen (stop-keeps-screen-test on 9f3502ed; Rehras clip, user length short / medium / long)
 
