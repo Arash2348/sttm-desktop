@@ -140,3 +140,7 @@ Env: `VF_EMIS_CACHE`, `VF_EMIS_MODE=replay|record`, `VF_EMIS_CODEC=q16|f32`, `VF
   one audio chunk earlier (9.94 vs 10.06 s): the deterministic driver finishes a decision before the
   next chunk, --fast finished this one during the next chunk. Expected divergence; it can flip a
   threshold metric (found <= 10 s) on a clip right at the boundary.
+- 2026-10-12 23:30. Shared cache on Khalis Azure (banidb / voice-follow-training-data, prefix bench-cache/):
+  `vf-check cache push|pull|list`; vf-check pulls missing clips automatically before replaying.
+  Validated small first: pushed clip02 (12.5 MB), removed it locally, pulled it back (byte-identical),
+  replayed: event-for-event identical to the real-model record.

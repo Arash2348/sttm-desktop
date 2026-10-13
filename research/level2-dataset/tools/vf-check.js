@@ -409,6 +409,14 @@ async function check() {
       } else todo[side].push(j);
     }
   }
+  // a clip not cached here may be in the shared Azure copy: fetch it before replaying (never records)
+  if (!flag('no-pull') && (todo.base.length || todo.cand.length)) {
+    try {
+      const need = [...new Map([...todo.base, ...todo.cand].map((j) => [j.id, { id: j.id, wav: j.wav }])).values()];
+      const r = await require('./remote-cache').pull({ root: CACHE, model: msha.slice(0, 12), codec: CODEC, clips: need, log: () => {} });
+      if (r.pulled) say(`pulled ${r.pulled} clips (${(r.bytes / 1e6).toFixed(1)} MB) from the shared cache`);
+    } catch (e) { say(`(shared cache not reachable: ${String(e.message).slice(0, 120)})`); }
+  }
   const tasks = [...makeTasks(todo.base, 'base', base, outRoot, 'replay'), ...makeTasks(todo.cand, 'cand', cand, outRoot, 'replay')];
   const nRuns = todo.base.length + todo.cand.length;
   say(`replaying ${nRuns} clip runs in ${tasks.length} processes (${nReused} reused from earlier replays of the same app tree${sameTree ? '; candidate tree == base tree' : ''})`);
@@ -530,8 +538,31 @@ async function check() {
   process.exitCode = allPass ? 0 : 1;
 }
 
+// vf-check cache push|pull: sync the local emissions cache with the shared Azure copy (remote-cache.js).
+async function cacheCmd(what) {
+  const remote = require('./remote-cache');
+  const suites = (arg('suites', Object.keys(SUITES).join(','))).split(',');
+  const only = arg('only') ? new Set(arg('only').split(',')) : null;
+  const clips = selectJobs(suites, { only, sentinel: flag('sentinel') }).map((j) => ({ id: j.id, wav: j.wav }));
+  const model = modelSha(MODEL, CACHE).slice(0, 12);
+  const t0 = now();
+  if (what === 'push') {
+    let commit = null;
+    try { commit = sh('git', ['-C', TOOLS, 'rev-parse', '--short', 'HEAD']); } catch (_) { /* none */ }
+    const r = await remote.push({ root: CACHE, model, codec: CODEC, clips, commit });
+    console.log(`pushed ${r.pushed} clips, ${(r.bytes / 1e6).toFixed(1)} MB in ${fmtS(now() - t0)}; remote bench-cache/ total ${(r.remoteTotal / 1e6).toFixed(1)} MB`);
+  } else if (what === 'pull') {
+    const r = await remote.pull({ root: CACHE, model, codec: CODEC, clips });
+    console.log(`pulled ${r.pulled} clips, ${(r.bytes / 1e6).toFixed(1)} MB in ${fmtS(now() - t0)}`);
+  } else if (what === 'list') {
+    const m = await remote.list();
+    console.log(`${m.size} blobs, ${([...m.values()].reduce((a, b) => a + b, 0) / 1e6).toFixed(1)} MB under bench-cache/`);
+  } else throw new Error('vf-check cache push|pull|list');
+}
+
 if (require.main === module) {
   (async () => {
+    if (argv[0] === 'cache') return cacheCmd(argv[1]);
     if (arg('pool')) return pool(arg('pool'));
     if (flag('record')) return record();
     return check();
