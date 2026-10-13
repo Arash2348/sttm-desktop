@@ -53,31 +53,32 @@ Sohila lag 6 s, within 1 14.4%.
 
 Section 1 used an artificial handicap (1 thread + 120 ms per model pass) to reproduce the slow PC. Here the same
 parts run un-handicapped: fresh Start at the start of each part, `--fast` (every chunk awaited, so no backlog).
-MVP 9.0 = 9f3502ed. Rehras scored on the truth realigned at extra-long, with app verse ids taken from the app's own
+MVP 9.0 = 7165bd24 for the three paath parts (9f3502ed for the kirtan parts; the two later commits only touch Bani
+profiles). Rehras scored on the truth realigned at extra-long, with app verse ids taken from the app's own
 Bani 21 rows (results/rt11_rehrasX.app.truth.json, by the paath agent). Only confident truth time is scored.
 
 | part / metric | Base (tonight's build, 265da34e) | MVP 9.0 | pass? |
 |---|---|---|---|
 | Rehras median / p90 line lag | 1.8 / 2.8 s | 0.4 / 1.0 s | PASS (target < 1 s met) |
-| Rehras line exact | 50.2% | 77.2% | PASS |
-| Rehras line within 1 | 88.1% | 93.5% | PASS |
-| Rehras lines reached | 351/390 | 377/390 | PASS |
-| Rehras stretches > 5 s off the line | 8 (longest 32.5 s) | 5 (longest 32.5 s) | PASS |
-| Rehras right Bani | 97.7% | 97.3% | FAIL (small, = the 30080 page) |
-| Rehras wrong page | 0.6% (9475, 10 s) | 0.9% (9475 10 s + 30080 5.7 s) | FAIL — sent to paath |
+| Rehras line exact | 50.2% | 78.0% | PASS |
+| Rehras line within 1 | 88.1% | 94.5% | PASS |
+| Rehras lines reached | 351/390 | 380/390 | PASS |
+| Rehras stretches > 5 s off the line | 8 (longest 32.5 s) | 3 (longest 32.5 s) | PASS |
+| Rehras right Bani | 97.7% | 98.3% | PASS |
+| Rehras wrong page | 0.6% (9475, 10 s) | 0% | PASS |
 | Aarti median / p90 line lag | 2.3 / 3.3 s | 1.0 / 2.8 s | PASS |
 | Aarti line exact | 31.9% | 38.2% | PASS |
-| Aarti line within 1 | 45.8% | 45.2% | FAIL (small, -0.6) |
+| Aarti line within 1 | 45.8% | 45.2% | FAIL (small, -0.6 pt; exact and lag better) |
 | Aarti right Bani / wrong | 98.0% / 0% | 98.0% / 0% | PASS (equal) |
 | Sohila median / p90 line lag | 1.9 / 2.7 s | 0.4 / 0.9 s | PASS |
 | Sohila line exact | 60.4% | 84.1% | PASS |
 | Sohila line within 1 | 94.3% | 94.8% | PASS |
 | Sohila right Bani / wrong | 99.8% / 0% | 99.8% / 0% | PASS (equal) |
 
-New wrong page on Rehras: at 653-658 s the reader says "Ik Oankar Sri Vaheguru ji ki fateh, Patshahi 10" and goes
-into the extra-long Chaupai. The follower lets go, the search locks Bhai Nand Lal's Ganj Nama (30080) on "Vaheguru"
-for 5.7 s, then the Bani comes back at the new line (base stays on the Bani but shows a stale line: it has no
-extra-long lines). Sent to the paath agent.
+On 9f3502ed Rehras had one new wrong page: at 653-658 s the reader says "Ik Oankar Sri Vaheguru ji ki fateh,
+Patshahi 10" (where the long list has it; the app's extra-long list has it ~35 lines later), the follower lost it and the
+search locked Bhai Nand Lal's Ganj Nama (30080) for 5.7 s. Fixed in e7ff6324 (paath): the extra-long Rehras is followed
+with the long list's header rows merged in (never shown). On 7165bd24 both 30080 and base's 9475 detour are gone.
 
 | Kirtan Shabad (S2 seconds) | sung from | tonight on screen | Base | MVP 9.0 |
 |---|---|---|---|---|
@@ -142,7 +143,7 @@ The test now expects extra-long (commit on vf-mvp-9.0); app behaviour unchanged.
 | Hukamnama stays good | first on screen, wrong page | 3945.2 s, 0 | 3945.2 s, 0 (identical) | YES |
 | Stop moves the screen | stop-keeps-screen test | moves (base restores length) | ALL PASS at short, medium, long | YES |
 | Renton reads Rehras extra-long | lines the app can show | long (442 rows) | extra-long (61488e2c) | YES (code) |
-| New: Rehras wrong page at the Fateh before extra-long Chaupai | wrong page | 0.6% | 0.9% (30080, 5.7 s) | REGRESSION, with paath agent |
+| Rehras wrong page (9475 detour; Fateh header before extra-long Chaupai) | wrong page | 0.6% | 0% (e7ff6324) | YES |
 
 ## Commits on vf-mvp-9.0
 
