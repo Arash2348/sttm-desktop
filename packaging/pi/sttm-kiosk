@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# SikhiToTheMax as a Raspberry Pi appliance: started by the desktop at login (see
+# setup-pi.sh), it opens STTM with the presenter view on the projector and Voice-Follow
+# already listening. If STTM closes or crashes it is opened again.
+#
+# Settings live in /etc/sttm-kiosk.conf (written by setup-pi.sh):
+#   KIOSK_NAME=...       who set this Pi up; blank = record nothing for Voice-Follow research
+#   KIOSK_GURDWARA=...   which Gurdwara (used only with KIOSK_NAME)
+#   STTM_EXTRA_FLAGS=... extra command-line flags for STTM (rarely needed)
+set -u
+
+CONF=/etc/sttm-kiosk.conf
+KIOSK_NAME=""
+KIOSK_GURDWARA=""
+ENV_FLAGS="${STTM_EXTRA_FLAGS:-}" # flags given by the caller (tests) are kept
+STTM_EXTRA_FLAGS=""
+# shellcheck disable=SC1090
+[ -r "$CONF" ] && . "$CONF"
+STTM_EXTRA_FLAGS="$STTM_EXTRA_FLAGS $ENV_FLAGS"
+
+export STTM_KIOSK=1
+export STTM_KIOSK_NAME="$KIOSK_NAME"
+export STTM_KIOSK_GURDWARA="$KIOSK_GURDWARA"
+
+# The .deb installs STTM under /opt/<product name>/; its desktop entry names the binary.
+find_sttm() {
+  local exe
+  exe=$(grep -h '^Exec=' /usr/share/applications/sttm-desktop*.desktop 2>/dev/null |
+    head -n 1 | sed -e 's/^Exec=//' -e 's/ %[a-zA-Z]//g' -e 's/"//g')
+  if [ -n "$exe" ] && [ -x "$exe" ]; then echo "$exe"; return; fi
+  for exe in /opt/*/sttm-desktop; do
+    [ -x "$exe" ] && { echo "$exe"; return; }
+  done
+}
+
+BIN=$(find_sttm)
+if [ -z "$BIN" ]; then
+  echo "sttm-kiosk: SikhiToTheMax is not installed (no /opt/*/sttm-desktop)" >&2
+  exit 1
+fi
+
+# Let the desktop, audio server and USB microphone finish starting after login.
+sleep "${STTM_KIOSK_BOOT_WAIT:-5}"
+
+fails=0
+while true; do
+  started=$(date +%s)
+  # shellcheck disable=SC2086
+  "$BIN" $STTM_EXTRA_FLAGS "$@"
+  # A run shorter than a minute counts as a failure; back off so a broken install
+  # does not spin the CPU, and reset once it has stayed up.
+  if [ $(( $(date +%s) - started )) -lt 60 ]; then fails=$((fails + 1)); else fails=0; fi
+  sleep $(( fails > 5 ? 60 : 5 ))
+done

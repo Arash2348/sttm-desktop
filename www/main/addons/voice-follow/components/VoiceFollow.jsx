@@ -24,6 +24,7 @@ installDemoAudio(); // developer demos only (VF_DEMO_WAV); a no-op otherwise
 const shadowBus = require('../shadow/bus');
 const { diag } = require('../shadow/diag');
 const { SHADOW_BUILD, SHADOW_CPU_PAUSE, SHADOW_CPU_RESUME } = require('../shadow/config');
+const { KIOSK, KIOSK_START_DELAY_MS, KIOSK_RETRY_MS } = require('../kiosk');
 const os = require('os'); // eslint-disable-line import/order
 
 // Shadow mode (tester builds): Voice-Follow runs with no panel and never touches the
@@ -3555,7 +3556,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // hands-free experience; manual follow / one-shot detect are the fallbacks.
   // Visible mode in a tester build: stop the hidden run, mark the session, and start for
   // real; Stop hands the shadow back (the shadow state machine restarts the hidden run).
+  const kioskStoppedRef = useRef(false); // the sevadaar pressed Stop on a kiosk
   const takeOver = async () => {
+    kioskStoppedRef.current = false;
     clearTimeout(ratingTimerRef.current);
     setAskRating(false);
     shadowStateRef.current.running = false;
@@ -3567,6 +3570,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     await startAutopilot();
   };
   const release = () => {
+    kioskStoppedRef.current = true;
     stop();
     visibleRef.current = false;
     shadowStateRef.current.up = null; // so the hidden run's vf_up is logged again
@@ -3581,6 +3585,27 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     clearTimeout(ratingTimerRef.current);
     setAskRating(false);
   };
+  // Kiosk (Raspberry Pi appliance, see ../kiosk.js): start following on launch and start
+  // again if it stops on its own. A sevadaar who presses Stop is respected until Start.
+  const kioskStartRef = useRef(null);
+  kioskStartRef.current = () => {
+    // In the experimental build a hidden run may already be listening: that is not the
+    // visible Voice-Follow the projector needs, so take it over.
+    const following = autopilotRef.current && (!SHADOW_BUILD || visibleRef.current);
+    if (kioskStoppedRef.current || following) return;
+    if (SHADOW_BUILD) takeOver();
+    else startAutopilot();
+  };
+  useEffect(() => {
+    if (!KIOSK) return undefined;
+    const first = setTimeout(() => kioskStartRef.current(), KIOSK_START_DELAY_MS);
+    const retry = setInterval(() => kioskStartRef.current(), KIOSK_RETRY_MS);
+    return () => {
+      clearTimeout(first);
+      clearInterval(retry);
+    };
+  }, []);
+
   let onMainClick = start;
   if (SHADOW_BUILD) onMainClick = active ? release : takeOver;
   else if (active) onMainClick = stop;

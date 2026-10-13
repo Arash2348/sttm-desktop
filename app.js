@@ -396,9 +396,16 @@ function trackDisplay(action) {
   });
 }
 
+// Kiosk mode (STTM_KIOSK=1, set by the Raspberry Pi launcher packaging/pi/sttm-kiosk): the
+// Pi may be wired to the projector alone. With no second screen, that one screen IS the
+// projector, so the presenter view covers it full screen instead of the controller.
+const KIOSK = process.env.STTM_KIOSK === '1';
+
 function getExternalDisplays() {
-  const primaryDisplayId = electron.screen.getPrimaryDisplay().id;
-  return electron.screen.getAllDisplays().filter((display) => display.id !== primaryDisplayId);
+  const primary = electron.screen.getPrimaryDisplay();
+  const externals = electron.screen.getAllDisplays().filter((display) => display.id !== primary.id);
+  if (KIOSK && externals.length === 0) return [primary];
+  return externals;
 }
 
 function trackDisplay2Connection() {
@@ -1230,6 +1237,8 @@ app.on('ready', () => {
   }
   const analytics = new Analytics();
   global.analytics = analytics;
+  // A kiosk drives a projector all day: never let the screen blank or the Pi sleep.
+  if (KIOSK) electron.powerSaveBlocker.start('prevent-display-sleep');
 
   const screens = electron.screen;
   const { width, height } = screens.getPrimaryDisplay().workAreaSize;

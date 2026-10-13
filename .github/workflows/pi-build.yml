@@ -1,0 +1,125 @@
+# Raspberry Pi (64-bit Raspberry Pi OS, arm64) build of SikhiToTheMax, plus an unattended
+# kiosk test: install the .deb with packaging/pi/setup-pi.sh, start it through the kiosk
+# launcher with a kirtan recording as the microphone, and check the projector shows the
+# Shabad with nobody touching anything. Runs on GitHub's arm64 Linux runners, the same CPU
+# architecture as a Pi.
+name: Raspberry Pi build
+
+on:
+  push:
+    branches:
+      - pi-kiosk
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18.18.0'
+          cache: npm
+
+      - name: Packaging tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ruby ruby-dev rpm libarchive-tools
+          sudo gem install --no-document fpm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Speech model (Voice-Follow, bundled into the package)
+        run: |
+          mkdir -p build-resources/voice-follow
+          curl -L --retry 3 -o build-resources/voice-follow/model.int8.onnx \
+            "https://huggingface.co/karansea/indicconformer-stt-pa-ctc-shabad-preview/resolve/main/model.int8.onnx?download=true"
+          SIZE=$(wc -c < build-resources/voice-follow/model.int8.onnx | tr -d ' ')
+          echo "model bytes: $SIZE"; test "$SIZE" -gt 180000000
+
+      - name: Build
+        run: npm run build
+
+      - name: Package .deb (arm64)
+        env:
+          USE_SYSTEM_FPM: 'true'
+        run: npx electron-builder --linux deb --arm64 --publish never
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sttm-pi-deb
+          path: builds/*.deb
+          if-no-files-found: error
+
+  kiosk-e2e:
+    needs: build
+    runs-on: ubuntu-24.04-arm
+    strategy:
+      fail-fast: false
+      matrix:
+        # 4 cores = the runner as is; 2 cores = a rough stand-in for a Pi 5's speed.
+        cores: [4, 2]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: sttm-pi-deb
+          path: deb
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Test tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb ffmpeg
+
+      - name: Install the way a Pi would (setup-pi.sh)
+        env:
+          NONINTERACTIVE: '1'
+        run: packaging/pi/setup-pi.sh deb/*.deb && cat /etc/sttm-kiosk.conf && cat ~/.config/autostart/sttm-kiosk.desktop
+
+      - name: Kirtan recording for the microphone (first 3 minutes of the published demo)
+        run: |
+          curl -fsSL -o demo.mp4 \
+            https://github.com/Arash2348/sttm-desktop/releases/download/test-videos-2026-10-08/VoiceFollow-Demo.mp4
+          ffmpeg -v error -y -i demo.mp4 -t 180 -vn -ac 1 -ar 16000 /tmp/kirtan.wav
+
+      - name: Start the kiosk with nobody at the keyboard
+        run: |
+          Xvfb :99 -screen 0 1920x1080x24 &
+          sleep 2
+          ffmpeg -v error -y -f x11grab -video_size 1920x1080 -framerate 4 -i :99 -t 270 \
+            -vf scale=1280:-2 -pix_fmt yuv420p kiosk-screen.mp4 &
+          LAST=$(( ${{ matrix.cores }} - 1 ))
+          DISPLAY=:99 VF_DEMO_WAV=/tmp/kirtan.wav STTM_KIOSK_BOOT_WAIT=0 \
+            STTM_EXTRA_FLAGS="--no-sandbox --remote-debugging-port=9222" \
+            nohup taskset -c 0-$LAST /usr/local/bin/sttm-kiosk > sttm.log 2>&1 &
+          echo "started on cores 0-$LAST"
+
+      - name: Projector shows the Shabad by itself
+        run: |
+          node packaging/pi/e2e/kiosk-e2e.js --port 9222 --seconds 240 --out out \
+            --expect 'ਨਾਮੁ ਤੇਰ|ਤੇਰੋ ਕੀਆ|ਆਰਤੀ|nwmu qyr|qyro kIAw|AwrqI|Your Name is'
+
+      - name: Collect evidence
+        if: always()
+        run: |
+          sleep 5
+          pkill -f sttm-kiosk || true
+          pkill -f sttm-desktop || true
+          pkill -INT ffmpeg || true
+          sleep 3
+          cp sttm.log out/ 2>/dev/null || true
+          cp kiosk-screen.mp4 out/ 2>/dev/null || true
+          ls -la out || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kiosk-e2e-${{ matrix.cores }}-cores
+          path: out

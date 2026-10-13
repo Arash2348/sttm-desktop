@@ -10,6 +10,7 @@ const bus = require('./bus');
 const uploader = require('./uploader');
 const hf = require('./hf');
 const { HF_TOKEN } = require('./config');
+const { KIOSK, KIOSK_TESTER } = require('../kiosk');
 const service = require('./service');
 const listener = require('./listener');
 const pcm = require('./pcm');
@@ -209,6 +210,20 @@ const ShadowCollector = () => {
 
   useEffect(() => {
     if (SHADOW_BUILD) lookupPublicIp();
+  }, []);
+  // Kiosk: the consent card is answered at install (packaging/pi/setup-pi.sh), never on
+  // screen, because nobody is at the Pi. No name given at install = nothing is recorded.
+  useEffect(() => {
+    if (!SHADOW_BUILD || !KIOSK_TESTER || tester.name) return;
+    setShadowTester(
+      packTester({
+        ...KIOSK_TESTER,
+        gurdwara: KIOSK_TESTER.gurdwara || machineName(),
+        id: `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
+      }),
+    );
+    setShadowRecording(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const enabled = SHADOW_BUILD && !!tester.name && shadowRecording !== false;
 
@@ -562,7 +577,7 @@ const ShadowCollector = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
 
-  if (!SHADOW_BUILD || tester.name) return null;
+  if (!SHADOW_BUILD || tester.name || KIOSK) return null;
 
   // First launch only: who is testing (to group sessions), and the agreement.
   return (
