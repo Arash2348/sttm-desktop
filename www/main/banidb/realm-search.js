@@ -1,9 +1,9 @@
 /* eslint-disable import/no-dynamic-require, global-require */
 const electron = require('electron');
 const path = require('path');
-const Realm = require('realm');
 
 const CONSTS = require('./constants');
+const { openReadOnly } = require('./realm-open');
 
 let userDataPath;
 
@@ -31,7 +31,7 @@ let initialized = false;
 // find the file specified. (0x2)" while the other open still holds the lock file. One short
 // retry covers it; the cause is recorded for machines we cannot see.
 const openRealm = () =>
-  Realm.open(realmConfig).catch((e) => {
+  openReadOnly(realmConfig).catch((e) => {
     try {
       // eslint-disable-next-line global-require
       require('../addons/voice-follow/shadow/diag').diag(
@@ -42,7 +42,7 @@ const openRealm = () =>
     }
     return new Promise((resolve) => {
       setTimeout(resolve, 300);
-    }).then(() => Realm.open(realmConfig));
+    }).then(() => openReadOnly(realmConfig));
   });
 
 const init = () => {

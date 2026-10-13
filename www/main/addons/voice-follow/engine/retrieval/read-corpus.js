@@ -2,12 +2,12 @@
 // across threads or retain the handle after copying the searchable source text.
 const fs = require('fs');
 const path = require('path');
-const Realm = require('realm');
 const anvaad = require('anvaad-js');
+const { openReadOnly } = require('../../../../banidb/realm-open');
 
 async function readCorpus(userData) {
   const schema = JSON.parse(fs.readFileSync(path.join(userData, 'realm-schema-evergreen.json')));
-  const realm = await Realm.open({
+  const realm = await openReadOnly({
     path: path.join(userData, 'sttmdesktop-evergreen-v2.realm'),
     schema: schema.schemas,
     schemaVersion: schema.schemaVersion,
