@@ -156,3 +156,6 @@ Env: `VF_EMIS_CACHE`, `VF_EMIS_MODE=replay|record`, `VF_EMIS_CODEC=q16|f32`, `VF
   ~0.19 MB/s), ~$0.16/month at Azure hot LRS (~$0.02/GB-month), ~$0.7 egress per full pull.
 - 2026-10-13 02:20. Full cache build started (`vf-record-all.js --roots base,release-next --par 3`): 170 clips, 12.2 h of
   audio, order Renton -> smoke -> rest, lock-aware parallelism, push per batch, resumable via progress.json.
+- 2026-10-13 02:57. SMOKE TIER CACHED. First real smoke run (base 265da34e vs release-next 7165bd24, 10 clips, 19.5 min of
+  audio per side): 67 s wall with 3 recordings running on the machine; PASS. Rehras (1716 s) recorded in 665 s on the base
+  root and 219 s more on the second root (only its diverging windows), 336 MB in the cache: ~0.2 MB per audio second.
