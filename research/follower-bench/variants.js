@@ -12,7 +12,7 @@ const appBg = (id) => Object.entries(NITNEM).filter(([b]) => Number(b) !== Numbe
 
 module.exports = {
   // The paath follower as this branch ships it (engine/follower2.js, catch-up on).
-  paath: (infer, lines, ctx = {}) => new Paath(infer, lines, { inputSr: 16000, hopS: ctx.hop || 0.25, background: appBg(ctx.baniId), ...JSON.parse(process.env.V2_OPTS || '{}'), ...(ctx.extra || {}) }),
+  paath: (infer, lines, ctx = {}) => new Paath(infer, lines, { inputSr: 16000, hopS: ctx.hop || 0.25, baniId: ctx.baniId, background: appBg(ctx.baniId), ...JSON.parse(process.env.V2_OPTS || '{}'), ...(ctx.extra || {}) }),
   paathNoCatch: (infer, lines, ctx = {}) => new Paath(infer, lines, { inputSr: 16000, hopS: ctx.hop || 0.25, background: appBg(ctx.baniId), catchHops: 0 }),
   // Cycle 8 follower exactly as the desktop app and the website use it.
   c8: (infer, lines) => new Follower(infer, sp, lines, { inputSr: 16000 }),

@@ -33,6 +33,7 @@ const DEFAULTS = {
   skipDwell: 1, // windows a move past the next line must persist
   skipGain: 6, // ...and how much better it must match than staying within the next line
   backDwell: 4, // windows a backward move (repeat) must persist
+  backDwell1: 0, // ...a step back of exactly one line (0 = same as backDwell)
   jumpDwell: 4, // windows a far jump must persist
   jumpMargin: 0.15, // a far jump must beat the local match by this (per letter)
   jumpScore: 0.35, // ...and match at least this well
@@ -63,6 +64,19 @@ const DEFAULTS = {
   catchHops: 4,
   catchScore: 0.5, // ...each of those windows matching at least this well (per letter)
 };
+// Sung Banis (kirtan-style, not read): Asa di Vaar (BaniDB Bani 90). Ragis repeat a pauri
+// or a chhant stanza from its top (a jump 4-6 lines back, which the recited profile treats
+// as a far jump needing a clear margin and a long dwell), dwell on a line, and sing the
+// chhant refrain over and over. Measured on Khalsa School Newton (Oct 11, 2026) and a
+// YouTube Asa di Vaar (research: scratchpad asa/sweep*.txt): the local window reaches back
+// to the pauri's start, a move back of 2+ lines (a repeat) confirms in 2 windows while a
+// one-line step back keeps the recited 4 (it is a flicker, not a repeat), the next-line prior is
+// weaker, a 2-line skip needs less gain, and a pause (alaap, a held note) must last 12 s,
+// not 6, before the line is let go. Recited Banis keep DEFAULTS untouched.
+// Keyed by opts.baniId, so the engine and the headless bench build the same follower.
+const SUNG_BANIS = {
+  90: { back: 8, backDwell: 2, backDwell1: 4, distCost: 0.01, skipGain: 3, noMatchHops: 48 },
+};
 
 // Letters only, with marks that recognition often drops or adds removed, so that
 // spelling noise costs little.
@@ -77,7 +91,7 @@ const GAP = -1;
 class FollowerV2 {
   constructor(infer, lines, opts = {}) {
     this.infer = infer;
-    this.c = { ...DEFAULTS, ...opts };
+    this.c = { ...DEFAULTS, ...(SUNG_BANIS[opts.baniId] || {}), ...opts };
     this.inputSr = opts.inputSr || 48000;
     this.verseIds = lines.map((l) => l.verseId);
     // Stream of letters; lineAt[k] = line of letter k; lineStart[i] = first letter.
@@ -91,7 +105,11 @@ class FollowerV2 {
       // The line as it is said aloud (ੴ, ਮਹਲਾ ੧ ...), letters only. Each written word is
       // expanded on its own, so wordAt maps every spoken letter to the word that says it
       // (a numeral after ਮਹਲਾ belongs to the ਮਹਲਾ word; verse numbers say nothing).
-      const written = (l.text || (l.words || []).join(' ')).split(/[\s॥।]+/).filter(Boolean);
+      let written = (l.text || (l.words || []).join(' ')).split(/[\s॥।]+/).filter(Boolean);
+      // A row with no Gurmukhi letter at all (Asa di Vaar's 24 "❁" dividers) is never said:
+      // as a one-letter line it was the "next line" after every pauri, so the screen left
+      // the pauri's last line for the divider while that line was still being sung.
+      if (!/[਀-੿]/.test(simplify(spoken(written.join(' '))))) written = [];
       const shown = (l.words && l.words.length ? l.words : written).map((x) => simplify(spoken(x)));
       let wi = 0;
       written.forEach((wd, k) => {
@@ -138,6 +156,13 @@ class FollowerV2 {
     // Where the app locked on (index into lines): a first match that is equally good in
     // several places (refrains) picks the one nearest this.
     if (Number.isInteger(opts.startLine) && opts.startLine >= 0) this.lastCur = opts.startLine;
+    // A Bani opened from a line the app was already following (the two-shabads rule, the
+    // reading rule) starts AT that line instead of re-locking from nothing: on poor audio
+    // (Newton, a laptop mic in a hall) the fresh lock took tens of seconds, during which the
+    // Bani pane sat on its first line.
+    if (opts.startAt && Number.isInteger(opts.startLine) && opts.startLine >= 0) {
+      this.cur = Math.min(opts.startLine, lines.length - 1);
+    }
     this.tick = 0;
   }
 
@@ -355,7 +380,8 @@ class FollowerV2 {
       }
       return null;
     }
-    if (this.confirm(line, c.backDwell)) {
+    // A one-line step back (a flicker between neighbours) may need longer than a real repeat.
+    if (this.confirm(line, line === this.cur - 1 && c.backDwell1 ? c.backDwell1 : c.backDwell)) {
       this.cur = line;
       this.noMatch = 0;
       this.cand = null;

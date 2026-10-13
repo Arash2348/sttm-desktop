@@ -1891,6 +1891,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                   inputSr: sampleRateRef.current,
                   baniId,
                   startLine: profile.verses.findIndex((v) => v.verseId === cand.verseId),
+                  // A Bani opened from the Shabad line just locked starts there (opts.startAt:
+                  // the paath-line and two-shabads-in-order rules).
+                  startAt: !!opts.startAt,
                 })
               : await engine.createFollower(profile.verses, {
                   inputSr: sampleRateRef.current,
@@ -2113,7 +2116,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         ) {
           autopilotLockRef.current(
             { shabadId: `${BANI_KEY}${paathBani}`, verseId: cand.verseId, verse: cand.verse },
-            { promote: true },
+            { promote: true, startAt: true },
           );
           return;
         }
@@ -2169,7 +2172,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (bani != null && autopilotLockRef.current) {
             autopilotLockRef.current(
               { shabadId: `${BANI_KEY}${bani}`, verseId: cand.verseId, verse: cand.verse },
-              { promote: true },
+              { promote: true, startAt: true },
             );
           }
         }

@@ -1,0 +1,1006 @@
+{
+ "summary": {
+  "part": "nw11_asa2",
+  "t0": 1640,
+  "t1": 1900,
+  "segments": 33,
+  "repeats": 3,
+  "skippedInside": 3,
+  "firstLine": 642,
+  "lastLine": 671,
+  "confidentPct": 30.3,
+  "confidentTimePct": 27.3,
+  "halvesSegments": 61,
+  "halvesConfidentPct": 31.1,
+  "secondHalfFirst": 1,
+  "scoreLines": -4072.78466796875,
+  "scoreHalves": -4066.60791015625,
+  "linesFirst": 1641.28,
+  "linesLast": 1896
+ },
+ "lines": [
+  {
+   "lineIndex": 642,
+   "alignIndex": 642,
+   "verseId": 25649,
+   "appVerseId": 61,
+   "appShabadId": null,
+   "header": true,
+   "start": 1641.28,
+   "end": 1641.32,
+   "conf": -10.196,
+   "check": 0,
+   "confident": false,
+   "halfOrder": null,
+   "secondHalfFirst": false,
+   "halves": [],
+   "text": "❁"
+  },
+  {
+   "lineIndex": 643,
+   "alignIndex": 643,
+   "verseId": 25650,
+   "appVerseId": 20335,
+   "appShabadId": 1660,
+   "header": false,
+   "start": 1643.08,
+   "end": 1651.08,
+   "conf": -1.921,
+   "check": 0.64,
+   "confident": true,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1643.08,
+     "end": 1647.8,
+     "check": 0.68
+    },
+    {
+     "half": "b",
+     "start": 1648,
+     "end": 1651.08,
+     "check": 0.71
+    }
+   ],
+   "text": "ਗੁਰਸਿਖਾ ਮਨਿ ਵਾਧਾਈਆ ਜਿਨ ਮੇਰਾ ਸਤਿਗੁਰੂ ਡਿਠਾ ਰਾਮ ਰਾਜੇ ॥"
+  },
+  {
+   "lineIndex": 644,
+   "alignIndex": 644,
+   "verseId": 25651,
+   "appVerseId": 20336,
+   "appShabadId": 1660,
+   "header": false,
+   "start": 1652.04,
+   "end": 1659.92,
+   "conf": -1.984,
+   "check": 0.78,
+   "confident": true,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1652.04,
+     "end": 1655.44,
+     "check": 0.95
+    },
+    {
+     "half": "b",
+     "start": 1655.6,
+     "end": 1659.92,
+     "check": 0.48
+    }
+   ],
+   "text": "ਕੋਈ ਕਰਿ ਗਲ ਸੁਣਾਵੈ ਹਰਿ ਨਾਮ ਕੀ ਸੋ ਲਗੈ ਗੁਰਸਿਖਾ ਮਨਿ ਮਿਠਾ ॥"
+  },
+  {
+   "lineIndex": 645,
+   "alignIndex": 645,
+   "verseId": 25652,
+   "appVerseId": 20337,
+   "appShabadId": 1660,
+   "header": false,
+   "start": 1661.92,
+   "end": 1669.48,
+   "conf": -2.545,
+   "check": 0.69,
+   "confident": true,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1661.92,
+     "end": 1665.04,
+     "check": 0.53
+    },
+    {
+     "half": "b",
+     "start": 1666.52,
+     "end": 1669.48,
+     "check": 0.82
+    }
+   ],
+   "text": "ਹਰਿ ਦਰਗਹ ਗੁਰਸਿਖ ਪੈਨਾਈਅਹਿ ਜਿਨੑਾ ਮੇਰਾ ਸਤਿਗੁਰੁ ਤੁਠਾ ॥"
+  },
+  {
+   "lineIndex": 646,
+   "alignIndex": 646,
+   "verseId": 25653,
+   "appVerseId": 20338,
+   "appShabadId": 1660,
+   "header": false,
+   "start": 1671.28,
+   "end": 1678.96,
+   "conf": -0.573,
+   "check": 0.93,
+   "confident": true,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1671.28,
+     "end": 1674.48,
+     "check": 1
+    },
+    {
+     "half": "b",
+     "start": 1676.84,
+     "end": 1678.96,
+     "check": 0.8
+    }
+   ],
+   "text": "ਜਨ ਨਾਨਕੁ ਹਰਿ ਹਰਿ ਹੋਇਆ ਹਰਿ ਹਰਿ ਮਨਿ ਵੁਠਾ ॥੪॥੧੨॥੧੯॥"
+  },
+  {
+   "lineIndex": 647,
+   "alignIndex": 647,
+   "verseId": 25654,
+   "appVerseId": 21298,
+   "appShabadId": 1750,
+   "header": true,
+   "start": 1680.48,
+   "end": 1682.64,
+   "conf": -1.743,
+   "check": 0.6,
+   "confident": true,
+   "halfOrder": "-",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": null,
+     "start": 1680.48,
+     "end": 1682.64,
+     "check": 0.6
+    }
+   ],
+   "text": "ਸਲੋਕੁ ਮਃ ੧ ॥"
+  },
+  {
+   "lineIndex": 648,
+   "alignIndex": 648,
+   "verseId": 25655,
+   "appVerseId": 21299,
+   "appShabadId": 1750,
+   "header": false,
+   "start": 1683.2,
+   "end": 1687.32,
+   "conf": -2.832,
+   "check": 0.52,
+   "confident": false,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1683.2,
+     "end": 1685.92,
+     "check": 0.5
+    },
+    {
+     "half": "b",
+     "start": 1685.92,
+     "end": 1687.32,
+     "check": 0.57
+    }
+   ],
+   "text": "ਨਾਨਕ ਫਿਕੈ ਬੋਲਿਐ ਤਨੁ ਮਨੁ ਫਿਕਾ ਹੋਇ ॥"
+  },
+  {
+   "lineIndex": 649,
+   "alignIndex": 649,
+   "verseId": 25656,
+   "appVerseId": 21300,
+   "appShabadId": 1750,
+   "header": false,
+   "start": 1687.8,
+   "end": 1692.04,
+   "conf": -4.356,
+   "check": 0.45,
+   "confident": false,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1687.8,
+     "end": 1689.76,
+     "check": 0.5
+    },
+    {
+     "half": "b",
+     "start": 1690.12,
+     "end": 1692.04,
+     "check": 0.45
+    }
+   ],
+   "text": "ਫਿਕੋ ਫਿਕਾ ਸਦੀਐ ਫਿਕੇ ਫਿਕੀ ਸੋਇ ॥"
+  },
+  {
+   "lineIndex": 650,
+   "alignIndex": 650,
+   "verseId": 25657,
+   "appVerseId": 21301,
+   "appShabadId": 1750,
+   "header": false,
+   "start": 1692.52,
+   "end": 1696.8,
+   "conf": -3.457,
+   "check": 0.43,
+   "confident": false,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1692.52,
+     "end": 1694.68,
+     "check": 0.54
+    },
+    {
+     "half": "b",
+     "start": 1694.84,
+     "end": 1696.8,
+     "check": 0.5
+    }
+   ],
+   "text": "ਫਿਕਾ ਦਰਗਹ ਸਟੀਐ ਮੁਹਿ ਥੁਕਾ ਫਿਕੇ ਪਾਇ ॥"
+  },
+  {
+   "lineIndex": 651,
+   "alignIndex": 651,
+   "verseId": 25658,
+   "appVerseId": 21302,
+   "appShabadId": 1750,
+   "header": false,
+   "start": 1697.24,
+   "end": 1701.44,
+   "conf": -5.162,
+   "check": 0.28,
+   "confident": false,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1697.24,
+     "end": 1699.2,
+     "check": 0.33
+    },
+    {
+     "half": "b",
+     "start": 1699.56,
+     "end": 1701.44,
+     "check": 0.15
+    }
+   ],
+   "text": "ਫਿਕਾ ਮੂਰਖੁ ਆਖੀਐ ਪਾਣਾ ਲਹੈ ਸਜਾਇ ॥੧॥"
+  },
+  {
+   "lineIndex": 653,
+   "alignIndex": 653,
+   "verseId": 25660,
+   "appVerseId": 21304,
+   "appShabadId": 1751,
+   "header": false,
+   "start": 1701.88,
+   "end": 1706.2,
+   "conf": -1.316,
+   "check": 0.68,
+   "confident": true,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1701.88,
+     "end": 1704.24,
+     "check": 0.72
+    },
+    {
+     "half": "b",
+     "start": 1704.32,
+     "end": 1706.2,
+     "check": 0.6
+    }
+   ],
+   "text": "ਅੰਦਰਹੁ ਝੂਠੇ ਪੈਜ ਬਾਹਰਿ ਦੁਨੀਆ ਅੰਦਰਿ ਫੈਲੁ ॥"
+  },
+  {
+   "lineIndex": 654,
+   "alignIndex": 654,
+   "verseId": 25661,
+   "appVerseId": 21305,
+   "appShabadId": 1751,
+   "header": false,
+   "start": 1706.56,
+   "end": 1710,
+   "conf": -4.881,
+   "check": 0.24,
+   "confident": false,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1706.56,
+     "end": 1708.6,
+     "check": 0.42
+    },
+    {
+     "half": "b",
+     "start": 1709,
+     "end": 1710,
+     "check": 0
+    }
+   ],
+   "text": "ਅਠਸਠਿ ਤੀਰਥ ਜੇ ਨਾਵਹਿ ਉਤਰੈ ਨਾਹੀ ਮੈਲੁ ॥"
+  },
+  {
+   "lineIndex": 655,
+   "alignIndex": 655,
+   "verseId": 25662,
+   "appVerseId": 21306,
+   "appShabadId": 1751,
+   "header": false,
+   "start": 1711.28,
+   "end": 1715.52,
+   "conf": -2.5,
+   "check": 0.57,
+   "confident": false,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1711.28,
+     "end": 1713,
+     "check": 0.55
+    },
+    {
+     "half": "b",
+     "start": 1713.08,
+     "end": 1715.52,
+     "check": 0.58
+    }
+   ],
+   "text": "ਜਿਨੑ ਪਟੁ ਅੰਦਰਿ ਬਾਹਰਿ ਗੁਦੜੁ ਤੇ ਭਲੇ ਸੰਸਾਰਿ ॥"
+  },
+  {
+   "lineIndex": 656,
+   "alignIndex": 656,
+   "verseId": 25663,
+   "appVerseId": 21307,
+   "appShabadId": 1751,
+   "header": false,
+   "start": 1715.64,
+   "end": 1719.24,
+   "conf": -5.773,
+   "check": 0.06,
+   "confident": false,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1715.64,
+     "end": 1717.52,
+     "check": 0.13
+    },
+    {
+     "half": "b",
+     "start": 1717.76,
+     "end": 1719.24,
+     "check": 0
+    }
+   ],
+   "text": "ਤਿਨੑ ਨੇਹੁ ਲਗਾ ਰਬ ਸੇਤੀ ਦੇਖਨੑੇ ਵੀਚਾਰਿ ॥"
+  },
+  {
+   "lineIndex": 657,
+   "alignIndex": 657,
+   "verseId": 25664,
+   "appVerseId": 21308,
+   "appShabadId": 1751,
+   "header": false,
+   "start": 1720.72,
+   "end": 1724.88,
+   "conf": -2.041,
+   "check": 0.38,
+   "confident": false,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1720.72,
+     "end": 1722.92,
+     "check": 0.25
+    },
+    {
+     "half": "b",
+     "start": 1723.12,
+     "end": 1724.88,
+     "check": 0.5
+    }
+   ],
+   "text": "ਰੰਗਿ ਹਸਹਿ ਰੰਗਿ ਰੋਵਹਿ ਚੁਪ ਭੀ ਕਰਿ ਜਾਹਿ ॥"
+  },
+  {
+   "lineIndex": 658,
+   "alignIndex": 658,
+   "verseId": 25665,
+   "appVerseId": 21309,
+   "appShabadId": 1751,
+   "header": false,
+   "start": 1725.12,
+   "end": 1729.12,
+   "conf": -3.713,
+   "check": 0.49,
+   "confident": false,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1725.12,
+     "end": 1727.56,
+     "check": 0.54
+    },
+    {
+     "half": "b",
+     "start": 1727.8,
+     "end": 1729.12,
+     "check": 0.17
+    }
+   ],
+   "text": "ਪਰਵਾਹ ਨਾਹੀ ਕਿਸੈ ਕੇਰੀ ਬਾਝੁ ਸਚੇ ਨਾਹ ॥"
+  },
+  {
+   "lineIndex": 659,
+   "alignIndex": 659,
+   "verseId": 25666,
+   "appVerseId": 21310,
+   "appShabadId": 1751,
+   "header": false,
+   "start": 1729.8,
+   "end": 1734.12,
+   "conf": -3.138,
+   "check": 0.4,
+   "confident": false,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1729.8,
+     "end": 1732.16,
+     "check": 0.28
+    },
+    {
+     "half": "b",
+     "start": 1732.4,
+     "end": 1734.12,
+     "check": 0.3
+    }
+   ],
+   "text": "ਦਰਿ ਵਾਟ ਉਪਰਿ ਖਰਚੁ ਮੰਗਾ ਜਬੈ ਦੇਇ ਤ ਖਾਹਿ ॥"
+  },
+  {
+   "lineIndex": 660,
+   "alignIndex": 660,
+   "verseId": 25667,
+   "appVerseId": 21311,
+   "appShabadId": 1751,
+   "header": false,
+   "start": 1734.44,
+   "end": 1737.6,
+   "conf": -4.806,
+   "check": 0.19,
+   "confident": false,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1734.44,
+     "end": 1736.52,
+     "check": 0.22
+    },
+    {
+     "half": "b",
+     "start": 1736.72,
+     "end": 1737.6,
+     "check": 0
+    }
+   ],
+   "text": "ਦੀਬਾਨੁ ਏਕੋ ਕਲਮ ਏਕਾ ਹਮਾ ਤੁਮੑਾ ਮੇਲੁ ॥"
+  },
+  {
+   "lineIndex": 661,
+   "alignIndex": 661,
+   "verseId": 25668,
+   "appVerseId": 21312,
+   "appShabadId": 1751,
+   "header": false,
+   "start": 1737.72,
+   "end": 1743.8,
+   "conf": -5.3,
+   "check": 0.4,
+   "confident": false,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1737.72,
+     "end": 1741,
+     "check": 0.13
+    },
+    {
+     "half": "b",
+     "start": 1741,
+     "end": 1743.8,
+     "check": 0.55
+    }
+   ],
+   "text": "ਦਰਿ ਲਏ ਲੇਖਾ ਪੀੜਿ ਛੁਟੈ ਨਾਨਕਾ ਜਿਉ ਤੇਲੁ ॥੨॥"
+  },
+  {
+   "lineIndex": 663,
+   "alignIndex": 663,
+   "verseId": 25670,
+   "appVerseId": 21314,
+   "appShabadId": 1752,
+   "header": false,
+   "start": 1744.8,
+   "end": 1751.8,
+   "conf": -3.112,
+   "check": 0.58,
+   "confident": false,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1744.8,
+     "end": 1749.08,
+     "check": 0.64
+    },
+    {
+     "half": "b",
+     "start": 1749.52,
+     "end": 1751.8,
+     "check": 0.67
+    }
+   ],
+   "text": "ਆਪੇ ਹੀ ਕਰਣਾ ਕੀਓ ਕਲ ਆਪੇ ਹੀ ਤੈ ਧਾਰੀਐ ॥"
+  },
+  {
+   "lineIndex": 664,
+   "alignIndex": 664,
+   "verseId": 25671,
+   "appVerseId": 21315,
+   "appShabadId": 1752,
+   "header": false,
+   "start": 1753.76,
+   "end": 1761.2,
+   "conf": -2.414,
+   "check": 0.55,
+   "confident": false,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1753.76,
+     "end": 1758.44,
+     "check": 0.5
+    },
+    {
+     "half": "b",
+     "start": 1758.56,
+     "end": 1761.2,
+     "check": 0.5
+    }
+   ],
+   "text": "ਦੇਖਹਿ ਕੀਤਾ ਆਪਣਾ ਧਰਿ ਕਚੀ ਪਕੀ ਸਾਰੀਐ ॥"
+  },
+  {
+   "lineIndex": 665,
+   "alignIndex": 665,
+   "verseId": 25672,
+   "appVerseId": 21316,
+   "appShabadId": 1752,
+   "header": false,
+   "start": 1762.88,
+   "end": 1772.32,
+   "conf": -2.072,
+   "check": 0.7,
+   "confident": true,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1762.88,
+     "end": 1765.88,
+     "check": 0.6
+    },
+    {
+     "half": "b",
+     "start": 1767.56,
+     "end": 1772.32,
+     "check": 0.9
+    }
+   ],
+   "text": "ਜੋ ਆਇਆ ਸੋ ਚਲਸੀ ਸਭੁ ਕੋਈ ਆਈ ਵਾਰੀਐ ॥"
+  },
+  {
+   "lineIndex": 666,
+   "alignIndex": 666,
+   "verseId": 25673,
+   "appVerseId": 21317,
+   "appShabadId": 1752,
+   "header": false,
+   "start": 1772.64,
+   "end": 1780.12,
+   "conf": -2.106,
+   "check": 0.63,
+   "confident": true,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1772.64,
+     "end": 1775.44,
+     "check": 0.58
+    },
+    {
+     "half": "b",
+     "start": 1776.32,
+     "end": 1780.12,
+     "check": 0.72
+    }
+   ],
+   "text": "ਜਿਸ ਕੇ ਜੀਅ ਪਰਾਣ ਹਹਿ ਕਿਉ ਸਾਹਿਬੁ ਮਨਹੁ ਵਿਸਾਰੀਐ ॥"
+  },
+  {
+   "lineIndex": 667,
+   "alignIndex": 667,
+   "verseId": 25674,
+   "appVerseId": 21318,
+   "appShabadId": 1752,
+   "header": false,
+   "start": 1782.28,
+   "end": 1789.56,
+   "conf": -2.695,
+   "check": 0.5,
+   "confident": false,
+   "halfOrder": "aba",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1782.28,
+     "end": 1787.04,
+     "check": 0.36
+    },
+    {
+     "half": "b",
+     "start": 1787.28,
+     "end": 1789.56,
+     "check": 0.64
+    },
+    {
+     "half": "a",
+     "start": 1791.72,
+     "end": 1801.84,
+     "check": 0.54
+    }
+   ],
+   "text": "ਆਪਣ ਹਥੀ ਆਪਣਾ ਆਪੇ ਹੀ ਕਾਜੁ ਸਵਾਰੀਐ ॥੨੦॥"
+  },
+  {
+   "lineIndex": 667,
+   "alignIndex": 667,
+   "verseId": 25674,
+   "appVerseId": 21318,
+   "appShabadId": 1752,
+   "header": false,
+   "start": 1791.72,
+   "end": 1804.12,
+   "conf": -4.056,
+   "check": 0.52,
+   "confident": false,
+   "halfOrder": "bab",
+   "secondHalfFirst": true,
+   "halves": [
+    {
+     "half": "b",
+     "start": 1787.28,
+     "end": 1789.56,
+     "check": 0.64
+    },
+    {
+     "half": "a",
+     "start": 1791.72,
+     "end": 1801.84,
+     "check": 0.54
+    },
+    {
+     "half": "b",
+     "start": 1802.24,
+     "end": 1805.28,
+     "check": 0.33
+    }
+   ],
+   "text": "ਆਪਣ ਹਥੀ ਆਪਣਾ ਆਪੇ ਹੀ ਕਾਜੁ ਸਵਾਰੀਐ ॥੨੦॥"
+  },
+  {
+   "lineIndex": 664,
+   "alignIndex": 664,
+   "verseId": 25671,
+   "appVerseId": 21315,
+   "appShabadId": 1752,
+   "header": false,
+   "start": 1804.68,
+   "end": 1808.12,
+   "conf": -3.62,
+   "check": 0.43,
+   "confident": false,
+   "halfOrder": "b",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "b",
+     "start": 1805.48,
+     "end": 1808.12,
+     "check": 0.5
+    }
+   ],
+   "text": "ਦੇਖਹਿ ਕੀਤਾ ਆਪਣਾ ਧਰਿ ਕਚੀ ਪਕੀ ਸਾਰੀਐ ॥"
+  },
+  {
+   "lineIndex": 665,
+   "alignIndex": 665,
+   "verseId": 25672,
+   "appVerseId": 21316,
+   "appShabadId": 1752,
+   "header": false,
+   "start": 1808.68,
+   "end": 1812.12,
+   "conf": -1.482,
+   "check": 0.77,
+   "confident": true,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1808.68,
+     "end": 1810,
+     "check": 0.44
+    },
+    {
+     "half": "b",
+     "start": 1810.52,
+     "end": 1812.12,
+     "check": 1
+    }
+   ],
+   "text": "ਜੋ ਆਇਆ ਸੋ ਚਲਸੀ ਸਭੁ ਕੋਈ ਆਈ ਵਾਰੀਐ ॥"
+  },
+  {
+   "lineIndex": 666,
+   "alignIndex": 666,
+   "verseId": 25673,
+   "appVerseId": 21317,
+   "appShabadId": 1752,
+   "header": false,
+   "start": 1812.88,
+   "end": 1816.64,
+   "conf": -1.96,
+   "check": 0.65,
+   "confident": true,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1812.88,
+     "end": 1814.32,
+     "check": 0.75
+    },
+    {
+     "half": "b",
+     "start": 1814.76,
+     "end": 1816.64,
+     "check": 0.42
+    }
+   ],
+   "text": "ਜਿਸ ਕੇ ਜੀਅ ਪਰਾਣ ਹਹਿ ਕਿਉ ਸਾਹਿਬੁ ਮਨਹੁ ਵਿਸਾਰੀਐ ॥"
+  },
+  {
+   "lineIndex": 667,
+   "alignIndex": 667,
+   "verseId": 25674,
+   "appVerseId": 21318,
+   "appShabadId": 1752,
+   "header": false,
+   "start": 1817.72,
+   "end": 1822.04,
+   "conf": -2.881,
+   "check": 0.52,
+   "confident": false,
+   "halfOrder": "aba",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1817.72,
+     "end": 1820.28,
+     "check": 0.75
+    },
+    {
+     "half": "b",
+     "start": 1820.36,
+     "end": 1822.04,
+     "check": 0.33
+    },
+    {
+     "half": "a",
+     "start": 1822.96,
+     "end": 1826.2,
+     "check": 0.64
+    }
+   ],
+   "text": "ਆਪਣ ਹਥੀ ਆਪਣਾ ਆਪੇ ਹੀ ਕਾਜੁ ਸਵਾਰੀਐ ॥੨੦॥"
+  },
+  {
+   "lineIndex": 667,
+   "alignIndex": 667,
+   "verseId": 25674,
+   "appVerseId": 21318,
+   "appShabadId": 1752,
+   "header": false,
+   "start": 1822.96,
+   "end": 1847.32,
+   "conf": -3.39,
+   "check": 0.59,
+   "confident": false,
+   "halfOrder": "abab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1817.72,
+     "end": 1820.28,
+     "check": 0.75
+    },
+    {
+     "half": "b",
+     "start": 1820.36,
+     "end": 1822.04,
+     "check": 0.33
+    },
+    {
+     "half": "a",
+     "start": 1822.96,
+     "end": 1826.2,
+     "check": 0.64
+    },
+    {
+     "half": "b",
+     "start": 1826.24,
+     "end": 1847.32,
+     "check": 0.42
+    }
+   ],
+   "text": "ਆਪਣ ਹਥੀ ਆਪਣਾ ਆਪੇ ਹੀ ਕਾਜੁ ਸਵਾਰੀਐ ॥੨੦॥"
+  },
+  {
+   "lineIndex": 668,
+   "alignIndex": 668,
+   "verseId": 25675,
+   "appVerseId": 61,
+   "appShabadId": null,
+   "header": true,
+   "start": 1847.52,
+   "end": 1847.56,
+   "conf": -8.246,
+   "check": 0,
+   "confident": false,
+   "halfOrder": "-",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": null,
+     "start": 1847.52,
+     "end": 1847.56,
+     "check": 0
+    }
+   ],
+   "text": "❁"
+  },
+  {
+   "lineIndex": 670,
+   "alignIndex": 670,
+   "verseId": 25677,
+   "appVerseId": 20340,
+   "appShabadId": 1661,
+   "header": false,
+   "start": 1847.76,
+   "end": 1895.28,
+   "conf": -6.041,
+   "check": 0.29,
+   "confident": false,
+   "halfOrder": "ab",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1847.76,
+     "end": 1878.2,
+     "check": 0.36
+    },
+    {
+     "half": "b",
+     "start": 1878.32,
+     "end": 1895.28,
+     "check": 0.27
+    }
+   ],
+   "text": "ਜਿਨੑਾ ਭੇਟਿਆ ਮੇਰਾ ਪੂਰਾ ਸਤਿਗੁਰੂ ਤਿਨ ਹਰਿ ਨਾਮੁ ਦ੍ਰਿੜਾਵੈ ਰਾਮ ਰਾਜੇ ॥"
+  },
+  {
+   "lineIndex": 671,
+   "alignIndex": 671,
+   "verseId": 25678,
+   "appVerseId": 20341,
+   "appShabadId": 1661,
+   "header": false,
+   "start": 1895.6,
+   "end": 1896,
+   "conf": -15.105,
+   "check": 0.1,
+   "confident": false,
+   "halfOrder": "a",
+   "secondHalfFirst": false,
+   "halves": [
+    {
+     "half": "a",
+     "start": 1895.6,
+     "end": 1896,
+     "check": 0.2
+    }
+   ],
+   "text": "ਤਿਸ ਕੀ ਤ੍ਰਿਸਨਾ ਭੁਖ ਸਭ ਉਤਰੈ ਜੋ ਹਰਿ ਨਾਮੁ ਧਿਆਵੈ ॥"
+  }
+ ]
+}
