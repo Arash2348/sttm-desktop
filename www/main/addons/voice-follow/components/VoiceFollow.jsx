@@ -2781,12 +2781,25 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           textCandidates.length > 1 &&
           Math.abs(textCandidates[0].score - textCandidates[1].score) < 1e-9
         ) {
-          textCandidates.forEach((candidate) => {
-            if (Math.abs(candidate.score - textCandidates[0].score) < 1e-9) {
+          const tied = textCandidates.filter(
+            (candidate) => Math.abs(candidate.score - textCandidates[0].score) < 1e-9,
+          );
+          // The same Gurbani stored twice (Aarti's "Gagan mai thaal" in Dhanasari and in
+          // Sohila, Rehras's "So dar" and its Asa original) ties exactly on EVERY decode, and
+          // a tie is never confirmed: the switch judge zeroed both copies' wins each decode,
+          // so a sangat singing the Aarti after a Shabad (or the Rehras after a Shabad) was
+          // never followed, however well it matched (Oct 13 user test: 75-95% for 20 s, no
+          // switch). Copies are one candidate, not an ambiguity: judged like any other.
+          // Only a tie between DIFFERENT shabads (a shared line) still vetoes them all.
+          const copies = tied.every(
+            (candidate) => candidate === tied[0] || knownSame(tied[0].shabadId, candidate.shabadId),
+          );
+          if (!copies) {
+            tied.forEach((candidate) => {
               tiedLeaderIds.add(candidate.shabadId);
               bsWinsRef.current.delete(candidate.shabadId);
-            }
-          });
+            });
+          }
         }
         const hypFull = vfNorm(text).slice(-SWITCH_HYP_SLICE); // recent decoded audio
         // Current shabad scored from the cursor, candidates scored across all
