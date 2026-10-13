@@ -95,7 +95,7 @@ jobs:
       - name: Test tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y xvfb ffmpeg
+          sudo apt-get install -y xvfb ffmpeg dbus dbus-x11
 
       - name: Install the way a Pi would (setup-pi.sh)
         env:
@@ -117,7 +117,7 @@ jobs:
           LAST=$(( ${{ matrix.cores }} - 1 ))
           DISPLAY=:99 VF_DEMO_WAV=/tmp/kirtan.wav STTM_KIOSK_BOOT_WAIT=0 ELECTRON_ENABLE_LOGGING=1 \
             STTM_EXTRA_FLAGS="--no-sandbox --disable-gpu --remote-debugging-port=9222" \
-            nohup taskset -c 0-$LAST /usr/local/bin/sttm-kiosk > sttm.log 2>&1 &
+            nohup dbus-run-session -- taskset -c 0-$LAST /usr/local/bin/sttm-kiosk > sttm.log 2>&1 &
           echo "started on cores 0-$LAST"
           mkdir -p out
           # Every 30 s: which threads use the CPU, and how far the Gurbani database got.
