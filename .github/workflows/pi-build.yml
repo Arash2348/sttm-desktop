@@ -26,13 +26,16 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ruby ruby-dev rpm libarchive-tools \
-            libavahi-compat-libdnssd-dev libpng-dev cmake ninja-build
+            libavahi-compat-libdnssd-dev libpng-dev
           sudo gem install --no-document fpm
-          # Realm has no prebuilt binary for Linux arm64: it compiles from source with cmake-js.
-          npm install -g cmake-js@7
 
       - name: Install dependencies
-        run: npm ci
+        # Realm 10 (Mac/Windows) has no Linux arm64 binary and its npm package cannot be
+        # compiled from source; Realm 11.10.2 ships one and keeps the local-database API
+        # STTM uses. Pi build only: the lock file is not changed for other builds.
+        run: |
+          npm pkg set dependencies.realm=11.10.2
+          npm install --no-audit --no-fund
 
       - name: Speech model (Voice-Follow, bundled into the package)
         run: |
