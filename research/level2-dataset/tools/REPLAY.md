@@ -154,3 +154,5 @@ Env: `VF_EMIS_CACHE`, `VF_EMIS_MODE=replay|record`, `VF_EMIS_CODEC=q16|f32`, `VF
   (`vf-check --record --queue --tier smoke`, log in the replay scratchpad). Full-suite recording is ON HOLD by the lead's
   instruction (record once). Shared Azure cache: 6 clips, 108.5 MB pushed. Estimated full cache: ~8 GB q16 (734 min audio x
   ~0.19 MB/s), ~$0.16/month at Azure hot LRS (~$0.02/GB-month), ~$0.7 egress per full pull.
+- 2026-10-13 02:20. Full cache build started (`vf-record-all.js --roots base,release-next --par 3`): 170 clips, 12.2 h of
+  audio, order Renton -> smoke -> rest, lock-aware parallelism, push per batch, resumable via progress.json.
