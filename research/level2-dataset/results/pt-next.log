@@ -1,0 +1,85 @@
+pt01 Nitnem playlist        truth bani:2 | found   14.1s | right  53% wrong  47% search   0% | flips 1 | shown 1@-10.5 bani:2@14.0
+pt02 Nitnem playlist        truth bani:2 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 10@-25.3 bani:2@-25.3
+pt03 Nitnem playlist        truth bani:2 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 22@-23.7 bani:2@-23.7
+pt04 Nitnem playlist        truth bani:2 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 31@-26.3 bani:2@-26.3
+pt05 Nitnem playlist        truth bani:4 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 7402@-24.4 bani:4@-24.4
+pt06 Nitnem playlist        truth bani:4 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 7405@-7.5 bani:4@-7.5
+pt07 Nitnem playlist        truth bani:4 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 7414@-6.4 bani:4@-6.4
+pt08 Nitnem playlist        truth bani:4 | found   15.2s | right  49% wrong   0% search  51% | flips 1 | shown 7421@15.2 bani:4@15.2
+pt09 Nitnem playlist        truth bani:9 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 12794@-24.8 bani:9@-24.8
+pt10 Nitnem playlist        truth bani:9 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 12794@-25.8 bani:9@-25.8
+pt11 Nitnem playlist        truth bani:9 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 12794@-24.8 bani:9@-24.8
+pt12 Nitnem playlist        truth bani:6 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 7426@-25.3 bani:6@-25.3
+pt13 Nitnem playlist        truth bani:6 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 7426@-24.8 bani:6@-24.8
+pt14 Nitnem playlist        truth bani:6 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 7426@-24.2 bani:6@-24.2
+pt15 Nitnem playlist        truth bani:10 | found    NEVER | right   0% wrong 100% search   0% | flips 1 | shown 333375@-25.8 bani:1000@-25.8
+pt16 Nitnem playlist        truth bani:10 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 3375@-25.8 bani:10@-25.8
+pt17 Nitnem playlist        truth bani:10 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 3375@-25.8 bani:10@-25.8
+pt18 Nitnem playlist        truth bani:10 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 3375@-25.8 bani:10@-25.8
+pt19 Nitnem playlist        truth bani:21 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 1721@-26.3 bani:21@-15.8
+pt20 Nitnem playlist        truth bani:21 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 40@-25.8 bani:21@-5.3
+pt21 Nitnem playlist        truth bani:21 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 42@-22.2 bani:21@-14.0
+pt22 Nitnem playlist        truth bani:21 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 45@-25.8 bani:21@-13.7
+pt23 Nitnem playlist        truth bani:21 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 46@-24.8 bani:21@-13.0
+pt24 Nitnem playlist        truth bani:21 | found    NEVER | right   0% wrong 100% search   0% | flips 1 | shown 12794@-25.3 bani:9@-25.3
+pt25: no audio yet
+pt26 Nitnem playlist        truth bani:21 | found    NEVER | right   0% wrong 100% search   0% | flips 1 | shown 333375@-25.3 bani:1000@-25.3
+pt27 Nitnem playlist        truth bani:21 | found      0s | right 100% wrong   0% search   0% | flips 2 | shown 5538@-24.8 5539@-13.0 bani:21@-13.0
+pt28 Nitnem playlist        truth bani:23 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 49@-20.7 bani:23@-9.6
+pt29 Nitnem playlist        truth bani:23 | found    NEVER | right   0% wrong 100% search   0% | flips 0 | shown 51@-26.3
+pt30 Nitnem playlist        truth bani:23 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 52@-25.8 bani:23@-14.8
+pt31 Jaap Sahib live path   truth bani:4 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 7402@-27.3 bani:4@-27.3
+pt32 Jaap Sahib live path   truth bani:4 | found    NEVER | right   0% wrong   0% search 100% | flips 0 | shown 
+pt33 Jaap Sahib live path   truth bani:4 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 7414@-26.4 bani:4@-26.4
+pt34 Jaap Sahib live path   truth bani:4 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 7418@-26.9 bani:4@-26.9
+pt35 Aarti (verified bn07/bn08 video) truth bani:22 | found    NEVER | right   0% wrong 100% search   0% | flips 0 | shown 51@-21.7
+pt36 Aarti (verified bn07/bn08 video) truth bani:22 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 2638@-25.9 bani:22@-25.9
+pt37 Aarti (verified bn07/bn08 video) truth bani:22 | found    NEVER | right   0% wrong   0% search 100% | flips 0 | shown 
+pt38 Aarti (verified bn07/bn08 video) truth bani:22 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 2638@-22.3 bani:22@-22.3
+pt39 Aarti Darbar Sahib (No Ads) truth bani:22 | found    NEVER | right   0% wrong 100% search   0% | flips 0 | shown 51@-21.2
+pt40 Aarti Darbar Sahib (No Ads) truth bani:22 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 2638@-21.8 bani:22@-21.8
+pt41 Aarti Darbar Sahib (No Ads) truth bani:22 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 2642@-14.6 bani:22@-14.6
+pt42 Aarti Darbar Sahib (No Ads) truth bani:22 | found    NEVER | right   0% wrong 100% search   0% | flips 0 | shown 628@-20.1
+pt43 Aarti Darbar Sahib Amritsar truth bani:22 | found    NEVER | right   0% wrong 100% search   0% | flips 0 | shown 51@-20.7
+pt44 Aarti Darbar Sahib Amritsar truth bani:22 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 2638@-25.4 bani:22@-25.4
+pt45 Aarti Darbar Sahib Amritsar truth bani:22 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 2642@-17.7 bani:22@-17.7
+pt46 Aarti Darbar Sahib Amritsar truth bani:22 | found    NEVER | right   0% wrong 100% search   0% | flips 0 | shown 628@-21.2
+pt47: no audio yet
+pt48: no audio yet
+pt49: no audio yet
+pt50: no audio yet
+pt51 Aarti Bhai Karaj Singh Hazoori Ragi truth bani:22 | found    NEVER | right   0% wrong 100% search   0% | flips 0 | shown 51@-24.2
+pt52 Aarti Bhai Karaj Singh Hazoori Ragi truth bani:22 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 2638@-25.9 bani:22@-25.9
+pt53 Aarti Bhai Karaj Singh Hazoori Ragi truth bani:22 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 2642@-24.4 bani:22@-24.4
+pt54 Japji Bhai Manpreet Singh Kanpuri truth bani:2 | found    3.7s | right  88% wrong  12% search   0% | flips 1 | shown 1@-0.2 bani:2@3.7
+pt55 Japji Bhai Manpreet Singh Kanpuri truth bani:2 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 18@-25.3 bani:2@-25.3
+pt56 Japji Bhai Manpreet Singh Kanpuri truth bani:2 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 28@-26.8 bani:2@-26.8
+pt57 Japji Path Full (Fast) truth bani:2 | found    0.9s | right  97% wrong   3% search   0% | flips 1 | shown 1@-6.8 bani:2@0.9
+pt58 Japji Path Full (Fast) truth bani:2 | found   13.6s | right  55% wrong   0% search  45% | flips 1 | shown 20@13.5 bani:2@13.5
+pt59 Japji Path Full (Fast) truth bani:2 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 28@-26.8 bani:2@-26.8
+pt60 Japji Bhai Gurbaj Singh truth bani:2 | found    1.7s | right  94% wrong   6% search   0% | flips 1 | shown 1@-6.3 bani:2@1.6
+pt61 Japji Bhai Gurbaj Singh truth bani:2 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 19@-17.2 bani:2@-17.2
+pt62 Japji Bhai Gurbaj Singh truth bani:2 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 29@-24.8 bani:2@-24.8
+pt63 Japji Bhai Sahib Singh truth bani:2 | found    0.2s | right  99% wrong   1% search   0% | flips 1 | shown 1@-5.3 bani:2@0.1
+pt64 Japji Bhai Sahib Singh truth bani:2 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 19@-22.7 bani:2@-22.7
+pt65 Japji Bhai Sahib Singh truth bani:2 | found      0s | right 100% wrong   0% search   0% | flips 1 | shown 29@-27.3 bani:2@-27.3
+
+# Level 2 benchmark — MVP 4.0 (pr-2202 @ 42380ecc), shipped config
+
+Clips: 60. Truth: Human-Fully Sheet (read-only). App run headless with full BaniDB; no labels given to the app.
+
+| group | clips | found ≤10s | ≤20s | ≤30s | ≤60s | never | right page | wrong page | searching | flip-flops (total) | median first-correct | longest wrong |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| overall | 60 | 75% (45/60) | 80% (48/60) | 80% (48/60) | 80% (48/60) | 12 | 77.3% | 17.8% | 4.9% | 52 | 0s | 30s |
+| Nitnem playlist | 29 | 79% (23/29) | 86% (25/29) | 86% (25/29) | 86% (25/29) | 4 | 82.8% | 15.4% | 1.7% | 29 | 0s | 30s |
+| Jaap Sahib live path | 4 | 75% (3/4) | 75% (3/4) | 75% (3/4) | 75% (3/4) | 1 | 75.0% | 0.0% | 25.0% | 3 | 0s | 0s |
+| Aarti (verified bn07/bn08 video) | 4 | 50% (2/4) | 50% (2/4) | 50% (2/4) | 50% (2/4) | 2 | 50.0% | 25.0% | 25.0% | 2 | 0s | 30s |
+| Aarti Darbar Sahib (No Ads) | 4 | 50% (2/4) | 50% (2/4) | 50% (2/4) | 50% (2/4) | 2 | 50.0% | 50.0% | 0.0% | 2 | 0s | 30s |
+| Aarti Darbar Sahib Amritsar | 4 | 50% (2/4) | 50% (2/4) | 50% (2/4) | 50% (2/4) | 2 | 50.0% | 50.0% | 0.0% | 2 | 0s | 30s |
+| Aarti Bhai Karaj Singh Hazoori Ragi | 3 | 67% (2/3) | 67% (2/3) | 67% (2/3) | 67% (2/3) | 1 | 66.7% | 33.3% | 0.0% | 2 | 0s | 30s |
+| Japji Bhai Manpreet Singh Kanpuri | 3 | 100% (3/3) | 100% (3/3) | 100% (3/3) | 100% (3/3) | 0 | 95.9% | 4.1% | 0.0% | 3 | 0s | 3.7s |
+| Japji Path Full (Fast) | 3 | 67% (2/3) | 100% (3/3) | 100% (3/3) | 100% (3/3) | 0 | 83.9% | 1.0% | 15.1% | 3 | 0.9s | 0.9s |
+| Japji Bhai Gurbaj Singh | 3 | 100% (3/3) | 100% (3/3) | 100% (3/3) | 100% (3/3) | 0 | 98.1% | 1.9% | 0.0% | 3 | 0s | 1.7s |
+| Japji Bhai Sahib Singh | 3 | 100% (3/3) | 100% (3/3) | 100% (3/3) | 100% (3/3) | 0 | 99.8% | 0.2% | 0.0% | 3 | 0s | 0.2s |
+
+Right/wrong/searching are time-weighted over the truth windows. Found = correct shabad on screen at any point in the clip; seconds measured from the human-marked first sung line.

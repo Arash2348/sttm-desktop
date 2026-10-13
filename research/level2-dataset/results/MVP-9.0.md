@@ -104,19 +104,43 @@ visible Start that threw away the hidden run's lock; the kirtan change makes Sta
 Base (tonight's build, 265da34e): Shabad right 86.1%, wrong 4.6%, searching 9.3%, line same 46.6% (arbiter),
 line within 1 66.3%, verses reached 54/85, median line lag 3.1 s.
 
-## 4. Level-2 kirtan 41 / paath 60 / Aarti 50 — pending on the kirtan FINAL head
+## 4. Level-2 kirtan 41 / paath 60 / Aarti 50
 
 Base = the Oct 6 same-Mac runs of the same search code. 265da34e reproduces them event-for-event on a 12-clip
-L2 subset (12 of 12 identical), so they stand for base.
+L2 subset (12 of 12 identical), so they stand for base. Which commit ran what: paath-60 and Aarti-50 on 7165bd24
+(the final head); L2-41 and Fremont on 9f3502ed (the two later commits change only Bani profiles; a 13-clip L2 spot
+check on 7165bd24 is the proof, below).
 
-| suite | Base (tonight's build, 265da34e) |
-|---|---|
-| L2 41 (copy-aware rescore) | right 97.51%, wrong 0.84%, searching 1.67%, found <= 10 s 35/41, <= 20 s 39/41, never 1 |
-| paath (65 rows, 60 with audio) | Bani 68.8%, sub-Bani 3.2%, member shabad 5.2%, wrong 2.9%, none 13.9% |
-| Aarti 50 (45 scored) | right (Aarti text up) 84.8%, wrong 0.3%, none 14.9%, found 42/45, median find 8 s |
+### Paath (65 rows, 60 with audio) — MVP 9.0 = 7165bd24, Bani-aware scoring (tools/paath-score.js)
 
-Early 9.0 read (605b000c, broken driver, kirtan-only signal): L2 wrong 0.84 -> 0.99% because clip20 locks 2072 in
-the lead-in (29 s wrong). Treated as a regression until the kirtan FINAL lands.
+| metric | Base (tonight's build, 265da34e) | MVP 9.0 | pass? |
+|---|---|---|---|
+| right Bani | 68.8% | 67.8% | FAIL (small) |
+| sub-Bani (Chaupai/Anand inside Rehras) | 3.2% | 3.2% | equal |
+| member shabad | 5.2% | 5.1% | equal |
+| wrong page | 2.9% | 2.9% | PASS (equal) |
+| nothing on screen | 13.9% | 15.0% | FAIL (small) |
+| clips with identical screen events | | 53 of 60 | |
+
+Per-Bani right-text: Japji 88 -> 85%, Jaap 70 -> 69%, Chaupai 93 = 93, Savaiye 93 = 93, Anand 94 = 94,
+Rehras 93 = 93, Sohila 92 = 92, Aarti 71 = 71. No wrong page anywhere. Standalone Chaupai Sahib (pt09-11) opens
+Chaupai (bani:9), not Rehras: no extra-long side effect.
+
+The 7 clips that changed (all are later first locks; none shows a wrong page):
+
+| clip | Base (tonight's build, 265da34e) | MVP 9.0 | right text |
+|---|---|---|---|
+| pt58 Japji | 19 and Japji at -17.2 s | 20 and Japji at 13.5 s | 82% -> 38% — WATCH, being bisected |
+| pt06 Jaap | Jaap at -18.2 s | Jaap at -7.5 s (Paath-pool guard; still before the truth window) | 83% -> 68% (whole-clip scoring) |
+| pt01 Japji | first shabad -14.1 s | -10.5 s | 77% -> 72% |
+| pt12 / pt39 / pt60 / pt63 | | within 0.5 s of base | equal or -1 pt |
+
+Watch items from the paath agent's 0.25 s bench (pt35 within-1, pt26 / pt28 wrong): on this suite pt26, pt28 and pt35
+are event-identical to base (Bani-level scoring; no wrong page).
+
+### Level-2 kirtan 41 — pending (running on 9f3502ed)
+
+### Aarti 50 — pending (running on 7165bd24)
 
 ## 5. Stop keeps the screen (stop-keeps-screen-test on 9f3502ed; Rehras clip, user length short / medium / long)
 

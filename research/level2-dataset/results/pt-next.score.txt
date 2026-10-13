@@ -1,0 +1,70 @@
+pt01 Japji Sahib         @  40s  RIGHT-TEXT  72%  bani  37%  sub   0%  shabad  35%  WRONG   0%  none  28%  bani-open@44s | 1 > bani:2
+pt02 Japji Sahib         @ 450s  RIGHT-TEXT  93%  bani  93%  sub   0%  shabad   0%  WRONG   0%  none   7%  bani-open@5s | 10 > bani:2
+pt03 Japji Sahib         @ 950s  RIGHT-TEXT  91%  bani  91%  sub   0%  shabad   0%  WRONG   0%  none   9%  bani-open@6s | 22 > bani:2
+pt04 Japji Sahib         @1450s  RIGHT-TEXT  95%  bani  95%  sub   0%  shabad   0%  WRONG   0%  none   5%  bani-open@4s | 31 > bani:2
+pt05 Jaap Sahib          @  60s  RIGHT-TEXT  92%  bani  92%  sub   0%  shabad   0%  WRONG   0%  none   8%  bani-open@6s | 7402 > bani:4
+pt06 Jaap Sahib          @ 600s  RIGHT-TEXT  68%  bani  68%  sub   0%  shabad   0%  WRONG   0%  none  32%  bani-open@23s | 7405 > bani:4
+pt07 Jaap Sahib          @1200s  RIGHT-TEXT  66%  bani  66%  sub   0%  shabad   0%  WRONG   0%  none  34%  bani-open@24s | 7414 > bani:4
+pt08 Jaap Sahib          @1900s  RIGHT-TEXT  35%  bani  35%  sub   0%  shabad   0%  WRONG   0%  none  65%  bani-open@45s | 7421 > bani:4
+pt09 Chaupai Sahib       @  40s  RIGHT-TEXT  93%  bani  93%  sub   0%  shabad   0%  WRONG   0%  none   7%  bani-open@5s | 12794 > bani:9
+pt10 Chaupai Sahib       @ 150s  RIGHT-TEXT  94%  bani  94%  sub   0%  shabad   0%  WRONG   0%  none   6%  bani-open@4s | 12794 > bani:9
+pt11 Chaupai Sahib       @ 280s  RIGHT-TEXT  93%  bani  93%  sub   0%  shabad   0%  WRONG   0%  none   7%  bani-open@5s | 12794 > bani:9
+pt12 Tav Prasad Savaiye  @  40s  RIGHT-TEXT  93%  bani  93%  sub   0%  shabad   0%  WRONG   0%  none   7%  bani-open@5s | 7426 > bani:6
+pt13 Tav Prasad Savaiye  @ 150s  RIGHT-TEXT  93%  bani  93%  sub   0%  shabad   0%  WRONG   0%  none   7%  bani-open@5s | 7426 > bani:6
+pt14 Tav Prasad Savaiye  @ 260s  RIGHT-TEXT  92%  bani  92%  sub   0%  shabad   0%  WRONG   0%  none   8%  bani-open@6s | 7426 > bani:6
+pt15 Anand Sahib         @  60s  RIGHT-TEXT  94%  bani  94%  sub   0%  shabad   0%  WRONG   0%  none   6%  bani-open@4s | 333375 > bani:1000
+pt16 Anand Sahib         @ 400s  RIGHT-TEXT  94%  bani  94%  sub   0%  shabad   0%  WRONG   0%  none   6%  bani-open@4s | 3375 > bani:10
+pt17 Anand Sahib         @ 900s  RIGHT-TEXT  94%  bani  94%  sub   0%  shabad   0%  WRONG   0%  none   6%  bani-open@4s | 3375 > bani:10
+pt18 Anand Sahib         @1300s  RIGHT-TEXT  94%  bani  94%  sub   0%  shabad   0%  WRONG   0%  none   6%  bani-open@4s | 3375 > bani:10
+pt19 Rehras Sahib        @  40s  RIGHT-TEXT  95%  bani  80%  sub   0%  shabad  15%  WRONG   0%  none   5%  bani-open@14s | 1721 > bani:21
+pt20 Rehras Sahib        @ 200s  RIGHT-TEXT  94%  bani  65%  sub   0%  shabad  29%  WRONG   0%  none   6%  bani-open@25s | 40 > bani:21
+pt21 Rehras Sahib        @ 400s  RIGHT-TEXT  89%  bani  77%  sub   0%  shabad  12%  WRONG   0%  none  11%  bani-open@16s | 42 > bani:21
+pt22 Rehras Sahib        @ 600s  RIGHT-TEXT  94%  bani  77%  sub   0%  shabad  17%  WRONG   0%  none   6%  bani-open@16s | 45 > bani:21
+pt23 Rehras Sahib        @ 800s  RIGHT-TEXT  93%  bani  76%  sub   0%  shabad  17%  WRONG   0%  none   7%  bani-open@17s | 46 > bani:21
+pt24 Rehras Sahib        @1000s  RIGHT-TEXT  93%  bani   0%  sub  93%  shabad   0%  WRONG   0%  none   7%  bani-open@-s | 12794 > bani:9
+pt26 Rehras Sahib        @1400s  RIGHT-TEXT  93%  bani   0%  sub  93%  shabad   0%  WRONG   0%  none   7%  bani-open@-s | 333375 > bani:1000
+pt27 Rehras Sahib        @1600s  RIGHT-TEXT  93%  bani  76%  sub   0%  shabad  17%  WRONG   0%  none   7%  bani-open@17s | 5538 > 5539 > bani:21
+pt28 Kirtan Sohila       @  40s  RIGHT-TEXT  87%  bani  71%  sub   0%  shabad  16%  WRONG   0%  none  13%  bani-open@20s | 49 > bani:23
+pt29 Kirtan Sohila       @ 150s  RIGHT-TEXT  95%  bani   0%  sub   0%  shabad  95%  WRONG   0%  none   5%  bani-open@-s | 51
+pt30 Kirtan Sohila       @ 250s  RIGHT-TEXT  94%  bani  78%  sub   0%  shabad  16%  WRONG   0%  none   6%  bani-open@15s | 52 > bani:23
+pt31 Jaap Sahib          @  60s  RIGHT-TEXT  96%  bani  96%  sub   0%  shabad   0%  WRONG   0%  none   4%  bani-open@3s | 7402 > bani:4
+pt32 Jaap Sahib          @ 300s  RIGHT-TEXT   0%  bani   0%  sub   0%  shabad   0%  WRONG   0%  none 100%  bani-open@-s | 
+pt33 Jaap Sahib          @ 550s  RIGHT-TEXT  95%  bani  95%  sub   0%  shabad   0%  WRONG   0%  none   5%  bani-open@4s | 7414 > bani:4
+pt34 Jaap Sahib          @ 800s  RIGHT-TEXT  96%  bani  96%  sub   0%  shabad   0%  WRONG   0%  none   4%  bani-open@3s | 7418 > bani:4
+pt35 Aarti               @  60s  RIGHT-TEXT  88%  bani   0%  sub   0%  shabad   0%  WRONG   0%  none  12%  bani-open@-s | 51
+pt36 Aarti               @ 250s  RIGHT-TEXT  94%  bani  94%  sub   0%  shabad   0%  WRONG   0%  none   6%  bani-open@4s | 2638 > bani:22
+pt37 Aarti               @  60s  RIGHT-TEXT   0%  bani   0%  sub   0%  shabad   0%  WRONG   0%  none 100%  bani-open@-s | 
+pt38 Aarti               @ 250s  RIGHT-TEXT  89%  bani  89%  sub   0%  shabad   0%  WRONG   0%  none  11%  bani-open@8s | 2638 > bani:22
+pt39 Aarti               @  60s  RIGHT-TEXT  87%  bani   0%  sub   0%  shabad   0%  WRONG   0%  none  13%  bani-open@-s | 51
+pt40 Aarti               @ 249s  RIGHT-TEXT  88%  bani  88%  sub   0%  shabad   0%  WRONG   0%  none  12%  bani-open@8s | 2638 > bani:22
+pt41 Aarti               @ 438s  RIGHT-TEXT  78%  bani  78%  sub   0%  shabad   0%  WRONG   0%  none  22%  bani-open@15s | 2642 > bani:22
+pt42 Aarti               @ 627s  RIGHT-TEXT   0%  bani   0%  sub   0%  shabad   0%  WRONG  86%  none  14%  bani-open@-s | 628
+pt43 Aarti               @  60s  RIGHT-TEXT  87%  bani   0%  sub   0%  shabad   0%  WRONG   0%  none  13%  bani-open@-s | 51
+pt44 Aarti               @ 256s  RIGHT-TEXT  93%  bani  93%  sub   0%  shabad   0%  WRONG   0%  none   7%  bani-open@5s | 2638 > bani:22
+pt45 Aarti               @ 453s  RIGHT-TEXT  82%  bani  82%  sub   0%  shabad   0%  WRONG   0%  none  18%  bani-open@12s | 2642 > bani:22
+pt46 Aarti               @ 650s  RIGHT-TEXT   0%  bani   0%  sub   0%  shabad   0%  WRONG  87%  none  13%  bani-open@-s | 628
+pt51 Aarti               @  60s  RIGHT-TEXT  92%  bani   0%  sub   0%  shabad   0%  WRONG   0%  none   8%  bani-open@-s | 51
+pt52 Aarti               @ 217s  RIGHT-TEXT  94%  bani  94%  sub   0%  shabad   0%  WRONG   0%  none   6%  bani-open@4s | 2638 > bani:22
+pt53 Aarti               @ 374s  RIGHT-TEXT  92%  bani  92%  sub   0%  shabad   0%  WRONG   0%  none   8%  bani-open@6s | 2642 > bani:22
+pt54 Japji Sahib         @  15s  RIGHT-TEXT  73%  bani  66%  sub   0%  shabad   7%  WRONG   0%  none  27%  bani-open@19s | 1 > bani:2
+pt55 Japji Sahib         @ 462s  RIGHT-TEXT  93%  bani  93%  sub   0%  shabad   0%  WRONG   0%  none   7%  bani-open@5s | 18 > bani:2
+pt56 Japji Sahib         @ 867s  RIGHT-TEXT  95%  bani  95%  sub   0%  shabad   0%  WRONG   0%  none   5%  bani-open@3s | 28 > bani:2
+pt57 Japji Sahib         @  15s  RIGHT-TEXT  85%  bani  71%  sub   0%  shabad  14%  WRONG   0%  none  15%  bani-open@16s | 1 > bani:2
+pt58 Japji Sahib         @ 307s  RIGHT-TEXT  38%  bani  38%  sub   0%  shabad   0%  WRONG   0%  none  62%  bani-open@44s | 20 > bani:2
+pt59 Japji Sahib         @ 576s  RIGHT-TEXT  95%  bani  95%  sub   0%  shabad   0%  WRONG   0%  none   5%  bani-open@3s | 28 > bani:2
+pt60 Japji Sahib         @  15s  RIGHT-TEXT  84%  bani  70%  sub   0%  shabad  14%  WRONG   0%  none  16%  bani-open@17s | 1 > bani:2
+pt61 Japji Sahib         @ 548s  RIGHT-TEXT  82%  bani  82%  sub   0%  shabad   0%  WRONG   0%  none  18%  bani-open@13s | 19 > bani:2
+pt62 Japji Sahib         @1027s  RIGHT-TEXT  93%  bani  93%  sub   0%  shabad   0%  WRONG   0%  none   7%  bani-open@5s | 29 > bani:2
+pt63 Japji Sahib         @  15s  RIGHT-TEXT  83%  bani  73%  sub   0%  shabad  10%  WRONG   0%  none  18%  bani-open@15s | 1 > bani:2
+pt64 Japji Sahib         @ 559s  RIGHT-TEXT  90%  bani  90%  sub   0%  shabad   0%  WRONG   0%  none  10%  bani-open@7s | 19 > bani:2
+pt65 Japji Sahib         @1048s  RIGHT-TEXT  96%  bani  96%  sub   0%  shabad   0%  WRONG   0%  none   4%  bani-open@3s | 29 > bani:2
+
+ALL 60 clips: bani 67.8% | sub 3.2% | shabad 5.1% | WRONG 2.9% | none 15%
+  Japji Sahib         RIGHT-TEXT 85%  bani 80%  shabad 5%  WRONG 0%  none 15%
+  Jaap Sahib          RIGHT-TEXT 69%  bani 69%  shabad 0%  WRONG 0%  none 32%
+  Chaupai Sahib       RIGHT-TEXT 93%  bani 93%  shabad 0%  WRONG 0%  none 7%
+  Tav Prasad Savaiye  RIGHT-TEXT 93%  bani 93%  shabad 0%  WRONG 0%  none 7%
+  Anand Sahib         RIGHT-TEXT 94%  bani 94%  shabad 0%  WRONG 0%  none 6%
+  Rehras Sahib        RIGHT-TEXT 93%  bani 56%  shabad 13%  WRONG 0%  none 7%
+  Kirtan Sohila       RIGHT-TEXT 92%  bani 50%  shabad 42%  WRONG 0%  none 8%
+  Aarti               RIGHT-TEXT 71%  bani 47%  shabad 0%  WRONG 12%  none 18%
