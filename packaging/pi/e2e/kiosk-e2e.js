@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* eslint-disable no-console, no-await-in-loop, no-restricted-syntax, no-continue */
+/* eslint-disable no-console, no-await-in-loop, no-restricted-syntax, no-continue, no-template-curly-in-string */
 /* Kiosk end-to-end check (CI): STTM was started by the kiosk launcher with a recording in
  * place of the microphone (VF_DEMO_WAV) and the DevTools port open. Nobody touches it.
  * Passes when, within --seconds, the presenter window (www/viewer.html) shows a line that
@@ -61,6 +61,45 @@ function cdp(wsUrl, method, params = {}) {
   });
 }
 
+// When a page stops answering, pause its JavaScript through the debugger (which interrupts
+// running code) and record where it is: the stack of a stuck renderer.
+function stackOf(wsUrl) {
+  return new Promise((resolve) => {
+    const ws = new WebSocket(wsUrl);
+    let id = 0;
+    const send = (method, params = {}) => ws.send(JSON.stringify({ id: ++id, method, params }));
+    const timer = setTimeout(() => {
+      ws.close();
+      resolve(['(no pause within 20 s)']);
+    }, 20000);
+    ws.onopen = () => {
+      send('Debugger.enable');
+      send('Debugger.pause');
+    };
+    ws.onmessage = (m) => {
+      const msg = JSON.parse(m.data);
+      if (msg.method !== 'Debugger.paused') return;
+      clearTimeout(timer);
+      const frames = msg.params.callFrames
+        .slice(0, 25)
+        .map(
+          (f) =>
+            `${f.functionName || '(anon)'} ${f.url.split('/').slice(-3).join('/')}:${f.location.lineNumber + 1}`,
+        );
+      send('Debugger.resume');
+      setTimeout(() => {
+        ws.close();
+        resolve(frames);
+      }, 300);
+    };
+    ws.onerror = () => {
+      clearTimeout(timer);
+      resolve(['(debugger connection failed)']);
+    };
+  });
+}
+const stacks = [];
+
 async function text(t) {
   const r = await cdp(t.webSocketDebuggerUrl, 'Runtime.evaluate', {
     expression:
@@ -92,6 +131,11 @@ async function text(t) {
       }
     } catch (e) {
       timeline.push({ t: secs(), error: e.message });
+      if (main && stacks.length < 6) {
+        const frames = await stackOf(main.webSocketDebuggerUrl);
+        stacks.push({ t: secs(), frames });
+        console.log(`stuck at ${secs()}s:\n  ${frames.join('\n  ')}`);
+      }
     }
     // The presenter may draw Gurbani as Unicode or as ASCII in a Gurmukhi font: keep both.
     const gurmukhi = vText.replace(/\s+/g, ' ').trim();
@@ -128,7 +172,14 @@ async function text(t) {
       console.log(`screenshot ${name}: ${e.message}`);
     }
   }
-  const result = { pass: !!found, found, appOpenedAt: sawApp, viewerOpenedAt: sawViewer, timeline };
+  const result = {
+    pass: !!found,
+    found,
+    appOpenedAt: sawApp,
+    viewerOpenedAt: sawViewer,
+    stacks,
+    timeline,
+  };
   fs.writeFileSync(path.join(OUT, 'timeline.json'), JSON.stringify(result, null, 1));
   console.log(
     found
