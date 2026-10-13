@@ -306,6 +306,7 @@ async function record() {
   const suites = (arg('suites', Object.keys(SUITES).join(','))).split(',');
   const only = arg('only') ? new Set(arg('only').split(',')) : null;
   const outRoot = path.resolve(arg('out', path.join(CACHE, 'record-runs', new Date().toISOString().replace(/[:.]/g, '-'))));
+  fs.mkdirSync(outRoot, { recursive: true });
   console.log(`record -> cache ${CACHE} (model ${modelSha(MODEL, CACHE).slice(0, 12)}, codec ${CODEC}); runs in ${outRoot}`);
   // suite by suite (each root in turn), so every suite is complete for all roots as early as possible
   for (const s of suites) {
