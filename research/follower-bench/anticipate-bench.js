@@ -114,6 +114,7 @@ async function replay(variant, it) {
     if (!out || out.verseId == null || out.lineIndex == null || out.confidence < GATE) continue;
     if (out.lineIndex !== cur) { cur = out.lineIndex; shown.push({ t: +(1 + (k - pre) * hop).toFixed(3), i: cur, id: out.verseId }); }
   }
+  if (process.env.PACESTAT && f.paceStat) console.error(variant, it.name, 'pace gate', JSON.stringify(f.paceStat));
   return shown;
 }
 

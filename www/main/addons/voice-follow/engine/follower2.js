@@ -77,6 +77,10 @@ const DEFAULTS = {
   antMinLetters: 10, // lines shorter than this (headers, 'Dohra') are not anticipated
   backFrac: 0.5, // shown ahead, but the position is back in the first half of the line...
   backS: 0.25, // ...for this long: the reader is repeating it, step back
+  antPace: 0, // pace-predicted end (0 = off)
+  antPaceFrac: 0.6,
+  antPaceTol: 0.25,
+  antPaceMargin: 0.25,
   readBackDwell: 2, // read Banis (anticipate on): windows a step back needs (0 = backDwell)
   repeatLast: 1, // the last two lines of every read Bani are expected to be read twice
   repeatDwell: 1, // windows an expected repeat (BANI_REPEATS) needs to be followed back
@@ -607,8 +611,41 @@ class FollowerV2 {
     const late = inLine && frac >= c.antStallFrac && this.quiet;
     if (!late) this.quietT = null;
     else if (this.quietT == null) this.quietT = now;
+    // Pace (letters per second of the reader, EMA over in-line forward steps), for the
+    // pace-predicted end: anchored once the line is past antPaceFrac, the end is predicted
+    // at anchor + remaining letters / pace.
+    if (
+      inLine &&
+      this.paceP != null &&
+      this.paceLine === line &&
+      p > this.paceP &&
+      now > this.paceT
+    ) {
+      const r = (p - this.paceP) / (now - this.paceT);
+      if (r < 40) this.pace = this.pace ? 0.8 * this.pace + 0.2 * r : r;
+    }
+    if (inLine) {
+      this.paceP = p;
+      this.paceT = now;
+      this.paceLine = line;
+    }
+    if (inLine && frac >= c.antPaceFrac && this.predLine !== line && this.pace > 1) {
+      this.predLine = line;
+      this.predEnd = now + (this.lineEnd[line] - p) / this.pace;
+    }
+    let paceOk = false;
+    if (c.antPace && this.predLine === line && this.endT != null) {
+      // the end was heard when the pace said it would be: trust the pace
+      paceOk =
+        Math.abs(this.endT - this.predEnd) <= c.antPaceTol &&
+        now >= Math.max(this.endT, this.predEnd) + c.antPaceMargin - 1e-6;
+      if (now - this.endT < 1e-6) this.paceStat = this.paceStat || { ok: 0, no: 0 };
+      if (now - this.endT < 1e-6)
+        this.paceStat[Math.abs(this.endT - this.predEnd) <= c.antPaceTol ? 'ok' : 'no'] += 1;
+    }
     this.antP = p;
     const ready =
+      paceOk ||
       (this.endT != null && now - this.endT >= c.antDelayS - 1e-6) ||
       (c.antQuiet &&
         this.quiet &&

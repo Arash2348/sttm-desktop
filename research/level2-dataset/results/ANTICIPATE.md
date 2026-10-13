@@ -160,3 +160,41 @@ Sohila 0 -> 1, 55 clips 0 -> 6. `git diff --stat 7165bd24..HEAD -- www/ package.
 (follower.js, VoiceFollow.jsx, package.json untouched).
 Follow-up (not fixed): the 1.0 s no-new-letters timer restarts if one window's alignment dips under minScore mid-pause
 (costs some GOOD flips, never adds premature).
+
+## Round 2 (coordinator levers)
+Step 14. Duplicate-text rows (the extra-long list repeats headers such as "ੴ ਸ੍ਰੀ ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਹ") now count as the line
+when the shown verse id equals the truth id (scorer fix; base and cand unchanged at the 1st decimal).
+
+Step 15. Tracker re-acquire after a reader skip (jumpDwell 2 or 1 once the local match has failed 1-2 windows): Rehras
+87.9 -> 88.0 at best. Trace at the 1171 s skip (29 extra-long rows skipped): first letters of the new line heard 1177.5 s,
+jump 1178.75 s; what the jump waits for is enough letters to match, not the dwell. Removed (handed to a separate agent).
+Crossing lag to the first real line after each Renton skip, base = cand: 20 rows 1.22 s, 29 rows 2.35 s,
+45 rows (Chaupai headers) ~1.5 s after its first letters; 2-3 row skips 0.36-1.15 s. Not within 2 windows; unchanged.
+
+Step 16. Expected-repeat prior (user's domain knowledge). Rehras truth repeats: 638 s Jap tap (168 -> 165), 1315 s Dohra
+after Chaupai (460 -> 459), 1505 s end of Anand (495 -> 494), 1692 s last two lines (529 -> 528), plus 968 s (Chaupai),
+1185 s (extra-long Dohra), 1580 s (Mundavani area): 6 of 8 happened while the candidate was showing i+1. Sohila: last two
+lines read twice (85 -> 84 at 291.8 s). Rule (follower2.js REPEATS, by text, any read Bani; plus the last two lines of every
+read Bani): the first reading of the end line is not anticipated past, and the move back is followed after 1 window once
+the line was read to near its end. Off for sung Banis (needs anticipation on).
+Rehras 87.9 -> 88.0 (back median 2.0 -> 1.9 s); Sohila 96.4 -> 96.7, within-1 99.0 -> 99.2 (= base), premature 0,
+step back 1.49 -> 0.74 s. A first version marked a flicker as the repeat (Sohila 282 s); fixed by requiring the line read
+to within 3 letters of its end.
+Step 17. Step-backs are deliberate re-reads (user): read Banis follow any step back after 2 windows (readBackDwell 2;
+was 4): Rehras 88.2, back median 1.9 -> 1.4 s, premature unchanged 3; slowed 86.8; Sohila 96.6 (1 premature flip,
+0.19 s before a truth end); 55 clips 90.6 / 1.0%; sung identical.
+
+Step 18. Pace-predicted end (lever 1). Offline first: for 306 Rehras boundaries, the reader's pace over the second half of
+the line does not predict how long the line keeps sounding after its last letter is heard (remaining > 0.25 s:
+21% at below-median pace, 22% at above-median pace). Then implemented (antPace: EMA pace, end predicted from 60% of the
+line, trusted when the end is heard within antPaceTol of the prediction, flip at max(end heard, predicted) + margin):
+| margin / tol | gate declines | Rehras voiced | premature |
+|---|---|---|---|
+| 0.25 / 0.25 | 141 of 412 (34%) | 90.3 | 16 (4.5%) |
+| 0.5 / 0.25 | 139 of 414 | 89.1 | 6 (1.7%) |
+| 0.4 / 0.15 | 213 of 414 (51%) | 89.2 | 6 (1.7%) |
+| 0.6 / 0.25 | 143 of 417 | 88.4 | 4 (1.1%) |
+| 0.75 / 0.25 | 143 of 417 | 88.3 | 4 (1.1%) |
+| off (shipped) | - | 88.2 | 3 (0.8%) |
+Same frontier as the delay rules (+1 point voiced costs ~+1 point premature). Pace knows when the letters run out, not
+whether the reader is still holding the last syllable. Left OFF (antPace 0).
