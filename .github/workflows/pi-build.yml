@@ -57,7 +57,11 @@ jobs:
       - name: Package .deb (arm64)
         env:
           USE_SYSTEM_FPM: 'true'
-        run: npx electron-builder --linux deb --arm64 --publish never
+        # sharp's native code needs libvips next to it on disk: a shared library inside
+        # app.asar cannot be loaded on Linux, which left the main window blank.
+        run: |
+          npm pkg set 'build.asarUnpack[1]=node_modules/sharp/**/*'
+          npx electron-builder --linux deb --arm64 --publish never
 
       - uses: actions/upload-artifact@v4
         with:
