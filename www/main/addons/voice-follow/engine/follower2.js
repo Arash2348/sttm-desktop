@@ -63,6 +63,20 @@ const DEFAULTS = {
   // compound. 0 = off.
   catchHops: 4,
   catchScore: 0.5, // ...each of those windows matching at least this well (per letter)
+  // Anticipation (read paath only; see present()). 0 = off.
+  anticipate: 0,
+  antFrac: 1.0, // share of the current line's letters heard before it counts as finished
+  antDelay: 0, // further windows the position must stay at that point (no new letters: a pause)
+  antSlack: 0, // ...or all but this many of its last letters (often dropped by recognition)
+  antEnter: 0, // 1: after a window at the line's end, the next line's first letters flip at once
+  antStall: 0, // windows the position may sit still past antStallFrac of the line: a pause (0 = off)
+  antStallFrac: 0.8,
+  antQuiet: 0, // the last antQuietS of audio this much quieter than the window's speech: a pause (0 = off)
+  antQuietS: 0.15,
+  antQuietHops: 0, // ...or quiet this many windows in a row with the position past antStallFrac (0 = off)
+  antMinLetters: 10, // lines shorter than this (headers, 'Dohra') are not anticipated
+  backFrac: 0.5, // shown ahead, but the position is back in the first half of the line...
+  backHops: 2, // ...for this many windows: the reader is repeating it, step back
 };
 // Sung Banis (kirtan-style, not read): Asa di Vaar (BaniDB Bani 90). Ragis repeat a pauri
 // or a chhant stanza from its top (a jump 4-6 lines back, which the recited profile treats
@@ -265,6 +279,7 @@ class FollowerV2 {
     if (end >= 0 && this.lineAt[end] === line) this.lastEnd = end;
     else if (this.lastEnd < 0 || this.lineAt[this.lastEnd] !== line) this.lastEnd = -1;
     const wordIndex = this.lastEnd >= 0 ? this.wordAt[this.lastEnd] : -1;
+    this.lastScore = score;
     return {
       verseIndex: line,
       verseId: this.verseIds[line],
@@ -299,6 +314,7 @@ class FollowerV2 {
       if (B === null) B = this.bgScore(h);
       return B;
     };
+    this.pos = -1;
     if (this.cur === null) {
       const G = this.align(h, 0, last, null, this.lastCur);
       if (!G || G.score < c.lockScore || G.score - bg() < c.lockMargin) {
@@ -316,6 +332,7 @@ class FollowerV2 {
     const a = this.lineStart[Math.max(0, this.cur - c.back)];
     const b = this.lineEnd[Math.min(this.lineEnd.length - 1, this.cur + c.ahead)];
     const Lc = this.align(h, a, b, this.cur);
+    this.pos = Lc && Lc.score >= c.minScore ? Lc.end : -1;
     const needGlobal =
       !Lc || Lc.score < c.minScore + c.jumpMargin || this.tick % c.globalEvery === 0 || this.cand;
     const G = needGlobal ? this.align(h, 0, last, null, this.cur) : null;
@@ -431,8 +448,112 @@ class FollowerV2 {
     this.acc = 0;
     const emis = await this.infer.emissions(this.buf);
     const h = [...simplify(this.infer.decode(this.infer.greedy(emis)))];
-    if (h.length < this.c.minHyp) return null;
-    return this.decide(h);
+    if (h.length < this.c.minHyp) {
+      this.pos = -1;
+      return this.c.anticipate ? this.present(null) : null;
+    }
+    const out = this.decide(h);
+    if (!this.c.anticipate) return out;
+    if (this.c.antQuiet) this.quiet = this.tailQuiet();
+    return this.present(out);
+  }
+
+  // What the screen shows, given the tracker (anticipation): once the current line has
+  // been heard to its end (antFrac of its letters) and the position then stays there for
+  // antDelay more windows, show the next line, so it is there as the reader starts it.
+  // One anticipation per reading of a line; if the position falls back into the first
+  // part of the line instead (a repeat), the screen steps back to it.
+  present(res) {
+    const { c } = this;
+    const line = this.cur;
+    if (line === null || (res && (res.lineIndex == null || res.verseIndex === -1))) {
+      this.ant = null;
+      this.antRun = 0;
+      return res;
+    }
+    const p = this.pos;
+    const inLine = p >= 0 && this.lineAt[p] === line;
+    const len = this.lineEnd[line] - this.lineStart[line] + 1;
+    const frac = inLine ? (p - this.lineStart[line] + 1) / len : null;
+    if (frac !== null && frac < c.backFrac && this.antSpent === line && this.ant === null) {
+      this.antSpent = -1; // a new reading of this line
+    }
+    if (this.ant != null) {
+      if (line !== this.ant) {
+        this.ant = null; // the tracker caught up (or moved elsewhere)
+        this.lowRun = 0;
+        return res;
+      }
+      this.lowRun = frac !== null && frac < c.backFrac ? (this.lowRun || 0) + 1 : 0;
+      if (this.lowRun >= c.backHops) {
+        this.ant = null;
+        this.lowRun = 0;
+        this.antSpent = -1;
+        return res || this.out(line, this.lastScore || c.minScore, p);
+      }
+      return this.ahead1(res, line);
+    }
+    // finished-line run: position at the end of the line (or just past it, not yet entered)
+    const entering = p >= 0 && this.lineAt[p] === line + 1 && this.antRun > 0;
+    const atEnd =
+      (inLine &&
+        (frac >= c.antFrac - 1e-9 || this.lineEnd[line] - p <= c.antSlack) &&
+        (!this.antRun || p >= this.antP)) ||
+      entering;
+    this.antRun = atEnd ? (this.antRun || 0) + 1 : 0;
+    // stall: the position sits still late in the line (no new letters heard)
+    this.stallRun = inLine && frac >= c.antStallFrac && p === this.antP ? (this.stallRun || 0) + 1 : 0;
+    this.quietRun = inLine && frac >= c.antStallFrac && this.quiet ? (this.quietRun || 0) + 1 : 0;
+    this.antP = p;
+    if (
+      (this.antRun > c.antDelay ||
+        (c.antQuiet && this.quiet && inLine && this.antRun > 0) ||
+        (c.antEnter && entering) ||
+        (c.antStall && this.stallRun >= c.antStall) ||
+        (c.antQuietHops && this.quietRun >= c.antQuietHops)) &&
+      len >= c.antMinLetters &&
+      this.antSpent !== line &&
+      line + 1 < this.verseIds.length &&
+      this.lineEnd[line + 1] >= this.lineStart[line + 1]
+    ) {
+      this.ant = line;
+      this.antSpent = line;
+      this.lowRun = 0;
+      return this.ahead1(res, line);
+    }
+    return res;
+  }
+
+  // Is the end of the audio a pause? RMS of the last antQuietS against the loud speech
+  // in the window (90th percentile of 20 ms frames).
+  tailQuiet() {
+    const b = this.buf;
+    const F = Math.floor(0.02 * SR);
+    const n = Math.floor(b.length / F);
+    if (n < 10) return false;
+    const rms = new Float32Array(n);
+    for (let f = 0; f < n; f++) {
+      let e = 0;
+      for (let k = f * F; k < (f + 1) * F; k++) e += b[k] * b[k];
+      rms[f] = Math.sqrt(e / F);
+    }
+    const tailN = Math.max(1, Math.round(this.c.antQuietS / 0.02));
+    let tail = 0;
+    for (let f = n - tailN; f < n; f++) tail += rms[f];
+    tail /= tailN;
+    const sorted = Array.from(rms).sort((x, y) => x - y);
+    const loud = sorted[Math.floor(0.9 * (n - 1))];
+    return loud > 0 && tail < this.c.antQuiet * loud;
+  }
+
+  ahead1(res, line) {
+    return {
+      verseIndex: line + 1,
+      verseId: this.verseIds[line + 1],
+      lineIndex: line + 1,
+      wordIndex: 0,
+      confidence: res ? res.confidence : Math.max(this.lastScore || 0, this.c.minScore),
+    };
   }
 }
 
