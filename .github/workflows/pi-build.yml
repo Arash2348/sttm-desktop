@@ -10,9 +10,15 @@ on:
     branches:
       - pi-kiosk
   workflow_dispatch:
+    inputs:
+      deb_run_id:
+        description: 'Reuse the .deb from this earlier run (skip the build)'
+        required: false
+        default: ''
 
 jobs:
   build:
+    if: ${{ !inputs.deb_run_id }}
     runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
@@ -61,6 +67,7 @@ jobs:
 
   kiosk-e2e:
     needs: build
+    if: ${{ always() && (needs.build.result == 'success' || inputs.deb_run_id) }}
     runs-on: ubuntu-24.04-arm
     strategy:
       fail-fast: false
@@ -74,6 +81,8 @@ jobs:
         with:
           name: sttm-pi-deb
           path: deb
+          run-id: ${{ inputs.deb_run_id || github.run_id }}
+          github-token: ${{ github.token }}
 
       - uses: actions/setup-node@v4
         with:
@@ -102,7 +111,7 @@ jobs:
           ffmpeg -v error -y -f x11grab -video_size 1920x1080 -framerate 4 -i :99 -t 270 \
             -vf scale=1280:-2 -pix_fmt yuv420p kiosk-screen.mp4 &
           LAST=$(( ${{ matrix.cores }} - 1 ))
-          DISPLAY=:99 VF_DEMO_WAV=/tmp/kirtan.wav STTM_KIOSK_BOOT_WAIT=0 \
+          DISPLAY=:99 VF_DEMO_WAV=/tmp/kirtan.wav STTM_KIOSK_BOOT_WAIT=0 ELECTRON_ENABLE_LOGGING=1 \
             STTM_EXTRA_FLAGS="--no-sandbox --disable-gpu --remote-debugging-port=9222" \
             nohup taskset -c 0-$LAST /usr/local/bin/sttm-kiosk > sttm.log 2>&1 &
           echo "started on cores 0-$LAST"
