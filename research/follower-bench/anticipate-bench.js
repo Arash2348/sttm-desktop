@@ -135,7 +135,7 @@ function score(it, shown) {
     while (si + 1 < shown.length && shown[si + 1].t <= t) si++;
     const l = L[k];
     if (!l.ok) continue;
-    const d = si >= 0 ? dist(shown[si].i, l) : null;
+    const d = si < 0 ? null : (shown[si].id != null && shown[si].id === l.id ? 0 : dist(shown[si].i, l)); // a duplicate row with the same text counts as the line
     T++;
     if (d === 0) ex++;
     if (d !== null && Math.abs(d) <= 1) w1++;

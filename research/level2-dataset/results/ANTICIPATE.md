@@ -154,3 +154,9 @@ Rehras voiced counts the replay's cold first lock (17.6-41 s, 2.05% of voiced ti
 from the first shown line on: base ~81.3%, cand ~89.7%. The 3 Rehras premature flips are the tracker's own and identical
 in base (1 on a confident-alignment line). Strict exact drops by design: it counts the pause after line i as line i.
 Sohila within-1 99.2 -> 99.0 is the one step-back case (reader returned to 84 after a 1.2 s pause; 86 shown 1.0 s).
+Checks: the Rehras premature flips (244.25, 742.75, 1287.25, 1339.0 s) are identical in base and candidate (tracker's own).
+Ahead-then-back reverts (screen goes to i+1 then back to i within 1.5 s, visible flicker): Rehras 1 -> 5 (28 min),
+Sohila 0 -> 1, 55 clips 0 -> 6. `git diff --stat 7165bd24..HEAD -- www/ package.json`: only engine/follower2.js
+(follower.js, VoiceFollow.jsx, package.json untouched).
+Follow-up (not fixed): the 1.0 s no-new-letters timer restarts if one window's alignment dips under minScore mid-pause
+(costs some GOOD flips, never adds premature).

@@ -38,7 +38,7 @@ for (const f of process.argv.slice(2)) {
     if (e.type === 'verse') i = idx.has(e.verseId) ? idx.get(e.verseId) : -1000;
     else if (e.type === 'shabad' && sid !== BANI_OK[run.part]) i = -2000; // another page
     else continue;
-    if (i !== last) { shown.push({ t: e.t, i }); last = i; }
+    if (i !== last) { shown.push({ t: e.t, i, id: e.type === "verse" ? e.verseId : null }); last = i; }
   }
   const r = score(it, shown);
   const out = Object.fromEntries(Object.entries(r).filter(([k]) => !k.startsWith('_')));

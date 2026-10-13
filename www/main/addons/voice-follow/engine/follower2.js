@@ -77,6 +77,8 @@ const DEFAULTS = {
   antMinLetters: 10, // lines shorter than this (headers, 'Dohra') are not anticipated
   backFrac: 0.5, // shown ahead, but the position is back in the first half of the line...
   backS: 0.25, // ...for this long: the reader is repeating it, step back
+  repeatLast: 1, // the last two lines of every read Bani are expected to be read twice
+  repeatDwell: 1, // windows an expected repeat (BANI_REPEATS) needs to be followed back
   antOnward: 2, // shown ahead, but this many new letters of the line heard: still reading it, step back
 };
 // Sung Banis (kirtan-style, not read): Asa di Vaar (BaniDB Bani 90). Ragis repeat a pauri
@@ -103,6 +105,25 @@ const SUNG_BANIS = {
   // so its end says little about when the next one starts: no anticipation.
   22: { anticipate: 0 },
 };
+// Expected repeats in the usual reading of a paath: the reader finishes the first line of a
+// pair and goes back to the second (a block read twice). There the next line is not shown
+// ahead on the first reading, and the move back is followed as soon as it is heard. Lines are
+// matched by text (any Bani, any length or id space). The last two lines of every read Bani
+// are such a pair too (see the constructor).
+const REPEATS = [
+  // Rehras / Benti Chaupai: Jap tap sanjam, the closing pangtis read again
+  ['ਸਰਣਿ ਪਰੇ ਕੀ ਰਾਖਹੁ ਸਰਮਾ', 'ਜਪੁ ਤਪੁ ਸੰਜਮੁ ਧਰਮੁ ਨ ਕਮਾਇਆ'],
+  // the Dohra after Chaupai Sahib
+  ['ਬਾਹਿ ਗਹੇ ਕੀ ਲਾਜ ਅਸਿ ਗੋਬਿੰਦ ਦਾਸ ਤੁਹਾਰ', 'ਸਗਲ ਦੁਆਰ ਕਉ ਛਾਡਿ ਕੈ ਗਹਯੋ ਤੁਹਾਰੋ ਦੁਆਰ'],
+  // the end of Anand Sahib (pauri 40)
+  ['ਬਿਨਵੰਤਿ ਨਾਨਕੁ ਗੁਰ ਚਰਣ ਲਾਗੇ ਵਾਜੇ ਅਨਹਦ ਤੂਰੇ', 'ਸੁਣਤੇ ਪੁਨੀਤ ਕਹਤੇ ਪਵਿਤੁ ਸਤਿਗੁਰੁ ਰਹਿਆ ਭਰਪੂਰੇ'],
+  // the end of Rehras
+  ['ਜਿਸੁ ਸਿਮਰਤ ਸੁਖੁ ਹੋਇ ਸਗਲੇ ਦੂਖ ਜਾਹਿ', 'ਤਿਸੁ ਸਾਹਿਬ ਕੀ ਟੇਕ ਨਾਨਕ ਮਨੈ ਮਾਹਿ'],
+  // the end of Sohila (its list may continue past it)
+  ['ਨਾਨਕ ਦਾਸੁ ਇਹੈ ਸੁਖੁ ਮਾਗੈ ਮੋ ਕਉ ਕਰਿ ਸੰਤਨ ਕੀ ਧੂਰੇ', 'ਅੰਤਰਜਾਮੀ ਪੁਰਖ ਬਿਧਾਤੇ ਸਰਧਾ ਮਨ ਕੀ ਪੂਰੇ'],
+  // the end of Japji Sahib
+  ['ਨਾਨਕ ਤੇ ਮੁਖ ਉਜਲੇ ਕੇਤੀ ਛੁਟੀ ਨਾਲਿ', 'ਜਿਨੀ ਨਾਮੁ ਧਿਆਇਆ ਗਏ ਮਸਕਤਿ ਘਾਲਿ'],
+];
 
 // Letters only, with marks that recognition often drops or adds removed, so that
 // spelling noise costs little.
@@ -158,6 +179,31 @@ class FollowerV2 {
       lineEnd.push(text.length - 1);
     });
     Object.assign(this, { text, lineAt, wordAt, lineStart, lineEnd });
+    // Expected repeats (BANI_REPEATS): end line -> the line the reader goes back to.
+    this.repeatTo = new Map();
+    this.repeated = new Set();
+    const pairs = this.c.repeats === undefined ? REPEATS : this.c.repeats;
+    if (this.c.anticipate && pairs) {
+      const said = lines.map((l) => simplify(spoken(l.text || (l.words || []).join(' '))));
+      pairs.forEach(([endT, startT]) => {
+        const e = simplify(spoken(endT));
+        const st = simplify(spoken(startT));
+        said.forEach((x, i) => {
+          if (!x.startsWith(e)) return;
+          for (let j = i - 1; j >= Math.max(0, i - 8); j -= 1) {
+            if (said[j].startsWith(st)) {
+              this.repeatTo.set(i, j);
+              break;
+            }
+          }
+        });
+      });
+      // the last two (spoken) lines of the Bani
+      const real = said.map((x, i) => i).filter((i) => said[i].length >= this.c.antMinLetters);
+      if (this.c.repeatLast && real.length >= 2) {
+        this.repeatTo.set(real[real.length - 1], real[real.length - 2]);
+      }
+    }
     this.lastEnd = -1;
     // Other Gurbani (lines), minus any line this Bani also has: shared text (So Dar in
     // Japji and Rehras, Gagan mai thaal in Sohila and Aarti) is evidence for both.
@@ -345,6 +391,12 @@ class FollowerV2 {
     const b = this.lineEnd[Math.min(this.lineEnd.length - 1, this.cur + c.ahead)];
     const Lc = this.align(h, a, b, this.cur);
     this.pos = Lc && Lc.score >= c.minScore ? Lc.end : -1;
+    if (this.peakLine !== this.cur) {
+      this.peakLine = this.cur;
+      this.peak = -1;
+    }
+    if (this.pos >= 0 && this.lineAt[this.pos] === this.cur && this.pos > this.peak)
+      this.peak = this.pos;
     const needGlobal =
       !Lc || Lc.score < c.minScore + c.jumpMargin || this.tick % c.globalEvery === 0 || this.cand;
     const G = needGlobal ? this.align(h, 0, last, null, this.cur) : null;
@@ -410,7 +462,17 @@ class FollowerV2 {
       return null;
     }
     // A one-line step back (a flicker between neighbours) may need longer than a real repeat.
-    if (this.confirm(line, line === this.cur - 1 && c.backDwell1 ? c.backDwell1 : c.backDwell)) {
+    // the expected repeat of a block read twice: follow it at once
+    // (only once the line was read to near its end: earlier, a step back is a flicker)
+    const expected =
+      this.repeatTo.has(this.cur) &&
+      line >= this.repeatTo.get(this.cur) &&
+      line < this.cur &&
+      this.peak >= this.lineEnd[this.cur] - 3;
+    let need = line === this.cur - 1 && c.backDwell1 ? c.backDwell1 : c.backDwell;
+    if (expected) need = c.repeatDwell;
+    if (this.confirm(line, need)) {
+      if (expected) this.repeated.add(this.cur);
       this.cur = line;
       this.noMatch = 0;
       this.cand = null;
@@ -555,6 +617,7 @@ class FollowerV2 {
       ready &&
       len >= c.antMinLetters &&
       this.antSpent !== line &&
+      !(this.repeatTo.has(line) && !this.repeated.has(line)) &&
       line + 1 < this.verseIds.length &&
       this.lineEnd[line + 1] >= this.lineStart[line + 1]
     ) {
