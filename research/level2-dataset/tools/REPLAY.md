@@ -159,3 +159,6 @@ Env: `VF_EMIS_CACHE`, `VF_EMIS_MODE=replay|record`, `VF_EMIS_CODEC=q16|f32`, `VF
 - 2026-10-13 02:57. SMOKE TIER CACHED. First real smoke run (base 265da34e vs release-next 7165bd24, 10 clips, 19.5 min of
   audio per side): 67 s wall with 3 recordings running on the machine; PASS. Rehras (1716 s) recorded in 665 s on the base
   root and 219 s more on the second root (only its diverging windows), 336 MB in the cache: ~0.2 MB per audio second.
+- 2026-10-13 06:18. FULL CACHE BUILT: 170 clips, 12.2 h of audio, two roots, 4.0 h wall (3 clips in parallel when the lock was
+  free, 1 when others waited), 0 failures. Azure bench-cache/ 8.34 GB (311 blobs), ~$0.17/month hot LRS.
+  | suite | clips | audio h |  renton 7 / 1.23 | L2 41 / 5.19 | Fremont 5 / 0.74 | paath 60 / 1.15 | Aarti 50 / 2.10 | Asa 7 / 1.83
