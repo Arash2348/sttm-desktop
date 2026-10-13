@@ -150,3 +150,7 @@ Env: `VF_EMIS_CACHE`, `VF_EMIS_MODE=replay|record`, `VF_EMIS_CODEC=q16|f32`, `VF
   numbers: lag 1.85 -> 0.37 s). vf-check prints the per-clip line table whenever <cache>/line-truth/truth/<clip>.json exists.
 - Pipeline test (vf-check, 5 clips x 2 roots = 12.2 min of audio, 3 workers, machine busy with a release run): 42 s replay,
   2 s scoring; a repeat run of the same committed trees: 0.9 s (replays and metrics reused per tree hash).
+- 2026-10-13 02:20. Status: smoke-tier cache build running in the background, one clip per lock turn behind the release's runs
+  (`vf-check --record --queue --tier smoke`, log in the replay scratchpad). Full-suite recording is ON HOLD by the lead's
+  instruction (record once). Shared Azure cache: 6 clips, 108.5 MB pushed. Estimated full cache: ~8 GB q16 (734 min audio x
+  ~0.19 MB/s), ~$0.16/month at Azure hot LRS (~$0.02/GB-month), ~$0.7 egress per full pull.
