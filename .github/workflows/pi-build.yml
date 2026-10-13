@@ -103,7 +103,7 @@ jobs:
             -vf scale=1280:-2 -pix_fmt yuv420p kiosk-screen.mp4 &
           LAST=$(( ${{ matrix.cores }} - 1 ))
           DISPLAY=:99 VF_DEMO_WAV=/tmp/kirtan.wav STTM_KIOSK_BOOT_WAIT=0 \
-            STTM_EXTRA_FLAGS="--no-sandbox --remote-debugging-port=9222" \
+            STTM_EXTRA_FLAGS="--no-sandbox --disable-gpu --remote-debugging-port=9222" \
             nohup taskset -c 0-$LAST /usr/local/bin/sttm-kiosk > sttm.log 2>&1 &
           echo "started on cores 0-$LAST"
 
