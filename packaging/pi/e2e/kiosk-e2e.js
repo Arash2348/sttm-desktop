@@ -100,6 +100,53 @@ function stackOf(wsUrl) {
 }
 const stacks = [];
 
+// A Chromium performance trace through the browser-level endpoint, which answers even when a
+// page's main thread is stuck: shows whether the time goes to script, layout or painting.
+async function trace(seconds) {
+  const ver = await (await fetch(`http://127.0.0.1:${PORT}/json/version`)).json();
+  return new Promise((resolve) => {
+    const ws = new WebSocket(ver.webSocketDebuggerUrl);
+    const events = [];
+    let id = 0;
+    const send = (method, params = {}) => ws.send(JSON.stringify({ id: ++id, method, params }));
+    const done = () => {
+      ws.close();
+      resolve(events);
+    };
+    const guard = setTimeout(done, (seconds + 60) * 1000);
+    ws.onopen = () => {
+      send('Tracing.start', {
+        transferMode: 'ReportEvents',
+        traceConfig: {
+          includedCategories: [
+            'devtools.timeline',
+            'disabled-by-default-devtools.timeline',
+            'v8.execute',
+            'disabled-by-default-v8.cpu_profiler',
+            'blink',
+            'cc',
+            'toplevel',
+          ],
+        },
+      });
+      setTimeout(() => send('Tracing.end'), seconds * 1000);
+    };
+    ws.onmessage = (m) => {
+      const msg = JSON.parse(m.data);
+      if (msg.method === 'Tracing.dataCollected') events.push(...msg.params.value);
+      if (msg.method === 'Tracing.tracingComplete') {
+        clearTimeout(guard);
+        done();
+      }
+    };
+    ws.onerror = () => {
+      clearTimeout(guard);
+      done();
+    };
+  });
+}
+let traced = false;
+
 async function text(t) {
   const r = await cdp(t.webSocketDebuggerUrl, 'Runtime.evaluate', {
     expression:
@@ -131,6 +178,12 @@ async function text(t) {
       }
     } catch (e) {
       timeline.push({ t: secs(), error: e.message });
+      if (!traced) {
+        traced = true;
+        const ev = await trace(15);
+        fs.writeFileSync(path.join(OUT, 'trace.json'), JSON.stringify({ traceEvents: ev }));
+        console.log(`trace: ${ev.length} events`);
+      }
       if (main && stacks.length < 6) {
         const frames = await stackOf(main.webSocketDebuggerUrl);
         stacks.push({ t: secs(), frames });
