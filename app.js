@@ -400,6 +400,15 @@ function trackDisplay(action) {
 // Pi may be wired to the projector alone. With no second screen, that one screen IS the
 // projector, so the presenter view covers it full screen instead of the controller.
 const KIOSK = process.env.STTM_KIOSK === '1';
+// Nobody clicks anything on a kiosk, and Chromium keeps audio (including the microphone's
+// AudioContext) suspended until a click. Voice-Follow must hear from power-on.
+if (KIOSK) electron.app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
+// With only the projector connected, the presenter view must stay above the controller.
+function kioskCover(browserWindow, display) {
+  if (!KIOSK || !display || display.id !== electron.screen.getPrimaryDisplay().id) return false;
+  browserWindow.setAlwaysOnTop(true, 'screen-saver');
+  return true;
+}
 
 function getExternalDisplays() {
   const primary = electron.screen.getPrimaryDisplay();
@@ -498,6 +507,7 @@ function presentOnExternalDisplay(browserWindow, display) {
     browserWindow.setBounds({ x, y, width, height }, false);
     browserWindow.show();
     browserWindow.setFullScreen(true);
+    if (kioskCover(browserWindow, display)) return;
     if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.focus();
     }
@@ -658,6 +668,7 @@ function createViewer(ipcData, display) {
   presenterWindow.webContents.on('did-finish-load', () => {
     presenterWindow.webContents.insertCSS(styles);
     presenterWindow.show();
+    kioskCover(presenterWindow, targetDisplay);
     const [width, height] = presenterWindow.getSize();
     if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.webContents.send('external-display', JSON.stringify({ width, height }));
