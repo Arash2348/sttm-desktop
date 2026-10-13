@@ -144,3 +144,9 @@ Env: `VF_EMIS_CACHE`, `VF_EMIS_MODE=replay|record`, `VF_EMIS_CODEC=q16|f32`, `VF
   `vf-check cache push|pull|list`; vf-check pulls missing clips automatically before replaying.
   Validated small first: pushed clip02 (12.5 MB), removed it locally, pulled it back (byte-identical),
   replayed: event-for-event identical to the real-model record.
+- 2026-10-13 00:35. Line truth (line-truth.js, forced aligner of the rt11 truth) validated small first on pt54 (Japji, 55 s):
+  14 aligned lines, 2 flagged check<0.6 (the two "॥ ਜਪੁ ॥" title repeats). Line-level diff 265da34e -> MVP 9.0 on that clip:
+  line exact 25.6 -> 60.2 %, median lag 2.18 -> 0.41 s, 9 lines better, 0 worse (matches the paath agent's follower-bench
+  numbers: lag 1.85 -> 0.37 s). vf-check prints the per-clip line table whenever <cache>/line-truth/truth/<clip>.json exists.
+- Pipeline test (vf-check, 5 clips x 2 roots = 12.2 min of audio, 3 workers, machine busy with a release run): 42 s replay,
+  2 s scoring; a repeat run of the same committed trees: 0.9 s (replays and metrics reused per tree hash).
