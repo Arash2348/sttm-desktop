@@ -8,7 +8,7 @@
  *   node hf-ingest.js --inventory     print the inventory / split tables from the ledger (no network)
  *   node hf-ingest.js --retag         recompute the content tag (kirtan / sung Bani) from the local verse files
  *   node hf-ingest.js --push-benchmark  (after vf-benchmark-build.js) upload the new clip folders + manifest.csv +
- *                                     README.md to khalisfoundation/voice-follow-benchmark. Off unless asked.
+ *                                     README.md to khalisfoundation/GurbaniAutopilotBench. Off unless asked.
  *
  * Keyed by dataset id + revision sha (ledger research/level2-dataset/hf-jaspal/ledger.json, committed): a dataset
  * already ingested at the same sha is never downloaded again; a new sha re-pulls it but keeps its clip id,
@@ -47,7 +47,7 @@ const DS = path.join(__dirname, '..');
 const ROOT = path.resolve(DS, '../..');
 const ORG = 'khalisfoundation';
 const PREFIX = 'sttm_desktop_';
-const BENCH_REPO = `${ORG}/voice-follow-benchmark`;
+const BENCH_REPO = `${ORG}/GurbaniAutopilotBench`;
 const LEDGER = path.join(DS, 'hf-jaspal', 'ledger.json');
 const TESTS = path.join(DS, 'khalis-tests.json');
 const STORE = path.resolve(arg('store', path.join(os.homedir(), 'personal/live-darbar-venues/hf-jaspal')));
@@ -341,15 +341,14 @@ async function main() {
 // ---- upload the new benchmark clip folders (opt-in) ----
 function pushBenchmark(L) {
   const bench = path.resolve(arg('bench', path.join(os.homedir(), 'personal/vf-benchmark')));
-  const ids = Object.values(L.datasets).filter((d) => d.status === 'pulled').map((d) => d.clipName);
-  const folders = ids.filter((id) => fs.existsSync(path.join(bench, '1-kirtan-shabad', id)));
+  const folders = Object.values(L.datasets).filter((d) => d.status === 'pulled').map((d) => `${d.content || '1-kirtan-shabad'}/${d.clipName}`).filter((f) => fs.existsSync(path.join(bench, f)));
   say(`upload ${folders.length} clip folders + manifest.csv + README.md + coverage.json to ${BENCH_REPO}`);
   const py = `
 import os, sys
 from huggingface_hub import HfApi
 api = HfApi(token=os.environ['HF_TOKEN'])
 bench, folders = sys.argv[1], sys.argv[2:]
-pats = ['manifest.csv', 'README.md', 'coverage.json'] + [f'1-kirtan-shabad/{f}/*' for f in folders]
+pats = ['manifest.csv', 'README.md', 'coverage.json'] + [f'{f}/*' for f in folders]
 api.upload_folder(repo_id='${BENCH_REPO}', repo_type='dataset', folder_path=bench, allow_patterns=pats, commit_message='Add Fremont sevadaar-screen kirtan clips (hf-ingest.js)')
 print('ok')
 `;
