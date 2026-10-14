@@ -76,6 +76,7 @@ const state = {
   steppedAt: 0,
   steps: 0,
   scoped: false, // see current()
+  wide: false, // see setScoped()
   selfTest: null,
   blockedUntil: {}, // tier index -> ms: left because of backlog, do not re-enter before
   listeners: new Set(),
@@ -97,8 +98,12 @@ const FOLLOW_WINDOW_S = Number(process.env.VF_FOLLOW_WINDOW_S || 0) || null;
 // says so per audio chunk). Searching, kirtan Shabads and sung Banis always run the fast tier =
 // the code path without tiers (the bounded audio queue still protects a slow PC there).
 const current = () => (state.scoped ? TIERS[state.tier] : TIERS[0]);
-function setScoped(on) {
+// wide: the reader may be leaving the Bani (the paath follower is unsure, or another Shabad
+// has a switch win): the recognizer decodes its full window so the next Shabad is found as fast
+// as without tiers, while the paath follower keeps the tier.
+function setScoped(on, wide = false) {
   state.scoped = !!on;
+  state.wide = !!wide;
   if (!state.scoped) {
     state.behindSince = null;
     state.headroomSince = null;
@@ -170,6 +175,7 @@ function backlogBoundS() {
 function windowS(kind, ownWindowS) {
   const t = current();
   if (kind === 'follower' || !t.aligned || ownWindowS > 4) return ownWindowS;
+  if (kind === 'recognizer' && state.wide) return ownWindowS;
   return FOLLOW_WINDOW_S || t.windowS || ownWindowS;
 }
 

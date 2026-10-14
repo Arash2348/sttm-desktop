@@ -424,11 +424,15 @@ class FollowerV2 {
     return { verseIndex: -1, verseId: null, lineIndex: null, wordIndex: -1, confidence: 0 };
   }
 
-  // Performance tiers apply only while this follower is on a read Bani AND holding the reader:
-  // released, or nothing here / other Gurbani fitting better for 2+ windows (the reader may be
-  // leaving the Bani) -> the upstream path, so the next Shabad is found as fast as without tiers.
+  // Performance tiers apply only while this follower is on a read Bani and holds a line.
   tierOk() {
-    return this.readBani && this.cur != null && this.foreign < 2 && this.noMatch < 2;
+    return this.readBani && this.cur != null;
+  }
+
+  // Unsure: nothing here, or other Gurbani fitting better, for 2+ windows (the reader may be
+  // leaving the Bani).
+  unsure() {
+    return this.foreign >= 2 || this.noMatch >= 2;
   }
 
   // The profile for a hop `scale` times the configured one: every dwell counted in windows
@@ -454,7 +458,10 @@ class FollowerV2 {
 
   async push(pcm) {
     const res = resampleTo16k(pcm, this.inputSr);
-    this.win = Math.floor(pace.windowS(this.sung ? 'follower' : 'paath', this.base.windowS) * SR);
+    // Full window kept; a performance tier decodes only its newest part (see Recognizer.push).
+    const tierWin = Math.floor(
+      pace.windowS(this.sung ? 'follower' : 'paath', this.base.windowS) * SR,
+    );
     if (res.length) {
       let merged = new Float32Array(this.buf.length + res.length);
       merged.set(this.buf, 0);
@@ -473,7 +480,8 @@ class FollowerV2 {
     }
     if ((this.acc < this.hop && !pace.onBeat(pcm)) || this.buf.length < SR) return null;
     this.acc = 0;
-    const emis = await this.infer.emissions(this.buf);
+    const win = this.buf.length > tierWin ? this.buf.slice(this.buf.length - tierWin) : this.buf;
+    const emis = await this.infer.emissions(win);
     const h = [...simplify(this.infer.decode(this.infer.greedy(emis)))];
     if (h.length < this.c.minHyp) return null;
     return this.decide(h);

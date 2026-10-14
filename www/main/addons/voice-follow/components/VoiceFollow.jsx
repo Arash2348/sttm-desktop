@@ -3507,15 +3507,16 @@ const VoiceFollow = () => {
     try {
       sampleRate = await startAudio(async (pcm) => {
         if (!autopilotRef.current) return;
-        // Performance tiers only while the paath follower holds the reader in a read Bani and no
-        // other Shabad has a switch win (a switch being judged); otherwise the upstream path.
+        // Performance tiers only while the paath follower holds a line in a read Bani; otherwise
+        // the upstream path. While it is unsure, or another Shabad has a switch win, the
+        // recognizer decodes full windows (engine/pace setScoped wide).
         if (engine.pace) {
           const pf = followerRef.current;
           engine.pace.setScoped(
-            phaseRef.current === 'following' &&
-              !!(pf && pf.tierOk && pf.tierOk()) &&
-              !(switchCandRef.current && switchCandRef.current.wins > 0) &&
-              !(backstopRef.current && backstopRef.current.wins > 0),
+            phaseRef.current === 'following' && !!(pf && pf.tierOk && pf.tierOk()),
+            !!(pf && pf.unsure && pf.unsure()) ||
+              !!(switchCandRef.current && switchCandRef.current.wins > 0) ||
+              !!(backstopRef.current && backstopRef.current.wins > 0),
           );
         }
         {

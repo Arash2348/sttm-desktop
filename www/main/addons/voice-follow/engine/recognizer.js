@@ -17,7 +17,9 @@ class Recognizer {
 
   async push(pcm) {
     const res = resampleTo16k(pcm, this.inputSr);
-    this.win = Math.floor(pace.windowS('recognizer', this.windowS) * SR);
+    // The buffer always keeps the full window; a performance tier may decode only its newest
+    // part (pace.windowS), so leaving the tier decodes full windows again at once.
+    const tierWin = Math.floor(pace.windowS('recognizer', this.windowS) * SR);
     if (res.length) {
       let merged = new Float32Array(this.buf.length + res.length);
       merged.set(this.buf, 0);
@@ -31,13 +33,14 @@ class Recognizer {
     this.acc = 0;
     pace.markBeat(pcm);
 
-    const emis = await this.infer.emissions(this.buf);
+    const win = this.buf.length > tierWin ? this.buf.slice(this.buf.length - tierWin) : this.buf;
+    const emis = await this.infer.emissions(win);
     const hyp = this.infer.decode(this.infer.greedy(emis));
     if (norm(hyp).length < this.minHyp) return null;
     return {
       text: hyp,
       confidence: Number(this.infer.confidence(emis).toFixed(3)),
-      audioSec: Number((this.buf.length / SR).toFixed(1)),
+      audioSec: Number((win.length / SR).toFixed(1)),
     };
   }
 }
