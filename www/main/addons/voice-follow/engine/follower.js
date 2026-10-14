@@ -8,9 +8,9 @@ const NEG = -1e30;
 const DEFAULTS = {
   windowS: 4.0, hopS: 0.25, minHyp: 3, guard: 0.55, advCost: 0.03,
   jumpCost: 0.28, rahaoBonus: 0.18, revisitBonus: 0.10, decay: 0.90,
-  // dwellAdv 2 (was 1): the next line must win two decodes in a row (Fremont ear check:
-  // the app turned the page one line early in 14 of 30 disagreements).
-  dwell: 3, dwellAdv: 2, dwellBack: 2, skipSpan: 2, backSpan: 1, backCost: 0.14,
+  // dwellAdv: decodes the next line must win in a row. Kirtan Shabads pass 2 (VoiceFollow.jsx
+  // SHABAD_FOLLOWER_OPTS); sung Aarti keeps 1 (it lags behind the singer with 2).
+  dwell: 3, dwellAdv: 1, dwellBack: 2, skipSpan: 2, backSpan: 1, backCost: 0.14,
   margin: 0.05, marginGate: 0.10, initConfirm: 4, release: 14,
   acousticGate: 0.0, acousticWin: 3.0, acousticTopm: 5,
   // Evidence bar for any move other than "next line": the fragment must match the

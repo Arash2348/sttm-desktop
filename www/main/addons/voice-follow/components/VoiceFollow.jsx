@@ -246,6 +246,10 @@ const baniIdOf = (id) =>
 // Sohila (Gagan mai thaal) or Rehras (the Savaiya and Dohra) never opens it.
 const PAATH_BANIS = [1000, 10, 2, 4, 6, 7, 9, 22]; // Anand 6, Anand, Japji, Jaap, Savaiye x2, Chaupai, Aarti
 const AARTI_BANI = 22;
+// Line follower options for a kirtan Shabad (not Aarti): the next line must win two decodes
+// in a row, so a scrap of alaap or an instrumental tail does not turn the page early (Fremont
+// ear check: the app was one line early in 14 of 30 disagreements). Aarti keeps the default 1.
+const SHABAD_FOLLOWER_OPTS = { dwellAdv: 2 };
 const AARTI_SHARED_BANIS = [21, 23]; // Rehras, Sohila
 const PAATH_FAMILY = {
   1000: 'anand',
@@ -1545,7 +1549,10 @@ const VoiceFollow = () => {
               inputSr: sampleRate,
               baniId: sundarGutkaBaniId,
             })
-          : await engine.createFollower(verses, { inputSr: sampleRate });
+          : await engine.createFollower(verses, {
+              inputSr: sampleRate,
+              ...(isBani ? {} : SHABAD_FOLLOWER_OPTS),
+            });
       if (session !== sessionRef.current) return;
       followerRef.current = follower;
     } catch (e) {
@@ -1960,6 +1967,7 @@ const VoiceFollow = () => {
                 })
               : await engine.createFollower(profile.verses, {
                   inputSr: sampleRateRef.current,
+                  ...(baniId == null ? SHABAD_FOLLOWER_OPTS : {}),
                 });
         } catch (e) {
           if (session !== sessionRef.current) return;
