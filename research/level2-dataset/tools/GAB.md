@@ -6,11 +6,38 @@ cache), so a check takes seconds to minutes instead of hours, and the same build
 
 Dataset: Hugging Face `khalisfoundation/GurbaniAutopilotBench` (private). Tools: `research/level2-dataset/tools/`
 on branch `vf-cached-replay` (`gab.js`, `gab-score.js`, `gab-harvest.js`, `gab-review.js`, `gab-publish.js`).
-Version: every scorecard says `GAB v1.1` and the manifest hash it used. Leaderboard: the private Space
+Version: every scorecard says `GAB v1.2`, its tier (`set`: main or hard) and the manifest hash it used. Leaderboard: the private Space
 [khalisfoundation/GAB-leaderboard](https://huggingface.co/spaces/khalisfoundation/GAB-leaderboard) (static page; one
 JSON per build; `gab publish` writes it).
 
-## The questions, in plain words (GAB v1.1)
+## Two tiers: GAB and GAB-Hard (v1.2, Oct 14 2026)
+
+| tier | recordings | role |
+|---|---|---|
+| **GAB** (main, `--set main`, the default) | every practice row except GAB-Hard: Level-2 livestream kirtan (Darbar Sahib, Renton, Fremont livestream clip04-09), paath, Aarti and other sung Bani | the priority; what a build is judged on |
+| **GAB-Hard** (`--set hard`, or `gab hard ...`) | Jaspal's STTM Desktop recordings at Gurdwara Sahib Fremont (`gurdwara` = "Gurdwara Sahib Fremont (Jaspal)", kh01-kh32, laptop mic in the hall): practice = kh11-kh32 (20 kirtan clips with a runner; kh16 Asa di Vaar and kh23 Aarti have no runner yet); kh01-kh10 are test, held out | tracked, not the priority |
+
+**Why** (user decision, Oct 14 2026): the Fremont hall recordings are very hard (a resonant hall, the laptop mic far from
+the ragis, little clean audio) and pulled the kirtan numbers around; they are their own category. The Fremont YouTube
+livestream clips (clip04-09) are mixer feed and score like the rest of Level-2, so they stay in main.
+
+Both tiers are data in `gab-sets.json` (`tiers`: hard = a gurdwara regex; main = every row in no other tier), so a
+recording moves between tiers with one edit there. Splits are kept as they are (practice = train + dev; test held out
+in both tiers). Never mixed: a scorecard is one tier; `gab compare` refuses two different tiers; `gab publish` takes
+the main scorecard and the hard scorecard of the same build in their own slots, and each tier gets its own vs-base
+verdict on the leaderboard. Named sets carry their tier (Fremont dev / train are hard-only rows).
+
+**Consequence:** main GAB kirtan has no human line answers. The only main kirtan clip with line truth is clip05 (Fremont
+livestream, aligner-made, unchecked: 45.7%), so the leaderboard shows "no line answers yet; right Shabad only" for main
+kirtan. The same rule everywhere: a pangti %, same-or-neighbouring % or seconds-behind number is shown (and guarded by
+`gab compare`) only on human or ear-checked line answers and at least 3 clips; otherwise it is information only. Main
+paath and main sung Bani have 1 aligner-only clip each, so they read the same way.
+
+**Same or neighbouring pangti** (new in v1.2, information only, never guarded): ON + CATCHING UP + BEHIND + AHEAD as %
+of voiced time (the sangat-score buckets: right pangti, or one pangti behind or ahead). In kirtan the ragi sings two
+pangtis as one phrase, and the sevadaar answer key marks the partner pangti as wrong. Strict pangti % stays the headline.
+
+## The questions, in plain words (GAB v1.1, unchanged in v1.2)
 
 Rows are the four behaviours (Kirtan of a Shabad; Bani recited; Bani sung like kirtan; Akhand Paath), the Banis under
 them (the user's list; a Bani with no clip reads "no clips yet"), and the named clip sets of earlier reports
@@ -30,6 +57,14 @@ Mic path (mixer feed / room mic / 50/50) stays as a second table. Which recordin
 `gab-micpath.json` (Fremont YouTube livestream = mixer feed; Jaspal's laptop recordings = room mic).
 `4-akhand-paath` has no replay runner yet (the Sehaj clips have the order of Shabads but no times), so it reads "no
 runner yet".
+
+### v1.1 -> v1.2 (Oct 14 2026): tiers
+
+Every per-clip number is unchanged (7 builds re-scored from the cached replays, both tiers; no new replay, no speech
+model). What moved: the Fremont hall recordings left the main rows (kirtan 61 -> 41 clips; the old kirtan line number
+47.7% now sits under GAB-Hard), the same-or-neighbouring column was added, and line numbers on aligner-only or thin line
+answers no longer count in the guardrails (before, a 1-clip aligner-only drop could fail a build). The Fremont
+reconciliation rows (64.0% -> 73.1% with line hold) reproduce exactly under GAB-Hard.
 
 ### v1.0 -> v1.1 (Oct 14 2026): why the v1.0 numbers did not match earlier reports
 
@@ -59,23 +94,27 @@ runner yet".
 
 ```
 cd ~/personal/sttm-replay/research/level2-dataset/tools
-./gab run upstream                      # smoke tier: 10 clips, < 1 min the first time, seconds after
+./gab run upstream                      # main GAB, smoke tier: 9 clips, < 1 min the first time, seconds after
 ./gab run ~/personal/<worktree> --tier full
-./gab compare upstream ~/personal/<worktree> [--tier full]   # before/after, PASS only if no guarded number is worse
+./gab compare upstream ~/personal/<worktree> [--tier full]   # main GAB before/after, PASS only if no guarded number is worse
+./gab hard upstream --tier full                              # GAB-Hard only (= gab run upstream --tier full --set hard)
+./gab hard compare upstream ~/personal/<worktree> --tier full # GAB-Hard before/after (its own guardrails)
 ./gab slowpc upstream ~/personal/<worktree>                   # simulated slow PC (timing only, never on the leaderboard)
-./gab publish <run>/scorecard.json --name "<build name>" --order N [--status candidate --base 2cb8b003]   # one row on the Space
+./gab publish <main run>/scorecard.json --hard <hard run>/scorecard.json --name "<build name>" --order N [--status candidate --base 2cb8b003]   # one row (both tiers) on the Space
+./gab publish --batch batch.json        # every build in one commit (after a GAB version change); see gab-publish.js
 ```
 `<build>` is a worktree or a git rev of `~/personal/sttm-desktop` (`upstream` = khalis/experimental-release).
 `--manifest hf` scores against the manifest + answer keys on Hugging Face instead of the local copy
 `~/personal/vf-benchmark`. `--folders 2-bani-recited/japji` narrows it. Output: `results/gab/<time>-run/scorecard.{md,json}`.
 
-Guardrails (`gab compare`): each behaviour, all clips and per mic path (mixer, room, 50/50).
+Guardrails (`gab compare`, per tier: main compare guards main only, `gab hard compare` guards hard only): each behaviour, all clips and per mic path (mixer, room, 50/50).
 Worse beyond a tiny tolerance on any of right %, sangat-sees-pangti %, seconds behind, wrong s/h, time to find,
 not found, switch time p50, switches never found = FAIL (switches found within 10 s is information only: a build that
-stays on the main Shabad turns a switch into "stayed", so that count can drop for a better build). Per-Bani rows, named sets and the mixed all-behaviours row are information only. The replay is deterministic, so
+stays on the main Shabad turns a switch into "stayed", so that count can drop for a better build). Pangti % and seconds behind
+are guarded only on human or ear-checked line answers with at least 3 clips (v1.2), and same-or-neighbouring pangti is information only. Per-Bani rows, named sets and the mixed all-behaviours row are information only. The replay is deterministic, so
 every change is a real change; the compare also lists the clips whose screen events differ.
 
-Leaderboard verdicts: every `gab publish` recomputes, for every row, a "vs base" verdict with the same guardrails
+Leaderboard verdicts: every `gab publish` recomputes, for every row and each tier separately, a "vs base" verdict with the same guardrails
 (PASS / FAIL with the worse numbers listed): a candidate against the build it was made from (`--base`), a merged
 build against the merged build before it (`--order`). Named clip sets that got worse (information only) are listed
 under it. Page notes (clip counts, switch counts, which candidates come from which base) are generated from the

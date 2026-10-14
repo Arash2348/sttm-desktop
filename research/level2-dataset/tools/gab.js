@@ -2,7 +2,9 @@
 /* gab.js — GAB, the Gurbani Autopilot Bench: one entry point for benchmarking STTM Voice-Follow from the cache,
  * and for growing the benchmark. See GAB.md.
  *
- *   gab run <build> [--manifest hf | <local benchmark dir>] [--tier smoke|full] [--split dev|test|train,dev] [--folders 1-kirtan-shabad,2-bani-recited/japji] [--ids rt11_,kh12]
+ *   Tiers (gab-sets.json `tiers`): every command below scores the MAIN tier (everything except GAB-Hard) unless
+ *   --set hard (or `gab hard run|compare ...`): GAB-Hard = the Fremont hall laptop-mic recordings only. Never mixed.
+ *   gab run <build> [--set main|hard] [--manifest hf | <local benchmark dir>] [--tier smoke|full] [--split dev|test|train,dev] [--folders 1-kirtan-shabad,2-bani-recited/japji] [--ids rt11_,kh12]
  *                   [--name "<build name>"] [--out <dir>] [--jobs N] [--keep]                        -> scorecard
  *   gab compare <A> <B> [same options]                    -> both scorecards + before/after with pass/fail guardrails
  *   gab slowpc <A> <B> [--clips rehras,kh04,ytasa1] [--speeds 0.5,0.7,0.9,1.2] [--jobs N]  -> simulated slow-PC sweep
@@ -19,6 +21,7 @@
  * Cache rule (every command): an entry missing locally is pulled from the shared Azure bench-cache first; the model
  * runs only for entries missing in BOTH places (gab fill, under the bench lock, nice 19). gab run / compare never
  * run the model: a clip missing in both places is listed as "not run (needs gab fill)".
+ * `gab hard <build>` = `gab run <build> --set hard`; `gab hard compare A B` = `gab compare A B --set hard`.
  * Split rule: the default split `dev` = every row that is not test (train + dev). Test rows run only with --split test.
  */
 const fs = require('fs');
@@ -73,13 +76,24 @@ async function fetchTruth(repo, rows) {
   if (!fs.existsSync(vf)) { try { const t = await hfGet(repo, 'human-verdicts/line-start-check/verdicts.csv'); fs.mkdirSync(path.dirname(vf), { recursive: true }); fs.writeFileSync(vf, t); n++; } catch (_) { /* none */ } }
   return n;
 }
-// smoke tier: ~1 min; per split (test smoke only with --split test). Mixer feed + room mic in every folder that has both.
+// smoke tier: ~1 min; per GAB tier and split (test smoke only with --split test)
 const SMOKE = {
-  dev: ['clip02', 'clip05', 'clip13', 'pt01', 'pt19', 'pt28', 'pt35', 'pt52', 'kh14_sttm_desktop_2026_10_11T13_42_38_291Z', 'kh29_sttm_desktop_2026_10_13T03_13_38_540Z'],
-  test: ['kh05_sttm_desktop_2026_10_08T04_05_00_105Z', 'rt11_hukamnama', 'rt11_sohila', 'nw11_kirtan2'],
+  main: {
+    dev: ['clip02', 'clip05', 'clip13', 'clip34', 'pt01', 'pt19', 'pt28', 'pt35', 'pt52'],
+    test: ['rt11_hukamnama', 'rt11_sohila', 'nw11_kirtan2'],
+  },
+  hard: {
+    dev: ['kh12_sttm_desktop_2026_10_11T02_50_05_783Z', 'kh14_sttm_desktop_2026_10_11T13_42_38_291Z', 'kh28_sttm_desktop_2026_10_13T03_01_13_513Z', 'kh29_sttm_desktop_2026_10_13T03_13_38_540Z'],
+    test: ['kh05_sttm_desktop_2026_10_08T04_05_00_105Z'],
+  },
 };
 
-const argv = process.argv.slice(2);
+let argv = process.argv.slice(2);
+// `gab hard <build>` / `gab hard run|compare ...` = the same command with --set hard
+if (argv[0] === 'hard') {
+  const sub = ['run', 'compare'].includes(argv[1]) ? argv[1] : 'run';
+  argv = [sub, ...argv.slice(sub === argv[1] ? 2 : 1), '--set', 'hard'];
+}
 const cmd = argv[0];
 const pos = argv.slice(1).filter((a, i, all) => !a.startsWith('--') && !(i > 0 && all[i - 1].startsWith('--') && !['--keep', '--plan', '--push', '--no-push', '--dry-run', '--include-dev'].includes(all[i - 1])));
 const flag = (n) => argv.includes(`--${n}`);
@@ -137,18 +151,25 @@ function suiteJob(suite, clip) {
   return suiteJobsMemo[suite].find((j) => j.clip === clip || j.id === clip) || null;
 }
 // -> { man, rows, jobs: [{ row, suite, clip, id, wav, dur, outFile }], notRun: [{ id, folder, why }] }
-function select({ tier = arg('tier', 'smoke'), folders = arg('folders') } = {}) {
+const gabSet = () => {
+  const s = arg('set', 'main');
+  if (!['main', 'hard'].includes(s)) throw new Error(`--set main|hard (got ${s})`);
+  return s;
+};
+function select({ tier = arg('tier', 'smoke'), folders = arg('folders'), set = gabSet() } = {}) {
   const man = loadManifest();
   const splitKey = arg('split', 'dev') === 'test' ? 'test' : 'dev';
-  let rows = man.rows.filter((r) => splitOk(r.split));
+  const sets = G.loadSets();
+  // the GAB tier first (main = all but GAB-Hard; hard = GAB-Hard only), then split, folders, ids, smoke
+  let rows = man.rows.filter((r) => G.inTier(r, set, sets) && splitOk(r.split));
   if (folders) { const fs2 = folders.split(',').map(require('./folder-names').canonFolder); rows = rows.filter((r) => fs2.some((f) => r.content_folder === f || r.content_folder.startsWith(`${f}/`))); }
   // --ids rt11_,kh12: only clips whose id starts with one of these (reconciliation of an old number on its own clips)
   if (arg('ids')) { const pre = arg('ids').split(','); rows = rows.filter((r) => pre.some((p) => r.id.startsWith(p))); }
-  if (tier === 'smoke') rows = rows.filter((r) => SMOKE[splitKey].includes(r.id));
+  if (tier === 'smoke') rows = rows.filter((r) => set !== 'all' && SMOKE[set][splitKey].includes(r.id));
   else if (tier !== 'full') throw new Error(`--tier smoke|full (got ${tier})`);
   const jobs = [];
   const notRun = [];
-  const { exclude } = G.loadSets();
+  const { exclude } = sets;
   for (const r of rows) {
     if (exclude[r.id]) { notRun.push({ id: r.id, folder: r.content_folder, why: `excluded (${exclude[r.id]})` }); continue; }
     const first = (r.suite_jobs || '').split(';').filter(Boolean)[0];
@@ -159,7 +180,7 @@ function select({ tier = arg('tier', 'smoke'), folders = arg('folders') } = {}) 
     if (!fs.existsSync(j.wav)) { notRun.push({ id: r.id, folder: r.content_folder, why: 'audio not on this Mac' }); continue; }
     jobs.push({ row: r, suite, clip: j.clip, id: j.id, wav: j.wav, dur: j.dur, outFile: j.outFile });
   }
-  return { man, rows, jobs, notRun, tier, split: arg('split', 'dev') };
+  return { man, rows, jobs, notRun, tier, split: arg('split', 'dev'), set };
 }
 
 // ---------------------------------------------------------------- cache (Azure first) -
@@ -242,7 +263,7 @@ function cardFor(sel, build, side, outDir, rep, extra) {
     createdAt: new Date().toISOString().slice(0, 16).replace('T', ' '),
     build: { name: arg('name') || null, root: build.root, commit: build.commit, dirty: build.dirty, subject: build.subject, featureVersion: build.featureVersion },
     manifest: { sha: sel.man.sha, rows: sel.man.rows.length, path: path.join(BENCH, 'manifest.csv') },
-    tier: sel.tier, split: sel.split === 'dev' ? 'dev (train + dev rows; test held out)' : sel.split, folders: arg('folders') || null,
+    set: sel.set, tier: sel.tier, split: sel.split === 'dev' ? 'dev (train + dev rows; test held out)' : sel.split, folders: arg('folders') || null,
     notRun: notRun.sort((a, b) => a.id.localeCompare(b.id)),
     timings: extra.timings,
   } });
@@ -263,7 +284,7 @@ async function prepare(builds, label) {
   const sel = select();
   if (repo) { const n = await fetchTruth(repo, sel.jobs.map((j) => j.row)); console.log(`manifest + truth from Hugging Face ${repo} (${n} truth files fetched, cached in ${BENCH})`); }
   const out = outDirFor(label);
-  console.log(`${G.GAB_VERSION} ${label}: manifest ${sel.man.sha} · tier ${sel.tier} · split ${sel.split}${arg('folders') ? ` · folders ${arg('folders')}` : ''} · ${sel.jobs.length} clips (${(sel.jobs.reduce((a, j) => a + j.dur, 0) / 3600).toFixed(2)} h of audio), ${sel.notRun.length} without a runner · load ${load()}`);
+  console.log(`${G.GAB_VERSION} ${label}: ${G.tierTitle(sel.set)} (--set ${sel.set}) · manifest ${sel.man.sha} · tier ${sel.tier} · split ${sel.split}${arg('folders') ? ` · folders ${arg('folders')}` : ''} · ${sel.jobs.length} clips (${(sel.jobs.reduce((a, j) => a + j.dur, 0) / 3600).toFixed(2)} h of audio), ${sel.notRun.length} without a runner · load ${load()}`);
   for (const b of builds) console.log(`  build ${b.root} @ ${b.commit}${b.dirty ? ' (uncommitted edits)' : ''}`);
   const missingBoth = await pullMissing(sel.jobs);
   if (missingBoth.length) console.log(`  ${missingBoth.length} clips are in neither the local nor the Azure cache (not run; record them with gab fill): ${missingBoth.join(' ')}`);
@@ -337,7 +358,7 @@ async function cmdSlowpc() {
 }
 
 async function cmdPull() {
-  const sel = select({ tier: arg('tier', 'full') });
+  const sel = select({ tier: arg('tier', 'full'), set: arg('set', 'all') });
   const t0 = now();
   const left = await pullMissing(sel.jobs, { thorough: flag('thorough') });
   console.log(`${sel.jobs.length} clips checked in ${r1(now() - t0)} s; ${left.length} in neither place${left.length ? `: ${left.join(' ')}` : ''}`);
@@ -347,7 +368,7 @@ async function cmdFill() {
   // every manifest clip with a runner, all splits: pull from Azure first (thorough), then the model only for the rest
   process.argv.push('--split', 'train,dev,test');
   argv.push('--split', 'train,dev,test');
-  const sel = select({ tier: 'full' });
+  const sel = select({ tier: 'full', set: 'all' });
   const left = await pullMissing(sel.jobs, { thorough: true });
   console.log(`fill: ${sel.jobs.length} manifest clips with a runner; ${left.length} in neither the local nor the Azure cache`);
   if (!left.length) return;

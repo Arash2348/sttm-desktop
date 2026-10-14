@@ -1,6 +1,8 @@
 /* gab-score.js — the ONE GAB scorecard (Gurbani Autopilot Bench), library for gab.js. See GAB.md.
  *
- * GAB v1.1 (Oct 14 2026; v1.0 numbers are not comparable, see GAB.md "v1.0 -> v1.1").
+ * GAB v1.2 (Oct 14 2026): two tiers (gab-sets.json `tiers`): main = everything except GAB-Hard; hard = the Fremont hall
+ * laptop-mic recordings. A scorecard is one tier (`set`), never both; compare refuses two different tiers.
+ * v1.1 -> v1.2 also adds 'same or neighbouring pangti' (information). v1.0 numbers are not comparable (GAB.md).
  * Input: replay outputs (vf-check side dirs: <suite>/trace/<cache id>.events.jsonl) + the benchmark manifest rows.
  * Every clip is scored by sangat-score.js against the benchmark truth (lines.csv / shabads.csv), text-compared.
  * Rows: one per behaviour (the four content folders), the Banis under them, and the named clip sets of earlier
@@ -12,6 +14,8 @@
  *                            Only clips where the app put something on screen count (as kirtan-score); clips with
  *                            line truth where nothing was ever shown are counted apart ("never shown"): their loss is
  *                            already in right Shabad % and "not found".
+ *   same or neighbouring %  ON + CATCHING UP + BEHIND + AHEAD (one pangti off either way), same truth basis: in kirtan
+ *                            the ragi sings two pangtis as one phrase, and the answer key marks the partner as wrong
  *   seconds behind p50/p90   line level, same truth basis: a new pangti starts -> first on screen
  *   wrong Shabad s/h         Shabad level: seconds a text from another Shabad/Bani is up, per hour voiced
  *   find p50/p90 (n)         the first Shabad/Bani of each clip: from t=0 when the clip was cut from inside a
@@ -29,7 +33,16 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const GAB_VERSION = 'GAB v1.1';
+const GAB_VERSION = 'GAB v1.2';
+// ---------------------------------------------------------------- tiers -------------
+// gab-sets.json `tiers`: { main: { excludeTiers: ['hard'] }, hard: { gurdwara: '<regex>' } }
+function tierOf(row, sets = loadSets()) {
+  const T = sets.tiers || { main: {} };
+  for (const [k, t] of Object.entries(T)) if (t.gurdwara && new RegExp(t.gurdwara, 'i').test(row.gurdwara || '')) return k;
+  return Object.keys(T).find((k) => !T[k].gurdwara) || 'main';
+}
+const inTier = (row, tier, sets) => tier === 'all' || tierOf(row, sets) === tier;
+const tierTitle = (tier, sets = loadSets()) => ((sets.tiers || {})[tier] || {}).title || tier;
 const { TOP, canonFolder } = require('./folder-names');
 const TOP_TITLE = { '1-kirtan-shabad': 'Kirtan of a Shabad', '2-bani-recited': 'Bani recited (paath)', '3-bani-sung-like-kirtan': 'Bani sung like kirtan', '4-akhand-paath': 'Akhand Paath (Ang after Ang)' };
 const THIN = 3;
@@ -72,13 +85,16 @@ function scoreClip(sv, ds, row, eventsFile, suite, sets) {
 }
 
 // ---------------------------------------------------------------- aggregation --------
+// same or neighbouring pangti: ON + CATCHING UP + BEHIND + AHEAD, from the bucket seconds (not the rounded %s)
+const nearPct = (acc) => (acc && acc.voiced > 0 ? +(100 * (acc.b.on + acc.b.catching + acc.b.behind + acc.b.ahead) / acc.voiced).toFixed(1) : null);
 function lineGroup(sv, clips, basis) {
   const withTruth = clips.filter((c) => c.line.basis === basis);
   const scored = withTruth.filter((c) => c.line.acc);
-  const s = sv.summarize(sv.merge(scored.map((c) => c.line.acc)));
+  const m = sv.merge(scored.map((c) => c.line.acc));
+  const s = sv.summarize(m);
   if (!withTruth.length) return null;
   const audit = scored.reduce((a, c) => { const x = c.line.audit; if (x) for (const k of Object.keys(a)) a[k] += x[k] || 0; return a; }, { checked: 0, confirmed: 0, unsure: 0, rejected: 0 });
-  return { basis, pct: s ? s.right_pct : null, clips: scored.length, never_shown: withTruth.length - scored.length, voiced_min: s ? r1(s.voiced_s / 60) : 0,
+  return { basis, pct: s ? s.right_pct : null, near_pct: s ? nearPct(m) : null, clips: scored.length, never_shown: withTruth.length - scored.length, voiced_min: s ? r1(s.voiced_s / 60) : 0,
     behind_p50_s: s ? s.lag_p50 : null, behind_p90_s: s ? s.lag_p90 : null, behind_n: s ? s.lines - s.lines_missed : 0, lines_missed: s ? s.lines_missed : 0,
     audit: audit.checked ? audit : null };
 }
@@ -98,7 +114,7 @@ function group(sv, clips) {
     right_shabad_pct: sh ? sh.right_pct : null, shabad_clips: clips.filter((c) => c.shabad.acc).length, shabad_voiced_min: sh ? r1(sh.voiced_s / 60) : null,
     wrong_s_per_h: sh ? sh.wrong_s_per_h : null, blank_pct: sh ? sh.blank_pct : null,
     // headline line metrics on the best basis present; every basis kept in `lines`
-    pangti_pct: head ? head.pct : null, pangti_basis: head ? head.basis : null, pangti_clips: head ? head.clips : 0, pangti_never_shown: head ? head.never_shown : 0,
+    pangti_pct: head ? head.pct : null, pangti_near_pct: head ? head.near_pct : null, pangti_basis: head ? head.basis : null, pangti_clips: head ? head.clips : 0, pangti_never_shown: head ? head.never_shown : 0,
     behind_p50_s: head ? head.behind_p50_s : null, behind_p90_s: head ? head.behind_p90_s : null, behind_n: head ? head.behind_n : 0,
     lines,
     find_p50_s: r1(quant(ok(finds), 0.5)), find_p90_s: r1(quant(ok(finds), 0.9)), find_n: finds.length, not_found: finds.length - ok(finds).length,
@@ -134,16 +150,18 @@ function micSplit(sv, clips) {
 
 const setMatch = (s, c) => (!s.suite || (c.suiteJobs || '').split(';').some((j) => j.startsWith(`${s.suite}:`))) && (!s.folder || c.folder === s.folder || c.folder.startsWith(`${s.folder}/`)) && (!s.split || c.split === s.split);
 // rows: each behaviour (top folder), its Banis (incl. expected ones with no clip), the named sets, and all folders
-function build(sv, clips, sets) {
+function build(sv, clips, sets, tier = 'main') {
   const rows = [];
   const push = (key, level, title, cs, extra = {}) => { rows.push({ key, level, title, ...(cs.length ? { ...group(sv, cs), mic: micSplit(sv, cs) } : { clips: 0 }), ...extra }); };
   for (const top of TOP) {
     const cs = clips.filter((c) => c.folder.split('/')[0] === top);
-    push(top, 'behaviour', TOP_TITLE[top], cs, cs.length ? {} : { note: top === '4-akhand-paath' ? 'no runner yet: the Sehaj Paath clips have the Shabads of each Ang in order but no times, and GAB has no replay suite for them' : 'no clip of this behaviour was run' });
-    const subs = [...new Set([...cs.map((c) => c.folder).filter((f) => f.includes('/')), ...(sets.expectBanis[top] || []).map((b) => `${top}/${b}`)])].sort();
+    const none = tier === 'hard' ? `no ${tierTitle(tier, sets)} recording of this behaviour has a replay runner` : top === '4-akhand-paath' ? 'no runner yet: the Sehaj Paath clips have the Shabads of each Ang in order but no times, and GAB has no replay suite for them' : 'no clip of this behaviour was run';
+    push(top, 'behaviour', TOP_TITLE[top], cs, cs.length ? {} : { note: none });
+    // the Banis each behaviour should cover are listed (as 'no clips yet') in the main tier only
+    const subs = [...new Set([...cs.map((c) => c.folder).filter((f) => f.includes('/')), ...(tier === 'hard' ? [] : (sets.expectBanis[top] || []).map((b) => `${top}/${b}`))])].sort();
     for (const sub of subs) { const x = cs.filter((c) => c.folder === sub); push(sub, 'bani', sub.split('/').slice(1).join('/'), x, x.length ? {} : { note: 'no clips yet in this split' }); }
   }
-  for (const s of sets.sets) { const x = clips.filter((c) => setMatch(s, c)); if (x.length) push(s.key, 'set', s.title, x); }
+  for (const s of sets.sets) { if (s.tier && s.tier !== tier) continue; const x = clips.filter((c) => setMatch(s, c)); if (x.length) push(s.key, 'set', s.title, x); }
   push('all', 'all', 'All behaviours together (mixed; not a headline)', clips);
   return rows;
 }
@@ -164,12 +182,13 @@ function scorecard({ sv, ds, clips: runs, meta }) {
     } catch (e) { errors.push({ id: row.id, error: String(e.message).split('\n')[0] }); }
   }
   clips.sort((a, b) => a.id.localeCompare(b.id));
-  const rows = build(sv, clips, sets);
+  const rows = build(sv, clips, sets, meta.set || 'main');
   const micAssumptions = {};
   for (const r of runs) { const mp = micPathOf(r.row, cfg); micAssumptions[`${r.row.gurdwara} [${r.row.acoustics}]`] = `${mp.cls} (${mp.why})`; }
   return {
     gab: GAB_VERSION,
     ...meta,
+    setTitle: tierTitle(meta.set || 'main', sets),
     rows,
     micAssumptions: Object.fromEntries(Object.entries(micAssumptions).sort()),
     clips: clips.map((c) => {
@@ -177,7 +196,7 @@ function scorecard({ sv, ds, clips: runs, meta }) {
       const l = c.line.acc ? sv.summarize(c.line.acc) : null;
       return { id: c.id, folder: c.folder, suite: c.suite, split: c.split, mic: c.mic, hours: r2(c.dur / 3600),
         right_shabad_pct: s ? s.right_pct : null, wrong_s_per_h: s ? s.wrong_s_per_h : null,
-        pangti_pct: l ? l.right_pct : null, pangti_basis: c.line.basis || null, never_shown: c.neverShown, behind_p50_s: l ? l.lag_p50 : null,
+        pangti_pct: l ? l.right_pct : null, pangti_near_pct: l ? nearPct(c.line.acc) : null, pangti_basis: c.line.basis || null, never_shown: c.neverShown, behind_p50_s: l ? l.lag_p50 : null,
         audit: c.line.audit || null, events: c.events };
     }),
     scoreErrors: errors,
@@ -189,26 +208,27 @@ function scorecard({ sv, ds, clips: runs, meta }) {
 const f = (v, unit = '') => (v == null ? '-' : `${v}${unit}`);
 const thin = (r, k) => (r.thin && r.thin.includes(k) ? ' (thin)' : '');
 function cellsOf(r) {
-  if (!r.clips) return [r.note || '-', '', '', '', '', '', ''];
+  if (!r.clips) return [r.note || '-', '', '', '', '', '', '', ''];
   const basis = r.pangti_basis ? BASIS_TITLE[r.pangti_basis] : null;
   const head = r.lines && r.lines.find((g) => g.basis === r.pangti_basis);
   const audit = head && head.audit ? `; ear check ${head.audit.confirmed} of ${head.audit.checked} line starts confirmed${head.audit.unsure ? `, ${head.audit.unsure} unsure` : ''}${head.audit.rejected ? `, ${head.audit.rejected} rejected (not scored)` : ''}` : '';
   const pangti = r.pangti_pct != null ? `${r.pangti_basis === 'aligned' ? '' : '**'}${r.pangti_pct}%${r.pangti_basis === 'aligned' ? '' : '**'} (${basis}; ${r.pangti_clips} clips${r.pangti_never_shown ? `, +${r.pangti_never_shown} never shown` : ''}${audit})${thin(r, 'pangti_clips')}` : r.pangti_never_shown ? `- (${r.pangti_never_shown} clips with line truth, nothing ever shown)` : '- (no line truth)';
+  const near = r.pangti_near_pct != null ? `${r.pangti_near_pct}%` : '-';
   const behind = r.behind_p50_s != null ? `${r.behind_p50_s} / ${r.behind_p90_s} (${r.behind_n} pangtis, ${basis})` : '-';
   const find = r.find_n ? `${f(r.find_p50_s)} / ${f(r.find_p90_s)} (n ${r.find_n}${r.find_cold_n ? `, ${r.find_cold_n} cold` : ''}${r.not_found ? `, ${r.not_found} not found` : ''})${thin(r, 'find_n')}` : '-';
   const stayed = r.stayed_main_n ? `; ${r.stayed_main_n} stayed on main Shabad` : '';
   const pm = r.parmaan_n ? `; parmaan shown ${r.parmaan_shown} of ${r.parmaan_n}` : '';
   const sw = r.switch_n ? `${r.switch_within10_n ?? '-'} within 10 s / ${r.switch_later_n ?? '-'} later / ${r.switch_missed} never (n ${r.switch_n}); p50 ${f(r.switch_p50_s)} s over found${stayed}${pm}${thin(r, 'switch_n')}` : `- (no switch in these clips${stayed}${pm})`;
-  return [`${r.clips} · ${r.hours} h${thin(r, 'clips')}`, `${f(r.right_shabad_pct, '%')}`, pangti, behind, f(r.wrong_s_per_h), find, sw];
+  return [`${r.clips} · ${r.hours} h${thin(r, 'clips')}`, `${f(r.right_shabad_pct, '%')}`, pangti, near, behind, f(r.wrong_s_per_h), find, sw];
 }
 function markdown(card) {
   const L = [];
-  L.push(`## ${card.gab} scorecard — ${card.build.name || card.build.commit || card.build.root}`);
+  L.push(`## ${card.gab} scorecard — ${card.setTitle || 'GAB'} — ${card.build.name || card.build.commit || card.build.root}`);
   L.push('');
-  L.push(`build \`${card.build.root}\` @ ${card.build.commit || '?'}${card.build.dirty ? ' (uncommitted edits)' : ''}${card.build.featureVersion ? ` · Voice-Follow ${card.build.featureVersion}` : ''} · manifest ${card.manifest.sha} (${card.manifest.rows} rows) · tier **${card.tier}** · split **${card.split}**${card.folders ? ` · folders ${card.folders}` : ''} · ${card.createdAt}`);
+  L.push(`build \`${card.build.root}\` @ ${card.build.commit || '?'}${card.build.dirty ? ' (uncommitted edits)' : ''}${card.build.featureVersion ? ` · Voice-Follow ${card.build.featureVersion}` : ''} · manifest ${card.manifest.sha} (${card.manifest.rows} rows) · set **${card.set || 'pre-tier (mixed)'}** · tier **${card.tier}** · split **${card.split}**${card.folders ? ` · folders ${card.folders}` : ''} · ${card.createdAt}`);
   L.push('');
-  L.push('| behaviour | clips · audio | right Shabad/Bani on screen (human truth) | sangat sees the right pangti (truth basis; coverage) | seconds behind p50 / p90 | wrong Shabad s per hour | time to find p50 / p90 s | switch: found within 10 s / later / never; p50 |');
-  L.push('|---|---|---|---|---|---|---|---|');
+  L.push('| behaviour | clips · audio | right Shabad/Bani on screen (human truth) | sangat sees the right pangti (truth basis; coverage) | same or neighbouring pangti | seconds behind p50 / p90 | wrong Shabad s per hour | time to find p50 / p90 s | switch: found within 10 s / later / never; p50 |');
+  L.push('|---|---|---|---|---|---|---|---|---|');
   for (const r of card.rows.filter((x) => x.level === 'behaviour' || x.level === 'bani')) {
     const name = r.level === 'behaviour' ? `**${r.title}**` : `&nbsp;&nbsp;${r.title}`;
     L.push(`| ${name} | ${cellsOf(r).join(' | ')} |`);
@@ -216,8 +236,8 @@ function markdown(card) {
   L.push('');
   L.push('Named clip sets of earlier reports (so an old number can be checked on its own clips):');
   L.push('');
-  L.push('| set | clips · audio | right Shabad/Bani | sangat sees the right pangti | seconds behind p50 / p90 | wrong s/h | find p50 / p90 s | switch: within 10 s / later / never; p50 |');
-  L.push('|---|---|---|---|---|---|---|---|');
+  L.push('| set | clips · audio | right Shabad/Bani | sangat sees the right pangti | same or neighbouring | seconds behind p50 / p90 | wrong s/h | find p50 / p90 s | switch: within 10 s / later / never; p50 |');
+  L.push('|---|---|---|---|---|---|---|---|---|');
   for (const r of card.rows.filter((x) => x.level === 'set' || x.level === 'all')) L.push(`| ${r.title} | ${cellsOf(r).join(' | ')} |`);
   L.push('');
   L.push('Mic path, second view (50/50 = mean of mixer feed and room mic):');
@@ -238,7 +258,7 @@ function markdown(card) {
   L.push('');
   L.push(`Mic path assumptions (gab-micpath.json): ${Object.entries(card.micAssumptions).map(([g, a]) => `${g} = ${a.split(' (')[0]}`).join('; ')}.`);
   L.push('');
-  L.push('How to read: right Shabad/Bani % and wrong s/h rest on human answer keys for every clip. Sangat-sees-pangti % and seconds behind need line-level answer keys; their basis is printed (human = the sevadaar\'s screen or a person; aligned, ear-checked = made by our aligner and spot-checked by ear; aligned = made by our aligner only, not a headline). Find = first Shabad/Bani of a clip ("cold" = the app was started while it was being sung, timed from t=0); switch = a later, different Shabad/Bani, timed from its start, counted only when the screen showed something else when it began (a return to the main Shabad after a parmaan that the screen never left is "stayed on main Shabad", correct, not a switch); p50 is over found switches only, so read it with "never"; a parmaan is also counted as shown / not shown. (thin) = fewer than 3 clips or events behind the number.');
+  L.push('How to read: right Shabad/Bani % and wrong s/h rest on human answer keys for every clip. Same or neighbouring pangti adds the time the screen is one pangti behind or ahead (in kirtan the ragi sings two pangtis as one phrase, and the answer key marks the partner as wrong); information only. Sangat-sees-pangti % and seconds behind need line-level answer keys; their basis is printed (human = the sevadaar\'s screen or a person; aligned, ear-checked = made by our aligner and spot-checked by ear; aligned = made by our aligner only, not a headline). Find = first Shabad/Bani of a clip ("cold" = the app was started while it was being sung, timed from t=0); switch = a later, different Shabad/Bani, timed from its start, counted only when the screen showed something else when it began (a return to the main Shabad after a parmaan that the screen never left is "stayed on main Shabad", correct, not a switch); p50 is over found switches only, so read it with "never"; a parmaan is also counted as shown / not shown. (thin) = fewer than 3 clips or events behind the number.');
   if (card.notRun && card.notRun.length) {
     const by = {};
     for (const n of card.notRun) (by[n.why] = by[n.why] || []).push(n.id);
@@ -265,17 +285,25 @@ const GUARD = {
   switch_p50_s: [-1, 0.2, 'switch time p50 s'],
   switch_missed: [-1, 0, 'switches never found'],
 };
-const INFO = { find_p90_s: [-1, 0.2, 'time to find p90 s (info)'], switch_p90_s: [-1, 0.2, 'switch time p90 s (info)'], pangti_never_shown: [-1, 0, 'line-truth clips never shown (info)'], parmaan_shown: [1, 0, 'parmaans shown (info)'],
+const INFO = { pangti_near_pct: [1, 0.1, 'same or neighbouring pangti % (info)'], find_p90_s: [-1, 0.2, 'time to find p90 s (info)'], switch_p90_s: [-1, 0.2, 'switch time p90 s (info)'], pangti_never_shown: [-1, 0, 'line-truth clips never shown (info)'], parmaan_shown: [1, 0, 'parmaans shown (info)'],
   // info only: its denominator moves (a build that stays on the main Shabad turns a switch into 'stayed')
   switch_within10_n: [1, 0, 'switches found within 10 s (info)'] };
 function compare(A, B) {
-  const out = { gab: GAB_VERSION, a: A.build, b: B.build, manifest: [A.manifest.sha, B.manifest.sha], tier: A.tier, split: A.split, rows: [], pass: true, worse: [], better: [] };
+  const ta = A.set || 'pre-tier (mixed)';
+  const tb = B.set || 'pre-tier (mixed)';
+  if (ta !== tb) throw new Error(`GAB tiers are never mixed: A is ${ta}, B is ${tb} (re-run both with the same --set)`);
+  const out = { gab: GAB_VERSION, set: ta, a: A.build, b: B.build, manifest: [A.manifest.sha, B.manifest.sha], tier: A.tier, split: A.split, rows: [], pass: true, worse: [], better: [] };
   if (A.manifest.sha !== B.manifest.sha) out.warning = 'the two scorecards used different manifests';
   const byKey = (card) => new Map(card.rows.map((r) => [r.key, r]));
   const ma = byKey(A);
   const mb = byKey(B);
-  const judge = (key, scope, a, b, spec, guarded) => {
-    for (const [m, [dir, tol, label]] of Object.entries(spec)) {
+  // line numbers are guarded only on line answers that are a headline: human or ear-checked, at least THIN clips
+  const LINE = new Set(['pangti_pct', 'behind_p50_s', 'behind_p90_s']);
+  const lineHead = (r) => !!r && r.pangti_basis && r.pangti_basis !== 'aligned' && r.pangti_clips >= THIN;
+  const judge = (key, scope, a, b, spec, guarded0) => {
+    for (const [m, [dir, tol, label0]] of Object.entries(spec)) {
+      const guarded = guarded0 && (!LINE.has(m) || (lineHead(a) && lineHead(b)));
+      const label = guarded0 && !guarded ? `${label0} (info: aligner-only or thin line answers)` : label0;
       const x = a ? a[m] : null;
       const y = b ? b[m] : null;
       if (x == null && y == null) continue;
@@ -309,7 +337,7 @@ function compare(A, B) {
 }
 function compareMarkdown(c, A, B) {
   const L = [];
-  L.push(`## ${c.gab} compare — A: ${A.build.name || A.build.commit} vs B: ${B.build.name || B.build.commit}`);
+  L.push(`## ${c.gab} compare (${c.set}) — A: ${A.build.name || A.build.commit} vs B: ${B.build.name || B.build.commit}`);
   L.push('');
   L.push(`A \`${A.build.root}\` @ ${A.build.commit}${A.build.dirty ? ' (dirty)' : ''} · B \`${B.build.root}\` @ ${B.build.commit}${B.build.dirty ? ' (dirty)' : ''} · manifest ${c.manifest[0]} · tier ${c.tier} · split ${c.split}${c.warning ? ` · WARNING: ${c.warning}` : ''}`);
   L.push('');
@@ -324,9 +352,9 @@ function compareMarkdown(c, A, B) {
   L.push(`| (${nSame} more metric cells unchanged) | | | | | |`);
   L.push('');
   L.push(`GUARDRAILS: ${c.pass ? 'PASS (no guarded metric worse)' : `FAIL (${c.worse.length} worse: ${c.worse.map((w) => `${title(w.key)} ${w.scope} ${w.metric} ${w.a} -> ${w.b}`).join('; ')})`} · ${c.better.length} better`);
-  L.push('Guarded = each behaviour, all clips and per mic path (mixer feed, room mic, 50/50); per-Bani rows, named sets and the mixed all-behaviours row are information only. Tolerances: right % 0.1 pt, seconds behind 0.05 s (p50) / 0.1 s (p90), wrong s/h 1, find / switch time 0.2 s, not found / switches never found 0.');
+  L.push('Guarded = each behaviour, all clips and per mic path (mixer feed, room mic, 50/50); per-Bani rows, named sets and the mixed all-behaviours row are information only, and so are pangti % and seconds behind when they rest on aligner-only line answers or fewer than 3 clips. Tolerances: right % 0.1 pt, seconds behind 0.05 s (p50) / 0.1 s (p90), wrong s/h 1, find / switch time 0.2 s, not found / switches never found 0.');
   return L.join('\n');
 }
 
 const manifestSha = (text) => sha1(text).slice(0, 12);
-module.exports = { GAB_VERSION, TOP, TOP_TITLE, BASIS_TITLE, scorecard, markdown, compare, compareMarkdown, micPathOf, loadMicCfg, loadSets, manifestSha, GUARD, THIN };
+module.exports = { GAB_VERSION, tierOf, inTier, tierTitle, TOP, TOP_TITLE, BASIS_TITLE, scorecard, markdown, compare, compareMarkdown, micPathOf, loadMicCfg, loadSets, manifestSha, GUARD, THIN };

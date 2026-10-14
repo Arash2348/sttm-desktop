@@ -1,6 +1,6 @@
 {
- "title": "Numbers we reported before, checked with GAB v1.1",
- "intro": "Each row is a number from an earlier report. GAB was run on the same practice-set recordings with the same build and the same scorer rules. 'yes' means GAB gets the same number. Rows measured on recordings that are now in the held-out test set (Renton Oct 11, Fremont test sessions) quote only the number reported at the time; they are not re-checked here and no test-set number is published.",
+ "title": "Numbers we reported before, checked with GAB v1.2",
+ "intro": "Each row is a number from an earlier report. GAB was run on the same practice-set recordings with the same build and the same scorer rules. 'yes' means GAB gets the same number. Since Oct 14 2026 the Fremont hall (laptop mic) recordings are their own tier, GAB-Hard, and their rows are listed under it. Rows measured on recordings that are now in the held-out test set (Renton Oct 11, Fremont test sessions) quote only the number reported at the time; they are not re-checked here and no test-set number is published.",
  "rows": [
   {
    "what": "Kirtan: right Shabad on screen, Level-2 set",
@@ -8,7 +8,8 @@
    "where": "41 L2 clips, rescore.js (Shabad id match), Oct 6 build",
    "gab": "98.5% (2cb8b003); 98.4% after fast Aarti",
    "match": "explained",
-   "why": "rescore.js matched Shabad ids; GAB matches the words, so clip38 (the same Kabir salok shown from another Shabad) counts as right. SANGAT-VIEW.md already reported 98.5% with the word match: GAB gets exactly that."
+   "why": "rescore.js matched Shabad ids; GAB matches the words, so clip38 (the same Kabir salok shown from another Shabad) counts as right. SANGAT-VIEW.md already reported 98.5% with the word match: GAB gets exactly that.",
+   "tier": "main"
   },
   {
    "what": "Kirtan: wrong Shabad, Level-2 set",
@@ -16,7 +17,8 @@
    "where": "41 L2 clips",
    "gab": "23.6 s/h = 0.66% (2cb8b003)",
    "match": "yes",
-   "why": "Same 23.6 s/h as SANGAT-VIEW.md; the 0.84% was the id match (copies counted wrong)."
+   "why": "Same 23.6 s/h as SANGAT-VIEW.md; the 0.84% was the id match (copies counted wrong).",
+   "tier": "main"
   },
   {
    "what": "Kirtan: found within 10 s, Level-2 set",
@@ -24,15 +26,17 @@
    "where": "41 L2 clips, from the sheet's labelled pangti",
    "gab": "38 of 41, never 0 (same timing rule); v1.1 headline: 13.3 s typical from when the app starts",
    "match": "explained",
-   "why": "The labelled pangti is inside the Shabad and the 30 s before it is the same Shabad, so timing from it mostly shows 'already found'. v1.1 times it from when the app starts listening. 35 vs 38: id vs word match (clip38) and later builds."
+   "why": "The labelled pangti is inside the Shabad and the 30 s before it is the same Shabad, so timing from it mostly shows 'already found'. v1.1 times it from when the app starts listening. 35 vs 38: id vs word match (clip38) and later builds.",
+   "tier": "main"
   },
   {
    "what": "Fremont kirtan, sangat sees the right pangti (dev sessions)",
    "old": "64.0% -> 73.1% with line hold (+9.1)",
    "where": "11 Fremont dev clips (Jaspal), KIRTAN-GENERAL.md",
-   "gab": "64.0% -> 73.1% (6 clips scored, 5 never shown)",
+   "gab": "64.0% -> 73.1% (6 clips scored, 5 never shown); same or neighbouring pangti 86.6% -> 83.5%",
    "match": "yes",
-   "why": "GAB v1.0 showed 37.6% because it counted the 9 clips where nothing was ever shown as 0% and added the train sessions. v1.1 counts them apart, like the report."
+   "why": "GAB v1.0 showed 37.6% because it counted the 9 clips where nothing was ever shown as 0% and added the train sessions. v1.1 and later count them apart, like the report. With the line hold the exact pangti goes up but the same-or-neighbouring share goes down (86.6% -> 83.5%); worth a look before it is merged.",
+   "tier": "hard"
   },
   {
    "what": "Fremont kirtan, seconds behind (dev)",
@@ -40,7 +44,8 @@
    "where": "same 11 clips",
    "gab": "2.13 s -> 1.66 s",
    "match": "yes",
-   "why": ""
+   "why": "",
+   "tier": "hard"
   },
   {
    "what": "Fremont kirtan, line hold on held-out test",
@@ -48,7 +53,17 @@
    "where": "9 Fremont test clips",
    "gab": "test split: not re-checked on the leaderboard",
    "match": "not checked",
-   "why": "Held-out test sessions: quoted as reported. The dev rows above use the same scorer path and match exactly."
+   "why": "Held-out test sessions: quoted as reported. The dev rows above use the same scorer path and match exactly.",
+   "tier": "hard"
+  },
+  {
+   "what": "Fremont kirtan, wrong Shabad (dev sessions)",
+   "old": "6.8% (quoted in the Wrong Shabad under 1% row)",
+   "where": "11 Fremont dev clips",
+   "gab": "246 s/h = 6.8% (2cb8b003)",
+   "match": "yes",
+   "why": "Laptop mic in a resonant hall: the main reason these recordings are their own tier.",
+   "tier": "hard"
   },
   {
    "what": "Aarti-50: Aarti on screen / wrong",
@@ -56,7 +71,8 @@
    "where": "45 Aarti cold-start clips",
    "gab": "83.5% / 42.7 s/h (2cb8b003); 82.5% / 55.6 s/h with fast Aarti",
    "match": "yes",
-   "why": "Matches SANGAT-VIEW exactly. aarti-score ignored the time after the Aarti ends inside a clip (e.g. Shabad 287 shown while 4967 is sung), so its wrong % was lower. Fast Aarti's known trade-off (more wrong time) shows here: 42.7 -> 55.6 s/h."
+   "why": "Matches SANGAT-VIEW exactly. aarti-score ignored the time after the Aarti ends inside a clip (e.g. Shabad 287 shown while 4967 is sung), so its wrong % was lower. Fast Aarti's known trade-off (more wrong time) shows here: 42.7 -> 55.6 s/h.",
+   "tier": "main"
   },
   {
    "what": "Aarti-50: found / typical find time",
@@ -64,15 +80,17 @@
    "where": "45 Aarti clips",
    "gab": "42 of 45 found, 8.2 s",
    "match": "yes",
-   "why": ""
+   "why": "",
+   "tier": "main"
   },
   {
    "what": "Wrong Shabad under 1%",
    "old": "under 1%",
    "where": "L2 kirtan",
-   "gab": "L2 0.66%; Aarti-50 1.2% (1.5% with fast Aarti); Fremont laptop mic 6.8%",
+   "gab": "L2 0.66%; Aarti-50 1.2% (1.5% with fast Aarti)",
    "match": "partly",
-   "why": "True for Level-2 livestream kirtan. Aarti and Fremont room-mic recordings are above 1% when every second is scored."
+   "why": "True for Level-2 livestream kirtan. Aarti is above 1% when every second is scored. The Fremont hall laptop-mic recordings (6.8% on dev) are under GAB-Hard.",
+   "tier": "main"
   },
   {
    "what": "Paath: Renton Rehras, sangat sees the right pangti / seconds behind",
@@ -80,7 +98,8 @@
    "where": "Renton Oct 11 Rehras, aligned line truth (ear check: 23 of 25 starts confirmed, 2 unsure)",
    "gab": "test split: not re-checked on the leaderboard",
    "match": "not checked",
-   "why": "Held-out test recording: the reported 94.1% / 0.44 s is quoted as it was. The 8.3 s was the real screen on the night (pipeline backlog), not a replay."
+   "why": "Held-out test recording: the reported 94.1% / 0.44 s is quoted as it was. The 8.3 s was the real screen on the night (pipeline backlog), not a replay.",
+   "tier": "main"
   },
   {
    "what": "Paath: Renton Sohila",
@@ -88,7 +107,8 @@
    "where": "Renton Oct 11 Sohila, aligned line truth (ear check: 15 of 15 starts confirmed)",
    "gab": "test split: not re-checked on the leaderboard",
    "match": "not checked",
-   "why": "Held-out test recording: the reported number is quoted as it was."
+   "why": "Held-out test recording: the reported number is quoted as it was.",
+   "tier": "main"
   },
   {
    "what": "Paath: right Bani, Renton Rehras / Sohila",
@@ -96,7 +116,8 @@
    "where": "Renton Oct 11",
    "gab": "test split: not re-checked on the leaderboard",
    "match": "not checked",
-   "why": "Held-out test recordings: the reported numbers are quoted as they were."
+   "why": "Held-out test recordings: the reported numbers are quoted as they were.",
+   "tier": "main"
   },
   {
    "what": "Sung Aarti behind the singer, fast Aarti",
@@ -104,7 +125,8 @@
    "where": "Renton Oct 11 Aarti, aligned line truth (ear check: 18 of 20 starts confirmed, 1 unsure, 1 rejected and never scored)",
    "gab": "test split: not re-checked on the leaderboard",
    "match": "not checked",
-   "why": "Held-out test recording: quoted as reported. 1.2 s came from renton-score (Shabad ids); SANGAT-VIEW.md reported 87.9% / 1.06 s for MVP 9.0 on this clip with the sangat-view scorer. The practice-set Aarti numbers (Aarti-50 rows above) are on the leaderboard."
+   "why": "Held-out test recording: quoted as reported. 1.2 s came from renton-score (Shabad ids); SANGAT-VIEW.md reported 87.9% / 1.06 s for MVP 9.0 on this clip with the sangat-view scorer. The practice-set Aarti numbers (Aarti-50 rows above) are on the leaderboard.",
+   "tier": "main"
   },
   {
    "what": "Rehras -> Aarti switch",
@@ -112,7 +134,8 @@
    "where": "Renton Oct 11 handover clip (rt11_handover) and the Oct 13 user test",
    "gab": "no runner",
    "match": "not checked",
-   "why": "Those clips are in the test split and have no GAB replay suite yet. The dev switch column rests on Fremont kirtan and Aarti -> Phunhe, a different case."
+   "why": "Those clips are in the test split and have no GAB replay suite yet. On main GAB the switch column rests on sung Aarti -> the next piece (Bani sung like kirtan), a different case; the Fremont kirtan switches are under GAB-Hard.",
+   "tier": "main"
   },
   {
    "what": "Paath follower (follower2) steady 98.6%",
@@ -120,8 +143,9 @@
    "where": "research/follower-bench: 55 recitation clips, follower alone over saved windows, first 5 s left out, Oct 1",
    "gab": "cannot reproduce",
    "match": "different test",
-   "why": "That bench replays only the line follower, not the app, with its own aligned truth. GAB replays the whole app; on dev only one paath clip (pt54) has line truth (70.9%, 0.44 s, aligner only)."
+   "why": "That bench replays only the line follower, not the app, with its own aligned truth. GAB replays the whole app; on dev only one paath clip (pt54) has line truth (70.9%, 0.44 s, aligner only).",
+   "tier": "main"
   }
  ],
- "footer": "Checked Oct 14 2026 with GAB v1.1, manifest 0d7202f6daa8. Builds: 2cb8b003 = experimental-release 9.0.1 (the tree SANGAT-VIEW.md was scored on), db8f47cb = + fast Aarti, 747cb093 = + kirtan line hold."
+ "footer": "Checked Oct 14 2026 with GAB v1.1, re-checked with GAB v1.2 (tiers; every number above unchanged), manifest 0d7202f6daa8. Builds: 2cb8b003 = experimental-release 9.0.1 (the tree SANGAT-VIEW.md was scored on), db8f47cb = + fast Aarti, 747cb093 = + kirtan line hold."
 }
