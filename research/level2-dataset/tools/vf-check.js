@@ -13,7 +13,8 @@
  *   node vf-check.js --manifest <manifest.csv | hf:org/repo> --cand <worktree> [--folder <content folder>]
  *                                             the Voice-Follow benchmark dataset from its manifest (vf-manifest.js)
  *
- * Every heavy phase takes the shared bench lock itself (lockf -k /tmp/vf-bench.lock, nice 19):
+ * Model phases (record/fill) take the shared bench lock (lockf -k /tmp/vf-bench.lock, nice 19);
+ * replay-only phases take one of VF_REPLAY_SLOTS (default 2) shared replay slots instead:
  * replays as ONE job with N workers (default cores/2), recording one suite at a time with
  * VF_ORT_THREADS=3. A cache miss in replay is a hard error for that clip; --fill records the
  * missing clips (model, under the lock) and replays them again.
@@ -94,23 +95,44 @@ async function pool(planFile) {
   fs.writeFileSync(`${planFile}.status.json`, JSON.stringify({ wall: +(now() - t0).toFixed(1), status }, null, 1));
 }
 
-// Run a plan inside the bench lock (a child process holds it for the whole plan).
+// Run a plan. Model work (record/fill: `threads` set) takes the exclusive bench lock.
+// Replay-only plans (no model) take one of REPLAY_SLOTS shared slots instead, so several agents'
+// replays run side by side (each capped at 4 workers) instead of queueing behind one another.
+const REPLAY_SLOTS = Number(process.env.VF_REPLAY_SLOTS || 2);
 function runLocked(plan, file, { threads } = {}) {
+  const replayOnly = !threads;
+  if (replayOnly) plan = { ...plan, jobs: Math.min(plan.jobs, 4) };
   fs.writeFileSync(file, JSON.stringify(plan, null, 1));
+  const envArgs = threads ? ['env', `VF_ORT_THREADS=${threads}`] : [];
+  const poolArgs = ['nice', '-n', '19', ...envArgs, process.execPath, __filename, '--pool', file];
+  const waitStart = now();
+  const finish = (resolve, reject) => (code) => {
+    if (code) return reject(new Error(`pool exited ${code}`));
+    const st = JSON.parse(fs.readFileSync(`${file}.status.json`, 'utf8'));
+    st.lockWait = +(now() - waitStart - st.wall).toFixed(1);
+    return resolve(st);
+  };
+  // --no-lock: only for a few-clip replay (no model); never with record/fill
+  if (flag('no-lock') && replayOnly) {
+    return new Promise((resolve, reject) => spawn(poolArgs[0], poolArgs.slice(1), { stdio: ['ignore', 'inherit', 'inherit'] }).on('close', finish(resolve, reject)));
+  }
+  if (!replayOnly) {
+    process.stderr.write(`  waiting for ${LOCK} ...\n`);
+    return new Promise((resolve, reject) => spawn('lockf', ['-k', LOCK, ...poolArgs], { stdio: ['ignore', 'inherit', 'inherit'] }).on('close', finish(resolve, reject)));
+  }
+  // Replay: try each slot without waiting (lockf -t 0 exits 75 when the slot is busy); retry every 5 s.
   return new Promise((resolve, reject) => {
-    const envArgs = threads ? ['env', `VF_ORT_THREADS=${threads}`] : [];
-    const waitStart = now();
-    if (!(flag('no-lock') && !threads)) process.stderr.write(`  waiting for ${LOCK} ...\n`);
-    // --no-lock: only for a few-clip replay (no model) while the lock is busy; never with record/fill
-    const noLock = flag('no-lock') && !threads;
-    const cmd = noLock ? ['nice', ['-n', '19', ...envArgs, process.execPath, __filename, '--pool', file]] : ['lockf', ['-k', LOCK, 'nice', '-n', '19', ...envArgs, process.execPath, __filename, '--pool', file]];
-    const child = spawn(cmd[0], cmd[1], { stdio: ['ignore', 'inherit', 'inherit'] });
-    child.on('close', (code) => {
-      if (code) return reject(new Error(`pool exited ${code}`));
-      const st = JSON.parse(fs.readFileSync(`${file}.status.json`, 'utf8'));
-      st.lockWait = +(now() - waitStart - st.wall).toFixed(1);
-      return resolve(st);
-    });
+    let said = false;
+    const attempt = (k) => {
+      if (k >= REPLAY_SLOTS) {
+        if (!said) { process.stderr.write(`  all ${REPLAY_SLOTS} replay slots busy, waiting ...\n`); said = true; }
+        return setTimeout(() => attempt(0), 5000);
+      }
+      const slot = `/tmp/vf-replay-slot-${k}.lock`;
+      const child = spawn('lockf', ['-k', '-t', '0', slot, ...poolArgs], { stdio: ['ignore', 'inherit', 'inherit'] });
+      child.on('close', (code) => (code === 75 ? attempt(k + 1) : finish(resolve, reject)(code)));
+    };
+    attempt(0);
   });
 }
 
