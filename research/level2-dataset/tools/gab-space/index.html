@@ -96,7 +96,7 @@ code { background: var(--chip); padding: 0 4px; border-radius: 3px; font-size: 1
 <body>
 <header>
   <h1>GAB: Gurbani Autopilot Bench</h1>
-  <p class="sub">How well each version of <span id="sysname"><span class="gm">ਧਿਆਨ</span> Dhiaan</span> (STTM Desktop's Voice-Follow) keeps the right Gurbani on screen, tested on the same recordings. <span id="meta"></span></p>
+  <p class="sub">How well each version of <span id="sysname">Gurbani Autopilot</span> (STTM Desktop's Voice-Follow) keeps the right Gurbani on screen, tested on the same recordings. <span id="meta"></span></p>
 </header>
 <div class="tiers" id="tiers">
   <button data-set="main" class="on"><b>GAB</b>main benchmark, the priority</button>
@@ -134,7 +134,7 @@ code { background: var(--chip); padding: 0 4px; border-radius: 3px; font-size: 1
 </main>
 <script>
 // The name of the system being benchmarked. Read from gab-names.json (the one place to change it); this is only the fallback.
-let SYSTEM = { gurmukhi: 'ਧਿਆਨ', latin: 'Dhiaan' };
+let SYSTEM = { gurmukhi: '', latin: 'Gurbani Autopilot' };
 const BEH = [
   { key: '1-kirtan-shabad', name: 'Kirtan of a Shabad', unit: 'Shabad' },
   { key: '2-bani-recited', name: 'Bani recited (paath)', unit: 'Bani' },
@@ -171,12 +171,12 @@ let tier = Q.get('set') === 'hard' ? 'hard' : 'main';
 const partOf = (res) => (tier === 'hard' ? res.hard || { rows: [] } : res);
 function rowOf(res, key) { return (partOf(res).rows || []).find((r) => r.key === key) || null; }
 
-// ---- names: '<system> <label>' for a release, 'Experiment: <label>' for an experiment; 'In the app now' = latest release
+// ---- names: '<system> <label>' for a release or an older version, 'Experiment: <label>' for an experiment; 'In the app now' = latest by order (older versions have the lowest orders)
 const isExp = (res) => (res.kind || (res.status === 'merged' ? 'release' : 'experiment')) === 'experiment';
-const sysHtml = () => `<span class="gm" lang="pa">${esc(SYSTEM.gurmukhi)}</span>`;
+const sysHtml = () => `<span class="sys">${esc(SYSTEM.latin)}</span>`;
 const labelOf = (res) => res.label || res.name;
 const nameHtml = (res) => (isExp(res) ? `Experiment: ${esc(labelOf(res))}` : `${sysHtml()} ${esc(labelOf(res))}`);
-const nameText = (res) => (isExp(res) ? `Experiment: ${labelOf(res)}` : `${SYSTEM.gurmukhi} ${labelOf(res)}`);
+const nameText = (res) => (isExp(res) ? `Experiment: ${labelOf(res)}` : `${SYSTEM.latin} ${labelOf(res)}`);
 const inApp = () => RESULTS.filter((x) => !isExp(x)).sort((a, b) => (a.order ?? 99) - (b.order ?? 99)).pop() || null;
 const pills = (res) => (res === inApp() ? ' <span class="pill app">In the app now</span>' : '');
 const detail = (res) => `commit ${res.commit.slice(0, 8)} · Voice-Follow ${res.vf_feature_version || 'not stamped'} · scored ${res.date} · ${res.gab}`;
@@ -363,14 +363,15 @@ async function renderAbout() {
   try { document.getElementById('aboutText').innerHTML = await (await fetch('about.html', { cache: 'no-store' })).text(); } catch (e) { return; }
   // generated parts of the About text (from the results files)
   const exps = RESULTS.filter(isExp);
+  const olds = RESULTS.filter((x) => x.kind === 'older version');
   const app = inApp();
   const gen = {
     system: '',
-    builds: `${RESULTS.length} versions here: ${RESULTS.length - exps.length} releases and ${exps.length} experiments.${app ? ` In the app now: ${nameText(app)}.` : ''}`,
+    builds: `${RESULTS.length} versions here: ${olds.length ? `${olds.length} older versions (before the first 9.0.1 release), ` : ''}${RESULTS.length - exps.length - olds.length} releases and ${exps.length} experiments.${app ? ` In the app now: ${nameText(app)}.` : ''}`,
     candidates: exps.length ? `The experiments: ${exps.map((c) => { const b = byCommit(c.base); return `${nameText(c)} (made from ${b ? nameText(b) : c.base || 'an unnamed version'})`; }).join('; ')}.` : 'There are no experiments on the leaderboard right now.',
   };
   document.querySelectorAll('#aboutText [data-gen]').forEach((el) => { if (gen[el.dataset.gen]) el.textContent = gen[el.dataset.gen]; });
-  document.querySelectorAll('#aboutText [data-sys]').forEach((el) => { el.innerHTML = `${sysHtml()} ${esc(SYSTEM.latin)}`; });
+  document.querySelectorAll('#aboutText [data-sys]').forEach((el) => { el.innerHTML = sysHtml(); });
 }
 const showTab = (id) => { document.querySelectorAll('nav button').forEach((x) => x.classList.toggle('on', x.dataset.tab === id)); document.querySelectorAll('section').forEach((s) => s.classList.toggle('on', s.id === id)); };
 document.getElementById('tabs').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) showTab(b.dataset.tab); });
@@ -380,7 +381,7 @@ document.getElementById('buildPick').addEventListener('click', (e) => { const b 
 (async () => {
   try {
     try { const N = await (await fetch('gab-names.json', { cache: 'no-store' })).json(); if (N.system) SYSTEM = N.system; } catch (e) { /* fallback name */ }
-    document.getElementById('sysname').innerHTML = `${sysHtml()} ${esc(SYSTEM.latin)}`;
+    document.getElementById("sysname").innerHTML = sysHtml();
     const idx = await (await fetch('results/index.json', { cache: 'no-store' })).json();
     RESULTS = (await Promise.all(idx.results.map(async (x) => ({ ...x, ...(await (await fetch(`results/${x.file}`, { cache: 'no-store' })).json()) })))).sort((a, b) => (a.order ?? 99) - (b.order ?? 99) || a.date.localeCompare(b.date));
     const exps = RESULTS.filter(isExp).length;

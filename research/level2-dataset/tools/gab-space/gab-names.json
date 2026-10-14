@@ -1,11 +1,31 @@
 {
- "about": "Display names for the GAB leaderboard. system = the name of the thing being benchmarked (STTM Desktop Voice-Follow); change it here and republish (gab publish --site-only). builds: 8-character commit -> label (shown after the system name) and kind (release = a version that went into the app; experiment = a change tested here, not in the app). A build missing here gets '<system> <Voice-Follow version> · <--name>'. 'In the app now' is worked out on the page: the latest release by --order.",
+ "about": "Display names for the GAB leaderboard. system = the name of the thing being benchmarked (STTM Desktop Voice-Follow); change it here and republish (gab publish --site-only). builds: 8-character commit -> label (shown after the system name) and kind (release = a version that went into the app; experiment = a change tested here, not in the app; older version = a milestone before the first 9.0.1 release, kept so the colours have context). A build missing here gets '<system> <Voice-Follow version> · <--name>'. 'In the app now' is worked out on the page: the latest release by --order.",
  "system": {
-  "gurmukhi": "ਧਿਆਨ",
-  "latin": "Dhiaan",
+  "gurmukhi": "",
+  "latin": "Gurbani Autopilot",
   "is": "STTM Desktop Voice-Follow"
  },
  "builds": {
+  "535a9710": {
+   "label": "Cycle 8 · chosen as best (Sep 25)",
+   "kind": "older version"
+  },
+  "fa250815": {
+   "label": "8.6 · Cycle 8 + Bani paath, tester build (Sep 29)",
+   "kind": "older version"
+  },
+  "45ca85d7": {
+   "label": "8.6c · first in the Khalis experimental app (Oct 8)",
+   "kind": "older version"
+  },
+  "265da34e": {
+   "label": "8.6c · Renton Gurdwara production run (Oct 10 build, run Oct 11)",
+   "kind": "older version"
+  },
+  "7165bd24": {
+   "label": "9.0 · checkpoint, tested by the user (Oct 12)",
+   "kind": "older version"
+  },
   "2cb8b003": {
    "label": "9.0.1 · first release",
    "kind": "release"

@@ -114,7 +114,7 @@ stays on the main Shabad turns a switch into "stayed", so that count can drop fo
 are guarded only on human or ear-checked line answers with at least 3 clips (v1.2), and same-or-neighbouring pangti is information only. Per-Bani rows, named sets and the mixed all-behaviours row are information only. The replay is deterministic, so
 every change is a real change; the compare also lists the clips whose screen events differ.
 
-Leaderboard page (Oct 14 2026 redesign): the system is shown as ਧਿਆਨ Dhiaan and each build by a plain name from
+Leaderboard page (Oct 14 2026 redesign): the system is shown as Gurbani Autopilot and each build by a plain name from
 `gab-space/gab-names.json` (by commit; a build missing there gets '<Voice-Follow version> · <--name>'; edit the file and
 `gab publish --site-only` to rename). Rows are ranked best first (right pangti where every row has human line answers,
 else right Shabad), versions with identical shown numbers share one row, each column is coloured better/worse relative to

@@ -13,7 +13,7 @@
  *                         Voice-Follow feature version, GAB version, split, tier, date, status
  *   results/index.json    the list the page loads (an entry with the same slug is replaced)
  *   index.html, about.html, README.md, gab-names.json, reconcile.json (from tools/gab-space/; --reconcile <file> overrides the last)
- *   Display names: gab-space/gab-names.json (system name ਧਿਆਨ + label/kind per commit, fallback '<version> · <--name>');
+ *   Display names: gab-space/gab-names.json (system name Gurbani Autopilot + label/kind per commit, fallback '<version> · <--name>');
  *   each result gets label + kind; the page ranks builds best first and colours each column better/worse.
  * and keeps a short table in the dataset card (khalisfoundation/GurbaniAutopilotBench README.md, only between
  * <!-- GAB-LEADERBOARD:START --> / <!-- GAB-LEADERBOARD:END -->; the rest of the card is never touched), plus the full
@@ -41,7 +41,7 @@ const SITE = path.join(__dirname, 'gab-space');
 const START = '<!-- GAB-LEADERBOARD:START -->';
 const END = '<!-- GAB-LEADERBOARD:END -->';
 const UV = fs.existsSync(path.join(os.homedir(), '.local/bin/uv')) ? path.join(os.homedir(), '.local/bin/uv') : 'uv';
-// display names (gab-space/gab-names.json): the system's name (ਧਿਆਨ Dhiaan) and a plain label + kind per build commit.
+// display names (gab-space/gab-names.json): the system's name (Gurbani Autopilot) and a plain label + kind per build commit.
 // Results keep their stable name/slug; the page and the dataset card show label/kind. A build missing from the file
 // gets '<Voice-Follow version> · <--name>' (a release if merged, an experiment if a candidate).
 const NAMES_FILE = path.join(SITE, 'gab-names.json');

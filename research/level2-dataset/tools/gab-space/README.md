@@ -10,7 +10,7 @@ short_description: Gurbani Autopilot Bench results per STTM Voice-Follow build
 
 # GAB leaderboard
 
-One row per version of ਧਿਆਨ Dhiaan (STTM Desktop Voice-Follow), scored by GAB (Gurbani Autopilot Bench) on the practice split
+One row per version of Gurbani Autopilot (STTM Desktop Voice-Follow), scored by GAB (Gurbani Autopilot Bench) on the practice split
 (train + dev recordings) of the private dataset `khalisfoundation/GurbaniAutopilotBench`. Two tiers, never mixed:
 main GAB (the priority) and GAB-Hard (the Fremont hall laptop-mic recordings), each ranked best first, with its own
 "What changed between versions".
