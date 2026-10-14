@@ -1,9 +1,9 @@
 /* vf-manifest.js — vf-check --manifest: run a content folder or the whole Voice-Follow benchmark
- * (Hugging Face khalisfoundation/voice-follow-benchmark) from its manifest.csv, from the model-output
+ * (Hugging Face khalisfoundation/GurbaniAutopilotBench) from its manifest.csv, from the model-output
  * cache, and write a scorecard with the four plain-language questions per content folder.
  *
- *   node vf-check.js --manifest <manifest.csv | hf:khalisfoundation/voice-follow-benchmark> --cand <app worktree>
- *                    [--folder 3-bani-sung/aarti] [--out <dir>] [--jobs N] [--no-lock]
+ *   node vf-check.js --manifest <manifest.csv | hf:khalisfoundation/GurbaniAutopilotBench> --cand <app worktree>
+ *                    [--folder 3-bani-sung-like-kirtan/aarti] [--out <dir>] [--jobs N] [--no-lock]
  *
  * Every clip row names its replay-suite job(s) (`suite_jobs`, e.g. `paath:pt35;aarti:aa28`); the suites' own
  * runners replay them and the suites' own scorers (rescore / paath-score / aarti-score / khalis-arbiter /
@@ -73,6 +73,12 @@ async function fetchTruth(repo, rows, manifestText, dir) {
   return dir;
 }
 
+// old content folder names (2-paath-bani, 3-bani-sung) are read as the new ones (folder-names.js); the name on disk is kept
+function canonRows(rows) {
+  const { canonFolder } = require('./folder-names');
+  for (const r of rows) { const c = canonFolder(r.content_folder); if (c !== r.content_folder) { r.folder_on_disk = r.content_folder; r.content_folder = c; } }
+  return rows;
+}
 async function loadManifest(spec, outRoot) {
   if (spec.startsWith('hf:')) {
     const repo = spec.slice(3);
@@ -82,17 +88,17 @@ async function loadManifest(spec, outRoot) {
     if (!r.ok) throw new Error(`manifest download failed: ${r.status} ${url}`);
     const text = await r.text();
     fs.writeFileSync(path.join(outRoot, 'manifest.csv'), text);
-    return { rows: parseCsv(text), from: url, repo, text };
+    return { rows: canonRows(parseCsv(text)), from: url, repo, text };
   }
   const file = path.resolve(spec);
-  return { rows: parseCsv(fs.readFileSync(file, 'utf8')), from: file, root: path.dirname(file) };
+  return { rows: canonRows(parseCsv(fs.readFileSync(file, 'utf8'))), from: file, root: path.dirname(file) };
 }
 
 async function run(vf) {
   const { arg, flag, selectJobs, makeTasks, runLocked, CACHE, SUITES, DS, TOOLS, sha1, now, fmtS } = vf;
   const cand = path.resolve(arg('cand') || '');
   if (!arg('from') && (!arg('cand') || !fs.existsSync(path.join(cand, 'www')))) throw new Error('--manifest needs --cand <app worktree> (the build under test), or --from <existing replay dir>');
-  const folderFilter = arg('folder', '');
+  const folderFilter = require('./folder-names').canonFolder(arg('folder', ''));
   const outRoot = path.resolve(arg('out', path.join(DS, 'results', 'vf-check', `manifest-${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-')}`)));
   fs.mkdirSync(outRoot, { recursive: true });
   const t0 = now();
@@ -261,4 +267,4 @@ async function run(vf) {
   process.exitCode = missed.length || failed.length ? 1 : 0;
 }
 
-module.exports = { run, parseCsv, MAP };
+module.exports = { run, parseCsv, canonRows, MAP };

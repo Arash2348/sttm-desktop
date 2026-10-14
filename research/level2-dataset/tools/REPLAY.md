@@ -1,5 +1,7 @@
 # Cached deterministic replay (`vf-check`)
 
+**GAB (Gurbani Autopilot Bench)** wraps this replay in one command and one scorecard: see [GAB.md](GAB.md) (`./gab run upstream`).
+
 A full no-regression proof used to take ~3.5 h because every run re-executed the speech model on
 unchanged audio. ~90% of that is the model; most changes are decision logic. `vf-check` replays every
 suite with the model's outputs served from a cache, runs ALL decision code for real (the real
@@ -130,7 +132,7 @@ node vf-benchmark-build.js            # manifest rows + clip folders (~/personal
                                       # "sevadaar screen (human, may lag)"; rows other tools added are kept
 node vf-check.js --fill-new --roots <release worktree> --suites jaspal [--push]
                                       # record ONLY clips the cache lacks (shared Azure copy tried first), then push them
-node hf-ingest.js --push-benchmark    # (opt-in) upload the new clip folders + manifest to khalisfoundation/voice-follow-benchmark
+node hf-ingest.js --push-benchmark    # (opt-in) upload the new clip folders + manifest to khalisfoundation/GurbaniAutopilotBench
 ```
 Then `node vf-check.js --base B --cand C --suites jaspal --split train,dev` while tuning (`--split` keeps only those
 splits), and `--split test` once at the end. `node kirtan-score.js <run>/cand/jaspal --clips` or
@@ -207,4 +209,4 @@ Env: `VF_EMIS_CACHE`, `VF_EMIS_MODE=replay|record`, `VF_EMIS_CODEC=q16|f32`, `VF
   241 clip runs reused. Old way: ~3.5 h per side. Smoke tier: 67 s (busy machine). A rerun of two unchanged trees: seconds.
 - 2026-10-13 22:30 (kirtan-general). hf-ingest first run: 54 datasets listed; 32 Fremont kirtan recordings pulled (5.30 h; kh01-kh06
   truth rebuilt identical), 15 + 1 own-app test sessions excluded, 7 empty, 4 paath inventoried. 7 sessions: train 2 (9 kirtan clips,
-  1.48 h), dev 3 (11, 1.31 h; + Asa di Vaar kh16 1.14 h and Aarti kh23 filed under 3-bani-sung), test 2 pinned (10, 1.29 h).
+  1.48 h), dev 3 (11, 1.31 h; + Asa di Vaar kh16 1.14 h and Aarti kh23 filed under 3-bani-sung-like-kirtan), test 2 pinned (10, 1.29 h).

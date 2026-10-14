@@ -10,6 +10,7 @@
  *   node vf-check.js --changed <A> --cand <worktree>   A vs that worktree (uncommitted edits included)
  *   node vf-check.js --record --roots <wt>[,<wt>] [--suites ...] [--only ...]   build the cache (model, lock)
  *   node vf-check.js --plan ...               print what would run, run nothing
+ *   --replay-only                             replay (+ save for reuse), skip all scoring; writes <out>/replay.json (gab.js)
  *   node vf-check.js --manifest <manifest.csv | hf:org/repo> --cand <worktree> [--folder <content folder>]
  *                                             the Voice-Follow benchmark dataset from its manifest (vf-manifest.js)
  *
@@ -510,6 +511,15 @@ async function check() {
   const replayWall = now() - t1;
   missed = missed.map(([side, j]) => ({ key: jkey(side, j), suite: j.suite }));
   failed = failed.map(([side, j]) => ({ key: jkey(side, j), suite: j.suite, err: status[jkey(side, j)]?.err || 'not run' }));
+  // --replay-only (gab.js): replay + save, no scoring; the caller scores the side dirs (GAB scorecard)
+  if (flag('replay-only')) {
+    const rep = { base, cand, replayOnly: true, jobs: jobs.map((j) => ({ suite: j.suite, clip: j.clip, id: j.id, dur: j.dur })), missed, failed,
+      reused: nReused, runs: nRuns, timings: { total: now() - t0, replay: replayWall, lockWait: st.lockWait || 0, fill: fillWall } };
+    fs.writeFileSync(path.join(outRoot, 'replay.json'), JSON.stringify(rep, null, 1));
+    say(`replay-only: ${nRuns} clip runs replayed, ${nReused} reused, ${missed.length} cache misses, ${failed.length} errors | ${fmtS(now() - t0)}`);
+    process.exitCode = failed.length ? 1 : 0;
+    return;
+  }
 
   // score + diff
   const t2 = now();

@@ -1,0 +1,20 @@
+{
+  "_doc": "GAB mic path per benchmark clip. First rule whose gurdwara regex matches (case-insensitive) wins; else the acoustics rule; else 'unknown'. mixer-feed and room-mic are weighted 50/50 in the GAB headline (the user's estimate: Gurdwaras split about half and half). studio and unknown are shown but stay outside the 50/50. Edit this file when a recording's mic path is confirmed; the scorecard prints the assumption.",
+  "classes": {
+    "mixer-feed": "mixer / broadcast feed straight into the PC (USB from the mixer, livestream audio)",
+    "room-mic": "room or laptop microphone in the hall (reverb, sangat singing along)",
+    "studio": "studio / produced recording (clean; outside the 50/50)",
+    "unknown": "not known (outside the 50/50)"
+  },
+  "byGurdwara": [
+    ["Renton", "mixer-feed", "Renton PC takes USB from the mixer (Oct 11 production run); the L2 clips are its YouTube livestream"],
+    ["Harmandir|Darbar Sahib|SGPC", "mixer-feed", "Darbar Sahib broadcast feed"],
+    ["Fremont", "room-mic", "STTM Desktop on the sevadaar's laptop in the hall (laptop mic; unconfirmed, ask Jaspal)"],
+    ["Newton", "room-mic", "Gauravjeet's laptop in the hall"],
+    ["User test", "room-mic", "laptop mic at home"]
+  ],
+  "byAcoustics": {
+    "studio": "studio",
+    "laptop-mic": "room-mic"
+  }
+}

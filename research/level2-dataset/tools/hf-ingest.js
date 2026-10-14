@@ -163,7 +163,7 @@ async function timelineOf(csvText) {
 
 // content folder: a recording that is (>= 80% of its verse rows) one sung Bani the app follows as a Bani is not a
 // kirtan-Shabad clip (Asa di Vaar mornings, the Aarti); everything else is 1-kirtan-shabad.
-const SUNG = { 90: '3-bani-sung/asa-di-vaar', 22: '3-bani-sung/aarti' };
+const SUNG = { 90: '3-bani-sung-like-kirtan/asa-di-vaar', 22: '3-bani-sung-like-kirtan/aarti' };
 async function contentOf(tl) {
   if (!tl.length) return '1-kirtan-shabad';
   const r = await realm();
@@ -341,7 +341,7 @@ async function main() {
 // ---- upload the new benchmark clip folders (opt-in) ----
 function pushBenchmark(L) {
   const bench = path.resolve(arg('bench', path.join(os.homedir(), 'personal/vf-benchmark')));
-  const folders = Object.values(L.datasets).filter((d) => d.status === 'pulled').map((d) => `${d.content || '1-kirtan-shabad'}/${d.clipName}`).filter((f) => fs.existsSync(path.join(bench, f)));
+  const folders = Object.values(L.datasets).filter((d) => d.status === 'pulled').map((d) => `${require("./folder-names").canonFolder(d.content || "1-kirtan-shabad")}/${d.clipName}`).filter((f) => fs.existsSync(path.join(bench, f)));
   say(`upload ${folders.length} clip folders + manifest.csv + README.md + coverage.json to ${BENCH_REPO}`);
   const py = `
 import os, sys

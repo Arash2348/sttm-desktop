@@ -29,7 +29,7 @@ cd research/level2-dataset/tools
 export HF_TOKEN=...                                   # read access to the dataset (only for hf: manifests)
 
 # one content folder from the Hugging Face manifest
-node vf-check.js --manifest hf:khalisfoundation/voice-follow-benchmark --cand ~/personal/<app worktree> --folder 3-bani-sung/aarti
+node vf-check.js --manifest hf:khalisfoundation/GurbaniAutopilotBench --cand ~/personal/<app worktree> --folder 3-bani-sung-like-kirtan/aarti
 
 # the whole benchmark from a local manifest, 6 workers
 node vf-check.js --manifest /path/to/manifest.csv --cand ~/personal/<app worktree> --jobs 6

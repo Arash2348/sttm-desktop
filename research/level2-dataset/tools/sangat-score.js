@@ -24,7 +24,7 @@
  *   node sangat-score.js --run <bench output dir> [--dataset <benchmark root>] [--json <out.json>] [--md]
  *   node sangat-score.js --events <trace.jsonl | run.json> --clip <dataset id> [--dataset ...]
  *        [--window 26-121] [--explain [--samples 5] [--seed 1]]
- * --dataset: a local copy of khalisfoundation/voice-follow-benchmark (manifest.csv + <folder>/<id>/lines.csv,
+ * --dataset: a local copy of khalisfoundation/GurbaniAutopilotBench (manifest.csv + <folder>/<id>/lines.csv,
  * shabads.csv); default $VF_BENCHMARK or ~/personal/vf-benchmark. Only the csv/meta files are read.
  */
 const fs = require('fs');
@@ -158,7 +158,7 @@ function loadDataset(root = DEFAULT_DATASET) {
   const mf = path.join(root, 'manifest.csv');
   if (!fs.existsSync(mf)) return null;
   const { parseCsv: pc } = require('./vf-manifest');
-  const rows = pc(fs.readFileSync(mf, 'utf8'));
+  const rows = require('./vf-manifest').canonRows(pc(fs.readFileSync(mf, 'utf8')));
   const by = new Map();
   for (const r of rows) {
     by.set(r.id, r);
@@ -170,7 +170,8 @@ function loadDataset(root = DEFAULT_DATASET) {
 
 // -> { id, folder, lines: [{text, norm, start, end, conf, verseId, scored}], linesSource, shabads: [{ids, start, end, source}], shabadSource }
 function loadTruth(ds, row) {
-  const dir = path.join(ds.root, row.content_folder, row.id);
+  let dir = path.join(ds.root, row.content_folder, row.id);
+  if (!fs.existsSync(dir) && row.folder_on_disk) dir = path.join(ds.root, row.folder_on_disk, row.id); // a copy with the old folder names
   const rd = (f) => (fs.existsSync(path.join(dir, f)) ? parseCsv(fs.readFileSync(path.join(dir, f), 'utf8')) : []);
   const sh = rd('shabads.csv').map((s) => ({ ids: s.shabadId.split('|').filter(Boolean), start: numOrNull(s.start_s), end: numOrNull(s.end_s), source: s.source }))
     .filter((s) => s.ids.length && s.start != null && s.end != null && s.end > s.start);
@@ -425,7 +426,10 @@ function scoreClip(ds, row, eventsFile, opts = {}) {
   const until = dur || Infinity;
   const states = screenStates(events);
   const out = { id: row.id, folder: row.content_folder, events: eventsFile, scored_until_s: dur, truth: { lines: truth.linesFrom, linesSource: truth.linesSource, shabadSource: truth.shabadSource, corrections: truth.corrections } };
-  if (truth.lines.length && hasVerse) {
+  // opts.blankIsScored (GAB): a run that never put anything on screen is scored at line level too (all blank = 0%),
+  // instead of dropping out of the line average
+  const neverShown = !events.some((e) => e.type === 'shabad' || e.type === 'verse');
+  if (truth.lines.length && (hasVerse || (opts.blankIsScored && neverShown))) {
     const acc = scoreLines(truth, states, { ...opts, until });
     out.line = { provenance: truth.linesSource, acc, summary: summarize(acc) };
   } else out.line = { why: truth.lines.length ? 'line level not available (the run has no verse ids)' : 'line level not available (no line truth)' };
@@ -571,7 +575,7 @@ if (require.main === module) {
 // -> { lines: [markdown], groups: [...], clips: [...] }. Info only (never fails the check).
 function compareSides(jobs, traceOf, { dataset } = {}) {
   const ds = typeof dataset === 'object' && dataset ? dataset : loadDataset(dataset || DEFAULT_DATASET);
-  if (!ds) return { lines: [`(sangat view not scored: no benchmark truth at ${dataset || DEFAULT_DATASET}; set VF_BENCHMARK to a copy of khalisfoundation/voice-follow-benchmark)`], groups: [], clips: [] };
+  if (!ds) return { lines: [`(sangat view not scored: no benchmark truth at ${dataset || DEFAULT_DATASET}; set VF_BENCHMARK to a copy of khalisfoundation/GurbaniAutopilotBench)`], groups: [], clips: [] };
   const seen = new Set();
   const per = { base: [], cand: [] };
   for (const j of jobs) {
@@ -607,4 +611,4 @@ function compareSides(jobs, traceOf, { dataset } = {}) {
   return { lines, groups, clips: per.base.map((cb, i) => ({ base: strip(cb), cand: strip(per.cand[i]) })) };
 }
 
-module.exports = { compareSides, same, norm, loadDataset, loadTruth, loadEvents, screenStates, scoreClip, scoreRun, aggregate, summarize, merge, markdown, row, HEAD, findOutputs, close, DEFAULT_DATASET, BUCKETS };
+module.exports = { textOf, compareSides, same, norm, loadDataset, loadTruth, loadEvents, screenStates, scoreClip, scoreRun, aggregate, summarize, merge, markdown, row, HEAD, findOutputs, close, DEFAULT_DATASET, BUCKETS };

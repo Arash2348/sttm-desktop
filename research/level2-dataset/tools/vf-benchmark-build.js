@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /* vf-benchmark-build.js — assemble the Voice-Follow benchmark dataset (Hugging Face
- * khalisfoundation/voice-follow-benchmark) from the clips and truth already on this Mac.
+ * khalisfoundation/GurbaniAutopilotBench) from the clips and truth already on this Mac.
  *
  *   node vf-benchmark-build.js --out <dir> [--only aa28,pt54] [--no-audio]
  *
  * Layout (the user's content split):
- *   1-kirtan-shabad/<clip>/        2-paath-bani/<bani>/<clip>/      3-bani-sung/<bani>/<clip>/      4-akhand-paath/<clip>/
+ *   1-kirtan-shabad/<clip>/        2-bani-recited/<bani>/<clip>/      3-bani-sung-like-kirtan/<bani>/<clip>/      4-akhand-paath/<clip>/
  *   <clip>/audio.wav (16 kHz mono PCM16), lines.csv, shabads.csv, meta.json; manifest.csv + README.md at the top.
  * Sources are read, never modified. Audio already 16 kHz mono PCM16 is copied byte for byte; anything else
  * is converted (ffmpeg if present, else a plain WAV re-header is refused and the clip is skipped).
@@ -134,7 +134,7 @@ for (const [k, row] of paath.entries()) {
   const aa = aaByPt[clip];
   const sung = bani === 22;
   const live = /live|darbar|gurdwara/i.test(row.gurdwara);
-  add({ id: clip, clip, cacheId: job.id, wav: job.wav, folder: sung ? '3-bani-sung/aarti' : `2-paath-bani/${BANI_FOLDER[bani]}`, bani: BANI_NAME[bani], baniId: bani, gurdwara: row.gurdwara, reader: '', acoustics: live ? 'hall' : 'studio',
+  add({ id: clip, clip, cacheId: job.id, wav: job.wav, folder: sung ? '3-bani-sung-like-kirtan/aarti' : `2-bani-recited/${BANI_FOLDER[bani]}`, bani: BANI_NAME[bani], baniId: bani, gurdwara: row.gurdwara, reader: '', acoustics: live ? 'hall' : 'studio',
     origin: `https://youtu.be/${row.video_id}?t=${row.start_s}`, src: row.video_id, srcRange: [cs, row.end_s + 10], split: 'dev',
     suite_jobs: [`paath:${clip}`, aa && !NOT_AARTI.has(clip) ? `aarti:${aa}` : ''].filter(Boolean).join(';'),
     truth_provenance: `paath-tests.json row ${k + 1} (${row.verified || row.human}); Bani id from the video title${aa ? `; aarti-tests.json row ${aa.slice(2)} (same audio, listed there as ${aa})` : ''}`,
@@ -153,7 +153,7 @@ for (const [k, row] of aarti.entries()) {
     .map((p) => ({ shabadId: Number(p.shabadId), start_s: r1(Math.max(0, p.start - cs)), end_s: r1(p.end - cs), source: 'human' }));
   const where = { r1aarti: 'Renton Wednesday Aarti (hall)', r6aarti: 'Renton Friday Aarti (hall)', sep27: 'Renton Sep 27 production (hall)', hall: 'Renton hall test Sep 25', oct5: 'Renton Oct 5 production (board feed)' }[row.src] || row.gurdwara;
   const excluded = row.src === 'sep27' && row.offset >= 494;
-  add({ id: clip, clip, cacheId: job.id, wav: job.wav, folder: '3-bani-sung/aarti', bani: 'Aarti', baniId: 22, gurdwara: 'Gurdwara Sahib Renton', reader: '', acoustics: 'hall',
+  add({ id: clip, clip, cacheId: job.id, wav: job.wav, folder: '3-bani-sung-like-kirtan/aarti', bani: 'Aarti', baniId: 22, gurdwara: 'Gurdwara Sahib Renton', reader: '', acoustics: 'hall',
     origin: `Renton recording ${row.src} (live-darbar-renton-dataset), ${cs}-${row.end_s + 10} s`, src: row.src, srcRange: [cs, row.end_s + 10], split: 'dev', suite_jobs: excluded ? '' : `aarti:${clip}`,
     truth_provenance: `aarti-tests.json row ${k + 1} (human: ${row.human}); pieces from ${row.src === 'sep27' ? 'the Sep 27 sheet rows (aarti-score.js)' : `manifest-${row.src === 'r1aarti' ? 'r1a' : 'r6'}.json`}`,
     shabads: [{ shabadId: 'bani:22', start_s: row.start_s - cs, end_s: (row.src === 'sep27' && row.offset === 434 ? 480 : row.end_s) - cs, source: 'human' }, ...pieces],
@@ -178,9 +178,9 @@ for (const r of khalis) {
     if (last && last.shabadId === e.shabadId) last.end_s = i + 1 < tl.length ? tl[i + 1].t : r1(r.seconds);
     else shabads.push({ shabadId: e.shabadId, start_s: e.t, end_s: i + 1 < tl.length ? tl[i + 1].t : r1(r.seconds), source: 'human' });
   }
-  const folder = L.content || '1-kirtan-shabad';
+  const folder = require('./folder-names').canonFolder(L.content || '1-kirtan-shabad');
   const jobs = [/^kh0[1-5]$/.test(clip) ? `fremont:${clip}` : '', folder === '1-kirtan-shabad' && L.name && !L.audioProblem ? `jaspal:${clip}` : ''].filter(Boolean).join(';');
-  add({ id: path.basename(r.clip, '.wav'), clip, wav, folder, bani: { '3-bani-sung/asa-di-vaar': 'Asa di Vaar', '3-bani-sung/aarti': 'Aarti' }[folder] || '', baniId: { '3-bani-sung/asa-di-vaar': 90, '3-bani-sung/aarti': 22 }[folder],
+  add({ id: path.basename(r.clip, '.wav'), clip, wav, folder, bani: { '3-bani-sung-like-kirtan/asa-di-vaar': 'Asa di Vaar', '3-bani-sung-like-kirtan/aarti': 'Aarti' }[folder] || '', baniId: { '3-bani-sung-like-kirtan/asa-di-vaar': 90, '3-bani-sung-like-kirtan/aarti': 22 }[folder],
     gurdwara: L.gurdwara || 'Gurdwara Sahib Fremont (Jaspal)', reader: '', acoustics: 'laptop-mic',
     origin: `https://huggingface.co/datasets/khalisfoundation/${r.dataset}`, src: r.dataset, srcRange: [0, r.seconds], split: L.split || 'test', session: L.session || '', suite_jobs: jobs,
     truth_provenance: `${L.provenance || 'sevadaar screen (human, may lag)'}: verse_timestamps.csv of ${r.dataset} (the line the sevadaar put on screen while it was sung)`, shabads, lines,
@@ -190,14 +190,14 @@ for (const r of khalis) {
 // 5. Renton Oct 11 (production, S1/S2 app session audio) — test
 {
   const parts = {
-    rt11_rehras: { folder: '2-paath-bani/rehras', bani: 21, session: 'S1', truth: 'results/rt11_rehrasX.app.truth.json', note: 'Rehras read at extra-long; truth realigned with the app\'s own verse ids (rt11_rehrasX.app.truth.json)' },
-    rt11_aarti: { folder: '3-bani-sung/aarti', bani: 22, session: 'S1', truth: 'renton-oct11/truth/rt11_aarti.truth.json' },
-    rt11_sohila: { folder: '2-paath-bani/sohila', bani: 23, session: 'S2', truth: 'renton-oct11/truth/rt11_sohila.truth.json' },
+    rt11_rehras: { folder: '2-bani-recited/rehras', bani: 21, session: 'S1', truth: 'results/rt11_rehrasX.app.truth.json', note: 'Rehras read at extra-long; truth realigned with the app\'s own verse ids (rt11_rehrasX.app.truth.json)' },
+    rt11_aarti: { folder: '3-bani-sung-like-kirtan/aarti', bani: 22, session: 'S1', truth: 'renton-oct11/truth/rt11_aarti.truth.json' },
+    rt11_sohila: { folder: '2-bani-recited/sohila', bani: 23, session: 'S2', truth: 'renton-oct11/truth/rt11_sohila.truth.json' },
     rt11_kirtan1: { folder: '1-kirtan-shabad', session: 'S2' },
-    rt11_fareed1: { folder: '3-bani-sung/saloks-sung', session: 'S2', note: 'Salok Fareed 5299 sung as kirtan with a parmaan (5286) inside' },
-    rt11_fareed2: { folder: '3-bani-sung/saloks-sung', session: 'S2', note: 'Salok Fareed 5238 sung as kirtan' },
+    rt11_fareed1: { folder: '3-bani-sung-like-kirtan/saloks-sung', session: 'S2', note: 'Salok Fareed 5299 sung as kirtan with a parmaan (5286) inside' },
+    rt11_fareed2: { folder: '3-bani-sung-like-kirtan/saloks-sung', session: 'S2', note: 'Salok Fareed 5238 sung as kirtan' },
     rt11_hukamnama: { folder: '1-kirtan-shabad', session: 'S2', note: 'Hukamnama read, then short Shabads read' },
-    rt11_handover: { folder: '3-bani-sung/aarti', bani: 22, session: 'S1', note: 'Rehras tail (Bani on screen) then the Aarti begins at 279 s; the switch case of MVP 9.0.1', ut13: 'rt11_handover' },
+    rt11_handover: { folder: '3-bani-sung-like-kirtan/aarti', bani: 22, session: 'S1', note: 'Rehras tail (Bani on screen) then the Aarti begins at 279 s; the switch case of MVP 9.0.1', ut13: 'rt11_handover' },
   };
   for (const [p, d] of Object.entries(parts)) {
     const wav = path.join(CLIPS, `${p}.wav`);
@@ -238,7 +238,7 @@ for (const r of khalis) {
     const shabads = tp.map((t, i) => ({ shabadId: t.shabadId, start_s: r1(t.t - off), end_s: r1(i + 1 < tp.length ? tp[i + 1].t - off : dur), source: 'human' }));
     if (/asa/.test(p)) shabads.unshift({ shabadId: 'bani:90', start_s: 0, end_s: r1(dur), source: 'human' });
     if (p === 'nw11_session') { shabads.unshift({ shabadId: 'bani:90', start_s: 110, end_s: 840, source: 'human' }); shabads.push({ shabadId: 'bani:90', start_s: 1640, end_s: 1900, source: 'human' }); }
-    const folder = /asa|session/.test(p) ? '3-bani-sung/asa-di-vaar' : '1-kirtan-shabad';
+    const folder = /asa|session/.test(p) ? '3-bani-sung-like-kirtan/asa-di-vaar' : '1-kirtan-shabad';
     add({ id: p, clip: p, wav, folder, bani: /asa|session/.test(p) ? 'Asa di Vaar' : '', baniId: /asa|session/.test(p) ? 90 : undefined, gurdwara: 'Khalsa School Newton', reader: '', acoustics: 'hall',
       origin: 'Newton Oct 11 2026 session (app recording, stitched 16 kHz)', src: 'nw11', srcRange: [off, off + dur], split: 'test', suite_jobs: `asa:${p}`,
       truth_provenance: 'newton/truth (forced alignment of Asa di Vaar, confidence = check) + newton/taps.json (the Shabads he tapped, human)',
@@ -246,7 +246,7 @@ for (const r of khalis) {
   }
   const yt = SUITES.asa.jobs().find((j) => j.id.startsWith('ytasa1'));
   if (yt && fs.existsSync(yt.wav)) {
-    add({ id: yt.id, clip: yt.id, wav: yt.wav, folder: '3-bani-sung/asa-di-vaar', bani: 'Asa di Vaar', baniId: 90, gurdwara: 'YouTube Asa di Vaar', reader: '', acoustics: 'studio',
+    add({ id: yt.id, clip: yt.id, wav: yt.wav, folder: '3-bani-sung-like-kirtan/asa-di-vaar', bani: 'Asa di Vaar', baniId: 90, gurdwara: 'YouTube Asa di Vaar', reader: '', acoustics: 'studio',
       origin: 'https://youtu.be/4IXk2t_Irqo?t=900', src: '4IXk2t_Irqo', srcRange: [900, 1620], split: 'dev', suite_jobs: `asa:${yt.id}`,
       truth_provenance: 'newton/truth/ytasa1.truth.json (forced alignment, confidence = check)', shabads: [{ shabadId: 'bani:90', start_s: 0, end_s: 720, source: 'human' }],
       lines: alignedLines(path.join(DS, 'newton/truth/ytasa1.truth.json')), notes: '' });
@@ -276,8 +276,8 @@ for (const r of seq.filter((x) => /^sp/.test(x.name))) {
 
 // ---------------------------------------------------------------- write -----------------
 fs.mkdirSync(OUT, { recursive: true });
-for (const b of PAATH_FOLDERS) fs.mkdirSync(path.join(OUT, '2-paath-bani', b), { recursive: true });
-for (const b of SUNG_FOLDERS) fs.mkdirSync(path.join(OUT, '3-bani-sung', b), { recursive: true });
+for (const b of PAATH_FOLDERS) fs.mkdirSync(path.join(OUT, '2-bani-recited', b), { recursive: true });
+for (const b of SUNG_FOLDERS) fs.mkdirSync(path.join(OUT, '3-bani-sung-like-kirtan', b), { recursive: true });
 for (const f of ['1-kirtan-shabad', '4-akhand-paath']) fs.mkdirSync(path.join(OUT, f), { recursive: true });
 
 const rows = [];
@@ -316,7 +316,7 @@ const H = 'id,content_folder,bani,gurdwara,acoustics,split,duration_s,suite_jobs
 fs.writeFileSync(path.join(OUT, 'manifest.csv'), csv(H, rows));
 
 // coverage: clips, clip hours, unique audio hours (union of source ranges per source recording)
-const folders = ['1-kirtan-shabad', ...PAATH_FOLDERS.map((b) => `2-paath-bani/${b}`), ...SUNG_FOLDERS.map((b) => `3-bani-sung/${b}`), '4-akhand-paath'];
+const folders = ['1-kirtan-shabad', ...PAATH_FOLDERS.map((b) => `2-bani-recited/${b}`), ...SUNG_FOLDERS.map((b) => `3-bani-sung-like-kirtan/${b}`), '4-akhand-paath'];
 const union = (list) => {
   const by = {};
   for (const r of list) if (r._src && r._range) (by[r._src] = by[r._src] || []).push(r._range);
