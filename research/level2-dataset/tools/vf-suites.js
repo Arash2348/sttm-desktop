@@ -37,6 +37,20 @@ function sheetJobs(truthFile, prefix, extra = []) {
   return jobs;
 }
 
+// hf-ingest.js ledger -> one job per kirtan recording (content 1-kirtan-shabad), filtered by VF_SPLIT
+function jaspalJobs() {
+  const ledger = JSON.parse(fs.readFileSync(path.join(DS, 'hf-jaspal', 'ledger.json')));
+  const splits = process.env.VF_SPLIT ? new Set(process.env.VF_SPLIT.split(',')) : null;
+  return Object.values(ledger.datasets)
+    .filter((d) => d.status === 'pulled' && (d.content || '1-kirtan-shabad') === '1-kirtan-shabad' && (!splits || splits.has(d.split)))
+    .sort((a, b) => a.clipId.localeCompare(b.clipId))
+    .map((d) => {
+      const wav = path.join(CLIPS, `${d.clipName}.wav`);
+      return { id: d.clipName, clip: d.clipId, wav, dur: durOf(wav), only: d.clipName, outFile: `${d.clipName}.json`, split: d.split, gurdwara: d.gurdwara,
+        args: ['khalis-bench.js', '--fast', '--trace', '--tests', path.join(DS, 'khalis-tests.json')] };
+    });
+}
+
 const SUITES = {
   l2: {
     title: 'Level-2 kirtan (41)',
@@ -84,7 +98,7 @@ const SUITES = {
     sentinel: ['kh01', 'kh03', 'kh05'],
     jobs: () => {
       const tests = JSON.parse(fs.readFileSync(path.join(DS, 'khalis-tests.json')));
-      return tests.filter((r) => /^kh0[1-5]_/.test(r.name)).map((r) => {
+      return tests.filter((r) => new RegExp(process.env.VF_FREMONT_CLIPS || '^kh0[1-5]_').test(r.name)).map((r) => {
         const wav = path.join(CLIPS, r.clip);
         return { id: path.basename(r.clip, '.wav'), clip: r.name.slice(0, 4), wav, dur: durOf(wav), only: r.name, outFile: `${r.name}.json`,
           args: ['khalis-bench.js', '--fast', '--trace', '--tests', path.join(DS, 'khalis-tests.json')] };
@@ -103,6 +117,20 @@ const SUITES = {
         'verses reached': rs.reduce((a, r) => a + r.versesReached, 0), 'median line lag s': lags.length ? lags[Math.floor(rs.length / 2)] ?? null : null,
         flips: rs.reduce((a, r) => a + r.flips, 0), 'arbiter same/app-right %': same, 'line +-3 s %': tol3 };
     },
+  },
+  // Fremont-style sevadaar-screen recordings pulled by hf-ingest.js (all kirtan clips, every split; kh01-kh05 are
+  // also the fremont suite). VF_SPLIT=train,dev (vf-check --split) keeps only those splits. Scored by kirtan-score.js:
+  // Shabad level, line level (sangat view), find time, parmaan follow / return, wrong-Shabad s per hour, wrong
+  // switches; per split and per Gurdwara.
+  jaspal: {
+    title: 'Fremont sevadaar-screen recordings (hf-ingest)',
+    optIn: true, // run only when named, until its cache is complete and pushed
+    smoke: [],
+    sentinel: ['kh01', 'kh04', 'kh12', 'kh20', 'kh27'],
+    jobs: () => jaspalJobs(),
+    metrics: null, // built from the splits present (see score)
+    score(dir) { return require('./kirtan-score').suiteMetrics(dir); },
+    direction: (name) => require('./kirtan-score').direction(name),
   },
   renton: {
     title: 'Renton Oct 11 parts (7)',

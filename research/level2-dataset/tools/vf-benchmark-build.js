@@ -160,11 +160,16 @@ for (const [k, row] of aarti.entries()) {
     lines: lineTruthCache(job.id), notes: [where, excluded ? 'aarti-score.js: window starts after the Aarti ended (kirtan); not scored' : '', row.src === 'sep27' && row.offset === 434 ? 'truth end 480 s (kirtan 5393 begins ~8:00)' : ''].filter(Boolean).join('; ') });
 }
 
-// 4. Fremont (Jaspal, app-recorded, line-level human timeline) — test
+// 4. Fremont (Jaspal, app-recorded, line-level human timeline: the verse the sevadaar had on screen). Every
+//    recording hf-ingest.js pulled (hf-jaspal/ledger.json): split = its recording session's frozen split,
+//    content folder = its tag (kirtan, or a sung Bani: Asa di Vaar / Aarti). kh01-kh05 also keep their fremont job.
+const ledger = J(path.join(DS, 'hf-jaspal', 'ledger.json'));
+const ingested = new Map(Object.values(ledger.datasets).filter((d) => d.status === 'pulled').map((d) => [d.name, d]));
 for (const r of khalis) {
   const clip = r.name.slice(0, 4);
   const wav = path.join(CLIPS, r.clip);
   if (!fs.existsSync(wav)) continue;
+  const L = ingested.get(r.dataset) || {};
   const tl = r.timeline;
   const lines = tl.map((e, i) => ({ verseId: e.verseId, start_s: e.t, end_s: i + 1 < tl.length ? tl[i + 1].t : r1(r.seconds), confidence: 1, source: 'human' }));
   const shabads = [];
@@ -173,11 +178,13 @@ for (const r of khalis) {
     if (last && last.shabadId === e.shabadId) last.end_s = i + 1 < tl.length ? tl[i + 1].t : r1(r.seconds);
     else shabads.push({ shabadId: e.shabadId, start_s: e.t, end_s: i + 1 < tl.length ? tl[i + 1].t : r1(r.seconds), source: 'human' });
   }
-  const inSuite = /^kh0[1-5]$/.test(clip);
-  add({ id: path.basename(r.clip, '.wav'), clip, wav, folder: '1-kirtan-shabad', bani: '', gurdwara: 'Gurdwara Sahib Fremont (Jaspal)', reader: '', acoustics: 'laptop-mic',
-    origin: `https://huggingface.co/datasets/khalisfoundation/${r.dataset}`, src: r.dataset, srcRange: [0, r.seconds], split: 'test', suite_jobs: inSuite ? `fremont:${clip}` : '',
-    truth_provenance: `khalis-tests.json (${r.dataset}: the line the operator put on screen while it was sung, human)`, shabads, lines,
-    notes: inSuite ? '' : 'kh06 is not in the Fremont suite (no cache entry); truth included' });
+  const folder = L.content || '1-kirtan-shabad';
+  const jobs = [/^kh0[1-5]$/.test(clip) ? `fremont:${clip}` : '', folder === '1-kirtan-shabad' && L.name ? `jaspal:${clip}` : ''].filter(Boolean).join(';');
+  add({ id: path.basename(r.clip, '.wav'), clip, wav, folder, bani: { '3-bani-sung/asa-di-vaar': 'Asa di Vaar', '3-bani-sung/aarti': 'Aarti' }[folder] || '', baniId: { '3-bani-sung/asa-di-vaar': 90, '3-bani-sung/aarti': 22 }[folder],
+    gurdwara: L.gurdwara || 'Gurdwara Sahib Fremont (Jaspal)', reader: '', acoustics: 'laptop-mic',
+    origin: `https://huggingface.co/datasets/khalisfoundation/${r.dataset}`, src: r.dataset, srcRange: [0, r.seconds], split: L.split || 'test', session: L.session || '', suite_jobs: jobs,
+    truth_provenance: `${L.provenance || 'sevadaar screen (human, may lag)'}: verse_timestamps.csv of ${r.dataset} (the line the sevadaar put on screen while it was sung)`, shabads, lines,
+    notes: [L.content && L.content !== '1-kirtan-shabad' ? 'sung Bani recording (not in the kirtan suites)' : '', L.mic ? `mic: ${L.mic}` : ''].filter(Boolean).join('; ') });
 }
 
 // 5. Renton Oct 11 (production, S1/S2 app session audio) — test
@@ -284,12 +291,28 @@ for (const c of clips) {
   fs.writeFileSync(path.join(dir, 'lines.csv'), csv('verseId,start_s,end_s,confidence,source', lines));
   fs.writeFileSync(path.join(dir, 'shabads.csv'), csv('shabadId,start_s,end_s,source', c.shabads));
   const meta = { id: c.id, content_folder: c.folder, bani: c.bani || null, bani_id: c.baniId ?? null, gurdwara: c.gurdwara, reader: c.reader || null, acoustics: c.acoustics, origin: c.origin,
-    source_file: path.basename(c.wav), duration_s: r1(duration), split: c.split, truth_provenance: c.truth_provenance, suite_jobs: c.suite_jobs, cache: cached(c.cacheId) ? 'yes' : 'no', cache_id: c.cacheId,
+    source_file: path.basename(c.wav), duration_s: r1(duration), split: c.split, session: c.session || undefined, truth_provenance: c.truth_provenance, suite_jobs: c.suite_jobs, cache: cached(c.cacheId) ? 'yes' : 'no', cache_id: c.cacheId,
     lines_n: lines.length, lines_source: lines.length ? lines[0].source : 'none', shabads_n: c.shabads.length, notes: c.notes || '' };
   fs.writeFileSync(path.join(dir, 'meta.json'), `${JSON.stringify(meta, null, 1)}\n`);
-  rows.push({ ...meta, audio: `${c.folder}/${c.id}/audio.wav`, _src: c.src, _range: c.srcRange });
+  rows.push({ ...meta, session: c.session || '', audio: `${c.folder}/${c.id}/audio.wav`, _src: c.src, _range: c.srcRange });
 }
-const H = 'id,content_folder,bani,gurdwara,acoustics,split,duration_s,suite_jobs,cache,cache_id,lines_n,lines_source,shabads_n,truth_provenance,origin,source_file,reader,audio,notes';
+// rows another tool added to the existing manifest (not built here) are kept as they are, never dropped
+if (!ONLY) {
+  try {
+    const prev = fs.readFileSync(path.join(OUT, 'manifest.csv'), 'utf8').replace(/\r\n/g, '\n');
+    const lines = []; let cur = ''; let q = false;
+    for (const ch of prev) { if (ch === '"') q = !q; if (ch === '\n' && !q) { lines.push(cur); cur = ''; } else cur += ch; }
+    if (cur) lines.push(cur);
+    const head = lines[0].split(',');
+    const cells = (l) => { const out = []; let c = ''; let qq = false; for (let i = 0; i < l.length; i++) { const ch = l[i]; if (qq) { if (ch === '"' && l[i + 1] === '"') { c += '"'; i++; } else if (ch === '"') qq = false; else c += ch; } else if (ch === '"') qq = true; else if (ch === ',') { out.push(c); c = ''; } else c += ch; } out.push(c); return out; };
+    const built = new Set(rows.map((r) => r.id));
+    for (const l of lines.slice(1)) {
+      const v = cells(l); const r = Object.fromEntries(head.map((h, i) => [h, v[i]]));
+      if (r.id && !built.has(r.id)) { r.duration_s = Number(r.duration_s) || 0; rows.push(r); console.log(`kept ${r.id} (in the existing manifest, not built here)`); }
+    }
+  } catch (_) { /* no manifest yet */ }
+}
+const H = 'id,content_folder,bani,gurdwara,acoustics,split,duration_s,suite_jobs,cache,cache_id,lines_n,lines_source,shabads_n,truth_provenance,origin,source_file,reader,audio,notes,session';
 fs.writeFileSync(path.join(OUT, 'manifest.csv'), csv(H, rows));
 
 // coverage: clips, clip hours, unique audio hours (union of source ranges per source recording)
@@ -309,12 +332,12 @@ const union = (list) => {
 const cov = folders.map((f) => {
   const L = rows.filter((r) => r.content_folder === f);
   const noSess = L.filter((r) => !/^nw11_(asa|kirtan)/.test(r.id)); // cuts of nw11_session
-  return { folder: f, clips: L.length, dev: L.filter((r) => r.split === 'dev').length, test: L.filter((r) => r.split === 'test').length, hours: L.reduce((a, r) => a + r.duration_s, 0) / 3600, unique: union(noSess) / 3600, cached: L.filter((r) => r.cache === 'yes').length };
+  return { folder: f, clips: L.length, train: L.filter((r) => r.split === 'train').length, dev: L.filter((r) => r.split === 'dev').length, test: L.filter((r) => r.split === 'test').length, hours: L.reduce((a, r) => a + r.duration_s, 0) / 3600, unique: union(noSess) / 3600, cached: L.filter((r) => r.cache === 'yes').length };
 });
-let table = '| content folder | clips (dev / test) | clip hours | unique audio hours | clips with a model-output cache entry |\n|---|---|---|---|---|\n';
-for (const c of cov) table += c.clips ? `| \`${c.folder}\` | ${c.clips} (${c.dev} / ${c.test}) | ${c.hours.toFixed(2)} | ${c.unique.toFixed(2)} | ${c.cached} |\n` : `| \`${c.folder}\` | 0 — **gap, no recordings yet** | 0 | 0 | 0 |\n`;
+let table = '| content folder | clips (train / dev / test) | clip hours | unique audio hours | clips with a model-output cache entry |\n|---|---|---|---|---|\n';
+for (const c of cov) table += c.clips ? `| \`${c.folder}\` | ${c.clips} (${c.train} / ${c.dev} / ${c.test}) | ${c.hours.toFixed(2)} | ${c.unique.toFixed(2)} | ${c.cached} |\n` : `| \`${c.folder}\` | 0 — **gap, no recordings yet** | 0 | 0 | 0 |\n`;
 const tot = cov.reduce((a, c) => ({ clips: a.clips + c.clips, hours: a.hours + c.hours, unique: a.unique + c.unique, cached: a.cached + c.cached }), { clips: 0, hours: 0, unique: 0, cached: 0 });
-table += `| **total** | **${tot.clips}** (${rows.filter((r) => r.split === 'dev').length} / ${rows.filter((r) => r.split === 'test').length}) | **${tot.hours.toFixed(2)}** | **${tot.unique.toFixed(2)}** | ${tot.cached} |\n`;
+table += `| **total** | **${tot.clips}** (${rows.filter((r) => r.split === 'train').length} / ${rows.filter((r) => r.split === 'dev').length} / ${rows.filter((r) => r.split === 'test').length}) | **${tot.hours.toFixed(2)}** | **${tot.unique.toFixed(2)}** | ${tot.cached} |\n`;
 for (const c of cov) if (!c.clips) fs.writeFileSync(path.join(OUT, c.folder, 'README.md'), `# ${c.folder}\n\nno recordings yet\n`);
 
 const tmpl = fs.readFileSync(path.join(__dirname, 'vf-benchmark-README.md'), 'utf8');

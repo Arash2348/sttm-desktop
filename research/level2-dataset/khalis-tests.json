@@ -776,5 +776,5369 @@
   ],
   "clip": "kh06_sttm_desktop_2026_10_09T03_56_15_071Z.wav",
   "seconds": 348.02
+ },
+ {
+  "name": "kh07_sttm_desktop_2026_10_09T03_14_15_214Z",
+  "dataset": "sttm_desktop_2026_10_09T03_14_15_214Z",
+  "timeline": [
+   {
+    "t": 16.269,
+    "verseId": 11166,
+    "shabadId": 816,
+    "line": 2,
+    "lines": 3
+   },
+   {
+    "t": 67.045,
+    "verseId": 31380,
+    "shabadId": 2803,
+    "line": 2,
+    "lines": 12
+   },
+   {
+    "t": 108.827,
+    "verseId": 31381,
+    "shabadId": 2803,
+    "line": 3,
+    "lines": 12
+   }
+  ],
+  "shabads": [
+   816,
+   2803
+  ],
+  "clip": "kh07_sttm_desktop_2026_10_09T03_14_15_214Z.wav",
+  "seconds": 132.78
+ },
+ {
+  "name": "kh08_sttm_desktop_2026_10_09T03_27_58_323Z",
+  "dataset": "sttm_desktop_2026_10_09T03_27_58_323Z",
+  "timeline": [
+   {
+    "t": 14.359,
+    "verseId": 31605,
+    "shabadId": 2819,
+    "line": 4,
+    "lines": 11
+   },
+   {
+    "t": 34.303,
+    "verseId": 31604,
+    "shabadId": 2819,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 56.539,
+    "verseId": 31605,
+    "shabadId": 2819,
+    "line": 4,
+    "lines": 11
+   },
+   {
+    "t": 86.551,
+    "verseId": 31604,
+    "shabadId": 2819,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 111.374,
+    "verseId": 31601,
+    "shabadId": 2819,
+    "line": 0,
+    "lines": 11
+   },
+   {
+    "t": 114.501,
+    "verseId": 31604,
+    "shabadId": 2819,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 131.692,
+    "verseId": 31602,
+    "shabadId": 2819,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 163.767,
+    "verseId": 31603,
+    "shabadId": 2819,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 176.982,
+    "verseId": 31604,
+    "shabadId": 2819,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 199.182,
+    "verseId": 31605,
+    "shabadId": 2819,
+    "line": 4,
+    "lines": 11
+   },
+   {
+    "t": 217.482,
+    "verseId": 31604,
+    "shabadId": 2819,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 255.3,
+    "verseId": 31606,
+    "shabadId": 2819,
+    "line": 5,
+    "lines": 11
+   },
+   {
+    "t": 288.063,
+    "verseId": 31607,
+    "shabadId": 2819,
+    "line": 6,
+    "lines": 11
+   },
+   {
+    "t": 302.621,
+    "verseId": 31604,
+    "shabadId": 2819,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 323.351,
+    "verseId": 31605,
+    "shabadId": 2819,
+    "line": 4,
+    "lines": 11
+   },
+   {
+    "t": 341.354,
+    "verseId": 31604,
+    "shabadId": 2819,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 384.103,
+    "verseId": 31608,
+    "shabadId": 2819,
+    "line": 7,
+    "lines": 11
+   },
+   {
+    "t": 415.041,
+    "verseId": 31609,
+    "shabadId": 2819,
+    "line": 8,
+    "lines": 11
+   },
+   {
+    "t": 431.537,
+    "verseId": 31604,
+    "shabadId": 2819,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 446.484,
+    "verseId": 31605,
+    "shabadId": 2819,
+    "line": 4,
+    "lines": 11
+   },
+   {
+    "t": 464.501,
+    "verseId": 31604,
+    "shabadId": 2819,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 526.47,
+    "verseId": 31610,
+    "shabadId": 2819,
+    "line": 9,
+    "lines": 11
+   },
+   {
+    "t": 576.048,
+    "verseId": 31611,
+    "shabadId": 2819,
+    "line": 10,
+    "lines": 11
+   },
+   {
+    "t": 610.542,
+    "verseId": 31610,
+    "shabadId": 2819,
+    "line": 9,
+    "lines": 11
+   },
+   {
+    "t": 620.126,
+    "verseId": 31611,
+    "shabadId": 2819,
+    "line": 10,
+    "lines": 11
+   },
+   {
+    "t": 634.319,
+    "verseId": 31604,
+    "shabadId": 2819,
+    "line": 3,
+    "lines": 11
+   }
+  ],
+  "shabads": [
+   2819
+  ],
+  "clip": "kh08_sttm_desktop_2026_10_09T03_27_58_323Z.wav",
+  "seconds": 638.55
+ },
+ {
+  "name": "kh09_sttm_desktop_2026_10_09T03_39_34_494Z",
+  "dataset": "sttm_desktop_2026_10_09T03_39_34_494Z",
+  "timeline": [
+   {
+    "t": 2.776,
+    "verseId": 11993,
+    "shabadId": 924,
+    "line": 1,
+    "lines": 10
+   },
+   {
+    "t": 8.624,
+    "verseId": 11994,
+    "shabadId": 924,
+    "line": 2,
+    "lines": 10
+   },
+   {
+    "t": 15.5,
+    "verseId": 11995,
+    "shabadId": 924,
+    "line": 3,
+    "lines": 10
+   },
+   {
+    "t": 34.196,
+    "verseId": 31604,
+    "shabadId": 2819,
+    "line": 3,
+    "lines": 11
+   }
+  ],
+  "shabads": [
+   924,
+   2819
+  ],
+  "clip": "kh09_sttm_desktop_2026_10_09T03_39_34_494Z.wav",
+  "seconds": 93.7
+ },
+ {
+  "name": "kh10_sttm_desktop_2026_10_09T03_42_41_425Z",
+  "dataset": "sttm_desktop_2026_10_09T03_42_41_425Z",
+  "timeline": [
+   {
+    "t": 28.127,
+    "verseId": 59507,
+    "shabadId": 5453,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 124.702,
+    "verseId": 59502,
+    "shabadId": 5453,
+    "line": 0,
+    "lines": 6
+   },
+   {
+    "t": 164.842,
+    "verseId": 59503,
+    "shabadId": 5453,
+    "line": 1,
+    "lines": 6
+   },
+   {
+    "t": 210.253,
+    "verseId": 59507,
+    "shabadId": 5453,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 285.466,
+    "verseId": 59504,
+    "shabadId": 5453,
+    "line": 2,
+    "lines": 6
+   },
+   {
+    "t": 319.354,
+    "verseId": 59505,
+    "shabadId": 5453,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 335.855,
+    "verseId": 59507,
+    "shabadId": 5453,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 425.259,
+    "verseId": 59505,
+    "shabadId": 5453,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 455.295,
+    "verseId": 59507,
+    "shabadId": 5453,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 497.625,
+    "verseId": 8782,
+    "shabadId": 638,
+    "line": 2,
+    "lines": 7
+   },
+   {
+    "t": 500.151,
+    "verseId": 8783,
+    "shabadId": 638,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 526.25,
+    "verseId": 59507,
+    "shabadId": 5453,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 527.287,
+    "verseId": 59506,
+    "shabadId": 5453,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 572.178,
+    "verseId": 59507,
+    "shabadId": 5453,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 681.909,
+    "verseId": 41412,
+    "shabadId": 3590,
+    "line": 0,
+    "lines": 9
+   },
+   {
+    "t": 708.47,
+    "verseId": 8783,
+    "shabadId": 638,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 712.291,
+    "verseId": 59507,
+    "shabadId": 5453,
+    "line": 5,
+    "lines": 6
+   }
+  ],
+  "shabads": [
+   5453,
+   638,
+   3590
+  ],
+  "clip": "kh10_sttm_desktop_2026_10_09T03_42_41_425Z.wav",
+  "seconds": 739.58
+ },
+ {
+  "name": "kh11_sttm_desktop_2026_10_11T02_40_20_422Z",
+  "dataset": "sttm_desktop_2026_10_11T02_40_20_422Z",
+  "timeline": [
+   {
+    "t": 31.726,
+    "verseId": 34313,
+    "shabadId": 3031,
+    "line": 4,
+    "lines": 7
+   },
+   {
+    "t": 44.049,
+    "verseId": 34312,
+    "shabadId": 3031,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 58.106,
+    "verseId": 34313,
+    "shabadId": 3031,
+    "line": 4,
+    "lines": 7
+   },
+   {
+    "t": 69.126,
+    "verseId": 34312,
+    "shabadId": 3031,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 103.655,
+    "verseId": 34310,
+    "shabadId": 3031,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 119.48,
+    "verseId": 34311,
+    "shabadId": 3031,
+    "line": 2,
+    "lines": 7
+   },
+   {
+    "t": 142.403,
+    "verseId": 34312,
+    "shabadId": 3031,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 163.513,
+    "verseId": 34313,
+    "shabadId": 3031,
+    "line": 4,
+    "lines": 7
+   },
+   {
+    "t": 181.242,
+    "verseId": 34312,
+    "shabadId": 3031,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 262.778,
+    "verseId": 34314,
+    "shabadId": 3031,
+    "line": 5,
+    "lines": 7
+   },
+   {
+    "t": 289.754,
+    "verseId": 34315,
+    "shabadId": 3031,
+    "line": 6,
+    "lines": 7
+   },
+   {
+    "t": 302.387,
+    "verseId": 34314,
+    "shabadId": 3031,
+    "line": 5,
+    "lines": 7
+   },
+   {
+    "t": 334.373,
+    "verseId": 34315,
+    "shabadId": 3031,
+    "line": 6,
+    "lines": 7
+   },
+   {
+    "t": 350.521,
+    "verseId": 34314,
+    "shabadId": 3031,
+    "line": 5,
+    "lines": 7
+   },
+   {
+    "t": 368.762,
+    "verseId": 34315,
+    "shabadId": 3031,
+    "line": 6,
+    "lines": 7
+   },
+   {
+    "t": 381.612,
+    "verseId": 34312,
+    "shabadId": 3031,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 389.155,
+    "verseId": 34313,
+    "shabadId": 3031,
+    "line": 4,
+    "lines": 7
+   },
+   {
+    "t": 396.058,
+    "verseId": 34312,
+    "shabadId": 3031,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 443.497,
+    "verseId": 34313,
+    "shabadId": 3031,
+    "line": 4,
+    "lines": 7
+   },
+   {
+    "t": 452.208,
+    "verseId": 34312,
+    "shabadId": 3031,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 461.609,
+    "verseId": 34313,
+    "shabadId": 3031,
+    "line": 4,
+    "lines": 7
+   },
+   {
+    "t": 469.31,
+    "verseId": 34312,
+    "shabadId": 3031,
+    "line": 3,
+    "lines": 7
+   }
+  ],
+  "shabads": [
+   3031
+  ],
+  "clip": "kh11_sttm_desktop_2026_10_11T02_40_20_422Z.wav",
+  "seconds": 496.3
+ },
+ {
+  "name": "kh12_sttm_desktop_2026_10_11T02_50_05_783Z",
+  "dataset": "sttm_desktop_2026_10_11T02_50_05_783Z",
+  "timeline": [
+   {
+    "t": 43.7,
+    "verseId": 51637,
+    "shabadId": 4261,
+    "line": 5,
+    "lines": 10
+   },
+   {
+    "t": 62.666,
+    "verseId": 51636,
+    "shabadId": 4261,
+    "line": 4,
+    "lines": 10
+   },
+   {
+    "t": 117.527,
+    "verseId": 51633,
+    "shabadId": 4261,
+    "line": 1,
+    "lines": 10
+   },
+   {
+    "t": 162.993,
+    "verseId": 51634,
+    "shabadId": 4261,
+    "line": 2,
+    "lines": 10
+   },
+   {
+    "t": 187.071,
+    "verseId": 51636,
+    "shabadId": 4261,
+    "line": 4,
+    "lines": 10
+   },
+   {
+    "t": 224.131,
+    "verseId": 51637,
+    "shabadId": 4261,
+    "line": 5,
+    "lines": 10
+   },
+   {
+    "t": 240.674,
+    "verseId": 51636,
+    "shabadId": 4261,
+    "line": 4,
+    "lines": 10
+   },
+   {
+    "t": 279.496,
+    "verseId": 51635,
+    "shabadId": 4261,
+    "line": 3,
+    "lines": 10
+   },
+   {
+    "t": 348.276,
+    "verseId": 51636,
+    "shabadId": 4261,
+    "line": 4,
+    "lines": 10
+   },
+   {
+    "t": 381.198,
+    "verseId": 51637,
+    "shabadId": 4261,
+    "line": 5,
+    "lines": 10
+   },
+   {
+    "t": 398.885,
+    "verseId": 51636,
+    "shabadId": 4261,
+    "line": 4,
+    "lines": 10
+   },
+   {
+    "t": 430.387,
+    "verseId": 51638,
+    "shabadId": 4261,
+    "line": 6,
+    "lines": 10
+   },
+   {
+    "t": 513.809,
+    "verseId": 51639,
+    "shabadId": 4261,
+    "line": 7,
+    "lines": 10
+   },
+   {
+    "t": 539.535,
+    "verseId": 51636,
+    "shabadId": 4261,
+    "line": 4,
+    "lines": 10
+   },
+   {
+    "t": 569.28,
+    "verseId": 51637,
+    "shabadId": 4261,
+    "line": 5,
+    "lines": 10
+   },
+   {
+    "t": 587.446,
+    "verseId": 51636,
+    "shabadId": 4261,
+    "line": 4,
+    "lines": 10
+   },
+   {
+    "t": 627.867,
+    "verseId": 51640,
+    "shabadId": 4261,
+    "line": 8,
+    "lines": 10
+   },
+   {
+    "t": 807.952,
+    "verseId": 51641,
+    "shabadId": 4261,
+    "line": 9,
+    "lines": 10
+   },
+   {
+    "t": 823.909,
+    "verseId": 51636,
+    "shabadId": 4261,
+    "line": 4,
+    "lines": 10
+   },
+   {
+    "t": 867.611,
+    "verseId": 51637,
+    "shabadId": 4261,
+    "line": 5,
+    "lines": 10
+   },
+   {
+    "t": 876.738,
+    "verseId": 51636,
+    "shabadId": 4261,
+    "line": 4,
+    "lines": 10
+   }
+  ],
+  "shabads": [
+   4261
+  ],
+  "clip": "kh12_sttm_desktop_2026_10_11T02_50_05_783Z.wav",
+  "seconds": 905.3
+ },
+ {
+  "name": "kh13_sttm_desktop_2026_10_11T03_07_57_411Z",
+  "dataset": "sttm_desktop_2026_10_11T03_07_57_411Z",
+  "timeline": [
+   {
+    "t": 3.322,
+    "verseId": 28970,
+    "shabadId": 2554,
+    "line": 4,
+    "lines": 7
+   },
+   {
+    "t": 77.249,
+    "verseId": 28967,
+    "shabadId": 2554,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 116.739,
+    "verseId": 28968,
+    "shabadId": 2554,
+    "line": 2,
+    "lines": 7
+   },
+   {
+    "t": 179,
+    "verseId": 28969,
+    "shabadId": 2554,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 217.222,
+    "verseId": 28971,
+    "shabadId": 2554,
+    "line": 5,
+    "lines": 7
+   },
+   {
+    "t": 273.854,
+    "verseId": 28972,
+    "shabadId": 2554,
+    "line": 6,
+    "lines": 7
+   },
+   {
+    "t": 375.054,
+    "verseId": 28969,
+    "shabadId": 2554,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 400.225,
+    "verseId": 28970,
+    "shabadId": 2554,
+    "line": 4,
+    "lines": 7
+   },
+   {
+    "t": 439.039,
+    "verseId": 28969,
+    "shabadId": 2554,
+    "line": 3,
+    "lines": 7
+   }
+  ],
+  "shabads": [
+   2554
+  ],
+  "clip": "kh13_sttm_desktop_2026_10_11T03_07_57_411Z.wav",
+  "seconds": 491.09
+ },
+ {
+  "name": "kh14_sttm_desktop_2026_10_11T13_42_38_291Z",
+  "dataset": "sttm_desktop_2026_10_11T13_42_38_291Z",
+  "timeline": [
+   {
+    "t": 16.749,
+    "verseId": 59495,
+    "shabadId": 5451,
+    "line": 3,
+    "lines": 4
+   }
+  ],
+  "shabads": [
+   5451
+  ],
+  "clip": "kh14_sttm_desktop_2026_10_11T13_42_38_291Z.wav",
+  "seconds": 75.09
+ },
+ {
+  "name": "kh15_sttm_desktop_2026_10_11T13_45_00_522Z",
+  "dataset": "sttm_desktop_2026_10_11T13_45_00_522Z",
+  "timeline": [
+   {
+    "t": 26.392,
+    "verseId": 22275,
+    "shabadId": 1848,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 49.876,
+    "verseId": 22276,
+    "shabadId": 1848,
+    "line": 2,
+    "lines": 7
+   },
+   {
+    "t": 89.794,
+    "verseId": 22275,
+    "shabadId": 1848,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 131.224,
+    "verseId": 22277,
+    "shabadId": 1848,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 156.477,
+    "verseId": 22278,
+    "shabadId": 1848,
+    "line": 4,
+    "lines": 7
+   },
+   {
+    "t": 182.067,
+    "verseId": 22275,
+    "shabadId": 1848,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 209.455,
+    "verseId": 22276,
+    "shabadId": 1848,
+    "line": 2,
+    "lines": 7
+   },
+   {
+    "t": 244.861,
+    "verseId": 22275,
+    "shabadId": 1848,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 292.442,
+    "verseId": 22279,
+    "shabadId": 1848,
+    "line": 5,
+    "lines": 7
+   },
+   {
+    "t": 323.277,
+    "verseId": 22280,
+    "shabadId": 1848,
+    "line": 6,
+    "lines": 7
+   },
+   {
+    "t": 350.253,
+    "verseId": 22275,
+    "shabadId": 1848,
+    "line": 1,
+    "lines": 7
+   }
+  ],
+  "shabads": [
+   1848
+  ],
+  "clip": "kh15_sttm_desktop_2026_10_11T13_45_00_522Z.wav",
+  "seconds": 414.81
+ },
+ {
+  "name": "kh16_sttm_desktop_2026_10_11T13_52_01_944Z",
+  "dataset": "sttm_desktop_2026_10_11T13_52_01_944Z",
+  "timeline": [
+   {
+    "t": 1.338,
+    "verseId": 20254,
+    "shabadId": 1656,
+    "line": 1,
+    "lines": 18
+   },
+   {
+    "t": 4.395,
+    "verseId": 20255,
+    "shabadId": 1656,
+    "line": 2,
+    "lines": 18
+   },
+   {
+    "t": 32.703,
+    "verseId": 20256,
+    "shabadId": 1656,
+    "line": 3,
+    "lines": 18
+   },
+   {
+    "t": 40.011,
+    "verseId": 20257,
+    "shabadId": 1656,
+    "line": 4,
+    "lines": 18
+   },
+   {
+    "t": 47.932,
+    "verseId": 20258,
+    "shabadId": 1656,
+    "line": 5,
+    "lines": 18
+   },
+   {
+    "t": 60.978,
+    "verseId": 20756,
+    "shabadId": 1685,
+    "line": 0,
+    "lines": 6
+   },
+   {
+    "t": 75.602,
+    "verseId": 20757,
+    "shabadId": 1685,
+    "line": 1,
+    "lines": 6
+   },
+   {
+    "t": 77.068,
+    "verseId": 20758,
+    "shabadId": 1685,
+    "line": 2,
+    "lines": 6
+   },
+   {
+    "t": 86.02,
+    "verseId": 20759,
+    "shabadId": 1685,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 88.753,
+    "verseId": 20760,
+    "shabadId": 1685,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 92.729,
+    "verseId": 20761,
+    "shabadId": 1685,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 100.513,
+    "verseId": 20762,
+    "shabadId": 1686,
+    "line": 0,
+    "lines": 3
+   },
+   {
+    "t": 102.162,
+    "verseId": 20763,
+    "shabadId": 1686,
+    "line": 1,
+    "lines": 3
+   },
+   {
+    "t": 106.496,
+    "verseId": 20764,
+    "shabadId": 1686,
+    "line": 2,
+    "lines": 3
+   },
+   {
+    "t": 114.69,
+    "verseId": 20765,
+    "shabadId": 1687,
+    "line": 0,
+    "lines": 5
+   },
+   {
+    "t": 118.02,
+    "verseId": 20766,
+    "shabadId": 1687,
+    "line": 1,
+    "lines": 5
+   },
+   {
+    "t": 122.894,
+    "verseId": 20767,
+    "shabadId": 1687,
+    "line": 2,
+    "lines": 5
+   },
+   {
+    "t": 129.028,
+    "verseId": 20768,
+    "shabadId": 1687,
+    "line": 3,
+    "lines": 5
+   },
+   {
+    "t": 135.68,
+    "verseId": 20769,
+    "shabadId": 1687,
+    "line": 4,
+    "lines": 5
+   },
+   {
+    "t": 141.113,
+    "verseId": 20770,
+    "shabadId": 1688,
+    "line": 0,
+    "lines": 6
+   },
+   {
+    "t": 141.838,
+    "verseId": 20771,
+    "shabadId": 1688,
+    "line": 1,
+    "lines": 6
+   },
+   {
+    "t": 146.228,
+    "verseId": 20772,
+    "shabadId": 1688,
+    "line": 2,
+    "lines": 6
+   },
+   {
+    "t": 151.478,
+    "verseId": 20773,
+    "shabadId": 1688,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 156.476,
+    "verseId": 20774,
+    "shabadId": 1688,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 161.829,
+    "verseId": 20775,
+    "shabadId": 1688,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 169.995,
+    "verseId": 20259,
+    "shabadId": 1656,
+    "line": 6,
+    "lines": 18
+   },
+   {
+    "t": 177.303,
+    "verseId": 20260,
+    "shabadId": 1656,
+    "line": 7,
+    "lines": 18
+   },
+   {
+    "t": 185.094,
+    "verseId": 20261,
+    "shabadId": 1656,
+    "line": 8,
+    "lines": 18
+   },
+   {
+    "t": 193.404,
+    "verseId": 20262,
+    "shabadId": 1656,
+    "line": 9,
+    "lines": 18
+   },
+   {
+    "t": 203.87,
+    "verseId": 20776,
+    "shabadId": 1689,
+    "line": 0,
+    "lines": 13
+   },
+   {
+    "t": 207.244,
+    "verseId": 20777,
+    "shabadId": 1689,
+    "line": 1,
+    "lines": 13
+   },
+   {
+    "t": 210.86,
+    "verseId": 20778,
+    "shabadId": 1689,
+    "line": 2,
+    "lines": 13
+   },
+   {
+    "t": 214.101,
+    "verseId": 20779,
+    "shabadId": 1689,
+    "line": 3,
+    "lines": 13
+   },
+   {
+    "t": 216.662,
+    "verseId": 20780,
+    "shabadId": 1689,
+    "line": 4,
+    "lines": 13
+   },
+   {
+    "t": 221.15,
+    "verseId": 20781,
+    "shabadId": 1689,
+    "line": 5,
+    "lines": 13
+   },
+   {
+    "t": 223.47,
+    "verseId": 20782,
+    "shabadId": 1689,
+    "line": 6,
+    "lines": 13
+   },
+   {
+    "t": 227.802,
+    "verseId": 20783,
+    "shabadId": 1689,
+    "line": 7,
+    "lines": 13
+   },
+   {
+    "t": 229.584,
+    "verseId": 20784,
+    "shabadId": 1689,
+    "line": 8,
+    "lines": 13
+   },
+   {
+    "t": 233.063,
+    "verseId": 20785,
+    "shabadId": 1689,
+    "line": 9,
+    "lines": 13
+   },
+   {
+    "t": 238.102,
+    "verseId": 20786,
+    "shabadId": 1689,
+    "line": 10,
+    "lines": 13
+   },
+   {
+    "t": 244.48,
+    "verseId": 20787,
+    "shabadId": 1689,
+    "line": 11,
+    "lines": 13
+   },
+   {
+    "t": 251.02,
+    "verseId": 20788,
+    "shabadId": 1689,
+    "line": 12,
+    "lines": 13
+   },
+   {
+    "t": 254.547,
+    "verseId": 20789,
+    "shabadId": 1690,
+    "line": 0,
+    "lines": 10
+   },
+   {
+    "t": 256.617,
+    "verseId": 20790,
+    "shabadId": 1690,
+    "line": 1,
+    "lines": 10
+   },
+   {
+    "t": 258.487,
+    "verseId": 20791,
+    "shabadId": 1690,
+    "line": 2,
+    "lines": 10
+   },
+   {
+    "t": 261.776,
+    "verseId": 20792,
+    "shabadId": 1690,
+    "line": 3,
+    "lines": 10
+   },
+   {
+    "t": 266.088,
+    "verseId": 20793,
+    "shabadId": 1690,
+    "line": 4,
+    "lines": 10
+   },
+   {
+    "t": 270.012,
+    "verseId": 20794,
+    "shabadId": 1690,
+    "line": 5,
+    "lines": 10
+   },
+   {
+    "t": 276.84,
+    "verseId": 20795,
+    "shabadId": 1690,
+    "line": 6,
+    "lines": 10
+   },
+   {
+    "t": 279.311,
+    "verseId": 20796,
+    "shabadId": 1690,
+    "line": 7,
+    "lines": 10
+   },
+   {
+    "t": 283.117,
+    "verseId": 20797,
+    "shabadId": 1690,
+    "line": 8,
+    "lines": 10
+   },
+   {
+    "t": 288.387,
+    "verseId": 20798,
+    "shabadId": 1690,
+    "line": 9,
+    "lines": 10
+   },
+   {
+    "t": 292.493,
+    "verseId": 20799,
+    "shabadId": 1691,
+    "line": 0,
+    "lines": 6
+   },
+   {
+    "t": 295.526,
+    "verseId": 20800,
+    "shabadId": 1691,
+    "line": 1,
+    "lines": 6
+   },
+   {
+    "t": 299.677,
+    "verseId": 20801,
+    "shabadId": 1691,
+    "line": 2,
+    "lines": 6
+   },
+   {
+    "t": 304.642,
+    "verseId": 20802,
+    "shabadId": 1691,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 308.62,
+    "verseId": 20803,
+    "shabadId": 1691,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 314.312,
+    "verseId": 20804,
+    "shabadId": 1691,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 323.16,
+    "verseId": 20805,
+    "shabadId": 1692,
+    "line": 0,
+    "lines": 6
+   },
+   {
+    "t": 323.973,
+    "verseId": 20806,
+    "shabadId": 1692,
+    "line": 1,
+    "lines": 6
+   },
+   {
+    "t": 329.186,
+    "verseId": 20807,
+    "shabadId": 1692,
+    "line": 2,
+    "lines": 6
+   },
+   {
+    "t": 334.75,
+    "verseId": 20808,
+    "shabadId": 1692,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 340.841,
+    "verseId": 20809,
+    "shabadId": 1692,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 346.836,
+    "verseId": 20810,
+    "shabadId": 1692,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 357.303,
+    "verseId": 20263,
+    "shabadId": 1656,
+    "line": 10,
+    "lines": 18
+   },
+   {
+    "t": 363.619,
+    "verseId": 20264,
+    "shabadId": 1656,
+    "line": 11,
+    "lines": 18
+   },
+   {
+    "t": 372.735,
+    "verseId": 20265,
+    "shabadId": 1656,
+    "line": 12,
+    "lines": 18
+   },
+   {
+    "t": 380.678,
+    "verseId": 20266,
+    "shabadId": 1656,
+    "line": 13,
+    "lines": 18
+   },
+   {
+    "t": 391.958,
+    "verseId": 20811,
+    "shabadId": 1693,
+    "line": 0,
+    "lines": 17
+   },
+   {
+    "t": 396.886,
+    "verseId": 20812,
+    "shabadId": 1693,
+    "line": 1,
+    "lines": 17
+   },
+   {
+    "t": 399.247,
+    "verseId": 20813,
+    "shabadId": 1693,
+    "line": 2,
+    "lines": 17
+   },
+   {
+    "t": 402.034,
+    "verseId": 20814,
+    "shabadId": 1693,
+    "line": 3,
+    "lines": 17
+   },
+   {
+    "t": 403.953,
+    "verseId": 20815,
+    "shabadId": 1693,
+    "line": 4,
+    "lines": 17
+   },
+   {
+    "t": 406.52,
+    "verseId": 20816,
+    "shabadId": 1693,
+    "line": 5,
+    "lines": 17
+   },
+   {
+    "t": 410.062,
+    "verseId": 20817,
+    "shabadId": 1693,
+    "line": 6,
+    "lines": 17
+   },
+   {
+    "t": 413.32,
+    "verseId": 20818,
+    "shabadId": 1693,
+    "line": 7,
+    "lines": 17
+   },
+   {
+    "t": 418.569,
+    "verseId": 20819,
+    "shabadId": 1693,
+    "line": 8,
+    "lines": 17
+   },
+   {
+    "t": 421.294,
+    "verseId": 20820,
+    "shabadId": 1693,
+    "line": 9,
+    "lines": 17
+   },
+   {
+    "t": 426.095,
+    "verseId": 20821,
+    "shabadId": 1693,
+    "line": 10,
+    "lines": 17
+   },
+   {
+    "t": 432.053,
+    "verseId": 20822,
+    "shabadId": 1693,
+    "line": 11,
+    "lines": 17
+   },
+   {
+    "t": 440.802,
+    "verseId": 20823,
+    "shabadId": 1693,
+    "line": 12,
+    "lines": 17
+   },
+   {
+    "t": 449.127,
+    "verseId": 20824,
+    "shabadId": 1693,
+    "line": 13,
+    "lines": 17
+   },
+   {
+    "t": 455.004,
+    "verseId": 20825,
+    "shabadId": 1693,
+    "line": 14,
+    "lines": 17
+   },
+   {
+    "t": 461.928,
+    "verseId": 20826,
+    "shabadId": 1693,
+    "line": 15,
+    "lines": 17
+   },
+   {
+    "t": 467.109,
+    "verseId": 20827,
+    "shabadId": 1693,
+    "line": 16,
+    "lines": 17
+   },
+   {
+    "t": 470.703,
+    "verseId": 20828,
+    "shabadId": 1694,
+    "line": 0,
+    "lines": 10
+   },
+   {
+    "t": 472.819,
+    "verseId": 20829,
+    "shabadId": 1694,
+    "line": 1,
+    "lines": 10
+   },
+   {
+    "t": 476.934,
+    "verseId": 20830,
+    "shabadId": 1694,
+    "line": 2,
+    "lines": 10
+   },
+   {
+    "t": 483.827,
+    "verseId": 20831,
+    "shabadId": 1694,
+    "line": 3,
+    "lines": 10
+   },
+   {
+    "t": 488.802,
+    "verseId": 20832,
+    "shabadId": 1694,
+    "line": 4,
+    "lines": 10
+   },
+   {
+    "t": 494.01,
+    "verseId": 20833,
+    "shabadId": 1694,
+    "line": 5,
+    "lines": 10
+   },
+   {
+    "t": 501.728,
+    "verseId": 20834,
+    "shabadId": 1694,
+    "line": 6,
+    "lines": 10
+   },
+   {
+    "t": 507.911,
+    "verseId": 20835,
+    "shabadId": 1694,
+    "line": 7,
+    "lines": 10
+   },
+   {
+    "t": 514.837,
+    "verseId": 20836,
+    "shabadId": 1694,
+    "line": 8,
+    "lines": 10
+   },
+   {
+    "t": 523.4,
+    "verseId": 20837,
+    "shabadId": 1694,
+    "line": 9,
+    "lines": 10
+   },
+   {
+    "t": 528.778,
+    "verseId": 20838,
+    "shabadId": 1695,
+    "line": 0,
+    "lines": 6
+   },
+   {
+    "t": 529.553,
+    "verseId": 20839,
+    "shabadId": 1695,
+    "line": 1,
+    "lines": 6
+   },
+   {
+    "t": 534.687,
+    "verseId": 20840,
+    "shabadId": 1695,
+    "line": 2,
+    "lines": 6
+   },
+   {
+    "t": 539.31,
+    "verseId": 20841,
+    "shabadId": 1695,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 544.536,
+    "verseId": 20842,
+    "shabadId": 1695,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 549.509,
+    "verseId": 20843,
+    "shabadId": 1695,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 561.117,
+    "verseId": 20267,
+    "shabadId": 1656,
+    "line": 14,
+    "lines": 18
+   },
+   {
+    "t": 566.935,
+    "verseId": 20268,
+    "shabadId": 1656,
+    "line": 15,
+    "lines": 18
+   },
+   {
+    "t": 574.354,
+    "verseId": 20269,
+    "shabadId": 1656,
+    "line": 16,
+    "lines": 18
+   },
+   {
+    "t": 582.691,
+    "verseId": 20270,
+    "shabadId": 1656,
+    "line": 17,
+    "lines": 18
+   },
+   {
+    "t": 593.728,
+    "verseId": 20844,
+    "shabadId": 1696,
+    "line": 0,
+    "lines": 15
+   },
+   {
+    "t": 598.143,
+    "verseId": 20845,
+    "shabadId": 1696,
+    "line": 1,
+    "lines": 15
+   },
+   {
+    "t": 599.828,
+    "verseId": 20846,
+    "shabadId": 1696,
+    "line": 2,
+    "lines": 15
+   },
+   {
+    "t": 602.684,
+    "verseId": 20847,
+    "shabadId": 1696,
+    "line": 3,
+    "lines": 15
+   },
+   {
+    "t": 605.186,
+    "verseId": 20848,
+    "shabadId": 1696,
+    "line": 4,
+    "lines": 15
+   },
+   {
+    "t": 607.16,
+    "verseId": 20849,
+    "shabadId": 1696,
+    "line": 5,
+    "lines": 15
+   },
+   {
+    "t": 609.342,
+    "verseId": 20850,
+    "shabadId": 1696,
+    "line": 6,
+    "lines": 15
+   },
+   {
+    "t": 610.888,
+    "verseId": 20851,
+    "shabadId": 1696,
+    "line": 7,
+    "lines": 15
+   },
+   {
+    "t": 614.394,
+    "verseId": 20852,
+    "shabadId": 1696,
+    "line": 8,
+    "lines": 15
+   },
+   {
+    "t": 616.849,
+    "verseId": 20853,
+    "shabadId": 1696,
+    "line": 9,
+    "lines": 15
+   },
+   {
+    "t": 618.941,
+    "verseId": 20854,
+    "shabadId": 1696,
+    "line": 10,
+    "lines": 15
+   },
+   {
+    "t": 621.01,
+    "verseId": 20855,
+    "shabadId": 1696,
+    "line": 11,
+    "lines": 15
+   },
+   {
+    "t": 623.872,
+    "verseId": 20856,
+    "shabadId": 1696,
+    "line": 12,
+    "lines": 15
+   },
+   {
+    "t": 627.924,
+    "verseId": 20857,
+    "shabadId": 1696,
+    "line": 13,
+    "lines": 15
+   },
+   {
+    "t": 632.589,
+    "verseId": 20858,
+    "shabadId": 1696,
+    "line": 14,
+    "lines": 15
+   },
+   {
+    "t": 637.086,
+    "verseId": 20859,
+    "shabadId": 1697,
+    "line": 0,
+    "lines": 10
+   },
+   {
+    "t": 638.957,
+    "verseId": 20860,
+    "shabadId": 1697,
+    "line": 1,
+    "lines": 10
+   },
+   {
+    "t": 643.21,
+    "verseId": 20861,
+    "shabadId": 1697,
+    "line": 2,
+    "lines": 10
+   },
+   {
+    "t": 647.637,
+    "verseId": 20862,
+    "shabadId": 1697,
+    "line": 3,
+    "lines": 10
+   },
+   {
+    "t": 655.514,
+    "verseId": 20863,
+    "shabadId": 1697,
+    "line": 4,
+    "lines": 10
+   },
+   {
+    "t": 659.083,
+    "verseId": 20864,
+    "shabadId": 1697,
+    "line": 5,
+    "lines": 10
+   },
+   {
+    "t": 666.882,
+    "verseId": 20865,
+    "shabadId": 1697,
+    "line": 6,
+    "lines": 10
+   },
+   {
+    "t": 675.398,
+    "verseId": 20866,
+    "shabadId": 1697,
+    "line": 7,
+    "lines": 10
+   },
+   {
+    "t": 683.677,
+    "verseId": 20867,
+    "shabadId": 1697,
+    "line": 8,
+    "lines": 10
+   },
+   {
+    "t": 691.65,
+    "verseId": 20868,
+    "shabadId": 1697,
+    "line": 9,
+    "lines": 10
+   },
+   {
+    "t": 697.75,
+    "verseId": 20869,
+    "shabadId": 1698,
+    "line": 0,
+    "lines": 6
+   },
+   {
+    "t": 698.309,
+    "verseId": 20870,
+    "shabadId": 1698,
+    "line": 1,
+    "lines": 6
+   },
+   {
+    "t": 704.316,
+    "verseId": 20871,
+    "shabadId": 1698,
+    "line": 2,
+    "lines": 6
+   },
+   {
+    "t": 709.001,
+    "verseId": 20872,
+    "shabadId": 1698,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 714.538,
+    "verseId": 20873,
+    "shabadId": 1698,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 719.339,
+    "verseId": 20874,
+    "shabadId": 1698,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 728.369,
+    "verseId": 20870,
+    "shabadId": 1698,
+    "line": 1,
+    "lines": 6
+   },
+   {
+    "t": 731.703,
+    "verseId": 20871,
+    "shabadId": 1698,
+    "line": 2,
+    "lines": 6
+   },
+   {
+    "t": 736.314,
+    "verseId": 20872,
+    "shabadId": 1698,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 740.485,
+    "verseId": 20873,
+    "shabadId": 1698,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 745.207,
+    "verseId": 20874,
+    "shabadId": 1698,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 755.4,
+    "verseId": 20271,
+    "shabadId": 1657,
+    "line": 0,
+    "lines": 17
+   },
+   {
+    "t": 762.848,
+    "verseId": 20272,
+    "shabadId": 1657,
+    "line": 1,
+    "lines": 17
+   },
+   {
+    "t": 772.875,
+    "verseId": 20273,
+    "shabadId": 1657,
+    "line": 2,
+    "lines": 17
+   },
+   {
+    "t": 782.228,
+    "verseId": 20274,
+    "shabadId": 1657,
+    "line": 3,
+    "lines": 17
+   },
+   {
+    "t": 792.9,
+    "verseId": 20275,
+    "shabadId": 1657,
+    "line": 4,
+    "lines": 17
+   },
+   {
+    "t": 807.1,
+    "verseId": 20875,
+    "shabadId": 1699,
+    "line": 0,
+    "lines": 5
+   },
+   {
+    "t": 812.696,
+    "verseId": 20876,
+    "shabadId": 1699,
+    "line": 1,
+    "lines": 5
+   },
+   {
+    "t": 817.613,
+    "verseId": 20877,
+    "shabadId": 1699,
+    "line": 2,
+    "lines": 5
+   },
+   {
+    "t": 823.437,
+    "verseId": 20878,
+    "shabadId": 1699,
+    "line": 3,
+    "lines": 5
+   },
+   {
+    "t": 830.854,
+    "verseId": 20879,
+    "shabadId": 1699,
+    "line": 4,
+    "lines": 5
+   },
+   {
+    "t": 841.662,
+    "verseId": 20880,
+    "shabadId": 1700,
+    "line": 0,
+    "lines": 27
+   },
+   {
+    "t": 843.916,
+    "verseId": 20881,
+    "shabadId": 1700,
+    "line": 1,
+    "lines": 27
+   },
+   {
+    "t": 845.86,
+    "verseId": 20882,
+    "shabadId": 1700,
+    "line": 2,
+    "lines": 27
+   },
+   {
+    "t": 849.364,
+    "verseId": 20883,
+    "shabadId": 1700,
+    "line": 3,
+    "lines": 27
+   },
+   {
+    "t": 852.033,
+    "verseId": 20884,
+    "shabadId": 1700,
+    "line": 4,
+    "lines": 27
+   },
+   {
+    "t": 855.941,
+    "verseId": 20885,
+    "shabadId": 1700,
+    "line": 5,
+    "lines": 27
+   },
+   {
+    "t": 860.432,
+    "verseId": 20886,
+    "shabadId": 1700,
+    "line": 6,
+    "lines": 27
+   },
+   {
+    "t": 864.224,
+    "verseId": 20887,
+    "shabadId": 1700,
+    "line": 7,
+    "lines": 27
+   },
+   {
+    "t": 866.826,
+    "verseId": 20888,
+    "shabadId": 1700,
+    "line": 8,
+    "lines": 27
+   },
+   {
+    "t": 870.351,
+    "verseId": 20889,
+    "shabadId": 1700,
+    "line": 9,
+    "lines": 27
+   },
+   {
+    "t": 874.521,
+    "verseId": 20890,
+    "shabadId": 1700,
+    "line": 10,
+    "lines": 27
+   },
+   {
+    "t": 877.978,
+    "verseId": 20891,
+    "shabadId": 1700,
+    "line": 11,
+    "lines": 27
+   },
+   {
+    "t": 881.422,
+    "verseId": 20892,
+    "shabadId": 1700,
+    "line": 12,
+    "lines": 27
+   },
+   {
+    "t": 886.264,
+    "verseId": 20893,
+    "shabadId": 1700,
+    "line": 13,
+    "lines": 27
+   },
+   {
+    "t": 889.279,
+    "verseId": 20894,
+    "shabadId": 1700,
+    "line": 14,
+    "lines": 27
+   },
+   {
+    "t": 893.065,
+    "verseId": 20895,
+    "shabadId": 1700,
+    "line": 15,
+    "lines": 27
+   },
+   {
+    "t": 896.211,
+    "verseId": 20896,
+    "shabadId": 1700,
+    "line": 16,
+    "lines": 27
+   },
+   {
+    "t": 901.093,
+    "verseId": 20897,
+    "shabadId": 1700,
+    "line": 17,
+    "lines": 27
+   },
+   {
+    "t": 903.32,
+    "verseId": 20898,
+    "shabadId": 1700,
+    "line": 18,
+    "lines": 27
+   },
+   {
+    "t": 907.73,
+    "verseId": 20899,
+    "shabadId": 1700,
+    "line": 19,
+    "lines": 27
+   },
+   {
+    "t": 911.354,
+    "verseId": 20900,
+    "shabadId": 1700,
+    "line": 20,
+    "lines": 27
+   },
+   {
+    "t": 915.931,
+    "verseId": 20901,
+    "shabadId": 1700,
+    "line": 21,
+    "lines": 27
+   },
+   {
+    "t": 917.969,
+    "verseId": 20902,
+    "shabadId": 1700,
+    "line": 22,
+    "lines": 27
+   },
+   {
+    "t": 920.882,
+    "verseId": 20903,
+    "shabadId": 1700,
+    "line": 23,
+    "lines": 27
+   },
+   {
+    "t": 925.705,
+    "verseId": 20904,
+    "shabadId": 1700,
+    "line": 24,
+    "lines": 27
+   },
+   {
+    "t": 929.563,
+    "verseId": 20905,
+    "shabadId": 1700,
+    "line": 25,
+    "lines": 27
+   },
+   {
+    "t": 935.816,
+    "verseId": 20906,
+    "shabadId": 1700,
+    "line": 26,
+    "lines": 27
+   },
+   {
+    "t": 938.907,
+    "verseId": 20907,
+    "shabadId": 1701,
+    "line": 0,
+    "lines": 6
+   },
+   {
+    "t": 939.335,
+    "verseId": 20908,
+    "shabadId": 1701,
+    "line": 1,
+    "lines": 6
+   },
+   {
+    "t": 943.765,
+    "verseId": 20909,
+    "shabadId": 1701,
+    "line": 2,
+    "lines": 6
+   },
+   {
+    "t": 949.024,
+    "verseId": 20910,
+    "shabadId": 1701,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 954.896,
+    "verseId": 20911,
+    "shabadId": 1701,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 960.778,
+    "verseId": 20912,
+    "shabadId": 1701,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 971.293,
+    "verseId": 20276,
+    "shabadId": 1657,
+    "line": 5,
+    "lines": 17
+   },
+   {
+    "t": 979.438,
+    "verseId": 20277,
+    "shabadId": 1657,
+    "line": 6,
+    "lines": 17
+   },
+   {
+    "t": 989.845,
+    "verseId": 20278,
+    "shabadId": 1657,
+    "line": 7,
+    "lines": 17
+   },
+   {
+    "t": 1000.421,
+    "verseId": 20279,
+    "shabadId": 1657,
+    "line": 8,
+    "lines": 17
+   },
+   {
+    "t": 1012.872,
+    "verseId": 20913,
+    "shabadId": 1702,
+    "line": 0,
+    "lines": 15
+   },
+   {
+    "t": 1016.346,
+    "verseId": 20914,
+    "shabadId": 1702,
+    "line": 1,
+    "lines": 15
+   },
+   {
+    "t": 1021.6,
+    "verseId": 20915,
+    "shabadId": 1702,
+    "line": 2,
+    "lines": 15
+   },
+   {
+    "t": 1027.381,
+    "verseId": 20916,
+    "shabadId": 1702,
+    "line": 3,
+    "lines": 15
+   },
+   {
+    "t": 1032.346,
+    "verseId": 20917,
+    "shabadId": 1702,
+    "line": 4,
+    "lines": 15
+   },
+   {
+    "t": 1036.683,
+    "verseId": 20918,
+    "shabadId": 1702,
+    "line": 5,
+    "lines": 15
+   },
+   {
+    "t": 1042.572,
+    "verseId": 20919,
+    "shabadId": 1702,
+    "line": 6,
+    "lines": 15
+   },
+   {
+    "t": 1051.609,
+    "verseId": 20920,
+    "shabadId": 1702,
+    "line": 7,
+    "lines": 15
+   },
+   {
+    "t": 1056.398,
+    "verseId": 20921,
+    "shabadId": 1702,
+    "line": 8,
+    "lines": 15
+   },
+   {
+    "t": 1063.676,
+    "verseId": 20922,
+    "shabadId": 1702,
+    "line": 9,
+    "lines": 15
+   },
+   {
+    "t": 1068.32,
+    "verseId": 20923,
+    "shabadId": 1702,
+    "line": 10,
+    "lines": 15
+   },
+   {
+    "t": 1076.704,
+    "verseId": 20924,
+    "shabadId": 1702,
+    "line": 11,
+    "lines": 15
+   },
+   {
+    "t": 1082.261,
+    "verseId": 20925,
+    "shabadId": 1702,
+    "line": 12,
+    "lines": 15
+   },
+   {
+    "t": 1086.998,
+    "verseId": 20926,
+    "shabadId": 1702,
+    "line": 13,
+    "lines": 15
+   },
+   {
+    "t": 1092.237,
+    "verseId": 20927,
+    "shabadId": 1702,
+    "line": 14,
+    "lines": 15
+   },
+   {
+    "t": 1102.989,
+    "verseId": 20928,
+    "shabadId": 1703,
+    "line": 0,
+    "lines": 5
+   },
+   {
+    "t": 1104.025,
+    "verseId": 20929,
+    "shabadId": 1703,
+    "line": 1,
+    "lines": 5
+   },
+   {
+    "t": 1108.902,
+    "verseId": 20930,
+    "shabadId": 1703,
+    "line": 2,
+    "lines": 5
+   },
+   {
+    "t": 1120.384,
+    "verseId": 20931,
+    "shabadId": 1703,
+    "line": 3,
+    "lines": 5
+   },
+   {
+    "t": 1126.719,
+    "verseId": 20932,
+    "shabadId": 1703,
+    "line": 4,
+    "lines": 5
+   },
+   {
+    "t": 1131.804,
+    "verseId": 20933,
+    "shabadId": 1704,
+    "line": 0,
+    "lines": 6
+   },
+   {
+    "t": 1132.948,
+    "verseId": 20934,
+    "shabadId": 1704,
+    "line": 1,
+    "lines": 6
+   },
+   {
+    "t": 1138.328,
+    "verseId": 20935,
+    "shabadId": 1704,
+    "line": 2,
+    "lines": 6
+   },
+   {
+    "t": 1143.336,
+    "verseId": 20936,
+    "shabadId": 1704,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 1148.608,
+    "verseId": 20937,
+    "shabadId": 1704,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 1153.494,
+    "verseId": 20938,
+    "shabadId": 1704,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 1163.389,
+    "verseId": 20280,
+    "shabadId": 1657,
+    "line": 9,
+    "lines": 17
+   },
+   {
+    "t": 1174.07,
+    "verseId": 20281,
+    "shabadId": 1657,
+    "line": 10,
+    "lines": 17
+   },
+   {
+    "t": 1186.693,
+    "verseId": 20282,
+    "shabadId": 1657,
+    "line": 11,
+    "lines": 17
+   },
+   {
+    "t": 1198.726,
+    "verseId": 20283,
+    "shabadId": 1657,
+    "line": 12,
+    "lines": 17
+   },
+   {
+    "t": 1214.352,
+    "verseId": 20939,
+    "shabadId": 1705,
+    "line": 0,
+    "lines": 19
+   },
+   {
+    "t": 1216.158,
+    "verseId": 20940,
+    "shabadId": 1705,
+    "line": 1,
+    "lines": 19
+   },
+   {
+    "t": 1219.989,
+    "verseId": 20941,
+    "shabadId": 1705,
+    "line": 2,
+    "lines": 19
+   },
+   {
+    "t": 1222.81,
+    "verseId": 20942,
+    "shabadId": 1705,
+    "line": 3,
+    "lines": 19
+   },
+   {
+    "t": 1225.019,
+    "verseId": 20943,
+    "shabadId": 1705,
+    "line": 4,
+    "lines": 19
+   },
+   {
+    "t": 1228.937,
+    "verseId": 20944,
+    "shabadId": 1705,
+    "line": 5,
+    "lines": 19
+   },
+   {
+    "t": 1232.529,
+    "verseId": 20945,
+    "shabadId": 1705,
+    "line": 6,
+    "lines": 19
+   },
+   {
+    "t": 1235.393,
+    "verseId": 20946,
+    "shabadId": 1705,
+    "line": 7,
+    "lines": 19
+   },
+   {
+    "t": 1240.006,
+    "verseId": 20947,
+    "shabadId": 1705,
+    "line": 8,
+    "lines": 19
+   },
+   {
+    "t": 1243.095,
+    "verseId": 20948,
+    "shabadId": 1705,
+    "line": 9,
+    "lines": 19
+   },
+   {
+    "t": 1244.841,
+    "verseId": 20949,
+    "shabadId": 1705,
+    "line": 10,
+    "lines": 19
+   },
+   {
+    "t": 1247.664,
+    "verseId": 20950,
+    "shabadId": 1705,
+    "line": 11,
+    "lines": 19
+   },
+   {
+    "t": 1250.438,
+    "verseId": 20951,
+    "shabadId": 1705,
+    "line": 12,
+    "lines": 19
+   },
+   {
+    "t": 1255.709,
+    "verseId": 20952,
+    "shabadId": 1705,
+    "line": 13,
+    "lines": 19
+   },
+   {
+    "t": 1261.015,
+    "verseId": 20953,
+    "shabadId": 1705,
+    "line": 14,
+    "lines": 19
+   },
+   {
+    "t": 1264.882,
+    "verseId": 20954,
+    "shabadId": 1705,
+    "line": 15,
+    "lines": 19
+   },
+   {
+    "t": 1268.234,
+    "verseId": 20955,
+    "shabadId": 1705,
+    "line": 16,
+    "lines": 19
+   },
+   {
+    "t": 1272.468,
+    "verseId": 20956,
+    "shabadId": 1705,
+    "line": 17,
+    "lines": 19
+   },
+   {
+    "t": 1277.501,
+    "verseId": 20957,
+    "shabadId": 1705,
+    "line": 18,
+    "lines": 19
+   },
+   {
+    "t": 1285.09,
+    "verseId": 20958,
+    "shabadId": 1706,
+    "line": 0,
+    "lines": 8
+   },
+   {
+    "t": 1286.113,
+    "verseId": 20959,
+    "shabadId": 1706,
+    "line": 1,
+    "lines": 8
+   },
+   {
+    "t": 1290.028,
+    "verseId": 20960,
+    "shabadId": 1706,
+    "line": 2,
+    "lines": 8
+   },
+   {
+    "t": 1298.908,
+    "verseId": 20961,
+    "shabadId": 1706,
+    "line": 3,
+    "lines": 8
+   },
+   {
+    "t": 1303.998,
+    "verseId": 20962,
+    "shabadId": 1706,
+    "line": 4,
+    "lines": 8
+   },
+   {
+    "t": 1308.809,
+    "verseId": 20963,
+    "shabadId": 1706,
+    "line": 5,
+    "lines": 8
+   },
+   {
+    "t": 1316.294,
+    "verseId": 20964,
+    "shabadId": 1706,
+    "line": 6,
+    "lines": 8
+   },
+   {
+    "t": 1325.193,
+    "verseId": 20965,
+    "shabadId": 1706,
+    "line": 7,
+    "lines": 8
+   },
+   {
+    "t": 1332.888,
+    "verseId": 20966,
+    "shabadId": 1707,
+    "line": 0,
+    "lines": 6
+   },
+   {
+    "t": 1333.441,
+    "verseId": 20967,
+    "shabadId": 1707,
+    "line": 1,
+    "lines": 6
+   },
+   {
+    "t": 1337.57,
+    "verseId": 20968,
+    "shabadId": 1707,
+    "line": 2,
+    "lines": 6
+   },
+   {
+    "t": 1343.022,
+    "verseId": 20969,
+    "shabadId": 1707,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 1349.286,
+    "verseId": 20970,
+    "shabadId": 1707,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 1354.22,
+    "verseId": 20971,
+    "shabadId": 1707,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 1364.951,
+    "verseId": 20284,
+    "shabadId": 1657,
+    "line": 13,
+    "lines": 17
+   },
+   {
+    "t": 1374.346,
+    "verseId": 20285,
+    "shabadId": 1657,
+    "line": 14,
+    "lines": 17
+   },
+   {
+    "t": 1385.87,
+    "verseId": 20286,
+    "shabadId": 1657,
+    "line": 15,
+    "lines": 17
+   },
+   {
+    "t": 1396.397,
+    "verseId": 20287,
+    "shabadId": 1657,
+    "line": 16,
+    "lines": 17
+   },
+   {
+    "t": 1410.534,
+    "verseId": 20972,
+    "shabadId": 1708,
+    "line": 0,
+    "lines": 10
+   },
+   {
+    "t": 1413.595,
+    "verseId": 20973,
+    "shabadId": 1708,
+    "line": 1,
+    "lines": 10
+   },
+   {
+    "t": 1422.915,
+    "verseId": 20974,
+    "shabadId": 1708,
+    "line": 2,
+    "lines": 10
+   },
+   {
+    "t": 1428.922,
+    "verseId": 20975,
+    "shabadId": 1708,
+    "line": 3,
+    "lines": 10
+   },
+   {
+    "t": 1434.765,
+    "verseId": 20976,
+    "shabadId": 1708,
+    "line": 4,
+    "lines": 10
+   },
+   {
+    "t": 1441.312,
+    "verseId": 20977,
+    "shabadId": 1708,
+    "line": 5,
+    "lines": 10
+   },
+   {
+    "t": 1445.269,
+    "verseId": 20978,
+    "shabadId": 1708,
+    "line": 6,
+    "lines": 10
+   },
+   {
+    "t": 1454.042,
+    "verseId": 20979,
+    "shabadId": 1708,
+    "line": 7,
+    "lines": 10
+   },
+   {
+    "t": 1462.68,
+    "verseId": 20980,
+    "shabadId": 1708,
+    "line": 8,
+    "lines": 10
+   },
+   {
+    "t": 1471.639,
+    "verseId": 20981,
+    "shabadId": 1708,
+    "line": 9,
+    "lines": 10
+   },
+   {
+    "t": 1480.323,
+    "verseId": 20982,
+    "shabadId": 1709,
+    "line": 0,
+    "lines": 7
+   },
+   {
+    "t": 1482.31,
+    "verseId": 20983,
+    "shabadId": 1709,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 1488.024,
+    "verseId": 20984,
+    "shabadId": 1709,
+    "line": 2,
+    "lines": 7
+   },
+   {
+    "t": 1494.47,
+    "verseId": 20985,
+    "shabadId": 1709,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 1500.713,
+    "verseId": 20986,
+    "shabadId": 1709,
+    "line": 4,
+    "lines": 7
+   },
+   {
+    "t": 1507.634,
+    "verseId": 20987,
+    "shabadId": 1709,
+    "line": 5,
+    "lines": 7
+   },
+   {
+    "t": 1513.636,
+    "verseId": 20988,
+    "shabadId": 1709,
+    "line": 6,
+    "lines": 7
+   },
+   {
+    "t": 1519.499,
+    "verseId": 20989,
+    "shabadId": 1710,
+    "line": 0,
+    "lines": 6
+   },
+   {
+    "t": 1519.923,
+    "verseId": 20990,
+    "shabadId": 1710,
+    "line": 1,
+    "lines": 6
+   },
+   {
+    "t": 1524.728,
+    "verseId": 20991,
+    "shabadId": 1710,
+    "line": 2,
+    "lines": 6
+   },
+   {
+    "t": 1530.544,
+    "verseId": 20992,
+    "shabadId": 1710,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 1536.546,
+    "verseId": 20993,
+    "shabadId": 1710,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 1542.904,
+    "verseId": 20994,
+    "shabadId": 1710,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 1552.674,
+    "verseId": 20990,
+    "shabadId": 1710,
+    "line": 1,
+    "lines": 6
+   },
+   {
+    "t": 1555.736,
+    "verseId": 20991,
+    "shabadId": 1710,
+    "line": 2,
+    "lines": 6
+   },
+   {
+    "t": 1559.806,
+    "verseId": 20992,
+    "shabadId": 1710,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 1564.997,
+    "verseId": 20993,
+    "shabadId": 1710,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 1568.961,
+    "verseId": 20994,
+    "shabadId": 1710,
+    "line": 5,
+    "lines": 6
+   }
+  ],
+  "shabads": [
+   1656,
+   1685,
+   1686,
+   1687,
+   1688,
+   1689,
+   1690,
+   1691,
+   1692,
+   1693,
+   1694,
+   1695,
+   1696,
+   1697,
+   1698,
+   1657,
+   1699,
+   1700,
+   1701,
+   1702,
+   1703,
+   1704,
+   1705,
+   1706,
+   1707,
+   1708,
+   1709,
+   1710
+  ],
+  "clip": "kh16_sttm_desktop_2026_10_11T13_52_01_944Z.wav",
+  "seconds": 4097.2
+ },
+ {
+  "name": "kh17_sttm_desktop_2026_10_11T18_10_13_059Z",
+  "dataset": "sttm_desktop_2026_10_11T18_10_13_059Z",
+  "timeline": [
+   {
+    "t": 75.664,
+    "verseId": 59474,
+    "shabadId": 5447,
+    "line": 0,
+    "lines": 6
+   },
+   {
+    "t": 108.731,
+    "verseId": 59475,
+    "shabadId": 5447,
+    "line": 1,
+    "lines": 6
+   },
+   {
+    "t": 148.262,
+    "verseId": 59478,
+    "shabadId": 5447,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 220.06,
+    "verseId": 59476,
+    "shabadId": 5447,
+    "line": 2,
+    "lines": 6
+   },
+   {
+    "t": 249.334,
+    "verseId": 59477,
+    "shabadId": 5447,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 289.987,
+    "verseId": 59478,
+    "shabadId": 5447,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 323.733,
+    "verseId": 59479,
+    "shabadId": 5447,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 362.53,
+    "verseId": 59478,
+    "shabadId": 5447,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 440.346,
+    "verseId": 59461,
+    "shabadId": 5443,
+    "line": 7,
+    "lines": 8
+   },
+   {
+    "t": 517.095,
+    "verseId": 41412,
+    "shabadId": 3590,
+    "line": 0,
+    "lines": 9
+   },
+   {
+    "t": 540.651,
+    "verseId": 41413,
+    "shabadId": 3590,
+    "line": 1,
+    "lines": 9
+   },
+   {
+    "t": 573.455,
+    "verseId": 41412,
+    "shabadId": 3590,
+    "line": 0,
+    "lines": 9
+   },
+   {
+    "t": 600.638,
+    "verseId": 59478,
+    "shabadId": 5447,
+    "line": 4,
+    "lines": 6
+   }
+  ],
+  "shabads": [
+   5447,
+   5443,
+   3590
+  ],
+  "clip": "kh17_sttm_desktop_2026_10_11T18_10_13_059Z.wav",
+  "seconds": 986.88
+ },
+ {
+  "name": "kh18_sttm_desktop_2026_10_11T20_00_12_780Z",
+  "dataset": "sttm_desktop_2026_10_11T20_00_12_780Z",
+  "timeline": [
+   {
+    "t": 2.228,
+    "verseId": 59468,
+    "shabadId": 5445,
+    "line": 2,
+    "lines": 4
+   },
+   {
+    "t": 53.244,
+    "verseId": 59469,
+    "shabadId": 5445,
+    "line": 3,
+    "lines": 4
+   },
+   {
+    "t": 71.685,
+    "verseId": 59468,
+    "shabadId": 5445,
+    "line": 2,
+    "lines": 4
+   },
+   {
+    "t": 111.614,
+    "verseId": 59466,
+    "shabadId": 5445,
+    "line": 0,
+    "lines": 4
+   },
+   {
+    "t": 141.056,
+    "verseId": 59467,
+    "shabadId": 5445,
+    "line": 1,
+    "lines": 4
+   },
+   {
+    "t": 171.378,
+    "verseId": 59466,
+    "shabadId": 5445,
+    "line": 0,
+    "lines": 4
+   },
+   {
+    "t": 194.228,
+    "verseId": 59467,
+    "shabadId": 5445,
+    "line": 1,
+    "lines": 4
+   },
+   {
+    "t": 220.537,
+    "verseId": 59468,
+    "shabadId": 5445,
+    "line": 2,
+    "lines": 4
+   }
+  ],
+  "shabads": [
+   5445
+  ],
+  "clip": "kh18_sttm_desktop_2026_10_11T20_00_12_780Z.wav",
+  "seconds": 417.54
+ },
+ {
+  "name": "kh19_sttm_desktop_2026_10_11T20_08_08_535Z",
+  "dataset": "sttm_desktop_2026_10_11T20_08_08_535Z",
+  "timeline": [
+   {
+    "t": 1.698,
+    "verseId": 59548,
+    "shabadId": 5460,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 9.175,
+    "verseId": 59549,
+    "shabadId": 5460,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 23.559,
+    "verseId": 59548,
+    "shabadId": 5460,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 35.218,
+    "verseId": 59549,
+    "shabadId": 5460,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 49.44,
+    "verseId": 59548,
+    "shabadId": 5460,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 62.684,
+    "verseId": 59549,
+    "shabadId": 5460,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 76.834,
+    "verseId": 59548,
+    "shabadId": 5460,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 88.984,
+    "verseId": 59549,
+    "shabadId": 5460,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 93.638,
+    "verseId": 59548,
+    "shabadId": 5460,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 109.042,
+    "verseId": 59544,
+    "shabadId": 5460,
+    "line": 0,
+    "lines": 6
+   },
+   {
+    "t": 135.95,
+    "verseId": 59545,
+    "shabadId": 5460,
+    "line": 1,
+    "lines": 6
+   },
+   {
+    "t": 165.704,
+    "verseId": 59548,
+    "shabadId": 5460,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 180.999,
+    "verseId": 59549,
+    "shabadId": 5460,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 194.797,
+    "verseId": 59548,
+    "shabadId": 5460,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 233.106,
+    "verseId": 59546,
+    "shabadId": 5460,
+    "line": 2,
+    "lines": 6
+   },
+   {
+    "t": 259.994,
+    "verseId": 59547,
+    "shabadId": 5460,
+    "line": 3,
+    "lines": 6
+   },
+   {
+    "t": 287.117,
+    "verseId": 59548,
+    "shabadId": 5460,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 302.134,
+    "verseId": 59549,
+    "shabadId": 5460,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 316.525,
+    "verseId": 59548,
+    "shabadId": 5460,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 334.624,
+    "verseId": 59549,
+    "shabadId": 5460,
+    "line": 5,
+    "lines": 6
+   },
+   {
+    "t": 361.025,
+    "verseId": 59548,
+    "shabadId": 5460,
+    "line": 4,
+    "lines": 6
+   },
+   {
+    "t": 387.051,
+    "verseId": 59549,
+    "shabadId": 5460,
+    "line": 5,
+    "lines": 6
+   }
+  ],
+  "shabads": [
+   5460
+  ],
+  "clip": "kh19_sttm_desktop_2026_10_11T20_08_08_535Z.wav",
+  "seconds": 405.25
+ },
+ {
+  "name": "kh20_sttm_desktop_2026_10_11T20_15_43_327Z",
+  "dataset": "sttm_desktop_2026_10_11T20_15_43_327Z",
+  "timeline": [
+   {
+    "t": 2.214,
+    "verseId": 48689,
+    "shabadId": 4086,
+    "line": 5,
+    "lines": 18
+   },
+   {
+    "t": 8.613,
+    "verseId": 48690,
+    "shabadId": 4086,
+    "line": 6,
+    "lines": 18
+   },
+   {
+    "t": 18.275,
+    "verseId": 48689,
+    "shabadId": 4086,
+    "line": 5,
+    "lines": 18
+   },
+   {
+    "t": 41.984,
+    "verseId": 48690,
+    "shabadId": 4086,
+    "line": 6,
+    "lines": 18
+   },
+   {
+    "t": 54.362,
+    "verseId": 48689,
+    "shabadId": 4086,
+    "line": 5,
+    "lines": 18
+   },
+   {
+    "t": 79.348,
+    "verseId": 48691,
+    "shabadId": 4086,
+    "line": 7,
+    "lines": 18
+   },
+   {
+    "t": 82.562,
+    "verseId": 48685,
+    "shabadId": 4086,
+    "line": 1,
+    "lines": 18
+   },
+   {
+    "t": 84.724,
+    "verseId": 48686,
+    "shabadId": 4086,
+    "line": 2,
+    "lines": 18
+   },
+   {
+    "t": 90.891,
+    "verseId": 48685,
+    "shabadId": 4086,
+    "line": 1,
+    "lines": 18
+   },
+   {
+    "t": 94.391,
+    "verseId": 48686,
+    "shabadId": 4086,
+    "line": 2,
+    "lines": 18
+   },
+   {
+    "t": 103.346,
+    "verseId": 48685,
+    "shabadId": 4086,
+    "line": 1,
+    "lines": 18
+   },
+   {
+    "t": 105.823,
+    "verseId": 48686,
+    "shabadId": 4086,
+    "line": 2,
+    "lines": 18
+   },
+   {
+    "t": 111.091,
+    "verseId": 48685,
+    "shabadId": 4086,
+    "line": 1,
+    "lines": 18
+   },
+   {
+    "t": 114.406,
+    "verseId": 48687,
+    "shabadId": 4086,
+    "line": 3,
+    "lines": 18
+   },
+   {
+    "t": 116.846,
+    "verseId": 48688,
+    "shabadId": 4086,
+    "line": 4,
+    "lines": 18
+   },
+   {
+    "t": 129.47,
+    "verseId": 48690,
+    "shabadId": 4086,
+    "line": 6,
+    "lines": 18
+   },
+   {
+    "t": 138.134,
+    "verseId": 48689,
+    "shabadId": 4086,
+    "line": 5,
+    "lines": 18
+   },
+   {
+    "t": 159.649,
+    "verseId": 48690,
+    "shabadId": 4086,
+    "line": 6,
+    "lines": 18
+   },
+   {
+    "t": 170.94,
+    "verseId": 48689,
+    "shabadId": 4086,
+    "line": 5,
+    "lines": 18
+   },
+   {
+    "t": 204.524,
+    "verseId": 48691,
+    "shabadId": 4086,
+    "line": 7,
+    "lines": 18
+   },
+   {
+    "t": 210.44,
+    "verseId": 48692,
+    "shabadId": 4086,
+    "line": 8,
+    "lines": 18
+   },
+   {
+    "t": 214.857,
+    "verseId": 48691,
+    "shabadId": 4086,
+    "line": 7,
+    "lines": 18
+   },
+   {
+    "t": 218.561,
+    "verseId": 48692,
+    "shabadId": 4086,
+    "line": 8,
+    "lines": 18
+   },
+   {
+    "t": 226.048,
+    "verseId": 48693,
+    "shabadId": 4086,
+    "line": 9,
+    "lines": 18
+   },
+   {
+    "t": 277.525,
+    "verseId": 41412,
+    "shabadId": 3590,
+    "line": 0,
+    "lines": 9
+   },
+   {
+    "t": 280.681,
+    "verseId": 41413,
+    "shabadId": 3590,
+    "line": 1,
+    "lines": 9
+   },
+   {
+    "t": 299.276,
+    "verseId": 48693,
+    "shabadId": 4086,
+    "line": 9,
+    "lines": 18
+   },
+   {
+    "t": 313.615,
+    "verseId": 48690,
+    "shabadId": 4086,
+    "line": 6,
+    "lines": 18
+   },
+   {
+    "t": 320.613,
+    "verseId": 48689,
+    "shabadId": 4086,
+    "line": 5,
+    "lines": 18
+   },
+   {
+    "t": 341.257,
+    "verseId": 48690,
+    "shabadId": 4086,
+    "line": 6,
+    "lines": 18
+   },
+   {
+    "t": 351.577,
+    "verseId": 48689,
+    "shabadId": 4086,
+    "line": 5,
+    "lines": 18
+   },
+   {
+    "t": 385.634,
+    "verseId": 48694,
+    "shabadId": 4086,
+    "line": 10,
+    "lines": 18
+   },
+   {
+    "t": 393.92,
+    "verseId": 48695,
+    "shabadId": 4086,
+    "line": 11,
+    "lines": 18
+   },
+   {
+    "t": 401.399,
+    "verseId": 48694,
+    "shabadId": 4086,
+    "line": 10,
+    "lines": 18
+   },
+   {
+    "t": 404.157,
+    "verseId": 48695,
+    "shabadId": 4086,
+    "line": 11,
+    "lines": 18
+   },
+   {
+    "t": 411.357,
+    "verseId": 48696,
+    "shabadId": 4086,
+    "line": 12,
+    "lines": 18
+   },
+   {
+    "t": 415.405,
+    "verseId": 48697,
+    "shabadId": 4086,
+    "line": 13,
+    "lines": 18
+   },
+   {
+    "t": 421.348,
+    "verseId": 48696,
+    "shabadId": 4086,
+    "line": 12,
+    "lines": 18
+   },
+   {
+    "t": 425.389,
+    "verseId": 48697,
+    "shabadId": 4086,
+    "line": 13,
+    "lines": 18
+   },
+   {
+    "t": 438.38,
+    "verseId": 55613,
+    "shabadId": 4725,
+    "line": 3,
+    "lines": 8
+   },
+   {
+    "t": 471.826,
+    "verseId": 55612,
+    "shabadId": 4725,
+    "line": 2,
+    "lines": 8
+   },
+   {
+    "t": 483.115,
+    "verseId": 55613,
+    "shabadId": 4725,
+    "line": 3,
+    "lines": 8
+   },
+   {
+    "t": 492.521,
+    "verseId": 48697,
+    "shabadId": 4086,
+    "line": 13,
+    "lines": 18
+   },
+   {
+    "t": 499.08,
+    "verseId": 48695,
+    "shabadId": 4086,
+    "line": 11,
+    "lines": 18
+   },
+   {
+    "t": 501.872,
+    "verseId": 48694,
+    "shabadId": 4086,
+    "line": 10,
+    "lines": 18
+   },
+   {
+    "t": 506.556,
+    "verseId": 48695,
+    "shabadId": 4086,
+    "line": 11,
+    "lines": 18
+   },
+   {
+    "t": 513.24,
+    "verseId": 48696,
+    "shabadId": 4086,
+    "line": 12,
+    "lines": 18
+   },
+   {
+    "t": 517.555,
+    "verseId": 48697,
+    "shabadId": 4086,
+    "line": 13,
+    "lines": 18
+   },
+   {
+    "t": 531.139,
+    "verseId": 48690,
+    "shabadId": 4086,
+    "line": 6,
+    "lines": 18
+   },
+   {
+    "t": 538.056,
+    "verseId": 48689,
+    "shabadId": 4086,
+    "line": 5,
+    "lines": 18
+   },
+   {
+    "t": 558.388,
+    "verseId": 48690,
+    "shabadId": 4086,
+    "line": 6,
+    "lines": 18
+   },
+   {
+    "t": 591.315,
+    "verseId": 48698,
+    "shabadId": 4086,
+    "line": 14,
+    "lines": 18
+   },
+   {
+    "t": 596.802,
+    "verseId": 48699,
+    "shabadId": 4086,
+    "line": 15,
+    "lines": 18
+   },
+   {
+    "t": 607.596,
+    "verseId": 48698,
+    "shabadId": 4086,
+    "line": 14,
+    "lines": 18
+   },
+   {
+    "t": 656.794,
+    "verseId": 13327,
+    "shabadId": 1067,
+    "line": 2,
+    "lines": 10
+   },
+   {
+    "t": 658.82,
+    "verseId": 13328,
+    "shabadId": 1067,
+    "line": 3,
+    "lines": 10
+   },
+   {
+    "t": 665.509,
+    "verseId": 48698,
+    "shabadId": 4086,
+    "line": 14,
+    "lines": 18
+   },
+   {
+    "t": 670.061,
+    "verseId": 48699,
+    "shabadId": 4086,
+    "line": 15,
+    "lines": 18
+   },
+   {
+    "t": 680.929,
+    "verseId": 48700,
+    "shabadId": 4086,
+    "line": 16,
+    "lines": 18
+   },
+   {
+    "t": 685.523,
+    "verseId": 48701,
+    "shabadId": 4086,
+    "line": 17,
+    "lines": 18
+   },
+   {
+    "t": 697.904,
+    "verseId": 48690,
+    "shabadId": 4086,
+    "line": 6,
+    "lines": 18
+   },
+   {
+    "t": 710.223,
+    "verseId": 48689,
+    "shabadId": 4086,
+    "line": 5,
+    "lines": 18
+   },
+   {
+    "t": 735.943,
+    "verseId": 48690,
+    "shabadId": 4086,
+    "line": 6,
+    "lines": 18
+   }
+  ],
+  "shabads": [
+   4086,
+   3590,
+   4725,
+   1067
+  ],
+  "clip": "kh20_sttm_desktop_2026_10_11T20_15_43_327Z.wav",
+  "seconds": 754.77
+ },
+ {
+  "name": "kh21_sttm_desktop_2026_10_11T20_29_16_335Z",
+  "dataset": "sttm_desktop_2026_10_11T20_29_16_335Z",
+  "timeline": [
+   {
+    "t": 21.417,
+    "verseId": 23859,
+    "shabadId": 2068,
+    "line": 7,
+    "lines": 17
+   },
+   {
+    "t": 100.206,
+    "verseId": 23857,
+    "shabadId": 2068,
+    "line": 5,
+    "lines": 17
+   },
+   {
+    "t": 138.398,
+    "verseId": 23859,
+    "shabadId": 2068,
+    "line": 7,
+    "lines": 17
+   },
+   {
+    "t": 202.515,
+    "verseId": 23858,
+    "shabadId": 2068,
+    "line": 6,
+    "lines": 17
+   },
+   {
+    "t": 275.758,
+    "verseId": 23860,
+    "shabadId": 2068,
+    "line": 8,
+    "lines": 17
+   },
+   {
+    "t": 318.483,
+    "verseId": 23859,
+    "shabadId": 2068,
+    "line": 7,
+    "lines": 17
+   }
+  ],
+  "shabads": [
+   2068
+  ],
+  "clip": "kh21_sttm_desktop_2026_10_11T20_29_16_335Z.wav",
+  "seconds": 380.42
+ },
+ {
+  "name": "kh22_sttm_desktop_2026_10_11T20_36_12_345Z",
+  "dataset": "sttm_desktop_2026_10_11T20_36_12_345Z",
+  "timeline": [
+   {
+    "t": 12.806,
+    "verseId": 208586,
+    "shabadId": 41235,
+    "line": 0,
+    "lines": 4
+   },
+   {
+    "t": 52.355,
+    "verseId": 208587,
+    "shabadId": 41235,
+    "line": 1,
+    "lines": 4
+   },
+   {
+    "t": 61.578,
+    "verseId": 208586,
+    "shabadId": 41235,
+    "line": 0,
+    "lines": 4
+   },
+   {
+    "t": 109.752,
+    "verseId": 208588,
+    "shabadId": 41235,
+    "line": 2,
+    "lines": 4
+   },
+   {
+    "t": 123.429,
+    "verseId": 208589,
+    "shabadId": 41235,
+    "line": 3,
+    "lines": 4
+   },
+   {
+    "t": 175.433,
+    "verseId": 208586,
+    "shabadId": 41235,
+    "line": 0,
+    "lines": 4
+   }
+  ],
+  "shabads": [
+   41235
+  ],
+  "clip": "kh22_sttm_desktop_2026_10_11T20_36_12_345Z.wav",
+  "seconds": 222.38
+ },
+ {
+  "name": "kh23_sttm_desktop_2026_10_13T01_50_01_713Z",
+  "dataset": "sttm_desktop_2026_10_13T01_50_01_713Z",
+  "timeline": [
+   {
+    "t": 2.319,
+    "verseId": 29895,
+    "shabadId": 2638,
+    "line": 2,
+    "lines": 10
+   },
+   {
+    "t": 11.86,
+    "verseId": 29896,
+    "shabadId": 2638,
+    "line": 3,
+    "lines": 10
+   },
+   {
+    "t": 22.585,
+    "verseId": 29897,
+    "shabadId": 2638,
+    "line": 4,
+    "lines": 10
+   },
+   {
+    "t": 33.077,
+    "verseId": 29898,
+    "shabadId": 2638,
+    "line": 5,
+    "lines": 10
+   },
+   {
+    "t": 44.184,
+    "verseId": 29899,
+    "shabadId": 2638,
+    "line": 6,
+    "lines": 10
+   },
+   {
+    "t": 55.503,
+    "verseId": 29900,
+    "shabadId": 2638,
+    "line": 7,
+    "lines": 10
+   },
+   {
+    "t": 65.911,
+    "verseId": 29901,
+    "shabadId": 2638,
+    "line": 8,
+    "lines": 10
+   },
+   {
+    "t": 77.128,
+    "verseId": 29902,
+    "shabadId": 2638,
+    "line": 9,
+    "lines": 10
+   },
+   {
+    "t": 88.399,
+    "verseId": 29920,
+    "shabadId": 2640,
+    "line": 0,
+    "lines": 10
+   },
+   {
+    "t": 88.927,
+    "verseId": 29921,
+    "shabadId": 2640,
+    "line": 1,
+    "lines": 10
+   },
+   {
+    "t": 93.92,
+    "verseId": 29922,
+    "shabadId": 2640,
+    "line": 2,
+    "lines": 10
+   },
+   {
+    "t": 99.208,
+    "verseId": 29923,
+    "shabadId": 2640,
+    "line": 3,
+    "lines": 10
+   },
+   {
+    "t": 110.155,
+    "verseId": 29924,
+    "shabadId": 2640,
+    "line": 4,
+    "lines": 10
+   },
+   {
+    "t": 114.997,
+    "verseId": 29925,
+    "shabadId": 2640,
+    "line": 5,
+    "lines": 10
+   },
+   {
+    "t": 120.013,
+    "verseId": 29926,
+    "shabadId": 2640,
+    "line": 6,
+    "lines": 10
+   },
+   {
+    "t": 125.334,
+    "verseId": 29927,
+    "shabadId": 2640,
+    "line": 7,
+    "lines": 10
+   },
+   {
+    "t": 130.714,
+    "verseId": 29928,
+    "shabadId": 2640,
+    "line": 8,
+    "lines": 10
+   },
+   {
+    "t": 136.576,
+    "verseId": 29929,
+    "shabadId": 2640,
+    "line": 9,
+    "lines": 10
+   },
+   {
+    "t": 141.388,
+    "verseId": 57509,
+    "shabadId": 4894,
+    "line": 0,
+    "lines": 9
+   },
+   {
+    "t": 141.615,
+    "verseId": 57510,
+    "shabadId": 4894,
+    "line": 1,
+    "lines": 9
+   },
+   {
+    "t": 151.601,
+    "verseId": 57511,
+    "shabadId": 4894,
+    "line": 2,
+    "lines": 9
+   },
+   {
+    "t": 161.974,
+    "verseId": 57512,
+    "shabadId": 4894,
+    "line": 3,
+    "lines": 9
+   },
+   {
+    "t": 171.724,
+    "verseId": 57513,
+    "shabadId": 4894,
+    "line": 4,
+    "lines": 9
+   },
+   {
+    "t": 181.818,
+    "verseId": 57514,
+    "shabadId": 4894,
+    "line": 5,
+    "lines": 9
+   },
+   {
+    "t": 192.572,
+    "verseId": 57515,
+    "shabadId": 4894,
+    "line": 6,
+    "lines": 9
+   },
+   {
+    "t": 202.909,
+    "verseId": 57516,
+    "shabadId": 4894,
+    "line": 7,
+    "lines": 9
+   },
+   {
+    "t": 212.289,
+    "verseId": 57517,
+    "shabadId": 4894,
+    "line": 8,
+    "lines": 9
+   },
+   {
+    "t": 222.186,
+    "verseId": 29937,
+    "shabadId": 2642,
+    "line": 0,
+    "lines": 10
+   },
+   {
+    "t": 222.428,
+    "verseId": 29938,
+    "shabadId": 2642,
+    "line": 1,
+    "lines": 10
+   },
+   {
+    "t": 227.999,
+    "verseId": 29939,
+    "shabadId": 2642,
+    "line": 2,
+    "lines": 10
+   },
+   {
+    "t": 233.246,
+    "verseId": 29940,
+    "shabadId": 2642,
+    "line": 3,
+    "lines": 10
+   },
+   {
+    "t": 236.194,
+    "verseId": 29941,
+    "shabadId": 2642,
+    "line": 4,
+    "lines": 10
+   },
+   {
+    "t": 239.493,
+    "verseId": 29942,
+    "shabadId": 2642,
+    "line": 5,
+    "lines": 10
+   },
+   {
+    "t": 244.368,
+    "verseId": 29943,
+    "shabadId": 2642,
+    "line": 6,
+    "lines": 10
+   },
+   {
+    "t": 246.679,
+    "verseId": 29944,
+    "shabadId": 2642,
+    "line": 7,
+    "lines": 10
+   },
+   {
+    "t": 249.392,
+    "verseId": 29945,
+    "shabadId": 2642,
+    "line": 8,
+    "lines": 10
+   },
+   {
+    "t": 252.201,
+    "verseId": 29946,
+    "shabadId": 2642,
+    "line": 9,
+    "lines": 10
+   },
+   {
+    "t": 254.155,
+    "verseId": 87325,
+    "shabadId": 8095,
+    "line": 0,
+    "lines": 5
+   },
+   {
+    "t": 256.628,
+    "verseId": 29945,
+    "shabadId": 2642,
+    "line": 8,
+    "lines": 10
+   },
+   {
+    "t": 257.366,
+    "verseId": 29946,
+    "shabadId": 2642,
+    "line": 9,
+    "lines": 10
+   },
+   {
+    "t": 262.695,
+    "verseId": 87325,
+    "shabadId": 8095,
+    "line": 0,
+    "lines": 5
+   },
+   {
+    "t": 263.979,
+    "verseId": 87326,
+    "shabadId": 8095,
+    "line": 1,
+    "lines": 5
+   },
+   {
+    "t": 270.756,
+    "verseId": 87327,
+    "shabadId": 8095,
+    "line": 2,
+    "lines": 5
+   },
+   {
+    "t": 278.323,
+    "verseId": 87328,
+    "shabadId": 8095,
+    "line": 3,
+    "lines": 5
+   },
+   {
+    "t": 286.379,
+    "verseId": 87329,
+    "shabadId": 8095,
+    "line": 4,
+    "lines": 5
+   },
+   {
+    "t": 293.662,
+    "verseId": 87330,
+    "shabadId": 8096,
+    "line": 0,
+    "lines": 4
+   },
+   {
+    "t": 294.801,
+    "verseId": 87331,
+    "shabadId": 8096,
+    "line": 1,
+    "lines": 4
+   },
+   {
+    "t": 303.75,
+    "verseId": 87332,
+    "shabadId": 8096,
+    "line": 2,
+    "lines": 4
+   }
+  ],
+  "shabads": [
+   2638,
+   2640,
+   4894,
+   2642,
+   8095,
+   8096
+  ],
+  "clip": "kh23_sttm_desktop_2026_10_13T01_50_01_713Z.wav",
+  "seconds": 314.62
+ },
+ {
+  "name": "kh24_sttm_desktop_2026_10_13T02_34_02_550Z",
+  "dataset": "sttm_desktop_2026_10_13T02_34_02_550Z",
+  "timeline": [
+   {
+    "t": 17.574,
+    "verseId": 57812,
+    "shabadId": 4949,
+    "line": 2,
+    "lines": 4
+   },
+   {
+    "t": 84.655,
+    "verseId": 57813,
+    "shabadId": 4949,
+    "line": 3,
+    "lines": 4
+   }
+  ],
+  "shabads": [
+   4949
+  ],
+  "clip": "kh24_sttm_desktop_2026_10_13T02_34_02_550Z.wav",
+  "seconds": 160.6
+ },
+ {
+  "name": "kh25_sttm_desktop_2026_10_13T02_37_22_571Z",
+  "dataset": "sttm_desktop_2026_10_13T02_37_22_571Z",
+  "timeline": [
+   {
+    "t": 196.856,
+    "verseId": 58451,
+    "shabadId": 5172,
+    "line": 1,
+    "lines": 2
+   },
+   {
+    "t": 273.104,
+    "verseId": 58450,
+    "shabadId": 5172,
+    "line": 0,
+    "lines": 2
+   }
+  ],
+  "shabads": [
+   5172
+  ],
+  "clip": "kh25_sttm_desktop_2026_10_13T02_37_22_571Z.wav",
+  "seconds": 288.26
+ },
+ {
+  "name": "kh26_sttm_desktop_2026_10_13T02_43_13_981Z",
+  "dataset": "sttm_desktop_2026_10_13T02_43_13_981Z",
+  "timeline": [
+   {
+    "t": 7.582,
+    "verseId": 58449,
+    "shabadId": 5171,
+    "line": 1,
+    "lines": 2
+   },
+   {
+    "t": 89.223,
+    "verseId": 58450,
+    "shabadId": 5172,
+    "line": 0,
+    "lines": 2
+   }
+  ],
+  "shabads": [
+   5171,
+   5172
+  ],
+  "clip": "kh26_sttm_desktop_2026_10_13T02_43_13_981Z.wav",
+  "seconds": 261.97
+ },
+ {
+  "name": "kh27_sttm_desktop_2026_10_13T02_48_34_427Z",
+  "dataset": "sttm_desktop_2026_10_13T02_48_34_427Z",
+  "timeline": [
+   {
+    "t": 22.017,
+    "verseId": 31009,
+    "shabadId": 2774,
+    "line": 2,
+    "lines": 7
+   },
+   {
+    "t": 44.535,
+    "verseId": 31008,
+    "shabadId": 2774,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 59.692,
+    "verseId": 31009,
+    "shabadId": 2774,
+    "line": 2,
+    "lines": 7
+   },
+   {
+    "t": 80.429,
+    "verseId": 31008,
+    "shabadId": 2774,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 105.643,
+    "verseId": 31010,
+    "shabadId": 2774,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 143.979,
+    "verseId": 31011,
+    "shabadId": 2774,
+    "line": 4,
+    "lines": 7
+   },
+   {
+    "t": 181.573,
+    "verseId": 31008,
+    "shabadId": 2774,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 197.123,
+    "verseId": 31009,
+    "shabadId": 2774,
+    "line": 2,
+    "lines": 7
+   },
+   {
+    "t": 216.962,
+    "verseId": 31008,
+    "shabadId": 2774,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 257.831,
+    "verseId": 31012,
+    "shabadId": 2774,
+    "line": 5,
+    "lines": 7
+   },
+   {
+    "t": 300.555,
+    "verseId": 31013,
+    "shabadId": 2774,
+    "line": 6,
+    "lines": 7
+   },
+   {
+    "t": 324.371,
+    "verseId": 31012,
+    "shabadId": 2774,
+    "line": 5,
+    "lines": 7
+   },
+   {
+    "t": 370.187,
+    "verseId": 30869,
+    "shabadId": 2763,
+    "line": 3,
+    "lines": 12
+   },
+   {
+    "t": 375.557,
+    "verseId": 30870,
+    "shabadId": 2763,
+    "line": 4,
+    "lines": 12
+   },
+   {
+    "t": 383.871,
+    "verseId": 30871,
+    "shabadId": 2763,
+    "line": 5,
+    "lines": 12
+   },
+   {
+    "t": 394.563,
+    "verseId": 30872,
+    "shabadId": 2763,
+    "line": 6,
+    "lines": 12
+   },
+   {
+    "t": 403.313,
+    "verseId": 30873,
+    "shabadId": 2763,
+    "line": 7,
+    "lines": 12
+   },
+   {
+    "t": 412.072,
+    "verseId": 30874,
+    "shabadId": 2763,
+    "line": 8,
+    "lines": 12
+   },
+   {
+    "t": 421.754,
+    "verseId": 30875,
+    "shabadId": 2763,
+    "line": 9,
+    "lines": 12
+   },
+   {
+    "t": 424.881,
+    "verseId": 30874,
+    "shabadId": 2763,
+    "line": 8,
+    "lines": 12
+   },
+   {
+    "t": 428.287,
+    "verseId": 30875,
+    "shabadId": 2763,
+    "line": 9,
+    "lines": 12
+   },
+   {
+    "t": 443.505,
+    "verseId": 30876,
+    "shabadId": 2763,
+    "line": 10,
+    "lines": 12
+   },
+   {
+    "t": 454.328,
+    "verseId": 30877,
+    "shabadId": 2763,
+    "line": 11,
+    "lines": 12
+   },
+   {
+    "t": 487.244,
+    "verseId": 31012,
+    "shabadId": 2774,
+    "line": 5,
+    "lines": 7
+   },
+   {
+    "t": 496.905,
+    "verseId": 31013,
+    "shabadId": 2774,
+    "line": 6,
+    "lines": 7
+   },
+   {
+    "t": 521.367,
+    "verseId": 31008,
+    "shabadId": 2774,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 536.946,
+    "verseId": 31009,
+    "shabadId": 2774,
+    "line": 2,
+    "lines": 7
+   },
+   {
+    "t": 564.153,
+    "verseId": 31008,
+    "shabadId": 2774,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 580.229,
+    "verseId": 31009,
+    "shabadId": 2774,
+    "line": 2,
+    "lines": 7
+   },
+   {
+    "t": 607.572,
+    "verseId": 31008,
+    "shabadId": 2774,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 639.234,
+    "verseId": 31009,
+    "shabadId": 2774,
+    "line": 2,
+    "lines": 7
+   },
+   {
+    "t": 656.661,
+    "verseId": 31008,
+    "shabadId": 2774,
+    "line": 1,
+    "lines": 7
+   }
+  ],
+  "shabads": [
+   2774,
+   2763
+  ],
+  "clip": "kh27_sttm_desktop_2026_10_13T02_48_34_427Z.wav",
+  "seconds": 684.46
+ },
+ {
+  "name": "kh28_sttm_desktop_2026_10_13T03_01_13_513Z",
+  "dataset": "sttm_desktop_2026_10_13T03_01_13_513Z",
+  "timeline": [
+   {
+    "t": 114.04,
+    "verseId": 31092,
+    "shabadId": 2778,
+    "line": 2,
+    "lines": 7
+   },
+   {
+    "t": 155.978,
+    "verseId": 31091,
+    "shabadId": 2778,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 263.937,
+    "verseId": 31093,
+    "shabadId": 2778,
+    "line": 3,
+    "lines": 7
+   },
+   {
+    "t": 302.426,
+    "verseId": 31094,
+    "shabadId": 2778,
+    "line": 4,
+    "lines": 7
+   },
+   {
+    "t": 340.488,
+    "verseId": 31091,
+    "shabadId": 2778,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 415.703,
+    "verseId": 31095,
+    "shabadId": 2778,
+    "line": 5,
+    "lines": 7
+   },
+   {
+    "t": 475.488,
+    "verseId": 31096,
+    "shabadId": 2778,
+    "line": 6,
+    "lines": 7
+   },
+   {
+    "t": 506.167,
+    "verseId": 31091,
+    "shabadId": 2778,
+    "line": 1,
+    "lines": 7
+   },
+   {
+    "t": 570.319,
+    "verseId": 31096,
+    "shabadId": 2778,
+    "line": 6,
+    "lines": 7
+   },
+   {
+    "t": 596.006,
+    "verseId": 31091,
+    "shabadId": 2778,
+    "line": 1,
+    "lines": 7
+   }
+  ],
+  "shabads": [
+   2778
+  ],
+  "clip": "kh28_sttm_desktop_2026_10_13T03_01_13_513Z.wav",
+  "seconds": 716.8
+ },
+ {
+  "name": "kh29_sttm_desktop_2026_10_13T03_13_38_540Z",
+  "dataset": "sttm_desktop_2026_10_13T03_13_38_540Z",
+  "timeline": [
+   {
+    "t": 5.125,
+    "verseId": 31045,
+    "shabadId": 2776,
+    "line": 8,
+    "lines": 45
+   },
+   {
+    "t": 37.812,
+    "verseId": 31046,
+    "shabadId": 2776,
+    "line": 9,
+    "lines": 45
+   },
+   {
+    "t": 57.697,
+    "verseId": 31045,
+    "shabadId": 2776,
+    "line": 8,
+    "lines": 45
+   },
+   {
+    "t": 111.631,
+    "verseId": 31038,
+    "shabadId": 2776,
+    "line": 1,
+    "lines": 45
+   },
+   {
+    "t": 134.673,
+    "verseId": 31039,
+    "shabadId": 2776,
+    "line": 2,
+    "lines": 45
+   },
+   {
+    "t": 144.481,
+    "verseId": 31040,
+    "shabadId": 2776,
+    "line": 3,
+    "lines": 45
+   },
+   {
+    "t": 153.366,
+    "verseId": 31041,
+    "shabadId": 2776,
+    "line": 4,
+    "lines": 45
+   },
+   {
+    "t": 159.018,
+    "verseId": 31042,
+    "shabadId": 2776,
+    "line": 5,
+    "lines": 45
+   },
+   {
+    "t": 166.259,
+    "verseId": 31043,
+    "shabadId": 2776,
+    "line": 6,
+    "lines": 45
+   },
+   {
+    "t": 177.09,
+    "verseId": 31044,
+    "shabadId": 2776,
+    "line": 7,
+    "lines": 45
+   },
+   {
+    "t": 190.296,
+    "verseId": 31047,
+    "shabadId": 2776,
+    "line": 10,
+    "lines": 45
+   },
+   {
+    "t": 195.498,
+    "verseId": 31048,
+    "shabadId": 2776,
+    "line": 11,
+    "lines": 45
+   },
+   {
+    "t": 209.967,
+    "verseId": 31045,
+    "shabadId": 2776,
+    "line": 8,
+    "lines": 45
+   }
+  ],
+  "shabads": [
+   2776
+  ],
+  "clip": "kh29_sttm_desktop_2026_10_13T03_13_38_540Z.wav",
+  "seconds": 231.77
+ },
+ {
+  "name": "kh30_sttm_desktop_2026_10_14T02_35_12_435Z",
+  "dataset": "sttm_desktop_2026_10_14T02_35_12_435Z",
+  "timeline": [
+   {
+    "t": 49.699,
+    "verseId": 46768,
+    "shabadId": 3867,
+    "line": 3,
+    "lines": 4
+   }
+  ],
+  "shabads": [
+   3867
+  ],
+  "clip": "kh30_sttm_desktop_2026_10_14T02_35_12_435Z.wav",
+  "seconds": 124.25
+ },
+ {
+  "name": "kh31_sttm_desktop_2026_10_14T02_38_09_370Z",
+  "dataset": "sttm_desktop_2026_10_14T02_38_09_370Z",
+  "timeline": [
+   {
+    "t": 19.889,
+    "verseId": 7848,
+    "shabadId": 553,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 33.744,
+    "verseId": 7847,
+    "shabadId": 553,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 67.343,
+    "verseId": 7849,
+    "shabadId": 553,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 86.696,
+    "verseId": 7850,
+    "shabadId": 553,
+    "line": 4,
+    "lines": 11
+   },
+   {
+    "t": 106.767,
+    "verseId": 7847,
+    "shabadId": 553,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 118.179,
+    "verseId": 7848,
+    "shabadId": 553,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 129.677,
+    "verseId": 7847,
+    "shabadId": 553,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 162.461,
+    "verseId": 7851,
+    "shabadId": 553,
+    "line": 5,
+    "lines": 11
+   },
+   {
+    "t": 176.138,
+    "verseId": 7852,
+    "shabadId": 553,
+    "line": 6,
+    "lines": 11
+   },
+   {
+    "t": 190.231,
+    "verseId": 7853,
+    "shabadId": 553,
+    "line": 7,
+    "lines": 11
+   },
+   {
+    "t": 201.756,
+    "verseId": 7854,
+    "shabadId": 553,
+    "line": 8,
+    "lines": 11
+   },
+   {
+    "t": 216.776,
+    "verseId": 7847,
+    "shabadId": 553,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 227.225,
+    "verseId": 7848,
+    "shabadId": 553,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 240.966,
+    "verseId": 7847,
+    "shabadId": 553,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 317.447,
+    "verseId": 7855,
+    "shabadId": 553,
+    "line": 9,
+    "lines": 11
+   },
+   {
+    "t": 328.034,
+    "verseId": 7856,
+    "shabadId": 553,
+    "line": 10,
+    "lines": 11
+   },
+   {
+    "t": 341.551,
+    "verseId": 7855,
+    "shabadId": 553,
+    "line": 9,
+    "lines": 11
+   },
+   {
+    "t": 353.118,
+    "verseId": 7856,
+    "shabadId": 553,
+    "line": 10,
+    "lines": 11
+   },
+   {
+    "t": 353.815,
+    "verseId": 7855,
+    "shabadId": 553,
+    "line": 9,
+    "lines": 11
+   },
+   {
+    "t": 361.325,
+    "verseId": 7856,
+    "shabadId": 553,
+    "line": 10,
+    "lines": 11
+   },
+   {
+    "t": 378.95,
+    "verseId": 7855,
+    "shabadId": 553,
+    "line": 9,
+    "lines": 11
+   },
+   {
+    "t": 382.357,
+    "verseId": 7856,
+    "shabadId": 553,
+    "line": 10,
+    "lines": 11
+   },
+   {
+    "t": 395.684,
+    "verseId": 7855,
+    "shabadId": 553,
+    "line": 9,
+    "lines": 11
+   },
+   {
+    "t": 426.434,
+    "verseId": 7856,
+    "shabadId": 553,
+    "line": 10,
+    "lines": 11
+   },
+   {
+    "t": 448.392,
+    "verseId": 7847,
+    "shabadId": 553,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 456.368,
+    "verseId": 7848,
+    "shabadId": 553,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 464.747,
+    "verseId": 7847,
+    "shabadId": 553,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 491.805,
+    "verseId": 7848,
+    "shabadId": 553,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 505.198,
+    "verseId": 7847,
+    "shabadId": 553,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 613.395,
+    "verseId": 30998,
+    "shabadId": 2773,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 631.944,
+    "verseId": 30997,
+    "shabadId": 2773,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 643.465,
+    "verseId": 30998,
+    "shabadId": 2773,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 668.582,
+    "verseId": 30997,
+    "shabadId": 2773,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 693.907,
+    "verseId": 30999,
+    "shabadId": 2773,
+    "line": 3,
+    "lines": 11
+   },
+   {
+    "t": 734.053,
+    "verseId": 31000,
+    "shabadId": 2773,
+    "line": 4,
+    "lines": 11
+   },
+   {
+    "t": 750.725,
+    "verseId": 30998,
+    "shabadId": 2773,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 773.907,
+    "verseId": 30997,
+    "shabadId": 2773,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 807.777,
+    "verseId": 31001,
+    "shabadId": 2773,
+    "line": 5,
+    "lines": 11
+   },
+   {
+    "t": 849.589,
+    "verseId": 31002,
+    "shabadId": 2773,
+    "line": 6,
+    "lines": 11
+   },
+   {
+    "t": 873.513,
+    "verseId": 30998,
+    "shabadId": 2773,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 895.5,
+    "verseId": 30997,
+    "shabadId": 2773,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 911.886,
+    "verseId": 30998,
+    "shabadId": 2773,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 926.116,
+    "verseId": 30997,
+    "shabadId": 2773,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 958.335,
+    "verseId": 31003,
+    "shabadId": 2773,
+    "line": 7,
+    "lines": 11
+   },
+   {
+    "t": 986.986,
+    "verseId": 31004,
+    "shabadId": 2773,
+    "line": 8,
+    "lines": 11
+   },
+   {
+    "t": 1004.222,
+    "verseId": 30998,
+    "shabadId": 2773,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 1024.174,
+    "verseId": 30997,
+    "shabadId": 2773,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 1061.564,
+    "verseId": 31005,
+    "shabadId": 2773,
+    "line": 9,
+    "lines": 11
+   },
+   {
+    "t": 1158.665,
+    "verseId": 31006,
+    "shabadId": 2773,
+    "line": 10,
+    "lines": 11
+   },
+   {
+    "t": 1174.463,
+    "verseId": 31005,
+    "shabadId": 2773,
+    "line": 9,
+    "lines": 11
+   },
+   {
+    "t": 1201.674,
+    "verseId": 31006,
+    "shabadId": 2773,
+    "line": 10,
+    "lines": 11
+   },
+   {
+    "t": 1215.555,
+    "verseId": 30998,
+    "shabadId": 2773,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 1234.455,
+    "verseId": 30997,
+    "shabadId": 2773,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 1256.13,
+    "verseId": 30998,
+    "shabadId": 2773,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 1277.131,
+    "verseId": 30997,
+    "shabadId": 2773,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 1298.356,
+    "verseId": 30998,
+    "shabadId": 2773,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 1326.759,
+    "verseId": 30997,
+    "shabadId": 2773,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 1344.542,
+    "verseId": 30998,
+    "shabadId": 2773,
+    "line": 2,
+    "lines": 11
+   },
+   {
+    "t": 1355.928,
+    "verseId": 30997,
+    "shabadId": 2773,
+    "line": 1,
+    "lines": 11
+   },
+   {
+    "t": 1374.796,
+    "verseId": 31120,
+    "shabadId": 2781,
+    "line": 2,
+    "lines": 9
+   },
+   {
+    "t": 1407.998,
+    "verseId": 31118,
+    "shabadId": 2781,
+    "line": 0,
+    "lines": 9
+   },
+   {
+    "t": 1408.707,
+    "verseId": 31119,
+    "shabadId": 2781,
+    "line": 1,
+    "lines": 9
+   },
+   {
+    "t": 1426.829,
+    "verseId": 31120,
+    "shabadId": 2781,
+    "line": 2,
+    "lines": 9
+   },
+   {
+    "t": 1470.666,
+    "verseId": 31121,
+    "shabadId": 2781,
+    "line": 3,
+    "lines": 9
+   },
+   {
+    "t": 1480.602,
+    "verseId": 31122,
+    "shabadId": 2781,
+    "line": 4,
+    "lines": 9
+   },
+   {
+    "t": 1491.094,
+    "verseId": 31121,
+    "shabadId": 2781,
+    "line": 3,
+    "lines": 9
+   },
+   {
+    "t": 1499.89,
+    "verseId": 31122,
+    "shabadId": 2781,
+    "line": 4,
+    "lines": 9
+   },
+   {
+    "t": 1508.335,
+    "verseId": 31121,
+    "shabadId": 2781,
+    "line": 3,
+    "lines": 9
+   },
+   {
+    "t": 1518.017,
+    "verseId": 31122,
+    "shabadId": 2781,
+    "line": 4,
+    "lines": 9
+   },
+   {
+    "t": 1531.338,
+    "verseId": 31120,
+    "shabadId": 2781,
+    "line": 2,
+    "lines": 9
+   },
+   {
+    "t": 1556.1,
+    "verseId": 31119,
+    "shabadId": 2781,
+    "line": 1,
+    "lines": 9
+   },
+   {
+    "t": 1576.42,
+    "verseId": 31120,
+    "shabadId": 2781,
+    "line": 2,
+    "lines": 9
+   },
+   {
+    "t": 1616.844,
+    "verseId": 31122,
+    "shabadId": 2781,
+    "line": 4,
+    "lines": 9
+   },
+   {
+    "t": 1618.478,
+    "verseId": 31123,
+    "shabadId": 2781,
+    "line": 5,
+    "lines": 9
+   },
+   {
+    "t": 1625.596,
+    "verseId": 31124,
+    "shabadId": 2781,
+    "line": 6,
+    "lines": 9
+   },
+   {
+    "t": 1637.853,
+    "verseId": 31123,
+    "shabadId": 2781,
+    "line": 5,
+    "lines": 9
+   },
+   {
+    "t": 1644.236,
+    "verseId": 31124,
+    "shabadId": 2781,
+    "line": 6,
+    "lines": 9
+   },
+   {
+    "t": 1654.168,
+    "verseId": 31123,
+    "shabadId": 2781,
+    "line": 5,
+    "lines": 9
+   },
+   {
+    "t": 1662.424,
+    "verseId": 31124,
+    "shabadId": 2781,
+    "line": 6,
+    "lines": 9
+   },
+   {
+    "t": 1678.118,
+    "verseId": 31120,
+    "shabadId": 2781,
+    "line": 2,
+    "lines": 9
+   },
+   {
+    "t": 1702.026,
+    "verseId": 31119,
+    "shabadId": 2781,
+    "line": 1,
+    "lines": 9
+   },
+   {
+    "t": 1723.025,
+    "verseId": 31120,
+    "shabadId": 2781,
+    "line": 2,
+    "lines": 9
+   },
+   {
+    "t": 1770.434,
+    "verseId": 31125,
+    "shabadId": 2781,
+    "line": 7,
+    "lines": 9
+   },
+   {
+    "t": 1780.263,
+    "verseId": 31126,
+    "shabadId": 2781,
+    "line": 8,
+    "lines": 9
+   },
+   {
+    "t": 1793.429,
+    "verseId": 31125,
+    "shabadId": 2781,
+    "line": 7,
+    "lines": 9
+   },
+   {
+    "t": 1799.182,
+    "verseId": 31126,
+    "shabadId": 2781,
+    "line": 8,
+    "lines": 9
+   },
+   {
+    "t": 1808.53,
+    "verseId": 31125,
+    "shabadId": 2781,
+    "line": 7,
+    "lines": 9
+   },
+   {
+    "t": 1818.566,
+    "verseId": 31126,
+    "shabadId": 2781,
+    "line": 8,
+    "lines": 9
+   },
+   {
+    "t": 1829.377,
+    "verseId": 31120,
+    "shabadId": 2781,
+    "line": 2,
+    "lines": 9
+   },
+   {
+    "t": 1848.859,
+    "verseId": 31119,
+    "shabadId": 2781,
+    "line": 1,
+    "lines": 9
+   },
+   {
+    "t": 1886.685,
+    "verseId": 31120,
+    "shabadId": 2781,
+    "line": 2,
+    "lines": 9
+   }
+  ],
+  "shabads": [
+   553,
+   2773,
+   2781
+  ],
+  "clip": "kh31_sttm_desktop_2026_10_14T02_38_09_370Z.wav",
+  "seconds": 1992.11
+ },
+ {
+  "name": "kh32_sttm_desktop_2026_10_14T03_11_54_037Z",
+  "dataset": "sttm_desktop_2026_10_14T03_11_54_037Z",
+  "timeline": [
+   {
+    "t": 1.051,
+    "verseId": 59493,
+    "shabadId": 5451,
+    "line": 1,
+    "lines": 4
+   },
+   {
+    "t": 13.432,
+    "verseId": 59494,
+    "shabadId": 5451,
+    "line": 2,
+    "lines": 4
+   },
+   {
+    "t": 27.257,
+    "verseId": 59495,
+    "shabadId": 5451,
+    "line": 3,
+    "lines": 4
+   }
+  ],
+  "shabads": [
+   5451
+  ],
+  "clip": "kh32_sttm_desktop_2026_10_14T03_11_54_037Z.wav",
+  "seconds": 37.97
  }
 ]

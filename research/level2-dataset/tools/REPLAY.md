@@ -117,6 +117,42 @@ scorer on a directory of per-clip JSON files and return `{ metric: number }`), `
 direction (+1 higher is better, -1 lower is better, 0 informational) and a `sentinel` subset. Add the
 suite to the right areas in `vf-scope.json`, then `vf-check --record --suites <new>`.
 
+## New recordings join the benchmark by themselves (hf-ingest -> benchmark -> cache)
+
+Fremont-style recordings (STTM Desktop on the sevadaar's laptop in the hall; Hugging Face
+`khalisfoundation/sttm_desktop_*`, audio parquet + `verse_timestamps.csv` = the verse the sevadaar had on screen) are
+pulled incrementally and become replayable clips with a frozen train / dev / test split. The nightly sequence:
+
+```
+node hf-ingest.js                     # list the org (fresh every run), pull only NEW / CHANGED datasets (id + revision sha),
+                                      # 16 kHz mono wav + truth, Gurdwara / date / mic / type / session / split tags
+node vf-benchmark-build.js            # manifest rows + clip folders (~/personal/vf-benchmark), provenance
+                                      # "sevadaar screen (human, may lag)"; rows other tools added are kept
+node vf-check.js --fill-new --roots <release worktree> --suites jaspal [--push]
+                                      # record ONLY clips the cache lacks (shared Azure copy tried first), then push them
+node hf-ingest.js --push-benchmark    # (opt-in) upload the new clip folders + manifest to khalisfoundation/voice-follow-benchmark
+```
+Then `node vf-check.js --base B --cand C --suites jaspal --split train,dev` while tuning (`--split` keeps only those
+splits), and `--split test` once at the end. `node kirtan-score.js <run>/cand/jaspal --clips` or
+`kirtan-score.js --compare <run>/base/jaspal <run>/cand/jaspal` prints the kirtan scorecard per split and per Gurdwara:
+Shabad right / wrong / searching, sangat line % (ON + catching up), find time of each new Shabad, parmaan follow and
+return, wrong-Shabad s/h, wrong switches. `vf-check --manifest` scorecards add a split x Gurdwara table by default.
+
+* **Ledger** `research/level2-dataset/hf-jaspal/ledger.json` (committed): per dataset id the revision sha, status
+  (`pulled` | `excluded`: the user's own app test sessions, whose verse file is the app's screen | `empty` | `inventory`:
+  paath), Gurdwara, PT date, duration, clip id (`khNN`, assigned once), session, split, content folder (kirtan, or a sung
+  Bani: >= 80% of the verse rows in Asa di Vaar / Aarti), wav sha256. `--inventory` prints it; `--retag` recomputes
+  the content tags offline. `hf-jaspal/splits.json` = session -> split, clips.
+* **Split rule (frozen, `RULE` in hf-ingest.js, checked against the ledger on every run):** a recording session = the
+  recordings of one Gurdwara less than 2 h apart (one darbar). A session's split is decided ONCE, the first time it is
+  seen: pinned (kh01-kh06's sessions -> test, so earlier numbers stay comparable) or `sha1(salt + session) % 100`
+  < 60 train, < 80 dev, else test, per Gurdwara. Later recordings of the same session join its split. Nothing moves.
+* **Truth** (`khalis-tests.json` rows, same shape as before): verse -> Shabad and line index from BaniDB; consecutive
+  repeats collapsed. Rebuilt for kh01-kh06 by the tool: identical to the earlier rows.
+* **Suite `jaspal`** (vf-suites.js): every kirtan-content recording in the ledger, `optIn` (runs only when named) until
+  its cache is complete and pushed. kh01-kh05 stay in the `fremont` suite too.
+* Tools: `hf-ingest.js`, `hf-parquet-wav.py` (uv + pyarrow, run with -I), `kirtan-score.js`.
+
 ## Files
 
 `emis-cache.js` (cache + codec), `bench-driver.js` (cache + deterministic mode, `VF_DRIVER_ROOT`,
@@ -169,3 +205,6 @@ Env: `VF_EMIS_CACHE`, `VF_EMIS_MODE=replay|record`, `VF_EMIS_CODEC=q16|f32`, `VF
   | suite | clips | audio h |  renton 7 / 1.23 | L2 41 / 5.19 | Fremont 5 / 0.74 | paath 60 / 1.15 | Aarti 50 / 2.10 | Asa 7 / 1.83
 - 2026-10-13 12:45. First full-tier check from the cache (6 suites, 170 clips, both sides): 8.4 min wall, 7 workers, with 99 of
   241 clip runs reused. Old way: ~3.5 h per side. Smoke tier: 67 s (busy machine). A rerun of two unchanged trees: seconds.
+- 2026-10-13 22:30 (kirtan-general). hf-ingest first run: 54 datasets listed; 32 Fremont kirtan recordings pulled (5.30 h; kh01-kh06
+  truth rebuilt identical), 15 + 1 own-app test sessions excluded, 7 empty, 4 paath inventoried. 7 sessions: train 2 (9 kirtan clips,
+  1.48 h), dev 3 (11, 1.31 h; + Asa di Vaar kh16 1.14 h and Aarti kh23 filed under 3-bani-sung), test 2 pinned (10, 1.29 h).

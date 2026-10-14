@@ -75,8 +75,14 @@ audio, and anyone reading the saloks as paath, are the next recordings to collec
 
 ## Splits
 
-* **test** = real production and user sessions: Renton Oct 11 (`rt11_*`), Fremont (`kh*`), Newton Oct 11 (`nw11_*`),
-  the Oct 13 user test (`ut13_*`). **Never tune on these**; they are only run for the final number of a build.
+* **test** = real production and user sessions: Renton Oct 11 (`rt11_*`), Fremont (`kh*` in a TEST session, incl.
+  kh01-kh06), Newton Oct 11 (`nw11_*`), the Oct 13 user test (`ut13_*`). **Never tune on these**; they are only run for
+  the final number of a build.
+* **Fremont sevadaar-screen recordings (`kh*`)** are split by RECORDING SESSION (one darbar = recordings of one
+  Gurdwara less than 2 h apart), never by clip: `hf-ingest.js` decides a session's split once (kh01-kh06's sessions
+  pinned to test; every other session by a salted hash, 60 / 20 / 20 train / dev / test per Gurdwara) and freezes it
+  in `hf-jaspal/ledger.json`, so new recordings join a split automatically and nothing ever moves. **train** = tune on,
+  **dev** = check while iterating, **test** = once, at the end. The `session` column names the session.
 * **dev** = everything else (the Level-2 kirtan sheet clips, the paath playlist clips, the Renton Aarti cuts, the
   YouTube Asa di Vaar, the Sehaj paath clips).
 
@@ -93,8 +99,10 @@ Level 3 stays out of this dataset (sealed, held by the user).
   paath row (Bani opened?) and as an Aarti clip.
 * **Aarti (`aa*`)**: `aarti-tests.json`; Renton Wednesday / Friday / Sep 27 / Sep 25 hall test / Oct 5 recordings,
   cut at several start points so cold starts inside the Aarti are scored; piece truth from the Renton manifests.
-* **Fremont (`kh01`-`kh06`)**: Jaspal's app-recorded sessions (Hugging Face `khalisfoundation/sttm_desktop_*`);
-  line truth = the line the operator put on screen while it was sung (human).
+* **Fremont (`kh*`)**: Jaspal's app-recorded sessions (Hugging Face `khalisfoundation/sttm_desktop_*`, pulled
+  incrementally by `hf-ingest.js`); line truth = the line the sevadaar put on screen while it was sung
+  (provenance "sevadaar screen (human, may lag)": the screen follows the singing, usually a little late). Morning Asa
+  di Vaar and Aarti recordings are filed under `3-bani-sung/`.
 * **Renton Oct 11 (`rt11_*`)**: the app's own session audio from the Gurdwara PC; Bani parts forced-aligned
   (Rehras realigned at extra-long with the app's own verse ids), kirtan onsets from `kirtan-targets.json`.
 * **Newton Oct 11 (`nw11_*`, `ytasa1`)**: Khalsa School Newton session (hard audio: 11 % of lines clearly heard)

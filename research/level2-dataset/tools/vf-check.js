@@ -35,6 +35,10 @@ const argv = process.argv.slice(2);
 const flag = (n) => argv.includes(`--${n}`);
 const arg = (n, d) => { const i = argv.indexOf(`--${n}`); return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
 const CACHE = path.resolve(arg('cache', process.env.VF_EMIS_CACHE || DEFAULT_ROOT));
+// --split train,dev: suites with split-tagged clips (jaspal) keep only those splits (read by vf-suites.js jobs())
+if (arg('split')) process.env.VF_SPLIT = arg('split');
+// suites marked optIn run only when named (--suites), e.g. while their cache is still being recorded
+const DEFAULT_SUITES = Object.keys(SUITES).filter((s) => !SUITES[s].optIn);
 const TIER = arg('tier', 'full'); // smoke: ~10 clips across all suites, after every edit; full: everything
 const JOBS = Number(arg('jobs', Math.max(1, Math.floor(os.cpus().length / 2))));
 const sh = (cmd, args, opts = {}) => execFileSync(cmd, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...opts }).trim();
@@ -324,11 +328,41 @@ async function politeTurn() {
   }
 }
 
-async function record() {
+// --fill-new: record ONLY the clips the cache does not have yet (new benchmark recordings), after first trying the
+// shared Azure copy; --push then uploads what was recorded. Meant for a nightly run after hf-ingest.js:
+//   node vf-check.js --fill-new --roots <release worktree> [--suites jaspal] [--split train,dev] [--push]
+const cachedLocally = (id) => fs.existsSync(path.join(CACHE, `${modelSha(MODEL, CACHE).slice(0, 12)}-${CODEC}`, id, 'index.jsonl'));
+async function fillNew() {
+  const suites = (arg('suites', Object.keys(SUITES).join(','))).split(',');
+  const all = selectJobs(suites, { only: arg('only') ? new Set(arg('only').split(',')) : null, sentinel: flag('sentinel') });
+  let missing = all.filter((j) => !cachedLocally(j.id));
+  console.log(`fill-new: ${all.length} clips in ${suites.join(',')}, ${missing.length} not in the local cache`);
+  if (missing.length && !flag('no-pull')) {
+    try {
+      const r = await require('./remote-cache').pull({ root: CACHE, model: modelSha(MODEL, CACHE).slice(0, 12), codec: CODEC, clips: missing.map((j) => ({ id: j.id, wav: j.wav })) });
+      console.log(`  pulled ${r.pulled} from the shared cache`);
+    } catch (e) { console.log(`  shared cache pull skipped: ${e.message}`); }
+    missing = missing.filter((j) => !cachedLocally(j.id));
+  }
+  if (flag('plan')) { for (const j of missing) console.log(`  ${j.suite} ${j.id} ${fmtS(j.dur)}`); console.log(`  ${fmtS(missing.reduce((a, j) => a + j.dur, 0))} of audio to record`); return; }
+  if (!missing.length) return;
+  const ids = new Set(missing.map((j) => j.id));
+  await record({ only: ids, suites: [...new Set(missing.map((j) => j.suite))] });
+  const done = missing.filter((j) => cachedLocally(j.id));
+  console.log(`fill-new: ${done.length}/${missing.length} recorded`);
+  if (flag('push') && done.length) {
+    let commit = null;
+    try { commit = sh('git', ['-C', TOOLS, 'rev-parse', '--short', 'HEAD']); } catch (_) { /* none */ }
+    const r = await require('./remote-cache').push({ root: CACHE, model: modelSha(MODEL, CACHE).slice(0, 12), codec: CODEC, clips: done.map((j) => ({ id: j.id, wav: j.wav })), commit });
+    console.log(`pushed ${r.pushed} clips, ${(r.bytes / 1e6).toFixed(1)} MB`);
+  }
+}
+
+async function record(opts = {}) {
   const roots = (arg('roots', '') || [arg('base'), arg('cand')].filter(Boolean).join(',')).split(',').filter(Boolean).map((r) => path.resolve(r));
   if (!roots.length) throw new Error('--record needs --roots <worktree>[,<worktree>]');
-  const suites = (arg('suites', Object.keys(SUITES).join(','))).split(',');
-  const only = arg('only') ? new Set(arg('only').split(',')) : null;
+  const suites = opts.suites || (arg('suites', DEFAULT_SUITES.join(','))).split(',');
+  const only = opts.only || (arg('only') ? new Set(arg('only').split(',')) : null);
   const outRoot = path.resolve(arg('out', path.join(CACHE, 'record-runs', new Date().toISOString().replace(/[:.]/g, '-'))));
   fs.mkdirSync(outRoot, { recursive: true });
   console.log(`record -> cache ${CACHE} (model ${modelSha(MODEL, CACHE).slice(0, 12)}, codec ${CODEC}); runs in ${outRoot}`);
@@ -384,7 +418,7 @@ async function check() {
   if (!base || !cand) throw new Error('need --base and --cand worktrees (or --base-rev <rev>, or --changed A..B)');
   base = path.resolve(base);
   cand = path.resolve(cand);
-  suites = suites || Object.keys(SUITES);
+  suites = suites || DEFAULT_SUITES;
   const only = arg('only') ? new Set(arg('only').split(',')) : null;
   const outRoot = path.resolve(arg('out', path.join(DS, 'results', 'vf-check', new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-'))));
   fs.mkdirSync(outRoot, { recursive: true });
@@ -597,7 +631,7 @@ async function check() {
 // vf-check cache push|pull: sync the local emissions cache with the shared Azure copy (remote-cache.js).
 async function cacheCmd(what) {
   const remote = require('./remote-cache');
-  const suites = (arg('suites', Object.keys(SUITES).join(','))).split(',');
+  const suites = (arg('suites', DEFAULT_SUITES.join(','))).split(',');
   const only = arg('only') ? new Set(arg('only').split(',')) : null;
   const clips = selectJobs(suites, { only, sentinel: flag('sentinel') }).map((j) => ({ id: j.id, wav: j.wav }));
   const model = modelSha(MODEL, CACHE).slice(0, 12);
@@ -620,6 +654,7 @@ if (require.main === module) {
   (async () => {
     if (argv[0] === 'cache') return cacheCmd(argv[1]);
     if (arg('pool')) return pool(arg('pool'));
+    if (flag('fill-new')) return fillNew();
     if (flag('record')) return record();
     if (arg('manifest')) return require('./vf-manifest').run({ arg, flag, selectJobs, makeTasks, runLocked, CACHE, CODEC, MODEL, JOBS, SUITES, DS, TOOLS, sha1, now, fmtS });
     return check();

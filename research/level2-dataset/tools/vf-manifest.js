@@ -31,6 +31,7 @@ const MAP = {
   aarti: [[/wrong switches/, 'new_shabad'], [/piece exact %|heard line %/, 'right_line'], [/found|median find s|right %|wrong %|none %/, 'found_quickly']],
   fremont: [[/flips/, 'new_shabad'], [/median line lag s/, 'seconds_behind'], [/line exact %|line within 1 %|verses reached|arbiter|line \+-3 s %/, 'right_line'], [/shabad right %|wrong %|searching %/, 'found_quickly']],
   renton: [[/lag median s|lag p90 s|stretches >5 s/, 'seconds_behind'], [/line exact %|line within 1 %|lines reached/, 'right_line'], [/first on screen s|wrong s/, 'new_shabad'], [/Bani right %|wrong %/, 'found_quickly']],
+  jaspal: [[/parmaan|return|wrong switches/, 'new_shabad'], [/catch-up lag/, 'seconds_behind'], [/sangat line/, 'right_line'], [/Shabad right|Shabad wrong|searching|find|not found|wrong s\/h/, 'found_quickly']],
   asa: [[/lag median s|behind %|premature/, 'seconds_behind'], [/line within 1 %|line exact %|lines reached/, 'right_line'], [/replay s/, 'new_shabad'], [/Bani right %/, 'found_quickly']],
 };
 const NA = { l2: { new_shabad: 'n/a (one Shabad per clip; a wrong page is counted under 1)', right_line: 'not measured (no line truth in the suite)', seconds_behind: 'not measured' },
@@ -238,6 +239,18 @@ async function run(vf) {
   say(`| content folder | clips run / listed | ${Q.map((q) => QTITLE[q]).join(' | ')} |`);
   say(`|---|---|${Q.map(() => '---').join('|')}|`);
   for (const [folder, F] of Object.entries(card.folders)) say(`| \`${folder}\` | ${F.run} / ${F.clips} | ${Q.map((q) => fmt(F.questions[q])).join(' | ')} |`);
+  // by split x Gurdwara (default): the sangat view of every clip that ran, grouped by its manifest split and gurdwara
+  if (!flag('no-split-table')) {
+    const byId = new Map(sel.map((r) => [r.id, r]));
+    const cl = Object.entries(sangat).filter(([, c]) => c && !c.error).map(([id, c]) => ({ ...c, id }));
+    const key = (c) => { const r = byId.get(c.id) || {}; return `${r.split || '?'} | ${r.gurdwara || '?'} | ${c.folder}`; };
+    const ag = sv.aggregate(cl, key).sort((a, b) => a.key.localeCompare(b.key) || a.level.localeCompare(b.level));
+    card.bySplitGurdwara = ag.map(({ ids, ...g }) => ({ ...g, clips: ids }));
+    say('');
+    say('| split | Gurdwara | content folder | level | truth | clips | sangat sees the right pangti / Shabad | wrong page s/h | catch-up lag p50 s |');
+    say('|---|---|---|---|---|---|---|---|---|');
+    for (const g of ag) if (g.summary) say(`| ${g.key} | ${g.level} | ${g.provenance} | ${g.n} | ${g.summary.right_pct}% | ${g.summary.wrong_s_per_h} | ${g.level === 'line' ? g.summary.lag_p50 ?? '-' : '-'} |`);
+  }
   if (notRun.length) { say(''); say('Not run:'); for (const [id, folder, why] of notRun) say(`  ${folder}/${id}: ${why}`); }
   if (missed.length) { say(''); say(`CACHE MISSES (no model was run; record them with vf-check --record --only ...): ${missed.map((j) => `${j.suite}/${j.id}`).join(' ')}`); }
   if (failed.length) { say(''); say('ERRORS:'); for (const [j, e] of failed) say(`  ${j.suite}/${j.id}: ${e}`); }

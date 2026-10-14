@@ -1,0 +1,126 @@
+{
+ "gurdwara_sahib_fremont@2026-10-08T03:18Z": {
+  "split": "test",
+  "rule": "pinned (sttm_desktop_2026_10_08T03_18_48_617Z)",
+  "clips": [
+   "kh01",
+   "kh02",
+   "kh03",
+   "kh04",
+   "kh05"
+  ],
+  "datasets": [
+   "sttm_desktop_2026_10_08T03_18_48_617Z",
+   "sttm_desktop_2026_10_08T03_30_14_004Z",
+   "sttm_desktop_2026_10_08T03_40_41_289Z",
+   "sttm_desktop_2026_10_08T03_51_10_447Z",
+   "sttm_desktop_2026_10_08T04_05_00_105Z"
+  ]
+ },
+ "gurdwara_sahib_fremont@2026-10-09T03:14Z": {
+  "split": "test",
+  "rule": "pinned (sttm_desktop_2026_10_09T03_56_15_071Z)",
+  "clips": [
+   "kh07",
+   "kh08",
+   "kh09",
+   "kh10",
+   "kh06"
+  ],
+  "datasets": [
+   "sttm_desktop_2026_10_09T03_14_15_214Z",
+   "sttm_desktop_2026_10_09T03_27_58_323Z",
+   "sttm_desktop_2026_10_09T03_39_34_494Z",
+   "sttm_desktop_2026_10_09T03_42_41_425Z",
+   "sttm_desktop_2026_10_09T03_56_15_071Z"
+  ]
+ },
+ "gurdwara_sahib_fremont@2026-10-11T02:40Z": {
+  "split": "dev",
+  "rule": "hash 60",
+  "clips": [
+   "kh11",
+   "kh12",
+   "kh13"
+  ],
+  "datasets": [
+   "sttm_desktop_2026_10_11T02_40_20_422Z",
+   "sttm_desktop_2026_10_11T02_50_05_783Z",
+   "sttm_desktop_2026_10_11T03_07_57_411Z"
+  ]
+ },
+ "gurdwara_sahib_fremont@2026-10-11T13:42Z": {
+  "split": "dev",
+  "rule": "hash 71",
+  "clips": [
+   "kh14",
+   "kh15",
+   "kh16"
+  ],
+  "datasets": [
+   "sttm_desktop_2026_10_11T13_42_38_291Z",
+   "sttm_desktop_2026_10_11T13_45_00_522Z",
+   "sttm_desktop_2026_10_11T13_52_01_944Z"
+  ]
+ },
+ "gurdwara_sahib_fremont@2026-10-11T18:10Z": {
+  "split": "train",
+  "rule": "hash 53",
+  "clips": [
+   "kh17",
+   "kh18",
+   "kh19",
+   "kh20",
+   "kh21",
+   "kh22"
+  ],
+  "datasets": [
+   "sttm_desktop_2026_10_11T18_10_13_059Z",
+   "sttm_desktop_2026_10_11T20_00_12_780Z",
+   "sttm_desktop_2026_10_11T20_08_08_535Z",
+   "sttm_desktop_2026_10_11T20_15_43_327Z",
+   "sttm_desktop_2026_10_11T20_29_16_335Z",
+   "sttm_desktop_2026_10_11T20_36_12_345Z"
+  ]
+ },
+ "gurdwara_sahib_fremont@2026-10-13T01:50Z": {
+  "split": "dev",
+  "rule": "hash 65",
+  "clips": [
+   "kh23",
+   "kh24",
+   "kh25",
+   "kh26",
+   "kh27",
+   "kh28",
+   "kh29"
+  ],
+  "datasets": [
+   "sttm_desktop_2026_10_13T01_50_01_713Z",
+   "sttm_desktop_2026_10_13T02_34_02_550Z",
+   "sttm_desktop_2026_10_13T02_37_22_571Z",
+   "sttm_desktop_2026_10_13T02_43_13_981Z",
+   "sttm_desktop_2026_10_13T02_48_34_427Z",
+   "sttm_desktop_2026_10_13T03_01_13_513Z",
+   "sttm_desktop_2026_10_13T03_13_38_540Z",
+   "sttm_desktop_2026_10_13T03_19_05_030Z",
+   "sttm_desktop_2026_10_13T03_20_54_106Z",
+   "sttm_desktop_2026_10_13T03_42_27_484Z"
+  ]
+ },
+ "gurdwara_sahib_fremont@2026-10-14T02:35Z": {
+  "split": "train",
+  "rule": "hash 10",
+  "clips": [
+   "kh30",
+   "kh31",
+   "kh32"
+  ],
+  "datasets": [
+   "sttm_desktop_2026_10_14T02_35_12_435Z",
+   "sttm_desktop_2026_10_14T02_38_09_370Z",
+   "sttm_desktop_2026_10_14T03_11_54_037Z",
+   "sttm_desktop_2026_10_14T03_13_54_699Z"
+  ]
+ }
+}
