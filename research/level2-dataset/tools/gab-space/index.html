@@ -69,6 +69,8 @@ th.s, td.s { background: color-mix(in srgb, var(--app-dot) 3%, var(--panel)); }
 th.s:not(.g) + th.s, td.s + td.s { }
 td.v.s { font-size: 14px; color: var(--ink); }
 td.v.s:first-of-type { }
+th.s.lag, td.s.lag { font-weight: 600; }
+th.s.lag { min-width: 170px; } th.s { min-width: 130px; }
 .sd td.spd { color: var(--muted); font-size: 12px; text-align: left; }
 td.nm, th.vh { text-align: left !important; }
 .items { padding: 10px 0 6px; display: grid; gap: 5px; }
@@ -158,13 +160,23 @@ function chg(v, b, kind) {
 let PREV = new Map();
 // speed: typical seconds, lower is better. Behind only on human or ear-checked line answers (>= 3 clips), else '–'
 const sv = (res, key, k, need) => { const r = rowOf(res.rows, key); if (!r || r[k] == null || (need && !need(r))) return null; return Number(r[k]); };
-const behindOk = (r) => r.pangti_basis && r.pangti_basis !== 'aligned' && r.pangti_clips >= 3;
-const SPEED = [
-  { t: 'Find', sub: 'kirtan', tip: 'typical seconds until the right Shabad is first shown (kirtan)', get: (res) => sv(res, '1-kirtan-shabad', 'find_p50_s') },
-  { t: 'Switch', sub: 'sung Bani', tip: 'typical seconds to the new Shabad or Bani after a change, e.g. Rehras Sahib to Aarti', get: (res) => sv(res, '3-bani-sung-like-kirtan', 'switch_p50_s', (r) => r.switch_n > 0) },
-  { t: 'Behind', sub: 'paath', tip: 'typical seconds behind the reader; fills in once paath line answers are in the practice set', get: (res) => sv(res, '2-bani-recited', 'behind_p50_s', behindOk) },
+// lag (typical seconds behind the singer or reader) counts only on line timings made or checked by a person, >= 3 clips
+const lagOf = (r) => { if (!r) return null; const l = (r.lines || []).find((x) => x.basis !== 'aligned' && x.clips >= 3 && x.behind_p50_s != null); return l ? Number(l.behind_p50_s) : null; };
+// the collapsed row's lag: the first source (in this order) that any version has; the header says which one
+const LAG_SRC = [
+  { lab: 'paath', get: (res) => lagOf(rowOf(res.rows, '2-bani-recited')) },
+  { lab: 'Aarti / sung Bani', get: (res) => lagOf(rowOf(res.rows, '3-bani-sung-like-kirtan')) },
+  { lab: 'kirtan', get: (res) => lagOf(rowOf(res.rows, '1-kirtan-shabad')) },
+  { lab: 'kirtan, laptop mic', get: (res) => lagOf(rowOf((res.hard || {}).rows, '1-kirtan-shabad')) },
 ];
-const speedTxt = (r) => { if (!r) return ''; const p = []; if (r.find_p50_s != null) p.push(`find ${r.find_p50_s} s`); if (r.switch_n && r.switch_p50_s != null) p.push(`switch ${r.switch_p50_s} s`); if (behindOk(r) && r.behind_p50_s != null) p.push(`behind ${r.behind_p50_s} s`); return p.join(' · '); };
+let LAG = LAG_SRC[0];
+const SHOW_SWITCH = false; // Switch rests on too few events for now; true brings it back (row and tree)
+const SPEED = [
+  { t: 'Lag', sub: () => `behind the singer/reader, s\n${LAG.lab}`, tip: () => `typical seconds the screen is behind the singer or reader (${LAG.lab}); lower is better`, none: 'needs line timings', get: (res) => LAG.get(res) },
+  { t: 'Shows Shabad in', sub: () => 'seconds after start\nkirtan', tip: () => 'typical seconds from pressing Start until the right Shabad is on screen (kirtan)', get: (res) => sv(res, '1-kirtan-shabad', 'find_p50_s') },
+  ...(SHOW_SWITCH ? [{ t: 'Switch', sub: () => 'sung Bani', tip: () => 'typical seconds to the new Shabad or Bani after a change', get: (res) => sv(res, '3-bani-sung-like-kirtan', 'switch_p50_s', (r) => r.switch_n > 0) }] : []),
+];
+const speedTxt = (r) => { if (!r) return ''; const p = []; const lg = lagOf(r); if (lg != null) p.push(`lag ${lg} s`); if (r.find_p50_s != null) p.push(`shows in ${r.find_p50_s} s`); if (SHOW_SWITCH && r.switch_n && r.switch_p50_s != null) p.push(`switch ${r.switch_p50_s} s`); return p.join(' · '); };
 
 
 const verOf = (res) => (res.vf_feature_version && kindOf(res) === 'release' ? res.vf_feature_version : String(res.label || res.name).split(' · ')[0].split(' + ')[0]);
@@ -260,16 +272,17 @@ function render() {
     const bar = BARS ? `<div class="bar" style="--c: var(${HCOL[c.key]})"><i style="width:${v}%"></i>${b != null ? `<b style="left:calc(${b}% - 1px)" title="version before: ${b}%"></b>` : ''}</div>` : '';
     return `<td class="v">${v}%${chg(v, b, 'pct')}${bar}</td>`;
   };
+  LAG = LAG_SRC.find((src) => RESULTS.some((x) => src.get(x) != null)) || LAG_SRC[0];
   const scell = (res, c) => {
-    const v = c.get(res); if (v == null) return `<td class="v s" title="${esc(c.tip)}">–</td>`;
+    const v = c.get(res); if (v == null) return `<td class="v s" title="${esc(c.none || c.tip())}">–</td>`;
     const pv = PREV.get(res); const b = pv ? c.get(pv) : null;
-    return `<td class="v s" title="${esc(c.tip)}">${v} s${chg(v, b, 'sec')}</td>`;
+    return `<td class="v s${c.t === 'Lag' ? ' lag' : ''}" title="${esc(c.tip())}">${v} s${chg(v, b, 'sec')}</td>`;
   };
   const tl = (cls = '') => (SPINE ? `<td class="tl ${cls}">${cls === 'd' ? '' : '<span class="dot"></span>'}</td>` : '');
   const body = rows.map((g, i) => { CUR_G = g; const res = g.rep; const isNow = g === nowG;
     return `<tr class="ver ${{ experiment: 'idea', 'older version': 'old' }[kindOf(res)] || ''}${isNow ? ' now' : ''}${i === rows.length - 1 ? ' lastver' : ''}" data-i="${i}" tabindex="0" aria-expanded="false">${tl()}${nameCell(g, isNow)}${HEAD.map((c) => cell(res, c)).join('')}${SPEED.map((c) => scell(res, c)).join('')}</tr><tr class="det" hidden>${tl('d')}<td colspan="${HEAD.length + SPEED.length + 1}">${detail(res)}</td></tr>`; }).join('');
   CUR_G = null;
-  document.getElementById('board').innerHTML = `<thead><tr class="grp">${SPINE ? '<th class="tl"></th>' : ''}<th></th><th colspan="${HEAD.length}" class="g">Accuracy <span>right %</span></th><th colspan="${SPEED.length}" class="g s">Speed <span>seconds, lower is better</span></th></tr><tr>${SPINE ? '<th class="tl"></th>' : ''}<th class="vh">Version</th>${HEAD.map((c) => `<th style="--c: var(${HCOL[c.key]})">${BARS ? '<span class="hdot"></span>' : ''}${c.t}</th>`).join('')}${SPEED.map((c) => `<th class="s" title="${esc(c.tip)}">${c.t}<span class="u">${c.sub}</span></th>`).join('')}</tr></thead><tbody>${body}</tbody>`;
+  document.getElementById('board').innerHTML = `<thead><tr class="grp">${SPINE ? '<th class="tl"></th>' : ''}<th></th><th colspan="${HEAD.length}" class="g">Accuracy <span>right %</span></th><th colspan="${SPEED.length}" class="g s">Speed <span>seconds, lower is better</span></th></tr><tr>${SPINE ? '<th class="tl"></th>' : ''}<th class="vh">Version</th>${HEAD.map((c) => `<th style="--c: var(${HCOL[c.key]})">${BARS ? '<span class="hdot"></span>' : ''}${c.t}</th>`).join('')}${SPEED.map((c) => `<th class="s${c.t === 'Lag' ? ' lag' : ''}" title="${esc(c.tip())}">${c.t}<span class="u">${esc(c.sub()).replace('\n', '<br>')}</span></th>`).join('')}</tr></thead><tbody>${body}</tbody>`;
   const q = new URLSearchParams(location.search).get('open');
   if (q) document.querySelectorAll('tr.ver').forEach((tr) => { if (rows[tr.dataset.i] && rows[tr.dataset.i].builds.some((x) => String(x.commit).startsWith(q))) toggle(tr); });
 }
