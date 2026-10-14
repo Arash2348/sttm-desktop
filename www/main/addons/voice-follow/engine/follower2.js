@@ -424,6 +424,13 @@ class FollowerV2 {
     return { verseIndex: -1, verseId: null, lineIndex: null, wordIndex: -1, confidence: 0 };
   }
 
+  // Performance tiers apply only while this follower is on a read Bani AND holding the reader:
+  // released, or nothing here / other Gurbani fitting better for 2+ windows (the reader may be
+  // leaving the Bani) -> the upstream path, so the next Shabad is found as fast as without tiers.
+  tierOk() {
+    return this.readBani && this.cur != null && this.foreign < 2 && this.noMatch < 2;
+  }
+
   // The profile for a hop `scale` times the configured one: every dwell counted in windows
   // is divided by it (never below 1 window), so a slower tier confirms moves after the
   // same wall-clock time. scale 1 = the profile itself.

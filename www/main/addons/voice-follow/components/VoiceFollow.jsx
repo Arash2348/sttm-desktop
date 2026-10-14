@@ -3507,10 +3507,15 @@ const VoiceFollow = () => {
     try {
       sampleRate = await startAudio(async (pcm) => {
         if (!autopilotRef.current) return;
-        // Performance tiers only while the paath follower follows a read Bani (engine/pace).
+        // Performance tiers only while the paath follower holds the reader in a read Bani and no
+        // other Shabad has a switch win (a switch being judged); otherwise the upstream path.
         if (engine.pace) {
+          const pf = followerRef.current;
           engine.pace.setScoped(
-            phaseRef.current === 'following' && !!(followerRef.current && followerRef.current.readBani),
+            phaseRef.current === 'following' &&
+              !!(pf && pf.tierOk && pf.tierOk()) &&
+              !(switchCandRef.current && switchCandRef.current.wins > 0) &&
+              !(backstopRef.current && backstopRef.current.wins > 0),
           );
         }
         {
