@@ -196,7 +196,7 @@ function loadTruth(ds, row) {
     lines = t.lines.filter((l) => l.end > 0).map((l) => {
       const text = l.text && norm(l.text) ? l.text : textOf(l.appVerseId ?? l.verseId);
       const conf = l.check ?? null;
-      return { text, norm: norm(text), start: l.start, end: l.end, conf, verseId: l.appVerseId ?? l.verseId, scored: conf != null && conf >= MIN_CHECK };
+      return { text, norm: norm(text), start: l.start, end: l.end, conf, verseId: l.appVerseId ?? l.verseId, ids: [l.verseId, l.appVerseId].filter((x) => x != null).map(Number), scored: conf != null && conf >= MIN_CHECK };
     });
     linesSource = 'aligned';
     linesFrom = `research/level2-dataset/${ov}`;
@@ -205,12 +205,39 @@ function loadTruth(ds, row) {
       const src = l.source || linesSource;
       const conf = numOrNull(l.confidence);
       const text = textOf(Number(l.verseId));
-      return { text, norm: norm(text), start: Number(l.start_s), end: Number(l.end_s), conf, verseId: Number(l.verseId), scored: src === 'human' || (conf != null && conf >= MIN_CHECK) };
+      return { text, norm: norm(text), start: Number(l.start_s), end: Number(l.end_s), conf, verseId: Number(l.verseId), ids: [Number(l.verseId)], src, scored: src === 'human' || (conf != null && conf >= MIN_CHECK) };
     });
   }
+  const audit = applyEarChecks(ds, row, lines);
   lines = lines.filter((l) => l.norm && l.end > l.start).sort((a, b) => a.start - b.start);
   const shabadSource = [...new Set(sh.map((s) => s.source))].join('+') || null;
-  return { id: row.id, folder: row.content_folder, lines, linesSource: lines.length ? linesSource : null, linesFrom, shabads: sh.filter((s) => s.end > s.start), shabadSource, provenance: row.truth_provenance, corrections };
+  return { id: row.id, folder: row.content_folder, lines, linesSource: lines.length ? linesSource : null, linesFrom, shabads: sh.filter((s) => s.end > s.start), shabadSource, provenance: row.truth_provenance, corrections, audit };
+}
+
+// Ear checks of aligned line starts (HF human-verdicts/line-start-check/verdicts.csv, mirrored in the local dataset
+// copy; the lines.csv `source` column carries the same marks: aligned+human-confirmed / -unsure / REJECTED-by-human).
+// A line whose start a person rejected is never scored. Returns { checked, confirmed, unsure, rejected } or null.
+const verdictMemo = new Map();
+function earChecks(ds) {
+  if (verdictMemo.has(ds.root)) return verdictMemo.get(ds.root);
+  const f = path.join(ds.root, 'human-verdicts', 'line-start-check', 'verdicts.csv');
+  const v = fs.existsSync(f) ? parseCsv(fs.readFileSync(f, 'utf8')).map((r) => ({ rec: r.recording, ids: [r.verseId, r.appVerseId].filter(Boolean).map(Number), t: Number(r.claimed_start_s), verdict: r.verdict })) : [];
+  verdictMemo.set(ds.root, v);
+  return v;
+}
+function applyEarChecks(ds, row, lines) {
+  const vs = earChecks(ds).filter((v) => v.rec === row.id);
+  const a = { checked: 0, confirmed: 0, unsure: 0, rejected: 0 };
+  for (const l of lines) {
+    let verdict = /REJECTED/i.test(l.src || '') ? 'no' : /human-confirmed/.test(l.src || '') ? 'yes' : /human-unsure/.test(l.src || '') ? 'unsure' : null;
+    const v = vs.find((x) => Math.abs(x.t - l.start) < 0.15 && x.ids.some((id) => (l.ids || []).includes(id)));
+    if (v) verdict = v.verdict;
+    if (!verdict) continue;
+    a.checked++;
+    if (verdict === 'yes') a.confirmed++;
+    else if (verdict === 'no') { a.rejected++; l.scored = false; l.rejected = true; } else a.unsure++;
+  }
+  return a.checked ? a : null;
 }
 
 // ---------------------------------------------------------------- screen ------------------
@@ -425,7 +452,7 @@ function scoreClip(ds, row, eventsFile, opts = {}) {
   const { events, hasVerse, dur } = loadEvents(eventsFile);
   const until = dur || Infinity;
   const states = screenStates(events);
-  const out = { id: row.id, folder: row.content_folder, events: eventsFile, scored_until_s: dur, truth: { lines: truth.linesFrom, linesSource: truth.linesSource, shabadSource: truth.shabadSource, corrections: truth.corrections } };
+  const out = { id: row.id, folder: row.content_folder, events: eventsFile, scored_until_s: dur, truth: { lines: truth.linesFrom, linesSource: truth.linesSource, shabadSource: truth.shabadSource, corrections: truth.corrections, audit: truth.audit } };
   // opts.blankIsScored (GAB): a run that never put anything on screen is scored at line level too (all blank = 0%),
   // instead of dropping out of the line average
   const neverShown = !events.some((e) => e.type === 'shabad' || e.type === 'verse');
@@ -611,4 +638,54 @@ function compareSides(jobs, traceOf, { dataset } = {}) {
   return { lines, groups, clips: per.base.map((cb, i) => ({ base: strip(cb), cand: strip(per.cand[i]) })) };
 }
 
-module.exports = { textOf, compareSides, same, norm, loadDataset, loadTruth, loadEvents, screenStates, scoreClip, scoreRun, aggregate, summarize, merge, markdown, row, HEAD, findOutputs, close, DEFAULT_DATASET, BUCKETS };
+// ---------------------------------------------------------------- find / switch events (GAB v1.1) -------------
+// The Shabad/Bani windows of a clip (shabads.csv; a piece that belongs to a Bani row counts as that Bani) in order.
+// The FIRST window is a find: from clip t=0 when the clip was cut from inside a performance (opts.coldFirst: the app
+// is started while it is being sung, so the time it takes to show it is the cold-start find time), else from the
+// window start (the Shabad begins inside the clip). Every LATER window whose Shabad/Bani differs from the one before
+// it is a switch, measured from its start. Each event: seconds until a text of it is on screen (null = never, inside
+// its window). Windows shorter than 3 s are passing tuks, not events.
+function findEvents(ds, row, eventsFile, opts = {}) {
+  const truth = loadTruth(ds, row);
+  const { events } = loadEvents(eventsFile);
+  const states = screenStates(events);
+  const rows = truth.shabads.filter((r) => r.end - r.start >= 3);
+  if (!rows.length) return [];
+  rows.forEach((r) => r.ids.forEach(unit));
+  covering(truth, rows[0].start); // builds truth.memberOf
+  const keyOf = (r) => { const m = truth.memberOf.get(r); return m && m.length ? m[0] : r; };
+  const wins = [];
+  for (const r of [...rows].sort((a, b) => a.start - b.start || b.end - a.end)) {
+    const k = keyOf(r);
+    const last = wins[wins.length - 1];
+    if (last && last.key === k && r.start - last.end < 5) { last.end = Math.max(last.end, r.end); continue; }
+    if (last && last.key === k) { wins.push({ key: k, start: r.start, end: r.end }); continue; }
+    // a Bani row whose own window opens later than a member piece already seen: same content, extend
+    if (wins.some((w) => w.key === k && w.end >= r.start - 5)) { const w = wins.filter((x) => x.key === k).pop(); w.end = Math.max(w.end, r.end); continue; }
+    wins.push({ key: k, start: r.start, end: r.end });
+  }
+  const out = [];
+  wins.forEach((w, i) => {
+    const ids = [...new Set([...w.key.ids, ...rows.filter((r) => keyOf(r) === w.key).flatMap((r) => r.ids)])];
+    const units = ids.map(unit);
+    const set = new Set(units.flatMap((u) => u.seq));
+    const isOn = (st) => {
+      const S = screenText(st);
+      if (S == null) return false;
+      if (typeof S === 'object') return overlap(S.unknownUnit, set) >= 0.5;
+      return set.has(S) || units.some((u) => posIn(u, S));
+    };
+    let kind;
+    let from;
+    if (i === 0) { kind = opts.coldFirst || w.start <= 3 ? 'cold' : 'begins'; from = kind === 'cold' ? 0 : w.start; } else {
+      if (wins[i - 1].key === w.key) return;
+      kind = 'switch'; from = w.start;
+    }
+    let found = isOn(stateAt(states, from)) ? from : null;
+    if (found == null) for (const st of states) if (st.t > from && st.t < w.end && isOn(st)) { found = st.t; break; }
+    out.push({ kind, at: r1(from), window: [r1(w.start), r1(w.end)], unit: ids.join('|'), find: found == null ? null : r1(found - from) });
+  });
+  return out;
+}
+
+module.exports = { findEvents, textOf, compareSides, same, norm, loadDataset, loadTruth, loadEvents, screenStates, scoreClip, scoreRun, aggregate, summarize, merge, markdown, row, HEAD, findOutputs, close, DEFAULT_DATASET, BUCKETS };

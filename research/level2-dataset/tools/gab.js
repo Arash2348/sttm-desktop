@@ -2,7 +2,7 @@
 /* gab.js — GAB, the Gurbani Autopilot Bench: one entry point for benchmarking STTM Voice-Follow from the cache,
  * and for growing the benchmark. See GAB.md.
  *
- *   gab run <build> [--manifest hf | <local benchmark dir>] [--tier smoke|full] [--split dev|test|train,dev] [--folders 1-kirtan-shabad,2-bani-recited/japji]
+ *   gab run <build> [--manifest hf | <local benchmark dir>] [--tier smoke|full] [--split dev|test|train,dev] [--folders 1-kirtan-shabad,2-bani-recited/japji] [--ids rt11_,kh12]
  *                   [--name "<build name>"] [--out <dir>] [--jobs N] [--keep]                        -> scorecard
  *   gab compare <A> <B> [same options]                    -> both scorecards + before/after with pass/fail guardrails
  *   gab slowpc <A> <B> [--clips rehras,kh04,ytasa1] [--speeds 0.5,0.7,0.9,1.2] [--jobs N]  -> simulated slow-PC sweep
@@ -68,6 +68,9 @@ async function fetchTruth(repo, rows) {
       }
     }
   }));
+  // ear checks of aligned line starts (scorers skip a rejected line)
+  const vf = path.join(BENCH, 'human-verdicts', 'line-start-check', 'verdicts.csv');
+  if (!fs.existsSync(vf)) { try { const t = await hfGet(repo, 'human-verdicts/line-start-check/verdicts.csv'); fs.mkdirSync(path.dirname(vf), { recursive: true }); fs.writeFileSync(vf, t); n++; } catch (_) { /* none */ } }
   return n;
 }
 // smoke tier: ~1 min; per split (test smoke only with --split test). Mixer feed + room mic in every folder that has both.
@@ -109,7 +112,10 @@ function resolveBuild(spec) {
     dirty = !!sh('git', ['-C', dir, 'status', '--porcelain', '--', 'www', ':(exclude)www/assets/videos']);
     subject = sh('git', ['-C', dir, 'log', '-1', '--format=%s']);
   } catch (_) { /* not a git tree */ }
-  return { root: dir, commit, dirty, subject, spec };
+  // Voice-Follow feature version stamped in the build (shadow/config.js, since 9.0.1); null = before the stamp existed
+  let featureVersion = null;
+  try { const m = fs.readFileSync(path.join(dir, 'www/main/addons/voice-follow/shadow/config.js'), 'utf8').match(/VF_FEATURE_VERSION\s*=\s*'([^']+)'/); featureVersion = m ? m[1] : null; } catch (_) { /* no config */ }
+  return { root: dir, commit, dirty, subject, spec, featureVersion };
 }
 
 // ---------------------------------------------------------------- selection ----------
@@ -136,11 +142,15 @@ function select({ tier = arg('tier', 'smoke'), folders = arg('folders') } = {}) 
   const splitKey = arg('split', 'dev') === 'test' ? 'test' : 'dev';
   let rows = man.rows.filter((r) => splitOk(r.split));
   if (folders) { const fs2 = folders.split(',').map(require('./folder-names').canonFolder); rows = rows.filter((r) => fs2.some((f) => r.content_folder === f || r.content_folder.startsWith(`${f}/`))); }
+  // --ids rt11_,kh12: only clips whose id starts with one of these (reconciliation of an old number on its own clips)
+  if (arg('ids')) { const pre = arg('ids').split(','); rows = rows.filter((r) => pre.some((p) => r.id.startsWith(p))); }
   if (tier === 'smoke') rows = rows.filter((r) => SMOKE[splitKey].includes(r.id));
   else if (tier !== 'full') throw new Error(`--tier smoke|full (got ${tier})`);
   const jobs = [];
   const notRun = [];
+  const { exclude } = G.loadSets();
   for (const r of rows) {
+    if (exclude[r.id]) { notRun.push({ id: r.id, folder: r.content_folder, why: `excluded (${exclude[r.id]})` }); continue; }
     const first = (r.suite_jobs || '').split(';').filter(Boolean)[0];
     if (!first) { notRun.push({ id: r.id, folder: r.content_folder, why: 'no replay runner for this clip yet' }); continue; }
     const [suite, clip] = first.split(':');
@@ -230,7 +240,7 @@ function cardFor(sel, build, side, outDir, rep, extra) {
   }
   const card = G.scorecard({ sv, ds, clips: runs, meta: {
     createdAt: new Date().toISOString().slice(0, 16).replace('T', ' '),
-    build: { name: arg('name') || null, root: build.root, commit: build.commit, dirty: build.dirty, subject: build.subject },
+    build: { name: arg('name') || null, root: build.root, commit: build.commit, dirty: build.dirty, subject: build.subject, featureVersion: build.featureVersion },
     manifest: { sha: sel.man.sha, rows: sel.man.rows.length, path: path.join(BENCH, 'manifest.csv') },
     tier: sel.tier, split: sel.split === 'dev' ? 'dev (train + dev rows; test held out)' : sel.split, folders: arg('folders') || null,
     notRun: notRun.sort((a, b) => a.id.localeCompare(b.id)),
