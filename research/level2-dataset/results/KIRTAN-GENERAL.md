@@ -180,12 +180,12 @@ the candidates the lock logic sees (search top-4), or anywhere a better logic co
 
 Reading it: the recognizer is not silent (500-1900 chars/min), but what it hears rarely retrieves the Shabad being
 sung. Every clip whose Shabad is in the search's top 4 in >= 25% of search decodes is found (0-17 s, kh17/kh21 slower);
-every clip at <= 10% is never found or takes minutes (kh11, kh13, kh18, kh22, kh24, kh25, kh30, kh31, kh32: 9 of 20
-TRAIN+DEV clips). Over all TRAIN+DEV search decodes the sevadaar's Shabad is top-1 in ~7%, top-4 in ~11%, top-60 in
+every clip at <= 10% is never found or takes minutes (never: kh11, kh13, kh14, kh18, kh22, kh24, kh25, kh30, kh32, 9 of 20
+TRAIN+DEV clips; kh31: 100-518 s and one never). Over all TRAIN+DEV search decodes the sevadaar's Shabad is top-1 in ~7%, top-4 in ~11%, top-60 in
 ~26%. Parmaan detours are mostly not heard at all (kh27's 117 s quote: 1-3 letters per 4 s window).
 
-**Model vs logic:** about half of the Fremont Shabad-finding loss (the 9 never-found clips, ~0.45 h of 2.8 h) is the model:
-the sung Shabad never reaches the search's candidates. The rest (finds that take 50-200 s with the Shabad in the top 4
+**Model vs logic:** most of the Fremont Shabad-finding loss is the model: 9 of 20 TRAIN+DEV clips (0.55 h of 2.8 h) never
+find their Shabad because the sung Shabad almost never reaches the search's candidates (top-4 <= 10% of decodes). The rest (finds that take 50-200 s with the Shabad in the top 4
 14-32% of the time) is logic-addressable, but every text-only lock rule tried there added wrong locks elsewhere; an
 acoustic check makes earlier locks safe yet saved only seconds.
 
