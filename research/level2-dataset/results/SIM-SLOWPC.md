@@ -42,7 +42,7 @@ tiers = detached worktrees at ca4e8492 / daf855f1.
 | Rehras 0-600 | line lag median | 1.0 s (3 runs) | **1.0** / 1.2 s | 0.4 s | **0.4** / 0.5 s | same both builds; difference -0.6 s = VM -0.6 s |
 | | within 1 line | 92.2-94.9 % | **93.7** / 83.3 % | 95.0 % | **94.2** / 93.9 % | in the VM range / -0.8 pt |
 | | wrong page | 0 | **0** / 9.7 % (1370, 56 s) | 0 | **0** / 0 | same |
-| | audio backlog max / p95 | 2.94 / 0.9 s | 1.02 / 0.77 s | 0.64 / 0.26 s | 0.38 / 0 s | p95 a bit lower (JS is free in the sim) |
+| | audio backlog max / p95 | 2.94 / 0.9 s | 1.02 / 0.77 s | - / 0.26 s | 0.38 / 0 s | p95 a bit lower (JS is free in the sim) |
 | | tier | - | - | sync | sync/1 | same |
 | kh04 (4 Shabads) | right % | 81.1-82.4 | **80.7** / 83.2 | 86.8 | **86.9** / 86.9 | upstream -0.4 pt below range; tiers exact |
 | | wrong page s | 92-127 | **91** / 112 | 100 | **100** / 100 | same |
@@ -63,7 +63,7 @@ in 1 of 3 runs). The sim is deterministic: it gives ONE trajectory where the VM 
 
 The fix that followed (daf855f1, section 7), same harness:
 
-| clip (0.9x) | VM daf855f1 (2 runs) | sim js 0 | sim js 50 |
+| clip (0.9x) | VM daf855f1 (Rehras 1 run; kh04, Asa 2 runs) | sim js 0 | sim js 50 |
 |---|---|---|---|
 | Rehras 0-600: lag / within 1 / tier | 0.7 s / 95.0 % / sync -> lean (2) | 0.6 s / 94.2 % / sync (1) | **0.8 s / 94.0 % / sync -> lean (2)** |
 | kh04: right / wrong s / lag / 5393 | 82.1 % / 91 / 1.4 s / never (x2) | 82.0 % / 56 / 1.9 s / never | **80.7 % / 91 / 1.5 s / never** |
@@ -127,7 +127,13 @@ The 0.9x validation (3 builds x 3 clips) replays in 3.2 min. The overlay store a
 
 ## 5. Limitations
 
-* JS cost is a knob, not a measurement (above). Database and retrieval work cost no virtual time.
+* JS cost is a knob, not a measurement (above).
+* banidb/realm-search.js:44 retries a failed `Realm.open` after `setTimeout(resolve, 300)`. banidb runs inside the vm
+  context, so that timer is virtual, while the retry is database work the clock waits on before it moves: a Realm open
+  failure would stall the sim (it never occurred). `VF_SIM_DEBUG=1` prints the clock and what it waits on every 5 s.
+* The harness files (bench-driver.js among them) are part of vf-check's replay-reuse key: after this change every cached
+  replay recomputes once. The awaited path is unchanged: vf-check smoke, upstream vs ca4e8492, 10 clips replayed with the
+  new driver, 0 of 135 screen events differ (PASS), as in THROUGHPUT-2 section 5. Database and retrieval work cost no virtual time.
 * Deterministic: one trajectory per build/speed/clip. A threshold event the VM hits in some runs (kh04's 5393 switch)
   appears or not; run js 0 and js 50 (or neighbouring speeds) to see whether a result is on a knife edge.
 * Pass cost is linear in the window and identical for every pass; real ORT passes vary, and a real single-engine PC
