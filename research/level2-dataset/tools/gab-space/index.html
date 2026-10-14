@@ -12,15 +12,15 @@
   --bg: #fbfaf7; --panel: #ffffff; --ink: #1d1d1b; --muted: #5f5d57; --line: #e4e1d8; --accent: #1f5f8b; --accent-soft: #e6eff6;
   --warn: #8a5a00; --warn-soft: #fff3d6; --chip: #f0eee8;
   /* better / worse: Okabe-Ito bluish green and vermilion (colour-blind safe), as light tints behind dark text */
-  --better: #009e73; --worse: #d55e00; --better-ink: #00694c; --worse-ink: #a8430a; --tint: 34%;
+  --better: #1a9850; --mid: #f2c12e; --worse: #d73027; --better-ink: #13703b; --worse-ink: #b0241c; --mid-ink: #8a6a00; --tint: 34%;
   --app: #1f5f8b; --app-soft: #e6eff6;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) { --bg: #151514; --panel: #1e1e1c; --ink: #ecebe6; --muted: #a9a69c; --line: #34332f; --accent: #7fb4dc; --accent-soft: #1f2d38; --warn: #e6b450; --warn-soft: #3a2f17; --chip: #2a2926;
-    --better: #2bbf92; --worse: #f07a3a; --better-ink: #63d6ae; --worse-ink: #f39a66; --tint: 30%; --app: #9cc8ea; --app-soft: #1f2d38; }
+    --better: #3fbf6f; --mid: #e8c547; --worse: #ef5a4c; --better-ink: #7fd89e; --worse-ink: #f48a7e; --mid-ink: #e8c547; --tint: 30%; --app: #9cc8ea; --app-soft: #1f2d38; }
 }
 :root[data-theme="dark"] { --bg: #151514; --panel: #1e1e1c; --ink: #ecebe6; --muted: #a9a69c; --line: #34332f; --accent: #7fb4dc; --accent-soft: #1f2d38; --warn: #e6b450; --warn-soft: #3a2f17; --chip: #2a2926;
-  --better: #2bbf92; --worse: #f07a3a; --better-ink: #63d6ae; --worse-ink: #f39a66; --tint: 30%; --app: #9cc8ea; --app-soft: #1f2d38; }
+  --better: #3fbf6f; --mid: #e8c547; --worse: #ef5a4c; --better-ink: #7fd89e; --worse-ink: #f48a7e; --mid-ink: #e8c547; --tint: 30%; --app: #9cc8ea; --app-soft: #1f2d38; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
 .gm { font-family: "Noto Sans Gurmukhi", "Gurmukhi MN", "Raavi", "Mukta Mahee", sans-serif; font-weight: 600; }
@@ -68,12 +68,12 @@ td.who .also div { margin: 1px 0; }
 .legend .sw { display: inline-block; width: 44px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 4px; border: 1px solid var(--line); }
 .legend .sw.g { background: color-mix(in srgb, var(--better) var(--tint), var(--panel)); }
 .legend .sw.r { background: color-mix(in srgb, var(--worse) var(--tint), var(--panel)); }
-.legend .sw.grad { width: 90px; background: linear-gradient(90deg, color-mix(in srgb, var(--worse) var(--tint), var(--panel)), var(--panel), color-mix(in srgb, var(--better) var(--tint), var(--panel))); }
+.legend .sw.grad { width: 90px; background: linear-gradient(90deg, color-mix(in srgb, var(--worse) var(--tint), var(--panel)), color-mix(in srgb, var(--mid) var(--tint), var(--panel)), color-mix(in srgb, var(--better) var(--tint), var(--panel))); }
 .card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; margin: 0 0 12px; }
 .card h3 { margin: 0 0 6px; font-size: 16px; }
 .card p { margin: 6px 0; }
 code { background: var(--chip); padding: 0 4px; border-radius: 3px; font-size: 13px; }
-.ok { color: var(--better-ink); font-weight: 600; } .no { color: var(--worse-ink); font-weight: 600; }
+.ok { color: var(--better-ink); font-weight: 600; } .mid { color: var(--mid-ink); font-weight: 600; } .no { color: var(--worse-ink); font-weight: 600; }
 .chg h3 { margin-bottom: 2px; }
 .chg .vs { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
 .chg ul { margin: 4px 0; padding-left: 0; list-style: none; }
@@ -198,8 +198,11 @@ function cellHtml(r, c, sc) {
   let style = ''; let cls = 'num'; let mark = ''; let tip = '';
   if (sc && sc.varies && v != null) {
     const t = c.dir > 0 ? (v - sc.lo) / (sc.hi - sc.lo) : (sc.hi - v) / (sc.hi - sc.lo); // 1 = best, 0 = worst
-    const s = Math.abs(t - 0.5) * 2;
-    style = ` style="background: color-mix(in srgb, var(${t >= 0.5 ? '--better' : '--worse'}) calc(var(--tint) * ${s.toFixed(2)}), var(--panel))"`;
+    // Traffic-light scale: best = green, middle = yellow, worst = red.
+    const hue = t >= 0.5
+      ? `color-mix(in srgb, var(--better) ${Math.round((t - 0.5) * 200)}%, var(--mid))`
+      : `color-mix(in srgb, var(--mid) ${Math.round(t * 200)}%, var(--worse))`;
+    style = ` style="background: color-mix(in srgb, ${hue} var(--tint), var(--panel))"`;
     tip = ` title="${t === 1 ? 'best of these versions' : t === 0 ? 'worst of these versions' : 'between the best and worst of these versions'}"`;
     if (v === sc.best) { cls += ' best'; mark = '<span class="bestmark">best</span>'; }
   }
@@ -249,7 +252,7 @@ function renderBoard() {
   document.getElementById('boardTable').innerHTML = `<thead><tr><th>#</th><th>Version${tier === 'hard' ? '<span class="dir">GAB-Hard</span>' : ''}</th>${heads(mainK, cols)}</tr></thead><tbody>${body}</tbody>`;
   const anyColour = COLS.some((c) => scales[c.k].varies);
   document.getElementById('legend').innerHTML = anyColour
-    ? `<span>Best first, ranked by <b>${esc(mainC.t)}</b>.</span><span><span class="sw grad"></span>colour compares these versions with each other: <span class="ok">green-blue = better</span>, <span class="no">orange = worse</span>, plain = all the same.</span><span><span class="bestmark">best</span>= best value in that column.</span><span>Small gaps still get full colour: read the numbers.</span>${noLines ? '<span>Right pangti, Same or neighbouring pangti and Behind are left out here: no line answers yet.</span>' : ''}`
+    ? `<span>Best first, ranked by <b>${esc(mainC.t)}</b>.</span><span><span class="sw grad"></span>colour compares these versions with each other: <span class="ok">green = better</span>, <span class="mid">yellow = in between</span>, <span class="no">red = worse</span>, plain = all the same.</span><span><span class="bestmark">best</span>= best value in that column.</span><span>Small gaps still get full colour: read the numbers.</span>${noLines ? '<span>Right pangti, Same or neighbouring pangti and Behind are left out here: no line answers yet.</span>' : ''}`
     : `<span>Best first, ranked by <b>${esc(mainC.t)}</b>. Every version has the same numbers here, so nothing is coloured.</span>${noLines ? '<span>Right pangti, Same or neighbouring pangti and Behind are left out here: no line answers yet.</span>' : ''}`;
   document.getElementById('coverage').innerHTML = esc(coverage(beh));
 }
@@ -332,7 +335,7 @@ function renderChanges() {
     const nc = v.not_compared && v.not_compared.length ? `<p class="small">Not compared: ${esc(v.not_compared.join(', '))} (this version's replay there is not complete yet).</p>` : '';
     return `<div class="card chg"><h3>${nameHtml(res)}${pills(res)}</h3><p class="vs">compared with ${nameHtml(ref)} · ${summary}</p>${li ? `<ul>${li}</ul>` : ''}${infoTxt}${nc}</div>`;
   });
-  el.innerHTML = `<div class="card"><p><b>${tier === 'hard' ? 'GAB-Hard' : 'Main GAB'}.</b> Each version is compared with the version before it; an experiment is compared with the version it was made from. <span class="ok">Green-blue</span> = better, <span class="no">orange</span> = worse. A worse number is not always a mistake (it can be the price of a gain elsewhere), but it is always shown. Changes smaller than measuring noise are not listed; the replay is the same every time, so every listed change is real.</p></div>${cards.join('')}`;
+  el.innerHTML = `<div class="card"><p><b>${tier === 'hard' ? 'GAB-Hard' : 'Main GAB'}.</b> Each version is compared with the version before it; an experiment is compared with the version it was made from. <span class="ok">Green</span> = better, <span class="no">red</span> = worse. A worse number is not always a mistake (it can be the price of a gain elsewhere), but it is always shown. Changes smaller than measuring noise are not listed; the replay is the same every time, so every listed change is real.</p></div>${cards.join('')}`;
 }
 
 function renderBanis() {
