@@ -385,7 +385,7 @@ async function check() {
   // reuse saved replays of an unchanged, committed app tree (same harness, model, codec)
   const hk = harnessKey();
   // scorers + suite definitions also key the stored metrics
-  const scoreKey = sha1([hk, ...['vf-suites.js', 'rescore.js', 'bani-aware.js', 'paath-score.js', '../aarti/aarti-score.js', 'khalis-arbiter.js', 'renton-score.js', 'nw-score.js']
+  const scoreKey = sha1([hk, ...['vf-suites.js', 'rescore.js', 'bani-aware.js', 'paath-score.js', '../aarti/aarti-score.js', 'khalis-arbiter.js', 'renton-score.js', 'nw-score.js', 'sangat-score.js']
     .map((f) => fs.readFileSync(path.join(TOOLS, f), 'utf8'))].join('\0'));
   const msha = modelSha(MODEL, CACHE);
   const savedDir = (root) => { const tk = treeKey(root); return tk ? path.join(CACHE, 'replays', sha1(`${tk}|${hk}|${msha}|${CODEC}`).slice(0, 16)) : null; };
@@ -546,6 +546,19 @@ async function check() {
       for (const { j, d } of rows) say(`| ${j.suite}/${j.clip} | ${d.base.lines} | ${d.base.exact} -> ${d.cand.exact} | ${d.base.within1} -> ${d.cand.within1} | ${d.base.lagMedian} -> ${d.cand.lagMedian} | ${d.base.reached} -> ${d.cand.reached} | ${d.better} | ${d.worse} |`);
       report.lines = rows.map(({ j, d }) => ({ suite: j.suite, clip: j.clip, ...d }));
     }
+  }
+  // Sangat view (sangat-score.js): what the hall sees, one scorer for every suite, text-compared against the
+  // benchmark truth (lines.csv / shabads.csv); human-keyed vs aligned-keyed rows kept apart. Info only.
+  {
+    const sv = require('./sangat-score');
+    try {
+      const r = sv.compareSides(jobs, (side, j) => path.join(outRoot, side, j.suite, 'trace', `${j.id}.events.jsonl`));
+      say('');
+      say('Sangat view (ON + catching up, % of the time a pangti / Shabad is being sung or read; truth = human or aligned):');
+      r.lines.forEach((l) => say(l));
+      report.sangat = { groups: r.groups, clips: r.clips };
+    } catch (e) { say(`(sangat view failed: ${String(e.message).split('\n')[0]})`); }
+    sv.close();
   }
   if (missed.length) { say(''); say(`CACHE MISSES (no model was run; rerun with --fill or vf-check --record): ${missed.map((t) => t.key).join(' ')}`); }
   if (failed.length) { say(''); say('ERRORS:'); for (const t of failed) say(`  ${t.key}: ${t.err}`); }

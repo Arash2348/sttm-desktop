@@ -41,8 +41,34 @@ node vf-check.js --manifest ... --cand ... --plan
 Output (`research/level2-dataset/results/vf-check/manifest-<time>/`, or `--out`):
 
 * `scorecard.md` / `scorecard.json` — one row per content folder, the four questions as columns:
-  1. found within 10 s / wrong page, 2. on the right line or turning to it, 3. seconds behind, 4. seconds to the new
-  Shabad / wrong switches. Each cell is the suite scorer's own metric(s) by name, or `not measured`.
+  1. found within 10 s / wrong page, 2. **sangat sees the right pangti** (the sangat view, below), 3. seconds behind,
+  4. seconds to the new Shabad / wrong switches. Questions 1, 3, 4 are the suite scorers' own metrics by name; the
+  suites' old line metrics (line exact / within 1 / heard line) are kept in `scorecard.json` as `old_right_line`.
+  Every cell is a measured value or `not measured`.
+
+## The sangat view (`sangat-score.js`)
+
+One scorer for every suite: what the people in the hall see, time-weighted over the seconds a pangti is being sung
+or read (the clip's `lines.csv` windows; aligned rows only with check >= 0.6). The screen is compared by
+**normalised text** (Gurmukhi letters only), so the same words under another Shabad/Bani id count (Shabad 51 vs the
+Aarti Bani row, Sohila's 2533 copy, So Dar 40 vs Asa 1368); copies with a letter or vowel-sign difference count too,
+but two texts that both occur in one Shabad/Bani never do (Jaap Sahib's short half-lines stay apart).
+Buckets: ON, CATCHING UP (previous pangti, true one started < 1.0 s ago; or the next one, starting in < 1.0 s),
+BEHIND / AHEAD (one pangti off longer), LOST (same Shabad/Bani, 2+ away), WRONG PAGE, BLANK (nothing / Waheguru).
+Headline = ON + CATCHING UP %. Also wrong-page s/h, catch-up lag p50/p90, longest not-ON stretch, stuck > 3 s.
+Clips with only Shabad truth (Level-2 kirtan, Aarti-50, paath) are scored at Shabad level ("right Shabad/Bani text
+up"; line level not available). Every row says whether its truth is **human** (headline) or **aligned** (forced
+alignment with our own model: secondary, never the headline).
+
+```
+node sangat-score.js --run <any bench output dir> --dataset <local copy of the dataset>      # vf-check side dir, renton / kh / l2 result dirs
+node sangat-score.js --events <trace.jsonl | run.json> --clip rt11_aarti --window 26-121 --explain --samples 5
+node vf-check.js --manifest <manifest.csv> --from <existing replay dir, e.g. results/vf-check/<run>/cand>   # scorecard without replaying
+```
+
+`--dataset` / `VF_BENCHMARK` = a local copy of the dataset (`manifest.csv` + `<folder>/<id>/lines.csv, shabads.csv`;
+audio not needed); `vf-check --manifest` uses the manifest's own folder, or fetches the csv files for `hf:`.
+`vf-check --base/--cand` prints a base -> candidate sangat table after the line table (information, never fails).
 * `cand/<suite>/<clip>.json` + `cand/<suite>/trace/<clip>.events.jsonl` — every screen event, transcript and judge trace.
 * `score/<folder>/<suite>/` — the per-folder scoring directories (what the scorer saw).
 
