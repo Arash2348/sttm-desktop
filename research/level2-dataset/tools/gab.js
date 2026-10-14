@@ -12,7 +12,9 @@
  *   gab fill [--root <build>] [--plan] [--no-push]        -> pull from Azure, then record (model) only what is in
  *                                                             neither place, then push it to Azure
  *   gab ingest [--dry-run] [--push]                       -> pull new Jaspal recordings, rebuild the manifest, fill plan
- *   gab publish <scorecard.json> --name "<build name>"    -> append a row to the leaderboard in the HF dataset README
+ *   gab publish <main scorecard.json> --hard <hard scorecard.json> --name "<build name>"  -> one row (both tiers) on the
+ *                                                             leaderboard Space + the dataset card's short table
+ *   gab publish --batch <batch.json>                      -> every build in one commit (after a GAB version change)
  *   gab harvest [...]                                      -> Azure sessions -> review queue (gab-harvest.js)
  *   gab review [--queue <dir>] [--port 8771]              -> yes/no ear-check app over a review queue (gab-review.js)
  *

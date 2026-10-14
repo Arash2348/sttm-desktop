@@ -140,8 +140,8 @@ from huggingface_hub import HfApi, CommitOperationAdd, CommitOperationDelete
 api = HfApi(token=os.environ['HF_TOKEN'])
 repo, typ, msg, s = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
 ops = [CommitOperationAdd(dst, os.path.join(s, src)) if src else CommitOperationDelete(dst) for dst, src in json.load(open(os.path.join(s, 'ops.json')))]
-api.create_commit(repo_id=repo, repo_type=typ, operations=ops, commit_message=msg)
-print('committed', len(ops), 'files to', repo)
+r = api.create_commit(repo_id=repo, repo_type=typ, operations=ops, commit_message=msg)
+print('committed', len(ops), 'files to', repo, r.oid)
 `;
   fs.writeFileSync(path.join(S, 'push.py'), py);
   fs.writeFileSync(path.join(S, 'ops.json'), JSON.stringify(ops));
