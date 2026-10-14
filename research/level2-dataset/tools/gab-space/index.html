@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GAB Leaderboard</title>
+<style>
+:root {
+  --bg: #fbfaf7; --panel: #ffffff; --ink: #1d1d1b; --muted: #5f5d57; --line: #e4e1d8; --accent: #1f5f8b; --accent-soft: #e6eff6;
+  --good: #1e6b3a; --warn: #8a5a00; --warn-soft: #fff3d6; --chip: #f0eee8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #151514; --panel: #1e1e1c; --ink: #ecebe6; --muted: #a9a69c; --line: #34332f; --accent: #7fb4dc; --accent-soft: #1f2d38; --good: #7fcf98; --warn: #e6b450; --warn-soft: #3a2f17; --chip: #2a2926; }
+}
+:root[data-theme="dark"] { --bg: #151514; --panel: #1e1e1c; --ink: #ecebe6; --muted: #a9a69c; --line: #34332f; --accent: #7fb4dc; --accent-soft: #1f2d38; --good: #7fcf98; --warn: #e6b450; --warn-soft: #3a2f17; --chip: #2a2926; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { padding: 24px 16px 8px; max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 24px; margin: 0 0 4px; }
+.sub { color: var(--muted); margin: 0; }
+nav { max-width: 1200px; margin: 12px auto 0; padding: 0 16px; display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
+nav button { background: none; border: 0; border-bottom: 2px solid transparent; padding: 8px 10px; color: var(--muted); font: inherit; cursor: pointer; }
+nav button.on { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
+main { max-width: 1200px; margin: 0 auto; padding: 16px; }
+section { display: none; } section.on { display: block; }
+.pills { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0 12px; }
+.pills button { border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 5px 12px; font: inherit; cursor: pointer; }
+.pills button.on { background: var(--accent-soft); border-color: var(--accent); }
+.wrap { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { font-size: 13px; color: var(--muted); font-weight: 600; white-space: nowrap; cursor: pointer; user-select: none; background: var(--panel); position: sticky; top: 0; }
+th .dir { font-weight: 400; font-size: 11px; display: block; color: var(--muted); }
+td.num { text-align: right; white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td:first-child { min-width: 190px; }
+.n { color: var(--muted); font-size: 12px; display: block; }
+.chip { display: inline-block; background: var(--chip); border-radius: 4px; padding: 0 6px; font-size: 12px; color: var(--muted); }
+.cand { background: var(--warn-soft); color: var(--warn); }
+.thin { color: var(--warn); font-size: 12px; }
+.note { color: var(--muted); font-size: 13px; margin: 10px 2px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; margin: 0 0 12px; }
+.card h3 { margin: 0 0 6px; font-size: 16px; }
+.card p { margin: 6px 0; }
+code { background: var(--chip); padding: 0 4px; border-radius: 3px; font-size: 13px; }
+.ok { color: var(--good); font-weight: 600; } .no { color: var(--warn); font-weight: 600; }
+@media (max-width: 640px) { th, td { padding: 6px 8px; font-size: 13px; } h1 { font-size: 20px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>GAB: Gurbani Autopilot Bench</h1>
+  <p class="sub">How well each version of STTM Desktop Voice-Follow keeps the right Gurbani on screen, tested on the same recordings. <span id="meta"></span></p>
+</header>
+<nav id="tabs">
+  <button data-tab="board" class="on">Leaderboard</button>
+  <button data-tab="banis">Per Bani</button>
+  <button data-tab="sets">Old numbers, checked</button>
+  <button data-tab="about">About / how to read this</button>
+</nav>
+<main>
+  <section id="board" class="on">
+    <div class="pills" id="behaviours"></div>
+    <div class="wrap"><table id="boardTable"></table></div>
+    <p class="note" id="coverage"></p>
+  </section>
+  <section id="banis">
+    <div class="pills" id="buildPick"></div>
+    <div class="wrap"><table id="baniTable"></table></div>
+    <p class="note">Each row is one Bani or one group of recordings, for the build picked above. "no clips yet" means the practice set has no recording of it; that is a gap in the data, not a score.</p>
+  </section>
+  <section id="sets">
+    <div id="reconcile"></div>
+  </section>
+  <section id="about">
+    <div id="aboutText"></div>
+  </section>
+</main>
+<script>
+const BEH = [
+  { key: '1-kirtan-shabad', name: 'Kirtan of a Shabad' },
+  { key: '2-bani-recited', name: 'Bani recited (paath)' },
+  { key: '3-bani-sung-like-kirtan', name: 'Bani sung like kirtan' },
+  { key: '4-akhand-paath', name: 'Akhand Paath (Ang after Ang)' },
+];
+const BASIS = { human: 'human answers', 'aligned+ear-checked': 'aligner, ear-checked', aligned: 'aligner only (not a headline)' };
+const COLS = [
+  { k: 'right_shabad_pct', t: 'Right Shabad or Bani on screen', u: '%', dir: 'higher is better', n: (r) => `${r.shabad_clips} clips, human answers` },
+  { k: 'pangti_pct', t: 'Sangat sees the right pangti', u: '%', dir: 'higher is better', n: (r) => r.pangti_basis ? `${r.pangti_clips} clips${r.pangti_never_shown ? ` (+${r.pangti_never_shown} never shown)` : ''}, ${BASIS[r.pangti_basis]}` : 'no line answers' },
+  { k: 'behind_p50_s', t: 'Seconds behind (typical / worst 10%)', u: ' s', dir: 'lower is better', two: 'behind_p90_s', n: (r) => r.behind_n ? `${r.behind_n} pangtis, ${BASIS[r.pangti_basis]}` : '' },
+  { k: 'wrong_s_per_h', t: 'Seconds of wrong Shabad per hour', u: '', dir: 'lower is better', n: (r) => `${r.hours} h` },
+  { k: 'find_p50_s', t: 'Seconds to find (typical / worst 10%)', u: ' s', dir: 'lower is better', two: 'find_p90_s', n: (r) => r.find_n ? `n ${r.find_n}${r.not_found ? `, ${r.not_found} never found` : ''}` : '' },
+  { k: 'switch_p50_s', t: 'Seconds to switch (typical / worst 10%)', u: ' s', dir: 'lower is better', two: 'switch_p90_s', n: (r) => r.switch_n ? `n ${r.switch_n}${r.switch_missed ? `, ${r.switch_missed} never` : ''}` : 'no switch in these clips' },
+];
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const fmt = (v, u) => (v == null ? '–' : `${v}${u || ''}`);
+let RESULTS = []; let beh = BEH[0].key; let sortKey = null; let sortDir = 1; let pick = null;
+
+function rowOf(res, key) { return (res.rows || []).find((r) => r.key === key) || null; }
+function thinMark(r, k) { const map = { pangti_pct: 'pangti_clips', behind_p50_s: 'pangti_clips', find_p50_s: 'find_n', switch_p50_s: 'switch_n' }; return r.thin && r.thin.includes(map[k]) ? ' <span class="thin" title="fewer than 3 clips or events behind this number">thin</span>' : ''; }
+
+function renderBoard() {
+  document.getElementById('behaviours').innerHTML = BEH.map((b) => `<button data-b="${b.key}" class="${b.key === beh ? 'on' : ''}">${esc(b.name)}</button>`).join('');
+  const t = document.getElementById('boardTable');
+  const head = `<tr><th data-s="name">Build</th><th data-s="date">Date</th>${COLS.map((c) => `<th data-s="${c.k}">${esc(c.t)}<span class="dir">${c.dir}</span></th>`).join('')}</tr>`;
+  let list = RESULTS.map((res) => ({ res, r: rowOf(res, beh) }));
+  if (sortKey) list.sort((a, b) => { const x = sortKey === 'name' || sortKey === 'date' ? a.res[sortKey === 'name' ? 'name' : 'date'] : a.r && a.r[sortKey]; const y = sortKey === 'name' || sortKey === 'date' ? b.res[sortKey === 'name' ? 'name' : 'date'] : b.r && b.r[sortKey]; if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : x < y ? -1 : 0) * sortDir; });
+  const body = list.map(({ res, r }) => {
+    const nm = `<b>${esc(res.name)}</b><span class="n">${esc(res.commit)} · Voice-Follow ${esc(res.vf_feature_version || 'not stamped')} · ${esc(res.gab)} · ${esc(res.split)}</span>${res.status !== 'merged' ? `<span class="chip cand">${esc(res.status)}</span>` : '<span class="chip">merged</span>'}${res.note ? `<span class="n">${esc(res.note)}</span>` : ''}`;
+    if (!r || !r.clips) return `<tr><td>${nm}</td><td>${esc(res.date)}</td><td colspan="${COLS.length}" class="note">${esc((r && r.note) || 'not tested')}</td></tr>`;
+    return `<tr><td>${nm}</td><td>${esc(res.date)}</td>${COLS.map((c) => `<td class="num">${fmt(r[c.k], c.u)}${c.two && r[c.two] != null ? ` / ${fmt(r[c.two], c.u)}` : ''}${thinMark(r, c.k)}<span class="n">${esc(c.n(r))}</span></td>`).join('')}</tr>`;
+  }).join('');
+  t.innerHTML = `<thead>${head}</thead><tbody>${body}</tbody>`;
+  const any = RESULTS.map((x) => rowOf(x, beh)).find((r) => r && r.clips);
+  const cov = {
+    '1-kirtan-shabad': 'Right Shabad % rests on the Level-2 sheet (41 livestream clips from Renton, Fremont and Darbar Sahib) and 20 Fremont recordings made on the sevadaar\'s laptop in the hall. The pangti and seconds-behind numbers rest only on the Fremont laptop recordings (the sevadaar\'s screen is the answer key), so they describe a room microphone at one Gurdwara.',
+    '2-bani-recited': 'Right Bani % rests on 45 short (70 s) cuts of recited Nitnem from YouTube, scored on the 30 s a person labelled. Only one clip (a Japji cut) has line-by-line answers, made by our aligner, so the pangti and seconds-behind numbers here are thin and not a headline. The Renton Rehras and Sohila recordings where we reported 0.4 s behind are in the held-out test set and never shown here (see "Old numbers, checked").',
+    '3-bani-sung-like-kirtan': 'Right Bani % rests on 45 Aarti recordings (Renton hall, Darbar Sahib, YouTube; started cold at many points) and one Asa di Vaar cut. Only the Asa di Vaar cut has line answers (aligner only). The switch column is mostly Aarti ending and the next Shabad (Phunhe) starting.',
+    '4-akhand-paath': 'No runner yet: the Sehaj Paath clips have the Shabads of each Ang in order but no times, so nothing is scored.',
+  }[beh];
+  document.getElementById('coverage').innerHTML = `${esc(cov)}${any ? ` Same recordings for every build: ${any.clips} clips, ${any.hours} h.` : ''} Click a column title to sort.`;
+}
+function renderBanis() {
+  if (!pick && RESULTS.length) pick = RESULTS[RESULTS.length - 1].slug;
+  document.getElementById('buildPick').innerHTML = RESULTS.map((r) => `<button data-p="${r.slug}" class="${r.slug === pick ? 'on' : ''}">${esc(r.name)}</button>`).join('');
+  const res = RESULTS.find((r) => r.slug === pick);
+  if (!res) return;
+  const rows = res.rows.filter((r) => r.level === 'behaviour' || r.level === 'bani' || r.level === 'set');
+  document.getElementById('baniTable').innerHTML = `<thead><tr><th>Bani or group</th><th>Clips · hours</th>${COLS.map((c) => `<th>${esc(c.t)}<span class="dir">${c.dir}</span></th>`).join('')}</tr></thead><tbody>${rows.map((r) => {
+    const name = r.level === 'behaviour' ? `<b>${esc(r.title)}</b>` : r.level === 'set' ? `<i>${esc(r.title)}</i>` : `&nbsp;&nbsp;${esc(r.title)}`;
+    if (!r.clips) return `<tr><td>${name}</td><td colspan="${COLS.length + 1}" class="note">${esc(r.note || 'no clips yet')}</td></tr>`;
+    return `<tr><td>${name}</td><td class="num">${r.clips} · ${r.hours} h</td>${COLS.map((c) => `<td class="num">${fmt(r[c.k], c.u)}${c.two && r[c.two] != null ? ` / ${fmt(r[c.two], c.u)}` : ''}${thinMark(r, c.k)}<span class="n">${esc(c.n(r))}</span></td>`).join('')}</tr>`;
+  }).join('')}</tbody>`;
+}
+async function renderReconcile() {
+  const el = document.getElementById('reconcile');
+  try {
+    const R = await (await fetch('reconcile.json', { cache: 'no-store' })).json();
+    el.innerHTML = `<div class="card"><h3>${esc(R.title)}</h3><p>${esc(R.intro)}</p></div><div class="wrap"><table><thead><tr><th>What we reported</th><th>Old number</th><th>Where it was measured</th><th>GAB now (same clips, same build)</th><th>Match?</th><th>Why it differs / note</th></tr></thead><tbody>${R.rows.map((x) => `<tr><td>${esc(x.what)}</td><td class="num">${esc(x.old)}</td><td>${esc(x.where)}</td><td class="num">${esc(x.gab)}</td><td class="${x.match === 'yes' ? 'ok' : 'no'}">${esc(x.match)}</td><td>${esc(x.why)}</td></tr>`).join('')}</tbody></table></div><p class="note">${esc(R.footer || '')}</p>`;
+  } catch (e) { el.innerHTML = '<p class="note">reconcile.json not found.</p>'; }
+}
+async function renderAbout() {
+  try { document.getElementById('aboutText').innerHTML = await (await fetch('about.html', { cache: 'no-store' })).text(); } catch (e) { /* none */ }
+}
+document.getElementById('tabs').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; document.querySelectorAll('nav button').forEach((x) => x.classList.toggle('on', x === b)); document.querySelectorAll('section').forEach((s) => s.classList.toggle('on', s.id === b.dataset.tab)); });
+document.getElementById('behaviours').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; beh = b.dataset.b; renderBoard(); });
+document.getElementById('boardTable').addEventListener('click', (e) => { const th = e.target.closest('th'); if (!th) return; const k = th.dataset.s; sortDir = sortKey === k ? -sortDir : (COLS.find((c) => c.k === k) && COLS.find((c) => c.k === k).dir.startsWith('higher') ? -1 : 1); sortKey = k; renderBoard(); });
+document.getElementById('buildPick').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; pick = b.dataset.p; renderBanis(); });
+(async () => {
+  try {
+    const idx = await (await fetch('results/index.json', { cache: 'no-store' })).json();
+    RESULTS = (await Promise.all(idx.results.map(async (x) => ({ ...x, ...(await (await fetch(`results/${x.file}`, { cache: 'no-store' })).json()) })))).sort((a, b) => (a.order ?? 99) - (b.order ?? 99) || a.date.localeCompare(b.date));
+    document.getElementById('meta').textContent = `${RESULTS.length} builds · practice set (train + dev recordings; the held-out test set is never shown).`;
+  } catch (e) { document.getElementById('meta').textContent = 'could not load results'; }
+  renderBoard(); renderBanis(); renderReconcile(); renderAbout();
+})();
+</script>
+</body>
+</html>
