@@ -72,7 +72,7 @@ async function fetchTruth(repo, rows) {
 }
 // smoke tier: ~1 min; per split (test smoke only with --split test). Mixer feed + room mic in every folder that has both.
 const SMOKE = {
-  dev: ['clip02', 'clip05', 'clip13', 'pt01', 'pt19', 'pt28', 'pt35', 'pt52', 'kh14_sttm_desktop_2026_10_11T13_42_38_291Z', 'kh24_sttm_desktop_2026_10_13T02_34_02_550Z'],
+  dev: ['clip02', 'clip05', 'clip13', 'pt01', 'pt19', 'pt28', 'pt35', 'pt52', 'kh14_sttm_desktop_2026_10_11T13_42_38_291Z', 'kh29_sttm_desktop_2026_10_13T03_13_38_540Z'],
   test: ['kh05_sttm_desktop_2026_10_08T04_05_00_105Z', 'rt11_hukamnama', 'rt11_sohila', 'nw11_kirtan2'],
 };
 
