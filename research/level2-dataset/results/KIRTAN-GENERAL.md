@@ -96,3 +96,102 @@ Caveat, said up front: parmaan detours are few (5 train, 1 dev, 7 test), so deto
 
 Sparse truth (1-2 verse changes): kh14, kh24, kh25, kh26, kh30 (the sevadaar held one line or left the Shabad's first
 line up); they count at Shabad level and barely at line level.
+
+### Update after ingest checks
+
+* **kh06 is an audio problem**: the recording on the Hub is digital silence (max |sample| 9 of 32768, rms -119 dBFS), not
+  a model or logic failure. hf-ingest.js now measures every recording and keeps such files out of scoring
+  (`audioProblem` in the ledger). TEST is therefore 9 scored clips (1.19 h, 5 parmaan detours). All other recordings
+  are -15 to -33 dBFS with no clipping.
+* Uploads (approved by the coordinator under the user's instructions): the new clip folders + manifest/README are in the
+  private HF benchmark (now `khalisfoundation/GurbaniAutopilotBench`), and the new cache entries (TRAIN, DEV, TEST, both
+  roots) are on the Khalis Azure bench-cache (10.7 GB total there).
+
+## Phase 2: stopped by the user (audio is the main limit); no app code changed on this branch
+
+What was tried, offline only (tools/search-sim.js replays the search phase's first-lock decision from traces;
+nothing shipped):
+
+| first-lock rule (TRAIN+DEV episodes, + L2-41 / Aarti-50 / Renton for safety) | locks earlier | new wrong locks | note |
+|---|---|---|---|
+| one pangti (two-verse gate dropped) | 6 | 2 Fremont + aa18 (3732) | the known aa18 wrong lock |
+| one pangti + acoustic check (winner's best line CTC beats the other text candidates' by >= 0.05) | 3 Fremont, 3 L2 | 0 anywhere | saves 0.5-2.6 s only |
+| breadth of verses over 20-30 s (with or without the acoustic check) | 0-4 | 1-3 (a long generic Shabad, 3406) | rejected |
+| sub-window / adjacent-line-pair text queries | | | truth rank worse (top-1 6.7 -> 4.7 %) |
+
+## Held-out scoring of the line-hold fix (747cb093) vs upstream experimental-release (2cb8b003)
+
+Cached replay, jaspal suite (`vf-check --suites jaspal --split dev,test --fill`), honest scorers: kirtan-score.js
+(Shabad level copy/Bani-aware; line level = sangat-score ON + catching up within 1 s, sevadaar-screen truth).
+
+| split | clips / h | Shabad right % | Shabad wrong % | searching % | sangat line % (right pangti) | catch-up lag p50 s | find median / p90 s | not found | wrong switches |
+|---|---|---|---|---|---|---|---|---|---|
+| DEV upstream | 11 / 1.31 | 61.1 | 6.8 | 32.1 | 64.0 | 2.13 | 14.9 / 51.7 | 6 | 0 |
+| DEV 747cb093 | | 61.1 | 6.8 | 32.1 | **73.1** | 1.66 | same | 6 | 0 |
+| TEST upstream | 9 / 1.19 | 85.7 | 5.2 | 9.2 | 65.5 | 1.47 | 8 / 91.9 | 2 | 0 |
+| TEST 747cb093 | | 85.7 | 5.2 | 9.2 | **72.7** | 1.13 | same | 2 | 0 |
+
+Per clip (sangat line %, upstream -> 747cb093): TEST kh01 35.5->51.6, kh02 81.6->81.4, kh03 74.9->78.1, kh04 54.5->76.1,
+kh05 47.3->51.5, and the never-seen kh07 37.2->40.7, kh08 81.5->82.7, kh09 16.6->18.0, kh10 84.5->84.6; DEV kh12
+71.5->82.2, kh15 70.5->93.9, kh26 26.6->26.6, kh27 49.6->58.8, kh28 88.0->89.3, kh29 44.5->54.0 (kh11/13/14/24/25:
+Shabad never found, no line level). No clip is worse by more than 0.2 pt; the fix changes only the line follower, so
+Shabad level, finding, parmaan and wrong switches are identical. **TEST agrees with DEV** (+7.2 vs +9.1 pt), including the
+four TEST clips nobody tuned on (kh07-kh10: all equal or better).
+
+30 ear-check moments (tools/ear-check.js, re-scored on the same replays): sevadaar-right moments now right 0/25 ->
+14/25 (8 -> 243 s on the sevadaar's line); "instruments only, keep the line" 3/3 -> 2/3 (scored as "the line did not
+change during the window"); 2 unsure. These come from kh01-kh05 (TEST) and were tuned on by the line-hold work, so they
+are a no-regression check, not held-out evidence; kh07-kh10 and DEV are the held-out evidence.
+
+## Model vs logic (tools/kirtan-ceiling.js)
+
+Over the app's search decodes (nothing locked, or the Waheguru slide up), how often was the sevadaar's Shabad among
+the candidates the lock logic sees (search top-4), or anywhere a better logic could see it (text index top-60)?
+
+| clip | split | min | heard chars/min | search decodes | sevadaar Shabad top-1 / top-4 / top-60 (%) | time to find each new Shabad (s) | Shabad right % |
+|---|---|---|---|---|---|---|---|
+| kh11 | dev | 7.7 | 1929 | 740 | 4 / 8 / 18 | never | 0 |
+| kh12 | dev | 14.4 | 588 | 16 | 13 / 38 / 50 | 0 | 97.8 |
+| kh13 | dev | 8.1 | 1263 | 654 | 6 / 10 / 22 | never | 0 |
+| kh14 | dev | 1.0 | 990 | 66 | 18 / 18 / 42 | never | 0 |
+| kh15 | dev | 6.5 | 810 | 24 | 25 / 33 / 50 | 12.5 | 96.8 |
+| kh17 | train | 15.2 | 1042 | 220 | 22 / 32 / 57 | 98.4 | 67.1 |
+| kh18 | train | 6.9 | 1889 | 648 | 2 / 5 / 12 | never | 0 |
+| kh19 | train | 6.7 | 1407 | 158 | 18 / 23 / 57 | 87.4 | 78.3 |
+| kh20 | train | 12.5 | 1045 | 314 | 7 / 14 / 36 | 206.7 | 64.0 |
+| kh21 | train | 6.0 | 1204 | 208 | 18 / 28 / 50 | 125.5 | 65.0 |
+| kh22 | train | 3.5 | 1580 | 266 | 0 / 4 / 8 | never | 0 |
+| kh24 | dev | 2.4 | 827 | 102 | 0 / 0 / 0 | never | 0 |
+| kh25 | dev | 1.5 | 1428 | 136 | 0 / 3 / 22 | never | 0 |
+| kh26 | dev | 4.2 | 591 | 30 | 40 / 40 / 67 | 14.9, never | 26.2 |
+| kh27 | dev | 11.0 | 845 | 90 | 9 / 11 / 56 | 51.7 | 74.5 |
+| kh28 | dev | 10.0 | 515 | 0 | - | 0 | 100 |
+| kh29 | dev | 3.8 | 766 | 18 | 33 / 56 / 67 | 16.9 | 92.5 |
+| kh30 | train | 1.2 | 772 | 52 | 0 / 0 / 0 | never | 0 |
+| kh31 | train | 32.9 | 548 | 432 | 2 / 3 / 11 | 100.4, 518.1, never | 36.5 |
+| kh32 | train | 0.6 | 1624 | 56 | 0 / 0 / 7 | never | 0 |
+| kh01 | test | 9.3 | 1102 | 158 | 10 / 19 / 48 | 91.9 | 83.6 |
+| kh03 | test | 8.7 | 869 | 110 | 18 / 25 / 51 | 59.1 | 88.7 |
+| kh04 | test | 12.7 | 760 | 48 | 8 / 13 / 21 | 0 | 80.7 |
+| kh05 | test | 3.0 | 1922 | 160 | 13 / 18 / 31 | 81.3 | 55.6 |
+| kh07 | test | 1.9 | 905 | 80 | 20 / 23 / 43 | never, 4.6 | 52.4 |
+| kh08 | test | 10.4 | 692 | 8 | 75 / 100 / 100 | 5.6 | 99.1 |
+| kh09 | test | 1.5 | 903 | 16 | 63 / 75 / 88 | 8, never | 25.8 |
+
+Reading it: the recognizer is not silent (500-1900 chars/min), but what it hears rarely retrieves the Shabad being
+sung. Every clip whose Shabad is in the search's top 4 in >= 25% of search decodes is found (0-17 s, kh17/kh21 slower);
+every clip at <= 10% is never found or takes minutes (kh11, kh13, kh18, kh22, kh24, kh25, kh30, kh31, kh32: 9 of 20
+TRAIN+DEV clips). Over all TRAIN+DEV search decodes the sevadaar's Shabad is top-1 in ~7%, top-4 in ~11%, top-60 in
+~26%. Parmaan detours are mostly not heard at all (kh27's 117 s quote: 1-3 letters per 4 s window).
+
+**Model vs logic:** about half of the Fremont Shabad-finding loss (the 9 never-found clips, ~0.45 h of 2.8 h) is the model:
+the sung Shabad never reaches the search's candidates. The rest (finds that take 50-200 s with the Shabad in the top 4
+14-32% of the time) is logic-addressable, but every text-only lock rule tried there added wrong locks elsewhere; an
+acoustic check makes earlier locks safe yet saved only seconds.
+
+## What limited this work
+
+* Audio/model: see the table. Fremont laptop-mic kirtan transcripts rarely contain retrievable text for the sung
+  Shabad; parmaan quotes are often inaudible to the model. A better kirtan model (or front-end) is the lever.
+* Data: one Gurdwara only; 7 sessions (2 train, 3 dev, 2 test); 11 parmaan detours in total (5 train, 1 dev, 5 test).
+* Phase 2 tuning was stopped by the user after the data showed the model limit; no app code changed on this branch.
