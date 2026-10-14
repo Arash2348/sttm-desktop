@@ -98,7 +98,7 @@ async function pool(planFile) {
 // Run a plan. Model work (record/fill: `threads` set) takes the exclusive bench lock.
 // Replay-only plans (no model) take one of REPLAY_SLOTS shared slots instead, so several agents'
 // replays run side by side (each capped at 4 workers) instead of queueing behind one another.
-const REPLAY_SLOTS = Number(process.env.VF_REPLAY_SLOTS || 2);
+const REPLAY_SLOTS = Number(process.env.VF_REPLAY_SLOTS || 3);
 function runLocked(plan, file, { threads } = {}) {
   const replayOnly = !threads;
   if (replayOnly) plan = { ...plan, jobs: Math.min(plan.jobs, 4) };
