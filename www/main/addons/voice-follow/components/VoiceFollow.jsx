@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 
@@ -6,9 +7,12 @@ import { filterRequiredVerseItems } from '../../../navigator/shabad/utils/filter
 import { loadBani as loadBaniRows } from '../../../navigator/utils/load-bani';
 import { useNewShabad } from '../../../navigator/search/hooks/use-new-shabad';
 import updateMultipane from '../../../navigator/search/utils/update-multipane';
+import { VoiceWave } from '../../../common/sttm-ui';
+import { i18n } from '../../../common/i18n';
+import { useAutopilotSlot } from './autopilotSlot';
 
 const anvaad = require('anvaad-js');
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, shell } = require('electron');
 const banidb = require('../../../banidb');
 const { slideStrings } = require('../../../common/constants/slidedb');
 // In-process native engine (onnxruntime-node): no Python sidecar, no websocket.
@@ -126,6 +130,12 @@ const AP_LOCK_STABLE = 2; // hold the lead this many decodes before the first lo
 // coin flip that then costs ~40 s to undo. Level 2 benchmark: every correct first
 // lock had a margin >= 0.12 over the runner-up; the one wrong lock had 0.00.
 const AP_LOCK_TEXT_MARGIN = 0.08;
+// First-lock line evidence: two different verses of the Shabad, or one decisive decode
+// (anchor). The panel's progress uses the same gate, so it only reaches 100% when a lock can
+// fire (without it the bar stops at 70%). A one-verse route was tried for kirtan that dwells on
+// one pangti (Fremont first locks 105 -> 40 s) but wrong-locked a Sep 27 Aarti clip (3732 for
+// 8875) that no text-only check separated; it needs an independent (acoustic) check first.
+const lineEvidenceOk = (c) => c.anchor || c.verses.size >= 2;
 const VOTE_CAP = 60; // clamp votes so a long shabad can't become impossible to switch away from
 // The recognizer WINDOW is a two-sided lever, so autopilot uses a DIFFERENT one
 // per phase (goal: each capability as good as its dedicated feature):
@@ -144,6 +154,15 @@ const AP_SEARCH_WIN_S = 10; // recognizer window while SEARCHING (matches standa
 // recall 85->83) and was ~a wash on the 9s stress stream — not voice-agnostic, so 4 stays.
 const AP_FOLLOW_WIN_S = 4; // recognizer window while FOLLOWING (fast switching)
 const AP_REC_HOP_S = 0.5; // recognizer decode hop while in autopilot
+// Audio the engines have not consumed yet is a backlog: recognised text (and the screen)
+// is that far behind the room. On a computer that decodes slower than real time it
+// would grow without limit (5-10 s per minute at a Gurdwara PC, 50-84 s by the end of a
+// Bani) and only a Stop/Start cleared it. Past this bound every chunk still waiting is
+// handed to the engines in ONE push: their sliding windows stay contiguous (no audio is
+// dropped, so no spliced window can match a wrong page) and each decodes once, on the
+// newest window, instead of once per hop over audio that is already stale.
+const AUDIO_BACKLOG_S = 1.0;
+const AUDIO_BACKLOG_NOTE_MS = 10000; // backlog events at most this often
 
 // Acoustic switch test (runs while following). Each recognizer decode we score the
 // recent decoded audio against the CURRENT shabad's lines and against a proposed
@@ -275,12 +294,15 @@ const PAATH_POOL_HITS = 5;
 // the same score floor fires on no kirtan cold start (41 Level 2 clips) that 5 of 8 did not.
 const PAATH_POOL_HITS_BY_BANI = { [AARTI_BANI]: 4 };
 const PAATH_POOL_TEXT_MIN = 0.2; // minimum full-text score of that top line
-// Rehras is followed at the long length by default: the long Rehras contains the short
-// one plus long readers' opening ("Har jug jug bhagat upaya" and its salok) and the extra
-// Dasam shabads, so both kinds of reader are followed from the first line. While Rehras
-// is open the Bani length is raised to this (never lowered) and restored when it ends.
+// Rehras is followed at the extra-long length by default: it contains every shorter
+// Rehras (the long readers' opening "Har jug jug bhagat upaya" and its salok, the extra
+// Dasam shabads) plus the Chaupai pauris and dohras some gurdwaras (Renton) read; a
+// reader of any length is then followed from the first line, and the paath follower
+// steps over the lines a shorter reader leaves out. (The Taksal list's only lines the
+// extra-long one lacks are three headers and a repeated dohra.) While Rehras is open the
+// Bani length is raised to this (never lowered) and restored when it ends.
 const REHRAS_BANI = 21;
-const REHRAS_LENGTH = 'long';
+const REHRAS_LENGTH = 'extralong';
 const LENGTH_ORDER = ['short', 'medium', 'long', 'extralong'];
 // Aarti likewise is followed at the extra-long length: a sung Aarti (Renton) runs through
 // pieces the short list lacks (Kabir's Sorath "Bhookhe bhagat na keejai", the opening
@@ -290,6 +312,22 @@ const BANI_MIN_LENGTH = { [REHRAS_BANI]: REHRAS_LENGTH, [AARTI_BANI]: AARTI_LENG
 const baniLengthFor = (baniId, userLength) => {
   const min = BANI_MIN_LENGTH[baniId];
   return min && LENGTH_ORDER.indexOf(userLength) < LENGTH_ORDER.indexOf(min) ? min : userLength;
+};
+// Stop never moves the screen: the length Voice-Follow raised for a Bani (Rehras long,
+// Aarti extra-long) stays while that Bani is still up, because putting the user's length
+// back reloads the Bani and the pane jumps to its first line (Renton, Oct 2026: a
+// sevadaar pressed Stop mid-Rehras and had to scroll back down to the line). The user's
+// length comes back once the screen has moved on. pending = { prev, to, baniId }.
+//   'keep'    the raised Bani is still on screen at the raised length: leave it.
+//   'restore' the screen shows something else now: put the user's length back.
+//   'drop'    the length was changed by hand since: the user's choice stands.
+const PENDING_LENGTH_KEY = 'vf-length-restore';
+export const pendingLengthAction = (pending, nav) => {
+  if (!pending) return 'keep';
+  if (nav.baniLength && pending.to && nav.baniLength !== pending.to) return 'drop';
+  const sameBani =
+    nav.isSundarGutkaBani && !nav.isCeremonyBani && nav.sundarGutkaBaniId === pending.baniId;
+  return sameBani ? 'keep' : 'restore';
 };
 // Of the long Rehras's extra shabads, only its opening (Har jug jug bhagat upaya and the
 // salok after it) may open Rehras by the reading rule: its closing saloks and pauris
@@ -321,6 +359,18 @@ function poolPaathVotes(ranked, index) {
   if (bani == null || members < 2 || pool < DETECT_MIN_EVIDENCE) return null;
   if (pool / (pool + other) < AUTO_LOCK_CONF) return null;
   return { bani, sid: bestSid };
+}
+// True when the full-text search (the entries the context lock tallies) recently put a
+// shabad of `bani` among its leaders with a real score.
+function poolTextAgrees(bani, index, memory) {
+  const entries = (memory && memory.entries) || [];
+  return entries.some((e) =>
+    e.candidates.some(
+      (c) =>
+        c.score >= PAATH_POOL_TEXT_MIN &&
+        (index.byShabad.get(c.shabadId) || []).some((x) => x.bani === bani),
+    ),
+  );
 }
 // The Bani in which `nextId` follows `prevId` most closely, in order; else null.
 // Two Banis can hold the same pair in order (the Savaiya and Dohra close both the long
@@ -404,6 +454,18 @@ const BANI_CUR_SPAN = 8;
 // any reasonably confident frame. (Kept modest so a freshly-switched follower, which
 // starts with low confidence, isn't frozen in place — that read as "stops working".)
 const UI_MOVE_CONF = 0.4;
+// Volume label lines (mic loudness as rms of the raw signal, 0..1; no gain control is applied):
+// below SILENT = no sound, below GOOD = low, below GREAT = good, above = great.
+// The label reads the louder moments (80th percentile of 250 ms windows over the last 4 s),
+// so pauses between lines don't pull it down. Set from bench recordings while singing: the
+// home laptop test that followed well ~0.009 (good), Fremont laptop mic 0.03-0.19, Renton
+// hall feed 0.06-0.5 (good to great).
+const VOL_SILENT_RMS = 0.0005; // about -66 dBFS: nothing reaches the app (needs 8 s of it)
+const VOL_GOOD_RMS = 0.004; // about -48 dBFS: below this the mic is too quiet
+const VOL_GREAT_RMS = 0.1; // about -20 dBFS: a strong, clear feed
+const VOL_LEVEL_WINDOWS = 16; // 4 s of 250 ms windows for low / good / great
+const VOL_SILENT_WINDOWS = 32; // 8 s of silence before "No sound" (a pause is not a dead mic)
+const VOL_ORDER = ['none', 'low', 'good', 'great'];
 const HEARD_MIN_CONF = 0.88; // what-it-hears strip: below this the text is letters, not words
 const HEARD_KEYS_KEEP = 14; // recent heard words kept for marking matches in candidate lines
 // Recognizer spellings are loose: ignore a final short vowel, fold ਣ/ਨ and the nukta, and
@@ -427,31 +489,40 @@ const lineWordsOf = (line) =>
     .replace(/[।॥|0-9੦-੯.,;:!?-]+/g, ' ')
     .split(/\s+/)
     .filter(Boolean);
+// Gurbani is shown in the app's Gurmukhi font (the .gurmukhi class), which is ASCII-encoded.
+// The engine works in Unicode, so text is converted only for display.
+const toAkhar = (uni) => (uni ? anvaad.unicode(uni, true) : '');
+// Gurbani in the app's Gurmukhi font.
+const Gurmukhi = ({ text }) => <span className="gurmukhi">{toAkhar(text)}</span>;
+Gurmukhi.propTypes = { text: PropTypes.string };
 // A line with the heard words in bold, so a candidate shows why it is there.
 const MarkedLine = ({ line, keys }) => {
   const words = lineWordsOf(line);
-  if (!keys.length || !words.length) return <>{line}</>;
+  if (!keys.length || !words.length) return <Gurmukhi text={line} />;
   return (
-    <>
+    <span className="gurmukhi">
       {words.map((w, i) => {
         const hit = keys.some((k) => wordMatches(k, wordKey(w)));
         return (
           // eslint-disable-next-line react/no-array-index-key
           <span key={i} className={hit ? 'vf2-hl' : ''}>
             {i ? ' ' : ''}
-            {w}
+            {toAkhar(w)}
           </span>
         );
       })}
-    </>
+    </span>
   );
 };
 MarkedLine.propTypes = { line: PropTypes.string, keys: PropTypes.arrayOf(PropTypes.string) };
 MarkedLine.defaultProps = { line: '', keys: [] };
 const HEARD_CLEAR_MS = 5000; // strip empties after this long without a confident word
-const HEARD_TENTATIVE_WORDS = 2; // the tail of a decode is still being sung: shown lighter
+const HEARD_TENTATIVE_WORDS = 2; // the tail of a decode is still being sung: not merged until it settles
 const HEARD_SHOW_WORDS = 10; // the strip shows this many settled words, newest always in view
 const RATING_ASK_MS = 20000; // after Stop, the one-tap rating stays for this long
+// Start while the hidden run is following: its Shabad goes straight on screen when the panel
+// (calibrated posterior) is at least this sure of it; otherwise Start searches afresh.
+const ADOPT_MIN_PCT = 0.9;
 const HEARTBEAT = false; // the slow breath of the current card: off (not an agreed design)
 const HEARTBEAT_MIN_SCORE = 0.5; // current-line match score that counts as a beat
 const HEARTBEAT_MIN_MS = 2400; // slow pulse: one breath at most this often // follower confidence required to move the on-screen line
@@ -462,6 +533,36 @@ const HEARTBEAT_MIN_MS = 2400; // slow pulse: one breath at most this often // f
 const MODES = {
   kirtan: { label: 'Kirtan (sung)', profile: 'kirtan' },
   path: { label: 'Path (recitation)', profile: 'karansea' },
+};
+
+// The microphone chosen on the start screen (a deviceId; empty = the system default).
+// Per-computer convenience, so browser storage is enough.
+const MIC_PREF_KEY = 'vf-mic-device';
+const readMicPref = () => {
+  try {
+    return window.localStorage.getItem(MIC_PREF_KEY) || '';
+  } catch (e) {
+    return '';
+  }
+};
+// Where "Open Settings" goes when the system has blocked the microphone, per platform.
+const MIC_SETTINGS_URL = {
+  darwin: 'x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone',
+  win32: 'ms-settings:privacy-microphone',
+};
+const MIC_DENIED_DESC = {
+  darwin: 'VOICE_FOLLOW.MIC_DENIED_DESC_MAC',
+  win32: 'VOICE_FOLLOW.MIC_DENIED_DESC_WIN',
+};
+// A capture error that means the microphone is blocked (not missing or busy).
+const isMicBlocked = (e) => !!e && (e.name === 'NotAllowedError' || e.name === 'SecurityError');
+const saveMicPref = (deviceId) => {
+  try {
+    if (deviceId) window.localStorage.setItem(MIC_PREF_KEY, deviceId);
+    else window.localStorage.removeItem(MIC_PREF_KEY);
+  } catch (e) {
+    // Storage unavailable: the choice lasts for this run only.
+  }
 };
 
 // Raw Float32 PCM worklet, inlined as a Blob so there is no file:// path to
@@ -496,6 +597,63 @@ const BANI_LENGTH_COLS = {
   long: 'existsTaksal',
   extralong: 'existsBuddhaDal',
 };
+// Rows a Bani is FOLLOWED with. Usually the rows on screen; but the extra-long Rehras puts
+// the "Sri Vaheguru ji ki fateh / Patshahi 10" header before Chaupai some 40 lines later
+// (after its extra pauris) than the long list does, and Renton reads it in the long
+// position, right after "Saran pare ki rakhahu sarma". Missing there, the header pulled the
+// app onto Bhai Nand Lal's Ganj Nama (which opens with it). So the extra-long Rehras is
+// followed with the long list's own rows merged in (each placed before the next row both
+// lists share; matched in order, since header rows repeat and share ids). Those rows are
+// followed and judged but never shown: the screen holds its line while they are read.
+// screenLine = the row's 0-based line among on-screen rows.
+async function loadFollowRows(baniId, col) {
+  const rows = ((await loadBaniRows(baniId, col)) || []).filter(
+    (r) => r && r.ID != null && r.Gurmukhi,
+  );
+  // Rows are Realm objects (fields are getters, not own properties): keep them whole.
+  let merged = rows.map((row) => ({ row, off: false }));
+  if (Number(baniId) === REHRAS_BANI && col === BANI_LENGTH_COLS.extralong) {
+    const long = ((await loadBaniRows(baniId, BANI_LENGTH_COLS.long).catch(() => [])) || []).filter(
+      (r) => r && r.ID != null && r.Gurmukhi,
+    );
+    // Longest common subsequence of the two lists by row id: the shared rows, in order.
+    const n = rows.length;
+    const m = long.length;
+    const L = Array.from({ length: m + 1 }, () => new Uint16Array(n + 1));
+    for (let j = m - 1; j >= 0; j -= 1) {
+      for (let i = n - 1; i >= 0; i -= 1) {
+        L[j][i] =
+          long[j].ID === rows[i].ID ? L[j + 1][i + 1] + 1 : Math.max(L[j + 1][i], L[j][i + 1]);
+      }
+    }
+    const before = new Map(); // index in rows -> long-only rows read just before it
+    let pending = [];
+    let i = 0;
+    let j = 0;
+    while (j < m) {
+      if (i < n && long[j].ID === rows[i].ID && L[j][i] === L[j + 1][i + 1] + 1) {
+        if (pending.length) before.set(i, pending);
+        pending = [];
+        i += 1;
+        j += 1;
+      } else if (i < n && L[j][i + 1] >= L[j + 1][i]) i += 1;
+      else {
+        pending.push({ row: long[j], off: true });
+        j += 1;
+      }
+    }
+    merged = [];
+    rows.forEach((row, k) => {
+      merged.push(...(before.get(k) || []), { row, off: false });
+    });
+    merged.push(...pending);
+  }
+  let k = -1;
+  return merged.map(({ row, off }) => {
+    if (!off) k += 1;
+    return { row, offScreen: off, screenLine: Math.max(0, k) };
+  });
+}
 
 // Split a Unicode Gurmukhi line into word tokens for the aligner. The server
 // normalizes further (strips punctuation/matras irrelevant to matching); this
@@ -533,14 +691,6 @@ const toAsciiFirstLetters = (uniText) => {
   return Array.from(fl, (ch) => UNI_TO_ASCII_FL[ch] || '').join('');
 };
 
-const DOT = {
-  idle: '#888',
-  connecting: '#f39c12',
-  detecting: '#5b73ff',
-  listening: '#27ae60',
-  error: '#c0392b',
-  stopped: '#888',
-};
 const STATUS_LABEL = {
   idle: 'Ready',
   connecting: 'Starting',
@@ -634,7 +784,7 @@ const LiveBar = ({ value }) => {
 };
 LiveBar.propTypes = { value: PropTypes.number.isRequired };
 
-const VoiceFollow = ({ isOpen, onScreenClose }) => {
+const VoiceFollow = () => {
   // Select the primitive directly rather than holding the whole navigator slice
   // object across renders — a slice reference can be an immer proxy that gets
   // revoked between selection and render.
@@ -680,8 +830,29 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const setBaniLength = useStoreActions((actions) => actions.userSettings.setBaniLength);
   const setBaniLengthRef = useRef(null);
   setBaniLengthRef.current = (...a) => (shadowing() ? shadowNoop() : setBaniLength(...a));
-  // { prev }: the user's own Bani length while Voice-Follow has raised it for Rehras.
+  // { prev, to, baniId, real }: the user's own Bani length while Voice-Follow has raised it
+  // for Rehras (real: raised on the real screen, not only in the hidden shadow run).
   const lengthOverrideRef = useRef(null);
+  // A raised length left in place by Stop (see pendingLengthAction), kept across restarts.
+  const pendingLengthRef = useRef(undefined);
+  if (pendingLengthRef.current === undefined) {
+    pendingLengthRef.current = null;
+    try {
+      const saved = JSON.parse(window.localStorage.getItem(PENDING_LENGTH_KEY) || 'null');
+      if (saved && saved.prev) pendingLengthRef.current = saved;
+    } catch (_) {
+      /* No storage: the pending length lives for this run only. */
+    }
+  }
+  const setPendingLength = (p) => {
+    pendingLengthRef.current = p;
+    try {
+      if (p) window.localStorage.setItem(PENDING_LENGTH_KEY, JSON.stringify(p));
+      else window.localStorage.removeItem(PENDING_LENGTH_KEY);
+    } catch (_) {
+      /* No storage. */
+    }
+  };
   // Opening a Bani is the same four navigator actions the Sundar Gutka screen uses; in
   // shadow mode they become one system update ("bani:<id>" at a line), nothing on screen.
   const setIsSundarGutkaBani = useCallback(
@@ -718,7 +889,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     [navActions],
   );
   const isMiscSlide = useStoreState((state) => state.navigator.isMiscSlide);
-  const setOverlayScreen = useStoreActions((actions) => actions.app.setOverlayScreen);
   // Proper "open this shabad" action (drives viewer/projector/history/socket).
   // Kept in a ref so the async detect->lock path always calls the latest one.
   const changeActiveShabad = useNewShabad();
@@ -745,9 +915,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const vetoRef = useRef(null); // { id, left }: shabad a tap just left, and judged decodes remaining
   const baniLengthRef = useRef('short');
   baniLengthRef.current = baniLength;
-  // The user's own length (what they chose), even while Rehras has it raised.
+  // The user's own length (what they chose), even while Rehras has it raised (by this run,
+  // or by an earlier one that Stop left on screen).
   const userLength = () =>
-    (lengthOverrideRef.current && lengthOverrideRef.current.prev) || baniLengthRef.current;
+    (lengthOverrideRef.current && lengthOverrideRef.current.prev) ||
+    (pendingLengthRef.current && pendingLengthRef.current.prev) ||
+    baniLengthRef.current;
   const restoreBaniLength = () => {
     const o = lengthOverrideRef.current;
     if (!o) return;
@@ -758,6 +931,38 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       /* Closing store. */
     }
   };
+  // Stop: the raised length stays on screen (pending); only a hidden run's own bookkeeping
+  // (never applied to the real setting) is simply dropped.
+  const parkBaniLength = () => {
+    const o = lengthOverrideRef.current;
+    lengthOverrideRef.current = null;
+    if (o && o.real) setPendingLength({ prev: o.prev, to: o.to, baniId: o.baniId });
+  };
+  // Once the screen has moved on from the Bani Stop left raised (the sevadaar opened a
+  // shabad or another Bani), put the user's own length back; if they changed the length by
+  // hand meanwhile, theirs stands.
+  const settlePendingLength = () => {
+    const action = pendingLengthAction(pendingLengthRef.current, {
+      baniLength,
+      isSundarGutkaBani,
+      isCeremonyBani,
+      sundarGutkaBaniId,
+    });
+    if (action === 'keep') return action;
+    const { prev } = pendingLengthRef.current;
+    setPendingLength(null);
+    if (action === 'restore') {
+      try {
+        setBaniLength(prev);
+      } catch (_) {
+        /* Closing store. */
+      }
+    }
+    return action;
+  };
+  useEffect(() => {
+    settlePendingLength();
+  }, [baniLength, isSundarGutkaBani, isCeremonyBani, sundarGutkaBaniId, activeShabadId]);
   const baniIndexRef = useRef(null); // { col, promise } shabad<->Bani index, built once per length
   const curBaniShabadsRef = useRef(null); // Set of shabads inside the Bani being followed
   const seqReadRef = useRef({ id: null, last: -1, lines: new Set(), fired: false }); // PAATH_READ_LINES
@@ -772,10 +977,11 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const sessionIdRef = useRef(null);
   const sessionStartRef = useRef(0);
   const lastAutoDecisionRef = useRef(0);
-  const [autoDetect, setAutoDetect] = useState(false); // blind: identify the shabad from audio, then follow (one-shot)
+  const [autoDetect] = useState(false); // blind: identify the shabad from audio, then follow (one-shot)
   // Acoustic text stays inside matching; only canonical BaniDB text is rendered.
   const [, setCands] = useState([]); // [{shabadId, verseId, verse, display, share}] shortlist
-  const [audioView, setAudioView] = useState({ seconds: 0, level: 0, device: '' });
+  const [, setAudioView] = useState({ seconds: 0, level: 0, rms: 0, peak: 0, device: '' });
+  const volumeRef = useRef({ hist: [], state: 'good' }); // the last ~2 s of mic levels for the volume label
   const audioViewRef = useRef({ samples: 0, published: 0 });
   const [currentView, setCurrentView] = useState(null);
   const [, setRankedView] = useState([]);
@@ -788,20 +994,21 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     setRankedView(rows.filter((row) => row.display).slice(0, 3));
   }, []);
 
-  const [mode, setMode] = useState('kirtan');
+  const [mode] = useState('kirtan');
   const [detail, setDetail] = useState('');
   const [pos, setPos] = useState(null); // { lineIndex, wordIndex, confidence }
   const [dlProgress, setDlProgress] = useState(null); // 0..1 during first-run model download, else null
-  // Zoom-style floating widget: collapse the panel down to just the pill, and
-  // drag either one anywhere on screen. `widgetPos` is null until first dragged
-  // (then it overrides the default anchored position).
-  const [collapsed, setCollapsed] = useState(false);
-  const [widgetPos, setWidgetPos] = useState(null); // { top, left } | null
-  const movedRef = useRef(false); // set during a drag so the pill click doesn't also expand
+  // The search pane's Autopilot tab hands us a node to render the live view into; the
+  // session itself keeps running here whichever tab is showing.
+  const autopilotSlot = useAutopilotSlot();
+  const setAutopilotLive = useStoreActions((actions) => actions.app.setAutopilotLive);
 
   const followerRef = useRef(null); // Follower (track a known shabad/bani)
   const recognizerRef = useRef(null); // Recognizer (blind auto-detect)
   const chainRef = useRef(Promise.resolve()); // serialize async inference per chunk
+  // Audio captured but not yet handed to the engines (see AUDIO_BACKLOG_S).
+  const backlogRef = useRef({ chunks: [], samples: 0, seconds: 0, peak: 0, merges: 0, notedAt: 0 });
+  const paceOffRef = useRef(null); // unsubscribes this session's tier-step listener
   const sessionRef = useRef(0); // invalidates asynchronous work after cleanup/restart
   const transcriptSeqRef = useRef(0);
   const transcriptAbortRef = useRef(null);
@@ -841,23 +1048,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const heardRef = useRef('');
   const [heard, setHeard] = useState('');
   const heardAtRef = useRef(0);
-  const [showHeard, setShowHeard] = useState(() => {
-    try {
-      return window.localStorage.getItem('vf-show-heard') !== '0';
-    } catch (_) {
-      return true;
-    }
-  });
-  const toggleHeard = useCallback(() => {
-    setShowHeard((v) => {
-      try {
-        window.localStorage.setItem('vf-show-heard', v ? '0' : '1');
-      } catch (_) {
-        /* preference only */
-      }
-      return !v;
-    });
-  }, []);
   // The strip shows words, not noise: between lines the recognizer still emits lone letters
   // from tabla, harmonium and room sound at low confidence (sung lines score ~0.93-0.99),
   // so a hypothesis has to be confident and contain at least one real word to be shown,
@@ -880,6 +1070,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   const tentativeRef = useRef('');
   const heardBoxRef = useRef(null); // the hearing strip: scrolled to its end when it overflows
   const [askRating, setAskRating] = useState(false); // one-tap rating offered after Stop
+  const [, setVisTick] = useState(0); // re-render when Start adopts the hidden run
   const ratingTimerRef = useRef(null);
   const heardKeysRef = useRef([]); // recent heard words (keys) for marking candidate lines
   const [heardKeys, setHeardKeys] = useState([]);
@@ -958,12 +1149,45 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   if (!shadowing()) isMiscSlideRef.current = isMiscSlide;
   const ctxRef = useRef(null);
   const streamRef = useRef(null);
+  // Microphones for the start screen's "Listening through" picker. 'default' and
+  // 'communications' are aliases of real devices, so they are not listed; the alias
+  // still tells which real device is the system default.
+  const [mics, setMics] = useState({ list: [], defaultGroup: null });
+  const [micId, setMicId] = useState(readMicPref);
+  const micIdRef = useRef(micId);
+  micIdRef.current = micId;
+  // The system has blocked the microphone: the start screen asks for access instead.
+  const [micDenied, setMicDenied] = useState(false);
+  // Read the system permission. Returns true when it is blocked. An unknown answer
+  // (Linux, or no IPC) leaves the current state alone: a capture error decides then.
+  const checkMicAccess = useCallback(async () => {
+    if (!ipcRenderer || !ipcRenderer.invoke) return false;
+    try {
+      const access = await ipcRenderer.invoke('voice-follow:mic-access');
+      if (access === 'denied' || access === 'restricted') {
+        setMicDenied(true);
+        return true;
+      }
+      if (access === 'granted' || access === 'not-determined') setMicDenied(false);
+    } catch (e) {
+      // Unknown: keep whatever the last capture attempt showed.
+    }
+    return false;
+  }, []);
+  // Check when the panel opens, and again whenever the app comes back to the front
+  // (the sevadaar may have just allowed it in System Settings).
+  useEffect(() => {
+    checkMicAccess();
+    if (!window.addEventListener) return undefined;
+    window.addEventListener('focus', checkMicAccess);
+    return () => window.removeEventListener('focus', checkMicAccess);
+  }, [checkMicAccess]);
   const nodeRef = useRef(null);
   const srcRef = useRef(null);
   const linesRef = useRef([]); // [{ verseId }] indexed by aligner lineIndex
   const lastVerseRef = useRef(null);
+  const lockedVerseRef = useRef(null); // { verseId, verse } the current Shabad was locked at
   const followingKeyRef = useRef(null); // session key: `shabad:<id>` or `bani:<id>`
-  const panelRef = useRef(null); // flyout panel, for click-outside dismissal
   // Blind-detect session state (mutable, avoids re-render churn per decode).
   const recognizingRef = useRef(false); // true while blindly identifying a shabad
   const contextEvidenceRef = useRef(null);
@@ -1021,6 +1245,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     followerRef.current = null;
     recognizerRef.current = null;
     chainRef.current = Promise.resolve();
+    backlogRef.current = { chunks: [], samples: 0, seconds: 0, peak: 0, merges: 0, notedAt: 0 };
+    paceOffRef.current?.();
+    paceOffRef.current = null;
+    if (engine.pace) engine.pace.setScoped(false);
     // Take down our seeking slide if we put one up; never touch the user's own.
     if (seekingRef.current) {
       seekingRef.current = false;
@@ -1042,20 +1270,37 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     const session = sessionRef.current;
     // Preserve the actual capture error; missing/busy devices are not all
     // permission denials. The caller handles it only for its current session.
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: { channelCount: 1, echoCancellation: false, noiseSuppression: false },
-    });
+    const audio = { channelCount: 1, echoCancellation: false, noiseSuppression: false };
+    const wanted = micIdRef.current;
+    let stream;
+    try {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          audio: wanted ? { ...audio, deviceId: { exact: wanted } } : audio,
+        });
+      } catch (e) {
+        // The chosen microphone was unplugged: listen through the system default instead.
+        const gone = e && (e.name === 'OverconstrainedError' || e.name === 'NotFoundError');
+        if (!wanted || !gone || session !== sessionRef.current) throw e;
+        stream = await navigator.mediaDevices.getUserMedia({ audio });
+      }
+    } catch (e) {
+      if (isMicBlocked(e) && session === sessionRef.current) setMicDenied(true);
+      throw e;
+    }
+    setMicDenied(false);
     if (session !== sessionRef.current) {
       stream.getTracks().forEach((track) => track.stop());
       return null;
     }
     streamRef.current = stream;
-    audioViewRef.current = { samples: 0, published: 0 };
+    audioViewRef.current = { samples: 0, published: 0, energy: 0, n: 0, peak: 0 };
     rankedViewRef.current = 0;
     setRankedView([]);
     setCurrentView(null);
     const device = stream.getAudioTracks?.()[0]?.label || 'Microphone';
-    setAudioView({ seconds: 0, level: 0, device });
+    setAudioView({ seconds: 0, level: 0, rms: 0, peak: 0, device });
+    volumeRef.current = { hist: [], state: 'good' };
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     ctxRef.current = ctx;
     const url = URL.createObjectURL(new Blob([WORKLET_SRC], { type: 'application/javascript' }));
@@ -1067,26 +1312,112 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     if (session !== sessionRef.current) return null;
     const node = new AudioWorkletNode(ctx, 'voice-follow-pcm');
     chainRef.current = Promise.resolve();
+    const backlog = { chunks: [], samples: 0, seconds: 0, peak: 0, merges: 0, notedAt: 0 };
+    backlogRef.current = backlog;
+    let draining = false;
+    // Performance tier (engine/pace): the session log carries the tier the self-test chose
+    // and every live step, so the fleet report shows what each computer runs at.
+    const pace = engine.pace || null;
+    const notePace = (fields) => {
+      sessionLog.logEvent('perf_tier', fields);
+      if (SHADOW_BUILD && shadowBus.active()) shadowBus.note({ type: 'perf_tier', ...fields });
+    };
+    if (pace) {
+      notePace({ reason: 'start', ...pace.describe() });
+      paceOffRef.current?.();
+      paceOffRef.current = pace.onStep((ev) => {
+        if (session !== sessionRef.current) return;
+        notePace(ev);
+      });
+    }
+    // Past the bound (1 s; the lowest tier halves it) every chunk still waiting goes in
+    // one push (see AUDIO_BACKLOG_S).
+    const backlogBoundS = () => (pace ? pace.backlogBoundS() : AUDIO_BACKLOG_S);
+    // Chunks wait here until the engines are free; one loop feeds them in order. Under
+    // the bound each chunk is pushed on its own, exactly as the microphone delivered it;
+    // past it everything waiting goes in one push (see AUDIO_BACKLOG_S).
+    const drain = async () => {
+      draining = true;
+      try {
+        while (backlog.chunks.length && session === sessionRef.current) {
+          let pcm;
+          if (backlog.samples > backlogBoundS() * ctx.sampleRate) {
+            const seconds = backlog.samples / ctx.sampleRate;
+            pcm = new Float32Array(backlog.samples);
+            let at = 0;
+            backlog.chunks.forEach((c) => {
+              pcm.set(c, at);
+              at += c.length;
+            });
+            backlog.chunks = [];
+            backlog.merges += 1;
+            backlog.peak = Math.max(backlog.peak, seconds);
+            const nowMs = Date.now();
+            if (nowMs - backlog.notedAt >= AUDIO_BACKLOG_NOTE_MS) {
+              backlog.notedAt = nowMs;
+              const fields = {
+                seconds: Math.round(seconds * 100) / 100,
+                peak: Math.round(backlog.peak * 100) / 100,
+                merges: backlog.merges,
+              };
+              sessionLog.logEvent('audio_backlog', fields);
+              if (SHADOW_BUILD && shadowBus.active())
+                shadowBus.note({ type: 'audio_backlog', ...fields });
+            }
+          } else {
+            pcm = backlog.chunks.shift();
+          }
+          backlog.samples -= pcm.length;
+          backlog.seconds = backlog.samples / ctx.sampleRate;
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            await onChunk(pcm);
+          } catch (_) {
+            /* one bad chunk must not stop the microphone */
+          }
+          // Still behind after the push: step the tier down; clear headroom: back up.
+          if (pace) pace.observe(backlog.samples / ctx.sampleRate);
+        }
+      } finally {
+        draining = false;
+      }
+    };
     node.port.onmessage = (ev) => {
       if (session !== sessionRef.current) return;
       const pcm = new Float32Array(ev.data);
       const capture = audioViewRef.current;
       capture.samples += pcm.length;
       const now = Date.now();
+      // The volume label measures the whole 250 ms window: loudness (rms) and the peak.
+      for (let i = 0; i < pcm.length; i += 1) {
+        const v = pcm[i];
+        capture.energy = (capture.energy || 0) + v * v;
+        const a = v < 0 ? -v : v;
+        if (a > (capture.peak || 0)) capture.peak = a;
+      }
+      capture.n = (capture.n || 0) + pcm.length;
       if (now - capture.published >= 250) {
-        let energy = 0;
-        for (let i = 0; i < pcm.length; i += 1) energy += pcm[i] * pcm[i];
-        const rms = Math.sqrt(energy / (pcm.length || 1));
+        const rms = Math.sqrt((capture.energy || 0) / (capture.n || 1));
+        const peak = capture.peak || 0;
+        capture.energy = 0;
+        capture.n = 0;
+        capture.peak = 0;
         capture.published = now;
+        const volHist = volumeRef.current.hist;
+        volHist.push(rms);
+        if (volHist.length > VOL_SILENT_WINDOWS) volHist.shift();
         setAudioView({
           seconds: Math.floor(capture.samples / ctx.sampleRate),
           level: Math.min(1, rms * 8),
+          rms,
+          peak,
           device,
         });
       }
-      chainRef.current = chainRef.current
-        .then(() => (session === sessionRef.current ? onChunk(pcm) : undefined))
-        .catch(() => {});
+      backlog.chunks.push(pcm);
+      backlog.samples += pcm.length;
+      backlog.seconds = backlog.samples / ctx.sampleRate;
+      if (!draining) chainRef.current = drain();
     };
     const src = ctx.createMediaStreamSource(stream);
     nodeRef.current = node;
@@ -1097,7 +1428,9 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   }, []);
 
   const stop = useCallback(() => {
-    restoreBaniLength();
+    // Never move the screen on Stop: same Bani, same length, same line (see
+    // pendingLengthAction). The user's own length comes back once the screen moves on.
+    parkBaniLength();
     if (sessionIdRef.current) {
       sessionLog.logEvent('session_end', {
         session: sessionIdRef.current,
@@ -1163,13 +1496,18 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     try {
       if (isBani) {
         const col = BANI_LENGTH_COLS[baniLength] || BANI_LENGTH_COLS.short;
-        const rows = await loadBaniRows(sundarGutkaBaniId, col);
+        const follow = await loadFollowRows(sundarGutkaBaniId, col);
         if (session !== sessionRef.current) return;
-        const filtered = (rows || []).filter((r) => r && r.ID != null && r.Gurmukhi);
-        linesRef.current = filtered.map((r) => ({ verseId: r.ID }));
+        const filtered = follow.map((f) => f.row);
+        linesRef.current = follow.map((f) => ({
+          verseId: f.row.ID,
+          offScreen: f.offScreen,
+          screenLine: f.screenLine,
+        }));
         verses = filtered.map((r) => ({
           verseId: r.ID,
           words: tokenize(anvaad.unicode(r.Gurmukhi)),
+          text: anvaad.unicode(r.Gurmukhi),
         }));
       } else {
         const rows = await banidb.loadShabad(activeShabadId);
@@ -1226,6 +1564,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         const out = await f.push(pcm);
         // A stop or content change can replace the follower during inference.
         if (!out || followerRef.current !== f) return;
+        // A followed row that is not on screen (see loadFollowRows): hold the line.
+        if (typeof out.lineIndex === 'number' && linesRef.current[out.lineIndex]?.offScreen) return;
         setPos({
           lineIndex: out.lineIndex,
           wordIndex: out.wordIndex,
@@ -1237,7 +1577,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (line && line.verseId != null && line.verseId !== lastVerseRef.current) {
             lastVerseRef.current = line.verseId;
             setActiveVerseId(line.verseId);
-            setLineNumber(out.lineIndex + 1);
+            setLineNumber((line.screenLine ?? out.lineIndex) + 1);
           }
         }
       });
@@ -1251,7 +1591,13 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
     if (session !== sessionRef.current) return;
     try {
-      const follower = await engine.createFollower(verses, { inputSr: sampleRate });
+      // Paath (a Bani) uses the position follower; Shabads (kirtan) the line follower.
+      const follower = isBani
+        ? await engine.createPaathFollower(verses, {
+            inputSr: sampleRate,
+            baniId: sundarGutkaBaniId,
+          })
+        : await engine.createFollower(verses, { inputSr: sampleRate });
       if (session !== sessionRef.current) return;
       followerRef.current = follower;
     } catch (e) {
@@ -1434,11 +1780,16 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
   const loadBaniProfile = useCallback(async (baniId) => {
     const col = BANI_LENGTH_COLS[baniLengthFor(baniId, userLength())] || BANI_LENGTH_COLS.short;
-    const rows = await loadBaniRows(baniId, col);
-    const filtered = (rows || []).filter((r) => r && r.ID != null && r.Gurmukhi);
+    const follow = await loadFollowRows(baniId, col);
+    const filtered = follow.map((f) => f.row);
+    // Rows followed but not shown (indexes; none except the extra-long Rehras), and each
+    // row's line number on screen.
+    const offScreen = new Set(follow.flatMap((f, k) => (f.offScreen ? [k] : [])));
+    const screenLines = follow.map((f) => f.screenLine);
     const verses = filtered.map((r) => ({
       verseId: r.ID,
       words: tokenize(anvaad.unicode(r.Gurmukhi)),
+      text: anvaad.unicode(r.Gurmukhi),
     }));
     const linesNorm = verses.map((v) => vfNorm((v.words || []).join(' ')));
     const displayLines = filtered.map((r) => anvaad.unicode(r.Gurmukhi));
@@ -1451,7 +1802,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
       BANI_LENGTH_ALL.map((c) => banidb.loadBaniIndex(c).catch(() => ({}))),
     );
     all.forEach((idx) => ((idx && idx[baniId]) || []).forEach((sid) => shabadIds.add(sid)));
-    return { verses, linesNorm, displayLines, rawLines, shabadIds };
+    return { verses, linesNorm, displayLines, rawLines, shabadIds, offScreen, screenLines };
   }, []);
 
   const loadShabadProfile = useCallback(async (shabadId) => {
@@ -1647,9 +1998,20 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
 
         let follower;
         try {
-          follower = await engine.createFollower(profile.verses, {
-            inputSr: sampleRateRef.current,
-          });
+          // Paath (a Bani) uses the position follower; Shabads (kirtan) the line follower.
+          follower =
+            baniId != null
+              ? await engine.createPaathFollower(profile.verses, {
+                  inputSr: sampleRateRef.current,
+                  baniId,
+                  startLine: profile.verses.findIndex((v) => v.verseId === cand.verseId),
+                  // A Bani opened from the Shabad line just locked starts there (opts.startAt:
+                  // the paath-line and two-shabads-in-order rules).
+                  startAt: !!opts.startAt,
+                })
+              : await engine.createFollower(profile.verses, {
+                  inputSr: sampleRateRef.current,
+                });
         } catch (e) {
           if (session !== sessionRef.current) return;
           setDetail(`engine init failed: ${e?.message || e}`);
@@ -1689,6 +2051,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           (v.words || []).map(vfNorm).filter(Boolean),
         );
         setCurrentView({ id: cand.shabadId, line: anvaad.unicode(cand.verse) });
+        lockedVerseRef.current = { verseId: cand.verseId, verse: cand.verse };
         curCursorRef.current = null; // new shabad — cursor unknown until the follower reports
         // Seed the panel's position at the verse we locked on. Without this the
         // stale fix from the previous shabad (or line 1) shows for a beat until
@@ -1761,12 +2124,25 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               cand.shabadId,
             ].slice(-RECENT_SHABADS);
           }
+          // A visible run takes over a length an earlier Stop left raised on screen.
+          if (!shadowing() && pendingLengthRef.current) {
+            if (!lengthOverrideRef.current)
+              lengthOverrideRef.current = { ...pendingLengthRef.current, real: true };
+            setPendingLength(null);
+          }
           const wantLength = baniId != null ? baniLengthFor(baniId, userLength()) : null;
           if (wantLength && wantLength !== baniLengthRef.current) {
             if (!lengthOverrideRef.current) lengthOverrideRef.current = { prev: userLength() };
+            Object.assign(lengthOverrideRef.current, {
+              to: wantLength,
+              baniId,
+              real: !shadowing(),
+            });
             setBaniLengthRef.current(wantLength);
           } else if (!wantLength || wantLength === userLength()) {
             restoreBaniLength();
+          } else if (lengthOverrideRef.current) {
+            lengthOverrideRef.current.baniId = baniId;
           }
           if (baniId != null) {
             // Same actions the Sundar Gutka screen uses to open a Bani, plus the
@@ -1854,7 +2230,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
         ) {
           autopilotLockRef.current(
             { shabadId: `${BANI_KEY}${paathBani}`, verseId: cand.verseId, verse: cand.verse },
-            { promote: true },
+            { promote: true, startAt: true },
           );
           return;
         }
@@ -1910,7 +2286,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (bani != null && autopilotLockRef.current) {
             autopilotLockRef.current(
               { shabadId: `${BANI_KEY}${bani}`, verseId: cand.verseId, verse: cand.verse },
-              { promote: true },
+              { promote: true, startAt: true },
             );
           }
         }
@@ -2194,8 +2570,8 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
                 if (!cur || p > cur.p) prog.set(id, { p, verseId: verseId ?? cur?.verseId });
               };
               rankedContext.forEach((c) => {
-                const p =
-                  Math.min(c.count / 6, c.wins / 4) * (c.anchor || c.verses.size >= 2 ? 1 : 0.7);
+                // Same gates as the lock below, so a full bar means a lock is due.
+                const p = Math.min(c.count / 6, c.wins / 4) * (lineEvidenceOk(c) ? 1 : 0.7);
                 bump(c.id, (leaders.find((l) => l.shabadId === c.id) || {}).verseId, p);
               });
               if (poolBani != null)
@@ -2235,7 +2611,7 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
               margin >= AP_LOCK_TEXT_MARGIN &&
               winner.count >= 6 &&
               winner.wins >= 4 &&
-              (winner.anchor || winner.verses.size >= 2) &&
+              lineEvidenceOk(winner) &&
               winner.score - (rankedContext[1]?.score || 0) >= 1
             ) {
               let profile;
@@ -2441,7 +2817,12 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (fl.length >= AP_LOCK_MIN_LETTERS) {
             const index = await getBaniIndex().catch(() => null);
             if (!isCurrentTranscript() || lockingRef.current) return;
-            const pooled = index && poolPaathVotes(ranked, index);
+            let pooled = index && poolPaathVotes(ranked, index);
+            // First-letter grams of ordinary speech can pool onto a Bani (tonight's Fareed talk
+            // pooled onto the Aarti and opened it): the full-text route must have seen a member
+            // of that Bani recently, as it always does when the Bani is really being recited.
+            if (pooled && !poolTextAgrees(pooled.bani, index, contextEvidenceRef.current))
+              pooled = null;
             const ps = poolStableRef.current;
             if (!pooled) poolStableRef.current = { bani: null, count: 0 };
             else if (ps.bani === pooled.bani) ps.count += 1;
@@ -2511,12 +2892,25 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           textCandidates.length > 1 &&
           Math.abs(textCandidates[0].score - textCandidates[1].score) < 1e-9
         ) {
-          textCandidates.forEach((candidate) => {
-            if (Math.abs(candidate.score - textCandidates[0].score) < 1e-9) {
+          const tied = textCandidates.filter(
+            (candidate) => Math.abs(candidate.score - textCandidates[0].score) < 1e-9,
+          );
+          // The same Gurbani stored twice (Aarti's "Gagan mai thaal" in Dhanasari and in
+          // Sohila, Rehras's "So dar" and its Asa original) ties exactly on EVERY decode, and
+          // a tie is never confirmed: the switch judge zeroed both copies' wins each decode,
+          // so a sangat singing the Aarti after a Shabad (or the Rehras after a Shabad) was
+          // never followed, however well it matched (Oct 13 user test: 75-95% for 20 s, no
+          // switch). Copies are one candidate, not an ambiguity: judged like any other.
+          // Only a tie between DIFFERENT shabads (a shared line) still vetoes them all.
+          const copies = tied.every(
+            (candidate) => candidate === tied[0] || knownSame(tied[0].shabadId, candidate.shabadId),
+          );
+          if (!copies) {
+            tied.forEach((candidate) => {
               tiedLeaderIds.add(candidate.shabadId);
               bsWinsRef.current.delete(candidate.shabadId);
-            }
-          });
+            });
+          }
         }
         const hypFull = vfNorm(text).slice(-SWITCH_HYP_SLICE); // recent decoded audio
         // Current shabad scored from the cursor, candidates scored across all
@@ -3140,6 +3534,13 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     try {
       sampleRate = await startAudio(async (pcm) => {
         if (!autopilotRef.current) return;
+        // Performance tiers only while the paath follower follows a read Bani (engine/pace).
+        if (engine.pace) {
+          engine.pace.setScoped(
+            phaseRef.current === 'following' &&
+              !!(followerRef.current && followerRef.current.readBani),
+          );
+        }
         {
           const sr = sampleRateRef.current || 48000;
           if (!ringRef.current || ringRef.current.sampleRate !== sr) {
@@ -3176,6 +3577,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           // Remember where we are so the switch test can score the current shabad
           // relative to the cursor (not as a global max over all its lines).
           curCursorRef.current = out.lineIndex;
+          // A followed row that is not on screen (see loadFollowRows): the switch test
+          // already scores from it; the screen holds its line.
+          const curProf = curProfileRef.current;
+          if (curProf && curProf.offScreen && curProf.offScreen.has(out.lineIndex)) return;
           // Don't chase the highlight onto a similar-worded line of the OLD shabad:
           // hold position on low-confidence frames, and freeze entirely while a
           // switch is being evaluated (the current shabad is likely being left).
@@ -3190,7 +3595,10 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
           if (out.verseId != null && out.verseId !== lastVerseRef.current) {
             lastVerseRef.current = out.verseId;
             setActiveVerseId(out.verseId);
-            setLineNumber(out.lineIndex + 1);
+            setLineNumber(
+              ((curProf && curProf.screenLines && curProf.screenLines[out.lineIndex]) ??
+                out.lineIndex) + 1,
+            );
           }
           // Straight-through reading of a Rehras or Sohila shabad: open the Bani.
           const sid = currentShabadIdRef.current;
@@ -3375,6 +3783,24 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     const check = () => {
       const st = shadowStateRef.current;
       const nowMs = Date.now();
+      // Once a minute while Voice-Follow listens (hidden or from the panel): how long a
+      // model pass takes, how many it finishes per second and how far the audio backlog
+      // is, so the data shows how close this computer is to falling behind.
+      if (shadowBus.active() && autopilotRef.current && nowMs - (st.lastPerfLog || 0) >= 60000) {
+        st.lastPerfLog = nowMs;
+        const perf = engine.perfStats ? engine.perfStats() : null;
+        if (perf) {
+          const b = backlogRef.current;
+          shadowBus.note({
+            type: 'perf',
+            ...perf,
+            ...(engine.pace ? engine.pace.describe() : {}),
+            backlogSec: Math.round(b.seconds * 100) / 100,
+            backlogPeak: Math.round(b.peak * 100) / 100,
+            merges: b.merges,
+          });
+        }
+      }
       // The sevadaar is driving Voice-Follow from the panel: no hidden run until they stop.
       if (visibleRef.current) {
         st.running = false;
@@ -3447,107 +3873,52 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // panel shows it as idle, and Start hands the screen to Voice-Follow.
   const hiddenRun = SHADOW_BUILD && running && !visibleRef.current;
   const active = running && !hiddenRun;
-  // The floating widget is present whenever the tool is opened OR a session is
-  // running (like Zoom's share bar, which persists independently of any menu).
-  const present = isOpen || active;
-  const panelVisible = present && !collapsed;
-
-  // Opening from the toolbar mic (or the pill) always expands the panel.
+  // The Autopilot tab shows a live dot while a session runs behind the Search tab.
   useEffect(() => {
-    if (isOpen) setCollapsed(false);
-  }, [isOpen]);
-
-  // Dismiss the panel the easy ways: Esc or a click outside it. While a session
-  // is running we collapse to the pill (never kill the live session); otherwise
-  // we close the tool. Toolbar mic + pill are excluded so their own toggles
-  // aren't double-fired.
+    setAutopilotLive(active);
+  }, [active, setAutopilotLive]);
+  // Keep the microphone list current: devices come and go, and their names only
+  // appear once the microphone has been allowed (so read it again after a session).
   useEffect(() => {
-    if (!panelVisible) return undefined;
-    const dismiss = () => (active ? setCollapsed(true) : onScreenClose());
-    const onKey = (e) => {
-      if (e.key === 'Escape') dismiss();
-    };
-    const onDown = (e) => {
-      const t = e.target;
-      if (panelRef.current && panelRef.current.contains(t)) return;
-      if (t && t.closest && t.closest('#toolbar, #toolbar-nav, #tool-voice-follow, #vf-pill'))
-        return;
-      dismiss();
-    };
-    document.addEventListener('keydown', onKey);
-    document.addEventListener('mousedown', onDown);
+    const md = navigator.mediaDevices;
+    if (!md || !md.enumerateDevices) return undefined;
+    let live = true;
+    const refresh = () =>
+      md
+        .enumerateDevices()
+        .then((devices) => {
+          if (!live) return;
+          const inputs = devices.filter((d) => d.kind === 'audioinput');
+          const alias = inputs.find((d) => d.deviceId === 'default');
+          setMics({
+            list: inputs.filter((d) => d.deviceId !== 'default' && d.deviceId !== 'communications'),
+            defaultGroup: alias ? alias.groupId : null,
+          });
+        })
+        .catch(() => {});
+    refresh();
+    if (md.addEventListener) md.addEventListener('devicechange', refresh);
     return () => {
-      document.removeEventListener('keydown', onKey);
-      document.removeEventListener('mousedown', onDown);
+      live = false;
+      if (md.removeEventListener) md.removeEventListener('devicechange', refresh);
     };
-  }, [panelVisible, active, onScreenClose]);
-
-  // Drag handle: mousedown on a widget's grip moves the whole widget. Records a
-  // moved flag so a drag on the pill doesn't also fire its expand-on-click.
-  const startDrag = useCallback((e) => {
-    if (e.button !== 0) return;
-    const el = e.currentTarget.closest('[data-vf-widget]');
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const offX = e.clientX - rect.left;
-    const offY = e.clientY - rect.top;
-    const w = rect.width;
-    const h = rect.height;
-    movedRef.current = false;
-    // Coalesce moves to one state update per animation frame. Native mousemove
-    // listeners don't batch, so an unthrottled setState-per-event is janky;
-    // rAF caps it to ~60fps while keeping React the source of truth (so live
-    // position re-renders during a session can't clobber the drag position).
-    let pending = null;
-    let raf = 0;
-    const apply = () => {
-      raf = 0;
-      if (pending) setWidgetPos(pending);
-    };
-    const onMove = (m) => {
-      movedRef.current = true;
-      const maxLeft = window.innerWidth - w;
-      const maxTop = window.innerHeight - h;
-      pending = {
-        left: Math.min(Math.max(0, m.clientX - offX), Math.max(0, maxLeft)),
-        top: Math.min(Math.max(0, m.clientY - offY), Math.max(0, maxTop)),
-      };
-      if (!raf) raf = requestAnimationFrame(apply);
-    };
-    const onUp = () => {
-      if (raf) cancelAnimationFrame(raf);
-      if (pending) setWidgetPos(pending);
-      document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseup', onUp);
-    };
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onUp);
-    e.preventDefault();
-  }, []);
-
-  // Once dragged, both widgets use the free position (and the caret that points
-  // back at the mic no longer makes sense, so it's hidden).
-  const posOverride = widgetPos
-    ? { top: widgetPos.top, left: widgetPos.left, right: 'auto', bottom: 'auto' }
-    : null;
-
-  const posLine = pos && typeof pos.lineIndex === 'number' ? pos.lineIndex + 1 : null;
-  const dot = (
-    <span
-      className={`vf-dot${active ? ' is-live' : ''}`}
-      style={{ background: DOT[status] || '#888' }}
-    />
-  );
-
+  }, [active]);
+  const chooseMic = (deviceId) => {
+    setMicId(deviceId);
+    saveMicPref(deviceId);
+  };
+  // The picker shows the saved microphone, else the system default, else the first one.
+  const shownMic =
+    mics.list.find((d) => d.deviceId === micId) ||
+    mics.list.find((d) => mics.defaultGroup && d.groupId === mics.defaultGroup) ||
+    mics.list[0] ||
+    null;
   // Human-readable status line (avoids surfacing internal states like "idle").
   let statusText =
     status === 'idle'
       ? 'Press Start for Gurbani Voice Follow'
       : `${STATUS_LABEL[status] || status}${detail ? ` · ${detail}` : ''}`;
   if (hiddenRun || (SHADOW_BUILD && !active)) statusText = 'Press Start for Gurbani Voice Follow';
-  // Short label for the collapsed pill.
-  let pillText = STATUS_LABEL[status] || 'Voice-Follow';
-  if (status === 'listening') pillText = `Line ${posLine == null ? '—' : posLine}`;
 
   // Live stats (shown while listening). Word is 1-based like the line; confidence
   // reads as a friendly percentage.
@@ -3557,11 +3928,57 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   // Visible mode in a tester build: stop the hidden run, mark the session, and start for
   // real; Stop hands the shadow back (the shadow state machine restarts the hidden run).
   const kioskStoppedRef = useRef(false); // the sevadaar pressed Stop on a kiosk
+  // Start adopting a hidden run that is following: put its Shabad (or Bani) and line on the
+  // real screen with the same actions a lock uses (in shadow mode they only went to the bus).
+  const projectCurrent = () => {
+    const id = currentShabadIdRef.current;
+    const locked = lockedVerseRef.current || {};
+    const verseId = lastVerseRef.current ?? locked.verseId ?? null;
+    const baniId = baniIdOf(id);
+    if (baniId != null) {
+      // Same length bookkeeping as a visible lock, so Stop parks this raise (stop branch)
+      // and the user's own length comes back once the screen moves on.
+      if (pendingLengthRef.current) {
+        if (!lengthOverrideRef.current)
+          lengthOverrideRef.current = { ...pendingLengthRef.current, real: true };
+        setPendingLength(null);
+      }
+      const wantLength = baniLengthFor(baniId, userLength());
+      if (wantLength && wantLength !== baniLengthRef.current) {
+        if (!lengthOverrideRef.current) lengthOverrideRef.current = { prev: userLength() };
+        Object.assign(lengthOverrideRef.current, { to: wantLength, baniId, real: true });
+        setBaniLengthRef.current(wantLength);
+      }
+      updatePaneRef.current('bani', baniId, verseId);
+      setIsCeremonyBani(false);
+      setSingleDisplayActiveTab('shabad');
+      setIsSundarGutkaBani(true);
+      setSundarGutkaBaniId(baniId);
+      if (verseId != null) setActiveVerseId(verseId);
+    } else {
+      openShabadRef.current(id, verseId, verseId === locked.verseId ? locked.verse : undefined);
+    }
+  };
   const takeOver = async () => {
     kioskStoppedRef.current = false;
     clearTimeout(ratingTimerRef.current);
     setAskRating(false);
     shadowStateRef.current.running = false;
+    // The hidden run is already listening: keep it (its evidence, its recognizer, its
+    // retrieval index) instead of restarting from nothing. Restarting threw away a lock
+    // the hidden run had made seconds earlier and sent every Start back to a cold search.
+    if (hiddenRun && autopilotRef.current && !lockingRef.current) {
+      const following = phaseRef.current === 'following' && currentShabadIdRef.current != null;
+      const cur = following ? boardRef.current.snapshot().find((b) => b.role === 'current') : null;
+      if (!following || (cur && cur.pct >= ADOPT_MIN_PCT)) {
+        visibleRef.current = true;
+        window.dispatchEvent(new CustomEvent('vf-shadow-start'));
+        shadowBus.setVisible(true);
+        if (following) projectCurrent();
+        setVisTick((n) => n + 1);
+        return;
+      }
+    }
     if (running) stop();
     visibleRef.current = true;
     // A shadow session starts now if none is running, so this whole run is recorded.
@@ -3614,10 +4031,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   else if (active) onMainClick = stop;
   else if (autopilot) onMainClick = startAutopilot;
   else if (autoDetect) onMainClick = startDetect;
-  let mainLabel = 'Start';
-  if (active) mainLabel = 'Stop';
-  else if (autopilot) mainLabel = 'Start';
-  else if (autoDetect) mainLabel = 'Start';
 
   const currentLabel = isMiscSlide ? 'Slide held' : 'Following';
   // The line the follower is on right now (the follower indexes the same line
@@ -3629,7 +4042,6 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     (posIsCurrent && profLines && profLines[pos.lineIndex]) ||
     (currentView && currentView.line) ||
     null;
-  const lineNo = posIsCurrent ? pos.lineIndex + 1 : null;
   // Option: preview the next lines once the app is sure of the Shabad (>= 95%).
   let showNext = true; // one faint next line under the current line, once sure (>= 95%)
   try {
@@ -3637,6 +4049,65 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
   } catch (e) {
     showNext = true;
   }
+  // The next pangti: from the follower's position, else the line after the one on screen.
+  let nextLine = null;
+  if (showNext && currentView && profLines) {
+    let at = posIsCurrent ? pos.lineIndex : -1;
+    if (at < 0 && liveLine) at = profLines.findIndex((l) => l === liveLine);
+    if (at >= 0 && at + 1 < profLines.length) nextLine = profLines[at + 1] || null;
+  }
+  // Volume label: no sound (red), low (amber), good (green), great (dark green), with a
+  // little hysteresis so it doesn't flicker (see VOL_* above).
+  const vol = volumeRef.current;
+  const p80 = (xs) => {
+    const sorted = [...xs].sort((a, b) => a - b);
+    return sorted.length ? sorted[Math.floor(0.8 * (sorted.length - 1))] : 0;
+  };
+  const rmsMid = p80(vol.hist.slice(-VOL_LEVEL_WINDOWS));
+  const deadMic = vol.hist.length >= VOL_SILENT_WINDOWS && p80(vol.hist) < VOL_SILENT_RMS;
+  // Hysteresis: to move up a level the loudness must clear the line by 25%.
+  const over = (line, level) => {
+    const climbing = VOL_ORDER.indexOf(vol.state) < VOL_ORDER.indexOf(level);
+    return rmsMid >= (climbing ? line * 1.25 : line);
+  };
+  // Dropping from good needs the whole last 8 s to be quiet, so a pause doesn't flash amber.
+  const wasGood = vol.state === 'good' || vol.state === 'great';
+  let volState = vol.state;
+  if (vol.hist.length >= 4) {
+    if (over(VOL_GREAT_RMS, 'great')) volState = 'great';
+    else if (over(VOL_GOOD_RMS, 'good') || (wasGood && p80(vol.hist) >= VOL_GOOD_RMS)) {
+      volState = 'good';
+    } else if (deadMic) volState = 'none';
+    else if (rmsMid >= VOL_SILENT_RMS || vol.state !== 'none') volState = 'low';
+  }
+  vol.state = volState;
+  const volBars = VOL_ORDER.indexOf(volState);
+  const volumeLabel = (
+    <span
+      className={`vf-ap-vol is-${volState}`}
+      role="status"
+      title={i18n.t('VOICE_FOLLOW.VOL_TIP')}
+    >
+      <span className="vf-ap-vol-bars" aria-hidden="true">
+        {[0, 1, 2].map((i) => (
+          <i key={i} className={i < volBars ? 'is-on' : ''} />
+        ))}
+      </span>
+      {i18n.t(`VOICE_FOLLOW.VOL_${volState.toUpperCase()}`)}
+    </span>
+  );
+  const stopButton = (
+    <button
+      type="button"
+      className="vf2-stop"
+      onClick={onMainClick}
+      title={i18n.t('VOICE_FOLLOW.STOP')}
+      aria-label={i18n.t('VOICE_FOLLOW.STOP')}
+    >
+      <i className="fa fa-stop" aria-hidden="true" />
+      {i18n.t('VOICE_FOLLOW.STOP_SHORT')}
+    </button>
+  );
   // Challengers to display: never the Shabad on screen itself (under any id) nor a
   // member of the Bani on screen.
   const liveItems = currentView
@@ -3712,344 +4183,254 @@ const VoiceFollow = ({ isOpen, onScreenClose }) => {
     !sameAsCurrent(leadLine)
   );
 
-  return (
-    <>
-      {/* Non-modal, draggable floating panel. No backdrop, so the Gurbani stays
-          fully visible while you set up and sing. Drag it by the header. */}
-      {panelVisible && (
-        <div
-          ref={panelRef}
-          data-vf-widget
-          data-vf-cards={cardStyle}
-          className="vf-panel"
-          style={posOverride || undefined}
-        >
-          {!widgetPos && <span className="vf-caret" />}
-          <div className="vf-header" onMouseDown={startDrag} title="Drag to move">
-            <span className="vf-title">
-              <span className="vf-grip">⠿</span>
-              <span className="vf-heading-copy">
-                <span>Voice Follow</span>
-              </span>
-              {active && (
-                <span
-                  className="vf-mic-bars"
-                  role="meter"
-                  aria-label="Microphone sound level"
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-valuenow={Math.round(audioView.level * 100)}
-                  title={audioView.device || 'Microphone'}
-                >
-                  {[0.4, 0.7, 1, 0.8, 0.5].map((scale, index) => (
-                    <span key={index} style={{ height: `${3 + 17 * scale * audioView.level}px` }} />
-                  ))}
-                </span>
-              )}
-            </span>
-            <span className="vf-hdr-btns">
-              <button
-                type="button"
-                className={`vf-hdr-btn vf-heard-toggle${showHeard ? ' is-on' : ''}`}
-                title={showHeard ? 'Hide what Voice-Follow hears' : 'Show what Voice-Follow hears'}
-                aria-label={showHeard ? 'Hide transcript' : 'Show transcript'}
-                aria-pressed={showHeard}
-                onMouseDown={(e) => e.stopPropagation()}
-                onClick={toggleHeard}
-              >
-                <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
-                  <path
-                    d="M1.5 8s2.4-4.5 6.5-4.5S14.5 8 14.5 8 12.1 12.5 8 12.5 1.5 8 1.5 8z"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.4"
-                  />
-                  <circle cx="8" cy="8" r="2" fill="currentColor" />
-                  {!showHeard && (
-                    <path d="M2.5 13.5 13.5 2.5" stroke="currentColor" strokeWidth="1.4" />
-                  )}
-                </svg>
-              </button>
-              <button
-                type="button"
-                className="vf-hdr-btn"
-                title="Collapse to pill"
-                aria-label="Collapse"
-                onMouseDown={(e) => e.stopPropagation()}
-                onClick={() => setCollapsed(true)}
-              >
-                –
-              </button>
-              <button
-                type="button"
-                className="vf-hdr-btn"
-                title="Close (Esc)"
-                aria-label="Close"
-                onMouseDown={(e) => e.stopPropagation()}
-                onClick={() => (active ? setCollapsed(true) : onScreenClose())}
-              >
-                ×
-              </button>
-            </span>
+  const heardStrip = (() => {
+    // A rolling window: only the last few settled words, newest kept in view.
+    const [settled, tentative] = heard ? heard.split('\u0001') : ['', ''];
+    // One run of text beside the waveform: the newest words at full strength, the oldest
+    // faded (see .vf-ap-heard in _voice-follow.scss).
+    const words = [...settled.split(/\s+/).filter(Boolean).slice(-HEARD_SHOW_WORDS), tentative]
+      .filter(Boolean)
+      .join(' ');
+    return words ? (
+      <Gurmukhi text={words} />
+    ) : (
+      <span className="vf2-heard-placeholder">{i18n.t('VOICE_FOLLOW.LISTENING')}</span>
+    );
+  })();
+
+  const dlBar = dlProgress != null && (
+    <div className="vf-dl" title="Downloading the recognition model (one time)">
+      <span className="vf-dl-bar" style={{ width: `${Math.round(dlProgress * 100)}%` }} />
+    </div>
+  );
+
+  const ratingAsk = SHADOW_BUILD && !active && askRating && (
+    <div className="vf-rate" role="group" aria-label="How did Voice-Follow do?">
+      <span>How did Voice-Follow do?</span>
+      <button type="button" onClick={() => rate('up')} title="Good" aria-label="Good">
+        👍
+      </button>
+      <button type="button" onClick={() => rate('down')} title="Not good" aria-label="Not good">
+        👎
+      </button>
+    </div>
+  );
+
+  // Idle: one large mic to start, what Autopilot does, and the microphone it listens
+  // through. Running: the Shabad being followed with its confidence, the other possible
+  // Shabads, and at the bottom what it hears (beside a small waveform) with Stop.
+  const startTitle = i18n.t('VOICE_FOLLOW.START_TITLE');
+  // Microphone blocked by the system: send the sevadaar to its setting, then retry.
+  const micSettingsUrl = MIC_SETTINGS_URL[os.platform()];
+  const openMicSettings = () => {
+    if (micSettingsUrl && shell) shell.openExternal(micSettingsUrl);
+  };
+  const retryMic = async () => {
+    if (await checkMicAccess()) return; // still blocked: stay on this screen
+    onMainClick();
+  };
+  const autopilotView = (
+    <div className={`vf-autopilot${active ? ' is-active' : ' is-idle'}`} data-vf-cards={cardStyle}>
+      {!active && micDenied && (
+        <div className="vf-ap-start is-denied">
+          <div className="vf-ap-mic-off" aria-hidden="true">
+            <i className="fa fa-microphone" />
           </div>
-
-          {!autopilot && (
-            <>
-              <div className="vf-modes">
-                {Object.keys(MODES).map((k) => (
-                  <button
-                    key={k}
-                    type="button"
-                    disabled={active}
-                    onClick={() => setMode(k)}
-                    className={`vf-mode${mode === k ? ' is-active' : ''}`}
-                  >
-                    {MODES[k].label}
-                  </button>
-                ))}
-              </div>
-              <label
-                className="vf-toggle"
-                title="Identify the shabad from your voice, then follow it"
-              >
-                <input
-                  type="checkbox"
-                  checked={autoDetect}
-                  disabled={active}
-                  onChange={(e) => setAutoDetect(e.target.checked)}
-                />
-                <span>Auto&#8288;-detect the shabad from my voice</span>
-              </label>
-            </>
-          )}
-
-          {dlProgress != null && (
-            <div className="vf-dl" title="Downloading the recognition model (one time)">
-              <span className="vf-dl-bar" style={{ width: `${Math.round(dlProgress * 100)}%` }} />
+          <div className="vf-ap-start-text">
+            <div className="vf-ap-start-title">{i18n.t('VOICE_FOLLOW.MIC_DENIED_TITLE')}</div>
+            <div className="vf-ap-start-desc">
+              {i18n.t(MIC_DENIED_DESC[os.platform()] || 'VOICE_FOLLOW.MIC_DENIED_DESC')}
             </div>
-          )}
-
-          {active && (
-            <div className="vf2-body">
-              {showHeard && (
-                <div className="vf2-heard" title="The words Voice-Follow is hearing right now">
-                  <span className="vf2-heard-label">Hearing</span>
-                  <span className="vf2-heard-text" lang="pa" ref={heardBoxRef}>
-                    {(() => {
-                      // A rolling window: only the last few settled words, newest kept in view.
-                      const [settled, tentative] = heard ? heard.split('\u0001') : ['', ''];
-                      const tail = settled.split(/\s+/).filter(Boolean).slice(-HEARD_SHOW_WORDS);
-                      return (
-                        <>
-                          <span className="vf2-heard-settled">
-                            {tail.length ? tail.join(' ') : !tentative && '…'}
-                          </span>
-                          {tentative && <span className="vf2-heard-tentative">{tentative}</span>}
-                        </>
-                      );
-                    })()}
-                  </span>
-                </div>
-              )}
-              <section
-                key={beat}
-                className={`vf2-now${currentView ? ' is-following' : ' is-searching'}${
-                  boardCur ? ` lvl-${pctLevel(boardCur.pct)}` : ''
-                }${beat ? ' is-beat' : ''}`}
-                style={boardCur ? pctVars(boardCur.pct) : undefined}
-              >
-                <div className="vf2-label" aria-live="polite">
-                  <span className={`vf2-dot ${currentView ? 'is-on' : 'is-seeking'}`} />
-                  <span className="vf2-label-text">{currentView ? currentLabel : 'Finding'}</span>
-                  {currentView && lineNo != null && (
-                    <span className="vf2-lineno">Line {lineNo}</span>
-                  )}
-                  {boardCur && <LivePct value={boardCur.pct} />}
-                  {currentView && (
-                    <button
-                      type="button"
-                      className="vf2-fold"
-                      title={lineExpanded ? 'Show on one line' : 'Show the full line'}
-                      aria-label={lineExpanded ? 'Collapse the line' : 'Expand the line'}
-                      aria-expanded={lineExpanded}
-                      onClick={() => setLineExpanded((v) => !v)}
-                    >
-                      {lineExpanded ? '−' : '+'}
-                    </button>
-                  )}
-                </div>
-                <div
-                  className={`vf2-line${lineExpanded ? ' is-expanded' : ''}`}
-                  lang="pa"
-                  key={liveLine || 'none'}
-                  role="button"
-                  tabIndex={0}
-                  title={lineExpanded ? 'Click to show on one line' : 'Click to show the full line'}
-                  onClick={() => setLineExpanded((v) => !v)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') setLineExpanded((v) => !v);
-                  }}
-                >
-                  {liveLine || 'Listening…'}
-                </div>
-                {showNext &&
-                  posIsCurrent &&
-                  profLines &&
-                  boardCur &&
-                  boardCur.pct >= 0.95 &&
-                  profLines.slice(pos.lineIndex + 1, pos.lineIndex + 2).map((l, i) => (
-                    // eslint-disable-next-line react/no-array-index-key
-                    <div key={i} className="vf2-next-line" lang="pa">
-                      {l}
-                    </div>
-                  ))}
-                {boardCur && <LiveBar value={boardCur.pct} />}
-              </section>
-
-              {changing && (
-                <section
-                  className={`vf2-change${
-                    liveLead.wins >= 2 ? ' is-confirming' : ''
-                  } is-tappable lvl-${pctLevel(leadPct)}`}
-                  aria-live="polite"
-                  role="button"
-                  tabIndex={0}
-                  title="Tap to change to this Shabad now"
-                  style={pctVars(leadPct)}
-                  onClick={() => pickCandidate(liveLead)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') pickCandidate(liveLead);
-                  }}
-                >
-                  <div className="vf2-label">
-                    <span className="vf2-dot is-seeking" />
-                    {changeLabel}
-                    <LivePct value={leadPct} />
-                  </div>
-                  <div className="vf2-cand-line" lang="pa">
-                    <MarkedLine line={leadLine} keys={heardKeys} />
-                  </div>
-                  <LiveBar value={leadPct} />
-                </section>
-              )}
-              <details className="vf2-matches" open>
-                <summary>
-                  <svg
-                    className="vf2-chevron"
-                    viewBox="0 0 10 10"
-                    width="10"
-                    height="10"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M3.5 2 6.5 5 3.5 8"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  <span className="vf2-summary-title">
-                    {currentView ? 'Possible New Shabad' : 'Possible Shabad'}
-                  </span>
-                  {boardOthers.length > 0 && (
-                    <span className="vf2-summary-count">{boardOthers.length}</span>
-                  )}
-                  {boardOthers.length > 0 && (
-                    <span className="vf2-summary-tap">
-                      {currentView ? 'tap to switch' : 'tap to open'}
-                    </span>
-                  )}
-                </summary>
-                <div className="vf2-next" aria-live="polite">
-                  {boardOthers.length === 0 && <div className="vf2-empty">None right now.</div>}
-                  {boardOthers.map((c) => (
-                    <button
-                      type="button"
-                      className={`vf2-cand is-tappable lvl-${pctLevel(c.pct)}`}
-                      key={c.shabadId}
-                      style={pctVars(c.pct)}
-                      onClick={() => pickCandidate(c)}
-                      title={
-                        currentView ? 'Tap to change to this Shabad now' : 'Tap to open this Shabad'
-                      }
-                    >
-                      <div className="vf2-cand-row">
-                        <span className="vf2-cand-line" lang="pa">
-                          <MarkedLine line={c.line} keys={heardKeys} />
-                        </span>
-                        <LivePct value={c.pct} />
-                      </div>
-                      <LiveBar value={c.pct} />
-                    </button>
-                  ))}
-                </div>
-              </details>
-            </div>
-          )}
-          <div className={`vf-compact-footer${active ? '' : ' is-idle'}`}>
-            <button
-              type="button"
-              onClick={onMainClick}
-              className={`vf-main ${active ? 'is-stop' : 'is-start'}`}
-            >
-              {mainLabel}
+          </div>
+          <div className="vf-ap-actions">
+            {micSettingsUrl && (
+              <button type="button" className="vf2-switch is-primary" onClick={openMicSettings}>
+                {i18n.t('VOICE_FOLLOW.OPEN_SETTINGS')}
+              </button>
+            )}
+            <button type="button" className="vf2-switch" onClick={retryMic}>
+              {i18n.t('VOICE_FOLLOW.TRY_AGAIN')}
             </button>
           </div>
+          {ratingAsk}
+        </div>
+      )}
+      {!active && !micDenied && (
+        <div className="vf-ap-start">
+          <button
+            type="button"
+            className="vf-ap-mic"
+            onClick={onMainClick}
+            title={startTitle}
+            aria-label={startTitle}
+          >
+            <i className="fa fa-microphone" aria-hidden="true" />
+          </button>
+          <div className="vf-ap-start-text">
+            <div className="vf-ap-start-title">{startTitle}</div>
+            <div className="vf-ap-start-desc">{i18n.t('VOICE_FOLLOW.START_DESC')}</div>
+          </div>
+          <label className="vf-ap-source">
+            <span className="vf-ap-source-label">{i18n.t('VOICE_FOLLOW.LISTENING_THROUGH')}</span>
+            <span className="vf-ap-source-pick">
+              <i className="fa fa-microphone" aria-hidden="true" />
+              <select
+                value={shownMic ? shownMic.deviceId : ''}
+                disabled={mics.list.length < 2}
+                title={i18n.t('VOICE_FOLLOW.CHOOSE_MIC')}
+                onChange={(e) => chooseMic(e.target.value)}
+              >
+                {!shownMic && <option value="">{i18n.t('VOICE_FOLLOW.DEFAULT_MIC')}</option>}
+                {mics.list.map((d) => (
+                  <option key={d.deviceId} value={d.deviceId}>
+                    {d.label || i18n.t('VOICE_FOLLOW.DEFAULT_MIC')}
+                  </option>
+                ))}
+              </select>
+            </span>
+          </label>
+          {dlBar}
+          {status === 'error' && <div className="vf-status">{statusText}</div>}
+          {ratingAsk}
+        </div>
+      )}
+
+      {active && (
+        <div className="vf2-body">
+          {dlBar}
+
+          <section
+            key={beat}
+            className={`vf2-now${currentView ? ' is-following' : ' is-searching'}${
+              boardCur ? ` lvl-${pctLevel(boardCur.pct)}` : ''
+            }${beat ? ' is-beat' : ''}`}
+            style={boardCur ? pctVars(boardCur.pct) : undefined}
+          >
+            <div className="vf2-label" aria-live="polite">
+              <span className={`vf2-dot ${currentView ? 'is-on' : 'is-seeking'}`} />
+              <span className="vf2-label-text">{currentView ? currentLabel : 'Finding'}</span>
+              {boardCur && <LivePct value={boardCur.pct} />}
+            </div>
+            <div
+              className={`vf2-line${lineExpanded ? ' is-expanded' : ''}`}
+              key={liveLine || 'none'}
+              role="button"
+              tabIndex={0}
+              title={lineExpanded ? 'Click to show on one line' : 'Click to show the full line'}
+              onClick={() => setLineExpanded((v) => !v)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') setLineExpanded((v) => !v);
+              }}
+            >
+              {liveLine ? <Gurmukhi text={liveLine} /> : i18n.t('VOICE_FOLLOW.LISTENING')}
+            </div>
+            {/* The next pangti (marked by a thin grey bar) and Stop share one row, so Stop
+                sits near the top of the panel without adding a line. */}
+            <div className="vf2-next-row">
+              {nextLine ? (
+                <div className="vf2-next-line" title={i18n.t('VOICE_FOLLOW.NEXT')}>
+                  <span className="vf2-next-mark" aria-hidden="true" />
+                  <Gurmukhi text={nextLine} />
+                </div>
+              ) : (
+                <span className="vf2-next-line is-empty" />
+              )}
+              {stopButton}
+            </div>
+            {boardCur && <LiveBar value={boardCur.pct} />}
+          </section>
+
+          {changing && (
+            <section
+              className={`vf2-change${
+                liveLead.wins >= 2 ? ' is-confirming' : ''
+              } is-tappable lvl-${pctLevel(leadPct)}`}
+              aria-live="polite"
+              role="button"
+              tabIndex={0}
+              title="Tap to change to this Shabad now"
+              style={pctVars(leadPct)}
+              onClick={() => pickCandidate(liveLead)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') pickCandidate(liveLead);
+              }}
+            >
+              <div className="vf2-label">
+                <span className="vf2-dot is-seeking" />
+                {changeLabel}
+                <LivePct value={leadPct} />
+              </div>
+              <div className="vf2-cand-line">
+                <MarkedLine line={leadLine} keys={heardKeys} />
+              </div>
+              <LiveBar value={leadPct} />
+            </section>
+          )}
+
+          <section className="vf2-shabads" aria-live="polite">
+            <div className="vf2-shabads-head">
+              <span className="vf2-shabads-title">
+                {i18n.t(currentView ? 'VOICE_FOLLOW.POSSIBLE_NEW' : 'VOICE_FOLLOW.POSSIBLE')}
+              </span>
+              {boardOthers.length > 0 && (
+                <span className="vf2-shabads-count">{boardOthers.length}</span>
+              )}
+            </div>
+            {boardOthers.length === 0 && (
+              <div className="vf2-empty">{i18n.t('VOICE_FOLLOW.NONE_NOW')}</div>
+            )}
+            {boardOthers.map((c, i) => (
+              <div className="vf2-shabad-row" key={c.shabadId}>
+                <span className="vf2-cand-line">
+                  <MarkedLine line={c.line} keys={heardKeys} />
+                </span>
+                <LiveBar value={c.pct} />
+                <LivePct value={c.pct} />
+                <button
+                  type="button"
+                  className={`vf2-switch${i === 0 ? ' is-primary' : ''}`}
+                  onClick={() => pickCandidate(c)}
+                  title={i18n.t(currentView ? 'VOICE_FOLLOW.SWITCH_TIP' : 'VOICE_FOLLOW.OPEN_TIP')}
+                >
+                  {i18n.t(currentView ? 'VOICE_FOLLOW.SWITCH' : 'VOICE_FOLLOW.OPEN')}
+                </button>
+              </div>
+            ))}
+          </section>
           {(hiddenRun || (status !== 'listening' && !detecting)) && (
             <div className="vf-status">{statusText}</div>
-          )}
-          {SHADOW_BUILD && !active && askRating && (
-            <div className="vf-rate" role="group" aria-label="How did Voice-Follow do?">
-              <span>How did Voice-Follow do?</span>
-              <button type="button" onClick={() => rate('up')} title="Good" aria-label="Good">
-                👍
-              </button>
-              <button
-                type="button"
-                onClick={() => rate('down')}
-                title="Not good"
-                aria-label="Not good"
-              >
-                👎
-              </button>
-            </div>
           )}
         </div>
       )}
 
-      {/* Collapsed state: a compact, draggable status pill. Click expands back
-          to the panel; drag to reposition (a drag doesn't trigger the expand). */}
-      {present && collapsed && (
-        <button
-          id="vf-pill"
-          data-vf-widget
-          type="button"
-          className="vf-pill"
-          style={posOverride || undefined}
-          title="Voice-Follow — click to expand, drag to move"
-          onMouseDown={startDrag}
-          onClick={() => {
-            if (movedRef.current) {
-              movedRef.current = false;
-              return;
-            }
-            setCollapsed(false);
-            if (!isOpen) setOverlayScreen('voice-follow');
-          }}
-        >
-          {dot}
-          {pillText}
-        </button>
+      {active && (
+        <div className="vf-ap-bar">
+          <div className="vf-ap-heard" title={i18n.t('VOICE_FOLLOW.HEARING_TIP')}>
+            <VoiceWave
+              stream={streamRef.current}
+              isRecording={active}
+              autoStopSeconds={null}
+              showDuration={false}
+              placeholder={null}
+              fill
+              width={120}
+              height={20}
+              barWidth={3}
+              barGap={4}
+              barColor="currentColor"
+              className="vf-ap-wave"
+            />
+            <span className="vf2-heard-text" ref={heardBoxRef}>
+              {heardStrip}
+            </span>
+          </div>
+          {volumeLabel}
+        </div>
       )}
-    </>
+    </div>
   );
-};
 
-VoiceFollow.propTypes = {
-  isOpen: PropTypes.bool,
-  onScreenClose: PropTypes.func,
+  return autopilotSlot ? createPortal(autopilotView, autopilotSlot) : null;
 };
 
 export default VoiceFollow;

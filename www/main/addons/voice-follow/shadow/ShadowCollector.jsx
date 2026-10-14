@@ -9,7 +9,7 @@ const remote = require('@electron/remote');
 const bus = require('./bus');
 const uploader = require('./uploader');
 const hf = require('./hf');
-const { HF_TOKEN } = require('./config');
+const { HF_TOKEN, VF_FEATURE_VERSION, VF_BUILD_COMMIT } = require('./config');
 const { KIOSK, KIOSK_TESTER } = require('../kiosk');
 const service = require('./service');
 const listener = require('./listener');
@@ -66,7 +66,8 @@ if (SHADOW_BUILD && typeof window !== 'undefined' && !window.shadowDiagOn) {
       );
       diag(
         `${tag}: ${process.platform} ${os.arch()} app ${remote.app.getVersion()} electron ${process.versions.electron} ` +
-          `cpus ${os.cpus().length} mem ${Math.round(os.totalmem() / 1e9)}GB db ${size} bytes ` +
+          `cpus ${os.cpus().length} (${(os.cpus()[0] || {}).model || '?'} ${(os.cpus()[0] || {}).speed || 0}MHz) ` +
+          `mem ${Math.round(os.totalmem() / 1e9)}GB db ${size} bytes ` +
           `isDbDownloaded=${localStorage.getItem('isDbDownloaded')} model=${model}`,
       );
       if (!size) diag(`${tag} db query: skipped, database not downloaded yet`);
@@ -165,6 +166,9 @@ const machineFacts = () => {
     host: machineName(),
     user,
     os: `${process.platform} ${os.release()}`,
+    cpus: os.cpus().length,
+    cpuModel: (os.cpus()[0] || {}).model || '',
+    cpuMhz: (os.cpus()[0] || {}).speed || 0,
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
     locale: navigator.language || '',
     publicIp: publicIpRef.value,
@@ -327,7 +331,11 @@ const ShadowCollector = () => {
               machine: machineFacts(),
               startedAt: new Date(t0).toISOString(),
               app: remote.app.getVersion(),
-              build: 'mvp-8.6c-shadow',
+              build: `vf-${VF_FEATURE_VERSION}`,
+              feature: {
+                version: VF_FEATURE_VERSION,
+                commit: VF_BUILD_COMMIT.startsWith('__') ? 'dev' : VF_BUILD_COMMIT,
+              },
               platform: process.platform,
               microphone: stream.getAudioTracks()[0]?.label || '',
               startedBy: startReasonRef.current,
