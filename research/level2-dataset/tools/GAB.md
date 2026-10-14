@@ -71,7 +71,8 @@ cd ~/personal/sttm-replay/research/level2-dataset/tools
 
 Guardrails (`gab compare`): each behaviour, all clips and per mic path (mixer, room, 50/50).
 Worse beyond a tiny tolerance on any of right %, sangat-sees-pangti %, seconds behind, wrong s/h, time to find,
-not found, switch time p50, switches never found, switches found within 10 s = FAIL. Per-Bani rows, named sets and the mixed all-behaviours row are information only. The replay is deterministic, so
+not found, switch time p50, switches never found = FAIL (switches found within 10 s is information only: a build that
+stays on the main Shabad turns a switch into "stayed", so that count can drop for a better build). Per-Bani rows, named sets and the mixed all-behaviours row are information only. The replay is deterministic, so
 every change is a real change; the compare also lists the clips whose screen events differ.
 
 Leaderboard verdicts: every `gab publish` recomputes, for every row, a "vs base" verdict with the same guardrails

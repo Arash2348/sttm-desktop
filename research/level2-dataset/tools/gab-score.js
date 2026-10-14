@@ -264,9 +264,10 @@ const GUARD = {
   not_found: [-1, 0, 'not found'],
   switch_p50_s: [-1, 0.2, 'switch time p50 s'],
   switch_missed: [-1, 0, 'switches never found'],
-  switch_within10_n: [1, 0, 'switches found within 10 s'],
 };
-const INFO = { find_p90_s: [-1, 0.2, 'time to find p90 s (info)'], switch_p90_s: [-1, 0.2, 'switch time p90 s (info)'], pangti_never_shown: [-1, 0, 'line-truth clips never shown (info)'], parmaan_shown: [1, 0, 'parmaans shown (info)'] };
+const INFO = { find_p90_s: [-1, 0.2, 'time to find p90 s (info)'], switch_p90_s: [-1, 0.2, 'switch time p90 s (info)'], pangti_never_shown: [-1, 0, 'line-truth clips never shown (info)'], parmaan_shown: [1, 0, 'parmaans shown (info)'],
+  // info only: its denominator moves (a build that stays on the main Shabad turns a switch into 'stayed')
+  switch_within10_n: [1, 0, 'switches found within 10 s (info)'] };
 function compare(A, B) {
   const out = { gab: GAB_VERSION, a: A.build, b: B.build, manifest: [A.manifest.sha, B.manifest.sha], tier: A.tier, split: A.split, rows: [], pass: true, worse: [], better: [] };
   if (A.manifest.sha !== B.manifest.sha) out.warning = 'the two scorecards used different manifests';
@@ -323,7 +324,7 @@ function compareMarkdown(c, A, B) {
   L.push(`| (${nSame} more metric cells unchanged) | | | | | |`);
   L.push('');
   L.push(`GUARDRAILS: ${c.pass ? 'PASS (no guarded metric worse)' : `FAIL (${c.worse.length} worse: ${c.worse.map((w) => `${title(w.key)} ${w.scope} ${w.metric} ${w.a} -> ${w.b}`).join('; ')})`} · ${c.better.length} better`);
-  L.push('Guarded = each behaviour, all clips and per mic path (mixer feed, room mic, 50/50); per-Bani rows, named sets and the mixed all-behaviours row are information only. Tolerances: right % 0.1 pt, seconds behind 0.05 s (p50) / 0.1 s (p90), wrong s/h 1, find / switch time 0.2 s, not found / switches never found / switches found within 10 s 0.');
+  L.push('Guarded = each behaviour, all clips and per mic path (mixer feed, room mic, 50/50); per-Bani rows, named sets and the mixed all-behaviours row are information only. Tolerances: right % 0.1 pt, seconds behind 0.05 s (p50) / 0.1 s (p90), wrong s/h 1, find / switch time 0.2 s, not found / switches never found 0.');
   return L.join('\n');
 }
 
