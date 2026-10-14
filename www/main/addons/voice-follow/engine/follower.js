@@ -8,7 +8,9 @@ const NEG = -1e30;
 const DEFAULTS = {
   windowS: 4.0, hopS: 0.25, minHyp: 3, guard: 0.55, advCost: 0.03,
   jumpCost: 0.28, rahaoBonus: 0.18, revisitBonus: 0.10, decay: 0.90,
-  dwell: 3, dwellAdv: 1, dwellBack: 2, skipSpan: 2, backSpan: 1, backCost: 0.14,
+  // dwellAdv 2 (was 1): the next line must win two decodes in a row (Fremont ear check:
+  // the app turned the page one line early in 14 of 30 disagreements).
+  dwell: 3, dwellAdv: 2, dwellBack: 2, skipSpan: 2, backSpan: 1, backCost: 0.14,
   margin: 0.05, marginGate: 0.10, initConfirm: 4, release: 14,
   acousticGate: 0.0, acousticWin: 3.0, acousticTopm: 5,
   // Evidence bar for any move other than "next line": the fragment must match the
@@ -20,6 +22,15 @@ const DEFAULTS = {
   minHypJump: 8,
   // Decodes a 2..skipSpan-line skip must persist (default: same as dwellAdv).
   dwellSkip: null,
+  // (Re)locking the line: lock when one line is the top of initVotes of the last initWin
+  // decodes that heard letters. A frozen decode (instruments, alaap) does not reset the
+  // count, so muddy kirtan can re-lock after a release. initWin 0 = the old rule
+  // (initConfirm consecutive decodes, reset by any frozen decode).
+  initWin: 6, initVotes: 3,
+  // Evidence bar for "next line": the fragment must have at least advMinHyp letters and
+  // match the next line at least advEmisGap better than the current one, so a scrap of
+  // alaap or an instrumental tail does not turn the page early. 0 disables each.
+  advMinHyp: 6, advEmisGap: 0.0,
 };
 
 function argmax(a) { let bi = 0, bv = -Infinity; for (let i = 0; i < a.length; i++) if (a[i] > bv) { bv = a[i]; bi = i; } return bi; }
@@ -53,6 +64,7 @@ class Follower {
     this.dwell = 0;
     this.initCand = null;
     this.initCount = 0;
+    this.initHist = [];
     this.miss = 0;
     this.visited = new Set();
     this.wiLine = null;
@@ -160,9 +172,10 @@ class Follower {
 
   _freeze() {
     this.miss += 1;
-    this.initCand = null; this.initCount = 0;
+    if (!this.c.initWin) { this.initCand = null; this.initCount = 0; }
     if (this.c.release && this.miss >= this.c.release && this.cur !== null) {
       this.cur = null; this.challenger = null; this.dwell = 0;
+      this.initHist = [];
       this.score = new Float64Array(this.linesNorm.length);
       return { verseIndex: -1, verseId: null, wordIndex: -1, lineIndex: null, confidence: 0.0 };
     }
@@ -218,10 +231,17 @@ class Follower {
     if (c.onTrace) c.onTrace({ hyp, top, cur: this.cur, emisTop: emis[top], emisCur: this.cur == null ? null : emis[this.cur], scoreTop: this.score[top], scoreCur: this.cur == null ? null : this.score[this.cur], dwell: this.dwell, challenger: this.challenger });
 
     if (this.cur === null) {
-      if (top === this.initCand) this.initCount += 1;
-      else { this.initCand = top; this.initCount = 1; }
-      if (this.initCount >= c.initConfirm) { this.cur = top; this.initCand = null; this.initCount = 0; }
-      else return null;
+      if (c.initWin) {
+        this.initHist.push(top);
+        if (this.initHist.length > c.initWin) this.initHist.shift();
+        const votes = this.initHist.filter((x) => x === top).length;
+        if (votes >= c.initVotes) { this.cur = top; this.initHist = []; } else return null;
+      } else {
+        if (top === this.initCand) this.initCount += 1;
+        else { this.initCand = top; this.initCount = 1; }
+        if (this.initCount >= c.initConfirm) { this.cur = top; this.initCand = null; this.initCount = 0; }
+        else return null;
+      }
     } else if (top === this.cur) {
       this.challenger = null; this.dwell = 0;
     } else {
@@ -233,7 +253,8 @@ class Follower {
       else if (d >= 2 && d <= c.skipSpan) need = c.dwellSkip == null ? c.dwellAdv : c.dwellSkip;
       else if (d >= -c.backSpan && d <= -1) need = c.dwellBack;
       else need = c.dwell;
-      const evid = d === 1 || ((c.jumpEmisGap <= 0 || emis[top] - emis[this.cur] >= c.jumpEmisGap) && hyp.length >= c.minHypJump);
+      const evidAdv = hyp.length >= c.advMinHyp && (c.advEmisGap <= 0 || emis[top] - emis[this.cur] >= c.advEmisGap);
+      const evid = d === 1 ? evidAdv : (c.jumpEmisGap <= 0 || emis[top] - emis[this.cur] >= c.jumpEmisGap) && hyp.length >= c.minHypJump;
       if (evid && this.dwell >= need && this.score[top] >= this.score[this.cur] + c.margin) {
         this.cur = top; this.challenger = null; this.dwell = 0;
       }
