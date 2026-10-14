@@ -60,6 +60,12 @@ scorecard showed.
 | `3-bani-sung/asa-di-vaar` | aligned, line | 4 | within 1 line 15.6–95.9% per clip | 72.7% | 61.0 / 11.6 / 3.9 / 9.4 / 0 / 14.1 | 0 | 0.60 / 1.64 | 17.3 | 22 |
 | `3-bani-sung/saloks-sung` | aligned / human+aligned, Shabad | 2 | first on screen 527 s / 1039 s | 97.4% / 97.1% | | 0 / 101.6 | n/a | 10.7 / 12.8 | 1 / 1 |
 
+Reproduce: folder rows = `node tools/sangat-score.js --run <run>/cand` (or `vf-check --manifest <manifest.csv> --from
+<run>/cand` for the scorecard). The key-clip groups are clips whose manifest `suite_jobs` carry `aarti:` (Aarti-50),
+`clip01`-`clip41` (L2-41) and `kh01`-`kh05` (Fremont). The `3-bani-sung/aarti` Bani row counts 51 clips: the 49 the
+scorecard runs plus aa21/aa22, which have replay traces but no `suite_jobs` (their window is the kirtan after the
+Aarti).
+
 ### Other outputs rescored (sttm-release `results/`, JSON outputs, no traces)
 
 | output | clip | old metric (stored) | sangat sees right pangti | truth, level | wrong page s/h | catch-up lag p50 / p90 s | longest not-ON s |

@@ -165,7 +165,8 @@ async function run(vf) {
 
   // score once per (content folder, suite) on that folder's clips only
   const t2 = now();
-  const card = { manifest: from, cand, tree, folders: {}, notRun: notRun.map(([id, folder, why]) => ({ id, folder, why })), cacheMisses: missed.map((j) => `${j.suite}/${j.id}`), errors: failed.map(([j, e]) => ({ clip: `${j.suite}/${j.id}`, error: e })) };
+  if (fromDir) tree = 'existing replay (--from)';
+  const card = { manifest: from, cand: fromDir || cand, tree, folders: {}, notRun: notRun.map(([id, folder, why]) => ({ id, folder, why })), cacheMisses: missed.map((j) => `${j.suite}/${j.id}`), errors: failed.map(([j, e]) => ({ clip: `${j.suite}/${j.id}`, error: e })) };
   const folders = [...new Set(sel.map((r) => r.content_folder))].sort();
   // sangat view per clip (one result per manifest clip; pt35 is replayed by two suites: the first suite_jobs entry wins)
   const sv = require('./sangat-score');
