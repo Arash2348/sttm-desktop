@@ -65,7 +65,9 @@ async function pool(planFile) {
     fs.mkdirSync(task.outDir, { recursive: true });
     const started = now();
     const only = task.jobs.map((j) => j.only).filter(Boolean);
-    const args = ['-r', './no-shadow-preload.js', ...task.args, ...(only.length ? ['--only', only.join(',')] : []), '--out', jobDir];
+    // the shadow-config preload only for builds that have a shadow layer (Cycle 8 / MVP 8.6 and older have none)
+    const shadowCfg = path.join(task.env.VF_DRIVER_ROOT || path.resolve(TOOLS, '../../..'), 'www/main/addons/voice-follow/shadow/config.js');
+    const args = [...(fs.existsSync(shadowCfg) ? ['-r', './no-shadow-preload.js'] : []), ...task.args, ...(only.length ? ['--only', only.join(',')] : []), '--out', jobDir];
     const child = spawn(process.execPath, args, { cwd: TOOLS, env: { ...process.env, ...task.env } });
     let err = '';
     child.stderr.on('data', (d) => { err += d; if (err.length > 400000) err = err.slice(-200000); });

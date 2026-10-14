@@ -14,17 +14,17 @@
   "fa250815": {
    "label": "8.6 · Cycle 8 + Bani paath, tester build (Sep 29)",
    "kind": "older version",
-   "why": "the tester build engine: Cycle 8 kirtan + Sundar Gutka paath"
+   "why": "Sep 29: the tester build engine, Cycle 8 kirtan + Sundar Gutka paath"
   },
   "265da34e": {
    "label": "8.6c · Renton Gurdwara production run (Oct 11)",
    "kind": "older version",
-   "why": "the build run through a whole Renton program"
+   "why": "Oct 11: the build run through a whole Renton Gurdwara program"
   },
   "7165bd24": {
    "label": "9.0 · checkpoint, tested by the user (Oct 12)",
    "kind": "older version",
-   "why": "Renton fixes; the user tested it live and called it pretty good"
+   "why": "Oct 12: Renton fixes; the user tested it live and called it pretty good"
   },
   "2cb8b003": {
    "label": "9.0.1 · first release",

@@ -117,12 +117,13 @@ function tree(res) {
   const behs = [...new Set([...main, ...hard].filter((x) => x.level === 'behaviour').map((x) => x.key))].sort();
   return behs.map((k) => {
     const m = main.find((x) => x.key === k); const h = hard.find((x) => x.key === k);
-    const node = { id: k, name: BEH_NAME[k] || (m || h).title, row: has(m) ? m : has(h) ? h : null, kids: [] };
-    if (has(h)) {
+    const inc = (r) => !!(r && r.incomplete); // not scored: needs speech-model output not in the cache
+    const node = { id: k, name: BEH_NAME[k] || (m || h).title, row: has(m) || inc(m) ? m : has(h) ? h : null, kids: [] };
+    if (has(h) || inc(h)) {
       // two mics: Gurdwara mic (main GAB) and Laptop mic (GAB-Hard), each with its own Banis / mic types
       node.kids = [
-        { id: `${k}|gurdwara`, name: 'Gurdwara mic', row: has(m) ? m : null, kids: has(m) ? (banisOf(main, k, `${k}|gurdwara`).length ? banisOf(main, k, `${k}|gurdwara`) : micKids(`${k}|gurdwara`, m)) : [] },
-        { id: `${k}|laptop`, name: 'Laptop mic', row: h, kids: banisOf(hard, k, `${k}|laptop`) },
+        { id: `${k}|gurdwara`, name: 'Gurdwara mic', row: has(m) || inc(m) ? m : null, kids: has(m) ? (banisOf(main, k, `${k}|gurdwara`).length ? banisOf(main, k, `${k}|gurdwara`) : micKids(`${k}|gurdwara`, m)) : [] },
+        { id: `${k}|laptop`, name: 'Laptop mic', row: h, kids: has(h) ? banisOf(hard, k, `${k}|laptop`) : [] },
       ];
     } else if (has(m)) node.kids = banisOf(main, k, k).length ? banisOf(main, k, k) : micKids(k, m);
     return node;
@@ -130,6 +131,7 @@ function tree(res) {
 }
 const walk = (nodes, f, d = 0) => nodes.forEach((n) => { f(n, d); walk(n.kids, f, d + 1); });
 function nodeCells(n, pn) {
+  if (n.row && n.row.incomplete) return `<td class="none" colspan="2" title="${esc(n.row.note || '')}">not scored: ${n.row.incomplete} recording${n.row.incomplete > 1 ? 's need' : ' needs'} speech-model output this version asks for, not saved yet</td>`;
   if (!has(n.row)) return '<td class="none" colspan="2">no recordings yet</td>';
   const r = Number(n.row.right_shabad_pct); const w = Number(n.row.wrong_s_per_h);
   const p = pn && has(pn.row) ? pn.row : null;
