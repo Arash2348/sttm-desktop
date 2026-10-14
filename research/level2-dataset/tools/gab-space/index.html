@@ -4,20 +4,30 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GAB Leaderboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gurmukhi:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #fbfaf7; --panel: #ffffff; --ink: #1d1d1b; --muted: #5f5d57; --line: #e4e1d8; --accent: #1f5f8b; --accent-soft: #e6eff6;
-  --good: #1e6b3a; --warn: #8a5a00; --warn-soft: #fff3d6; --chip: #f0eee8;
+  --warn: #8a5a00; --warn-soft: #fff3d6; --chip: #f0eee8;
+  /* better / worse: Okabe-Ito bluish green and vermilion (colour-blind safe), as light tints behind dark text */
+  --better: #009e73; --worse: #d55e00; --better-ink: #00694c; --worse-ink: #a8430a; --tint: 34%;
+  --app: #1f5f8b; --app-soft: #e6eff6;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { --bg: #151514; --panel: #1e1e1c; --ink: #ecebe6; --muted: #a9a69c; --line: #34332f; --accent: #7fb4dc; --accent-soft: #1f2d38; --good: #7fcf98; --warn: #e6b450; --warn-soft: #3a2f17; --chip: #2a2926; }
+  :root:not([data-theme="light"]) { --bg: #151514; --panel: #1e1e1c; --ink: #ecebe6; --muted: #a9a69c; --line: #34332f; --accent: #7fb4dc; --accent-soft: #1f2d38; --warn: #e6b450; --warn-soft: #3a2f17; --chip: #2a2926;
+    --better: #2bbf92; --worse: #f07a3a; --better-ink: #63d6ae; --worse-ink: #f39a66; --tint: 30%; --app: #9cc8ea; --app-soft: #1f2d38; }
 }
-:root[data-theme="dark"] { --bg: #151514; --panel: #1e1e1c; --ink: #ecebe6; --muted: #a9a69c; --line: #34332f; --accent: #7fb4dc; --accent-soft: #1f2d38; --good: #7fcf98; --warn: #e6b450; --warn-soft: #3a2f17; --chip: #2a2926; }
+:root[data-theme="dark"] { --bg: #151514; --panel: #1e1e1c; --ink: #ecebe6; --muted: #a9a69c; --line: #34332f; --accent: #7fb4dc; --accent-soft: #1f2d38; --warn: #e6b450; --warn-soft: #3a2f17; --chip: #2a2926;
+  --better: #2bbf92; --worse: #f07a3a; --better-ink: #63d6ae; --worse-ink: #f39a66; --tint: 30%; --app: #9cc8ea; --app-soft: #1f2d38; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+.gm { font-family: "Noto Sans Gurmukhi", "Gurmukhi MN", "Raavi", "Mukta Mahee", sans-serif; font-weight: 600; }
 header { padding: 24px 16px 8px; max-width: 1200px; margin: 0 auto; }
 h1 { font-size: 24px; margin: 0 0 4px; }
 .sub { color: var(--muted); margin: 0; }
+.sub .gm { color: var(--ink); }
 nav { max-width: 1200px; margin: 12px auto 0; padding: 0 16px; display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
 nav button { background: none; border: 0; border-bottom: 2px solid transparent; padding: 8px 10px; color: var(--muted); font: inherit; cursor: pointer; }
 nav button.on { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
@@ -29,45 +39,64 @@ section { display: none; } section.on { display: block; }
 .wrap { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
 table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
 th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-th { font-size: 13px; color: var(--ink); font-weight: 600; line-height: 1.25; cursor: pointer; user-select: none; background: var(--panel); position: sticky; top: 0; z-index: 1; }
+th { font-size: 13px; color: var(--ink); font-weight: 600; line-height: 1.25; background: var(--panel); position: sticky; top: 0; z-index: 1; }
 th .dir { font-weight: 400; font-size: 11px; display: block; color: var(--muted); }
-td.num { text-align: right; min-width: 92px; max-width: 150px; }
-td.num b { font-size: 16px; white-space: nowrap; }
+th.main { box-shadow: inset 0 -3px 0 var(--accent); }
+th.main .rk { display: inline-block; font-size: 10px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .04em; }
+td.num { text-align: right; min-width: 96px; max-width: 160px; }
+td.num .v { font-size: 16px; white-space: nowrap; }
+td.num.best .v { font-weight: 700; }
 td.num .n { line-height: 1.3; }
 th.num { text-align: right; }
 tr:last-child td { border-bottom: 0; }
-td:first-child, th:first-child { position: sticky; left: 0; background: var(--panel); z-index: 2; }
-td:first-child { min-width: 200px; max-width: 260px; box-shadow: 1px 0 0 var(--line); }
-th:first-child { z-index: 3; box-shadow: 1px 0 0 var(--line); }
+td.rank { width: 48px; text-align: center; font-size: 20px; font-weight: 700; color: var(--muted); }
+td.rank.r1 { color: var(--ink); }
+td.rank .n { font-size: 11px; font-weight: 400; }
+td.who { min-width: 230px; max-width: 300px; }
+td.who .lead { font-size: 15px; font-weight: 600; }
+td.who .also { margin-top: 4px; font-size: 13px; }
+td.who .also div { margin: 1px 0; }
 .n { color: var(--muted); font-size: 12px; display: block; }
-.chip { display: inline-block; background: var(--chip); border-radius: 4px; padding: 0 6px; font-size: 12px; color: var(--muted); }
-.cand { background: var(--warn-soft); color: var(--warn); }
+.cm { color: var(--muted); font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.pill { display: inline-block; border-radius: 999px; padding: 0 8px; font-size: 11px; font-weight: 600; line-height: 18px; vertical-align: 1px; white-space: nowrap; }
+.pill.app { background: var(--app-soft); color: var(--app); border: 1px solid var(--app); }
+.pill.exp { background: var(--chip); color: var(--muted); border: 1px solid var(--line); }
+.bestmark { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--better-ink); margin-right: 4px; vertical-align: 2px; }
 .thin { color: var(--warn); font-size: 12px; }
 .note { color: var(--muted); font-size: 13px; margin: 10px 2px; }
+.legend { display: flex; gap: 4px 16px; flex-wrap: wrap; align-items: center; font-size: 12px; color: var(--muted); margin: 0 2px 8px; }
+.legend .sw { display: inline-block; width: 44px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 4px; border: 1px solid var(--line); }
+.legend .sw.g { background: color-mix(in srgb, var(--better) var(--tint), var(--panel)); }
+.legend .sw.r { background: color-mix(in srgb, var(--worse) var(--tint), var(--panel)); }
+.legend .sw.grad { width: 90px; background: linear-gradient(90deg, color-mix(in srgb, var(--worse) var(--tint), var(--panel)), var(--panel), color-mix(in srgb, var(--better) var(--tint), var(--panel))); }
 .card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; margin: 0 0 12px; }
 .card h3 { margin: 0 0 6px; font-size: 16px; }
 .card p { margin: 6px 0; }
 code { background: var(--chip); padding: 0 4px; border-radius: 3px; font-size: 13px; }
-.ok { color: var(--good); font-weight: 600; } .no { color: var(--warn); font-weight: 600; }
-.pass { background: var(--accent-soft); color: var(--good); } .fail { background: var(--warn-soft); color: var(--warn); font-weight: 600; }
-.verdicts { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 16px; margin: 12px 0; }
-.verdicts h3 { margin: 4px 0 6px; font-size: 15px; }
-.verdicts ul { margin: 4px 0 8px; padding-left: 18px; }
-.verdicts li { margin: 2px 0; }
-.verdicts .small { color: var(--muted); font-size: 13px; }
+.ok { color: var(--better-ink); font-weight: 600; } .no { color: var(--worse-ink); font-weight: 600; }
+.chg h3 { margin-bottom: 2px; }
+.chg .vs { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
+.chg ul { margin: 4px 0; padding-left: 0; list-style: none; }
+.chg li { margin: 4px 0; padding: 4px 10px; border-radius: 6px; }
+.chg li.up { background: color-mix(in srgb, var(--better) 14%, var(--panel)); }
+.chg li.down { background: color-mix(in srgb, var(--worse) 14%, var(--panel)); }
+.chg li .tag { font-weight: 700; margin-right: 6px; }
+.chg li.up .tag { color: var(--better-ink); } .chg li.down .tag { color: var(--worse-ink); }
+.chg .same { color: var(--muted); }
+.chg .small { color: var(--muted); font-size: 13px; }
 .tiers { max-width: 1200px; margin: 8px auto 0; padding: 0 16px; display: flex; gap: 8px; flex-wrap: wrap; }
 .tiers button { border: 1px solid var(--line); background: var(--panel); color: var(--muted); border-radius: 8px; padding: 8px 14px; font: inherit; cursor: pointer; text-align: left; }
 .tiers button b { color: var(--ink); display: block; }
 .tiers button.on { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); }
 .hardnote { background: var(--warn-soft); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; margin: 0 0 12px; }
 .hardnote b { color: var(--warn); }
-@media (max-width: 640px) { th, td { padding: 6px 8px; font-size: 13px; } td.num b { font-size: 14px; } h1 { font-size: 20px; } td:first-child { min-width: 128px; max-width: 150px; } .hide-phone, td.num .n { display: none; } td.num { min-width: 64px; } }
+@media (max-width: 640px) { th, td { padding: 6px 8px; font-size: 13px; } td.num .v { font-size: 14px; } h1 { font-size: 20px; } td.who { min-width: 150px; max-width: 180px; } .hide-phone, td.num .n { display: none; } td.num { min-width: 64px; } td.rank { width: 32px; font-size: 16px; } }
 </style>
 </head>
 <body>
 <header>
   <h1>GAB: Gurbani Autopilot Bench</h1>
-  <p class="sub">How well each version of STTM Desktop Voice-Follow keeps the right Gurbani on screen, tested on the same recordings. <span id="meta"></span></p>
+  <p class="sub">How well each version of <span id="sysname"><span class="gm">ਧਿਆਨ</span> Dhiaan</span> (STTM Desktop's Voice-Follow) keeps the right Gurbani on screen, tested on the same recordings. <span id="meta"></span></p>
 </header>
 <div class="tiers" id="tiers">
   <button data-set="main" class="on"><b>GAB</b>main benchmark, the priority</button>
@@ -75,22 +104,26 @@ code { background: var(--chip); padding: 0 4px; border-radius: 3px; font-size: 1
 </div>
 <nav id="tabs">
   <button data-tab="board" class="on">Leaderboard</button>
+  <button data-tab="changes">What changed between versions</button>
   <button data-tab="banis">Per Bani</button>
   <button data-tab="sets">Old numbers, checked</button>
   <button data-tab="about">About / how to read this</button>
 </nav>
 <main>
   <section id="board" class="on">
-    <div class="hardnote" id="hardnote" hidden><b>GAB-Hard (Fremont hall, laptop mic).</b> Jaspal's recordings at Gurdwara Sahib Fremont, made with STTM Desktop on the sevadaar's laptop: the hall is resonant, the laptop mic is far from the ragis, and there is little clean audio, so these are much harder than the main set. They are tracked here on their own, but they are not the priority; builds are judged on main GAB.</div>
+    <div class="hardnote" id="hardnote" hidden><b>GAB-Hard (Fremont hall, laptop mic).</b> Jaspal's recordings at Gurdwara Sahib Fremont, made with STTM Desktop on the sevadaar's laptop: the hall echoes, the laptop mic is far from the ragis, and there is little clean audio, so these are much harder than the main set. They are tracked here on their own, but they are not the priority; versions are judged on main GAB.</div>
     <div class="pills" id="behaviours"></div>
+    <div class="legend" id="legend"></div>
     <div class="wrap"><table id="boardTable"></table></div>
     <p class="note" id="coverage"></p>
-    <div class="verdicts" id="verdicts"></div>
+  </section>
+  <section id="changes">
+    <div id="changeList"></div>
   </section>
   <section id="banis">
     <div class="pills" id="buildPick"></div>
     <div class="wrap"><table id="baniTable"></table></div>
-    <p class="note">Each row is one Bani or one group of recordings, for the build picked above. "no clips yet" means the practice set has no recording of it; that is a gap in the data, not a score.</p>
+    <p class="note">Each row is one Bani or one group of recordings, for the version picked above. "no clips yet" means the practice set has no recording of it; that is a gap in the data, not a score.</p>
   </section>
   <section id="sets">
     <div id="reconcile"></div>
@@ -100,47 +133,77 @@ code { background: var(--chip); padding: 0 4px; border-radius: 3px; font-size: 1
   </section>
 </main>
 <script>
+// The name of the system being benchmarked. Read from gab-names.json (the one place to change it); this is only the fallback.
+let SYSTEM = { gurmukhi: 'ਧਿਆਨ', latin: 'Dhiaan' };
 const BEH = [
-  { key: '1-kirtan-shabad', name: 'Kirtan of a Shabad' },
-  { key: '2-bani-recited', name: 'Bani recited (paath)' },
-  { key: '3-bani-sung-like-kirtan', name: 'Bani sung like kirtan' },
-  { key: '4-akhand-paath', name: 'Akhand Paath (Ang after Ang)' },
+  { key: '1-kirtan-shabad', name: 'Kirtan of a Shabad', unit: 'Shabad' },
+  { key: '2-bani-recited', name: 'Bani recited (paath)', unit: 'Bani' },
+  { key: '3-bani-sung-like-kirtan', name: 'Bani sung like kirtan', unit: 'Bani' },
+  { key: '4-akhand-paath', name: 'Akhand Paath (Ang after Ang)', unit: 'Shabad' },
 ];
 const BASIS = { human: 'human answers', 'aligned+ear-checked': 'aligner, ear-checked', aligned: 'aligner only (not a headline)' };
 const THIN = 3;
 // a line number is shown only on human or ear-checked line answers and at least 3 clips; otherwise the honest text
-const lineShown = (r) => r.pangti_pct != null && r.pangti_basis !== 'aligned' && r.pangti_clips >= THIN;
-const noLine = () => 'no line answers yet; right Shabad only';
-// compact columns: the main number big, its spread and coverage on the small line under it
+const lineShown = (r) => !!r && r.pangti_pct != null && r.pangti_basis !== 'aligned' && r.pangti_clips >= THIN;
+const LINE_KEYS = ['pangti_pct', 'pangti_near_pct', 'behind_p50_s'];
+// columns: k = the value that is ranked and coloured, dir = +1 higher is better / -1 lower is better
 const COLS = [
-  { k: 'right_shabad_pct', t: 'Right Shabad', d: '% of time, higher better', cell: (r) => [fmt(r.right_shabad_pct, '%'), `${r.shabad_clips} clips, human answers`] },
-  { k: 'pangti_pct', t: 'Right pangti', d: 'strict, % of time, higher better', cell: (r) => (lineShown(r) ? [fmt(r.pangti_pct, '%'), `${r.pangti_clips} clips${r.pangti_never_shown ? ` +${r.pangti_never_shown} never shown` : ''}, ${BASIS[r.pangti_basis]}`] : ['–', noLine(r)]) },
-  { k: 'pangti_near_pct', t: 'Same or neighbouring pangti', d: '% of time, higher better', cell: (r) => (lineShown(r) ? [fmt(r.pangti_near_pct, '%'), 'right pangti, or one pangti behind or ahead'] : ['–', 'no line answers yet']) },
-  { k: 'behind_p50_s', t: 'Behind', d: 's typical, lower better', cell: (r) => (lineShown(r) ? [fmt(r.behind_p50_s, ' s'), r.behind_n ? `worst 10%: ${fmt(r.behind_p90_s, ' s')}; ${r.behind_n} pangtis` : ''] : ['–', 'no line answers yet']) },
-  { k: 'wrong_s_per_h', t: 'Wrong Shabad', d: 's per hour, lower better', cell: (r) => [fmt(r.wrong_s_per_h), `${r.hours} h`] },
-  { k: 'find_p50_s', t: 'Find', d: 's typical, lower better', cell: (r) => [fmt(r.find_p50_s, ' s'), r.find_n ? `worst 10%: ${fmt(r.find_p90_s, ' s')}; n ${r.find_n}${r.not_found ? `, ${r.not_found} never found` : ''}` : ''] },
-  { k: 'switch_missed', t: 'Switch', d: '≤10 s / later / never', cell: (r) => {
+  { k: 'right_shabad_pct', dir: 1, t: 'Right Shabad', d: '% of time · higher is better', cell: (r) => [fmt(r.right_shabad_pct, '%'), `${r.shabad_clips} clips, human answers`] },
+  { k: 'pangti_pct', dir: 1, t: 'Right pangti', d: 'exact, % of time · higher is better', cell: (r) => (lineShown(r) ? [fmt(r.pangti_pct, '%'), `${r.pangti_clips} clips${r.pangti_never_shown ? ` +${r.pangti_never_shown} never shown` : ''}, ${BASIS[r.pangti_basis]}`] : ['–', 'no line answers yet; right Shabad only']) },
+  { k: 'pangti_near_pct', dir: 1, t: 'Same or neighbouring pangti', d: '% of time · higher is better', cell: (r) => (lineShown(r) ? [fmt(r.pangti_near_pct, '%'), 'right pangti, or one before or after'] : ['–', 'no line answers yet']) },
+  { k: 'behind_p50_s', dir: -1, t: 'Behind', d: 'seconds, typical · lower is better', cell: (r) => (lineShown(r) ? [fmt(r.behind_p50_s, ' s'), r.behind_n ? `slowest 10%: ${fmt(r.behind_p90_s, ' s')}; ${r.behind_n} pangtis` : ''] : ['–', 'no line answers yet']) },
+  { k: 'wrong_s_per_h', dir: -1, t: 'Wrong Shabad', d: 'seconds per hour · lower is better', cell: (r) => [fmt(r.wrong_s_per_h, ' s/h'), `${r.hours} h of recordings`] },
+  { k: 'find_p50_s', dir: -1, t: 'Find', d: 'seconds, typical · lower is better', cell: (r) => [fmt(r.find_p50_s, ' s'), r.find_n ? `slowest 10%: ${fmt(r.find_p90_s, ' s')}; ${r.find_n} starts${r.not_found ? `, ${r.not_found} never found` : ''}` : ''] },
+  { k: 'switch_missed', dir: -1, t: 'Switch', d: '≤10 s / later / never · fewer "never" is better', cell: (r) => {
     const extra = [r.stayed_main_n ? `${r.stayed_main_n} stayed on main Shabad` : '', r.parmaan_n ? `parmaan shown ${r.parmaan_shown} of ${r.parmaan_n}` : ''].filter(Boolean).join('; ');
     if (!r.switch_n) return ['–', `no switch in these clips${extra ? `; ${extra}` : ''}`];
     return [`${r.switch_within10_n ?? '?'} / ${r.switch_later_n ?? '?'} / ${r.switch_missed}`, `typical ${fmt(r.switch_p50_s, ' s')} over found${extra ? `; ${extra}` : ''}`];
   } },
 ];
+// the value a cell is ranked / coloured on (null = not comparable: no line answers, no switch)
+const valOf = (r, c) => { if (!r || !r.clips) return null; if (LINE_KEYS.includes(c.k) && !lineShown(r)) return null; if (c.k === 'switch_missed' && !r.switch_n) return null; return r[c.k] ?? null; };
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const fmt = (v, u) => (v == null ? '–' : `${v}${u || ''}`);
 const Q = new URLSearchParams(location.search);
-let RESULTS = []; let beh = Q.get('beh') || BEH[0].key; let sortKey = null; let sortDir = 1; let pick = null;
-// GAB tier on view: main (the priority) or hard (Fremont hall, laptop mic); each build's result holds both, never mixed
+let RESULTS = []; let beh = Q.get('beh') || BEH[0].key; let pick = null;
+// GAB tier on view: main (the priority) or hard (Fremont hall, laptop mic); each version's result holds both, never mixed
 let tier = Q.get('set') === 'hard' ? 'hard' : 'main';
 const partOf = (res) => (tier === 'hard' ? res.hard || { rows: [] } : res);
 function rowOf(res, key) { return (partOf(res).rows || []).find((r) => r.key === key) || null; }
-function thinMark(r, k) { if (['pangti_pct', 'pangti_near_pct', 'behind_p50_s'].includes(k) && !lineShown(r)) return ''; const map = { pangti_pct: 'pangti_clips', pangti_near_pct: 'pangti_clips', behind_p50_s: 'pangti_clips', find_p50_s: 'find_n', switch_missed: 'switch_n' }; return r.thin && r.thin.includes(map[k]) ? ' <span class="thin" title="fewer than 3 clips or events behind this number">thin</span>' : ''; }
-const cells = (r) => COLS.map((c) => { const [big, small] = c.cell(r); return `<td class="num"><b>${esc(big)}</b>${thinMark(r, c.k)}<span class="n">${esc(small)}</span></td>`; }).join('');
-const heads = () => COLS.map((c) => `<th class="num" data-s="${c.k}">${esc(c.t)}<span class="dir">${esc(c.d)}</span></th>`).join('');
-const worseText = (w) => `${w.title}${w.scope && w.scope !== 'all clips' ? ` (${w.scope})` : ''}: ${w.metric} ${w.a} → ${w.b}`;
-function verdictChip(res) {
-  const v = partOf(res).vs;
-  if (!v || !v.against) return v && v.kind === 'first merged build' ? '<span class="chip">first merged build</span>' : '<span class="chip">no base to compare</span>';
-  return `<span class="chip ${v.pass ? 'pass' : 'fail'}" title="${esc(v.pass ? 'no guarded number worse' : v.worse.map(worseText).join('; '))}">${v.pass ? 'PASS' : `FAIL (${v.worse.length} worse)`} vs ${esc(v.kind === 'its base' ? 'base' : 'previous')}</span>`;
+
+// ---- names: '<system> <label>' for a release, 'Experiment: <label>' for an experiment; 'In the app now' = latest release
+const isExp = (res) => (res.kind || (res.status === 'merged' ? 'release' : 'experiment')) === 'experiment';
+const sysHtml = () => `<span class="gm" lang="pa">${esc(SYSTEM.gurmukhi)}</span>`;
+const labelOf = (res) => res.label || res.name;
+const nameHtml = (res) => (isExp(res) ? `Experiment: ${esc(labelOf(res))}` : `${sysHtml()} ${esc(labelOf(res))}`);
+const nameText = (res) => (isExp(res) ? `Experiment: ${labelOf(res)}` : `${SYSTEM.gurmukhi} ${labelOf(res)}`);
+const inApp = () => RESULTS.filter((x) => !isExp(x)).sort((a, b) => (a.order ?? 99) - (b.order ?? 99)).pop() || null;
+const pills = (res) => (res === inApp() ? ' <span class="pill app">In the app now</span>' : '');
+const detail = (res) => `commit ${res.commit.slice(0, 8)} · Voice-Follow ${res.vf_feature_version || 'not stamped'} · scored ${res.date} · ${res.gab}`;
+const short = (res) => `${res.commit.slice(0, 8)} · Voice-Follow ${res.vf_feature_version || 'not stamped'}`;
+const byCommit = (c) => RESULTS.find((x) => c && String(x.commit).startsWith(String(c).slice(0, 8))) || null;
+
+function thinMark(r, k) { if (LINE_KEYS.includes(k) && !lineShown(r)) return ''; const map = { pangti_pct: 'pangti_clips', pangti_near_pct: 'pangti_clips', behind_p50_s: 'pangti_clips', find_p50_s: 'find_n', switch_missed: 'switch_n' }; return r.thin && r.thin.includes(map[k]) ? ' <span class="thin" title="fewer than 3 clips or events behind this number">thin</span>' : ''; }
+const heads = (mainK, cols = COLS) => cols.map((c) => `<th class="num${c.k === mainK ? ' main' : ''}">${c.k === mainK ? '<span class="rk">ranked by</span><br>' : ''}${esc(c.t)}<span class="dir">${esc(c.d)}</span></th>`).join('');
+// colour: each column on its own, from worse (vermilion) through neutral to better (bluish green), relative to the other
+// rows; all equal = neutral, no 'best'
+function scaleOf(list, c) {
+  const vs = list.map((x) => valOf(x.r, c)).filter((v) => v != null);
+  const lo = Math.min(...vs); const hi = Math.max(...vs);
+  return { lo, hi, best: c.dir > 0 ? hi : lo, varies: vs.length > 1 && hi > lo };
+}
+function cellHtml(r, c, sc) {
+  const [big, small] = c.cell(r);
+  const v = valOf(r, c);
+  let style = ''; let cls = 'num'; let mark = ''; let tip = '';
+  if (sc && sc.varies && v != null) {
+    const t = c.dir > 0 ? (v - sc.lo) / (sc.hi - sc.lo) : (sc.hi - v) / (sc.hi - sc.lo); // 1 = best, 0 = worst
+    const s = Math.abs(t - 0.5) * 2;
+    style = ` style="background: color-mix(in srgb, var(${t >= 0.5 ? '--better' : '--worse'}) calc(var(--tint) * ${s.toFixed(2)}), var(--panel))"`;
+    tip = ` title="${t === 1 ? 'best of these versions' : t === 0 ? 'worst of these versions' : 'between the best and worst of these versions'}"`;
+    if (v === sc.best) { cls += ' best'; mark = '<span class="bestmark">best</span>'; }
+  }
+  return `<td class="${cls}"${style}${tip}>${mark}<span class="v">${esc(big)}</span>${thinMark(r, c.k)}<span class="n">${esc(small)}</span></td>`;
 }
 
 function renderBoard() {
@@ -150,62 +213,138 @@ function renderBoard() {
   const shown = BEH.filter((b) => tier === 'main' || RESULTS.some((res) => (rowOf(res, b.key) || {}).clips));
   if (!shown.some((b) => b.key === beh)) beh = (shown[0] || BEH[0]).key;
   document.getElementById('behaviours').innerHTML = shown.map((b) => `<button data-b="${b.key}" class="${b.key === beh ? 'on' : ''}">${esc(b.name)}</button>`).join('');
-  const t = document.getElementById('boardTable');
-  const head = `<tr><th data-s="name">Build${tier === 'hard' ? '<span class="dir">GAB-Hard</span>' : ''}</th>${heads()}</tr>`;
-  let list = RESULTS.map((res) => ({ res, r: rowOf(res, beh) }));
-  if (sortKey) list.sort((a, b) => { const x = sortKey === 'name' ? a.res.name : a.r && a.r[sortKey]; const y = sortKey === 'name' ? b.res.name : b.r && b.r[sortKey]; if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : x < y ? -1 : 0) * sortDir; });
-  const body = list.map(({ res, r }) => {
-    const nm = `<b>${esc(res.name)}</b> ${res.status !== 'merged' ? '<span class="chip cand">candidate</span>' : '<span class="chip">merged</span>'} ${verdictChip(res)}<span class="n">${esc(res.commit.slice(0, 8))} · ${esc(res.date)}<span class="hide-phone"> · Voice-Follow ${esc(res.vf_feature_version || 'not stamped')} · ${esc(res.gab)}</span></span>${res.note ? `<span class="n">${esc(res.note)}</span>` : ''}`;
-    if (!r || !r.clips) return `<tr><td>${nm}</td><td colspan="${COLS.length}" class="note">${esc((r && r.note) || 'not tested')}</td></tr>`;
-    return `<tr><td>${nm}</td>${cells(r)}</tr>`;
-  }).join('');
-  t.innerHTML = `<thead>${head}</thead><tbody>${body}</tbody>`;
-  document.getElementById('coverage').innerHTML = `${esc(coverage(beh))} Click a column title to sort.`;
-  renderVerdicts();
+  const all = RESULTS.map((res) => ({ res, r: rowOf(res, beh) }));
+  const scored = all.filter((x) => x.r && x.r.clips);
+  // ranked by right pangti where every version has human (or ear-checked) line answers, else by right Shabad
+  const mainK = scored.length && scored.every((x) => lineShown(x.r)) ? 'pangti_pct' : 'right_shabad_pct';
+  const mainC = COLS.find((c) => c.k === mainK);
+  // versions with identical shown numbers become one row
+  const groups = [];
+  for (const x of scored) {
+    const sig = JSON.stringify(COLS.map((c) => c.cell(x.r)[0]));
+    const g = groups.find((y) => y.sig === sig);
+    if (g) g.members.push(x); else groups.push({ sig, r: x.r, members: [x] });
+  }
+  const app = inApp();
+  for (const g of groups) {
+    const rel = g.members.filter((m) => !isExp(m.res)).sort((a, b) => (b.res.order ?? 0) - (a.res.order ?? 0));
+    const lead = g.members.find((m) => m.res === app) || rel[0] || g.members[0];
+    g.members = [lead, ...g.members.filter((m) => m !== lead)];
+  }
+  // best first: the main column, then the other columns in order (each in its own direction)
+  const cmp = (a, b) => { for (const c of [mainC, ...COLS.filter((x) => x !== mainC)]) { const x = valOf(a.r, c); const y = valOf(b.r, c); if (x === y) continue; if (x == null) return 1; if (y == null) return -1; return (y - x) * c.dir; } return 0; };
+  groups.sort(cmp);
+  groups.forEach((g, i) => { const v = valOf(g.r, mainC); const first = groups.findIndex((y) => valOf(y.r, mainC) === v); g.rank = first + 1; g.tied = groups.filter((y) => valOf(y.r, mainC) === v).length > 1; });
+  const scales = Object.fromEntries(COLS.map((c) => [c.k, scaleOf(groups, c)]));
+  // no version has line answers here: the three pangti columns would be empty, so they are left out (said in the legend)
+  const noLines = !scored.some((x) => lineShown(x.r));
+  const cols = COLS.filter((c) => !(noLines && LINE_KEYS.includes(c.k)));
+  const who = (g) => {
+    const [lead, ...rest] = g.members;
+    const one = (m) => `${nameHtml(m.res)}${pills(m.res)} <span class="cm">${esc(m.res.commit.slice(0, 8))}</span>`;
+    return `<td class="who" title="${esc(g.members.map((m) => `${nameText(m.res)}: ${detail(m.res)}`).join('\n'))}"><div class="lead">${nameHtml(lead.res)}${pills(lead.res)}</div><span class="cm">${esc(short(lead.res))}</span>${rest.length ? `<div class="also"><span class="n">same shown scores:</span>${rest.map((m) => `<div>${one(m)}</div>`).join('')}</div>` : ''}</td>`;
+  };
+  const body = groups.map((g) => `<tr><td class="rank${g.rank === 1 ? ' r1' : ''}">${g.rank}${g.tied ? '<span class="n">tied</span>' : ''}</td>${who(g)}${cols.map((c) => cellHtml(g.r, c, scales[c.k])).join('')}</tr>`).join('')
+    + all.filter((x) => !(x.r && x.r.clips)).map((x) => `<tr><td class="rank">–</td><td class="who"><div class="lead">${nameHtml(x.res)}${pills(x.res)}</div><span class="cm">${esc(short(x.res))}</span></td><td colspan="${cols.length}" class="note">${esc(plainNote(x.r))}</td></tr>`).join('');
+  document.getElementById('boardTable').innerHTML = `<thead><tr><th>#</th><th>Version${tier === 'hard' ? '<span class="dir">GAB-Hard</span>' : ''}</th>${heads(mainK, cols)}</tr></thead><tbody>${body}</tbody>`;
+  const anyColour = COLS.some((c) => scales[c.k].varies);
+  document.getElementById('legend').innerHTML = anyColour
+    ? `<span>Best first, ranked by <b>${esc(mainC.t)}</b>.</span><span><span class="sw grad"></span>colour compares these versions with each other: <span class="ok">green-blue = better</span>, <span class="no">orange = worse</span>, plain = all the same.</span><span><span class="bestmark">best</span>= best value in that column.</span><span>Small gaps still get full colour: read the numbers.</span>${noLines ? '<span>Right pangti, Same or neighbouring pangti and Behind are left out here: no line answers yet.</span>' : ''}`
+    : `<span>Best first, ranked by <b>${esc(mainC.t)}</b>. Every version has the same numbers here, so nothing is coloured.</span>${noLines ? '<span>Right pangti, Same or neighbouring pangti and Behind are left out here: no line answers yet.</span>' : ''}`;
+  document.getElementById('coverage').innerHTML = esc(coverage(beh));
 }
-// notes under the table: generated from the results files, never typed in (so a new build cannot leave them stale)
-const latestMerged = () => RESULTS.filter((x) => x.status === 'merged').sort((a, b) => (a.order ?? 99) - (b.order ?? 99)).pop() || RESULTS[RESULTS.length - 1];
+const plainNote = (r) => { const n = (r && r.note) || 'not tested'; return /^incomplete/.test(n) ? `Not scored for this version yet: ${r.incomplete} recordings need a new replay (the saved speech-model output does not cover them), so there is no fair number to compare.` : n; };
+// notes under the table: generated from the results files, never typed in (so a new version cannot leave them stale)
 function coverage(key) {
-  const res = latestMerged();
+  const res = inApp() || RESULTS[RESULTS.length - 1];
   if (!res) return '';
   const r = rowOf(res, key) || {};
   const set = (k) => (rowOf(res, k) || {}).clips || 0;
   const plural = (n, w, ws = `${w}s`) => `${n} ${n === 1 ? w : ws}`;
   const out = [];
-  if (key === '4-akhand-paath') return r.note ? `No numbers: ${r.note}.` : '';
+  if (key === '4-akhand-paath') return r.note ? `No numbers yet: ${r.note}.` : '';
   if (!r.clips) return r.note || '';
-  out.push(`Same recordings for every build: ${r.clips} clips, ${r.hours} h.`);
+  out.push(`Every version is tested on the same recordings: ${r.clips} clips, ${r.hours} h.`);
   if (tier === 'hard') {
     if (key === '1-kirtan-shabad') out.push(`GAB-Hard kirtan = ${set('set:fremont-dev')} Fremont recordings from dev sessions and ${set('set:fremont-train')} from train sessions, made with STTM Desktop on the sevadaar's laptop in the hall (laptop mic assumed, not yet confirmed). Right Shabad rests on human answers for all ${r.shabad_clips}. Its test sessions are held out and never shown.`);
   } else if (key === '1-kirtan-shabad') out.push(`Right Shabad rests on human answers for all ${set('set:L2-41')} Level-2 livestream clips (Darbar Sahib, Renton and the Fremont livestream, mixer feed). The Fremont hall laptop-mic recordings are in GAB-Hard, not here.`);
   if (key === '2-bani-recited') out.push(`Right Bani rests on ${set('set:paath-60')} short cuts of recited Nitnem (the 30 s a person labelled).`);
-  if (key === '3-bani-sung-like-kirtan') out.push(`Right Bani rests on ${set('set:aarti-50')} Aarti cold starts and ${r.clips - set('set:aarti-50')} other sung-Bani clips.`);
+  if (key === '3-bani-sung-like-kirtan') out.push(`Right Bani rests on ${set('set:aarti-50')} Aarti cold starts and ${plural(r.clips - set('set:aarti-50'), 'other sung-Bani clip')}.`);
   if (lineShown(r)) out.push(`Right pangti, same or neighbouring pangti and Behind rest on ${plural(r.pangti_clips, 'clip')} with ${BASIS[r.pangti_basis]}${r.pangti_basis === 'human' && tier === 'hard' ? ' (the sevadaar\'s screen, which may lag)' : ''}${r.pangti_never_shown ? ` (+${r.pangti_never_shown} where nothing was ever shown; that loss is in Right Shabad and Find)` : ''}. "Same or neighbouring" also counts the pangti just before or after: in kirtan the ragi often sings two pangtis as one phrase, and the answer key then marks the partner pangti as wrong.`);
-  else out.push(`No line answers yet for ${tier === 'hard' ? 'GAB-Hard' : 'main'} ${BEH.find((b) => b.key === key).name.toLowerCase()}: the pangti columns are blank and this tab is right Shabad only${r.pangti_basis ? ` (only ${plural(r.pangti_clips, 'clip')} with pangti answers${r.pangti_basis === 'aligned' ? ', made by our aligner and never checked by a person' : ''}: too few to show a fair number)` : ''}.`);
-  if (r.switch_n || r.stayed_main_n || r.parmaan_n) out.push(`Switch for ${res.name} (latest merged build): ${plural(r.switch_n, 'switch', 'switches')} to a different Shabad or Bani: ${r.switch_within10_n} found within 10 s, ${r.switch_later_n} later, ${r.switch_missed} never${r.switch_p50_s != null ? ` (typical ${r.switch_p50_s} s, over the found ones only)` : ''}. ${plural(r.stayed_main_n, 'return')} to the main Shabad after a parmaan where the app stayed on the main Shabad (correct, not counted as a switch). Parmaans shown: ${r.parmaan_shown} of ${r.parmaan_n}.`);
+  else out.push(`No line answers yet for ${tier === 'hard' ? 'GAB-Hard' : 'main'} ${BEH.find((b) => b.key === key).name.toLowerCase()}: the pangti columns are left out and this tab is ranked on right Shabad only${r.pangti_basis ? ` (only ${plural(r.pangti_clips, 'clip')} with pangti answers${r.pangti_basis === 'aligned' ? ', made by our aligner and never checked by a person' : ''}: too few to show a fair number)` : ''}.`);
+  if (r.switch_n || r.stayed_main_n || r.parmaan_n) out.push(`Switch for ${nameText(res)} (in the app now): ${plural(r.switch_n, 'switch', 'switches')} to a different Shabad or Bani: ${r.switch_within10_n} found within 10 s, ${r.switch_later_n} later, ${r.switch_missed} never${r.switch_p50_s != null ? ` (typical ${r.switch_p50_s} s, over the found ones only)` : ''}. ${plural(r.stayed_main_n, 'return')} to the main Shabad after a parmaan where the app stayed on the main Shabad (correct, not counted as a switch). Parmaans shown: ${r.parmaan_shown} of ${r.parmaan_n}.`);
+  out.push('Hover a version to see its commit.');
   return out.join(' ');
 }
-function renderVerdicts() {
-  const el = document.getElementById('verdicts');
-  const ordered = [...RESULTS].sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
-  el.innerHTML = `<h3>${tier === 'hard' ? 'GAB-Hard' : 'Main GAB'}: each build vs the build before it</h3><p class="small">${tier === 'hard' ? 'GAB-Hard numbers only (<code>gab hard compare</code>); main GAB has its own verdicts.' : 'Main GAB numbers only (<code>gab compare</code>); GAB-Hard has its own verdicts.'} Computed by the same guardrails as <code>gab compare</code>: FAIL if any behaviour (all clips, or per mic path) is worse beyond a small tolerance. A candidate is compared with the build it was made from; a merged build with the merged build before it. Named sets of earlier reports that got worse are listed too (information only).</p><ul>${ordered.map((res) => {
-    const v = partOf(res).vs || {};
-    if (!v.against) return `<li><b>${esc(res.name)}</b>: ${esc(v.kind === 'first merged build' ? 'first merged build, nothing to compare' : 'base not on the leaderboard')}</li>`;
-    const nc = v.not_compared && v.not_compared.length ? ` Not compared (this build's replay is incomplete there): ${esc(v.not_compared.join(', '))}.` : '';
-    const info = v.info_worse && v.info_worse.length ? `<br><span class="small">Also worse on named sets: ${esc(v.info_worse.map(worseText).join('; '))}.</span>` : '';
-    return `<li><b>${esc(res.name)}</b> vs ${esc(v.kind)} <b>${esc(v.against)}</b>: <span class="${v.pass ? 'ok' : 'no'}">${v.pass ? 'PASS' : 'FAIL'}</span>${v.pass ? '' : ` (worse: ${esc(v.worse.map(worseText).join('; '))})`}; ${v.better_n} numbers better.${nc}${info}</li>`;
-  }).join('')}</ul>`;
+
+// ---- What changed between versions: each version against the one before it (an experiment: against the version it was made from)
+const PHRASE = {
+  'right Shabad/Bani %': ['right {u} on screen more of the time', 'right {u} on screen less of the time', '%'],
+  'sangat sees the right pangti %': ['exact pangti on screen more of the time', 'exact pangti on screen less of the time', '%'],
+  'same or neighbouring pangti %': ['same or neighbouring pangti on screen more of the time', 'same or neighbouring pangti on screen less of the time', '%'],
+  'seconds behind p50': ['follows closer (typical delay)', 'falls further behind (typical delay)', ' s'],
+  'seconds behind p90': ['the slowest pangtis come sooner', 'the slowest pangtis come later', ' s'],
+  'wrong Shabad s/h': ['shows a wrong {u} less often', 'shows a wrong {u} more often', ' s per hour'],
+  'time to find p50 s': ['finds the first {u} faster', 'finds the first {u} slower', ' s typical'],
+  'time to find p90 s': ['the slowest finds come sooner', 'the slowest finds come later', ' s'],
+  'not found': ['fewer recordings where the first {u} is never found', 'more recordings where the first {u} is never found', ''],
+  'switch time p50 s': ['catches a change of Shabad faster', 'catches a change of Shabad slower', ' s typical'],
+  'switch time p90 s': ['the slowest changes of Shabad are caught sooner', 'the slowest changes of Shabad are caught later', ' s'],
+  'switches never found': ['misses fewer changes of Shabad', 'misses more changes of Shabad', ''],
+  'switches found within 10 s': ['catches more changes of Shabad within 10 s', 'catches fewer changes of Shabad within 10 s', ''],
+  'line-truth clips never shown': ['fewer recordings where nothing was shown', 'more recordings where nothing was shown', ''],
+  'parmaans shown': ['shows more of the quoted Shabads (parmaans)', 'shows fewer of the quoted Shabads (parmaans)', ''],
+};
+const LINE_LABELS = /pangti|seconds behind|never shown/;
+const SCOPE = { 'mixer-feed': 'the mixer-feed recordings', 'room-mic': 'the room-mic recordings', '50/50': 'mixer and room mic weighted 50/50' };
+function sentence(w, up, unitWord) {
+  const base = String(w.metric).replace(/ \(info.*\)$/, '');
+  const p = PHRASE[base];
+  if (!p) return `${base}: ${w.a} → ${w.b}`;
+  return `${p[up ? 0 : 1].replace('{u}', unitWord)} (${w.a} → ${w.b}${p[2]})`;
 }
+function renderChanges() {
+  const el = document.getElementById('changeList');
+  const ordered = [...RESULTS].sort((a, b) => (isExp(a) - isExp(b)) || (a.order ?? 99) - (b.order ?? 99));
+  const cards = ordered.map((res) => {
+    const v = partOf(res).vs || {};
+    const ref = byCommit(v.against_commit) || (v.against ? RESULTS.find((x) => x.name === v.against) : null);
+    if (!ref) return `<div class="card chg"><h3>${nameHtml(res)}${pills(res)}</h3><p class="same">${isExp(res) ? 'The version it was made from is not on this leaderboard, so there is nothing to compare it with.' : 'The first version on this leaderboard: nothing before it to compare with.'}</p></div>`;
+    const lineOk = (key) => lineShown(rowOf(res, key)) && lineShown(rowOf(ref, key));
+    // keep only what the leaderboard shows: per behaviour; line numbers only where both have real line answers
+    const keep = (w) => BEH.some((b) => b.key === w.row) && (!LINE_LABELS.test(w.metric) || lineOk(w.row));
+    const items = [...(v.better || []).filter(keep).map((w) => ({ w, up: true })), ...(v.worse || []).filter(keep).map((w) => ({ w, up: false }))];
+    // one line per behaviour + measure; other recording groups (mixer feed, room mic) folded in after it
+    const lines = [];
+    for (const it of items) {
+      const b = BEH.find((x) => x.key === it.w.row);
+      const id = `${it.w.row}|${it.w.metric}|${it.up}`;
+      const scopeTxt = it.w.scope && it.w.scope !== 'all clips' ? SCOPE[it.w.scope] || it.w.scope : null;
+      let L = lines.find((x) => x.id === id);
+      if (!L) { L = { id, up: it.up, beh: b, main: null, other: [] }; lines.push(L); }
+      if (scopeTxt) L.other.push(`on ${scopeTxt}: ${it.w.a} → ${it.w.b}`); else L.main = sentence(it.w, it.up, b.unit);
+    }
+    const li = lines.map((L) => `<li class="${L.up ? 'up' : 'down'}"><span class="tag">${L.up ? '▲ Better' : '▼ Worse'}</span><b>${esc(L.beh.name)}:</b> ${esc(L.main || `${sentence({ ...items.find((i) => `${i.w.row}|${i.w.metric}|${i.up}` === L.id).w }, L.up, L.beh.unit)}`)}${L.main && L.other.length ? ` <span class="small">(also ${esc(L.other.join('; '))})</span>` : ''}${!L.main ? ` <span class="small">(only on ${esc(L.other.join('; '))})</span>` : ''}</li>`).join('');
+    const ups = lines.filter((x) => x.up).length; const downs = lines.length - ups;
+    const summary = !lines.length ? 'No number on the leaderboard changed: the same scores.' : `${ups ? `<span class="ok">Better on ${ups}</span>` : 'Better on nothing'}, ${downs ? `<span class="no">worse on ${downs}</span>` : 'worse on nothing'}.`;
+    const info = (v.info_worse || []).filter((w) => !LINE_LABELS.test(w.metric) || lineOk('1-kirtan-shabad'));
+    const infoTxt = info.length ? `<p class="small">On the named recording groups from earlier reports: ${esc(info.map((w) => `${w.title}: ${sentence(w, false, /aarti|paath|bani/i.test(w.title) ? 'Bani' : 'Shabad')}`).join('; '))}.</p>` : '';
+    const nc = v.not_compared && v.not_compared.length ? `<p class="small">Not compared: ${esc(v.not_compared.join(', '))} (this version's replay there is not complete yet).</p>` : '';
+    return `<div class="card chg"><h3>${nameHtml(res)}${pills(res)}</h3><p class="vs">compared with ${nameHtml(ref)} · ${summary}</p>${li ? `<ul>${li}</ul>` : ''}${infoTxt}${nc}</div>`;
+  });
+  el.innerHTML = `<div class="card"><p><b>${tier === 'hard' ? 'GAB-Hard' : 'Main GAB'}.</b> Each version is compared with the version before it; an experiment is compared with the version it was made from. <span class="ok">Green-blue</span> = better, <span class="no">orange</span> = worse. A worse number is not always a mistake (it can be the price of a gain elsewhere), but it is always shown. Changes smaller than measuring noise are not listed; the replay is the same every time, so every listed change is real.</p></div>${cards.join('')}`;
+}
+
 function renderBanis() {
-  if (!pick && RESULTS.length) pick = RESULTS[RESULTS.length - 1].slug;
-  document.getElementById('buildPick').innerHTML = RESULTS.map((r) => `<button data-p="${r.slug}" class="${r.slug === pick ? 'on' : ''}">${esc(r.name)}</button>`).join('');
+  if (!pick && RESULTS.length) pick = (inApp() || RESULTS[RESULTS.length - 1]).slug;
+  document.getElementById('buildPick').innerHTML = RESULTS.map((r) => `<button data-p="${r.slug}" class="${r.slug === pick ? 'on' : ''}" title="${esc(detail(r))}">${nameHtml(r)}</button>`).join('');
   const res = RESULTS.find((r) => r.slug === pick);
   if (!res) return;
   const rows = partOf(res).rows.filter((r) => r.level === 'behaviour' || r.level === 'bani' || r.level === 'set');
-  document.getElementById('baniTable').innerHTML = `<thead><tr><th>Bani or group</th>${heads()}</tr></thead><tbody>${rows.map((r) => {
+  document.getElementById('baniTable').innerHTML = `<thead><tr><th>Bani or group</th>${heads(null)}</tr></thead><tbody>${rows.map((r) => {
     const name = r.level === 'behaviour' ? `<b>${esc(r.title)}</b>` : r.level === 'set' ? `<i>${esc(r.title)}</i>` : `&nbsp;&nbsp;${esc(r.title)}`;
-    if (!r.clips) return `<tr><td>${name}</td><td colspan="${COLS.length}" class="note">${esc(r.note || 'no clips yet')}</td></tr>`;
-    return `<tr><td>${name}<span class="n">${r.clips} clips · ${r.hours} h</span></td>${cells(r)}</tr>`;
+    if (!r.clips) return `<tr><td>${name}</td><td colspan="${COLS.length}" class="note">${esc(r.incomplete ? plainNote(r) : r.note || 'no clips yet')}</td></tr>`;
+    return `<tr><td>${name}<span class="n">${r.clips} clips · ${r.hours} h</span></td>${COLS.map((c) => cellHtml(r, c, null)).join('')}</tr>`;
   }).join('')}</tbody>`;
 }
 let RECON = null;
@@ -214,32 +353,38 @@ async function renderReconcile() {
   try {
     const R = RECON || (RECON = await (await fetch('reconcile.json', { cache: 'no-store' })).json());
     const rows = R.rows.filter((x) => (x.tier || 'main') === tier);
-    el.innerHTML = `<div class="card"><h3>${esc(R.title)}${tier === 'hard' ? ': GAB-Hard (Fremont hall, laptop mic)' : ': main GAB'}</h3><p>${esc(R.intro)}</p><p class="small">${tier === 'hard' ? 'Only the Fremont hall rows are here; the others are under main GAB.' : 'The Fremont hall (laptop mic) rows are under GAB-Hard.'}</p></div><div class="wrap"><table><thead><tr><th>What we reported</th><th>Old number</th><th>Where it was measured</th><th>GAB now (same clips, same build)</th><th>Match?</th><th>Why it differs / note</th></tr></thead><tbody>${rows.map((x) => `<tr><td>${esc(x.what)}</td><td class="num">${esc(x.old)}</td><td>${esc(x.where)}</td><td class="num">${esc(x.gab)}</td><td class="${x.match === 'yes' ? 'ok' : 'no'}">${esc(x.match)}</td><td>${esc(x.why)}</td></tr>`).join('')}</tbody></table></div><p class="note">${esc(R.footer || '')}</p>`;
+    el.innerHTML = `<div class="card"><h3>${esc(R.title)}${tier === 'hard' ? ': GAB-Hard (Fremont hall, laptop mic)' : ': main GAB'}</h3><p>${esc(R.intro)}</p><p class="note">${tier === 'hard' ? 'Only the Fremont hall rows are here; the others are under main GAB.' : 'The Fremont hall (laptop mic) rows are under GAB-Hard.'}</p></div><div class="wrap"><table><thead><tr><th>What we reported</th><th>Old number</th><th>Where it was measured</th><th>GAB now (same clips, same version)</th><th>Match?</th><th>Why it differs / note</th></tr></thead><tbody>${rows.map((x) => `<tr><td>${esc(x.what)}</td><td class="num">${esc(x.old)}</td><td>${esc(x.where)}</td><td class="num">${esc(x.gab)}</td><td class="${x.match === 'yes' ? 'ok' : 'no'}">${esc(x.match)}</td><td>${esc(x.why)}</td></tr>`).join('')}</tbody></table></div><p class="note">${esc(R.footer || '')}</p>`;
   } catch (e) { el.innerHTML = '<p class="note">reconcile.json not found.</p>'; }
 }
 async function renderAbout() {
   try { document.getElementById('aboutText').innerHTML = await (await fetch('about.html', { cache: 'no-store' })).text(); } catch (e) { return; }
   // generated parts of the About text (from the results files)
-  const cands = RESULTS.filter((x) => x.status !== 'merged');
+  const exps = RESULTS.filter(isExp);
+  const app = inApp();
   const gen = {
-    candidates: cands.length ? `The candidates here: ${cands.map((c) => { const b = RESULTS.find((x) => c.base && x.commit.startsWith(String(c.base).slice(0, 8))); return `${c.name} (made from ${b ? `${b.name}, ${b.commit.slice(0, 8)}` : c.base || 'an unnamed base'})`; }).join('; ')}.` : 'There are no candidates on the leaderboard right now.',
-    builds: `${RESULTS.length} builds: ${RESULTS.filter((x) => x.status === 'merged').length} merged, ${cands.length} candidates.`,
+    system: '',
+    builds: `${RESULTS.length} versions here: ${RESULTS.length - exps.length} releases and ${exps.length} experiments.${app ? ` In the app now: ${nameText(app)}.` : ''}`,
+    candidates: exps.length ? `The experiments: ${exps.map((c) => { const b = byCommit(c.base); return `${nameText(c)} (made from ${b ? nameText(b) : c.base || 'an unnamed version'})`; }).join('; ')}.` : 'There are no experiments on the leaderboard right now.',
   };
-  document.querySelectorAll('#aboutText [data-gen]').forEach((el) => { el.textContent = gen[el.dataset.gen] || ''; });
+  document.querySelectorAll('#aboutText [data-gen]').forEach((el) => { if (gen[el.dataset.gen]) el.textContent = gen[el.dataset.gen]; });
+  document.querySelectorAll('#aboutText [data-sys]').forEach((el) => { el.innerHTML = `${sysHtml()} ${esc(SYSTEM.latin)}`; });
 }
-document.getElementById('tabs').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; document.querySelectorAll('nav button').forEach((x) => x.classList.toggle('on', x === b)); document.querySelectorAll('section').forEach((s) => s.classList.toggle('on', s.id === b.dataset.tab)); });
-document.getElementById('tiers').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; tier = b.dataset.set; sortKey = null; renderBoard(); renderBanis(); renderReconcile(); });
+const showTab = (id) => { document.querySelectorAll('nav button').forEach((x) => x.classList.toggle('on', x.dataset.tab === id)); document.querySelectorAll('section').forEach((s) => s.classList.toggle('on', s.id === id)); };
+document.getElementById('tabs').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) showTab(b.dataset.tab); });
+document.getElementById('tiers').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; tier = b.dataset.set; renderBoard(); renderChanges(); renderBanis(); renderReconcile(); });
 document.getElementById('behaviours').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; beh = b.dataset.b; renderBoard(); });
-document.getElementById('boardTable').addEventListener('click', (e) => { const th = e.target.closest('th'); if (!th) return; const k = th.dataset.s; sortDir = sortKey === k ? -sortDir : (COLS.find((c) => c.k === k) && /higher/.test(COLS.find((c) => c.k === k).d) ? -1 : 1); sortKey = k; renderBoard(); });
 document.getElementById('buildPick').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; pick = b.dataset.p; renderBanis(); });
 (async () => {
   try {
+    try { const N = await (await fetch('gab-names.json', { cache: 'no-store' })).json(); if (N.system) SYSTEM = N.system; } catch (e) { /* fallback name */ }
+    document.getElementById('sysname').innerHTML = `${sysHtml()} ${esc(SYSTEM.latin)}`;
     const idx = await (await fetch('results/index.json', { cache: 'no-store' })).json();
     RESULTS = (await Promise.all(idx.results.map(async (x) => ({ ...x, ...(await (await fetch(`results/${x.file}`, { cache: 'no-store' })).json()) })))).sort((a, b) => (a.order ?? 99) - (b.order ?? 99) || a.date.localeCompare(b.date));
-    document.getElementById('meta').textContent = `${RESULTS.length} builds · practice set (train + dev recordings; the held-out test set is never shown).`;
-    if (Q.get('tab')) { const b = document.querySelector(`nav button[data-tab="${Q.get('tab')}"]`); if (b) b.click(); }
+    const exps = RESULTS.filter(isExp).length;
+    document.getElementById('meta').textContent = `${RESULTS.length - exps} releases and ${exps} experiments · practice set (train + dev recordings; the held-out test set is never shown).`;
   } catch (e) { document.getElementById('meta').textContent = 'could not load results'; }
-  renderBoard(); renderBanis(); renderReconcile(); renderAbout();
+  renderBoard(); renderChanges(); renderBanis(); renderReconcile(); renderAbout();
+  if (Q.get('tab')) showTab(Q.get('tab'));
 })();
 </script>
 </body>

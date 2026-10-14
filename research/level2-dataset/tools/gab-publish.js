@@ -12,7 +12,9 @@
  *   results/<slug>.json   the build's rows (behaviours, Banis, named sets; no per-clip detail), build name, commit,
  *                         Voice-Follow feature version, GAB version, split, tier, date, status
  *   results/index.json    the list the page loads (an entry with the same slug is replaced)
- *   index.html, about.html, README.md, reconcile.json (from tools/gab-space/; --reconcile <file> overrides the last)
+ *   index.html, about.html, README.md, gab-names.json, reconcile.json (from tools/gab-space/; --reconcile <file> overrides the last)
+ *   Display names: gab-space/gab-names.json (system name ਧਿਆਨ + label/kind per commit, fallback '<version> · <--name>');
+ *   each result gets label + kind; the page ranks builds best first and colours each column better/worse.
  * and keeps a short table in the dataset card (khalisfoundation/GurbaniAutopilotBench README.md, only between
  * <!-- GAB-LEADERBOARD:START --> / <!-- GAB-LEADERBOARD:END -->; the rest of the card is never touched), plus the full
  * scorecard under scores/gab/<slug>/ in the dataset. The Space reads only its own files: no token, no secret.
@@ -23,7 +25,7 @@
  * Every publish recomputes each row's "vs base" verdict (gab compare's guardrails): a candidate against --base <commit>
  * (required for a candidate), a merged build against the merged build before it (by --order).
  * --preview <dir>: write the Space as it would be into <dir> (to serve locally), push nothing.
- * --site-only: push the page files (and --reconcile) and the recomputed verdicts only, no new result. --replace <slug>: the new row takes the place of
+ * --site-only: push the page files (and --reconcile), the recomputed verdicts and names, and the card's Leaderboard section if it changed; no new result. --replace <slug>: the new row takes the place of
  * that earlier row (its results file is deleted), e.g. a candidate that has since been merged.
  */
 const fs = require('fs');
@@ -39,6 +41,19 @@ const SITE = path.join(__dirname, 'gab-space');
 const START = '<!-- GAB-LEADERBOARD:START -->';
 const END = '<!-- GAB-LEADERBOARD:END -->';
 const UV = fs.existsSync(path.join(os.homedir(), '.local/bin/uv')) ? path.join(os.homedir(), '.local/bin/uv') : 'uv';
+// display names (gab-space/gab-names.json): the system's name (ਧਿਆਨ Dhiaan) and a plain label + kind per build commit.
+// Results keep their stable name/slug; the page and the dataset card show label/kind. A build missing from the file
+// gets '<Voice-Follow version> · <--name>' (a release if merged, an experiment if a candidate).
+const NAMES_FILE = path.join(SITE, 'gab-names.json');
+const loadNames = () => JSON.parse(fs.readFileSync(NAMES_FILE, 'utf8'));
+function nameOf(res, names = loadNames()) {
+  const m = names.builds[String(res.commit).slice(0, 8)];
+  if (m) return { label: m.label, kind: m.kind };
+  const kind = res.status === 'merged' ? 'release' : 'experiment';
+  return { label: [res.vf_feature_version, res.name].filter(Boolean).join(' · '), kind };
+}
+// the full display text: '<system> <label>' for a release, 'Experiment: <label>' for an experiment
+const shownName = (res, names = loadNames()) => { const n = nameOf(res, names); return n.kind === 'experiment' ? `Experiment: ${n.label}` : `${names.system.gurmukhi} ${n.label}`; };
 const token = () => process.env.HF_TOKEN || fs.readFileSync(path.join(os.homedir(), '.vf-hf-token'), 'utf8').trim();
 
 async function hfText(kind, repo, file) {
@@ -115,7 +130,7 @@ function verdictsFor(all, set) {
     const infoWorse = c.rows.filter((r) => r.verdict === 'worse (info)' && r.scope === 'all clips' && r.key.startsWith('set:') && !/\(info\)/.test(r.metric)
       && (!LINE_M.test(r.metric) || (lineShown(rowIn(ref, r.key)) && lineShown(rowIn(res, r.key)))));
     const incomplete = part(res, set).rows.filter((r) => r.level === 'behaviour' && r.incomplete && part(ref, set).rows.some((x) => x.key === r.key && x.clips)).map((r) => TITLE[r.key] || r.key);
-    put(res, { kind, against: ref.name, against_commit: ref.commit, pass: c.pass, worse: c.worse.map(pick), better_n: c.better.length, info_worse: infoWorse.map(pick), not_compared: incomplete });
+    put(res, { kind, against: ref.name, against_commit: ref.commit, pass: c.pass, worse: c.worse.map(pick), better_n: c.better.length, better: c.better.map(pick), info_worse: infoWorse.map(pick), not_compared: incomplete });
   }
 }
 const slugOf = (name, commit) => `${name.toLowerCase().replace(/[^a-z0-9.]+/g, '-').replace(/^-|-$/g, '').slice(0, 48)}-${String(commit).slice(0, 8)}`;
@@ -126,10 +141,11 @@ const lineShown = (r) => r && r.pangti_pct != null && r.pangti_basis !== 'aligne
 function section(entries) {
   const cell = (rows, key, k, u = '') => { const r = (rows || []).find((x) => x.key === key); return r && r.clips && r[k] != null ? `${r[k]}${u}` : r && r.incomplete ? 'incomplete' : '-'; };
   const line = (rows, key) => { const r = (rows || []).find((x) => x.key === key); return lineShown(r) ? `${r.pangti_pct}% / ${r.pangti_near_pct}%` : 'no line answers'; };
-  const lines = entries.map((e) => `| ${e.name}${e.status === 'merged' ? '' : ' (candidate)'} | ${e.commit} | ${e.vf_feature_version || '-'} | ${cell(e.rows, '1-kirtan-shabad', 'right_shabad_pct', '%')} | ${cell(e.rows, '1-kirtan-shabad', 'wrong_s_per_h')} | ${cell(e.rows, '2-bani-recited', 'right_shabad_pct', '%')} | ${cell(e.rows, '3-bani-sung-like-kirtan', 'right_shabad_pct', '%')} | ${e.hard ? cell(e.hard.rows, '1-kirtan-shabad', 'right_shabad_pct', '%') : '-'} | ${e.hard ? line(e.hard.rows, '1-kirtan-shabad') : '-'} |`);
+  const names = loadNames();
+  const lines = entries.map((e) => `| ${shownName(e, names)} | ${e.commit} | ${e.vf_feature_version || '-'} | ${cell(e.rows, '1-kirtan-shabad', 'right_shabad_pct', '%')} | ${cell(e.rows, '1-kirtan-shabad', 'wrong_s_per_h')} | ${cell(e.rows, '2-bani-recited', 'right_shabad_pct', '%')} | ${cell(e.rows, '3-bani-sung-like-kirtan', 'right_shabad_pct', '%')} | ${e.hard ? cell(e.hard.rows, '1-kirtan-shabad', 'right_shabad_pct', '%') : '-'} | ${e.hard ? line(e.hard.rows, '1-kirtan-shabad') : '-'} |`);
   return [START, '## Leaderboard', '',
-    `The leaderboard lives in the private Space [${SPACE}](${SPACE_URL}) (how to read it is on its About tab). A short copy, ${G.GAB_VERSION}, practice split (train + dev; the test split is never published). Higher is better for the % columns, lower for wrong seconds per hour. Main GAB (the priority) is everything except the Fremont hall laptop-mic recordings; those are GAB-Hard, tracked apart (resonant hall, laptop mic far from the ragis, little clean audio). Main kirtan has no line-by-line answers yet, so it is right Shabad only; the GAB-Hard pangti column is strict / same or neighbouring pangti, on the sevadaar's screen as the answer key.`, '',
-    '| Build | Commit | Voice-Follow | Kirtan: right Shabad | Kirtan: wrong Shabad s/h | Bani recited: right Bani | Bani sung: right Bani | GAB-Hard kirtan: right Shabad | GAB-Hard kirtan: pangti strict / neighbouring |',
+    `The leaderboard lives in the private Space [${SPACE}](${SPACE_URL}) (how to read it is on its About tab). The system benchmarked is STTM Desktop Voice-Follow, named ${loadNames().system.gurmukhi} (${loadNames().system.latin}); "Experiment" rows are changes tested here, not in the app. A short copy, ${G.GAB_VERSION}, practice split (train + dev; the test split is never published). Higher is better for the % columns, lower for wrong seconds per hour. Main GAB (the priority) is everything except the Fremont hall laptop-mic recordings; those are GAB-Hard, tracked apart (resonant hall, laptop mic far from the ragis, little clean audio). Main kirtan has no line-by-line answers yet, so it is right Shabad only; the GAB-Hard pangti column is strict / same or neighbouring pangti, on the sevadaar's screen as the answer key.`, '',
+    '| Version | Commit | Voice-Follow | Kirtan: right Shabad | Kirtan: wrong Shabad s/h | Bani recited: right Bani | Bani sung: right Bani | GAB-Hard kirtan: right Shabad | GAB-Hard kirtan: pangti strict / neighbouring |',
     '|---|---|---|---|---|---|---|---|---|', ...lines, '', END].join('\n');
 }
 
@@ -156,7 +172,7 @@ async function main(args) {
   const S = fs.mkdtempSync(path.join(os.tmpdir(), 'gab-publish-'));
   try {
     const spaceOps = [];
-    for (const f of ['index.html', 'about.html', 'README.md']) { fs.copyFileSync(path.join(SITE, f), path.join(S, `site-${f}`)); spaceOps.push([f, `site-${f}`]); }
+    for (const f of ['index.html', 'about.html', 'README.md', 'gab-names.json']) { fs.copyFileSync(path.join(SITE, f), path.join(S, `site-${f}`)); spaceOps.push([f, `site-${f}`]); }
     const rec = opt('reconcile') || path.join(SITE, 'reconcile.json');
     if (fs.existsSync(rec)) { fs.copyFileSync(rec, path.join(S, 'reconcile.json')); spaceOps.push(['reconcile.json', 'reconcile.json']); }
     let msg = 'GAB leaderboard: page files';
@@ -200,6 +216,8 @@ async function main(args) {
       all.push(res);
     }
     verdicts(all);
+    const names = loadNames();
+    for (const res of all) Object.assign(res, nameOf(res, names));
     index.results.forEach((e, i) => { fs.writeFileSync(path.join(S, `result-${i}.json`), JSON.stringify(all[i], null, 1)); spaceOps.push([`results/${e.file}`, `result-${i}.json`]); });
     const sorted = [...all].sort((a, b) => (a.order ?? 99) - (b.order ?? 99) || a.date.localeCompare(b.date));
     const vsText = (v) => (v && v.against ? `${v.against}: ${v.pass ? 'PASS' : `FAIL (${v.worse.map((w) => `${w.title} ${w.scope} ${w.metric} ${w.a} -> ${w.b}`).join('; ')})`}${v.info_worse && v.info_worse.length ? ` | info rows worse: ${v.info_worse.map((w) => `${w.title} ${w.metric} ${w.a} -> ${w.b}`).join('; ')}` : ''}` : '-');
@@ -214,7 +232,6 @@ async function main(args) {
     }
     if (dry) { console.log(`dry run: would commit ${spaceOps.map((o) => o[0]).join(', ')} to ${SPACE}${pub.length ? ` and the Leaderboard section (if its numbers changed) + scores/gab/<slug>/ for ${pub.length} builds to ${DATASET}` : ''}`); return; }
     console.log(push(SPACE, 'space', spaceOps, msg, S));
-    if (!pub.length) return;
     // dataset card: rebuild the short table from every published result, only between the markers; left alone when
     // its numbers did not change. Full scorecards (main + hard) under scores/gab/<slug>/ (added or replaced, never deleted).
     const readme = await hfText('dataset', DATASET, 'README.md');
@@ -225,6 +242,7 @@ async function main(args) {
     fs.writeFileSync(path.join(S, 'README.md'), newReadme);
     fs.writeFileSync(path.join(S, 'LEADERBOARD.md'), `# GAB leaderboard\n\nThe leaderboard moved to the private Space [${SPACE}](${SPACE_URL}) (Oct 14 2026; now ${G.GAB_VERSION}: main GAB + GAB-Hard). The GAB v1.0 rows that were here are retired: their kirtan line number counted recordings where nothing was ever shown as 0%, their find time was measured from a window that opened mid-Shabad (so mostly 0 s), and the headline mixed behaviours. Full scorecards per build: scores/gab/.\n`);
     const dsOps = [];
+    if (!pub.length && newReadme === readme) { console.log('dataset card: Leaderboard section unchanged, not touched'); return; }
     pub.forEach((p, i) => {
       fs.copyFileSync(path.resolve(p.files.main), path.join(S, `sc-${i}.json`));
       fs.writeFileSync(path.join(S, `sc-${i}.md`), `${G.markdown(p.card)}\n`);
@@ -235,8 +253,8 @@ async function main(args) {
     if (newReadme !== readme) dsOps.push(['README.md', 'README.md'], ['LEADERBOARD.md', 'LEADERBOARD.md']);
     else console.log('dataset card: Leaderboard section unchanged, not touched');
     console.log(push(DATASET, 'dataset', dsOps, msg, S));
-    console.log(`published: ${SPACE_URL} (${pub.length} results) and the dataset card's Leaderboard section`);
+    console.log(`published: ${SPACE_URL} (${pub.length} new results) and the dataset card's Leaderboard section`);
   } finally { fs.rmSync(S, { recursive: true, force: true }); }
 }
 
-module.exports = { main, resultOf, section, verdicts, slugOf, lineShown };
+module.exports = { main, resultOf, section, verdicts, slugOf, lineShown, nameOf, shownName };

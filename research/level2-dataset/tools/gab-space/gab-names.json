@@ -1,0 +1,38 @@
+{
+ "about": "Display names for the GAB leaderboard. system = the name of the thing being benchmarked (STTM Desktop Voice-Follow); change it here and republish (gab publish --site-only). builds: 8-character commit -> label (shown after the system name) and kind (release = a version that went into the app; experiment = a change tested here, not in the app). A build missing here gets '<system> <Voice-Follow version> · <--name>'. 'In the app now' is worked out on the page: the latest release by --order.",
+ "system": {
+  "gurmukhi": "ਧਿਆਨ",
+  "latin": "Dhiaan",
+  "is": "STTM Desktop Voice-Follow"
+ },
+ "builds": {
+  "2cb8b003": {
+   "label": "9.0.1 · first release",
+   "kind": "release"
+  },
+  "c69b420b": {
+   "label": "9.0.1 + version stamp",
+   "kind": "release"
+  },
+  "db8f47cb": {
+   "label": "9.0.1 + faster Aarti",
+   "kind": "release"
+  },
+  "97386660": {
+   "label": "9.0.2 · works on slow computers",
+   "kind": "release"
+  },
+  "3fafc0ba": {
+   "label": "9.0.3 · new panel",
+   "kind": "release"
+  },
+  "747cb093": {
+   "label": "kirtan line hold",
+   "kind": "experiment"
+  },
+  "eb789375": {
+   "label": "Akhand Paath (Ang after Ang)",
+   "kind": "experiment"
+  }
+ }
+}

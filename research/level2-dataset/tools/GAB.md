@@ -114,6 +114,14 @@ stays on the main Shabad turns a switch into "stayed", so that count can drop fo
 are guarded only on human or ear-checked line answers with at least 3 clips (v1.2), and same-or-neighbouring pangti is information only. Per-Bani rows, named sets and the mixed all-behaviours row are information only. The replay is deterministic, so
 every change is a real change; the compare also lists the clips whose screen events differ.
 
+Leaderboard page (Oct 14 2026 redesign): the system is shown as ਧਿਆਨ Dhiaan and each build by a plain name from
+`gab-space/gab-names.json` (by commit; a build missing there gets '<Voice-Follow version> · <--name>'; edit the file and
+`gab publish --site-only` to rename). Rows are ranked best first (right pangti where every row has human line answers,
+else right Shabad), versions with identical shown numbers share one row, each column is coloured better/worse relative to
+the other versions, and "In the app now" = the latest merged build by order. The verdicts below are shown only in the
+"What changed between versions" tab, in plain sentences (no PASS/FAIL on the page); `--site-only` also refreshes the
+dataset card's Leaderboard section when the names change.
+
 Leaderboard verdicts: every `gab publish` recomputes, for every row and each tier separately, a "vs base" verdict with the same guardrails
 (PASS / FAIL with the worse numbers listed): a candidate against the build it was made from (`--base`), a merged
 build against the merged build before it (`--order`). Named clip sets that got worse (information only) are listed
