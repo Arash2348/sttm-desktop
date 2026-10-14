@@ -10,13 +10,13 @@ short_description: Gurbani Autopilot Bench results per STTM Voice-Follow build
 
 # GAB leaderboard
 
-One row per version of Gurbani Autopilot (STTM Desktop Voice-Follow), scored by GAB (Gurbani Autopilot Bench) on the practice split
-(train + dev recordings) of the private dataset `khalisfoundation/GurbaniAutopilotBench`. Two tiers, never mixed:
-main GAB (the priority) and GAB-Hard (the Fremont hall laptop-mic recordings), each ranked best first, with its own
-"What changed between versions".
+One table: one row per version of Gurbani Autopilot (STTM Desktop Voice-Follow), newest at the top, with the % of time
+the right Shabad or Bani is on screen for kirtan, paath and sung Bani (main GAB, practice split of the private dataset
+`khalisfoundation/GurbaniAutopilotBench`; the held-out test set is never shown). Click a version to open a tree:
+behaviour, then Gurdwara mic (main GAB) / Laptop mic (GAB-Hard), then each Bani, each with right % and wrong seconds
+per hour, coloured across versions at the same place in the tree. The tree is built from the result rows, so a new
+Bani or mic type appears without a page change. `?open=<commit>` opens one version.
 
-Files: `index.html` (the page), `about.html` (how to read it), `gab-names.json` (the system's name and each version's
-display name, by commit), `reconcile.json` (earlier reported numbers checked
-against GAB), `results/index.json` + `results/<build>.json` (one file per build, written by `gab publish`; `rows` = main GAB,
-`hard.rows` = GAB-Hard). URL options: `?set=hard`, `?tab=board|changes|banis|sets|about`, `?beh=1-kirtan-shabad`.
-The page reads only these files; it needs no token or secret.
+Files: `index.html` (the page), `gab-names.json` (system name and each version's display name, by commit),
+`results/index.json` + `results/<build>.json` (written by `gab publish`; `rows` = main GAB, `hard.rows` = GAB-Hard).
+The page needs no token or secret.

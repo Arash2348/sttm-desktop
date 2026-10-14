@@ -4,391 +4,182 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GAB Leaderboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gurmukhi:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #fbfaf7; --panel: #ffffff; --ink: #1d1d1b; --muted: #5f5d57; --line: #e4e1d8; --accent: #1f5f8b; --accent-soft: #e6eff6;
-  --warn: #8a5a00; --warn-soft: #fff3d6; --chip: #f0eee8;
-  /* better / worse: Okabe-Ito bluish green and vermilion (colour-blind safe), as light tints behind dark text */
-  --better: #1a9850; --mid: #f2c12e; --worse: #d73027; --better-ink: #13703b; --worse-ink: #b0241c; --mid-ink: #8a6a00; --tint: 34%;
+  --bg: #fbfaf7; --panel: #ffffff; --ink: #1d1d1b; --muted: #6b6962; --line: #e4e1d8; --sub: #f6f4ef;
   --app: #1f5f8b; --app-soft: #e6eff6;
+  --better: #1a9850; --mid: #f2c12e; --worse: #d73027; --tint: 34%;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { --bg: #151514; --panel: #1e1e1c; --ink: #ecebe6; --muted: #a9a69c; --line: #34332f; --accent: #7fb4dc; --accent-soft: #1f2d38; --warn: #e6b450; --warn-soft: #3a2f17; --chip: #2a2926;
-    --better: #3fbf6f; --mid: #e8c547; --worse: #ef5a4c; --better-ink: #7fd89e; --worse-ink: #f48a7e; --mid-ink: #e8c547; --tint: 30%; --app: #9cc8ea; --app-soft: #1f2d38; }
+  :root:not([data-theme="light"]) { --bg: #151514; --panel: #1e1e1c; --ink: #ecebe6; --muted: #a9a69c; --line: #34332f; --sub: #252522;
+    --app: #9cc8ea; --app-soft: #1f2d38; --better: #3fbf6f; --mid: #e8c547; --worse: #ef5a4c; --tint: 30%; }
 }
-:root[data-theme="dark"] { --bg: #151514; --panel: #1e1e1c; --ink: #ecebe6; --muted: #a9a69c; --line: #34332f; --accent: #7fb4dc; --accent-soft: #1f2d38; --warn: #e6b450; --warn-soft: #3a2f17; --chip: #2a2926;
-  --better: #3fbf6f; --mid: #e8c547; --worse: #ef5a4c; --better-ink: #7fd89e; --worse-ink: #f48a7e; --mid-ink: #e8c547; --tint: 30%; --app: #9cc8ea; --app-soft: #1f2d38; }
+:root[data-theme="dark"] { --bg: #151514; --panel: #1e1e1c; --ink: #ecebe6; --muted: #a9a69c; --line: #34332f; --sub: #252522;
+  --app: #9cc8ea; --app-soft: #1f2d38; --better: #3fbf6f; --mid: #e8c547; --worse: #ef5a4c; --tint: 30%; }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
-.gm { font-family: "Noto Sans Gurmukhi", "Gurmukhi MN", "Raavi", "Mukta Mahee", sans-serif; font-weight: 600; }
-header { padding: 24px 16px 8px; max-width: 1200px; margin: 0 auto; }
-h1 { font-size: 24px; margin: 0 0 4px; }
-.sub { color: var(--muted); margin: 0; }
-.sub .gm { color: var(--ink); }
-nav { max-width: 1200px; margin: 12px auto 0; padding: 0 16px; display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
-nav button { background: none; border: 0; border-bottom: 2px solid transparent; padding: 8px 10px; color: var(--muted); font: inherit; cursor: pointer; }
-nav button.on { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
-main { max-width: 1200px; margin: 0 auto; padding: 16px; }
-section { display: none; } section.on { display: block; }
-.pills { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0 12px; }
-.pills button { border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 5px 12px; font: inherit; cursor: pointer; }
-.pills button.on { background: var(--accent-soft); border-color: var(--accent); }
-.wrap { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
+.page { max-width: 940px; margin: 0 auto; padding: 24px 16px; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+.sub { color: var(--muted); font-size: 13px; margin: 0 0 16px; }
+.box { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
 table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
-th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-th { font-size: 13px; color: var(--ink); font-weight: 600; line-height: 1.25; background: var(--panel); position: sticky; top: 0; z-index: 1; }
-th .dir { font-weight: 400; font-size: 11px; display: block; color: var(--muted); }
-th.main { box-shadow: inset 0 -3px 0 var(--accent); }
-th.main .rk { display: inline-block; font-size: 10px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .04em; }
-td.num { text-align: right; min-width: 96px; max-width: 160px; }
-td.num .v { font-size: 16px; white-space: nowrap; }
-td.num.best .v { font-weight: 700; }
-td.num .n { line-height: 1.3; }
-th.num { text-align: right; }
-tr:last-child td { border-bottom: 0; }
-td.rank { width: 48px; text-align: center; font-size: 20px; font-weight: 700; color: var(--muted); }
-td.rank.r1 { color: var(--ink); }
-td.rank .n { font-size: 11px; font-weight: 400; }
-td.who { min-width: 230px; max-width: 300px; }
-td.who .lead { font-size: 15px; font-weight: 600; }
-td.who .also { margin-top: 4px; font-size: 13px; }
-td.who .also div { margin: 1px 0; }
-.n { color: var(--muted); font-size: 12px; display: block; }
-.cm { color: var(--muted); font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-.pill { display: inline-block; border-radius: 999px; padding: 0 8px; font-size: 11px; font-weight: 600; line-height: 18px; vertical-align: 1px; white-space: nowrap; }
-.pill.app { background: var(--app-soft); color: var(--app); border: 1px solid var(--app); }
-.pill.exp { background: var(--chip); color: var(--muted); border: 1px solid var(--line); }
-.bestmark { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--better-ink); margin-right: 4px; vertical-align: 2px; }
-.thin { color: var(--warn); font-size: 12px; }
-.note { color: var(--muted); font-size: 13px; margin: 10px 2px; }
-.legend { display: flex; gap: 4px 16px; flex-wrap: wrap; align-items: center; font-size: 12px; color: var(--muted); margin: 0 2px 8px; }
-.legend .sw { display: inline-block; width: 44px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 4px; border: 1px solid var(--line); }
-.legend .sw.g { background: color-mix(in srgb, var(--better) var(--tint), var(--panel)); }
-.legend .sw.r { background: color-mix(in srgb, var(--worse) var(--tint), var(--panel)); }
-.legend .sw.grad { width: 90px; background: linear-gradient(90deg, color-mix(in srgb, var(--worse) var(--tint), var(--panel)), color-mix(in srgb, var(--mid) var(--tint), var(--panel)), color-mix(in srgb, var(--better) var(--tint), var(--panel))); }
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; margin: 0 0 12px; }
-.card h3 { margin: 0 0 6px; font-size: 16px; }
-.card p { margin: 6px 0; }
-code { background: var(--chip); padding: 0 4px; border-radius: 3px; font-size: 13px; }
-.ok { color: var(--better-ink); font-weight: 600; } .mid { color: var(--mid-ink); font-weight: 600; } .no { color: var(--worse-ink); font-weight: 600; }
-.chg h3 { margin-bottom: 2px; }
-.chg .vs { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
-.chg ul { margin: 4px 0; padding-left: 0; list-style: none; }
-.chg li { margin: 4px 0; padding: 4px 10px; border-radius: 6px; }
-.chg li.up { background: color-mix(in srgb, var(--better) 14%, var(--panel)); }
-.chg li.down { background: color-mix(in srgb, var(--worse) 14%, var(--panel)); }
-.chg li .tag { font-weight: 700; margin-right: 6px; }
-.chg li.up .tag { color: var(--better-ink); } .chg li.down .tag { color: var(--worse-ink); }
-.chg .same { color: var(--muted); }
-.chg .small { color: var(--muted); font-size: 13px; }
-.tiers { max-width: 1200px; margin: 8px auto 0; padding: 0 16px; display: flex; gap: 8px; flex-wrap: wrap; }
-.tiers button { border: 1px solid var(--line); background: var(--panel); color: var(--muted); border-radius: 8px; padding: 8px 14px; font: inherit; cursor: pointer; text-align: left; }
-.tiers button b { color: var(--ink); display: block; }
-.tiers button.on { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); }
-.hardnote { background: var(--warn-soft); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; margin: 0 0 12px; }
-.hardnote b { color: var(--warn); }
-@media (max-width: 640px) { th, td { padding: 6px 8px; font-size: 13px; } td.num .v { font-size: 14px; } h1 { font-size: 20px; } td.who { min-width: 150px; max-width: 180px; } .hide-phone, td.num .n { display: none; } td.num { min-width: 64px; } td.rank { width: 32px; font-size: 16px; } }
+th, td { padding: 9px 12px; border-bottom: 1px solid var(--line); text-align: right; }
+th:first-child, td:first-child { text-align: left; }
+th { font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+tr.ver { cursor: pointer; }
+tr.ver:hover td:first-child, tr.ver:focus-visible td:first-child { background: var(--sub); }
+tr.ver:focus-visible { outline: 2px solid var(--app); outline-offset: -2px; }
+td.nm { font-weight: 600; }
+td.nm .car { display: inline-block; width: 14px; color: var(--muted); font-size: 11px; transition: transform .15s; }
+tr.open td.nm .car { transform: rotate(90deg); }
+td.nm .what { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 4px; }
+tr.idea td.nm { font-weight: 500; color: var(--muted); }
+tr.old td.nm { font-weight: 400; }
+.pill { display: inline-block; margin-left: 6px; border-radius: 999px; padding: 0 7px; font-size: 10px; font-weight: 600; line-height: 16px; vertical-align: 1px; white-space: nowrap; background: var(--app-soft); color: var(--app); border: 1px solid var(--app); }
+td.v { font-size: 15px; white-space: nowrap; width: 13%; }
+tr.det > td { padding: 0 12px 12px 26px; background: var(--sub); text-align: left; }
+.sd { width: 100%; font-size: 13px; }
+.sd th, .sd td { padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.sd th { font-size: 12px; }
+.sd td.none { color: var(--muted); font-size: 12px; }
+.sd td { width: 26%; white-space: nowrap; } .sd td:first-child { width: auto; white-space: normal; }
+.sd tr.node { cursor: pointer; }
+.sd .tw { display: inline-block; width: 16px; background: none; border: 0; padding: 0; color: var(--muted); font: inherit; font-size: 12px; cursor: pointer; text-align: left; }
+@media (max-width: 560px) {
+  .page { padding: 16px 12px; }
+  th, td { padding: 8px 6px; }
+  td.v { font-size: 14px; }
+  td.nm .what { display: block; margin-left: 14px; }
+  td.nm .sysn { display: none; }
+  th { white-space: normal; }
+  tr.det > td { padding: 0 6px 10px 6px; }
+}
 </style>
 </head>
 <body>
-<header>
+<div class="page">
   <h1>GAB: Gurbani Autopilot Bench</h1>
-  <p class="sub">How well each version of <span id="sysname">Gurbani Autopilot</span> (STTM Desktop's Voice-Follow) keeps the right Gurbani on screen, tested on the same recordings. <span id="meta"></span></p>
-</header>
-<div class="tiers" id="tiers">
-  <button data-set="main" class="on"><b>GAB</b>main benchmark, the priority</button>
-  <button data-set="hard"><b>GAB-Hard</b>Fremont hall, laptop mic</button>
+  <p class="sub">% of time the right Gurbani is on screen, higher is better · Wrong: seconds per hour of a wrong one, lower is better</p>
+  <div class="box"><table id="board"></table></div>
 </div>
-<nav id="tabs">
-  <button data-tab="board" class="on">Leaderboard</button>
-  <button data-tab="changes">What changed between versions</button>
-  <button data-tab="banis">Per Bani</button>
-  <button data-tab="sets">Old numbers, checked</button>
-  <button data-tab="about">About / how to read this</button>
-</nav>
-<main>
-  <section id="board" class="on">
-    <div class="hardnote" id="hardnote" hidden><b>GAB-Hard (Fremont hall, laptop mic).</b> Jaspal's recordings at Gurdwara Sahib Fremont, made with STTM Desktop on the sevadaar's laptop: the hall echoes, the laptop mic is far from the ragis, and there is little clean audio, so these are much harder than the main set. They are tracked here on their own, but they are not the priority; versions are judged on main GAB.</div>
-    <div class="pills" id="behaviours"></div>
-    <div class="legend" id="legend"></div>
-    <div class="wrap"><table id="boardTable"></table></div>
-    <p class="note" id="coverage"></p>
-  </section>
-  <section id="changes">
-    <div id="changeList"></div>
-  </section>
-  <section id="banis">
-    <div class="pills" id="buildPick"></div>
-    <div class="wrap"><table id="baniTable"></table></div>
-    <p class="note">Each row is one Bani or one group of recordings, for the version picked above. "no clips yet" means the practice set has no recording of it; that is a gap in the data, not a score.</p>
-  </section>
-  <section id="sets">
-    <div id="reconcile"></div>
-  </section>
-  <section id="about">
-    <div id="aboutText"></div>
-  </section>
-</main>
 <script>
-// The name of the system being benchmarked. Read from gab-names.json (the one place to change it); this is only the fallback.
-let SYSTEM = { gurmukhi: '', latin: 'Gurbani Autopilot' };
-const BEH = [
-  { key: '1-kirtan-shabad', name: 'Kirtan of a Shabad', unit: 'Shabad' },
-  { key: '2-bani-recited', name: 'Bani recited (paath)', unit: 'Bani' },
-  { key: '3-bani-sung-like-kirtan', name: 'Bani sung like kirtan', unit: 'Bani' },
-  { key: '4-akhand-paath', name: 'Akhand Paath (Ang after Ang)', unit: 'Shabad' },
+let SYSTEM = { latin: 'Gurbani Autopilot' };
+// headline: right Shabad/Bani % per behaviour, main GAB (Gurdwara mic)
+const HEAD = [
+  { t: 'Kirtan', key: '1-kirtan-shabad' },
+  { t: 'Paath', key: '2-bani-recited' },
+  { t: 'Sung Bani', key: '3-bani-sung-like-kirtan' },
 ];
-const BASIS = { human: 'human answers', 'aligned+ear-checked': 'aligner, ear-checked', aligned: 'aligner only (not a headline)' };
-const THIN = 3;
-// a line number is shown only on human or ear-checked line answers and at least 3 clips; otherwise the honest text
-const lineShown = (r) => !!r && r.pangti_pct != null && r.pangti_basis !== 'aligned' && r.pangti_clips >= THIN;
-const LINE_KEYS = ['pangti_pct', 'pangti_near_pct', 'behind_p50_s'];
-// columns: k = the value that is ranked and coloured, dir = +1 higher is better / -1 lower is better
-const COLS = [
-  { k: 'right_shabad_pct', dir: 1, t: 'Right Shabad', d: '% of time · higher is better', cell: (r) => [fmt(r.right_shabad_pct, '%'), `${r.shabad_clips} clips, human answers`] },
-  { k: 'pangti_pct', dir: 1, t: 'Right pangti', d: 'exact, % of time · higher is better', cell: (r) => (lineShown(r) ? [fmt(r.pangti_pct, '%'), `${r.pangti_clips} clips${r.pangti_never_shown ? ` +${r.pangti_never_shown} never shown` : ''}, ${BASIS[r.pangti_basis]}`] : ['–', 'no line answers yet; right Shabad only']) },
-  { k: 'pangti_near_pct', dir: 1, t: 'Same or neighbouring pangti', d: '% of time · higher is better', cell: (r) => (lineShown(r) ? [fmt(r.pangti_near_pct, '%'), 'right pangti, or one before or after'] : ['–', 'no line answers yet']) },
-  { k: 'behind_p50_s', dir: -1, t: 'Behind', d: 'seconds, typical · lower is better', cell: (r) => (lineShown(r) ? [fmt(r.behind_p50_s, ' s'), r.behind_n ? `slowest 10%: ${fmt(r.behind_p90_s, ' s')}; ${r.behind_n} pangtis` : ''] : ['–', 'no line answers yet']) },
-  { k: 'wrong_s_per_h', dir: -1, t: 'Wrong Shabad', d: 'seconds per hour · lower is better', cell: (r) => [fmt(r.wrong_s_per_h, ' s/h'), `${r.hours} h of recordings`] },
-  { k: 'find_p50_s', dir: -1, t: 'Find', d: 'seconds, typical · lower is better', cell: (r) => [fmt(r.find_p50_s, ' s'), r.find_n ? `slowest 10%: ${fmt(r.find_p90_s, ' s')}; ${r.find_n} starts${r.not_found ? `, ${r.not_found} never found` : ''}` : ''] },
-  { k: 'switch_missed', dir: -1, t: 'Switch', d: '≤10 s / later / never · fewer "never" is better', cell: (r) => {
-    const extra = [r.stayed_main_n ? `${r.stayed_main_n} stayed on main Shabad` : '', r.parmaan_n ? `parmaan shown ${r.parmaan_shown} of ${r.parmaan_n}` : ''].filter(Boolean).join('; ');
-    if (!r.switch_n) return ['–', `no switch in these clips${extra ? `; ${extra}` : ''}`];
-    return [`${r.switch_within10_n ?? '?'} / ${r.switch_later_n ?? '?'} / ${r.switch_missed}`, `typical ${fmt(r.switch_p50_s, ' s')} over found${extra ? `; ${extra}` : ''}`];
-  } },
-];
-// the value a cell is ranked / coloured on (null = not comparable: no line answers, no switch)
-const valOf = (r, c) => { if (!r || !r.clips) return null; if (LINE_KEYS.includes(c.k) && !lineShown(r)) return null; if (c.k === 'switch_missed' && !r.switch_n) return null; return r[c.k] ?? null; };
+// expanded view: a tree built from the scorecard rows (behaviour -> mic -> Bani -> mic type), no fixed list
+const BEH_NAME = { '1-kirtan-shabad': 'Kirtan', '2-bani-recited': 'Paath (recited Bani)', '3-bani-sung-like-kirtan': 'Aarti and sung Bani', '4-akhand-paath': 'Akhand Paath' };
+const BANI = { japji: 'Japji Sahib', jaap: 'Jaap Sahib', 'tav-prasad-savaiye': 'Tav Prasad Savaiye', chaupai: 'Chaupai Sahib', 'anand-40': 'Anand Sahib', anand: 'Anand Sahib', rehras: 'Rehras Sahib', sohila: 'Kirtan Sohila', sukhmani: 'Sukhmani Sahib', saloks: 'Saloks', aarti: 'Aarti', 'asa-di-vaar': 'Asa di Vaar' };
+const MIC = { 'mixer-feed': 'Mixer feed', 'room-mic': 'Room mic', studio: 'Studio', unknown: 'Mic not known' };
+// Nitnem order first, then anything new (alphabetical)
+const ORDER = ['japji', 'jaap', 'tav-prasad-savaiye', 'chaupai', 'anand-40', 'anand', 'rehras', 'sohila', 'sukhmani', 'saloks', 'aarti', 'asa-di-vaar'];
+const ord = (slug) => { const i = ORDER.indexOf(slug); return i < 0 ? 99 : i; };
+const nice = (slug) => BANI[slug] || slug.replace(/-/g, ' ').replace(/^./, (c) => c.toUpperCase());
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const fmt = (v, u) => (v == null ? '–' : `${v}${u || ''}`);
-const Q = new URLSearchParams(location.search);
-let RESULTS = []; let beh = Q.get('beh') || BEH[0].key; let pick = null;
-// GAB tier on view: main (the priority) or hard (Fremont hall, laptop mic); each version's result holds both, never mixed
-let tier = Q.get('set') === 'hard' ? 'hard' : 'main';
-const partOf = (res) => (tier === 'hard' ? res.hard || { rows: [] } : res);
-function rowOf(res, key) { return (partOf(res).rows || []).find((r) => r.key === key) || null; }
+const kindOf = (r) => r.kind || (r.status === 'merged' ? 'release' : 'experiment');
+const rowOf = (rows, key) => (rows || []).find((x) => x.key === key && x.clips) || null;
+const pct = (res, key) => { const r = rowOf(res.rows, key); return r && r.right_shabad_pct != null ? Number(r.right_shabad_pct) : null; };
+const tint = (t) => `background: color-mix(in srgb, ${t >= 0.5 ? `color-mix(in srgb, var(--better) ${Math.round((t - 0.5) * 200)}%, var(--mid))` : `color-mix(in srgb, var(--mid) ${Math.round(t * 200)}%, var(--worse))`} var(--tint), var(--panel))`;
+let RESULTS = [];
 
-// ---- names: '<system> <label>' for a release or an older version, 'Experiment: <label>' for an experiment; 'In the app now' = latest by order (older versions have the lowest orders)
-const isExp = (res) => (res.kind || (res.status === 'merged' ? 'release' : 'experiment')) === 'experiment';
-const sysHtml = () => `<span class="sys">${esc(SYSTEM.latin)}</span>`;
-const labelOf = (res) => res.label || res.name;
-const nameHtml = (res) => (isExp(res) ? `Experiment: ${esc(labelOf(res))}` : `${sysHtml()} ${esc(labelOf(res))}`);
-const nameText = (res) => (isExp(res) ? `Experiment: ${labelOf(res)}` : `${SYSTEM.latin} ${labelOf(res)}`);
-const inApp = () => RESULTS.filter((x) => !isExp(x)).sort((a, b) => (a.order ?? 99) - (b.order ?? 99)).pop() || null;
-const pills = (res) => (res === inApp() ? ' <span class="pill app">In the app now</span>' : '');
-const detail = (res) => `commit ${res.commit.slice(0, 8)} · Voice-Follow ${res.vf_feature_version || 'not stamped'} · scored ${res.date} · ${res.gab}`;
-const short = (res) => `${res.commit.slice(0, 8)} · Voice-Follow ${res.vf_feature_version || 'not stamped'}`;
-const byCommit = (c) => RESULTS.find((x) => c && String(x.commit).startsWith(String(c).slice(0, 8))) || null;
-
-function thinMark(r, k) { if (LINE_KEYS.includes(k) && !lineShown(r)) return ''; const map = { pangti_pct: 'pangti_clips', pangti_near_pct: 'pangti_clips', behind_p50_s: 'pangti_clips', find_p50_s: 'find_n', switch_missed: 'switch_n' }; return r.thin && r.thin.includes(map[k]) ? ' <span class="thin" title="fewer than 3 clips or events behind this number">thin</span>' : ''; }
-const heads = (mainK, cols = COLS) => cols.map((c) => `<th class="num${c.k === mainK ? ' main' : ''}">${c.k === mainK ? '<span class="rk">ranked by</span><br>' : ''}${esc(c.t)}<span class="dir">${esc(c.d)}</span></th>`).join('');
-// colour: each column on its own, from worse (vermilion) through neutral to better (bluish green), relative to the other
-// rows; all equal = neutral, no 'best'
-function scaleOf(list, c) {
-  const vs = list.map((x) => valOf(x.r, c)).filter((v) => v != null);
-  const lo = Math.min(...vs); const hi = Math.max(...vs);
-  return { lo, hi, best: c.dir > 0 ? hi : lo, varies: vs.length > 1 && hi > lo };
+function nameCell(res, now) {
+  const [ver, ...rest] = String(res.label || res.name).split(' · ');
+  const idea = kindOf(res) === 'experiment';
+  const tip = `${res.label || res.name}\ncommit ${String(res.commit).slice(0, 8)} · Voice-Follow ${res.vf_feature_version || 'not stamped'}`;
+  return `<td class="nm" title="${esc(tip)}"><span class="car">▶</span>${idea ? `Idea: ${esc(ver)}` : `<span class="sysn">${esc(SYSTEM.latin)} </span>${esc(ver)}`}${res === now ? '<span class="pill">in the app now</span>' : ''}${rest.length ? `<span class="what">${esc(rest.join(' · '))}</span>` : ''}</td>`;
 }
-function cellHtml(r, c, sc) {
-  const [big, small] = c.cell(r);
-  const v = valOf(r, c);
-  let style = ''; let cls = 'num'; let mark = ''; let tip = '';
-  if (sc && sc.varies && v != null) {
-    const t = c.dir > 0 ? (v - sc.lo) / (sc.hi - sc.lo) : (sc.hi - v) / (sc.hi - sc.lo); // 1 = best, 0 = worst
-    // Traffic-light scale: best = green, middle = yellow, worst = red.
-    const hue = t >= 0.5
-      ? `color-mix(in srgb, var(--better) ${Math.round((t - 0.5) * 200)}%, var(--mid))`
-      : `color-mix(in srgb, var(--mid) ${Math.round(t * 200)}%, var(--worse))`;
-    style = ` style="background: color-mix(in srgb, ${hue} var(--tint), var(--panel))"`;
-    tip = ` title="${t === 1 ? 'best of these versions' : t === 0 ? 'worst of these versions' : 'between the best and worst of these versions'}"`;
-    if (v === sc.best) { cls += ' best'; mark = '<span class="bestmark">best</span>'; }
-  }
-  return `<td class="${cls}"${style}${tip}>${mark}<span class="v">${esc(big)}</span>${thinMark(r, c.k)}<span class="n">${esc(small)}</span></td>`;
+const has = (r) => !!(r && r.clips && r.right_shabad_pct != null);
+// mic types inside one scorecard row (only when there is more than one real type)
+function micKids(path, r) {
+  const ks = Object.keys((r && r.mic) || {}).filter((k) => k !== '50/50' && r.mic[k] && r.mic[k].clips);
+  return ks.length > 1 ? ks.map((k) => ({ id: `${path}|mic:${k}`, name: MIC[k] || k, row: r.mic[k], kids: [] })) : [];
 }
-
-function renderBoard() {
-  document.querySelectorAll('#tiers button').forEach((b) => b.classList.toggle('on', b.dataset.set === tier));
-  document.getElementById('hardnote').hidden = tier !== 'hard';
-  // GAB-Hard shows only the behaviours it has recordings of (Fremont kirtan)
-  const shown = BEH.filter((b) => tier === 'main' || RESULTS.some((res) => (rowOf(res, b.key) || {}).clips));
-  if (!shown.some((b) => b.key === beh)) beh = (shown[0] || BEH[0]).key;
-  document.getElementById('behaviours').innerHTML = shown.map((b) => `<button data-b="${b.key}" class="${b.key === beh ? 'on' : ''}">${esc(b.name)}</button>`).join('');
-  const all = RESULTS.map((res) => ({ res, r: rowOf(res, beh) }));
-  const scored = all.filter((x) => x.r && x.r.clips);
-  // ranked by right pangti where every version has human (or ear-checked) line answers, else by right Shabad
-  const mainK = scored.length && scored.every((x) => lineShown(x.r)) ? 'pangti_pct' : 'right_shabad_pct';
-  const mainC = COLS.find((c) => c.k === mainK);
-  // versions with identical shown numbers become one row
-  const groups = [];
-  for (const x of scored) {
-    const sig = JSON.stringify(COLS.map((c) => c.cell(x.r)[0]));
-    const g = groups.find((y) => y.sig === sig);
-    if (g) g.members.push(x); else groups.push({ sig, r: x.r, members: [x] });
-  }
-  const app = inApp();
-  for (const g of groups) {
-    const rel = g.members.filter((m) => !isExp(m.res)).sort((a, b) => (b.res.order ?? 0) - (a.res.order ?? 0));
-    const lead = g.members.find((m) => m.res === app) || rel[0] || g.members[0];
-    g.members = [lead, ...g.members.filter((m) => m !== lead)];
-  }
-  // best first: the main column, then the other columns in order (each in its own direction)
-  const cmp = (a, b) => { for (const c of [mainC, ...COLS.filter((x) => x !== mainC)]) { const x = valOf(a.r, c); const y = valOf(b.r, c); if (x === y) continue; if (x == null) return 1; if (y == null) return -1; return (y - x) * c.dir; } return 0; };
-  groups.sort(cmp);
-  groups.forEach((g, i) => { const v = valOf(g.r, mainC); const first = groups.findIndex((y) => valOf(y.r, mainC) === v); g.rank = first + 1; g.tied = groups.filter((y) => valOf(y.r, mainC) === v).length > 1; });
-  const scales = Object.fromEntries(COLS.map((c) => [c.k, scaleOf(groups, c)]));
-  // no version has line answers here: the three pangti columns would be empty, so they are left out (said in the legend)
-  const noLines = !scored.some((x) => lineShown(x.r));
-  const cols = COLS.filter((c) => !(noLines && LINE_KEYS.includes(c.k)));
-  const who = (g) => {
-    const [lead, ...rest] = g.members;
-    const one = (m) => `${nameHtml(m.res)}${pills(m.res)} <span class="cm">${esc(m.res.commit.slice(0, 8))}</span>`;
-    return `<td class="who" title="${esc(g.members.map((m) => `${nameText(m.res)}: ${detail(m.res)}`).join('\n'))}"><div class="lead">${nameHtml(lead.res)}${pills(lead.res)}</div><span class="cm">${esc(short(lead.res))}</span>${rest.length ? `<div class="also"><span class="n">same shown scores:</span>${rest.map((m) => `<div>${one(m)}</div>`).join('')}</div>` : ''}</td>`;
-  };
-  const body = groups.map((g) => `<tr><td class="rank${g.rank === 1 ? ' r1' : ''}">${g.rank}${g.tied ? '<span class="n">tied</span>' : ''}</td>${who(g)}${cols.map((c) => cellHtml(g.r, c, scales[c.k])).join('')}</tr>`).join('')
-    + all.filter((x) => !(x.r && x.r.clips)).map((x) => `<tr><td class="rank">–</td><td class="who"><div class="lead">${nameHtml(x.res)}${pills(x.res)}</div><span class="cm">${esc(short(x.res))}</span></td><td colspan="${cols.length}" class="note">${esc(plainNote(x.r))}</td></tr>`).join('');
-  document.getElementById('boardTable').innerHTML = `<thead><tr><th>#</th><th>Version${tier === 'hard' ? '<span class="dir">GAB-Hard</span>' : ''}</th>${heads(mainK, cols)}</tr></thead><tbody>${body}</tbody>`;
-  const anyColour = COLS.some((c) => scales[c.k].varies);
-  document.getElementById('legend').innerHTML = anyColour
-    ? `<span>Best first, ranked by <b>${esc(mainC.t)}</b>.</span><span><span class="sw grad"></span>colour compares these versions with each other: <span class="ok">green = better</span>, <span class="mid">yellow = in between</span>, <span class="no">red = worse</span>, plain = all the same.</span><span><span class="bestmark">best</span>= best value in that column.</span><span>Small gaps still get full colour: read the numbers.</span>${noLines ? '<span>Right pangti, Same or neighbouring pangti and Behind are left out here: no line answers yet.</span>' : ''}`
-    : `<span>Best first, ranked by <b>${esc(mainC.t)}</b>. Every version has the same numbers here, so nothing is coloured.</span>${noLines ? '<span>Right pangti, Same or neighbouring pangti and Behind are left out here: no line answers yet.</span>' : ''}`;
-  document.getElementById('coverage').innerHTML = esc(coverage(beh));
+function banisOf(rows, beh, path) {
+  return (rows || []).filter((x) => x.level === 'bani' && x.key.startsWith(`${beh}/`)).sort((a, b) => has(b) - has(a) || ord(a.key.slice(beh.length + 1)) - ord(b.key.slice(beh.length + 1)) || a.key.localeCompare(b.key)).map((x) => ({ id: `${path}|${x.key}`, name: nice(x.key.slice(beh.length + 1)), row: x, kids: has(x) ? micKids(`${path}|${x.key}`, x) : [] }));
 }
-const plainNote = (r) => { const n = (r && r.note) || 'not tested'; return /^incomplete/.test(n) ? `Not scored for this version yet: ${r.incomplete} recordings need a new replay (the saved speech-model output does not cover them), so there is no fair number to compare.` : n; };
-// notes under the table: generated from the results files, never typed in (so a new version cannot leave them stale)
-function coverage(key) {
-  const res = inApp() || RESULTS[RESULTS.length - 1];
-  if (!res) return '';
-  const r = rowOf(res, key) || {};
-  const set = (k) => (rowOf(res, k) || {}).clips || 0;
-  const plural = (n, w, ws = `${w}s`) => `${n} ${n === 1 ? w : ws}`;
-  const out = [];
-  if (key === '4-akhand-paath') return r.note ? `No numbers yet: ${r.note}.` : '';
-  if (!r.clips) return r.note || '';
-  out.push(`Every version is tested on the same recordings: ${r.clips} clips, ${r.hours} h.`);
-  if (tier === 'hard') {
-    if (key === '1-kirtan-shabad') out.push(`GAB-Hard kirtan = ${set('set:fremont-dev')} Fremont recordings from dev sessions and ${set('set:fremont-train')} from train sessions, made with STTM Desktop on the sevadaar's laptop in the hall (laptop mic assumed, not yet confirmed). Right Shabad rests on human answers for all ${r.shabad_clips}. Its test sessions are held out and never shown.`);
-  } else if (key === '1-kirtan-shabad') out.push(`Right Shabad rests on human answers for all ${set('set:L2-41')} Level-2 livestream clips (Darbar Sahib, Renton and the Fremont livestream, mixer feed). The Fremont hall laptop-mic recordings are in GAB-Hard, not here.`);
-  if (key === '2-bani-recited') out.push(`Right Bani rests on ${set('set:paath-60')} short cuts of recited Nitnem (the 30 s a person labelled).`);
-  if (key === '3-bani-sung-like-kirtan') out.push(`Right Bani rests on ${set('set:aarti-50')} Aarti cold starts and ${plural(r.clips - set('set:aarti-50'), 'other sung-Bani clip')}.`);
-  if (lineShown(r)) out.push(`Right pangti, same or neighbouring pangti and Behind rest on ${plural(r.pangti_clips, 'clip')} with ${BASIS[r.pangti_basis]}${r.pangti_basis === 'human' && tier === 'hard' ? ' (the sevadaar\'s screen, which may lag)' : ''}${r.pangti_never_shown ? ` (+${r.pangti_never_shown} where nothing was ever shown; that loss is in Right Shabad and Find)` : ''}. "Same or neighbouring" also counts the pangti just before or after: in kirtan the ragi often sings two pangtis as one phrase, and the answer key then marks the partner pangti as wrong.`);
-  else out.push(`No line answers yet for ${tier === 'hard' ? 'GAB-Hard' : 'main'} ${BEH.find((b) => b.key === key).name.toLowerCase()}: the pangti columns are left out and this tab is ranked on right Shabad only${r.pangti_basis ? ` (only ${plural(r.pangti_clips, 'clip')} with pangti answers${r.pangti_basis === 'aligned' ? ', made by our aligner and never checked by a person' : ''}: too few to show a fair number)` : ''}.`);
-  if (r.switch_n || r.stayed_main_n || r.parmaan_n) out.push(`Switch for ${nameText(res)} (in the app now): ${plural(r.switch_n, 'switch', 'switches')} to a different Shabad or Bani: ${r.switch_within10_n} found within 10 s, ${r.switch_later_n} later, ${r.switch_missed} never${r.switch_p50_s != null ? ` (typical ${r.switch_p50_s} s, over the found ones only)` : ''}. ${plural(r.stayed_main_n, 'return')} to the main Shabad after a parmaan where the app stayed on the main Shabad (correct, not counted as a switch). Parmaans shown: ${r.parmaan_shown} of ${r.parmaan_n}.`);
-  out.push('Hover a version to see its commit.');
-  return out.join(' ');
-}
-
-// ---- What changed between versions: each version against the one before it (an experiment: against the version it was made from)
-const PHRASE = {
-  'right Shabad/Bani %': ['right {u} on screen more of the time', 'right {u} on screen less of the time', '%'],
-  'sangat sees the right pangti %': ['exact pangti on screen more of the time', 'exact pangti on screen less of the time', '%'],
-  'same or neighbouring pangti %': ['same or neighbouring pangti on screen more of the time', 'same or neighbouring pangti on screen less of the time', '%'],
-  'seconds behind p50': ['follows closer (typical delay)', 'falls further behind (typical delay)', ' s'],
-  'seconds behind p90': ['the slowest pangtis come sooner', 'the slowest pangtis come later', ' s'],
-  'wrong Shabad s/h': ['shows a wrong {u} less often', 'shows a wrong {u} more often', ' s per hour'],
-  'time to find p50 s': ['finds the first {u} faster', 'finds the first {u} slower', ' s typical'],
-  'time to find p90 s': ['the slowest finds come sooner', 'the slowest finds come later', ' s'],
-  'not found': ['fewer recordings where the first {u} is never found', 'more recordings where the first {u} is never found', ''],
-  'switch time p50 s': ['catches a change of Shabad faster', 'catches a change of Shabad slower', ' s typical'],
-  'switch time p90 s': ['the slowest changes of Shabad are caught sooner', 'the slowest changes of Shabad are caught later', ' s'],
-  'switches never found': ['misses fewer changes of Shabad', 'misses more changes of Shabad', ''],
-  'switches found within 10 s': ['catches more changes of Shabad within 10 s', 'catches fewer changes of Shabad within 10 s', ''],
-  'line-truth clips never shown': ['fewer recordings where nothing was shown', 'more recordings where nothing was shown', ''],
-  'parmaans shown': ['shows more of the quoted Shabads (parmaans)', 'shows fewer of the quoted Shabads (parmaans)', ''],
-};
-const LINE_LABELS = /pangti|seconds behind|never shown/;
-const SCOPE = { 'mixer-feed': 'the mixer-feed recordings', 'room-mic': 'the room-mic recordings', '50/50': 'mixer and room mic weighted 50/50' };
-function sentence(w, up, unitWord) {
-  const base = String(w.metric).replace(/ \(info.*\)$/, '');
-  const p = PHRASE[base];
-  if (!p) return `${base}: ${w.a} → ${w.b}`;
-  return `${p[up ? 0 : 1].replace('{u}', unitWord)} (${w.a} → ${w.b}${p[2]})`;
-}
-function renderChanges() {
-  const el = document.getElementById('changeList');
-  const ordered = [...RESULTS].sort((a, b) => (isExp(a) - isExp(b)) || (a.order ?? 99) - (b.order ?? 99));
-  const cards = ordered.map((res) => {
-    const v = partOf(res).vs || {};
-    const ref = byCommit(v.against_commit) || (v.against ? RESULTS.find((x) => x.name === v.against) : null);
-    if (!ref) return `<div class="card chg"><h3>${nameHtml(res)}${pills(res)}</h3><p class="same">${isExp(res) ? 'The version it was made from is not on this leaderboard, so there is nothing to compare it with.' : 'The first version on this leaderboard: nothing before it to compare with.'}</p></div>`;
-    const lineOk = (key) => lineShown(rowOf(res, key)) && lineShown(rowOf(ref, key));
-    // keep only what the leaderboard shows: per behaviour; line numbers only where both have real line answers
-    const keep = (w) => BEH.some((b) => b.key === w.row) && (!LINE_LABELS.test(w.metric) || lineOk(w.row));
-    const items = [...(v.better || []).filter(keep).map((w) => ({ w, up: true })), ...(v.worse || []).filter(keep).map((w) => ({ w, up: false }))];
-    // one line per behaviour + measure; other recording groups (mixer feed, room mic) folded in after it
-    const lines = [];
-    for (const it of items) {
-      const b = BEH.find((x) => x.key === it.w.row);
-      const id = `${it.w.row}|${it.w.metric}|${it.up}`;
-      const scopeTxt = it.w.scope && it.w.scope !== 'all clips' ? SCOPE[it.w.scope] || it.w.scope : null;
-      let L = lines.find((x) => x.id === id);
-      if (!L) { L = { id, up: it.up, beh: b, main: null, other: [] }; lines.push(L); }
-      if (scopeTxt) L.other.push(`on ${scopeTxt}: ${it.w.a} → ${it.w.b}`); else L.main = sentence(it.w, it.up, b.unit);
-    }
-    const li = lines.map((L) => `<li class="${L.up ? 'up' : 'down'}"><span class="tag">${L.up ? '▲ Better' : '▼ Worse'}</span><b>${esc(L.beh.name)}:</b> ${esc(L.main || `${sentence({ ...items.find((i) => `${i.w.row}|${i.w.metric}|${i.up}` === L.id).w }, L.up, L.beh.unit)}`)}${L.main && L.other.length ? ` <span class="small">(also ${esc(L.other.join('; '))})</span>` : ''}${!L.main ? ` <span class="small">(only on ${esc(L.other.join('; '))})</span>` : ''}</li>`).join('');
-    const ups = lines.filter((x) => x.up).length; const downs = lines.length - ups;
-    const summary = !lines.length ? 'No number on the leaderboard changed: the same scores.' : `${ups ? `<span class="ok">Better on ${ups}</span>` : 'Better on nothing'}, ${downs ? `<span class="no">worse on ${downs}</span>` : 'worse on nothing'}.`;
-    const info = (v.info_worse || []).filter((w) => !LINE_LABELS.test(w.metric) || lineOk('1-kirtan-shabad'));
-    const infoTxt = info.length ? `<p class="small">On the named recording groups from earlier reports: ${esc(info.map((w) => `${w.title}: ${sentence(w, false, /aarti|paath|bani/i.test(w.title) ? 'Bani' : 'Shabad')}`).join('; '))}.</p>` : '';
-    const nc = v.not_compared && v.not_compared.length ? `<p class="small">Not compared: ${esc(v.not_compared.join(', '))} (this version's replay there is not complete yet).</p>` : '';
-    return `<div class="card chg"><h3>${nameHtml(res)}${pills(res)}</h3><p class="vs">compared with ${nameHtml(ref)} · ${summary}</p>${li ? `<ul>${li}</ul>` : ''}${infoTxt}${nc}</div>`;
+function tree(res) {
+  const main = res.rows || []; const hard = (res.hard || {}).rows || [];
+  const behs = [...new Set([...main, ...hard].filter((x) => x.level === 'behaviour').map((x) => x.key))].sort();
+  return behs.map((k) => {
+    const m = main.find((x) => x.key === k); const h = hard.find((x) => x.key === k);
+    const node = { id: k, name: BEH_NAME[k] || (m || h).title, row: has(m) ? m : has(h) ? h : null, kids: [] };
+    if (has(h)) {
+      // two mics: Gurdwara mic (main GAB) and Laptop mic (GAB-Hard), each with its own Banis / mic types
+      node.kids = [
+        { id: `${k}|gurdwara`, name: 'Gurdwara mic', row: has(m) ? m : null, kids: has(m) ? (banisOf(main, k, `${k}|gurdwara`).length ? banisOf(main, k, `${k}|gurdwara`) : micKids(`${k}|gurdwara`, m)) : [] },
+        { id: `${k}|laptop`, name: 'Laptop mic', row: h, kids: banisOf(hard, k, `${k}|laptop`) },
+      ];
+    } else if (has(m)) node.kids = banisOf(main, k, k).length ? banisOf(main, k, k) : micKids(k, m);
+    return node;
   });
-  el.innerHTML = `<div class="card"><p><b>${tier === 'hard' ? 'GAB-Hard' : 'Main GAB'}.</b> Each version is compared with the version before it; an experiment is compared with the version it was made from. <span class="ok">Green</span> = better, <span class="no">red</span> = worse. A worse number is not always a mistake (it can be the price of a gain elsewhere), but it is always shown. Changes smaller than measuring noise are not listed; the replay is the same every time, so every listed change is real.</p></div>${cards.join('')}`;
 }
-
-function renderBanis() {
-  if (!pick && RESULTS.length) pick = (inApp() || RESULTS[RESULTS.length - 1]).slug;
-  document.getElementById('buildPick').innerHTML = RESULTS.map((r) => `<button data-p="${r.slug}" class="${r.slug === pick ? 'on' : ''}" title="${esc(detail(r))}">${nameHtml(r)}</button>`).join('');
-  const res = RESULTS.find((r) => r.slug === pick);
-  if (!res) return;
-  const rows = partOf(res).rows.filter((r) => r.level === 'behaviour' || r.level === 'bani' || r.level === 'set');
-  document.getElementById('baniTable').innerHTML = `<thead><tr><th>Bani or group</th>${heads(null)}</tr></thead><tbody>${rows.map((r) => {
-    const name = r.level === 'behaviour' ? `<b>${esc(r.title)}</b>` : r.level === 'set' ? `<i>${esc(r.title)}</i>` : `&nbsp;&nbsp;${esc(r.title)}`;
-    if (!r.clips) return `<tr><td>${name}</td><td colspan="${COLS.length}" class="note">${esc(r.incomplete ? plainNote(r) : r.note || 'no clips yet')}</td></tr>`;
-    return `<tr><td>${name}<span class="n">${r.clips} clips · ${r.hours} h</span></td>${COLS.map((c) => cellHtml(r, c, null)).join('')}</tr>`;
-  }).join('')}</tbody>`;
+const walk = (nodes, f, d = 0) => nodes.forEach((n) => { f(n, d); walk(n.kids, f, d + 1); });
+let SCALE = {};
+function nodeCells(n) {
+  if (!has(n.row)) return '<td class="none" colspan="2">no recordings yet</td>';
+  const sc = SCALE[n.id] || {}; const r = Number(n.row.right_shabad_pct); const w = Number(n.row.wrong_s_per_h);
+  const t1 = sc.rhi > sc.rlo ? ` style="${tint((r - sc.rlo) / (sc.rhi - sc.rlo))}"` : '';
+  const t2 = sc.whi > sc.wlo ? ` style="${tint((sc.whi - w) / (sc.whi - sc.wlo))}"` : '';
+  return `<td${t1}>${r}%</td><td${t2}>${w}</td>`;
 }
-let RECON = null;
-async function renderReconcile() {
-  const el = document.getElementById('reconcile');
-  try {
-    const R = RECON || (RECON = await (await fetch('reconcile.json', { cache: 'no-store' })).json());
-    const rows = R.rows.filter((x) => (x.tier || 'main') === tier);
-    el.innerHTML = `<div class="card"><h3>${esc(R.title)}${tier === 'hard' ? ': GAB-Hard (Fremont hall, laptop mic)' : ': main GAB'}</h3><p>${esc(R.intro)}</p><p class="note">${tier === 'hard' ? 'Only the Fremont hall rows are here; the others are under main GAB.' : 'The Fremont hall (laptop mic) rows are under GAB-Hard.'}</p></div><div class="wrap"><table><thead><tr><th>What we reported</th><th>Old number</th><th>Where it was measured</th><th>GAB now (same clips, same version)</th><th>Match?</th><th>Why it differs / note</th></tr></thead><tbody>${rows.map((x) => `<tr><td>${esc(x.what)}</td><td class="num">${esc(x.old)}</td><td>${esc(x.where)}</td><td class="num">${esc(x.gab)}</td><td class="${x.match === 'yes' ? 'ok' : 'no'}">${esc(x.match)}</td><td>${esc(x.why)}</td></tr>`).join('')}</tbody></table></div><p class="note">${esc(R.footer || '')}</p>`;
-  } catch (e) { el.innerHTML = '<p class="note">reconcile.json not found.</p>'; }
+function detail(res) {
+  const out = [];
+  walk(tree(res), (n, d) => {
+    const open = n.kids.length && has(n.row) || n.kids.length;
+    const kid = d ? ` data-p="${esc(n.id.split('|').slice(0, -1).join('|') || n.id)}" hidden` : '';
+    out.push(`<tr class="node"${kid} data-id="${esc(n.id)}"><td style="padding-left:${6 + d * 16}px">${open ? `<button type="button" class="tw" aria-expanded="false">▸</button>` : '<span class="tw"></span>'}${esc(n.name)}</td>${nodeCells(n)}</tr>`);
+  });
+  return `<table class="sd"><thead><tr><th></th><th>Right</th><th>Wrong (s/h)</th></tr></thead><tbody>${out.join('')}</tbody></table>`;
 }
-async function renderAbout() {
-  try { document.getElementById('aboutText').innerHTML = await (await fetch('about.html', { cache: 'no-store' })).text(); } catch (e) { return; }
-  // generated parts of the About text (from the results files)
-  const exps = RESULTS.filter(isExp);
-  const olds = RESULTS.filter((x) => x.kind === 'older version');
-  const app = inApp();
-  const gen = {
-    system: '',
-    builds: `${RESULTS.length} versions here: ${olds.length ? `${olds.length} older versions (before the first 9.0.1 release), ` : ''}${RESULTS.length - exps.length - olds.length} releases and ${exps.length} experiments.${app ? ` In the app now: ${nameText(app)}.` : ''}`,
-    candidates: exps.length ? `The experiments: ${exps.map((c) => { const b = byCommit(c.base); return `${nameText(c)} (made from ${b ? nameText(b) : c.base || 'an unnamed version'})`; }).join('; ')}.` : 'There are no experiments on the leaderboard right now.',
+function render() {
+  // newest at top: ideas, then releases, then older versions; within each, latest order first
+  const rank = { experiment: 0, release: 1, 'older version': 2 };
+  const list = [...RESULTS].sort((a, b) => (rank[kindOf(a)] ?? 1) - (rank[kindOf(b)] ?? 1) || (b.order ?? -99) - (a.order ?? -99) || String(b.date).localeCompare(String(a.date)));
+  const now = list.find((x) => kindOf(x) === 'release');
+  SCALE = {};
+  for (const res of list) walk(tree(res), (n) => { if (!has(n.row)) return; const r = Number(n.row.right_shabad_pct); const w = Number(n.row.wrong_s_per_h); const sc = SCALE[n.id] || (SCALE[n.id] = { rlo: r, rhi: r, wlo: w, whi: w }); sc.rlo = Math.min(sc.rlo, r); sc.rhi = Math.max(sc.rhi, r); sc.wlo = Math.min(sc.wlo, w); sc.whi = Math.max(sc.whi, w); });
+  const scale = HEAD.map((c) => { const vs = list.map((x) => pct(x, c.key)).filter((v) => v != null); return { lo: Math.min(...vs), hi: Math.max(...vs) }; });
+  const cell = (res, c, i) => {
+    const v = pct(res, c.key); if (v == null) return '<td class="v">–</td>';
+    const { lo, hi } = scale[i];
+    return `<td class="v"${hi > lo ? ` style="${tint((v - lo) / (hi - lo))}"` : ''}>${v}%</td>`;
   };
-  document.querySelectorAll('#aboutText [data-gen]').forEach((el) => { if (gen[el.dataset.gen]) el.textContent = gen[el.dataset.gen]; });
-  document.querySelectorAll('#aboutText [data-sys]').forEach((el) => { el.innerHTML = sysHtml(); });
+  const body = list.map((res, i) => `<tr class="ver ${{ experiment: 'idea', 'older version': 'old' }[kindOf(res)] || ''}" data-i="${i}" tabindex="0" aria-expanded="false">${nameCell(res, now)}${HEAD.map((c, j) => cell(res, c, j)).join('')}</tr><tr class="det" hidden><td colspan="${HEAD.length + 1}">${detail(res)}</td></tr>`).join('');
+  document.getElementById('board').innerHTML = `<thead><tr><th>Version</th>${HEAD.map((c) => `<th>${c.t}</th>`).join('')}</tr></thead><tbody>${body}</tbody>`;
+  const q = new URLSearchParams(location.search).get('open');
+  if (q) document.querySelectorAll('tr.ver').forEach((tr) => { if (list[tr.dataset.i] && String(list[tr.dataset.i].commit).startsWith(q)) toggle(tr); });
 }
-const showTab = (id) => { document.querySelectorAll('nav button').forEach((x) => x.classList.toggle('on', x.dataset.tab === id)); document.querySelectorAll('section').forEach((s) => s.classList.toggle('on', s.id === id)); };
-document.getElementById('tabs').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) showTab(b.dataset.tab); });
-document.getElementById('tiers').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; tier = b.dataset.set; renderBoard(); renderChanges(); renderBanis(); renderReconcile(); });
-document.getElementById('behaviours').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; beh = b.dataset.b; renderBoard(); });
-document.getElementById('buildPick').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; pick = b.dataset.p; renderBanis(); });
+// open: show direct children; close: hide every descendant
+function setNode(tr, on) {
+  const b = tr.querySelector('button.tw'); b.setAttribute('aria-expanded', String(on)); b.textContent = on ? '▾' : '▸';
+  const tb = tr.closest('tbody'); const id = tr.dataset.id;
+  tb.querySelectorAll('tr.node').forEach((x) => {
+    if (x.dataset.p === id) x.hidden = !on;
+    else if (!on && x.dataset.id.startsWith(`${id}|`)) { x.hidden = true; const bb = x.querySelector('button.tw'); if (bb) { bb.setAttribute('aria-expanded', 'false'); bb.textContent = '▸'; } }
+  });
+}
+function toggle(tr) {
+  const d = tr.nextElementSibling; d.hidden = !d.hidden;
+  tr.classList.toggle('open', !d.hidden); tr.setAttribute('aria-expanded', String(!d.hidden));
+}
+document.getElementById('board').addEventListener('click', (e) => {
+  const b = e.target.closest('button.tw');
+  if (b) { const tr = b.closest('tr'); const on = b.getAttribute('aria-expanded') !== 'true'; setNode(tr, on); return; }
+  if (e.target.closest('tr.node')) { const t = e.target.closest('tr.node').querySelector('button.tw'); if (t) t.click(); return; }
+  const tr = e.target.closest('tr.ver'); if (tr) toggle(tr);
+});
+document.getElementById('board').addEventListener('keydown', (e) => { const tr = e.target.closest('tr.ver'); if (tr && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); toggle(tr); } });
 (async () => {
+  try { const N = await (await fetch('gab-names.json', { cache: 'no-store' })).json(); if (N.system) SYSTEM = N.system; } catch (e) { /* fallback name */ }
   try {
-    try { const N = await (await fetch('gab-names.json', { cache: 'no-store' })).json(); if (N.system) SYSTEM = N.system; } catch (e) { /* fallback name */ }
-    document.getElementById("sysname").innerHTML = sysHtml();
     const idx = await (await fetch('results/index.json', { cache: 'no-store' })).json();
-    RESULTS = (await Promise.all(idx.results.map(async (x) => ({ ...x, ...(await (await fetch(`results/${x.file}`, { cache: 'no-store' })).json()) })))).sort((a, b) => (a.order ?? 99) - (b.order ?? 99) || a.date.localeCompare(b.date));
-    const exps = RESULTS.filter(isExp).length;
-    document.getElementById('meta').textContent = `${RESULTS.length - exps} releases and ${exps} experiments · practice set (train + dev recordings; the held-out test set is never shown).`;
-  } catch (e) { document.getElementById('meta').textContent = 'could not load results'; }
-  renderBoard(); renderChanges(); renderBanis(); renderReconcile(); renderAbout();
-  if (Q.get('tab')) showTab(Q.get('tab'));
+    RESULTS = await Promise.all(idx.results.map(async (x) => ({ ...x, ...(await (await fetch(`results/${x.file}`, { cache: 'no-store' })).json()) })));
+    render();
+  } catch (e) { document.getElementById('board').innerHTML = '<tr><td>Could not load results.</td></tr>'; }
 })();
 </script>
 </body>

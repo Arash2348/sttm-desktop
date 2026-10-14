@@ -1,5 +1,5 @@
 /* gab-publish.js — gab publish <main scorecard.json> --hard <hard scorecard.json> --name "<build name>" [--status merged|candidate]
- *                               [--note "..."] [--order N] [--base <commit>] [--preview <dir>] [--dry-run] [--allow-dirty] [--site-only] [--reconcile <reconcile.json>]
+ *                               [--note "..."] [--order N] [--base <commit>] [--preview <dir>] [--dry-run] [--allow-dirty] [--site-only]
  *                 gab publish --batch <batch.json> [--preview <dir>] [--dry-run]
  *                               batch.json = [{ "main": "<file>", "hard": "<file>", "name", "status", "order", "base", "note" }, ...]:
  *                               every build in one commit per repo (use it when the GAB version changes: all rows re-scored)
@@ -12,7 +12,7 @@
  *   results/<slug>.json   the build's rows (behaviours, Banis, named sets; no per-clip detail), build name, commit,
  *                         Voice-Follow feature version, GAB version, split, tier, date, status
  *   results/index.json    the list the page loads (an entry with the same slug is replaced)
- *   index.html, about.html, README.md, gab-names.json, reconcile.json (from tools/gab-space/; --reconcile <file> overrides the last)
+ *   index.html, README.md, gab-names.json (from tools/gab-space/); the retired page files (RETIRED) are deleted from the Space
  *   Display names: gab-space/gab-names.json (system name Gurbani Autopilot + label/kind per commit, fallback '<version> · <--name>');
  *   each result gets label + kind; the page ranks builds best first and colours each column better/worse.
  * and keeps a short table in the dataset card (khalisfoundation/GurbaniAutopilotBench README.md, only between
@@ -25,7 +25,7 @@
  * Every publish recomputes each row's "vs base" verdict (gab compare's guardrails): a candidate against --base <commit>
  * (required for a candidate), a merged build against the merged build before it (by --order).
  * --preview <dir>: write the Space as it would be into <dir> (to serve locally), push nothing.
- * --site-only: push the page files (and --reconcile), the recomputed verdicts and names, and the card's Leaderboard section if it changed; no new result. --replace <slug>: the new row takes the place of
+ * --site-only: push the page files, the recomputed verdicts and names, and the card's Leaderboard section if it changed; no new result. --replace <slug>: the new row takes the place of
  * that earlier row (its results file is deleted), e.g. a candidate that has since been merged.
  */
 const fs = require('fs');
@@ -38,6 +38,7 @@ const DATASET = 'khalisfoundation/GurbaniAutopilotBench';
 const SPACE = 'khalisfoundation/GAB-leaderboard';
 const SPACE_URL = `https://huggingface.co/spaces/${SPACE}`;
 const SITE = path.join(__dirname, 'gab-space');
+const RETIRED = ['about.html', 'reconcile.json'];
 const START = '<!-- GAB-LEADERBOARD:START -->';
 const END = '<!-- GAB-LEADERBOARD:END -->';
 const UV = fs.existsSync(path.join(os.homedir(), '.local/bin/uv')) ? path.join(os.homedir(), '.local/bin/uv') : 'uv';
@@ -213,9 +214,9 @@ async function main(args) {
   const S = fs.mkdtempSync(path.join(os.tmpdir(), 'gab-publish-'));
   try {
     const spaceOps = [];
-    for (const f of ['index.html', 'about.html', 'README.md', 'gab-names.json']) { fs.copyFileSync(path.join(SITE, f), path.join(S, `site-${f}`)); spaceOps.push([f, `site-${f}`]); }
-    const rec = opt('reconcile') || path.join(SITE, 'reconcile.json');
-    if (fs.existsSync(rec)) { fs.copyFileSync(rec, path.join(S, 'reconcile.json')); spaceOps.push(['reconcile.json', 'reconcile.json']); }
+    for (const f of ['index.html', 'README.md', 'gab-names.json']) { fs.copyFileSync(path.join(SITE, f), path.join(S, `site-${f}`)); spaceOps.push([f, `site-${f}`]); }
+    // the one-table page (Oct 14 2026) replaced the tabs: these files are removed from the Space when still there
+    for (const f of RETIRED) if (await hfText('space', SPACE, f) != null) spaceOps.push([f, null]);
     let msg = 'GAB leaderboard: page files';
     // the builds to publish now: [{ res, slug, card, hardCard }] (one, or a --batch)
     const pub = [];
@@ -233,7 +234,7 @@ async function main(args) {
     };
     if (opt('batch')) for (const o of JSON.parse(fs.readFileSync(opt('batch'), 'utf8'))) addOne(o);
     else if (!siteOnly) {
-      const file = args.find((a) => !a.startsWith('--') && a.endsWith('.json') && a !== opt('reconcile') && a !== opt('hard'));
+      const file = args.find((a) => !a.startsWith('--') && a.endsWith('.json') && a !== opt('hard'));
       if (!file || !opt('name')) throw new Error('gab publish <main scorecard.json> --hard <hard scorecard.json> --name "<build name>" [--status merged|candidate]   (or --batch <batch.json>)');
       addOne({ main: file, hard: opt('hard'), name: opt('name'), status: opt('status'), order: opt('order'), base: opt('base'), note: opt('note') });
     }
