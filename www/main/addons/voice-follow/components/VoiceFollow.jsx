@@ -3717,6 +3717,7 @@ const VoiceFollow = () => {
               sr.lines = new Set();
               sr.seen = [];
               sr.seqArmed = false; // a line came back: sung, not read in order
+              sr.sung = true; // ...and this Shabad never starts sequence mode (kirtan repeats lines)
               // Sung, not read (a line came back): a shabad that is a copy of an Aarti piece
               // (Sohila's Gagan mai thaal) is the Aarti being sung, so open the Aarti Bani at
               // this line; from inside the Bani the next pieces follow without a new search.
@@ -3845,7 +3846,12 @@ const VoiceFollow = () => {
                   }
                   // No Bani to open and still reading in order: a sequential paath
                   // (Akhand / Sehaj). Carry the next Shabads in the follower from here.
-                  if (banis.length === 0 && !sr.seqArmed) sr.seqArmed = true;
+                  // Only for a Shabad in no Bani at all: a Bani's own routes (two of its
+                  // Shabads in order, e.g. Asa di Vaar) follow it as 9.0.1 does.
+                  const inAnyBani = (index.byShabad.get(sid) || []).length > 0 || copies.size > 0;
+                  if (banis.length === 0 && !inAnyBani && !sr.sung && !sr.seqArmed) {
+                    sr.seqArmed = true;
+                  }
                 })
                 .catch(() => {});
             }
