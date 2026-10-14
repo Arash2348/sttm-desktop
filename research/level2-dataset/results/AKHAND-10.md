@@ -40,9 +40,9 @@ of the same pangtis, which this id-based scorer counts as wrong.)
 Base leaves it through the judge to 42 at 188.6 s; the candidate's sequence mode engages on 1370 and carries over to 1371 at
 184.0 s, which is the Raag Asa copy of 42 (15 of its 18 lines are letter-for-letter 42's lines), and stays there until 43 at
 242.4 s on both. So the hall sees the right words 4.6 s earlier, but under Asa's ids, and the id scorer counts 53.8 s more
-"wrong". It happens only because the bench switches every Bani route off (`VF_EXP_NO_BANI`): with routes on, 1370 is a copy
-of a Rehras Shabad, so it is "in a Bani" and sequence mode never engages (6b556b77); the paath suite with routes on is
-identical (below).
+"wrong". It happens only because the bench switches every Bani route off (`VF_EXP_NO_BANI`). Checked with routes ON
+(`paath-seq-bench --bani --only ps02`, recorded both sides): base and this open the Rehras Bani (bani:21) at 0 s and follow
+it to the end, identical events, sequence mode never engages; the paath suite with routes on is identical too (below).
 
 ### Sehaj Paath against the forced-aligned line truth
 
