@@ -1,58 +1,60 @@
 {
- "about": "Display names for the GAB leaderboard. system = the name of the thing being benchmarked (STTM Desktop Voice-Follow); change it here and republish (gab publish --site-only). builds: 8-character commit -> label (shown after the system name) and kind (release = a version that went into the app; experiment = a change tested here, not in the app; older version = a milestone before the first 9.0.1 release, kept so the colours have context). A build missing here gets '<system> <Voice-Follow version> · <--name>'. 'In the app now' is worked out on the page: the latest release by --order.",
+ "about": "Display names for the GAB leaderboard. system = the name of the thing being benchmarked (STTM Desktop Voice-Follow); change it here and republish (gab publish --site-only). builds: 8-character commit -> label (shown after the system name) and kind (release = a version that went into the app; experiment = a change tested here, not in the app; older version = a milestone before the first 9.0.1 release, kept so the colours have context). why = a short muted line under the name on the Space: what that version was merged for. A build missing here gets '<system> <Voice-Follow version> · <--name>'. 'In the app now' is worked out on the page: the latest release by --order.",
  "system": {
   "gurmukhi": "",
   "latin": "Gurbani Autopilot",
   "is": "STTM Desktop Voice-Follow"
  },
  "builds": {
-  "535a9710": {
-   "label": "Cycle 8 · chosen as best (Sep 25)",
-   "kind": "older version"
+  "97386660": {
+   "label": "9.0.2 · works on slow computers",
+   "kind": "release",
+   "why": "keeps up on slow Gurdwara PCs"
   },
   "fa250815": {
    "label": "8.6 · Cycle 8 + Bani paath, tester build (Sep 29)",
-   "kind": "older version"
-  },
-  "45ca85d7": {
-   "label": "8.6c · first in the Khalis experimental app (Oct 8)",
-   "kind": "older version"
+   "kind": "older version",
+   "why": "the tester build engine: Cycle 8 kirtan + Sundar Gutka paath"
   },
   "265da34e": {
-   "label": "8.6c · Renton Gurdwara production run (Oct 10 build, run Oct 11)",
-   "kind": "older version"
+   "label": "8.6c · Renton Gurdwara production run (Oct 11)",
+   "kind": "older version",
+   "why": "the build run through a whole Renton program"
   },
   "7165bd24": {
    "label": "9.0 · checkpoint, tested by the user (Oct 12)",
-   "kind": "older version"
+   "kind": "older version",
+   "why": "Renton fixes; the user tested it live and called it pretty good"
   },
   "2cb8b003": {
    "label": "9.0.1 · first release",
-   "kind": "release"
+   "kind": "release",
+   "why": "first release: paath follows the reader, fast Rehras→Aarti switch"
   },
   "c69b420b": {
    "label": "9.0.1 + version stamp",
-   "kind": "release"
+   "kind": "release",
+   "why": "records which version made each session"
   },
   "db8f47cb": {
    "label": "9.0.1 + faster Aarti",
-   "kind": "release"
-  },
-  "97386660": {
-   "label": "9.0.2 · works on slow computers",
-   "kind": "release"
+   "kind": "release",
+   "why": "Aarti follows the singer 1.2 s behind (was 2.4 s)"
   },
   "3fafc0ba": {
    "label": "9.0.3 · new panel",
-   "kind": "release"
+   "kind": "release",
+   "why": "new panel: Stop by the next pangti, volume label"
   },
   "747cb093": {
    "label": "kirtan line hold",
-   "kind": "experiment"
+   "kind": "experiment",
+   "why": "aims to hold the right pangti in hall kirtan"
   },
   "eb789375": {
    "label": "Akhand Paath (Ang after Ang)",
-   "kind": "experiment"
+   "kind": "experiment",
+   "why": "follows Akhand Paath Ang after Ang"
   }
  }
 }
