@@ -140,7 +140,7 @@ function runLocked(plan, file, { threads } = {}) {
 function treeKey(root) {
   // app code under test; a dirty www/ tree is never reused
   try {
-    const dirty = sh('git', ['-C', root, 'status', '--porcelain', '--', 'www']);
+    const dirty = sh('git', ['-C', root, 'status', '--porcelain', '--', 'www', ':(exclude)www/assets/videos']);
     if (dirty) return null;
     return sh('git', ['-C', root, 'rev-parse', 'HEAD:www']);
   } catch (_) { return null; }
