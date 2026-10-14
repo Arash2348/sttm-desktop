@@ -1,0 +1,295 @@
+{
+ "_doc": "User test Oct 13 2026 (Arash, MacBook mic): two shadow sessions of the SAME singing, MVP 9.0 (ut13_s90) and the 9.1 candidate (ut13_s91, started 22.4 s later). Clip t = session t (segments placed at their audio_segment times, pre-roll before session_start). Times from activity.jsonl (the PC's own live transcript) + human.jsonl. expect = ids that count as right (copies of the same Gurbani and the Bani that contains it included); 'cold' = sung while a different Shabad was on screen; pangtis = start times of distinct lines sung.",
+ "ut13_s90": {
+  "wav": "ut13_s90.wav",
+  "segments": [
+   {
+    "name": "fareed 5299",
+    "start": 36,
+    "end": 43,
+    "expect": [
+     5299
+    ],
+    "human": "5299 @40.3"
+   },
+   {
+    "name": "So Dar (Rehras shabad 40 = Asa copy 1368), COLD from 5299",
+    "start": 44,
+    "end": 85,
+    "expect": [
+     40,
+     1368,
+     "bani:21"
+    ],
+    "cold": true,
+    "pangtis": [
+     44,
+     51,
+     57,
+     62,
+     64,
+     68,
+     72,
+     74,
+     79
+    ],
+    "human": "nothing until 1721 @89 (seeking slide @72)"
+   },
+   {
+    "name": "Dukh daroo salok 1721 (Rehras)",
+    "start": 86,
+    "end": 115,
+    "expect": [
+     1721,
+     "bani:21"
+    ],
+    "human": "1721 @89.0"
+   },
+   {
+    "name": "Rehras followed",
+    "start": 116,
+    "end": 300,
+    "expect": [
+     "bani:21",
+     1721,
+     40,
+     1368
+    ],
+    "human": "bani:21 @116.3",
+    "informational": true
+   },
+   {
+    "name": "paused by the user",
+    "start": 356,
+    "end": 397,
+    "skip": true
+   },
+   {
+    "name": "Poota mata ki asees 1839 (cold start after Start)",
+    "start": 401,
+    "end": 439,
+    "expect": [
+     1839
+    ],
+    "human": "1839 @406.1"
+   },
+   {
+    "name": "Aarti Gagan mai thaal (51 = Sohila copy 2533), COLD from 1839",
+    "start": 497,
+    "end": 519,
+    "expect": [
+     51,
+     2533,
+     "bani:22",
+     "bani:23"
+    ],
+    "cold": true,
+    "pangtis": [
+     497,
+     507,
+     514
+    ],
+    "human": "never (stayed on 1839 until 637)"
+   },
+   {
+    "name": "Tumri saran 2567",
+    "start": 633,
+    "end": 641,
+    "expect": [
+     2567
+    ],
+    "human": "2567 @637.8"
+   },
+   {
+    "name": "Nirbhau hoe bhajahu / saadhsangat (628 or 4528)",
+    "start": 642,
+    "end": 657,
+    "expect": [
+     628,
+     4528
+    ],
+    "human": "4528 @645.6",
+    "informational": true
+   },
+   {
+    "name": "Doorahu chalke mai taki tau sarnaai (2883?)",
+    "start": 662,
+    "end": 697,
+    "expect": [
+     2883
+    ],
+    "human": "(9.1: 2883 @645.4)",
+    "informational": true
+   }
+  ]
+ },
+ "ut13_s91": {
+  "wav": "ut13_s91.wav",
+  "segments": [
+   {
+    "name": "fareed 5299",
+    "start": 13,
+    "end": 20,
+    "expect": [
+     5299
+    ],
+    "human": "5299 @18.9"
+   },
+   {
+    "name": "So Dar (40 / 1368), COLD from 5299",
+    "start": 21,
+    "end": 62,
+    "expect": [
+     40,
+     1368,
+     "bani:21"
+    ],
+    "cold": true,
+    "pangtis": [
+     21,
+     28,
+     34,
+     40,
+     42,
+     46,
+     49,
+     51,
+     56
+    ],
+    "human": "nothing until 1721 @66 (slide @27)"
+   },
+   {
+    "name": "Dukh daroo salok 1721",
+    "start": 64,
+    "end": 93,
+    "expect": [
+     1721,
+     "bani:21"
+    ],
+    "human": "1721 @66.2"
+   },
+   {
+    "name": "Rehras followed",
+    "start": 94,
+    "end": 278,
+    "expect": [
+     "bani:21",
+     1721,
+     40,
+     1368
+    ],
+    "human": "bani:21 @82.5",
+    "informational": true
+   },
+   {
+    "name": "paused by the user",
+    "start": 331,
+    "end": 377,
+    "skip": true
+   },
+   {
+    "name": "Poota mata ki asees 1839",
+    "start": 379,
+    "end": 417,
+    "expect": [
+     1839
+    ],
+    "human": "1839 @383.5"
+   },
+   {
+    "name": "Aarti Gagan mai thaal (51 / 2533), COLD from 1839",
+    "start": 477,
+    "end": 496,
+    "expect": [
+     51,
+     2533,
+     "bani:22",
+     "bani:23"
+    ],
+    "cold": true,
+    "pangtis": [
+     477,
+     486,
+     493
+    ],
+    "human": "never (stayed on 1839 until 615)"
+   },
+   {
+    "name": "Tumri saran 2567",
+    "start": 612,
+    "end": 619,
+    "expect": [
+     2567
+    ],
+    "human": "2567 @615.5"
+   },
+   {
+    "name": "Nirbhau hoe / saadhsangat",
+    "start": 620,
+    "end": 636,
+    "expect": [
+     628,
+     4528
+    ],
+    "human": "4528 @622.8",
+    "informational": true
+   },
+   {
+    "name": "Doorahu chalke (2883)",
+    "start": 639,
+    "end": 675,
+    "expect": [
+     2883
+    ],
+    "human": "2883 @645.4",
+    "informational": true
+   }
+  ]
+ },
+ "rt11_handover": {
+  "wav": "rt11_handover.wav",
+  "_doc": "Renton Oct 11 S1 session 1500-1900 s (clip t = session t - 1500): Rehras read to ~1716 (fateh 1710), then the Aarti from 1779 (Gagan mai thaal, truth rt11_aarti lines 100-102). The Rehras (Bani) -> Aarti handover the user asked about.",
+  "segments": [
+   {
+    "name": "Rehras tail (Bani on screen)",
+    "start": 60,
+    "end": 200,
+    "expect": [
+     "bani:21"
+    ],
+    "informational": true
+   },
+   {
+    "name": "Aarti Gagan mai thaal (51 / 2533), from Rehras Bani 21",
+    "start": 279,
+    "end": 300,
+    "expect": [
+     51,
+     2533,
+     "bani:22",
+     "bani:23"
+    ],
+    "cold": true,
+    "pangtis": [
+     279.2,
+     289.8,
+     299.8
+    ],
+    "human": "real screen: Aarti 51 tap at 1812 = clip 312"
+   },
+   {
+    "name": "Aarti continues",
+    "start": 300,
+    "end": 390,
+    "expect": [
+     51,
+     2533,
+     "bani:22",
+     "bani:23",
+     1876
+    ],
+    "informational": true
+   }
+  ]
+ }
+}

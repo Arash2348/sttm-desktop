@@ -1,0 +1,161 @@
+{
+ "session": "2026-10-12T01-18-07-299Z",
+ "timeBase": "S2 session seconds (same clock as events/human/audio_segment)",
+ "clipOffsets": {
+  "rt11_kirtan1": 0,
+  "rt11_fareed1": 510,
+  "rt11_fareed2": 1010,
+  "rt11_hukamnama": 3900,
+  "rt11_sohila": 4215
+ },
+ "targets": [
+  {
+   "shabadId": 2053,
+   "kind": "sung",
+   "startedSec": null,
+   "startedSource": "transcript (approx +-3 s)",
+   "approxFromTranscript": -21.6,
+   "firstOnScreenSec": 98.5,
+   "vfPickSec": [
+    98.5
+   ],
+   "engineFirstSec": 98.5,
+   "screenDelaySec": null,
+   "clip": "rt11_kirtan1",
+   "note": "NOT a measured onset: S1 live transcript has its opening line (Mai pekhio ri) at S1 2484 s = S2 -21.6 s (S2 started 18.6 s after S1 ended). Sung through S2 0-~500. Do not score a switch delay for it."
+  },
+  {
+   "shabadId": 5299,
+   "kind": "sung",
+   "startedSec": 544.0,
+   "startedSource": "transcript (approx +-3 s)",
+   "approxFromTranscript": 544.0,
+   "firstOnScreenSec": 727.3,
+   "vfPickSec": [
+    727.2
+   ],
+   "engineFirstSec": 523.7,
+   "screenDelaySec": 183.3,
+   "clip": "rt11_fareed1",
+   "note": "introduced in talk at ~520 (line quoted), sung from ~544 (forced alignment puts the line at 518.3, which is the speaker QUOTING it in the intro talk, not singing); parmaan Salok 5286 (Farida bure da bhala kar) sung ~568-612 inside it"
+  },
+  {
+   "shabadId": 5286,
+   "kind": "parmaan",
+   "startedSec": 566.6,
+   "startedSource": "forced-align",
+   "approxFromTranscript": 568.0,
+   "firstOnScreenSec": null,
+   "vfPickSec": [],
+   "engineFirstSec": null,
+   "screenDelaySec": null,
+   "clip": "rt11_fareed1",
+   "note": "parmaan inside 5299, ~568-612; returns to 5299 at ~612"
+  },
+  {
+   "shabadId": 5238,
+   "kind": "sung",
+   "startedSec": 1028.5,
+   "startedSource": "forced-align",
+   "approxFromTranscript": 1020.0,
+   "firstOnScreenSec": 1091.5,
+   "vfPickSec": [
+    1091.4
+   ],
+   "engineFirstSec": 1091.4,
+   "screenDelaySec": 63.0,
+   "clip": "rt11_fareed2",
+   "note": "alaap ~1020, first words \"Farida roti meri\" ~1032; ends ~1440 then announcements"
+  },
+  {
+   "shabadId": 3048,
+   "kind": "read",
+   "startedSec": 3913.8,
+   "startedSource": "forced-align",
+   "approxFromTranscript": 3916.0,
+   "firstOnScreenSec": 3941.4,
+   "vfPickSec": [],
+   "engineFirstSec": 3941.4,
+   "screenDelaySec": 27.6,
+   "clip": "rt11_hukamnama",
+   "note": "Hukamnama, announced ~3912, read ~3916-4140 (before it: a dharna \"Noor arshahu\" ~3868-3900, not Gurbani)"
+  },
+  {
+   "shabadId": 2367,
+   "kind": "read",
+   "startedSec": 4145.3,
+   "startedSource": "forced-align",
+   "approxFromTranscript": 4148.0,
+   "firstOnScreenSec": 4168.3,
+   "vfPickSec": [],
+   "engineFirstSec": 4168.3,
+   "screenDelaySec": 23.0,
+   "clip": "rt11_sohila (lead-in region) / full S2",
+   "note": "short shabad read after Hukamnama"
+  },
+  {
+   "shabadId": 3085,
+   "kind": "read",
+   "startedSec": 4174,
+   "startedSource": "forced-align",
+   "approxFromTranscript": 4180.0,
+   "firstOnScreenSec": 4182.6,
+   "vfPickSec": [],
+   "engineFirstSec": 4182.6,
+   "screenDelaySec": 8.6,
+   "clip": "full S2",
+   "note": "short shabad read"
+  },
+  {
+   "shabadId": 820,
+   "kind": "read",
+   "startedSec": 4204.4,
+   "startedSource": "forced-align",
+   "approxFromTranscript": 4208.0,
+   "firstOnScreenSec": 4213.0,
+   "vfPickSec": [],
+   "engineFirstSec": 4213.0,
+   "screenDelaySec": 8.6,
+   "clip": "full S2",
+   "note": "Salok read"
+  },
+  {
+   "shabadId": 1958,
+   "kind": "read",
+   "startedSec": 4217.0,
+   "startedSource": "transcript (approx +-3 s)",
+   "approxFromTranscript": 4217.0,
+   "firstOnScreenSec": 4226.3,
+   "vfPickSec": [],
+   "engineFirstSec": 4226.3,
+   "screenDelaySec": 9.3,
+   "clip": "full S2",
+   "note": "Salok M5 read (header ~4216); short-window alignment unreliable here"
+  },
+  {
+   "shabadId": 49,
+   "kind": "read",
+   "startedSec": 4228.0,
+   "startedSource": "transcript (approx +-3 s)",
+   "approxFromTranscript": 4228.0,
+   "firstOnScreenSec": 4229.6,
+   "vfPickSec": [],
+   "engineFirstSec": 4229.5,
+   "screenDelaySec": 1.6,
+   "clip": "rt11_sohila",
+   "note": "Kirtan Sohila (Bani 23) begins; reading ends ~4530"
+  }
+ ],
+ "wrongShows": [
+  {
+   "t": 1471.4,
+   "shabadId": 12797,
+   "what": "Zafarnama shown by visible VF during announcements after 5238 (no Gurbani being sung)"
+  }
+ ],
+ "notes": [
+  "All screen changes in S2 were by Voice-Follow (visible) or vf_pick taps; no override=true rows.",
+  "Break/katha ~1445-3865: VF hidden; engine (system.jsonl) picked ~25 different shabads there (all false alarms).",
+  "engineFirstSec = first time the engine (system.jsonl; includes choices made while VF was hidden) chose that shabad."
+ ]
+}

@@ -46,9 +46,9 @@ const isCopyOfAarti = (sid) => {
   return copyCache.get(sid);
 };
 // piece-level truth (recording time -> piece shabad)
-const r1 = JSON.parse(fs.readFileSync('/Users/asingh02/personal/live-darbar-renton-dataset/manifests/manifest-r1a.json')).segments.map((s) => ({ a: s.start, b: s.end, sid: Number(s.shabadId) }));
+const r1 = JSON.parse(fs.readFileSync(path.join(HERE, 'renton-manifests/manifest-r1a.json'))).segments.map((s) => ({ a: s.start, b: s.end, sid: Number(s.shabadId) }));
 r1.push({ a: 328, b: 375, sid: null }, { a: 375, b: 450, sid: 4967 });
-const r6 = JSON.parse(fs.readFileSync('/Users/asingh02/personal/live-darbar-renton-dataset/manifests/manifest-r6.json')).segments.map((s) => ({ a: s.start, b: s.end, sid: Number(s.shabadId) }));
+const r6 = JSON.parse(fs.readFileSync(path.join(HERE, 'renton-manifests/manifest-r6.json'))).segments.map((s) => ({ a: s.start, b: s.end, sid: Number(s.shabadId) }));
 let sep27 = [];
 try {
   const sh = JSON.parse(fs.readFileSync(path.join(HERE, '..', 'ab-81-86c-truth.json')));

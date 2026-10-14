@@ -10,6 +10,8 @@
  *   node vf-check.js --changed <A> --cand <worktree>   A vs that worktree (uncommitted edits included)
  *   node vf-check.js --record --roots <wt>[,<wt>] [--suites ...] [--only ...]   build the cache (model, lock)
  *   node vf-check.js --plan ...               print what would run, run nothing
+ *   node vf-check.js --manifest <manifest.csv | hf:org/repo> --cand <worktree> [--folder <content folder>]
+ *                                             the Voice-Follow benchmark dataset from its manifest (vf-manifest.js)
  *
  * Every heavy phase takes the shared bench lock itself (lockf -k /tmp/vf-bench.lock, nice 19):
  * replays as ONE job with N workers (default cores/2), recording one suite at a time with
@@ -584,6 +586,7 @@ if (require.main === module) {
     if (argv[0] === 'cache') return cacheCmd(argv[1]);
     if (arg('pool')) return pool(arg('pool'));
     if (flag('record')) return record();
+    if (arg('manifest')) return require('./vf-manifest').run({ arg, flag, selectJobs, makeTasks, runLocked, CACHE, CODEC, MODEL, JOBS, SUITES, DS, TOOLS, sha1, now, fmtS });
     return check();
   })().catch((e) => { console.error(e.stack || e); process.exit(2); });
 }

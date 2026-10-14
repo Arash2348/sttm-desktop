@@ -11,10 +11,10 @@
  */
 const fs = require('fs');
 const path = require('path');
-const V = process.env.VF || '/private/tmp/claude-501/-Users-asingh02-personal-sttm-desktop/7dc20a33-cab3-495f-b630-6acf57f0287c/scratchpad/vf-fix';
+const V = process.env.VF || path.join(__dirname, '..', 'renton-oct11');
 const DS = process.env.DS || path.join(__dirname, '..');
 const mem = JSON.parse(fs.readFileSync(path.join(DS, 'aarti/bani-members.json'))).members;
-const K = JSON.parse(fs.readFileSync(path.join(V, 'data/kirtan-targets.json')));
+const K = JSON.parse(fs.readFileSync(path.join(V, 'kirtan-targets.json')));
 const STEP = 0.1;
 const PAATH = { rt11_rehras: 21, rt11_aarti: 22, rt11_sohila: 23 };
 const BANI_OK = { 21: ['bani:21', 'bani:9', 'bani:10', 'bani:1000', ...mem['21']], 22: ['bani:22', ...mem['22'], 51 /* Sohila's Gagan mai thaal = same text as the Aarti piece */], 23: ['bani:23', ...mem['23']] };
@@ -27,7 +27,7 @@ function timeline(events) {
 }
 function paath(run, part) {
   const baniId = PAATH[part];
-  const tf = part === 'rt11_rehras' && process.env.REHRAS_TRUTH ? process.env.REHRAS_TRUTH : path.join(V, `data/truth/${part}.truth.json`);
+  const tf = part === 'rt11_rehras' && process.env.REHRAS_TRUTH ? process.env.REHRAS_TRUTH : path.join(V, `truth/${part}.truth.json`);
   const L = JSON.parse(fs.readFileSync(tf)).lines.filter((l) => l.confident && l.appVerseId != null && l.start < run.dur - 2).sort((a, b) => a.start - b.start);
   const ok = new Set(BANI_OK[baniId]);
   const idxOf = new Map(); // app verse id -> Bani line indexes
