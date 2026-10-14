@@ -145,7 +145,7 @@ lock was event-identical to 9.0 except the rows marked.
 | `2-paath-bani/rehras` — rt11_rehras (test) | 1 | **measured** (9.0 = 9.0.1): right Bani 98.3 %, wrong page 0 % | **measured**: line exact 78.0 %, within 1 94.5 %, lines reached 380/390 | **measured**: median 0.4 s, p90 1.0 s; 3 stretches > 5 s off the line (longest 32.5 s) | n/a |
 | `2-paath-bani/sohila` — rt11_sohila (test) | 1 | **measured**: right Bani 99.8 %, wrong 0 %; Sohila 49 on screen 0.3 s after the first word | **measured**: line exact 84.1 %, within 1 94.8 % | **measured**: median 0.4 s, p90 0.9 s | n/a |
 | `3-bani-sung/aarti` — aa01-50 + pt35-53 (dev) | 50 rows, 45 scored | **measured** (9.0 @308b58cb; 9.0.1 identical on the 21 cached clips replayed): right (Aarti text up) 85.3 %, wrong page 0.2 %, nothing 14.5 %; found 43/45, within 60 s 39/45 | **measured**: piece exact 60.2 %, heard line 73.2 % | not measured | **measured**: wrong switches 2 |
-| `3-bani-sung/aarti` — rt11_aarti (test) | 1 | **measured** (9.0 = 9.0.1): right Bani 98.0 %, wrong page 0 %; Aarti 51 on screen at 26.2 s, Bani 22 at 121.5 s | **measured**: line exact 31.9 %, within 1 45.8 % | **measured**: median 2.3 s, p90 3.3 s | **measured**: Rehras → Aarti handover (rt11_handover, ut13-bench): never inside the stretch (Aarti at +95 s) → **+3.9 s** in 9.0.1 |
+| `3-bani-sung/aarti` — rt11_aarti (test) | 1 | **measured** (9.0 = 9.0.1): right Bani 98.0 %, wrong page 0 %; Aarti 51 on screen at 26.2 s, Bani 22 at 121.5 s **(VM)** | **measured**: line exact 31.9 %, within 1 45.8 % | **measured**: median 2.3 s, p90 3.3 s | **measured**: Rehras → Aarti handover (rt11_handover, ut13-bench): never inside the stretch (Aarti at +95 s) → **+3.9 s** in 9.0.1 |
 | `3-bani-sung/asa-di-vaar` — Newton part 1 / part 2 (test) | 2 (+ session) | **measured** (9.0): Bani open identical to base | **measured**: part 1 within one line 66.7 %, exact 43.0 %, lines reached 56/83; part 2 within one line 27.3 %, reached 9/30 | **measured**: part 1 median 2.0 s, p90 5.8 s, > 1 line behind 30.8 %, no stall (base 229 s) | not measured |
 | `3-bani-sung/asa-di-vaar` — ytasa1 (dev) | 1 | not measured | **measured**: within one line 97.2 %, lines reached 158/160 | **measured**: left a line early 2 (base 0); median lag 0.45 s | n/a |
 | `3-bani-sung/saloks-sung` — rt11_fareed1 / fareed2 (test) | 2 | **measured** (9.0 = 9.0.1): 5299 on screen at 527.4 s (sung from 544: before the first sung word, locked from the intro quote); 5238 at 1039.3 s (sung 1028.5 → 10.8 s); wrong page 12.3 s (3442 in Fareed 1) | not measured | not measured | **measured**: 10.8 s to 5238; one wrong switch (3442, 12.3 s) |
@@ -161,10 +161,12 @@ p90 1.8 s, lines reached 118/121. These are live-paced runs and are not reproduc
 `scores/mvp-9.0.1-b1c9afab/3-bani-sung_aarti/scorecard.md` (+ `.json`): 61 suite jobs over 49 of the folder's 52 clips
 (aa21, aa22 are the Sep 27 windows after the Aarti ended; rt11_handover has no suite job), 147 min of audio replayed in
 2.5 min with no model run, scored in 3 s. Aarti suite on the Renton cuts: right 85.3 %, wrong 0.2 %, nothing 14.5 %,
-found 43 / within 60 s 39, piece exact 60.2 %, heard line 73.4 %, wrong switches 2 — the MVP 9.0 numbers above
-(heard line 73.2 → 73.4 is the one 9.0.1 difference). Renton rt11_aarti: Bani right 98.5 %, wrong 0 %, line exact
-32.5 %, within 1 46.2 %, lag median 2.4 s, p90 3.7 s. The 15 YouTube Aarti rows scored as paath rows: Bani 52.2 %,
-wrong 11.6 %, none 17.3 % (these rows carry all the wrong-page time of the 60-row paath suite, 2.9 % overall).
+found 43 / within 60 s 39, piece exact 60.2 %, heard line 73.4 %, wrong switches 2 — the MVP 9.0 numbers above except
+heard line (73.2 → 73.4). Renton rt11_aarti: Bani right 98.5 %, wrong 0 %, line exact 32.5 %, within 1 46.2 %, lag
+median 2.4 s, p90 3.7 s — these differ from the 9.0 row (98.0 / 31.9 / 45.8 / 2.3 / 3.3); the cause (branch head vs the
+lock commit, the harness revision, or the committed copy of the truth) is not established. The 15 YouTube Aarti rows
+scored as paath rows: Bani 52.2 %, wrong 11.6 %, none 17.3 % (the 60-row suite reports 2.9 % wrong overall; the wrong
+time here is pt42 and pt46, windows the Aarti sheet marks as not Aarti).
 
 ## Versioning
 
