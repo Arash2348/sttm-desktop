@@ -1,12 +1,12 @@
 {
  "gab": "GAB v1.1",
- "createdAt": "2026-10-14 10:02",
+ "createdAt": "2026-10-14 10:07",
  "build": {
   "name": null,
-  "root": "/Users/asingh02/personal/live-darbar-venues/cache/worktrees/498bf7407be5",
-  "commit": "498bf7407be5",
+  "root": "/Users/asingh02/personal/live-darbar-venues/cache/worktrees/3fafc0baf8a7",
+  "commit": "3fafc0baf8a7",
   "dirty": false,
-  "subject": "Voice-Follow: Autopilot panel tweaks (Stop beside the next pangti, volume label, clearer heard words)",
+  "subject": "Merge pull request #2244 from Arash2348/vf-panel-tweaks",
   "featureVersion": "9.0.3"
  },
  "manifest": {
@@ -70,12 +70,12 @@
   }
  ],
  "timings": {
-  "replay_s": 2.5,
+  "replay_s": 2.9,
   "clip_runs": 0,
   "reused": 152,
-  "load": "21.4 15.5 18.8",
-  "score_s": 5.8,
-  "total_s": 8.3
+  "load": "19.9 14.6 17.1",
+  "score_s": 6.3,
+  "total_s": 9.2
  },
  "rows": [
   {

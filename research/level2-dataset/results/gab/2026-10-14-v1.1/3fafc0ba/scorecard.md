@@ -1,6 +1,6 @@
-## GAB v1.1 scorecard — 498bf7407be5
+## GAB v1.1 scorecard — 3fafc0baf8a7
 
-build `/Users/asingh02/personal/live-darbar-venues/cache/worktrees/498bf7407be5` @ 498bf7407be5 · Voice-Follow 9.0.3 · manifest 0d7202f6daa8 (190 rows) · tier **full** · split **dev (train + dev rows; test held out)** · 2026-10-14 10:02
+build `/Users/asingh02/personal/live-darbar-venues/cache/worktrees/3fafc0baf8a7` @ 3fafc0baf8a7 · Voice-Follow 9.0.3 · manifest 0d7202f6daa8 (190 rows) · tier **full** · split **dev (train + dev rows; test held out)** · 2026-10-14 10:07
 
 | behaviour | clips · audio | right Shabad/Bani on screen (human truth) | sangat sees the right pangti (truth basis; coverage) | seconds behind p50 / p90 | wrong Shabad s per hour | time to find p50 / p90 s | switch time p50 / p90 s |
 |---|---|---|---|---|---|---|---|
@@ -50,4 +50,4 @@ How to read: right Shabad/Bani % and wrong s/h rest on human answer keys for eve
 
 Not run (10): no replay runner for this clip yet: aa21, aa22, kh16, kh23, sp01, sp02, sp03; excluded (the 30-60 s window is not Aarti (paath-tests not_bani); the dataset's bani:22 truth there is wrong): pt37, pt42, pt46.
 
-Timing: total 8.3 s (replay 2.5 s, scoring 5.8 s), 0 clip runs, 152 reused; load average 21.4 15.5 18.8.
+Timing: total 9.2 s (replay 2.9 s, scoring 6.3 s), 0 clip runs, 152 reused; load average 19.9 14.6 17.1.

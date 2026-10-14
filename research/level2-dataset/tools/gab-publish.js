@@ -13,7 +13,8 @@
  * with uncommitted edits (unless --allow-dirty). A behaviour with clips the replay could not finish from the cache
  * (they need new speech-model windows) is published as "incomplete", without numbers.
  * One commit per repo (huggingface_hub; token from ~/.vf-hf-token, never printed, never uploaded).
- * --site-only: push the page files (and --reconcile) only, no result.
+ * --site-only: push the page files (and --reconcile) only, no result. --replace <slug>: the new row takes the place of
+ * that earlier row (its results file is deleted), e.g. a candidate that has since been merged.
  */
 const fs = require('fs');
 const os = require('os');
@@ -73,10 +74,10 @@ function section(entries) {
 function push(repo, type, ops, msg, S) {
   const py = `
 import os, sys, json
-from huggingface_hub import HfApi, CommitOperationAdd
+from huggingface_hub import HfApi, CommitOperationAdd, CommitOperationDelete
 api = HfApi(token=os.environ['HF_TOKEN'])
 repo, typ, msg, s = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
-ops = [CommitOperationAdd(dst, os.path.join(s, src)) for dst, src in json.load(open(os.path.join(s, 'ops.json')))]
+ops = [CommitOperationAdd(dst, os.path.join(s, src)) if src else CommitOperationDelete(dst) for dst, src in json.load(open(os.path.join(s, 'ops.json')))]
 api.create_commit(repo_id=repo, repo_type=typ, operations=ops, commit_message=msg)
 print('committed', len(ops), 'files to', repo)
 `;
@@ -114,7 +115,10 @@ async function main(args) {
       fs.writeFileSync(path.join(S, 'result.json'), JSON.stringify(res, null, 1));
       spaceOps.push([`results/${slug}.json`, 'result.json']);
       const prev = JSON.parse(await hfText('space', SPACE, 'results/index.json') || '{"results":[]}');
-      index = { results: [...prev.results.filter((x) => x.slug !== slug), { slug, file: `${slug}.json`, name: res.name, commit: res.commit, date: res.date, order: res.order }] };
+      // --replace <slug>: this result takes the place of an earlier row (a candidate that has since been merged)
+      const gone = (opt('replace') || '').split(',').filter(Boolean);
+      for (const g of gone) { const e = prev.results.find((x) => x.slug === g); if (!e) throw new Error(`--replace ${g}: no such row`); spaceOps.push([`results/${e.file}`, null]); }
+      index = { results: [...prev.results.filter((x) => x.slug !== slug && !gone.includes(x.slug)), { slug, file: `${slug}.json`, name: res.name, commit: res.commit, date: res.date, order: res.order }] };
       fs.writeFileSync(path.join(S, 'index.json'), JSON.stringify(index, null, 1));
       spaceOps.push(['results/index.json', 'index.json']);
       msg = `GAB leaderboard: ${res.name} (${res.commit}, ${res.split}, ${res.tier})`;
