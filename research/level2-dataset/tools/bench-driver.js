@@ -29,6 +29,22 @@ const EMIS_CACHE = process.env.VF_EMIS_CACHE || '';
 const EMIS_MODE = process.env.VF_EMIS_MODE || 'replay';
 const DETERMINISTIC = !!EMIS_CACHE || process.env.VF_DETERMINISTIC === '1';
 const DATE0 = Date.UTC(2026, 0, 1);
+// Simulated slow PC (SIM-SLOWPC.md): VF_SIM_PASS_MS=<ms per 4 s model pass> (with VF_EMIS_CACHE).
+// The component, the engines and engine/pace run on a virtual clock owned by this driver: the
+// microphone delivers at real-time pace on it, each model pass costs VF_SIM_PASS_MS x window/4 s
+// of it (VF_SIM_SCALE=0: flat), VF_SIM_JS_MS is charged after each engine decode, and
+// everything else (audio queue + backlog bound, tier self-test and live stepping, followers)
+// runs unmodified. VF_SIM_MODEL=serial makes concurrent passes queue (default: each pass costs
+// its own time, as the VM's padded engine did). VF_EMIS_MODE=record fills missing windows with
+// the real model into a separate overlay store (<cache>/sim/...), never into the shared cache.
+const SIM = process.env.VF_SIM_PASS_MS
+  ? {
+      passMs: Number(process.env.VF_SIM_PASS_MS),
+      scale: process.env.VF_SIM_SCALE !== '0',
+      jsMs: Number(process.env.VF_SIM_JS_MS || 0),
+      serial: process.env.VF_SIM_MODEL === 'serial',
+    }
+  : null;
 const COMPONENT = path.join(ROOT, 'www/main/addons/voice-follow/components/VoiceFollow.jsx');
 
 // Deterministic mode only: build the canonical corpus index once per process (the TextIndex is
@@ -85,6 +101,44 @@ async function createDriver({
   traceRecognizerInputs = false,
   cacheId = process.env.VF_EMIS_ID || '',
 } = {}) {
+  // Simulated slow PC: the virtual clock, and the host's Date / performance.now on it. engine/
+  // infer.js and engine/pace.js are plain Node modules (outside the vm context) and read
+  // Date.now() / performance.now() to time passes, run the self-test and step tiers, so the
+  // host globals themselves must follow the virtual clock (restored by stop()).
+  let sim = null;
+  const realClock = { Date, ownNow: Object.prototype.hasOwnProperty.call(performance, 'now') ? performance.now : null };
+  const restoreClock = () => {
+    if (!sim) return;
+    globalThis.Date = realClock.Date;
+    if (realClock.ownNow) Object.defineProperty(performance, 'now', { value: realClock.ownNow, configurable: true, writable: true });
+    else delete performance.now;
+  };
+  let SimDate = null;
+  if (SIM) {
+    if (!EMIS_CACHE || engineOverride) throw new Error('VF_SIM_PASS_MS needs the emissions cache (VF_EMIS_CACHE)');
+    if (!(SIM.passMs > 0)) throw new Error('VF_SIM_PASS_MS must be > 0');
+    const { SimClock } = require(path.join(__dirname, 'sim-clock'));
+    // eslint-disable-next-line no-use-before-define
+    sim = new SimClock({ idle: () => simIdle(), check: () => simCheck() });
+    const RealDate = Date;
+    SimDate = class extends RealDate {
+      constructor(...a) {
+        if (a.length) super(...a);
+        else super(Math.floor(DATE0 + sim.t));
+      }
+
+      static now() {
+        return Math.floor(DATE0 + sim.t);
+      }
+    };
+    globalThis.Date = SimDate;
+    // (a plain assignment is silently ignored by Node's Performance object)
+    Object.defineProperty(performance, 'now', { value: () => sim.t, configurable: true, writable: true });
+    if (performance.now() !== sim.t) throw new Error('sim: could not virtualize performance.now');
+    if (process.env.VF_SIM_DEBUG) {
+      setInterval(() => console.error(`[sim] t ${(sim.t / 1000).toFixed(2)} s, events fired ${sim.fired}, queued ${sim.heap.length}, io ${ioPending.size}, model ${realPending.size}, decisions ${pending.size}`), 5000).unref();
+    }
+  }
   const { Infer, norm } = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/infer'));
   const { Recognizer } = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/recognizer'));
   const { Follower } = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/follower'));
@@ -106,15 +160,82 @@ async function createDriver({
     const { Store, storeDir, windowKey, CacheMiss } = require(path.join(__dirname, 'emis-cache'));
     const codec = process.env.VF_EMIS_CODEC || 'q16';
     const dir = storeDir({ root: EMIS_CACHE, model, codec, clip: cacheId });
-    const store = new Store(dir, { write: EMIS_MODE === 'record', codec });
+    const store = new Store(dir, { write: EMIS_MODE === 'record' && !SIM, codec });
     const VOCAB = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/assets/vocab'));
     infer = new Infer(null, VOCAB);
     const real = EMIS_MODE === 'record' ? await realInfer() : null;
     cache = { store, dir, hits: 0, misses: 0, recorded: 0, missErrors: [], real };
+    if (SIM) {
+      // Windows the awaited cache never saw (decodes moved by merged pushes, tier hops and
+      // windows) live in an overlay store; record mode fills it with the real model.
+      const simDir = storeDir({ root: path.join(EMIS_CACHE, 'sim'), model, codec, clip: cacheId });
+      cache.overlay = new Store(simDir, { write: EMIS_MODE === 'record', codec });
+      cache.simDir = simDir;
+      cache.selfTest = 0;
+      const passes = { n: 0, costMs: 0, calls: 0, free: 0 };
+      cache.passes = passes;
+      // One model pass, in the build's own seam: Infer.run when the build has it (the tiers'
+      // emissions() = memo + pass timing for engine/pace, which must run unmodified), else
+      // Infer.emissions. A real pass in record mode goes through run() too, so the real
+      // machine's timing never reaches pace.
+      const pass = async (buf) => {
+        const t0 = sim.t;
+        const key = windowKey(buf);
+        let out = store.get(key) || cache.overlay.get(key);
+        if (out) cache.hits += 1;
+        else if (simSelfTest) {
+          // the self-test's noise windows: only their (virtual) time matters
+          cache.selfTest += 1;
+          const frames = Math.max(1, Math.floor(buf.length / 640));
+          const C = VOCAB.length + 1;
+          out = { data: new Float32Array(frames * C).fill(-30), frames, C };
+        } else if (real) {
+          const job = (real.run ? real.run(buf) : real.emissions(buf)).then((o) => {
+            cache.overlay.put(key, o);
+            return cache.overlay.get(key); // what a replay will be served (codec round trip)
+          });
+          realPending.add(job);
+          try {
+            out = await job;
+          } finally {
+            realPending.delete(job);
+          }
+          cache.recorded += 1;
+        } else {
+          cache.misses += 1;
+          const err = new CacheMiss(key, cacheId);
+          cache.missErrors.push(err);
+          throw err;
+        }
+        const cost = SIM.passMs * (SIM.scale ? buf.length / (4 * 16000) : 1);
+        let start = t0;
+        if (SIM.serial) {
+          start = Math.max(t0, passes.free);
+          passes.free = start + cost;
+        }
+        passes.n += 1;
+        passes.costMs += cost;
+        await sim.until(start + cost);
+        return out;
+      };
+      if (typeof Infer.prototype.run === 'function') {
+        infer.run = pass;
+        const appEmissions = infer.emissions.bind(infer);
+        infer.emissions = (buf) => {
+          passes.calls += 1;
+          return appEmissions(buf);
+        };
+      } else {
+        infer.emissions = (buf) => {
+          passes.calls += 1;
+          return pass(buf);
+        };
+      }
+    }
     // FIFO: results come back in call order in both modes (ORT may finish two concurrent
     // passes in either order; the app's outcome must not depend on that here).
     let fifo = Promise.resolve();
-    infer.emissions = (buf) => {
+    if (!SIM) infer.emissions = (buf) => {
       const key = windowKey(buf);
       const job = fifo.then(async () => {
         let out = store.get(key);
@@ -145,6 +266,33 @@ async function createDriver({
   const realmHandles = new Set();
   const pending = new Set();
   const ioPending = new Set(); // database / retrieval work only (what a model pass waits behind)
+  const realPending = new Set(); // simulated slow PC: real model passes being recorded
+  const simStats = { consumed: 0, selfTest: null, pace: null };
+  let simSelfTest = false;
+  // Simulated slow PC: the clock moves only once every piece of real asynchronous work
+  // (database, retrieval, a recorded pass) has finished: two quiet turns of the event loop.
+  async function simIdle() {
+    let quiet = 0;
+    for (let i = 0; i < 100000; i += 1) {
+      await new Promise(setImmediate);
+      if (ioPending.size || realPending.size) {
+        quiet = 0;
+        const all = Promise.allSettled([...ioPending, ...realPending]);
+        if (process.env.VF_SIM_DEBUG) {
+          let timer;
+          const slow = new Promise((r) => { timer = setTimeout(() => r('slow'), 10000); });
+          if ((await Promise.race([all, slow])) === 'slow') console.error(`[sim] waiting on real work at ${(sim.t / 1000).toFixed(2)} s: io ${ioPending.size} model ${realPending.size}`, [...ioPending].map((x) => x.label || '?'));
+          clearTimeout(timer);
+        }
+        await all;
+      } else if (++quiet >= 2) return;
+    }
+    throw new Error('sim: real work never settled');
+  }
+  // A cache miss stops the run at once (the component swallows per-chunk errors).
+  function simCheck() {
+    if (cache && cache.missErrors.length) throw cache.missErrors[0];
+  }
   let bridge;
   let port;
   let now = 0;
@@ -259,9 +407,11 @@ async function createDriver({
       const rec = new Recognizer(recInfer, opts);
       const wrapped = Object.create(rec); // fidelity: expose rec.buf / rec.infer like production
       wrapped.push = async (pcm) => {
+        simStats.consumed += pcm.length;
         const before = performance.now();
         const out = await rec.push(pcm);
         if (out) emit('transcript', { ...out, inferenceMs: performance.now() - before });
+        if (out && sim && SIM.jsMs > 0) await sim.sleep(SIM.jsMs);
         return out;
       };
       return wrapped;
@@ -272,6 +422,7 @@ async function createDriver({
       wrappedFol.push = async (pcm) => {
         const out = await fol.push(pcm);
         if (out) emit('follower', out);
+        if (out && sim && SIM.jsMs > 0) await sim.sleep(SIM.jsMs);
         return out;
       };
       return wrappedFol;
@@ -292,6 +443,7 @@ async function createDriver({
       wrappedFol.push = async (pcm) => {
         const out = await fol.push(pcm);
         if (out) emit('follower', out);
+        if (out && sim && SIM.jsMs > 0) await sim.sleep(SIM.jsMs);
         return out;
       };
       return wrappedFol;
@@ -300,6 +452,27 @@ async function createDriver({
     if (e.code !== 'MODULE_NOT_FOUND') throw e;
   }
   const engine = engineOverride ? { norm, partialRatio, ...engineOverride } : nativeEngine;
+  // Simulated slow PC: the build's performance tiers (engine/pace), when it has them, exactly as
+  // engine/index.js ready() does: the self-test times its passes on the virtual clock.
+  if (sim) {
+    let pace = null;
+    try {
+      pace = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/pace'));
+    } catch (e) {
+      if (e.code !== 'MODULE_NOT_FOUND') throw e;
+    }
+    if (pace) {
+      if (pace.describe().selfTestMs != null) throw new Error('one simulated driver per process (engine/pace already self-tested)');
+      simSelfTest = true;
+      try {
+        simStats.selfTest = await sim.runUntil(pace.selfTest(infer));
+      } finally {
+        simSelfTest = false;
+      }
+      nativeEngine.pace = pace;
+      simStats.pace = pace;
+    }
+  }
   class AudioContext {
     constructor() {
       this.sampleRate = sampleRate;
@@ -334,7 +507,7 @@ async function createDriver({
     }
   }
   const context = vm.createContext({
-    ...(DETERMINISTIC ? { Date: AudioDate } : {}),
+    ...(DETERMINISTIC ? { Date: sim ? SimDate : AudioDate } : {}),
     console,
     Buffer,
     Float32Array,
@@ -345,8 +518,14 @@ async function createDriver({
     Set,
     Promise,
     performance,
-    setTimeout,
-    clearTimeout,
+    ...(sim
+      ? {
+          setTimeout: sim.setTimeout.bind(sim),
+          clearTimeout: sim.clearTimeout.bind(sim),
+          setInterval: sim.setInterval.bind(sim),
+          clearInterval: sim.clearTimeout.bind(sim),
+        }
+      : { setTimeout, clearTimeout }),
     AbortController,
     window: { AudioContext },
     AudioWorkletNode,
@@ -740,7 +919,74 @@ ${full}`);
       return bridge.snapshot();
     },
     cacheStats: () =>
-      cache && { dir: cache.dir, hits: cache.hits, misses: cache.misses, recorded: cache.recorded },
+      cache && { dir: cache.dir, hits: cache.hits, misses: cache.misses, recorded: cache.recorded,
+        ...(sim ? { simDir: cache.simDir, selfTestPasses: cache.selfTest, passes: cache.passes.n, emissionsCalls: cache.passes.calls, passCostMs: Math.round(cache.passes.costMs) } : {}) },
+    // ---- Simulated slow PC (VF_SIM_PASS_MS; SIM-SLOWPC.md) ----
+    sim: sim && {
+      clock: sim,
+      stats: simStats,
+      start: async () => {
+        await sim.runUntil(bridge.startAutopilot());
+        await settle();
+        if (!port?.onmessage) throw new Error('No audio handler');
+      },
+      // The microphone at real-time pace on the virtual clock: chunk k arrives at its audio end
+      // time (never awaited, as the worklet does); every sampleMs the audio waiting for the
+      // recognizer is sampled (delivered minus consumed, like renton-stress). Then drains.
+      feed: async (pcm, { chunk = 2048, sampleMs = 1000, onSample } = {}) => {
+        const t0 = sim.t;
+        let p = 0;
+        let enqueued = 0;
+        let fed = false;
+        let resolveFed;
+        const allFed = new Promise((r) => { resolveFed = r; });
+        const samples = [];
+        const consumed0 = simStats.consumed;
+        const sample = () => {
+          const s = { wall: +((sim.t - t0) / 1000).toFixed(1), audio: +(enqueued / sampleRate).toFixed(1), lag: +((enqueued - (simStats.consumed - consumed0)) / sampleRate).toFixed(2), phase: bridge.snapshot().phase };
+          samples.push(s);
+          if (onSample) onSample(s);
+        };
+        const tick = () => {
+          if (fed) return;
+          sample();
+          sim.at(sim.t + sampleMs, tick);
+        };
+        sim.at(t0 + sampleMs, tick);
+        const next = () => {
+          if (p >= pcm.length) {
+            fed = true;
+            resolveFed();
+            return;
+          }
+          const c = pcm.subarray(p, Math.min(p + chunk, pcm.length));
+          p += c.length;
+          const audioT = p / sampleRate;
+          sim.at(t0 + audioT * 1000, () => {
+            now = audioT;
+            enqueued += c.length;
+            if (!port?.onmessage) throw new Error('No audio handler');
+            port.onmessage({ data: c.buffer.slice(c.byteOffset, c.byteOffset + c.byteLength) });
+            next();
+          });
+        };
+        next();
+        await sim.runUntil(allFed);
+        const tDone = sim.t;
+        // drain: the queued audio and every decision still in flight
+        await sim.runUntil((async () => {
+          for (;;) {
+            const chain = bridge.chainRef.current;
+            await chain;
+            await Promise.allSettled([...pending]);
+            if (chain === bridge.chainRef.current && !pending.size) return;
+          }
+        })());
+        await settle();
+        samples.push({ wall: +((sim.t - t0) / 1000).toFixed(1), audio: +(enqueued / sampleRate).toFixed(1), lag: 0, drainS: +((sim.t - tDone) / 1000).toFixed(1), phase: bridge.snapshot().phase });
+        return { samples, enqueued };
+      },
+    },
     // Wall-paced producers must deliver without waiting for either inference or
     // decisions. This preserves the component's own queue/backlog behavior.
     enqueue: (pcm, t) => {
@@ -772,7 +1018,10 @@ ${full}`);
     stop: async () => {
       bridge.stop();
       try {
-        await settle();
+        // Simulated: work still in flight finishes on the virtual clock; after a cache miss the
+        // clock is dead (a decision may wait on the missing pass forever), so nothing is awaited.
+        if (sim && !(cache && cache.missErrors.length)) await sim.runUntil(settle());
+        else if (!sim) await settle();
       } finally {
         // settle awaits tracked work before surfacing its error. Native resources
         // still need releasing when a completed decision failed.
@@ -789,6 +1038,8 @@ ${full}`);
           flushTrace();
           for (const realm of realmHandles) if (!realm.isClosed) realm.close();
           realmHandles.clear();
+          if (cache && cache.overlay) cache.overlay.close();
+          restoreClock();
         }
       }
     },
