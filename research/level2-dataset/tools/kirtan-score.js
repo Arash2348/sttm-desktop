@@ -29,27 +29,33 @@ const ledgerBy = () => {
 };
 const q = (a, p) => { if (!a.length) return null; const s = [...a].sort((x, y) => x - y); return +s[Math.min(s.length - 1, Math.floor(p * s.length))].toFixed(1); };
 
+// screen states: shown Shabad (null while the Waheguru / seeking slide is up) and the last verse set
 function shownAt(events) {
-  const ev = events.filter((e) => e.type === 'shabad' || e.type === 'seeking').map((e, i) => ({ ...e, i })).sort((a, b) => a.t - b.t || a.i - b.i);
-  const st = [{ t: -1e9, s: null }];
-  let sid = null; let seeking = false;
+  const ev = events.filter((e) => e.type === 'shabad' || e.type === 'seeking' || e.type === 'verse').map((e, i) => ({ ...e, i })).sort((a, b) => a.t - b.t || a.i - b.i);
+  const st = [{ t: -1e9, s: null, v: null }];
+  let sid = null; let seeking = false; let v = null;
   for (const e of ev) {
-    if (e.type === 'shabad') sid = e.shabadId; else seeking = !!e.visible;
-    st.push({ t: e.t, s: seeking ? null : sid });
+    if (e.type === 'shabad') { sid = e.shabadId; v = e.verseId ?? v; } else if (e.type === 'verse') v = e.verseId; else seeking = !!e.visible;
+    st.push({ t: e.t, s: seeking ? null : sid, v });
   }
   return st;
 }
-const at = (st, t) => { let lo = 0; let hi = st.length - 1; while (lo < hi) { const m = (lo + hi + 1) >> 1; if (st[m].t <= t) lo = m; else hi = m - 1; } return st[lo].s; };
+const stAt = (st, t) => { let lo = 0; let hi = st.length - 1; while (lo < hi) { const m = (lo + hi + 1) >> 1; if (st[m].t <= t) lo = m; else hi = m - 1; } return st[lo]; };
+// right = the same Shabad id, another stored copy of the same Gurbani, or a Bani whose shown line belongs to it
+process.env.COPIES = process.env.COPIES || '1';
+const { isRight } = require('./bani-aware');
+const okAt = (x, sid) => x.s != null && sid != null && isRight(x.s, new Set([sid]), x.v);
 // first time >= from (or the state at from) the app shows sid, before until; null if never
 function firstShown(st, sid, from, until) {
-  if (at(st, from) === sid) return from;
-  for (const x of st) if (x.t > from && x.t < until && x.s === sid) return x.t;
+  if (okAt(stAt(st, from), sid)) return from;
+  for (const x of st) if (x.t > from && x.t < until && okAt(x, sid)) return x.t;
   return null;
 }
 
 // one clip: khalis-bench output -> events per Shabad stretch
 function clipEvents(run) {
-  const { row, events, metrics } = run;
+  const { row, metrics } = run;
+  const events = run.trace || run.events;
   const tl = row.timeline.filter((x) => x.shabadId != null);
   const end = row.seconds;
   const segs = [];
@@ -79,21 +85,33 @@ function clipEvents(run) {
     if (g.kind === 'detour') { out.detours++; if (d == null) out.followMissed++; else out.follow.push(d); }
     if (g.kind === 'return') { out.returns++; if (d == null) out.retMissed++; else out.ret.push(d); }
   }
-  // wrong switches
-  const truthAt = (t) => { let s = null; for (const x of tl) { if (x.t > t) break; s = x.shabadId; } return s; };
+  // wrong switches: a new Shabad on screen that the sevadaar does not show within [-15 s, +30 s]
   let last = null;
   for (const x of st.slice(1)) {
     if (x.s == null || x.s === last) continue;
     last = x.s;
     if (x.t < (tl[0] ? tl[0].t : 0) - SWITCH_BEFORE) continue;
     out.switches++;
-    const near = new Set([truthAt(x.t)]);
-    for (const y of tl) if (y.t >= x.t - SWITCH_BEFORE && y.t <= x.t + SWITCH_AFTER) near.add(y.shabadId);
-    if (!near.has(x.s)) out.wrongSwitches++;
+    const near = tl.filter((y) => y.t >= x.t - SWITCH_BEFORE && y.t <= x.t + SWITCH_AFTER).map((y) => y.shabadId);
+    let k = -1; for (const [i, y] of tl.entries()) if (y.t <= x.t) k = i;
+    if (k >= 0) near.push(tl[k].shabadId);
+    if (!near.some((sid) => okAt(x, sid))) out.wrongSwitches++;
   }
+  // time-weighted Shabad level (copy- and Bani-aware): from the sevadaar's first verse to the end
+  const STEP = 0.1; let right = 0; let wrong = 0; let searching = 0; let k = 0; let j = 0;
+  for (let t = tl.length ? tl[0].t : end; t < end; t += STEP) {
+    while (k + 1 < tl.length && tl[k + 1].t <= t) k++;
+    while (j + 1 < st.length && st[j + 1].t <= t) j++;
+    const x = st[j];
+    if (x.s == null) searching += STEP; else if (okAt(x, tl[k].shabadId)) right += STEP; else wrong += STEP;
+  }
+  const T = Math.max(STEP, right + wrong + searching);
+  const heard = events.filter((e) => e.type === 'transcript' && e.t >= (tl[0] ? tl[0].t : 0)).reduce((a, e) => a + (e.text || '').length, 0);
+  out.heardPerMin = Math.round(heard / Math.max(1, (T / 60)));
   out.segs = segs.map((g) => `${g.kind[0]}:${g.s}@${Math.round(g.start)}${g.shownAfter == null ? '(never)' : `+${g.shownAfter}`}`);
-  out.dur = metrics.dur;
-  out.right = metrics.right; out.wrong = metrics.wrong; out.searching = metrics.searching;
+  out.dur = +T.toFixed(1);
+  out.right = right / T; out.wrong = wrong / T; out.searching = searching / T;
+  void metrics;
   return out;
 }
 
@@ -110,6 +128,8 @@ function scoreDir(dir) {
   for (const f of files) {
     const run = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
     const name = path.basename(f, '.json');
+    const tf = path.join(dir, 'trace', `${name}.events.jsonl`);
+    if (fs.existsSync(tf)) run.trace = fs.readFileSync(tf, 'utf8').trim().split('\n').map((l) => JSON.parse(l));
     const led = L.get(name) || {};
     const ev = clipEvents(run);
     const sg = sangat && sangat.get(name);
@@ -162,8 +182,8 @@ function markdown(clips, { perClip = false } = {}) {
   const out = [`| group | ${COLS.join(' | ')} |`, `|---|${COLS.map(() => '---').join('|')}|`];
   for (const [k, cs] of groups(clips)) { const s = summarize(cs); out.push(`| ${k} | ${COLS.map((c) => s[c] ?? '-').join(' | ')} |`); }
   if (perClip) {
-    out.push('', '| clip | split | Shabad right % | sangat line % | stretches (kind:shabad@start+seconds to show) | wrong switches |', '|---|---|---|---|---|---|');
-    for (const c of clips) out.push(`| ${c.clip} | ${c.split} | ${(100 * c.right).toFixed(1)} | ${c.lineRight ?? '-'} | ${c.segs.join(' ')} | ${c.wrongSwitches} |`);
+    out.push('', '| clip | split | Shabad right % | sangat line % | stretches (kind:shabad@start+seconds to show) | wrong switches | heard chars/min |', '|---|---|---|---|---|---|---|');
+    for (const c of clips) out.push(`| ${c.clip} | ${c.split} | ${(100 * c.right).toFixed(1)} | ${c.lineRight ?? '-'} | ${c.segs.join(' ')} | ${c.wrongSwitches} | ${c.heardPerMin} |`);
   }
   return out.join('\n');
 }

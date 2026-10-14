@@ -54,7 +54,14 @@
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:09.890Z",
    "truthCheck": "identical to the earlier khalis-tests.json row",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -20,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_08T03_30_14_004Z": {
    "name": "sttm_desktop_2026_10_08T03_30_14_004Z",
@@ -83,7 +90,14 @@
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:09.907Z",
    "truthCheck": "identical to the earlier khalis-tests.json row",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -20.3,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_08T03_40_41_289Z": {
    "name": "sttm_desktop_2026_10_08T03_40_41_289Z",
@@ -112,7 +126,14 @@
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:09.926Z",
    "truthCheck": "identical to the earlier khalis-tests.json row",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -20.4,
+    "peak": 0.884,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_08T03_51_10_447Z": {
    "name": "sttm_desktop_2026_10_08T03_51_10_447Z",
@@ -141,7 +162,14 @@
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:09.957Z",
    "truthCheck": "identical to the earlier khalis-tests.json row",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -22,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_08T04_05_00_105Z": {
    "name": "sttm_desktop_2026_10_08T04_05_00_105Z",
@@ -171,7 +199,14 @@
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:09.969Z",
    "truthCheck": "identical to the earlier khalis-tests.json row",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -19.2,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_09T03_14_15_214Z": {
    "name": "sttm_desktop_2026_10_09T03_14_15_214Z",
@@ -200,7 +235,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_09T03_14_15_214Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:20.857Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -27.6,
+    "peak": 0.497,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_09T03_16_54_207Z": {
    "name": "sttm_desktop_2026_10_09T03_16_54_207Z",
@@ -244,7 +286,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_09T03_27_58_323Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:22.700Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -21.2,
+    "peak": 0.821,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_09T03_39_34_494Z": {
    "name": "sttm_desktop_2026_10_09T03_39_34_494Z",
@@ -273,7 +322,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_09T03_39_34_494Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:23.568Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -20.9,
+    "peak": 0.774,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_09T03_42_41_425Z": {
    "name": "sttm_desktop_2026_10_09T03_42_41_425Z",
@@ -302,7 +358,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_09T03_42_41_425Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:25.223Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -20.6,
+    "peak": 0.918,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_09T03_56_15_071Z": {
    "name": "sttm_desktop_2026_10_09T03_56_15_071Z",
@@ -331,7 +394,14 @@
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:25.240Z",
    "truthCheck": "identical to the earlier khalis-tests.json row",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -118.6,
+    "peak": 0,
+    "quietPct": 100,
+    "problem": "silent or near-silent audio (rms -118.6 dBFS, 100% of seconds quiet)"
+   },
+   "audioProblem": "silent or near-silent audio (rms -118.6 dBFS, 100% of seconds quiet)"
   },
   "sttm_desktop_2026_10_10T01_24_50_404Z": {
    "name": "sttm_desktop_2026_10_10T01_24_50_404Z",
@@ -626,7 +696,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_11T02_40_20_422Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:26.360Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -20.7,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_11T02_50_05_783Z": {
    "name": "sttm_desktop_2026_10_11T02_50_05_783Z",
@@ -655,7 +732,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_11T02_50_05_783Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:27.931Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -20.6,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_11T03_07_57_411Z": {
    "name": "sttm_desktop_2026_10_11T03_07_57_411Z",
@@ -684,7 +768,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_11T03_07_57_411Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:29.128Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -19.2,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_11T13_42_38_291Z": {
    "name": "sttm_desktop_2026_10_11T13_42_38_291Z",
@@ -713,7 +804,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_11T13_42_38_291Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:30.167Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -30.8,
+    "peak": 0.256,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_11T13_45_00_522Z": {
    "name": "sttm_desktop_2026_10_11T13_45_00_522Z",
@@ -742,7 +840,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_11T13_45_00_522Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:31.473Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -23.6,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_11T13_52_01_944Z": {
    "name": "sttm_desktop_2026_10_11T13_52_01_944Z",
@@ -771,7 +876,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_11T13_52_01_944Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:35.713Z",
-   "content": "3-bani-sung/asa-di-vaar"
+   "content": "3-bani-sung/asa-di-vaar",
+   "audio": {
+    "rmsDb": -24,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_11T18_10_13_059Z": {
    "name": "sttm_desktop_2026_10_11T18_10_13_059Z",
@@ -800,7 +912,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_11T18_10_13_059Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:37.595Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -20.1,
+    "peak": 0.936,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_11T20_00_12_780Z": {
    "name": "sttm_desktop_2026_10_11T20_00_12_780Z",
@@ -829,7 +948,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_11T20_00_12_780Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:38.664Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -18.1,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_11T20_08_08_535Z": {
    "name": "sttm_desktop_2026_10_11T20_08_08_535Z",
@@ -858,7 +984,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_11T20_08_08_535Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:39.793Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -19,
+    "peak": 0.848,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_11T20_15_43_327Z": {
    "name": "sttm_desktop_2026_10_11T20_15_43_327Z",
@@ -887,7 +1020,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_11T20_15_43_327Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:41.250Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -17.8,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_11T20_29_16_335Z": {
    "name": "sttm_desktop_2026_10_11T20_29_16_335Z",
@@ -916,7 +1056,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_11T20_29_16_335Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:42.469Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -17.8,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_11T20_36_12_345Z": {
    "name": "sttm_desktop_2026_10_11T20_36_12_345Z",
@@ -945,7 +1092,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_11T20_36_12_345Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:43.471Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -15.4,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_13T01_49_00_928Z": {
    "name": "sttm_desktop_2026_10_13T01_49_00_928Z",
@@ -989,7 +1143,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_13T01_50_01_713Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:44.519Z",
-   "content": "3-bani-sung/aarti"
+   "content": "3-bani-sung/aarti",
+   "audio": {
+    "rmsDb": -29.5,
+    "peak": 0.232,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_13T02_34_02_550Z": {
    "name": "sttm_desktop_2026_10_13T02_34_02_550Z",
@@ -1018,7 +1179,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_13T02_34_02_550Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:45.509Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -25.4,
+    "peak": 0.595,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_13T02_37_22_571Z": {
    "name": "sttm_desktop_2026_10_13T02_37_22_571Z",
@@ -1047,7 +1215,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_13T02_37_22_571Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:46.819Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -19.9,
+    "peak": 0.954,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_13T02_43_13_981Z": {
    "name": "sttm_desktop_2026_10_13T02_43_13_981Z",
@@ -1076,7 +1251,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_13T02_43_13_981Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:47.804Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -18.8,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_13T02_48_34_427Z": {
    "name": "sttm_desktop_2026_10_13T02_48_34_427Z",
@@ -1105,7 +1287,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_13T02_48_34_427Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:49.063Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -19.3,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_13T03_01_13_513Z": {
    "name": "sttm_desktop_2026_10_13T03_01_13_513Z",
@@ -1134,7 +1323,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_13T03_01_13_513Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:50.477Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -18.5,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_13T03_13_38_540Z": {
    "name": "sttm_desktop_2026_10_13T03_13_38_540Z",
@@ -1163,7 +1359,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_13T03_13_38_540Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:51.480Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -20.8,
+    "peak": 0.783,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_13T03_19_05_030Z": {
    "name": "sttm_desktop_2026_10_13T03_19_05_030Z",
@@ -1249,7 +1452,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_14T02_35_12_435Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:52.547Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -26.1,
+    "peak": 0.693,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_14T02_38_09_370Z": {
    "name": "sttm_desktop_2026_10_14T02_38_09_370Z",
@@ -1278,7 +1488,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_14T02_38_09_370Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:55.240Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -20.6,
+    "peak": 1,
+    "quietPct": 0,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_14T03_11_54_037Z": {
    "name": "sttm_desktop_2026_10_14T03_11_54_037Z",
@@ -1307,7 +1524,14 @@
    "local": "/Users/asingh02/personal/live-darbar-venues/hf-jaspal/sttm_desktop_2026_10_14T03_11_54_037Z",
    "provenance": "sevadaar screen (human, may lag)",
    "ingestedAt": "2026-10-14T04:55:56.141Z",
-   "content": "1-kirtan-shabad"
+   "content": "1-kirtan-shabad",
+   "audio": {
+    "rmsDb": -33.1,
+    "peak": 0.148,
+    "quietPct": 3,
+    "problem": null
+   },
+   "audioProblem": null
   },
   "sttm_desktop_2026_10_14T03_13_54_699Z": {
    "name": "sttm_desktop_2026_10_14T03_13_54_699Z",

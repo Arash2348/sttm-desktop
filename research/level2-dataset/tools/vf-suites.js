@@ -42,7 +42,7 @@ function jaspalJobs() {
   const ledger = JSON.parse(fs.readFileSync(path.join(DS, 'hf-jaspal', 'ledger.json')));
   const splits = process.env.VF_SPLIT ? new Set(process.env.VF_SPLIT.split(',')) : null;
   return Object.values(ledger.datasets)
-    .filter((d) => d.status === 'pulled' && (d.content || '1-kirtan-shabad') === '1-kirtan-shabad' && (!splits || splits.has(d.split)))
+    .filter((d) => d.status === 'pulled' && !d.audioProblem && (d.content || '1-kirtan-shabad') === '1-kirtan-shabad' && (!splits || splits.has(d.split)))
     .sort((a, b) => a.clipId.localeCompare(b.clipId))
     .map((d) => {
       const wav = path.join(CLIPS, `${d.clipName}.wav`);

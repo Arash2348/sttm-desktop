@@ -179,12 +179,12 @@ for (const r of khalis) {
     else shabads.push({ shabadId: e.shabadId, start_s: e.t, end_s: i + 1 < tl.length ? tl[i + 1].t : r1(r.seconds), source: 'human' });
   }
   const folder = L.content || '1-kirtan-shabad';
-  const jobs = [/^kh0[1-5]$/.test(clip) ? `fremont:${clip}` : '', folder === '1-kirtan-shabad' && L.name ? `jaspal:${clip}` : ''].filter(Boolean).join(';');
+  const jobs = [/^kh0[1-5]$/.test(clip) ? `fremont:${clip}` : '', folder === '1-kirtan-shabad' && L.name && !L.audioProblem ? `jaspal:${clip}` : ''].filter(Boolean).join(';');
   add({ id: path.basename(r.clip, '.wav'), clip, wav, folder, bani: { '3-bani-sung/asa-di-vaar': 'Asa di Vaar', '3-bani-sung/aarti': 'Aarti' }[folder] || '', baniId: { '3-bani-sung/asa-di-vaar': 90, '3-bani-sung/aarti': 22 }[folder],
     gurdwara: L.gurdwara || 'Gurdwara Sahib Fremont (Jaspal)', reader: '', acoustics: 'laptop-mic',
     origin: `https://huggingface.co/datasets/khalisfoundation/${r.dataset}`, src: r.dataset, srcRange: [0, r.seconds], split: L.split || 'test', session: L.session || '', suite_jobs: jobs,
     truth_provenance: `${L.provenance || 'sevadaar screen (human, may lag)'}: verse_timestamps.csv of ${r.dataset} (the line the sevadaar put on screen while it was sung)`, shabads, lines,
-    notes: [L.content && L.content !== '1-kirtan-shabad' ? 'sung Bani recording (not in the kirtan suites)' : '', L.mic ? `mic: ${L.mic}` : ''].filter(Boolean).join('; ') });
+    notes: [L.audioProblem ? `AUDIO PROBLEM (not scored): ${L.audioProblem}` : '', L.content && L.content !== '1-kirtan-shabad' ? 'sung Bani recording (not in the kirtan suites)' : '', L.mic ? `mic: ${L.mic}` : ''].filter(Boolean).join('; ') });
 }
 
 // 5. Renton Oct 11 (production, S1/S2 app session audio) — test

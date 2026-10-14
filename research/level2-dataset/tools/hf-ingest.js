@@ -114,6 +114,17 @@ function wavInfo(file) {
   }
   throw new Error(`${file}: no data chunk`);
 }
+// level check: a recording that is digital silence (kh06: max |sample| 9 of 32768 on the Hub itself) or mostly
+// quiet is an "audio problem", kept in the ledger but out of tuning and scoring
+function audioStats(file) {
+  const b = fs.readFileSync(file); let off = 12; let data = 44;
+  while (off + 8 <= b.length) { const id = b.toString('ascii', off, off + 4); const sz = b.readUInt32LE(off + 4); if (id === 'data') { data = off + 8; break; } off += 8 + sz + (sz & 1); }
+  const n = Math.floor((b.length - data) / 2); let ss = 0; let peak = 0; let quiet = 0; let wins = 0; let ws = 0; let wn = 0;
+  for (let i = 0; i < n; i++) { const v = b.readInt16LE(data + 2 * i) / 32768; ss += v * v; ws += v * v; if (Math.abs(v) > peak) peak = Math.abs(v); if (++wn === 16000) { if (Math.sqrt(ws / wn) < 0.003) quiet++; wins++; ws = 0; wn = 0; } }
+  const rmsDb = +(10 * Math.log10(ss / Math.max(1, n) + 1e-20)).toFixed(1);
+  const quietPct = wins ? Math.round(100 * quiet / wins) : 100;
+  return { rmsDb, peak: +peak.toFixed(3), quietPct, problem: rmsDb < -60 || quietPct > 50 ? `silent or near-silent audio (rms ${rmsDb} dBFS, ${quietPct}% of seconds quiet)` : null };
+}
 const sha256 = (f) => crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
 const bucket = (key) => {
   const h = crypto.createHash('sha1').update(RULE.salt + key).digest().readUInt32BE(0) % 100;
@@ -194,9 +205,9 @@ function inventory(L) {
   let out = '| dataset | clip | Gurdwara | local date (PT) | type | min | verse rows | status | session | split |\n|---|---|---|---|---|---|---|---|---|---|\n';
   for (const d of ds) {
     const pt = d.start ? new Date(d.start - 7 * 3600e3).toISOString().replace('T', ' ').slice(0, 16) : '';
-    out += `| ${d.name.replace(PREFIX, '')} | ${d.clipId || ''} | ${d.gurdwara || d.collection || ''} | ${pt} | ${d.type || ''} | ${d.duration ? (d.duration / 60).toFixed(1) : ''} | ${d.rows ?? ''} | ${d.status}${d.reason ? ` (${d.reason})` : ''}${d.content && d.content !== '1-kirtan-shabad' ? ` [${d.content}]` : ''} | ${d.session ? d.session.split('@')[1] : ''} | ${d.split || ''} |\n`;
+    out += `| ${d.name.replace(PREFIX, '')} | ${d.clipId || ''} | ${d.gurdwara || d.collection || ''} | ${pt} | ${d.type || ''} | ${d.duration ? (d.duration / 60).toFixed(1) : ''} | ${d.rows ?? ''} | ${d.status}${d.reason ? ` (${d.reason})` : ''}${d.content && d.content !== '1-kirtan-shabad' ? ` [${d.content}]` : ''}${d.audioProblem ? ` AUDIO PROBLEM: ${d.audioProblem}` : ''} | ${d.session ? d.session.split('@')[1] : ''} | ${d.split || ''} |\n`;
   }
-  const kir = ds.filter((d) => d.status === 'pulled' && (d.content || '1-kirtan-shabad') === '1-kirtan-shabad');
+  const kir = ds.filter((d) => d.status === 'pulled' && !d.audioProblem && (d.content || '1-kirtan-shabad') === '1-kirtan-shabad');
   const byG = {};
   for (const d of ds) { const g = d.gurdwara || d.collection || '(none)'; byG[g] = byG[g] || { all: 0, kirtan: 0, n: 0, k: 0 }; byG[g].all += d.duration || 0; byG[g].n++; if (kir.includes(d)) { byG[g].kirtan += d.duration || 0; byG[g].k++; } }
   let g = '\n| Gurdwara (collection) | datasets | hours (all types) | kirtan clips | kirtan hours |\n|---|---|---|---|---|\n';
@@ -217,7 +228,10 @@ async function main() {
   if (flag('inventory')) { say(inventory(L)); return; }
   if (flag('push-benchmark')) return pushBenchmark(L);
   if (flag('retag')) { // recompute content tags from the local verse files (no network)
-    for (const d of Object.values(L.datasets).filter((x) => x.status === 'pulled')) d.content = await contentOf(await timelineOf(fs.readFileSync(path.join(d.local, 'verse_timestamps.csv'), 'utf8')));
+    for (const d of Object.values(L.datasets).filter((x) => x.status === 'pulled')) {
+      d.content = await contentOf(await timelineOf(fs.readFileSync(path.join(d.local, 'verse_timestamps.csv'), 'utf8')));
+      d.audio = audioStats(fs.realpathSync(path.join(d.local, 'audio.wav'))); d.audioProblem = d.audio.problem;
+    }
     writeJ(LEDGER, L); say(inventory(L)); (await realmP).close(); return;
   }
   if (!token()) throw new Error('no HF token (HF_TOKEN or ~/.vf-hf-token)');
@@ -297,6 +311,8 @@ async function main() {
     const tl = await timelineOf(verseCsv);
     d.lastVerseT = tl.length ? tl[tl.length - 1].t : null;
     d.content = await contentOf(tl);
+    d.audio = audioStats(fs.realpathSync(wav));
+    d.audioProblem = d.audio.problem;
     d.checks = [Math.abs(d.wavDuration - (d.duration || d.wavDuration)) < 1 ? '' : `wav ${d.wavDuration}s vs README ${d.duration}s`, d.lastVerseT != null && d.lastVerseT > d.wavDuration + 0.5 ? `last verse ${d.lastVerseT}s after the end` : '', tl.some((x) => x.shabadId == null) ? `${tl.filter((x) => x.shabadId == null).length} verse(s) not in a Shabad` : ''].filter(Boolean);
     if (!d.duration) d.duration = d.wavDuration;
     d.session = d.session || assignSession(L, d);
