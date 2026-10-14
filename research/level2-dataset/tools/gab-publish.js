@@ -139,14 +139,55 @@ const slugOf = (name, commit) => `${name.toLowerCase().replace(/[^a-z0-9.]+/g, '
 // a line number is a headline only on human or ear-checked line answers and at least THIN clips
 const lineShown = (r) => r && r.pangti_pct != null && r.pangti_basis !== 'aligned' && r.pangti_clips >= G.THIN;
 function section(entries) {
-  const cell = (rows, key, k, u = '') => { const r = (rows || []).find((x) => x.key === key); return r && r.clips && r[k] != null ? `${r[k]}${u}` : r && r.incomplete ? 'incomplete' : '-'; };
-  const line = (rows, key) => { const r = (rows || []).find((x) => x.key === key); return lineShown(r) ? `${r.pangti_pct}% / ${r.pangti_near_pct}%` : 'no line answers'; };
+  // Card copy of the leaderboard, kept short: released versions in date order with traffic-light marks
+  // (relative to the other versions: 🟢 best, 🟡 in between, 🔴 worst; no mark when all are equal),
+  // then "ideas being tested" as changes against the version in the app now. Commit ids go in a fold.
   const names = loadNames();
-  const lines = entries.map((e) => `| ${shownName(e, names)} | ${e.commit} | ${e.vf_feature_version || '-'} | ${cell(e.rows, '1-kirtan-shabad', 'right_shabad_pct', '%')} | ${cell(e.rows, '1-kirtan-shabad', 'wrong_s_per_h')} | ${cell(e.rows, '2-bani-recited', 'right_shabad_pct', '%')} | ${cell(e.rows, '3-bani-sung-like-kirtan', 'right_shabad_pct', '%')} | ${e.hard ? cell(e.hard.rows, '1-kirtan-shabad', 'right_shabad_pct', '%') : '-'} | ${e.hard ? line(e.hard.rows, '1-kirtan-shabad') : '-'} |`);
+  const kindOf = (e) => ((names.builds || {})[String(e.commit).slice(0, 8)] || {}).kind || (e.status === 'merged' ? 'release' : 'experiment');
+  const labelOf = (e) => ((names.builds || {})[String(e.commit).slice(0, 8)] || {}).label || shownName(e, names);
+  const get = (rows, key, k) => { const r = (rows || []).find((x) => x.key === key); return r && r.clips && r[k] != null ? Number(r[k]) : null; };
+  const COLS = [
+    { t: 'Kirtan: right Shabad', v: (e) => get(e.rows, '1-kirtan-shabad', 'right_shabad_pct'), u: '%', dir: 1 },
+    { t: 'Kirtan: wrong Shabad (s per hour)', v: (e) => get(e.rows, '1-kirtan-shabad', 'wrong_s_per_h'), u: '', dir: -1 },
+    { t: 'Bani recited: right Bani', v: (e) => get(e.rows, '2-bani-recited', 'right_shabad_pct'), u: '%', dir: 1 },
+    { t: 'Bani sung: right Bani', v: (e) => get(e.rows, '3-bani-sung-like-kirtan', 'right_shabad_pct'), u: '%', dir: 1 },
+    { t: 'Bani sung: wrong Bani (s per hour)', v: (e) => get(e.rows, '3-bani-sung-like-kirtan', 'wrong_s_per_h'), u: '', dir: -1 },
+    { t: 'GAB-Hard kirtan: right Shabad', v: (e) => (e.hard ? get(e.hard.rows, '1-kirtan-shabad', 'right_shabad_pct') : null), u: '%', dir: 1 },
+  ];
+  const rel = entries.filter((e) => kindOf(e) !== 'experiment');
+  const exp = entries.filter((e) => kindOf(e) === 'experiment');
+  const now = [...entries].filter((e) => kindOf(e) === 'release').pop();
+  const mark = (c, v) => {
+    const vals = rel.map((e) => c.v(e)).filter((x) => x != null);
+    if (v == null) return '–';
+    const lo = Math.min(...vals); const hi = Math.max(...vals);
+    if (hi === lo) return `${v}${c.u}`;
+    const t = c.dir > 0 ? (v - lo) / (hi - lo) : (hi - v) / (hi - lo);
+    return `${t >= 0.67 ? '🟢' : t > 0.33 ? '🟡' : '🔴'} ${v}${c.u}`;
+  };
+  const relRows = rel.map((e) => `| ${e === now ? `**${labelOf(e)}** ← in the app now` : labelOf(e)} | ${COLS.map((c) => mark(c, c.v(e))).join(' | ')} |`);
+  // An idea is compared with the version it was built from (its --base), not with the latest release.
+  const baseOf = (e) => (e.base && entries.find((x) => String(x.commit).startsWith(String(e.base).slice(0, 8)))) || now;
+  const delta = (c, e) => {
+    const bE = baseOf(e); const v = c.v(e); const b = bE ? c.v(bE) : null;
+    if (v == null) return 'not scored yet';
+    if (b == null) return `${v}${c.u}`;
+    const d = Math.round((v - b) * 10) / 10;
+    if (d === 0) return `➖ ${v}${c.u}`;
+    const better = d * c.dir > 0;
+    return `${better ? '🟢' : '🔴'} ${v}${c.u} (${d > 0 ? '+' : ''}${d})`;
+  };
+  const expRows = exp.map((e) => `| ${labelOf(e)}<br><sub>vs ${baseOf(e) ? labelOf(baseOf(e)) : '-'}</sub> | ${COLS.map((c) => delta(c, e)).join(' | ')} |`);
+  const head = `| Version | ${COLS.map((c) => c.t).join(' | ')} |`;
+  const sep = `|---|${COLS.map(() => '---:').join('|')}|`;
+  const commits = entries.map((e) => `- ${kindOf(e) === 'experiment' ? `Idea: ${labelOf(e)}` : `${names.system.latin} ${labelOf(e)}`}: \`${String(e.commit).slice(0, 12)}\`${e.vf_feature_version ? ` (Voice-Follow ${e.vf_feature_version})` : ''}`);
   return [START, '## Leaderboard', '',
-    `The leaderboard lives in the private Space [${SPACE}](${SPACE_URL}) (how to read it is on its About tab). The system benchmarked is STTM Desktop Voice-Follow, named ${loadNames().system.gurmukhi} (${loadNames().system.latin}); "Experiment" rows are changes tested here, not in the app. A short copy, ${G.GAB_VERSION}, practice split (train + dev; the test split is never published). Higher is better for the % columns, lower for wrong seconds per hour. Main GAB (the priority) is everything except the Fremont hall laptop-mic recordings; those are GAB-Hard, tracked apart (resonant hall, laptop mic far from the ragis, little clean audio). Main kirtan has no line-by-line answers yet, so it is right Shabad only; the GAB-Hard pangti column is strict / same or neighbouring pangti, on the sevadaar's screen as the answer key.`, '',
-    '| Version | Commit | Voice-Follow | Kirtan: right Shabad | Kirtan: wrong Shabad s/h | Bani recited: right Bani | Bani sung: right Bani | GAB-Hard kirtan: right Shabad | GAB-Hard kirtan: pangti strict / neighbouring |',
-    '|---|---|---|---|---|---|---|---|---|', ...lines, '', END].join('\n');
+    `**${names.system.latin}** is STTM Desktop's Voice-Follow. Full, sortable leaderboard: [${SPACE}](${SPACE_URL}). ${G.GAB_VERSION}, practice recordings only (the test set is never shown).`, '',
+    '🟢 best · 🟡 in between · 🔴 worst, compared with the other versions in the same column. Higher % is better; fewer wrong-Shabad seconds is better.', '',
+    '### Versions', '', head, sep, ...relRows, '',
+    ...(expRows.length ? ['### Ideas being tested (not in the app)', '', 'Each idea is compared with the version it was built from: 🟢 better, 🔴 worse, ➖ same.', '', head, sep, ...expRows, ''] : []),
+    'Main GAB is everyday Gurdwara audio (livestream and mixer feeds, studio paath). GAB-Hard is the Fremont hall laptop-mic recordings, tracked apart. Kirtan pangti numbers are not shown yet: main kirtan has no line-by-line answers.', '',
+    '<details><summary>Exact code tested (commit ids)</summary>', '', ...commits, '', '</details>', '', END].join('\n');
 }
 
 function push(repo, type, ops, msg, S) {
