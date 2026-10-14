@@ -1,6 +1,6 @@
 {
  "gab": "GAB v1.1",
- "createdAt": "2026-10-14 10:02",
+ "createdAt": "2026-10-14 10:28",
  "build": {
   "name": null,
   "root": "/Users/asingh02/personal/live-darbar-venues/cache/worktrees/747cb093def8",
@@ -130,12 +130,12 @@
   }
  ],
  "timings": {
-  "replay_s": 19.7,
+  "replay_s": 19.9,
   "clip_runs": 6,
   "reused": 140,
-  "load": "21.6 16.0 18.9",
+  "load": "12.9 12.9 14.0",
   "score_s": 5.7,
-  "total_s": 25.4
+  "total_s": 25.7
  },
  "rows": [
   {
@@ -188,10 +188,15 @@
    "find_n": 61,
    "not_found": 9,
    "find_cold_n": 45,
-   "switch_p50_s": 1.5,
+   "switch_p50_s": 17.9,
    "switch_p90_s": 518.1,
-   "switch_n": 14,
-   "switch_missed": 7,
+   "switch_n": 5,
+   "switch_missed": 2,
+   "switch_within10_n": 1,
+   "switch_later_n": 2,
+   "stayed_main_n": 3,
+   "parmaan_n": 6,
+   "parmaan_shown": 1,
    "thin": [],
    "mic": {
     "mixer-feed": {
@@ -261,6 +266,11 @@
    "switch_p90_s": null,
    "switch_n": 0,
    "switch_missed": 0,
+   "switch_within10_n": 0,
+   "switch_later_n": 0,
+   "stayed_main_n": 0,
+   "parmaan_n": 0,
+   "parmaan_shown": 0,
    "thin": [],
    "mic": {
     "studio": {
@@ -325,6 +335,11 @@
    "switch_p90_s": null,
    "switch_n": 0,
    "switch_missed": 0,
+   "switch_within10_n": 0,
+   "switch_later_n": 0,
+   "stayed_main_n": 0,
+   "parmaan_n": 0,
+   "parmaan_shown": 0,
    "thin": [],
    "mic": {
     "studio": {
@@ -377,6 +392,11 @@
    "switch_p90_s": null,
    "switch_n": 0,
    "switch_missed": 0,
+   "switch_within10_n": 0,
+   "switch_later_n": 0,
+   "stayed_main_n": 0,
+   "parmaan_n": 0,
+   "parmaan_shown": 0,
    "thin": [],
    "mic": {
     "studio": {
@@ -429,6 +449,11 @@
    "switch_p90_s": null,
    "switch_n": 0,
    "switch_missed": 0,
+   "switch_within10_n": 0,
+   "switch_later_n": 0,
+   "stayed_main_n": 0,
+   "parmaan_n": 0,
+   "parmaan_shown": 0,
    "thin": [],
    "mic": {
     "studio": {
@@ -493,6 +518,11 @@
    "switch_p90_s": null,
    "switch_n": 0,
    "switch_missed": 0,
+   "switch_within10_n": 0,
+   "switch_later_n": 0,
+   "stayed_main_n": 0,
+   "parmaan_n": 0,
+   "parmaan_shown": 0,
    "thin": [],
    "mic": {
     "studio": {
@@ -545,6 +575,11 @@
    "switch_p90_s": null,
    "switch_n": 0,
    "switch_missed": 0,
+   "switch_within10_n": 0,
+   "switch_later_n": 0,
+   "stayed_main_n": 0,
+   "parmaan_n": 0,
+   "parmaan_shown": 0,
    "thin": [],
    "mic": {
     "studio": {
@@ -604,6 +639,11 @@
    "switch_p90_s": null,
    "switch_n": 0,
    "switch_missed": 0,
+   "switch_within10_n": 0,
+   "switch_later_n": 0,
+   "stayed_main_n": 0,
+   "parmaan_n": 0,
+   "parmaan_shown": 0,
    "thin": [
     "find_n",
     "clips"
@@ -659,6 +699,11 @@
    "switch_p90_s": null,
    "switch_n": 0,
    "switch_missed": 0,
+   "switch_within10_n": 0,
+   "switch_later_n": 0,
+   "stayed_main_n": 0,
+   "parmaan_n": 0,
+   "parmaan_shown": 0,
    "thin": [],
    "mic": {
     "studio": {
@@ -722,8 +767,13 @@
    "find_cold_n": 46,
    "switch_p50_s": 47,
    "switch_p90_s": 55.6,
-   "switch_n": 13,
+   "switch_n": 10,
    "switch_missed": 1,
+   "switch_within10_n": 0,
+   "switch_later_n": 9,
+   "stayed_main_n": 1,
+   "parmaan_n": 2,
+   "parmaan_shown": 2,
    "thin": [
     "pangti_clips"
    ],
@@ -791,8 +841,13 @@
    "find_cold_n": 45,
    "switch_p50_s": 47,
    "switch_p90_s": 55.6,
-   "switch_n": 13,
+   "switch_n": 10,
    "switch_missed": 1,
+   "switch_within10_n": 0,
+   "switch_later_n": 9,
+   "stayed_main_n": 1,
+   "parmaan_n": 2,
+   "parmaan_shown": 2,
    "thin": [],
    "mic": {
     "mixer-feed": {
@@ -873,6 +928,11 @@
    "switch_p90_s": null,
    "switch_n": 0,
    "switch_missed": 0,
+   "switch_within10_n": 0,
+   "switch_later_n": 0,
+   "stayed_main_n": 0,
+   "parmaan_n": 0,
+   "parmaan_shown": 0,
    "thin": [
     "pangti_clips",
     "find_n",
@@ -963,6 +1023,11 @@
    "switch_p90_s": null,
    "switch_n": 0,
    "switch_missed": 0,
+   "switch_within10_n": 0,
+   "switch_later_n": 0,
+   "stayed_main_n": 0,
+   "parmaan_n": 0,
+   "parmaan_shown": 0,
    "thin": [
     "pangti_clips"
    ],
@@ -1031,11 +1096,18 @@
    "find_n": 11,
    "not_found": 5,
    "find_cold_n": 0,
-   "switch_p50_s": 0,
-   "switch_p90_s": 0,
-   "switch_n": 3,
-   "switch_missed": 2,
-   "thin": [],
+   "switch_p50_s": null,
+   "switch_p90_s": null,
+   "switch_n": 1,
+   "switch_missed": 1,
+   "switch_within10_n": 0,
+   "switch_later_n": 0,
+   "stayed_main_n": 1,
+   "parmaan_n": 1,
+   "parmaan_shown": 0,
+   "thin": [
+    "switch_n"
+   ],
    "mic": {
     "room-mic": {
      "clips": 11,
@@ -1101,10 +1173,15 @@
    "find_n": 9,
    "not_found": 4,
    "find_cold_n": 4,
-   "switch_p50_s": 15.8,
+   "switch_p50_s": 17.9,
    "switch_p90_s": 518.1,
-   "switch_n": 11,
-   "switch_missed": 5,
+   "switch_n": 4,
+   "switch_missed": 1,
+   "switch_within10_n": 1,
+   "switch_later_n": 2,
+   "stayed_main_n": 2,
+   "parmaan_n": 5,
+   "parmaan_shown": 1,
    "thin": [],
    "mic": {
     "room-mic": {
@@ -1162,6 +1239,11 @@
    "switch_p90_s": null,
    "switch_n": 0,
    "switch_missed": 0,
+   "switch_within10_n": 0,
+   "switch_later_n": 0,
+   "stayed_main_n": 0,
+   "parmaan_n": 0,
+   "parmaan_shown": 0,
    "thin": [],
    "mic": {
     "studio": {
@@ -1224,8 +1306,13 @@
    "find_cold_n": 45,
    "switch_p50_s": 47,
    "switch_p90_s": 55.6,
-   "switch_n": 13,
+   "switch_n": 10,
    "switch_missed": 1,
+   "switch_within10_n": 0,
+   "switch_later_n": 9,
+   "stayed_main_n": 1,
+   "parmaan_n": 2,
+   "parmaan_shown": 2,
    "thin": [],
    "mic": {
     "mixer-feed": {
@@ -1314,10 +1401,15 @@
    "find_n": 140,
    "not_found": 13,
    "find_cold_n": 124,
-   "switch_p50_s": 17.9,
+   "switch_p50_s": 47,
    "switch_p90_s": 55.6,
-   "switch_n": 27,
-   "switch_missed": 8,
+   "switch_n": 15,
+   "switch_missed": 3,
+   "switch_within10_n": 1,
+   "switch_later_n": 11,
+   "stayed_main_n": 4,
+   "parmaan_n": 8,
+   "parmaan_shown": 3,
    "thin": [],
    "mic": {
     "mixer-feed": {
@@ -1849,17 +1941,17 @@
       141
      ],
      "unit": "8875",
-     "find": 0
+     "find": 0,
+     "parmaan": true
     },
     {
-     "kind": "switch",
+     "kind": "stayed",
      "at": 141,
      "window": [
       141,
       162
      ],
-     "unit": "bani:22|7596|8095",
-     "find": 0
+     "unit": "bani:22|7596|8095"
     }
    ]
   },
@@ -1896,7 +1988,8 @@
       97
      ],
      "unit": "8875",
-     "find": 0
+     "find": 0,
+     "parmaan": true
     }
    ]
   },
@@ -3698,7 +3791,8 @@
       517.1
      ],
      "unit": "5443",
-     "find": null
+     "find": null,
+     "parmaan": true
     },
     {
      "kind": "switch",
@@ -3708,7 +3802,8 @@
       600.6
      ],
      "unit": "3590",
-     "find": null
+     "find": null,
+     "parmaan": true
     },
     {
      "kind": "switch",
@@ -3809,17 +3904,17 @@
       299.3
      ],
      "unit": "3590",
-     "find": null
+     "find": null,
+     "parmaan": true
     },
     {
-     "kind": "switch",
+     "kind": "stayed",
      "at": 299.3,
      "window": [
       299.3,
       438.4
      ],
-     "unit": "4086",
-     "find": 0
+     "unit": "4086"
     },
     {
      "kind": "switch",
@@ -3829,7 +3924,8 @@
       492.5
      ],
      "unit": "4725",
-     "find": 15.8
+     "find": 15.8,
+     "parmaan": true
     },
     {
      "kind": "switch",
@@ -3849,17 +3945,17 @@
       665.5
      ],
      "unit": "1067",
-     "find": null
+     "find": null,
+     "parmaan": true
     },
     {
-     "kind": "switch",
+     "kind": "stayed",
      "at": 665.5,
      "window": [
       665.5,
       754.8
      ],
-     "unit": "4086",
-     "find": 0
+     "unit": "4086"
     }
    ]
   },
@@ -4041,17 +4137,17 @@
       487.2
      ],
      "unit": "2763",
-     "find": null
+     "find": null,
+     "parmaan": true
     },
     {
-     "kind": "switch",
+     "kind": "stayed",
      "at": 487.2,
      "window": [
       487.2,
       684.5
      ],
-     "unit": "2774",
-     "find": 0
+     "unit": "2774"
     }
    ]
   },

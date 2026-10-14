@@ -1,5 +1,5 @@
 /* gab-publish.js — gab publish <scorecard.json> --name "<build name>" [--status merged|candidate] [--note "..."]
- *                               [--order N] [--dry-run] [--allow-dirty] [--site-only] [--reconcile <reconcile.json>]
+ *                               [--order N] [--base <commit>] [--preview <dir>] [--dry-run] [--allow-dirty] [--site-only] [--reconcile <reconcile.json>]
  *
  * Publishes one build's GAB result to the leaderboard Space khalisfoundation/GAB-leaderboard (private, static, free):
  *   results/<slug>.json   the build's rows (behaviours, Banis, named sets; no per-clip detail), build name, commit,
@@ -13,7 +13,10 @@
  * with uncommitted edits (unless --allow-dirty). A behaviour with clips the replay could not finish from the cache
  * (they need new speech-model windows) is published as "incomplete", without numbers.
  * One commit per repo (huggingface_hub; token from ~/.vf-hf-token, never printed, never uploaded).
- * --site-only: push the page files (and --reconcile) only, no result. --replace <slug>: the new row takes the place of
+ * Every publish recomputes each row's "vs base" verdict (gab compare's guardrails): a candidate against --base <commit>
+ * (required for a candidate), a merged build against the merged build before it (by --order).
+ * --preview <dir>: write the Space as it would be into <dir> (to serve locally), push nothing.
+ * --site-only: push the page files (and --reconcile) and the recomputed verdicts only, no new result. --replace <slug>: the new row takes the place of
  * that earlier row (its results file is deleted), e.g. a candidate that has since been merged.
  */
 const fs = require('fs');
@@ -40,8 +43,9 @@ async function hfText(kind, repo, file) {
 
 // scorecard -> the compact result the page shows
 const KEEP = ['key', 'level', 'title', 'note', 'clips', 'hours', 'sessions', 'right_shabad_pct', 'shabad_clips', 'wrong_s_per_h', 'blank_pct', 'pangti_pct', 'pangti_basis', 'pangti_clips', 'pangti_never_shown',
-  'behind_p50_s', 'behind_p90_s', 'behind_n', 'lines', 'find_p50_s', 'find_p90_s', 'find_n', 'find_cold_n', 'not_found', 'switch_p50_s', 'switch_p90_s', 'switch_n', 'switch_missed', 'thin'];
-function resultOf(card, { name, status, note, order }) {
+  'behind_p50_s', 'behind_p90_s', 'behind_n', 'lines', 'find_p50_s', 'find_p90_s', 'find_n', 'find_cold_n', 'not_found', 'switch_p50_s', 'switch_p90_s', 'switch_n', 'switch_missed',
+  'switch_within10_n', 'switch_later_n', 'stayed_main_n', 'parmaan_n', 'parmaan_shown', 'thin'];
+function resultOf(card, { name, status, note, order, base }) {
   const cacheMiss = (card.notRun || []).filter((n) => /left the cache|not in the local or Azure cache/.test(n.why));
   const rows = card.rows.filter((r) => r.level !== 'all').map((r) => {
     const o = Object.fromEntries(KEEP.filter((k) => r[k] !== undefined).map((k) => [k, r[k]]));
@@ -52,12 +56,39 @@ function resultOf(card, { name, status, note, order }) {
     return o;
   });
   return {
-    gab: card.gab, name, status, note: note || null, order: order ?? null,
+    gab: card.gab, name, status, note: note || null, order: order ?? null, base: base || null,
     commit: card.build.commit, vf_feature_version: card.build.featureVersion || null, subject: card.build.subject || null,
     split: card.split.split(' ')[0], tier: card.tier, date: card.createdAt.slice(0, 10), manifest: card.manifest.sha,
     not_run: (card.notRun || []).map((n) => ({ id: n.id.split('_')[0], why: n.why })),
     rows,
   };
+}
+// "vs its base" verdict for every row, with gab compare's guardrail logic (G.compare): a candidate against the build it
+// was made from (--base <commit>), a merged build against the merged build before it (by order). Recomputed for every
+// result on every publish, so a new or re-scored build never leaves a stale verdict.
+const asCard = (res) => ({ build: { name: res.name, commit: res.commit }, manifest: { sha: res.manifest }, tier: res.tier, split: res.split, rows: res.rows });
+const TITLE = { '1-kirtan-shabad': 'Kirtan', '2-bani-recited': 'Bani recited', '3-bani-sung-like-kirtan': 'Bani sung', '4-akhand-paath': 'Akhand Paath' };
+function verdicts(all) {
+  const byOrder = [...all].sort((a, b) => (a.order ?? 99) - (b.order ?? 99) || a.date.localeCompare(b.date));
+  for (const res of all) {
+    let ref = null;
+    let kind = null;
+    if (res.status === 'merged') {
+      ref = byOrder.filter((x) => x.status === 'merged' && (x.order ?? 99) < (res.order ?? 99)).pop() || null;
+      kind = 'previous merged build';
+    } else if (res.base) {
+      ref = all.find((x) => x !== res && String(x.commit).startsWith(String(res.base).slice(0, 8))) || null;
+      kind = 'its base';
+    }
+    if (!ref) { res.vs = res.status === 'merged' ? { kind: 'first merged build', against: null } : { kind: 'its base', against: res.base || null, missing: true }; continue; }
+    const c = G.compare(asCard(ref), asCard(res));
+    const pick = (r) => ({ row: r.key, title: TITLE[r.key] || (r.key.startsWith('set:') ? r.key.slice(4) : r.key), scope: r.scope, metric: r.metric, a: r.a, b: r.b });
+    // information-only named clip sets of earlier reports (L2-41, Aarti-50, ...) that got worse are listed too, apart
+    const infoWorse = c.rows.filter((r) => r.verdict === 'worse (info)' && r.scope === 'all clips' && r.key.startsWith('set:') && !/\(info\)/.test(r.metric));
+    const incomplete = res.rows.filter((r) => r.level === 'behaviour' && r.incomplete && ref.rows.some((x) => x.key === r.key && x.clips)).map((r) => TITLE[r.key] || r.key);
+    res.vs = { kind, against: ref.name, against_commit: ref.commit, pass: c.pass, worse: c.worse.map(pick), better_n: c.better.length, info_worse: infoWorse.map(pick), not_compared: incomplete };
+  }
+  return all;
 }
 const slugOf = (name, commit) => `${name.toLowerCase().replace(/[^a-z0-9.]+/g, '-').replace(/^-|-$/g, '').slice(0, 48)}-${String(commit).slice(0, 8)}`;
 
@@ -110,27 +141,39 @@ async function main(args) {
       if (/^test/.test(card.split) || /test/.test(card.split.split(' ')[0])) throw new Error('test-split numbers are never published (GAB.md, split rule)');
       if (card.build.dirty && !args.includes('--allow-dirty')) throw new Error('the build had uncommitted edits; commit them and re-run gab (or pass --allow-dirty)');
       const status = (opt('status') || 'merged') === 'merged' ? 'merged' : 'candidate, not merged';
-      res = resultOf(card, { name: name.replace(/\|/g, '/'), status, note: opt('note'), order: opt('order') != null ? Number(opt('order')) : null });
+      res = resultOf(card, { name: name.replace(/\|/g, '/'), status, note: opt('note'), order: opt('order') != null ? Number(opt('order')) : null, base: opt('base') });
+      if (status !== 'merged' && !opt('base')) throw new Error('a candidate needs --base <commit of the build it was made from> (its "vs base" verdict)');
       slug = slugOf(name, card.build.commit);
-      fs.writeFileSync(path.join(S, 'result.json'), JSON.stringify(res, null, 1));
-      spaceOps.push([`results/${slug}.json`, 'result.json']);
       const prev = JSON.parse(await hfText('space', SPACE, 'results/index.json') || '{"results":[]}');
       // --replace <slug>: this result takes the place of an earlier row (a candidate that has since been merged)
       const gone = (opt('replace') || '').split(',').filter(Boolean);
       for (const g of gone) { const e = prev.results.find((x) => x.slug === g); if (!e) throw new Error(`--replace ${g}: no such row`); spaceOps.push([`results/${e.file}`, null]); }
       index = { results: [...prev.results.filter((x) => x.slug !== slug && !gone.includes(x.slug)), { slug, file: `${slug}.json`, name: res.name, commit: res.commit, date: res.date, order: res.order }] };
-      fs.writeFileSync(path.join(S, 'index.json'), JSON.stringify(index, null, 1));
-      spaceOps.push(['results/index.json', 'index.json']);
       msg = `GAB leaderboard: ${res.name} (${res.commit}, ${res.split}, ${res.tier})`;
       console.log(`row: ${res.name} | ${res.status} | ${res.commit} | Voice-Follow ${res.vf_feature_version || 'not stamped'} | ${res.gab} | ${res.split} ${res.tier} | ${res.date}`);
-    }
-    if (dry) { console.log(`dry run: would commit ${spaceOps.map((o) => o[0]).join(', ')} to ${SPACE}${siteOnly ? '' : ` and the Leaderboard section + scores/gab/${slug}/ to ${DATASET}`}`); return; }
-    console.log(push(SPACE, 'space', spaceOps, msg, S));
-    if (siteOnly) return;
-    // dataset card: rebuild the short table from every published result (read fresh), only between the markers
+    } else index = JSON.parse(await hfText('space', SPACE, 'results/index.json') || '{"results":[]}');
+    fs.writeFileSync(path.join(S, 'index.json'), JSON.stringify(index, null, 1));
+    spaceOps.push(['results/index.json', 'index.json']);
+    // every result (read fresh), with its "vs base" verdict recomputed; each results file is rewritten
     const all = [];
     for (const e of index.results) all.push(e.slug === slug ? res : JSON.parse(await hfText('space', SPACE, `results/${e.file}`)));
+    verdicts(all);
+    index.results.forEach((e, i) => { fs.writeFileSync(path.join(S, `result-${i}.json`), JSON.stringify(all[i], null, 1)); spaceOps.push([`results/${e.file}`, `result-${i}.json`]); });
     all.sort((a, b) => (a.order ?? 99) - (b.order ?? 99) || a.date.localeCompare(b.date));
+    for (const r of all) console.log(`vs ${r.vs.kind}: ${r.name} -> ${r.vs.against ? `${r.vs.against}: ${r.vs.pass ? 'PASS' : `FAIL (${r.vs.worse.map((w) => `${w.title} ${w.scope} ${w.metric} ${w.a} -> ${w.b}`).join('; ')})`}${r.vs.info_worse && r.vs.info_worse.length ? ` | info rows worse: ${r.vs.info_worse.map((w) => `${w.title} ${w.metric} ${w.a} -> ${w.b}`).join('; ')}` : ''}` : '-'}`);
+    // --preview <dir>: write the Space as it would be (page files + results) into <dir> and stop (nothing pushed)
+    if (opt('preview')) {
+      const P = path.resolve(opt('preview'));
+      fs.mkdirSync(path.join(P, 'results'), { recursive: true });
+      for (const [dst, src] of spaceOps) if (src) fs.copyFileSync(path.join(S, src), path.join(P, dst));
+      console.log(`preview written to ${P}`);
+      return;
+    }
+    if (dry) { console.log(`dry run: would commit ${spaceOps.map((o) => o[0]).join(', ')} to ${SPACE}${siteOnly ? '' : ` and the Leaderboard section (if its numbers changed) + scores/gab/${slug}/ to ${DATASET}`}`); return; }
+    console.log(push(SPACE, 'space', spaceOps, msg, S));
+    if (siteOnly) return;
+    // dataset card: rebuild the short table from every published result, only between the markers; left alone when
+    // its numbers did not change
     const readme = await hfText('dataset', DATASET, 'README.md');
     if (!readme) throw new Error('could not read README.md from the dataset');
     const newReadme = readme.includes(START)
@@ -140,9 +183,12 @@ async function main(args) {
     fs.writeFileSync(path.join(S, 'LEADERBOARD.md'), `# GAB leaderboard\n\nThe leaderboard moved to the private Space [${SPACE}](${SPACE_URL}) with ${G.GAB_VERSION} (Oct 14 2026). The ${'GAB v1.0'} rows that were here are retired: their kirtan line number counted recordings where nothing was ever shown as 0%, their find time was measured from a window that opened mid-Shabad (so mostly 0 s), and the headline mixed behaviours. Full scorecards per build: scores/gab/.\n`);
     fs.copyFileSync(path.resolve(args.find((a) => !a.startsWith('--') && a.endsWith('.json') && a !== opt('reconcile'))), path.join(S, 'scorecard.json'));
     fs.writeFileSync(path.join(S, 'scorecard.md'), `${G.markdown(card)}\n`);
-    console.log(push(DATASET, 'dataset', [['README.md', 'README.md'], ['LEADERBOARD.md', 'LEADERBOARD.md'], [`scores/gab/${slug}/scorecard.json`, 'scorecard.json'], [`scores/gab/${slug}/scorecard.md`, 'scorecard.md']], msg, S));
+    const dsOps = [[`scores/gab/${slug}/scorecard.json`, 'scorecard.json'], [`scores/gab/${slug}/scorecard.md`, 'scorecard.md']];
+    if (newReadme !== readme) dsOps.push(['README.md', 'README.md'], ['LEADERBOARD.md', 'LEADERBOARD.md']);
+    else console.log('dataset card: Leaderboard section unchanged, not touched');
+    console.log(push(DATASET, 'dataset', dsOps, msg, S));
     console.log(`published: ${SPACE_URL} (results/${slug}.json) and the dataset card's Leaderboard section`);
   } finally { fs.rmSync(S, { recursive: true, force: true }); }
 }
 
-module.exports = { main, resultOf, section };
+module.exports = { main, resultOf, section, verdicts, slugOf };

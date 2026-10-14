@@ -17,7 +17,10 @@
  *   find p50/p90 (n)         the first Shabad/Bani of each clip: from t=0 when the clip was cut from inside a
  *                            performance (cold start: the app is started while it is sung), else from its start;
  *                            "not found" = never shown inside its window
- *   switch p50/p90 (n)       every later Shabad/Bani that differs from the one before it: from its start
+ *   switch                   every later Shabad/Bani that differs from the one before it, from its start, when the
+ *                            screen showed something else as it began: found within 10 s / later / never, p50/p90 over
+ *                            found; a return to a main Shabad the screen never left = 'stayed on main' (counted apart);
+ *                            parmaans (a Shabad quoted inside another) also counted shown / not shown
  *   coverage                 clips, hours, and the n behind each number; fewer than 3 = "thin" (flagged)
  * Mic path (gab-micpath.json): mixer-feed vs room-mic per row, and their 50/50 mean, as a second view.
  * Deterministic: same traces + same truth -> byte-identical JSON apart from `createdAt` and `timings`.
@@ -84,8 +87,10 @@ function group(sv, clips) {
   const lines = BASES.map((b) => lineGroup(sv, clips, b)).filter(Boolean);
   const head = lines.find((g) => g.clips) || lines[0] || null;
   const ev = clips.flatMap((c) => c.events);
-  const finds = ev.filter((e) => e.kind !== 'switch');
-  const sw = ev.filter((e) => e.kind === 'switch');
+  const finds = ev.filter((e) => e.kind === 'cold' || e.kind === 'begins');
+  // a parmaan (a Shabad quoted inside another) is its own count, not a switch
+  const sw = ev.filter((e) => e.kind === 'switch' && !e.parmaan);
+  const pm = ev.filter((e) => e.kind === 'switch' && e.parmaan);
   const ok = (a) => a.filter((e) => e.find != null).map((e) => e.find);
   const hours = clips.reduce((a, c) => a + (c.dur || 0), 0) / 3600;
   const g = {
@@ -98,7 +103,12 @@ function group(sv, clips) {
     lines,
     find_p50_s: r1(quant(ok(finds), 0.5)), find_p90_s: r1(quant(ok(finds), 0.9)), find_n: finds.length, not_found: finds.length - ok(finds).length,
     find_cold_n: finds.filter((e) => e.kind === 'cold').length,
+    // switches: only events where the screen showed something else when the new Shabad/Bani began (returns to a
+    // main Shabad the screen never left are 'stayed', counted apart); found within 10 s / later / never; p50 over found
     switch_p50_s: r1(quant(ok(sw), 0.5)), switch_p90_s: r1(quant(ok(sw), 0.9)), switch_n: sw.length, switch_missed: sw.length - ok(sw).length,
+    switch_within10_n: ok(sw).filter((x) => x <= 10).length, switch_later_n: ok(sw).filter((x) => x > 10).length,
+    stayed_main_n: ev.filter((e) => e.kind === 'stayed').length,
+    parmaan_n: pm.length, parmaan_shown: ok(pm).length,
   };
   g.thin = ['pangti_clips', 'find_n', 'switch_n'].filter((k) => g[k] > 0 && g[k] < THIN).concat(g.clips < THIN ? ['clips'] : []);
   return g;
@@ -186,7 +196,9 @@ function cellsOf(r) {
   const pangti = r.pangti_pct != null ? `${r.pangti_basis === 'aligned' ? '' : '**'}${r.pangti_pct}%${r.pangti_basis === 'aligned' ? '' : '**'} (${basis}; ${r.pangti_clips} clips${r.pangti_never_shown ? `, +${r.pangti_never_shown} never shown` : ''}${audit})${thin(r, 'pangti_clips')}` : r.pangti_never_shown ? `- (${r.pangti_never_shown} clips with line truth, nothing ever shown)` : '- (no line truth)';
   const behind = r.behind_p50_s != null ? `${r.behind_p50_s} / ${r.behind_p90_s} (${r.behind_n} pangtis, ${basis})` : '-';
   const find = r.find_n ? `${f(r.find_p50_s)} / ${f(r.find_p90_s)} (n ${r.find_n}${r.find_cold_n ? `, ${r.find_cold_n} cold` : ''}${r.not_found ? `, ${r.not_found} not found` : ''})${thin(r, 'find_n')}` : '-';
-  const sw = r.switch_n ? `${f(r.switch_p50_s)} / ${f(r.switch_p90_s)} (n ${r.switch_n}${r.switch_missed ? `, ${r.switch_missed} never` : ''})${thin(r, 'switch_n')}` : '- (no switch in these clips)';
+  const stayed = r.stayed_main_n ? `; ${r.stayed_main_n} stayed on main Shabad` : '';
+  const pm = r.parmaan_n ? `; parmaan shown ${r.parmaan_shown} of ${r.parmaan_n}` : '';
+  const sw = r.switch_n ? `${r.switch_within10_n ?? '-'} within 10 s / ${r.switch_later_n ?? '-'} later / ${r.switch_missed} never (n ${r.switch_n}); p50 ${f(r.switch_p50_s)} s over found${stayed}${pm}${thin(r, 'switch_n')}` : `- (no switch in these clips${stayed}${pm})`;
   return [`${r.clips} · ${r.hours} h${thin(r, 'clips')}`, `${f(r.right_shabad_pct, '%')}`, pangti, behind, f(r.wrong_s_per_h), find, sw];
 }
 function markdown(card) {
@@ -195,7 +207,7 @@ function markdown(card) {
   L.push('');
   L.push(`build \`${card.build.root}\` @ ${card.build.commit || '?'}${card.build.dirty ? ' (uncommitted edits)' : ''}${card.build.featureVersion ? ` · Voice-Follow ${card.build.featureVersion}` : ''} · manifest ${card.manifest.sha} (${card.manifest.rows} rows) · tier **${card.tier}** · split **${card.split}**${card.folders ? ` · folders ${card.folders}` : ''} · ${card.createdAt}`);
   L.push('');
-  L.push('| behaviour | clips · audio | right Shabad/Bani on screen (human truth) | sangat sees the right pangti (truth basis; coverage) | seconds behind p50 / p90 | wrong Shabad s per hour | time to find p50 / p90 s | switch time p50 / p90 s |');
+  L.push('| behaviour | clips · audio | right Shabad/Bani on screen (human truth) | sangat sees the right pangti (truth basis; coverage) | seconds behind p50 / p90 | wrong Shabad s per hour | time to find p50 / p90 s | switch: found within 10 s / later / never; p50 |');
   L.push('|---|---|---|---|---|---|---|---|');
   for (const r of card.rows.filter((x) => x.level === 'behaviour' || x.level === 'bani')) {
     const name = r.level === 'behaviour' ? `**${r.title}**` : `&nbsp;&nbsp;${r.title}`;
@@ -204,7 +216,7 @@ function markdown(card) {
   L.push('');
   L.push('Named clip sets of earlier reports (so an old number can be checked on its own clips):');
   L.push('');
-  L.push('| set | clips · audio | right Shabad/Bani | sangat sees the right pangti | seconds behind p50 / p90 | wrong s/h | find p50 / p90 s | switch p50 / p90 s |');
+  L.push('| set | clips · audio | right Shabad/Bani | sangat sees the right pangti | seconds behind p50 / p90 | wrong s/h | find p50 / p90 s | switch: within 10 s / later / never; p50 |');
   L.push('|---|---|---|---|---|---|---|---|');
   for (const r of card.rows.filter((x) => x.level === 'set' || x.level === 'all')) L.push(`| ${r.title} | ${cellsOf(r).join(' | ')} |`);
   L.push('');
@@ -226,7 +238,7 @@ function markdown(card) {
   L.push('');
   L.push(`Mic path assumptions (gab-micpath.json): ${Object.entries(card.micAssumptions).map(([g, a]) => `${g} = ${a.split(' (')[0]}`).join('; ')}.`);
   L.push('');
-  L.push('How to read: right Shabad/Bani % and wrong s/h rest on human answer keys for every clip. Sangat-sees-pangti % and seconds behind need line-level answer keys; their basis is printed (human = the sevadaar\'s screen or a person; aligned, ear-checked = made by our aligner and spot-checked by ear; aligned = made by our aligner only, not a headline). Find = first Shabad/Bani of a clip ("cold" = the app was started while it was being sung, timed from t=0); switch = a later, different Shabad/Bani, timed from its start. (thin) = fewer than 3 clips or events behind the number.');
+  L.push('How to read: right Shabad/Bani % and wrong s/h rest on human answer keys for every clip. Sangat-sees-pangti % and seconds behind need line-level answer keys; their basis is printed (human = the sevadaar\'s screen or a person; aligned, ear-checked = made by our aligner and spot-checked by ear; aligned = made by our aligner only, not a headline). Find = first Shabad/Bani of a clip ("cold" = the app was started while it was being sung, timed from t=0); switch = a later, different Shabad/Bani, timed from its start, counted only when the screen showed something else when it began (a return to the main Shabad after a parmaan that the screen never left is "stayed on main Shabad", correct, not a switch); p50 is over found switches only, so read it with "never"; a parmaan is also counted as shown / not shown. (thin) = fewer than 3 clips or events behind the number.');
   if (card.notRun && card.notRun.length) {
     const by = {};
     for (const n of card.notRun) (by[n.why] = by[n.why] || []).push(n.id);
@@ -251,9 +263,10 @@ const GUARD = {
   find_p50_s: [-1, 0.2, 'time to find p50 s'],
   not_found: [-1, 0, 'not found'],
   switch_p50_s: [-1, 0.2, 'switch time p50 s'],
-  switch_missed: [-1, 0, 'switches never shown'],
+  switch_missed: [-1, 0, 'switches never found'],
+  switch_within10_n: [1, 0, 'switches found within 10 s'],
 };
-const INFO = { find_p90_s: [-1, 0.2, 'time to find p90 s (info)'], switch_p90_s: [-1, 0.2, 'switch time p90 s (info)'], pangti_never_shown: [-1, 0, 'line-truth clips never shown (info)'] };
+const INFO = { find_p90_s: [-1, 0.2, 'time to find p90 s (info)'], switch_p90_s: [-1, 0.2, 'switch time p90 s (info)'], pangti_never_shown: [-1, 0, 'line-truth clips never shown (info)'], parmaan_shown: [1, 0, 'parmaans shown (info)'] };
 function compare(A, B) {
   const out = { gab: GAB_VERSION, a: A.build, b: B.build, manifest: [A.manifest.sha, B.manifest.sha], tier: A.tier, split: A.split, rows: [], pass: true, worse: [], better: [] };
   if (A.manifest.sha !== B.manifest.sha) out.warning = 'the two scorecards used different manifests';
@@ -310,7 +323,7 @@ function compareMarkdown(c, A, B) {
   L.push(`| (${nSame} more metric cells unchanged) | | | | | |`);
   L.push('');
   L.push(`GUARDRAILS: ${c.pass ? 'PASS (no guarded metric worse)' : `FAIL (${c.worse.length} worse: ${c.worse.map((w) => `${title(w.key)} ${w.scope} ${w.metric} ${w.a} -> ${w.b}`).join('; ')})`} · ${c.better.length} better`);
-  L.push('Guarded = each behaviour, all clips and per mic path (mixer feed, room mic, 50/50); per-Bani rows, named sets and the mixed all-behaviours row are information only. Tolerances: right % 0.1 pt, seconds behind 0.05 s (p50) / 0.1 s (p90), wrong s/h 1, find / switch time 0.2 s, not found / never switched 0.');
+  L.push('Guarded = each behaviour, all clips and per mic path (mixer feed, room mic, 50/50); per-Bani rows, named sets and the mixed all-behaviours row are information only. Tolerances: right % 0.1 pt, seconds behind 0.05 s (p50) / 0.1 s (p90), wrong s/h 1, find / switch time 0.2 s, not found / switches never found / switches found within 10 s 0.');
   return L.join('\n');
 }
 

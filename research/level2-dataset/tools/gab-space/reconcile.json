@@ -1,6 +1,6 @@
 {
  "title": "Numbers we reported before, checked with GAB v1.1",
- "intro": "Each row is a number from an earlier report. GAB was run on the same recordings with the same build and the same scorer rules. 'yes' means GAB gets the same number. Rows on held-out test recordings (Renton Oct 11) were checked once, only to confirm the scorer, and are never leaderboard rows; their values are the old reported ones.",
+ "intro": "Each row is a number from an earlier report. GAB was run on the same practice-set recordings with the same build and the same scorer rules. 'yes' means GAB gets the same number. Rows measured on recordings that are now in the held-out test set (Renton Oct 11, Fremont test sessions) quote only the number reported at the time; they are not re-checked here and no test-set number is published.",
  "rows": [
   {
    "what": "Kirtan: right Shabad on screen, Level-2 set",
@@ -46,9 +46,9 @@
    "what": "Fremont kirtan, line hold on held-out test",
    "old": "65.5% -> 72.7% (+7.2)",
    "where": "9 Fremont test clips",
-   "gab": "not re-run",
+   "gab": "test split: not re-checked on the leaderboard",
    "match": "not checked",
-   "why": "Test split. The dev rows above use the same scorer path and match exactly."
+   "why": "Held-out test sessions: quoted as reported. The dev rows above use the same scorer path and match exactly."
   },
   {
    "what": "Aarti-50: Aarti on screen / wrong",
@@ -77,34 +77,34 @@
   {
    "what": "Paath: Renton Rehras, sangat sees the right pangti / seconds behind",
    "old": "94.1% / 0.44 s (0.4 s; 8.3 s on the night)",
-   "where": "Renton Oct 11 Rehras, aligned line truth (now ear-checked: 23 of 25 starts confirmed, 2 unsure)",
-   "gab": "same (checked once on the test clip)",
-   "match": "yes",
-   "why": "Test split: not on the leaderboard. The 8.3 s was the real screen on the night (pipeline backlog), not a replay."
+   "where": "Renton Oct 11 Rehras, aligned line truth (ear check: 23 of 25 starts confirmed, 2 unsure)",
+   "gab": "test split: not re-checked on the leaderboard",
+   "match": "not checked",
+   "why": "Held-out test recording: the reported 94.1% / 0.44 s is quoted as it was. The 8.3 s was the real screen on the night (pipeline backlog), not a replay."
   },
   {
    "what": "Paath: Renton Sohila",
    "old": "94.7% / 0.44 s",
-   "where": "Renton Oct 11 Sohila (15 of 15 ear-checked starts confirmed)",
-   "gab": "same (checked once)",
-   "match": "yes",
-   "why": "Test split."
+   "where": "Renton Oct 11 Sohila, aligned line truth (ear check: 15 of 15 starts confirmed)",
+   "gab": "test split: not re-checked on the leaderboard",
+   "match": "not checked",
+   "why": "Held-out test recording: the reported number is quoted as it was."
   },
   {
    "what": "Paath: right Bani, Renton Rehras / Sohila",
    "old": "97.1% / 97.5%",
    "where": "Renton Oct 11",
-   "gab": "same (checked once)",
-   "match": "yes",
-   "why": "Test split."
+   "gab": "test split: not re-checked on the leaderboard",
+   "match": "not checked",
+   "why": "Held-out test recordings: the reported numbers are quoted as they were."
   },
   {
    "what": "Sung Aarti behind the singer, fast Aarti",
    "old": "2.4 s -> 1.2 s",
-   "where": "Renton Oct 11 Aarti",
-   "gab": "same direction and size (checked once on the test clip; tonight's values not published)",
-   "match": "explained",
-   "why": "1.2 s came from renton-score (Shabad ids). The sangat-view scorer reported 87.9% / 1.06 s for MVP 9.0 on this clip (SANGAT-VIEW.md, renton-mvp90). Test split: not on the leaderboard."
+   "where": "Renton Oct 11 Aarti, aligned line truth (ear check: 18 of 20 starts confirmed, 1 unsure, 1 rejected and never scored)",
+   "gab": "test split: not re-checked on the leaderboard",
+   "match": "not checked",
+   "why": "Held-out test recording: quoted as reported. 1.2 s came from renton-score (Shabad ids); SANGAT-VIEW.md reported 87.9% / 1.06 s for MVP 9.0 on this clip with the sangat-view scorer. The practice-set Aarti numbers (Aarti-50 rows above) are on the leaderboard."
   },
   {
    "what": "Rehras -> Aarti switch",

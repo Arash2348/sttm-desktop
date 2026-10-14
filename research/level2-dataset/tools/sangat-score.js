@@ -643,8 +643,14 @@ function compareSides(jobs, traceOf, { dataset } = {}) {
 // The FIRST window is a find: from clip t=0 when the clip was cut from inside a performance (opts.coldFirst: the app
 // is started while it is being sung, so the time it takes to show it is the cold-start find time), else from the
 // window start (the Shabad begins inside the clip). Every LATER window whose Shabad/Bani differs from the one before
-// it is a switch, measured from its start. Each event: seconds until a text of it is on screen (null = never, inside
-// its window). Windows shorter than 3 s are passing tuks, not events.
+// it is a switch candidate, measured from its start. Each event: seconds until a text of it is on screen (null = never,
+// inside its window). Windows shorter than 3 s are passing tuks, not events.
+// Returns and parmaans (fixed Oct 14 2026, review of v1.1): a window whose Shabad/Bani was already sung earlier in the
+// clip is a RETURN (back to the main Shabad after a parmaan). It is a switch only if the screen actually LEFT that
+// Shabad (showed a different Shabad/Bani text) between its earlier window and the return; if the screen never left
+// (a blank / Waheguru slide is not leaving), the event is kind 'stayed' (correct behaviour, never a 0 s switch).
+// A window lying between two windows of the same Shabad/Bani, or inside a longer window of another one, is a
+// parmaan: it is kept as an event with parmaan: true (GAB counts it as shown / not shown, apart from switches).
 function findEvents(ds, row, eventsFile, opts = {}) {
   const truth = loadTruth(ds, row);
   const { events } = loadEvents(eventsFile);
@@ -654,19 +660,22 @@ function findEvents(ds, row, eventsFile, opts = {}) {
   rows.forEach((r) => r.ids.forEach(unit));
   covering(truth, rows[0].start); // builds truth.memberOf
   const keyOf = (r) => { const m = truth.memberOf.get(r); return m && m.length ? m[0] : r; };
+  // two truth rows of the same Shabad/Bani (e.g. sung again after a parmaan) are the same content: compare ids
+  const kid = (r) => [...r.ids].map(String).sort().join('|');
+  const sameKey = (a, b) => a === b || kid(a) === kid(b);
   const wins = [];
   for (const r of [...rows].sort((a, b) => a.start - b.start || b.end - a.end)) {
     const k = keyOf(r);
     const last = wins[wins.length - 1];
-    if (last && last.key === k && r.start - last.end < 5) { last.end = Math.max(last.end, r.end); continue; }
-    if (last && last.key === k) { wins.push({ key: k, start: r.start, end: r.end }); continue; }
+    if (last && sameKey(last.key, k) && r.start - last.end < 5) { last.end = Math.max(last.end, r.end); continue; }
+    if (last && sameKey(last.key, k)) { wins.push({ key: k, start: r.start, end: r.end }); continue; }
     // a Bani row whose own window opens later than a member piece already seen: same content, extend
-    if (wins.some((w) => w.key === k && w.end >= r.start - 5)) { const w = wins.filter((x) => x.key === k).pop(); w.end = Math.max(w.end, r.end); continue; }
+    if (wins.some((w) => sameKey(w.key, k) && w.end >= r.start - 5)) { const w = wins.filter((x) => sameKey(x.key, k)).pop(); w.end = Math.max(w.end, r.end); continue; }
     wins.push({ key: k, start: r.start, end: r.end });
   }
   const out = [];
   wins.forEach((w, i) => {
-    const ids = [...new Set([...w.key.ids, ...rows.filter((r) => keyOf(r) === w.key).flatMap((r) => r.ids)])];
+    const ids = [...new Set([...w.key.ids, ...rows.filter((r) => sameKey(keyOf(r), w.key)).flatMap((r) => r.ids)])];
     const units = ids.map(unit);
     const set = new Set(units.flatMap((u) => u.seq));
     const isOn = (st) => {
@@ -677,13 +686,26 @@ function findEvents(ds, row, eventsFile, opts = {}) {
     };
     let kind;
     let from;
+    let parmaan = false;
     if (i === 0) { kind = opts.coldFirst || w.start <= 3 ? 'cold' : 'begins'; from = kind === 'cold' ? 0 : w.start; } else {
-      if (wins[i - 1].key === w.key) return;
+      if (sameKey(wins[i - 1].key, w.key)) return;
       kind = 'switch'; from = w.start;
+      // parmaan: sandwiched between two windows of one other Shabad/Bani, or nested inside a window of another that goes on after it
+      parmaan = wins.slice(0, i).some((a) => !sameKey(a.key, w.key) && (a.end > w.end + 3 || wins.slice(i + 1).some((b) => sameKey(b.key, a.key))));
+      const prev = wins.slice(0, i).filter((a) => sameKey(a.key, w.key)).pop();
+      if (prev) {
+        // a return: did the screen show a different Shabad/Bani text between the earlier window and this one?
+        const span = [stateAt(states, prev.end), ...states.filter((st) => st.t > prev.end && st.t <= from)];
+        const shown = span.filter((st) => screenText(st) != null);
+        const left = shown.some((st) => !isOn(st));
+        const lastShown = shown[shown.length - 1];
+        if (!left && lastShown && isOn(lastShown)) kind = 'stayed';
+      }
     }
     let found = isOn(stateAt(states, from)) ? from : null;
     if (found == null) for (const st of states) if (st.t > from && st.t < w.end && isOn(st)) { found = st.t; break; }
-    out.push({ kind, at: r1(from), window: [r1(w.start), r1(w.end)], unit: ids.join('|'), find: found == null ? null : r1(found - from) });
+    if (kind === 'stayed') { out.push({ kind, at: r1(from), window: [r1(w.start), r1(w.end)], unit: ids.join('|') }); return; }
+    out.push({ kind, at: r1(from), window: [r1(w.start), r1(w.end)], unit: ids.join('|'), find: found == null ? null : r1(found - from), ...(parmaan ? { parmaan: true } : {}) });
   });
   return out;
 }

@@ -23,7 +23,7 @@ them (the user's list; a Bani with no clip reads "no clips yet"), and the named 
 | How many seconds behind is it? | same truth basis: a new pangti starts -> first on screen (p50 / p90, n pangtis) |
 | How long is a wrong Shabad up? | seconds per hour that a line from a different Shabad or Bani is on screen |
 | How fast does it find a Shabad? | the first Shabad/Bani of each clip. Clips cut from inside a performance (L2, paath, Aarti, Asa di Vaar: `coldFirst` in gab-sets.json) are timed from t=0, when the app starts listening ("cold": Start pressed while it is sung); others from the truth start. p50 / p90, n, not found |
-| How fast does it switch? | every later Shabad/Bani that differs from the one before it (a piece of a Bani counts as the Bani): from its start to on screen. p50 / p90, n, never |
+| How fast does it switch? | every later Shabad/Bani that differs from the one before it (a piece of a Bani counts as the Bani), from its start to on screen, counted only when the screen showed something else as it began. Reported as **found within 10 s / found later / never found** plus p50 over the found ones (so never-found stays visible). A return to the main Shabad after a parmaan that the screen never left is **stayed on main Shabad** (correct; counted apart, never a 0 s switch). A **parmaan** (a Shabad quoted between two parts of another, or inside it) is its own count: shown / not shown |
 | How much does each number rest on? | clips, hours, and the n under each number; fewer than 3 clips or events = **thin** |
 
 Mic path (mixer feed / room mic / 50/50) stays as a second table. Which recording counts as which is in
@@ -41,9 +41,17 @@ runner yet".
   inside a performance (the 30 s before the window is the same Shabad), so the app was usually locked already. v1.1
   times those from t=0 (cold start) and keeps truth-start timing only where the Shabad really begins in the clip.
 * **Switch time** is new (Shabad -> different Shabad inside a clip).
-* **Ear checks** of aligned line starts are applied (sangat-score: rejected rows skipped; Renton truth: 48 of 51 rows
-  confirmed, 3 unsure; the one rejected start is never scored). Renton is in the test split, so this shows only in
-  reconciliation runs.
+* **Switch rule fixed (Oct 14 2026, same day, after review; all 7 published builds re-scored from the cached replays,
+  no other number changed):** the first v1.1 scorecards counted a return to the main Shabad after a parmaan as a
+  switch even when the app never left the main Shabad (found at 0-1.5 s), and two truth rows of the same Shabad were
+  treated as different Shabads, so kirtan read "1.5 s typical" while most new Shabads were never found. Now: returns
+  the screen never left = "stayed on main Shabad"; parmaans counted apart (shown / not shown); switches reported as
+  found within 10 s / later / never + p50 over found. 9.0.1 release, kirtan: 1 within 10 s / 2 later / 2 never
+  (p50 17.9 s), 3 stayed on main, parmaan shown 1 of 6.
+* **Ear checks** of aligned line starts are applied (sangat-score: a rejected start is never scored). The file
+  `human-verdicts/line-start-check/verdicts.csv` on Hugging Face has 60 checked Renton Oct 11 line starts: 56
+  confirmed, 3 unsure, 1 rejected (Rehras 23 of 25 confirmed + 2 unsure; Sohila 15 of 15; Aarti 18 of 20 + 1 unsure +
+  1 rejected). Renton is in the test split, so this shows only in reconciliation runs, never on the leaderboard.
 * **Excluded:** pt37, pt42, pt46 (their 30-60 s window is not Aarti; dataset truth to fix).
 * **Headline:** per behaviour, no 50/50 mix in the headline; all-behaviours row is labelled "mixed; not a headline".
 
@@ -55,7 +63,7 @@ cd ~/personal/sttm-replay/research/level2-dataset/tools
 ./gab run ~/personal/<worktree> --tier full
 ./gab compare upstream ~/personal/<worktree> [--tier full]   # before/after, PASS only if no guarded number is worse
 ./gab slowpc upstream ~/personal/<worktree>                   # simulated slow PC (timing only, never on the leaderboard)
-./gab publish <run>/scorecard.json --name "<build name>" [--status candidate --note "from 2cb8b003"]   # one row on the Space
+./gab publish <run>/scorecard.json --name "<build name>" --order N [--status candidate --base 2cb8b003]   # one row on the Space
 ```
 `<build>` is a worktree or a git rev of `~/personal/sttm-desktop` (`upstream` = khalis/experimental-release).
 `--manifest hf` scores against the manifest + answer keys on Hugging Face instead of the local copy
@@ -63,8 +71,14 @@ cd ~/personal/sttm-replay/research/level2-dataset/tools
 
 Guardrails (`gab compare`): each behaviour, all clips and per mic path (mixer, room, 50/50).
 Worse beyond a tiny tolerance on any of right %, sangat-sees-pangti %, seconds behind, wrong s/h, time to find,
-not found, switch time, never switched = FAIL. Per-Bani rows, named sets and the mixed all-behaviours row are information only. The replay is deterministic, so
+not found, switch time p50, switches never found, switches found within 10 s = FAIL. Per-Bani rows, named sets and the mixed all-behaviours row are information only. The replay is deterministic, so
 every change is a real change; the compare also lists the clips whose screen events differ.
+
+Leaderboard verdicts: every `gab publish` recomputes, for every row, a "vs base" verdict with the same guardrails
+(PASS / FAIL with the worse numbers listed): a candidate against the build it was made from (`--base`), a merged
+build against the merged build before it (`--order`). Named clip sets that got worse (information only) are listed
+under it. Page notes (clip counts, switch counts, which candidates come from which base) are generated from the
+results files when the page loads, so adding a build never leaves stale text.
 
 Speed: the first run of a new build replays every clip from the cache (no speech model): measured 48 s for smoke and
 14 min for full (11 h of audio, 4 workers, the Mac at load average ~30 from other runs). A committed build that was
