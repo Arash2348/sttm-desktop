@@ -58,6 +58,11 @@ Results of a committed, unchanged app tree are kept per tree hash (`<cache>/resu
 | Audio backlog: a slow PC merges waiting audio into one push (`AUDIO_BACKLOG_S`) | never (each 128 ms chunk is pushed alone) | backlog behaviour is NOT tested here |
 | ORT may finish two concurrent passes in either order | FIFO | removes a source of run-to-run jitter |
 
+**Slow-PC timing from the cache:** `sim-slowpc.js` / `sim-sweep.js` replay the component on a virtual clock
+(`VF_SIM_PASS_MS`: microphone at real-time pace, each model pass costs N ms per 4 s window, the app's audio queue,
+backlog bound, tier self-test and stepping run unmodified). Validated against the x86 VM runs:
+`results/SIM-SLOWPC.md`.
+
 **Still needs live-paced runs:** anything about timing — backlog/throughput (`vf-lag-stress.js`
 `--pace wall` with a slowed engine), decision cancellation on a slow PC, Start/Stop/take-over in the
 app (`stop-keeps-screen-test.js`), and a final PR spot check of a few clips with the real model
