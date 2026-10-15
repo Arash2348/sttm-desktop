@@ -203,4 +203,12 @@ model passes, so it replays from the cache except where it changes later windows
 1. Add `HF_TOKEN` and `VF_AZURE_SAS` to this cloud environment's settings (environment menu in the session's
    title bar, then Edit), then start a new cloud session: a session only picks up variables added before it
    started. Then GAB can run in the cloud and this checklist runs there instead of on the Mac.
-2. Fix 6 (after a ceremony: follow what is sung, or pause?) is still your call.
+2. Fix 6: decided (Oct 16), see Backlog.
+
+## Backlog (decided, not scheduled)
+
+- **Fix 6: after a ceremony, hand off cleanly to what is sung next.** Owner's call: the app should follow the
+  next Shabad well after a ceremony (Ardas, Hukamnama, Anand Sahib) rather than pause, but only if no other GAB
+  metric gets worse (main, Fremont, Akhand: right Shabad, wrong-Shabad s/h, find time). Not built now: Akhand
+  Kirtan comes first. Pick it up if the issue shows up again in a recording or a report; build it as a constant
+  (on/off) and run the GAB checklist before keeping it.
