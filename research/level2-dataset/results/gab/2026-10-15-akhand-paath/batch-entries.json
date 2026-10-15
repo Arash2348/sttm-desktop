@@ -1,0 +1,5 @@
+[
+ { "main": "/Users/asingh02/personal/sttm-replay/research/level2-dataset/results/gab/2026-10-15-akhand-paath/upstream/scorecard.json", "hard": "/Users/asingh02/personal/sttm-replay/research/level2-dataset/results/gab/2026-10-15-akhand-paath/upstream/hard-scorecard.json", "name": "9.0.3", "status": "merged", "note": "re-scored with the Akhand Paath set (suite apaath)" },
+ { "main": "/Users/asingh02/personal/sttm-replay/research/level2-dataset/results/gab/2026-10-15-akhand-paath/sttm-akhand-2/scorecard.json", "hard": "/Users/asingh02/personal/sttm-replay/research/level2-dataset/results/gab/2026-10-15-akhand-paath/sttm-akhand-2/hard-scorecard.json", "name": "Akhand Paath sequence mode", "status": "candidate", "base": "3fafc0ba" },
+ { "main": "/Users/asingh02/personal/sttm-replay/research/level2-dataset/results/gab/2026-10-15-akhand-paath/56897a74/scorecard.json", "hard": "/Users/asingh02/personal/sttm-replay/research/level2-dataset/results/gab/2026-10-15-akhand-paath/56897a74/hard-scorecard.json", "name": "Akhand Paath sequence mode after 3 lines", "status": "candidate", "base": "3fafc0ba" }
+]

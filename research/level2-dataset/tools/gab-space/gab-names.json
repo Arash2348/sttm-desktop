@@ -86,6 +86,24 @@
     "Accuracy",
     "Speed"
    ]
+  },
+  "79584f7c": {
+   "label": "Akhand Paath sequence mode (on 9.0.3)",
+   "kind": "experiment",
+   "why": "Ang after Ang: follows the reader line by line and opens the next Shabad by itself; lag 0.66 to 0.3 s",
+   "type": [
+    "New behaviour",
+    "Speed"
+   ]
+  },
+  "56897a74": {
+   "label": "Akhand Paath sequence mode after 3 pangtis",
+   "kind": "experiment",
+   "why": "sequence mode starts after 3 pangtis read in order (was 6); helps short Shabads",
+   "type": [
+    "New behaviour",
+    "Speed"
+   ]
   }
  }
 }
