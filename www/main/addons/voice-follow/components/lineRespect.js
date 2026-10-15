@@ -13,8 +13,11 @@
 
 // How long the sevadaar's line is protected.
 const SEVADAAR_HOLD_MS = 12000;
-// A screen line equal to one the app wrote this recently is the app's own.
+// A screen line equal to the app's latest write within this long is the app's own; an
+// earlier write only within APP_WRITE_BURST_MS (one burst of store actions seen late). So a
+// sevadaar who puts back the line the app has just left is still seen.
 const APP_WRITE_GRACE_MS = 3000;
+const APP_WRITE_BURST_MS = 500;
 // During the hold, a pangti other than the next one needs the follower to stay on it
 // (or keep moving forward from it) this long, in this many outputs in a row, each at
 // least this confident.
@@ -49,7 +52,10 @@ function createLineRespect() {
     classify(verseId, { now, following, sameShabad, known }) {
       if (verseId == null) return 'ignore';
       prune(now);
-      if (writes.some((w) => w.verseId === verseId)) return 'app';
+      const last = writes[writes.length - 1];
+      if (last && last.verseId === verseId) return 'app';
+      if (writes.some((w) => w.verseId === verseId && now - w.at <= APP_WRITE_BURST_MS))
+        return 'app';
       if (!following || !sameShabad || !known) return 'ignore';
       return 'sevadaar';
     },
@@ -144,6 +150,7 @@ module.exports = {
   lineOfVerse,
   SEVADAAR_HOLD_MS,
   APP_WRITE_GRACE_MS,
+  APP_WRITE_BURST_MS,
   HOLD_MOVE_MS,
   HOLD_MOVE_OUTPUTS,
   HOLD_MOVE_CONF,

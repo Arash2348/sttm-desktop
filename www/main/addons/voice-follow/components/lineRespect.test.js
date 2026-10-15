@@ -35,6 +35,12 @@ describe('tag: app writes vs sevadaar moves', () => {
     lr.appWrote(102, 1100);
     assert.equal(lr.classify(101, ctx(1200)), 'app');
   });
+  it('the line the app has just left, put back by the sevadaar, is the sevadaar’s', () => {
+    const lr = createLineRespect();
+    lr.appWrote(101, 1000);
+    lr.appWrote(102, 2000);
+    assert.equal(lr.classify(101, ctx(3000)), 'sevadaar');
+  });
   it('any other line in the followed Shabad is the sevadaar’s', () => {
     const lr = createLineRespect();
     lr.appWrote(101, 1000);
