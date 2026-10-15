@@ -77,6 +77,15 @@
    "type": [
     "New behaviour"
    ]
+  },
+  "488c3721": {
+   "label": "Shabad-level evidence",
+   "kind": "experiment",
+   "why": "every pangti heard adds to its Shabad, so a Shabad is found when enough of its pangtis have been heard",
+   "type": [
+    "Accuracy",
+    "Speed"
+   ]
   }
  }
 }
