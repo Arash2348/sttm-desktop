@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { SHADOW_BUILD, SHADOW_SEGMENT_MS, SHADOW_DISCARD_COOLDOWN_MS } from './config';
-import { NoticeText } from './RecordingNotice';
+import { ShortNotice } from './RecordingNotice';
 
 const fs = require('fs');
 const os = require('os');
@@ -611,8 +611,15 @@ const ShadowCollector = () => {
   return (
     <div className="shadow-consent">
       <div className="shadow-consent-card" role="dialog" aria-labelledby="shadow-consent-title">
+        <div className="shadow-consent-icon" aria-hidden="true">
+          <i className="fa fa-microphone" />
+        </div>
         <h2 id="shadow-consent-title">Voice Autopilot records audio</h2>
-        <NoticeText />
+        <ShortNotice />
+        <p className="shadow-consent-more">
+          Click the &quot;Recording audio&quot; label at the top of STTM any time for the full
+          details.
+        </p>
         {!registered && (
           <>
             <label htmlFor="shadow-name">

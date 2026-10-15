@@ -37,6 +37,30 @@ export const NoticeText = () => (
   </div>
 );
 
+// The short version for the first-launch card; the chip's popover keeps the full text.
+export const ShortNotice = () => (
+  <div className="shadow-notice-text">
+    <p>This test version of STTM records audio to make Voice Autopilot better.</p>
+    <ul>
+      <li>
+        <b>Recorded:</b> microphone sound during a program, even when Voice Autopilot is not in use;
+        what is on screen; and what Voice Autopilot heard.
+      </li>
+      <li>
+        <b>Also saved:</b> your name and Gurdwara, computer details, and an approximate location
+        from the internet address.
+      </li>
+      <li>
+        <b>Where:</b> sent to Khalis Foundation&apos;s secure storage, to improve Voice Autopilot.
+      </li>
+      <li>
+        <b>To turn off:</b> {SETTING_PATH}. Recording and sending stop at once; anything not yet
+        sent stays on this computer.
+      </li>
+    </ul>
+  </div>
+);
+
 // The chip at the left of the workspace bar (controller window only, never the viewer):
 // "Recording audio" while a session records, "Mic on" while only the listener is open.
 // Clicking it shows the notice and the way to turn it off.

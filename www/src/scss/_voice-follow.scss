@@ -535,6 +535,26 @@ $vf2-yellow-bar: #f2c200;
     cursor: default;
   }
 }
+.shadow-consent-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background: #fdf0e7;
+  color: #e8702a;
+  font-size: 22px;
+}
+.shadow-consent-card h2 {
+  text-align: center;
+}
+.shadow-consent-card .shadow-consent-more {
+  margin: 0 0 14px;
+  color: #6b6b6b;
+  font-size: 12px;
+}
 // The recording notice text (first-launch card and the chip's popover share it).
 .shadow-notice-text {
   font-size: 13px;
