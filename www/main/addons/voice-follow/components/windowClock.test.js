@@ -2,7 +2,7 @@
 // engine that decodes on a grid point. node --test www/main/addons/voice-follow/components/
 const test = require('node:test');
 const assert = require('node:assert');
-const { SessionClock, seedEngine, appendTo } = require('../engine/clock');
+const { SessionClock, clockOpts, appendTo } = require('../engine/clock');
 
 const SR = 16000;
 const chunks = (n, len) =>
@@ -44,10 +44,10 @@ test('seed: an engine joining mid-session has the same window as one that was al
     clock.advance(pcm);
     appendTo(always, pcm, pcm, win);
     if (k === 37) {
-      joined = {};
-      seedEngine(joined, clock); // joins after this chunk went into the clock...
+      joined = { buf: new Float32Array(0) };
+      clockOpts(joined, { clock }); // created mid-session; joins at its first push
     }
-    if (joined) appendTo(joined, pcm, pcm, win); // ...and is pushed the same chunk: not twice
+    if (joined) appendTo(joined, pcm, pcm, win); // the chunk the seed ends with: not twice
     if (joined) assert.deepStrictEqual(joined.buf, always.buf, `chunk ${k}`);
   });
   assert.strictEqual(always.buf.length, win);
@@ -55,14 +55,24 @@ test('seed: an engine joining mid-session has the same window as one that was al
 
 test('seed: shorter than a window early in the session; unseeded engines start empty', () => {
   const clock = new SessionClock({ inputSr: SR });
-  chunks(3, 2048).forEach((pcm) => clock.advance(pcm));
-  const e = {};
-  seedEngine(e, clock);
+  const pcms = chunks(4, 2048);
+  pcms.slice(0, 3).forEach((pcm) => clock.advance(pcm));
+  const e = { buf: new Float32Array(0) };
+  clockOpts(e, { clock });
+  appendTo(e, pcms[2], pcms[2], 4 * SR);
   assert.strictEqual(e.buf.length, 3 * 2048);
   const r = { buf: new Float32Array(0) };
-  seedEngine(r, clock, { seed: false });
+  clockOpts(r, { clock, seed: false });
+  clock.advance(pcms[3]);
+  appendTo(r, pcms[3], pcms[3], 4 * SR);
   assert.strictEqual(r.clock, clock);
-  assert.strictEqual(r.buf.length, 0);
+  assert.strictEqual(r.buf.length, 2048);
+});
+
+test('no clock: the engine is left as it was', () => {
+  const e = {};
+  clockOpts(e, {});
+  assert.deepStrictEqual(e, {});
 });
 
 test('a merged backlog push decodes once', () => {

@@ -1,10 +1,10 @@
 // JS port of karansea_recognize.py KaranseaRecognizer.
 const { resampleTo16k, norm, SR } = require('./infer');
 const pace = require('./pace');
-const { appendTo } = require('./clock');
+const { appendTo, clockOpts } = require('./clock');
 
 class Recognizer {
-  constructor(infer, { inputSr = 48000, windowS = 10.0, hopS = 0.6, minHyp = 2 } = {}) {
+  constructor(infer, { inputSr = 48000, windowS = 10.0, hopS = 0.6, minHyp = 2, ...rest } = {}) {
     this.infer = infer;
     this.inputSr = inputSr;
     this.win = Math.floor(windowS * SR);
@@ -19,6 +19,7 @@ class Recognizer {
     // one shared object changed in place, so it works through wrappers (Object.create(rec) in the bench driver)
     this.passHistory = { on: false, list: [] };
     this.pushed = 0;
+    clockOpts(this, rest); // window alignment (engine/clock)
   }
 
   async push(pcm) {

@@ -2,7 +2,7 @@
 // token-passing line decoder + CTC word alignment. Mirrors push().
 const { resampleTo16k, norm, SR, BLANK } = require('./infer');
 const pace = require('./pace');
-const { appendTo } = require('./clock');
+const { appendTo, clockOpts } = require('./clock');
 const { partialRatio, partialRatioAlignment } = require('./fuzz');
 
 const NEG = -1e30;
@@ -42,7 +42,7 @@ const DEFAULTS = {
 function argmax(a) { let bi = 0, bv = -Infinity; for (let i = 0; i < a.length; i++) if (a[i] > bv) { bv = a[i]; bi = i; } return bi; }
 
 class Follower {
-  constructor(infer, sp, lines, { inputSr = 48000, ...opts } = {}) {
+  constructor(infer, sp, lines, { inputSr = 48000, clock, seed, ...opts } = {}) {
     this.infer = infer;
     this.sp = sp;
     this.inputSr = inputSr;
@@ -76,6 +76,7 @@ class Follower {
     this.maxWi = -1;
     this.tailLast = null;
     this.tailHits = 0;
+    clockOpts(this, { clock, seed }); // window alignment (engine/clock)
   }
 
   // tailAdv: does the end of this transcript say the NEXT line has begun? -> that line's index, else null
