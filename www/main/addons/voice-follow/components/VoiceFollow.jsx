@@ -252,6 +252,18 @@ const SHEV_SEARCH_TAU_DECODES = 480;
 const SHEV_SEARCH_MARGIN = 0.05;
 // One Shabad-level evidence store: Map shabadId -> Map(lineKey -> { w, at }); `now` is a decode
 // counter. Returns the Shabad's total after adding (lineIndex null = no order bonus).
+function shevTotal(store, now, id, tau = SHEV_TAU_DECODES) {
+  const lines = store.get(id);
+  if (!lines) return { total: 0, distinct: 0 };
+  let total = 0;
+  let distinct = 0;
+  lines.forEach((e) => {
+    const w = e.w * Math.exp(-(now - e.at) / tau);
+    total += w;
+    if (w >= 0.25) distinct += 1;
+  });
+  return { total, distinct };
+}
 function shevAdd(store, now, id, key, lineIndex, tau = SHEV_TAU_DECODES) {
   const fade = (e) => e.w * Math.exp(-(now - e.at) / tau);
   store.forEach((lines, sid) => {
@@ -274,18 +286,6 @@ function shevAdd(store, now, id, key, lineIndex, tau = SHEV_TAU_DECODES) {
     });
   lines.set(key, { w: Math.min(2, (old ? fade(old) : 0) + add), at: now, idx: lineIndex });
   return shevTotal(store, now, id, tau);
-}
-function shevTotal(store, now, id, tau = SHEV_TAU_DECODES) {
-  const lines = store.get(id);
-  if (!lines) return { total: 0, distinct: 0 };
-  let total = 0;
-  let distinct = 0;
-  lines.forEach((e) => {
-    const w = e.w * Math.exp(-(now - e.at) / tau);
-    total += w;
-    if (w >= 0.25) distinct += 1;
-  });
-  return { total, distinct };
 }
 // Same-Gurbani lock (ported from cycle 11): the same text stored as two shabads (Aarti in
 // Sohila and in Dhanasari, a Rehras shabad and its SGGS original) searches as an exact
@@ -2622,12 +2622,28 @@ const VoiceFollow = () => {
                 return;
             }
           }
-          if (SHEV_LOCK > 0 && top && top.score >= SHEV_SEARCH_MIN && margin >= SHEV_SEARCH_MARGIN) {
+          if (
+            SHEV_LOCK > 0 &&
+            top &&
+            top.score >= SHEV_SEARCH_MIN &&
+            margin >= SHEV_SEARCH_MARGIN
+          ) {
             if (!memory.shev) memory.shev = new Map();
-            const ev = shevAdd(memory.shev, step, top.shabadId, top.verseId, null, SHEV_SEARCH_TAU_DECODES);
+            const ev = shevAdd(
+              memory.shev,
+              step,
+              top.shabadId,
+              top.verseId,
+              null,
+              SHEV_SEARCH_TAU_DECODES,
+            );
             let next = 0;
             memory.shev.forEach((_, sid) => {
-              if (sid !== top.shabadId) next = Math.max(next, shevTotal(memory.shev, step, sid, SHEV_SEARCH_TAU_DECODES).total);
+              if (sid !== top.shabadId)
+                next = Math.max(
+                  next,
+                  shevTotal(memory.shev, step, sid, SHEV_SEARCH_TAU_DECODES).total,
+                );
             });
             if (ev.total >= SHEV_LOCK && ev.distinct >= 2 && ev.total >= SHEV_LEAD * next) {
               let profile;
@@ -3014,8 +3030,6 @@ const VoiceFollow = () => {
         const curId = currentShabadIdRef.current;
         judgeNRef.current += 1;
         const judgeN = judgeNRef.current;
-        const sinceWin = (id) =>
-          winAtRef.current.has(id) ? judgeN - winAtRef.current.get(id) : Infinity;
         const tiedLeaderIds = new Set();
         if (
           textCandidates.length > 1 &&
@@ -3122,7 +3136,13 @@ const VoiceFollow = () => {
             shevOk = ev.total >= SHEV_SWITCH && ev.distinct >= 2;
           }
           // eslint-disable-next-line no-param-reassign
-          slot.solid = nextSolidWins(slot.solid, slot.wins, step.wins, hypFull.length, SWITCH_SOLID_CHARS);
+          slot.solid = nextSolidWins(
+            slot.solid,
+            slot.wins,
+            step.wins,
+            hypFull.length,
+            SWITCH_SOLID_CHARS,
+          );
           slot.wins = step.wins; // eslint-disable-line no-param-reassign
           // Held decodes judged nothing — keep showing the last judged score.
           if (!step.held) slot.lastScore = sCand; // eslint-disable-line no-param-reassign
