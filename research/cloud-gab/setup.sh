@@ -77,4 +77,5 @@ if [[ " $* " == *" --builds "* ]]; then
     ln -sfn "$REPO/node_modules" "$d/node_modules"
   done
 fi
-say "ready. cd $TOOLS && VF_MIN_FREE_GB=3 ./gab run /root/personal/<build> --tier smoke --jobs 4"
+# always pass --manifest hf: it fetches the answer keys (shabads.csv / lines.csv); without them every score reads "-"
+say "ready. cd $TOOLS && VF_MIN_FREE_GB=3 ./gab run /root/personal/<build> --tier smoke --jobs 4 --manifest hf"
