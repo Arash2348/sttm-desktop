@@ -1,0 +1,35 @@
+--- index.orig.html	2026-10-15 23:12:26.974052798 +0000
++++ index.html	2026-10-15 23:12:37.952241182 +0000
+@@ -18,10 +18,12 @@
+   --app: #9cc8ea; --app-soft: #1f2d38; --better-ink: #7fd89e; --worse-ink: #f48a7e; }
+ * { box-sizing: border-box; }
+ body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
+-.page { max-width: 940px; margin: 0 auto; padding: 18px 16px; }
++.page { max-width: 1140px; margin: 0 auto; padding: 18px 16px; }
+ h1 { font-size: 22px; margin: 0 0 4px; }
+ .sub { color: var(--muted); font-size: 13px; margin: 0 0 16px; }
+-.box { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
++.box { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; }
++/* the version names get real room, and the timeline column keeps its width, so its line and dots never cross the names */
++td.nm, thead th.vh { min-width: 200px; }
+ table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+ th, td { padding: 6px 12px; border-bottom: 1px solid var(--line); text-align: right; }
+ th:first-child, td:first-child { text-align: left; }
+@@ -79,7 +81,7 @@
+ .item .ichg { font-size: 11px; color: var(--muted); }
+ .item .cm { margin-left: auto; font: 11px ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted); }
+ /* timeline spine */
+-td.tl, th.tl { width: 26px; padding: 0 0 0 14px !important; position: relative; }
++td.tl, th.tl { width: 36px; min-width: 36px; padding: 0 0 0 14px !important; position: relative; }
+ td.tl::before { content: ''; position: absolute; left: 22px; top: 0; bottom: 0; width: 2px; background: var(--spine); }
+ tbody tr:first-child td.tl::before { top: 50%; }
+ tbody tr.lastver td.tl::before { bottom: 50%; }
+@@ -105,7 +107,7 @@
+   tr.det > td { padding: 0 6px 10px 6px; }
+   /* phone: the table scrolls inside its box; spine and name stay put */
+   .box { overflow-x: auto; }
+-  #board { min-width: 720px; }
++  #board { min-width: 760px; }
+   td.tl, th.tl { position: sticky; left: 0; z-index: 2; background: var(--panel); min-width: 30px; width: 30px; }
+   tbody tr.ver td.nm, thead th.vh { position: sticky; left: 30px; z-index: 2; background: var(--panel); min-width: 120px; max-width: 130px; white-space: normal; box-shadow: 1px 0 0 var(--line); }
+   tr.now td.tl, tr.now td.nm { background: color-mix(in srgb, var(--app-dot) 4%, var(--panel)); }
