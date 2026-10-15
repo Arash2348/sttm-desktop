@@ -149,6 +149,33 @@ human-tapped). Not yet on Hugging Face: only human-checked keys go there.
 but not run: the session's safety guard blocks sending the HF / Azure keys to the VM (metadata) or reading the VM's
 own copies; needs the owner's explicit OK. The key was pasted in chat: rotate it.
 
+## Shabad verifier, offline test on GAB-Akhand (practice, 23 recordings, 280 windows of 30 s; Oct 15 2026)
+
+Idea: the model is poor at picking the Shabad out of the whole Guru Granth Sahib, but good at confirming a given one
+(told the Shabad, it clearly hears ~64% of Akhand pangtis). So: align each search candidate over the last 30 s and
+keep the best fit. `research/cloud-gab/lines/verifier-test.js` (Karanbir int8 output, follower-bench align.js).
+
+| right Shabad vs ... | windows | scores best | by a clear lead (> 20) |
+|---|---|---|---|
+| 20 random Shabads | 280 | 90% | 75% |
+| the wrong Shabads 9.0.3 showed | 162 | 87% | 70% |
+| the app's own search candidates (up to 25 per window) | 278 | 79% | 64% |
+
+The app's search proposes the right Shabad at least once in 89% of the windows (so the evidence is there to pick).
+Against what 9.0.3 had on screen at the end of each window:
+
+| 9.0.3 screen | windows | verifier says right Shabad with lead > 40 | verifier says a wrong one with lead > 40 |
+|---|---|---|---|
+| still searching (blank) | 36 | **18** | 2 |
+| wrong Shabad | 28 | 2 (right at all: 9) | - |
+| right Shabad | 216 | - | 4 (2%) |
+
+Reading: the verifier's clear win is **finding faster while the app is still searching** (half of the searching
+windows, 18 right vs 2 wrong); it rarely rescues a wrong lock and rarely contradicts a right one. Rough upper bound:
+moving those 18 windows from blank to right ~ +6 points right Shabad on Akhand (78 -> ~84%). Next: build it in the app
+behind a constant (verifier lock while searching, lead > 40), fed from the decode windows the app already runs (no new
+model passes, so it replays from the cache except where it changes later windows), then score on all three tiers.
+
 ## Brief for the Mac session: fill the x86 Akhand / Renton windows on the GCP VM (paste into Claude on the Mac)
 
 > The cloud session cannot send the HF / Azure keys to the VM (its safety mode), so this runs from the Mac, which
