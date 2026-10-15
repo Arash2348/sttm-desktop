@@ -218,18 +218,23 @@ const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a swit
 // look-alike phrases: score >= SWITCH_ACOUSTIC_MIN and margin over the current Shabad) is the
 // matched pangti; a win commits when the Shabad's total reaches SHEV_SWITCH over >= 2
 // distinct pangtis. Additive: every existing route is unchanged. 0 = off.
-const SHEV_LOCK = 3;
+const SHEV_LOCK = 2;
 const SHEV_SWITCH = 2.3;
 const SHEV_LEAD = 2;
 const SHEV_REPEAT = 0.3;
 const SHEV_SEQ = 0.25;
 const SHEV_TAU_DECODES = 60;
 const SHEV_RIVAL = 0.9;
-const SHEV_SEARCH_MIN = 0.45;
+const SHEV_SEARCH_MIN = 0.35;
+// While searching, the gaps between pangtis are long in hall kirtan (the ragi dwells on one
+// pangti for a minute or more), so search evidence fades over ~4 min, not ~30 s; and a leader
+// counts with a smaller margin than the old lock's (the Shabad total and lead are the guard).
+const SHEV_SEARCH_TAU_DECODES = 480;
+const SHEV_SEARCH_MARGIN = 0.05;
 // One Shabad-level evidence store: Map shabadId -> Map(lineKey -> { w, at }); `now` is a decode
 // counter. Returns the Shabad's total after adding (lineIndex null = no order bonus).
-function shevAdd(store, now, id, key, lineIndex) {
-  const fade = (e) => e.w * Math.exp(-(now - e.at) / SHEV_TAU_DECODES);
+function shevAdd(store, now, id, key, lineIndex, tau = SHEV_TAU_DECODES) {
+  const fade = (e) => e.w * Math.exp(-(now - e.at) / tau);
   store.forEach((lines, sid) => {
     if (sid === id) return;
     lines.forEach((e) => {
@@ -249,15 +254,15 @@ function shevAdd(store, now, id, key, lineIndex) {
       if (e.idx != null && Math.abs(e.idx - lineIndex) <= 2 && fade(e) >= 0.5) add = 1 + SHEV_SEQ;
     });
   lines.set(key, { w: Math.min(2, (old ? fade(old) : 0) + add), at: now, idx: lineIndex });
-  return shevTotal(store, now, id);
+  return shevTotal(store, now, id, tau);
 }
-function shevTotal(store, now, id) {
+function shevTotal(store, now, id, tau = SHEV_TAU_DECODES) {
   const lines = store.get(id);
   if (!lines) return { total: 0, distinct: 0 };
   let total = 0;
   let distinct = 0;
   lines.forEach((e) => {
-    const w = e.w * Math.exp(-(now - e.at) / SHEV_TAU_DECODES);
+    const w = e.w * Math.exp(-(now - e.at) / tau);
     total += w;
     if (w >= 0.25) distinct += 1;
   });
@@ -2591,12 +2596,12 @@ const VoiceFollow = () => {
                 return;
             }
           }
-          if (SHEV_LOCK > 0 && top && top.score >= SHEV_SEARCH_MIN && margin >= AP_LOCK_TEXT_MARGIN) {
+          if (SHEV_LOCK > 0 && top && top.score >= SHEV_SEARCH_MIN && margin >= SHEV_SEARCH_MARGIN) {
             if (!memory.shev) memory.shev = new Map();
-            const ev = shevAdd(memory.shev, step, top.shabadId, top.verseId, null);
+            const ev = shevAdd(memory.shev, step, top.shabadId, top.verseId, null, SHEV_SEARCH_TAU_DECODES);
             let next = 0;
             memory.shev.forEach((_, sid) => {
-              if (sid !== top.shabadId) next = Math.max(next, shevTotal(memory.shev, step, sid).total);
+              if (sid !== top.shabadId) next = Math.max(next, shevTotal(memory.shev, step, sid, SHEV_SEARCH_TAU_DECODES).total);
             });
             if (ev.total >= SHEV_LOCK && ev.distinct >= 2 && ev.total >= SHEV_LEAD * next) {
               let profile;
