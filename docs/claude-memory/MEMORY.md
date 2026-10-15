@@ -1,0 +1,64 @@
+# Memory index
+- [Verified data home](verified-data-home.md) — main Google Sheet tab is the append-only home of all human-verified rows
+- [End with action items](end-with-action-items.md) — every reply ends with ranked human next steps, then a one-line TLDR
+- [Level 3 policy](level3-policy.md) — L3 smagams in as a separate set; never tune on it; L2 stays the benchmark
+- [Vaheguru slide is not an error](vaheguru-slide-not-error.md) — wrong Bani is the failure; searching time is minor
+- [Model provenance](model-provenance.md) — karansea IndicConformer CTC, MIT, FP32 on HF; write-up + benchmark links, no paper
+- [Data priority](data-priority.md) — Level 2 verified (172) + hall test decide; Shabad Gurbani studio playlist is supplement only
+- [Cycle 10 scope](cycle10-scope.md) — code-only improvements; no model training unless proven to be the blocker
+- [Mac compute limit](mac-compute-limit.md) — one nice-19 job max on the Mac; all benchmarks on EC2; tell sub-agents explicitly
+- [Cycle numbering](cycle-numbering.md) — each accepted improvement = next cycle (10, 11, 12…) with a CYCLES.md entry (AWS only with express OK)
+- [AWS stop when done](aws-stop-when-done.md) — NO AWS call of any kind (EC2 or S3, incl. tester-pipeline S3) without asking first, each time
+- [Results as tables](results-as-tables.md) — always show cycle results as a table, one row per cycle
+- [Priority: find faster](priority-find-faster.md) — top goal = find more shabads, faster, no metric worse; English low priority
+- [Judge on held-out](judge-on-heldout.md) — 'better' = no held-out set worse + holds on busy-machine run; avoid overfitting
+- [Kirtan darbar shape](kirtan-darbar-shape.md) — Aarti then 2-3 long shabads with brief parmaan detours (correct); Aarti is the weak spot
+- [MVP 8.6 Bani](mvp-8-6-bani.md) — Cycle 8 + same-Gurbani lock + Bani work; tests, results, same-machine comparison rule
+- [Best version = Cycle 8](best-version-cycle8.md) — user chose Cycle 8 over 12 (12 felt slow / too much Waheguru slide live)
+- [follower2 (Bani)](follower2-bani.md) — position follower on branch follower-v2; bench research/follower-bench; steady 68.6% -> 98.6% (time-weighted), lag 0.35 s
+- [Sangat scorecard format](sangat-scorecard-format.md) — model-vs-person table: same line, seconds behind, shabads found, wrong shabads; ✅/⚠️/❌
+- [Work in background](work-in-background.md) — NEVER launch the tester app on the Mac unless explicitly asked; builds/offline checks only
+- [Tester build 8.6c](tester-build-86c.md) — tester build = mvp-8.6c-shadow (shadow layer on MVP 8.6); CI + DMG recipe
+- [8.7 Aarti work](aarti-87-work.md) — branch mvp-8.7-aarti, 50-clip cold-start Aarti set, baseline 72%, Sep 27/hall acoustic, open items
+- [Test runs in background](test-runs-in-background.md) — app test runs launch with open -g and park the window off-screen; never pop up on the user
+- [Akhand Paath mode](akhand-paath-mode.md) — sequence mode built on branch akhand-paath (no button, auto-detected); proxy bench = Rehras/Sohila with Bani routes off
+- [HF dataset compat](hf-dataset-compat.md) — Jaspal's HF layout (wav + verseId,timestamp_seconds csv); session-to-hf.py converter verified
+- [Dev node_modules](dev-node-modules.md) — worktrees symlink sttm-desktop/node_modules; better-sqlite3 via isolated scratch install; never npm install in a worktree
+- [HF dual-write](hf-dual-write.md) — sessions also pushed to Hugging Face khalisfoundation/sttm_desktop_<ts>; token in ~/.vf-hf-token, secret VF_HF_TOKEN
+- [Launch on right monitor](launch-on-right-monitor.md) — visible STTM test launches go on the right Dell monitor via place-right.js, never the centre display
+- [Surinder model compare](surinder-model-compare.md) — fair bench: his fp32 hears better but finds a bit slower; int8 broken; keep Karanbir for now
+- [Renton Oct 11 production run](renton-oct11-production.md) — 3 problems: paath lag = pipeline backlog (Stop/Start resets it), kirtan won't auto-switch, Stop resets screen; fix branches + open follow-ups (PC CPU model unknown)
+- [Always baseline numbers](always-baseline-numbers.md) — every update: table of experienced vs now vs target, named test set
+- [Test small first](test-small-first.md) — prove on a fast small set, extend incrementally; full suites only on final candidates
+- [North-star goals](north-star-goals.md) — 5 numeric end goals: 95% exact line, lag <=0 paath, same on all PCs, switch <10 s, find <15 s / <=1% wrong ; hardware parity: x86 is the production reference, report Mac + x86
+- [MVP 9.0 checkpoint](mvp-9-0-checkpoint.md) — 7165bd24, tag mvp-9.0-checkpoint-2026-10-12, user-tested 'pretty good'; relaunch via usertest/launch.sh ; SHIPPED as PR KhalisFoundation#2238 (mvp-9.0.1-pr)
+- [Azure bench cache](azure-bench-cache.md) — replay cache in Khalis Azure under bench-cache/; SAS in ~/.vf-azure-sas, renew before Jan 2027
+- [Engineer-to-CEO register](plain-language.md) — moderately technical, define terms, lead with decision + evidence; I make engineering calls, bring proposals for direction
+- [Paath repeat patterns](rehras-repeat-pattern.md) — ending 2 pangtis of every paath almost always read twice; Rehras spots (dohra after Chaupai, Jaap taap +next, Anand Sahib ending); Sohila, Japji, Anand too
+- [Paath conventions](paath-conventions.md) — step-backs deliberate; headers usually spoken; Rehras→Aarti/kirtan; extra-long must keep handling jumps; Aarti sung; rahao repeat = go back ; Newton Asa audio = Windows voice isolation on mic
+- [GCP bench VM](gcp-bench-vm.md) — project vf-bench-sttm, VM vf-record 32-core us-east1-b, $150 budget + billing kill-switch, 6 h self-stop; always stop after jobs; standing OK to use freely within cap (Oct 14)
+- [Never over budget](never-over-budget.md) — HARD RULE: never exceed cloud credit, no waste, credits before card; budget counts gross usage; every VM self-stops
+- [User test Oct 13](user-test-oct13.md) — 9.0 preferred over 9.1 (anticipation parked); both fail Bani->sung Aarti switch at 75-95%; sessions with audio saved; fix branch vf-mvp-9.0.1
+- [Pi kiosk build](pi-kiosk-build.md) — branch pi-kiosk: arm64 .deb + unattended kiosk test green on CI 2026-10-13; Pi-only fixes listed; real Pi 5 still unproven
+- [Adaptive performance](adaptive-performance.md) — telemetry -> Azure fleet report -> self-test tiers in the app, benchmarked at 0.5-1.2x on Intel; target 0.4 s on slow PCs
+- [Ship first](ship-first.md) — HARD RULE: one release in flight; ideas queue behind it; no videos unless trivial; user tests subjectively
+- [After-PR queue](after-pr-queue.md) — parked tracks with branches/status; work one at a time after the 9.0.1 PR
+- [Five behaviours](five-behaviours.md) — kirtan Shabad; paath of 7 main + 5 common Banis; Bani sung as kirtan; Shabad switching; Akhand Paath; organise reports by these
+- [Behaviour benchmark dataset](behaviour-benchmark-dataset.md) — consolidate all clips+truth by the 5 behaviours on HF (private); Sheet = human source; Azure = raw + cache; after tiers
+- [Session versioning](session-versioning.md) — session.json records feature version + build commit; bump VF_FEATURE_VERSION each Voice-Follow PR
+- [Human labels first](human-labels-first.md) — headline benchmark numbers from human labels only; forced-alignment truth is secondary and must be audited
+- [Sangat-view metric](sangat-view-metric.md) — HEADLINE: ON + CATCHING UP % of voiced time; plus wrong-page s/h, catch-up lag, stuck >3 s; maximise
+- [Disk hygiene](disk-hygiene.md) — disk filled Oct 13; keep-list (model file, clips, cache, active worktrees); agents delete temp outputs
+- [Respectful language](respectful-language.md) — Angs not pages for Guru Granth Sahib Ji; respectful terms everywhere
+- [Kirtan generalisation goal](kirtan-general-goal.md) — Fremont-style kirtan: train/dev/test by session from Jaspal's HF recordings; finding, parmaans, lines; guardrails
+- [Developers vs sangat](developers-vs-sangat.md) — Arash, Jashan, Gauravjeet are developers; any other tester's session is the signal to watch
+- [GAB](gab.md) — Gurbani Autopilot Bench: cached benchmark + flywheel; main GAB = priority, Fremont = separate GAB-Hard; HF static leaderboard Space
+- [No word splitting](no-word-splitting.md) — never split a Gurbani word in code/data; UI "…" truncation is fine
+- [Notify when done](notify-when-done.md) — always send a proactive "done" message with results when background work finishes
+- [Check PR status](check-pr-status.md) — always check a PR is merged/open via the API before citing its link
+- [Upload without asking](upload-without-asking.md) — checked recordings go to HF GAB without asking; a verifier subagent checks contact sheets and only unsure rows go to the user
+- [Lean and simple](lean-simple-ui.md) — leaderboards/reports: one releases table + ideas table, ≤6 columns, details hidden
+- [User test Oct 14](user-test-oct14.md) — 9.0.3 live test: Level 3 poor; candidate collapse on pauses, overrides not respected, candidates flicker, scroll pull, theme bugs
+- [Label progress report](label-progress-report.md) — after each labelling session report fully human-confirmed pangti count (yes or tapped start)
+- [Hearing diagnostic](hearing-diagnostic.md) — hard/Akhand misses = speech model, not logic; no model clearly better; int8 = fp32
+- [Akhand Kirtan priority](akhand-kirtan-priority.md) — TOP priority: iterate current system on Akhand Kirtan, no training, no metric worse; token-efficient
