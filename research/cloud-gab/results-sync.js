@@ -21,7 +21,7 @@ const LOCAL = path.join(process.env.VF_EMIS_CACHE || path.join(os.homedir(), 'pe
 const sas = () => {
   const s = (process.env.VF_AZURE_SAS || '').replace(/\s+/g, '').replace(/^\?/, '');
   if (!s) throw new Error('VF_AZURE_SAS is not set');
-  return s;
+  return require('/home/user/gab-tools/research/level2-dataset/tools/remote-cache').fixTimes(s);
 };
 const redact = (s) => String(s).replace(/sig=[^&\s"']+/g, 'sig=REDACTED');
 const blobUrl = (key) => `${BASE}/${key.split('/').map(encodeURIComponent).join('/')}?${sas()}`;
