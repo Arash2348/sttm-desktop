@@ -68,14 +68,14 @@ async function load() {
   all = (await (await fetch('items.json')).json()).filter((it) => it.hasAudio);
   answers = await (await fetch('answers.json')).json();
   const groups = [...new Set(all.map((it) => it.clip.replace(/[_\d].*$/, '')))];
-  $('filter').innerHTML += groups.map((g) => `<option value="${esc(g)}">${esc(g)} clips</option>`).join('') + '<option value="kind:aligned-1model">only one model found it</option><option value="kind:aligned-2model">models agree, weak match</option><option value="kind:aligned-2model-sure">spot checks</option>';
+  $('filter').innerHTML += '<option value="set:random20">20 random auto-accepted (spot check)</option>' + groups.map((g) => `<option value="${esc(g)}">${esc(g)} clips</option>`).join('') + '<option value="kind:aligned-1model">only one model found it</option><option value="kind:aligned-2model">models agree, weak match</option><option value="kind:aligned-2model-sure">spot checks</option>';
   $('filter').value = qs.get('f') || '';
   $('filter').addEventListener('change', () => { qs.set('f', $('filter').value); history.replaceState(null, '', `?${qs}`); apply(); });
   apply();
 }
 function apply() {
   const f = $('filter').value;
-  items = all.filter((it) => !f || (f.startsWith('kind:') ? it.kind === f.slice(5) : it.clip.startsWith(f)));
+  items = all.filter((it) => (f === 'set:random20' ? it.set === 'random20' : it.set !== 'random20') && (!f || f === 'set:random20' || (f.startsWith('kind:') ? it.kind === f.slice(5) : it.clip.startsWith(f))));
   $('sub').textContent = `· ${new Set(items.map((x) => x.clip)).size} recordings`;
   i = items.findIndex((it) => !answers[it.id]); if (i < 0) i = items.length;
   render();

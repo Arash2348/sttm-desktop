@@ -57,8 +57,12 @@ for (const c of clips) {
   const truth = readCsv(path.join(BENCH, c.folder, c.id, 'shabads.csv')).filter((t) => t.shabadId);
   const truthIds = new Set(truth.flatMap((t) => String(t.shabadId).split('|').map(Number)));
   // the wrong Shabads 9.0.3 put on screen for this recording
-  const tr = path.join(V, 'r903/replay/base/l3/trace', `${c.id}.events.jsonl`);
-  const shown = fs.existsSync(tr) ? fs.readFileSync(tr, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)).filter((e) => e.type === 'shabad' && e.shabadId != null).map((e) => Number(e.shabadId)) : [];
+  const td = path.join(V, 'r903/replay/base/l3/trace');
+  const tf = fs.readdirSync(td).find((f) => f.startsWith(`${c.id}_`) || f === `${c.id}.events.jsonl`);
+  const evs = tf ? fs.readFileSync(path.join(td, tf), 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)) : [];
+  const shown = evs.filter((e) => e.type === 'shabad' && e.shabadId != null).map((e) => Number(e.shabadId));
+  // the app's own text-search candidates (Shabad ids) at each moment: the realistic rivals a verifier must beat
+  const cands = evs.filter((e) => e.type === 'text-retrieval').map((e) => ({ t: e.t, ids: (e.candidates || []).map((x) => Number(x.shabadId)) }));
   const confusions = [...new Set(shown)].filter((s) => !truthIds.has(s));
   const r = rng(c.id);
   const randoms = Array.from({ length: NRAND }, () => allShabads[Math.floor(r() * allShabads.length)]).filter((s) => !truthIds.has(s));
@@ -70,9 +74,12 @@ for (const c of clips) {
       if (!me) continue;
       const conf = confusions.map((s) => score(s, lp, f0, f1)).filter(Boolean);
       const rand = randoms.map((s) => score(s, lp, f0, f1)).filter(Boolean);
+      const cnt = {}; for (const e of cands) if (e.t >= a && e.t <= a + WIN + 5) for (const id of e.ids) if (!truthIds.has(id)) cnt[id] = (cnt[id] || 0) + 1;
+      const appC = Object.entries(cnt).sort((x, y) => y[1] - x[1]).slice(0, 25).map(([id]) => score(Number(id), lp, f0, f1)).filter(Boolean);
+      const bestApp = appC.length ? Math.max(...appC.map((x) => x.score)) : -Infinity;
       const bestConf = conf.length ? Math.max(...conf.map((x) => x.score)) : -Infinity;
       const bestRand = rand.length ? Math.max(...rand.map((x) => x.score)) : -Infinity;
-      res.push({ clip: c.id, at: a, truth: me.score, heard: me.heard, bestConf, nConf: conf.length, bestRand, margin: me.score - Math.max(bestConf, bestRand) });
+      res.push({ clip: c.id, at: a, truth: me.score, heard: me.heard, bestConf, nConf: conf.length, bestRand, bestApp, nApp: appC.length, margin: me.score - Math.max(bestConf, bestRand, bestApp) });
     }
   }
   const mine = res.filter((x) => x.clip === c.id);
@@ -84,6 +91,8 @@ console.log(`\n${WIN} s windows every ${STEP} s, ${clips.length} practice record
 console.log('| test | windows | right Shabad scores best | ... by a clear margin (> 20) |\n|---|---|---|---|');
 console.log(`| vs ${NRAND} random Shabads | ${res.length} | ${pct(res.filter((x) => x.truth > x.bestRand).length, res.length)} | ${pct(res.filter((x) => x.truth - x.bestRand > 20).length, res.length)} |`);
 console.log(`| vs the wrong Shabads 9.0.3 showed | ${withConf.length} | ${pct(withConf.filter((x) => x.truth > x.bestConf).length, withConf.length)} | ${pct(withConf.filter((x) => x.truth - x.bestConf > 20).length, withConf.length)} |`);
-console.log(`| vs both | ${res.length} | ${pct(res.filter((x) => x.margin > 0).length, res.length)} | ${pct(res.filter((x) => x.margin > 20).length, res.length)} |`);
+const withApp = res.filter((x) => x.nApp > 0);
+console.log(`| vs the app's own search candidates (up to 25) | ${withApp.length} | ${pct(withApp.filter((x) => x.truth > x.bestApp).length, withApp.length)} | ${pct(withApp.filter((x) => x.truth - x.bestApp > 20).length, withApp.length)} |`);
+console.log(`| vs all of them | ${res.length} | ${pct(res.filter((x) => x.margin > 0).length, res.length)} | ${pct(res.filter((x) => x.margin > 20).length, res.length)} |`);
 fs.writeFileSync(path.join(V, `result-w${WIN}.json`), JSON.stringify(res, null, 1));
 realm.close();
