@@ -62,6 +62,7 @@ const {
   orderFreeLineScore,
   sameGurbani,
 } = require('./switchPolicy');
+const { screenTakenByCeremony } = require('./autopilotScreen');
 
 // maxLineScore lives in ./switchPolicy (same implementation, unit-tested there)
 // so the benchmarked length-penalty math is shared, not duplicated.
@@ -1186,6 +1187,10 @@ const VoiceFollow = () => {
   const linesRef = useRef([]); // [{ verseId }] indexed by aligner lineIndex
   const lastVerseRef = useRef(null);
   const lockedVerseRef = useRef(null); // { verseId, verse } the current Shabad was locked at
+  // A ceremony took the screen while following (see screenTakenByCeremony): the next pangti
+  // heard puts the followed Shabad back (projectCurrentRef, set below projectCurrent).
+  const screenLostRef = useRef(false);
+  const projectCurrentRef = useRef(null);
   const followingKeyRef = useRef(null); // session key: `shabad:<id>` or `bani:<id>`
   // Blind-detect session state (mutable, avoids re-render churn per decode).
   const recognizingRef = useRef(false); // true while blindly identifying a shabad
@@ -3593,7 +3598,12 @@ const VoiceFollow = () => {
           });
           if (out.verseId != null && out.verseId !== lastVerseRef.current) {
             lastVerseRef.current = out.verseId;
-            setActiveVerseId(out.verseId);
+            if (screenLostRef.current && projectCurrentRef.current) {
+              // The kirtan moved on in the followed Shabad while a ceremony was on screen:
+              // put the Shabad (or Bani) back, at this pangti.
+              screenLostRef.current = false;
+              projectCurrentRef.current();
+            } else setActiveVerseId(out.verseId);
             setLineNumber(
               ((curProf && curProf.screenLines && curProf.screenLines[out.lineIndex]) ??
                 out.lineIndex) + 1,
@@ -3957,6 +3967,21 @@ const VoiceFollow = () => {
       openShabadRef.current(id, verseId, verseId === locked.verseId ? locked.verse : undefined);
     }
   };
+  projectCurrentRef.current = projectCurrent;
+  // A theme tile on the Ceremonies screen (e.g. Anand Karaj in the Floral theme) opens that
+  // ceremony on screen by design (CeremonyPane onThemeClick). Autopilot keeps listening;
+  // once it hears the next pangti of the Shabad it is following, it puts that Shabad back.
+  // A real move to another Shabad still goes through the normal switch.
+  useEffect(() => {
+    screenLostRef.current = screenTakenByCeremony({
+      following:
+        autopilotRef.current &&
+        phaseRef.current === 'following' &&
+        currentShabadIdRef.current != null,
+      visible: !shadowing(),
+      isCeremonyBani,
+    });
+  }, [isCeremonyBani]);
   const takeOver = async () => {
     clearTimeout(ratingTimerRef.current);
     setAskRating(false);

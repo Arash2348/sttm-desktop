@@ -252,6 +252,25 @@ $vf2-yellow-bar: #f2c200;
   .vf2-next-line {
     flex: 1;
     font-size: 15px;
+    // The row is a flex box, so text-overflow on it never applies: the pangti span
+    // itself ellipsizes (otherwise a long pangti was cut off mid-word at Stop).
+    > .gurmukhi {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+// Full-line mode (the default): the next pangti wraps too, so it is shown whole.
+.vf2-line.is-expanded + .vf2-next-row .vf2-next-line {
+  align-items: flex-start;
+  white-space: normal;
+  > .gurmukhi {
+    overflow: visible;
+    overflow-wrap: anywhere;
+  }
+  > .vf2-next-mark {
+    margin-top: 0.15em;
   }
 }
 // A thin grey bar marks the next pangti (instead of a "Next" label).
