@@ -210,7 +210,7 @@ function scoreClip(rec, truth) {
       if (ok) right += 1;
       if (ok && recoveredS == null) recoveredS = +(t - m.t).toFixed(1);
     }
-    const out = { t: m.t, kind: m.kind, lineRight: n ? right / n : null, windowS: +(end - m.t).toFixed(1) };
+    const out = { t: m.t, to: m.to, kind: m.kind, lineRight: n ? right / n : null, windowS: +(end - m.t).toFixed(1) };
     if (m.kind === 'right') {
       out.override = !!(first && first.t - m.t <= OVERRIDE_S && !truthNear(first.t, first.verseId));
       out.followOn = first ? truthNear(first.t, first.verseId) : null; // null: no move in the window
@@ -260,7 +260,7 @@ function report(baseDir, candDir) {
   const clips = Object.keys(b.per).filter((k) => c.per[k]).sort();
   const all = (s) => clips.flatMap((k) => s.per[k]);
   const lines = [
-    `# Sevadaar line moves (sevadaar-sim.js, seed ${SEED}, a moment every ~${EVERY} s)`,
+    `# Sevadaar line moves (sevadaar-sim.js, seed ${SEED})`,
     '',
     `Clips scored on both builds: ${clips.length} (${clips.join(', ')}).`,
     '',
@@ -269,6 +269,16 @@ function report(baseDir, candDir) {
   ];
   for (const [name, s] of [['base', b], ['cand', c]]) {
     const a = agg(all(s));
+    lines.push(`| ${name} | ${a.right} | ${a.overrides} | ${a.followOn} | ${a.lineRightAfterRight} | ${a.wrong} | ${a.recovered} | ${a.recoverP50} | ${a.lineRightAfterWrong} |`);
+  }
+  // Paired: the same move (clip, moment, target pangti) made on both builds. After a build's first
+  // move the two replays can drift apart, so only these compare like with like.
+  const key = (k, m) => `${k}@${m.t.toFixed(2)}>${m.to}`;
+  const inC = new Set(clips.flatMap((k) => c.per[k].map((m) => key(k, m))));
+  const inB = new Set(clips.flatMap((k) => b.per[k].map((m) => key(k, m))));
+  lines.push('', `Paired (the same move on both builds): ${[...inB].filter((x) => inC.has(x)).length} moves.`, '', lines[4], lines[5]);
+  for (const [name, s, other] of [['base', b, inC], ['cand', c, inB]]) {
+    const a = agg(clips.flatMap((k) => s.per[k].filter((m) => other.has(key(k, m)))));
     lines.push(`| ${name} | ${a.right} | ${a.overrides} | ${a.followOn} | ${a.lineRightAfterRight} | ${a.wrong} | ${a.recovered} | ${a.recoverP50} | ${a.lineRightAfterWrong} |`);
   }
   lines.push('', '| clip | build | right | overrides | follow-on | line right % | wrong | recovered | line right % |', '|---|---|---|---|---|---|---|---|---|');
