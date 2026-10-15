@@ -19,6 +19,7 @@ const { slideStrings } = require('../../../common/constants/slidedb');
 const engine = require('../engine');
 const { Follower: AcousticFollower } = require('../engine/follower');
 const { SP: AcousticSP } = require('../engine/sentencepiece');
+const { localCtcScore, frameMax } = require('../engine/ctcLocal');
 const { createRendererRetrieval } = require('../engine/retrieval/renderer-client');
 const sessionLog = require('../engine/session-log');
 const { createBoard, mergeTranscript } = require('./liveBoard');
@@ -237,6 +238,14 @@ const SWITCH_COMMIT_SOLID = 1;
 // ytak_0typ locked a wrong Shabad at 9.7 s and reached the sung one only at 95 s. 0 = off.
 const PROBATION_DECODES = 120;
 const PROBATION_CONFIRM = 2;
+// Akhand Kirtan round 1 (idea 4, local pangti scoring): the search-phase acoustic check scores
+// each leader's pangtis where they are sung inside the window (engine/ctcLocal.js: keyword
+// spotting, AK_LOCAL_CTC nats earned per token heard) instead of aligning the whole pangti from
+// the window's first frame. The leader must then beat the next by AK_LOCAL_CTC_MARGIN nats
+// (about one token) instead of 0.05 nats per frame. ~0.2 ms per pangti on a 10 s window
+// (the whole-window score costs ~1.7 ms). 0 = off (the whole-window score, as before).
+const AK_LOCAL_CTC = 0;
+const AK_LOCAL_CTC_MARGIN = 2;
 const SHEV_LOCK = 2;
 const SHEV_SWITCH = 2.3;
 const SHEV_LEAD = 2;
@@ -2561,6 +2570,8 @@ const VoiceFollow = () => {
               )
                 return;
               if (!memory.acousticSP) memory.acousticSP = AcousticSP.load();
+              const fmax = AK_LOCAL_CTC > 0 ? frameMax(emissions) : null;
+              const acousticMargin = AK_LOCAL_CTC > 0 ? AK_LOCAL_CTC_MARGIN : 0.05;
               const scored = profiles
                 .map((profile, index) => ({
                   id: leaders[index].shabadId,
@@ -2572,14 +2583,16 @@ const VoiceFollow = () => {
                           .replace(/\s+/g, ' ')
                           .trim(),
                       );
+                      if (!tokens.length) return -Infinity;
+                      if (AK_LOCAL_CTC > 0)
+                        return localCtcScore(emissions, tokens, { reward: AK_LOCAL_CTC, fmax })
+                          .score;
                       // Reuse the follower scorer so acquisition uses the same audio evidence.
-                      return tokens.length
-                        ? // eslint-disable-next-line no-underscore-dangle
-                          AcousticFollower.prototype._ctcScore(emissions, tokens, [
-                            0,
-                            emissions.frames,
-                          ])
-                        : -Infinity;
+                      // eslint-disable-next-line no-underscore-dangle
+                      return AcousticFollower.prototype._ctcScore(emissions, tokens, [
+                        0,
+                        emissions.frames,
+                      ]);
                     }),
                   ),
                 }))
@@ -2589,7 +2602,7 @@ const VoiceFollow = () => {
               );
               if (
                 scored[0].id === top.shabadId &&
-                scored[0].score - scored[1].score >= 0.05 &&
+                scored[0].score - scored[1].score >= acousticMargin &&
                 !memory.acousticVotes.some((v) => v.hyp === hyp)
               ) {
                 memory.acousticVotes.push({ id: top.shabadId, step, hyp });
@@ -2599,7 +2612,7 @@ const VoiceFollow = () => {
                 agreeing.length >= 3 &&
                 step - agreeing[0].step >= 4 &&
                 scored[0].id === top.shabadId &&
-                scored[0].score - scored[1].score >= 0.05
+                scored[0].score - scored[1].score >= acousticMargin
               ) {
                 const profile = profiles[0];
                 const canonicalIndex = profile.verses.findIndex((v) => v.verseId === top.verseId);
