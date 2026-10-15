@@ -1216,12 +1216,13 @@ const VoiceFollow = () => {
       known: line >= 0,
     });
     if (kind !== 'sevadaar' || verseId === lastVerseRef.current) return;
-    if (!f.seek(line)) return;
     const from = lastVerseRef.current;
+    const fromLine = lineOfVerse(f.verseIds, from, curCursorRef.current);
+    if (!f.seek(line)) return;
     lastVerseRef.current = verseId;
     curCursorRef.current = line;
     if (seqReadRef.current.id === cur) seqReadRef.current.last = line;
-    lr.adopt(verseId, line, now, f);
+    lr.adopt(verseId, line, now, f, fromLine);
     setPos({ lineIndex: line, wordIndex: -1, confidence: 1, shabadId: cur });
     const fields = { session: sessionIdRef.current, shabadId: cur, from, to: verseId };
     sessionLog.logEvent('sevadaar_line', fields);

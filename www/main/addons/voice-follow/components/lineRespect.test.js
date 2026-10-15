@@ -78,6 +78,14 @@ describe('hold after a sevadaar move', () => {
     });
     assert.equal(lr.holding(), false);
   });
+  it('the old guess is held even when it is the next pangti (the sevadaar stepped back)', () => {
+    const lr = createLineRespect();
+    lr.adopt(105, 5, 0, F, 6);
+    assert.deepEqual(lr.gate({ lineIndex: 6, confidence: 0.9 }, 500, F), {
+      write: false,
+      reason: 'hold',
+    });
+  });
   it('going back to the old guess is held', () => {
     const lr = createLineRespect();
     lr.adopt(105, 5, 0, F);

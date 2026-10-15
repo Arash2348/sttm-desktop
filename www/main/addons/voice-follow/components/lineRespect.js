@@ -60,10 +60,11 @@ function createLineRespect() {
       return 'sevadaar';
     },
 
-    // The follower `owner` was moved to the sevadaar's line (index `line`).
-    adopt(verseId, line, now, owner = null) {
-      hold = { verseId, line, at: now, owner, streak: null };
-      lastMove = { verseId, line, at: now, owner };
+    // The follower `owner` was moved to the sevadaar's line (index `line`), away from the
+    // app's line `fromLine` (index, or -1).
+    adopt(verseId, line, now, owner = null, fromLine = -1) {
+      hold = { verseId, line, fromLine, at: now, owner, streak: null };
+      lastMove = { verseId, line, fromLine, at: now, owner };
     },
 
     // May the app write the follower's line `out` ({ lineIndex, confidence }) now?
@@ -80,8 +81,10 @@ function createLineRespect() {
         hold.streak = null; // the follower agrees with the sevadaar
         return { write: true, reason: null };
       }
-      if (line === hold.line + 1) {
-        hold = null; // the next pangti is being sung: carry on from the sevadaar's line
+      // The next pangti is being sung: carry on from the sevadaar's line. Not when that is
+      // the line the sevadaar just moved back from: that is the app's old guess.
+      if (line === hold.line + 1 && line !== hold.fromLine) {
+        hold = null;
         return { write: true, reason: 'next' };
       }
       // Anything else must be insisted on. Forward: steady progress past the next line
@@ -118,7 +121,7 @@ function createLineRespect() {
       if (verseId === m.verseId) return null;
       lastMove = null;
       return {
-        kind: line === m.line + 1 ? 'next' : 'override',
+        kind: line === m.line + 1 && line !== m.fromLine ? 'next' : 'override',
         from: m.verseId,
         to: verseId,
         afterS: Math.round((now - m.at) / 100) / 10,
