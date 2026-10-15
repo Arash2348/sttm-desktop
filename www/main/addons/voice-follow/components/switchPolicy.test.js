@@ -6,6 +6,7 @@ const {
   nextSwitchWins,
   nextSolidWins,
   switchCommitReady,
+  probationConfirm,
   nextEmptyStreak,
   maxLineScore,
   screenByFirstLetters,
@@ -317,5 +318,28 @@ describe('solid-win guard', () => {
   it('commits once one win in the run was solid', () => {
     assert.equal(switchCommitReady(3, 1, 3, 1), true);
     assert.equal(switchCommitReady(2, 1, 3, 1), false);
+  });
+});
+
+describe('probation after a searching lock', () => {
+  const cfg = { decodes: 4, confirm: 2, solidChars: 16, heardMin: 0.65 };
+  it('lowers the win count while the locked Shabad is not yet heard', () => {
+    const probe = { n: 0, heard: false };
+    assert.equal(probationConfirm(probe, 20, 0.4, 3, cfg), 2);
+    assert.equal(probationConfirm(probe, 9, 0.9, 3, cfg), 2); // thin decode does not confirm
+  });
+  it('restores the usual count once the locked Shabad is heard clearly', () => {
+    const probe = { n: 0, heard: false };
+    assert.equal(probationConfirm(probe, 20, 0.7, 3, cfg), 3);
+    assert.equal(probationConfirm(probe, 20, 0.1, 3, cfg), 3);
+  });
+  it('ends after the probation window', () => {
+    const probe = { n: 0, heard: false };
+    for (let i = 0; i < 4; i += 1) probationConfirm(probe, 20, 0.1, 3, cfg);
+    assert.equal(probationConfirm(probe, 20, 0.1, 3, cfg), 3);
+  });
+  it('does nothing without a probe or when off', () => {
+    assert.equal(probationConfirm(null, 20, 0.1, 3, cfg), 3);
+    assert.equal(probationConfirm({ n: 0, heard: false }, 20, 0.1, 3, { ...cfg, decodes: 0 }), 3);
   });
 });

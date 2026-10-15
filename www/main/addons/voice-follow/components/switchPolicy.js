@@ -45,6 +45,20 @@ function switchCommitReady(wins, solid, confirm, needSolid) {
   return wins >= confirm && (!(needSolid > 0) || (solid || 0) >= needSolid);
 }
 
+// Probation after a first lock (Akhand Kirtan round 1): a lock made while searching is checked
+// against what is heard next. Until the locked Shabad is heard clearly once (a solid decode,
+// >= cfg.solidChars letters, scoring >= cfg.heardMin on it), and for at most cfg.decodes judged
+// decodes, a rival needs only cfg.confirm wins instead of the usual count. Many-voice audio can
+// lock a wrong Shabad on one phrase (GAB-Akhand ytak_0typ: wrong at 9.7 s, right only at 95 s);
+// a lock the audio then confirms keeps the usual protection. probe: { n, heard } (mutated) or null.
+// Returns the win count a switch needs this decode.
+function probationConfirm(probe, hypLen, sCur, normal, cfg) {
+  if (!probe || !(cfg.decodes > 0)) return normal;
+  probe.n += 1; // eslint-disable-line no-param-reassign
+  if ((hypLen || 0) >= cfg.solidChars && sCur >= cfg.heardMin) probe.heard = true; // eslint-disable-line no-param-reassign
+  return !probe.heard && probe.n <= cfg.decodes ? Math.min(normal, cfg.confirm) : normal;
+}
+
 // Hold the visible candidate shortlist across transient empty decodes.
 // Sung audio often yields a decode with no banidb hit; wiping the shortlist
 // on every such decode makes the candidates flash and vanish. Only clear
@@ -195,6 +209,7 @@ module.exports = {
   nextSwitchWins,
   nextSolidWins,
   switchCommitReady,
+  probationConfirm,
   nextEmptyStreak,
   maxLineScore,
   screenByFirstLetters,

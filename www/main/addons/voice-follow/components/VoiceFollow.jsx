@@ -58,6 +58,7 @@ const {
   nextSwitchWins,
   nextSolidWins,
   switchCommitReady,
+  probationConfirm,
   nextEmptyStreak,
   maxLineScore,
   bestLineMatch,
@@ -229,6 +230,13 @@ const SWITCH_SOLID_CHARS = 16;
 // letters). GAB-Hard kh17: the 3-wins rule made a 32 s false switch on 8-9 letter decodes.
 // The Shabad-level route (SHEV_SWITCH) already counts only solid wins. 0 = off.
 const SWITCH_COMMIT_SOLID = 1;
+// Akhand Kirtan round 1 (probation): after a lock made while SEARCHING (not a switch, a
+// sevadaar tap or a Bani), until the locked Shabad is heard clearly once (a solid decode scoring
+// >= SWITCH_ACOUSTIC_MIN on it), and for at most PROBATION_DECODES judged decodes (~60 s), a
+// rival Shabad commits on PROBATION_CONFIRM wins instead of SWITCH_CONFIRM. GAB-Akhand
+// ytak_0typ locked a wrong Shabad at 9.7 s and reached the sung one only at 95 s. 0 = off.
+const PROBATION_DECODES = 120;
+const PROBATION_CONFIRM = 2;
 const SHEV_LOCK = 2;
 const SHEV_SWITCH = 2.3;
 const SHEV_LEAD = 2;
@@ -1214,6 +1222,7 @@ const VoiceFollow = () => {
   const winAtRef = useRef(new Map()); // shabadId -> judged decode of its last switch win
   const shevRef = useRef(new Map()); // Shabad-level evidence while following (fix 1 V6)
   const shevAtRef = useRef(0); // judged decode of the last following-phase add (one per decode per Shabad)
+  const probeRef = useRef(null); // probation after a searching lock: { n, heard } | null
   const sameGurbaniRef = useRef(new Map()); // 'a:b' -> Promise<boolean> (DUP_AWARE_LOCK)
   const bsAdoptKeyRef = useRef(''); // last screened field we ran adoption against
   const flIndexFailAtRef = useRef(0); // last index-build failure (backoff clock)
@@ -1536,6 +1545,7 @@ const VoiceFollow = () => {
     bsWinsRef.current.clear();
     winAtRef.current.clear();
     shevRef.current.clear();
+    probeRef.current = null;
     bsAdoptKeyRef.current = '';
     setSwitchView(null);
     cleanup();
@@ -1745,6 +1755,7 @@ const VoiceFollow = () => {
     bsWinsRef.current.clear();
     winAtRef.current.clear();
     shevRef.current.clear();
+    probeRef.current = null;
     bsAdoptKeyRef.current = '';
     setSwitchView(null);
     contextEvidenceRef.current = null;
@@ -2149,6 +2160,10 @@ const VoiceFollow = () => {
         setSwitchView(null);
         switchCandRef.current = null; // clear any in-flight switch evaluation
         vetoRef.current = null;
+        probeRef.current =
+          PROBATION_DECODES > 0 && !isSwitch && !opts.manual && !opts.promote && baniId == null
+            ? { n: 0, heard: false }
+            : null;
         {
           const from = currentShabadIdRef.current;
           if (opts.manual && from != null && from !== cand.shabadId) {
@@ -3063,6 +3078,18 @@ const VoiceFollow = () => {
           hypLen: hypFull.length,
           hypMin: SWITCH_HYP_MIN,
         };
+        const confirmNeed = probationConfirm(
+          probeRef.current,
+          hypFull.length,
+          sCurFull,
+          SWITCH_CONFIRM,
+          {
+            decodes: PROBATION_DECODES,
+            confirm: PROBATION_CONFIRM,
+            solidChars: SWITCH_SOLID_CHARS,
+            heardMin: SWITCH_ACOUSTIC_MIN,
+          },
+        );
         const stepSlot = (slot, sCand, lineIndex = -1) => {
           // Suppress confirmation only for identities in the tied leader set.
           const vetoed =
@@ -3100,7 +3127,7 @@ const VoiceFollow = () => {
           // Held decodes judged nothing — keep showing the last judged score.
           if (!step.held) slot.lastScore = sCand; // eslint-disable-line no-param-reassign
           return (
-            switchCommitReady(slot.wins, slot.solid, SWITCH_CONFIRM, SWITCH_COMMIT_SOLID) || shevOk
+            switchCommitReady(slot.wins, slot.solid, confirmNeed, SWITCH_COMMIT_SOLID) || shevOk
           );
         };
         const decaySlot = (slot) => {
@@ -3628,6 +3655,7 @@ const VoiceFollow = () => {
     bsWinsRef.current.clear();
     winAtRef.current.clear();
     shevRef.current.clear();
+    probeRef.current = null;
     bsAdoptKeyRef.current = '';
     setSwitchView(null);
     contextEvidenceRef.current = null;
