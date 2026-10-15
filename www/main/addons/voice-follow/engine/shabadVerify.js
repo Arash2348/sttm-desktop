@@ -125,15 +125,31 @@ function shabadFit(emis, lines) {
 function stitch(history, { spanS = 30, sr = 16000, fps = 25 } = {}) {
   if (!history.length) return null;
   const picked = [];
-  let edge = history[history.length - 1].end;
-  for (let k = history.length - 1; k >= 0 && picked.length < Math.ceil(spanS / 10) + 1; k--) {
-    const h = history[k];
-    // a pass is usable when it ends at or just before the current edge (<= 0.7 s gap)
-    if (h.end <= edge && edge - h.end <= 0.7 * sr) {
-      picked.unshift(h);
-      edge = h.end - h.len;
-      if ((picked[picked.length - 1].end - edge) / sr >= spanS) break;
-    }
+  const used = new Set();
+  const newest = history[history.length - 1].end;
+  let edge = newest;
+  // walk back: each step takes the pass whose end is nearest the start of the one after it. The
+  // recognizer keeps at most one pass per second for older audio, so a gap or overlap of up to
+  // 1.5 s is accepted (a second of doubled or missing frames barely moves a 30 s fit).
+  const nearest = (at) => {
+    let best = null;
+    let bd = Infinity;
+    history.forEach((h) => {
+      const d = Math.abs(h.end - at);
+      if (!used.has(h) && d <= 1.5 * sr && d < bd) {
+        best = h;
+        bd = d;
+      }
+    });
+    return best;
+  };
+  while (picked.length < Math.ceil(spanS / 10) + 1) {
+    const best = nearest(edge);
+    if (!best) break;
+    used.add(best);
+    picked.unshift(best);
+    edge = best.end - best.len;
+    if ((newest - edge) / sr >= spanS) break;
   }
   if (!picked.length) return null;
   const { C } = picked[0].emis;

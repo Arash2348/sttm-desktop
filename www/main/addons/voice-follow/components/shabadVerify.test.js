@@ -2,6 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const { shabadFit, stitch, BLANK } = require('../engine/shabadVerify');
+const { Recognizer } = require('../engine/recognizer');
 
 const C = 257;
 // emissions that "hear" the given token ids in order, each for `per` frames, blanks between
@@ -69,4 +70,28 @@ test('stitch joins non-overlapping 10 s passes, newest last', () => {
 
 test('stitch returns null with no history', () => {
   assert.strictEqual(stitch([]), null);
+});
+
+test('the recognizer keeps 35 s of passes, thinned, and stitch reaches 30 s from them', async () => {
+  const fake = {
+    emissions: async (buf) => ({
+      data: new Float32Array(Math.floor(buf.length / 640) * C),
+      frames: Math.floor(buf.length / 640),
+      C,
+    }),
+    decode: () => 'ਸਤਿਨਾਮ',
+    greedy: () => [],
+    confidence: () => 1,
+  };
+  const rec = new Recognizer(fake, { inputSr: 16000 });
+  rec.keepHistory = true;
+  const chunk = new Float32Array(0.128 * 16000);
+  // 50 s of audio, one chunk at a time (as the app pushes it)
+  // eslint-disable-next-line no-await-in-loop
+  for (let k = 0; k < Math.ceil(50 / 0.128); k++) await rec.push(chunk);
+  const span = (rec.history[rec.history.length - 1].end - rec.history[0].end) / 16000;
+  assert.ok(span >= 30 && span <= 35.5, `kept ${span} s`);
+  assert.ok(rec.history.length < 50, `kept ${rec.history.length} passes`);
+  const s = stitch(rec.history, { spanS: 30 });
+  assert.ok(s && s.seconds >= 29, `stitched ${s && s.seconds} s`);
 });

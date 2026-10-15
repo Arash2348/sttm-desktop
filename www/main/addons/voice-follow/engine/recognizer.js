@@ -40,12 +40,15 @@ class Recognizer {
     const emis = await this.infer.emissions(this.buf);
     if (this.keepHistory) {
       this.history.push({ end: this.pushed, len: this.buf.length, emis });
-      // keep ~35 s, and at most one pass per second (stitching needs one every ~10 s)
-      this.history = this.history.filter(
-        (h, k, all) =>
-          this.pushed - h.end <= 35 * SR &&
-          (k === all.length - 1 || all[k + 1].end - h.end >= SR || this.pushed - h.end <= 12 * SR),
-      );
+      // keep ~35 s: every pass of the last 12 s, older ones thinned to one per second
+      // (stitching needs one pass every ~10 s); compare each with the last one KEPT
+      const keep = [];
+      this.history.forEach((h) => {
+        const age = this.pushed - h.end;
+        if (age > 35 * SR) return;
+        if (age <= 12 * SR || !keep.length || h.end - keep[keep.length - 1].end >= SR) keep.push(h);
+      });
+      this.history = keep;
     }
     const hyp = this.infer.decode(this.infer.greedy(emis));
     if (norm(hyp).length < this.minHyp) return null;
