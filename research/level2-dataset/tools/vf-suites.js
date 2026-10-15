@@ -132,6 +132,36 @@ const SUITES = {
     score(dir) { return require('./kirtan-score').suiteMetrics(dir); },
     direction: (name) => require('./kirtan-score').direction(name),
   },
+  // Akhand / Sehaj Paath, reading Sri Guru Granth Sahib Ji Ang after Ang (benchmark folder 4-akhand-paath): manifest
+  // rows with suite_jobs apaath:<id> (publisher-slide line answers, lines.csv / shabads.csv), whole clips from t=0,
+  // Bani routes on as in the app. optIn: vf-check runs them only when named; GAB plays them from its manifest and
+  // scores them with sangat-score (in-sequence %, wrong s/h, seconds behind, Shabad crossings).
+  apaath: {
+    title: 'Akhand Paath, Ang after Ang (publisher-slide line answers)',
+    optIn: true,
+    smoke: [],
+    sentinel: [],
+    jobs: () => require('./akhand-bench').akhandRows().map(({ id, wav }) => ({ id, clip: id, wav, dur: durOf(wav), only: id, outFile: `${id}.json`, args: ['akhand-bench.js', '--fast'] })),
+    metrics: null,
+    score(dir) {
+      const sv = require('./sangat-score');
+      const ds = sv.loadDataset(require('./akhand-bench').BENCH);
+      const m = {};
+      const tr = path.join(dir, 'trace');
+      for (const f of fs.existsSync(tr) ? fs.readdirSync(tr).filter((x) => x.endsWith('.events.jsonl')) : []) {
+        const id = f.replace(/\.events\.jsonl$/, '');
+        const row = ds.find(id, 'apaath');
+        if (!row) continue;
+        const c = sv.scoreClip(ds, row, path.join(tr, f), {});
+        const s = c.shabad && c.shabad.acc ? sv.summarize(c.shabad.acc) : null;
+        const l = c.line && c.line.acc ? sv.summarize(c.line.acc) : null;
+        Object.assign(m, { [`${id} in-sequence %`]: s ? s.right_pct : null, [`${id} wrong s/h`]: s ? s.wrong_s_per_h : null, [`${id} behind p50 s`]: l ? l.lag_p50 : null });
+      }
+      sv.close();
+      return m;
+    },
+    direction: (name) => (/in-sequence/.test(name) ? 1 : -1),
+  },
   renton: {
     title: 'Renton Oct 11 parts (7)',
     smoke: ['rt11_hukamnama'],

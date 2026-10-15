@@ -63,10 +63,13 @@ const loadMicCfg = () => JSON.parse(fs.readFileSync(path.join(__dirname, 'gab-mi
 
 // ---------------------------------------------------------------- per clip -----------
 // line truth basis: human (lines_source human: sevadaar screen, tapping) > aligned + ear-checked > aligned
-const BASES = ['human', 'aligned+ear-checked', 'aligned'];
-const BASIS_TITLE = { human: 'human', 'aligned+ear-checked': 'aligned, ear-checked', aligned: 'aligned (our own aligner, unaudited)' };
+// broadcast-caption (Akhand Paath): the publisher's burned-in pangti slides, matched to the STTM DB and frame-checked
+// by an independent verifier; made by neither our aligner nor our speech model, so it counts as a headline basis
+const BASES = ['human', 'broadcast-caption', 'aligned+ear-checked', 'aligned'];
+const BASIS_TITLE = { human: 'human', 'broadcast-caption': 'publisher slides, frame-checked', 'aligned+ear-checked': 'aligned, ear-checked', aligned: 'aligned (our own aligner, unaudited)' };
 function basisOf(linesSource, audit) {
   if (/^human/.test(String(linesSource || ''))) return 'human';
+  if (/^broadcast-caption/.test(String(linesSource || ''))) return 'broadcast-caption';
   if (audit && audit.confirmed) return 'aligned+ear-checked';
   return 'aligned';
 }
@@ -81,7 +84,28 @@ function scoreClip(sv, ds, row, eventsFile, suite, sets) {
     neverShown: lineTruth && !(c.line && c.line.acc),
     shabad: c.shabad && c.shabad.acc ? { provenance: c.shabad.provenance, acc: c.shabad.acc } : { why: c.shabad && c.shabad.why },
     events,
+    // Akhand Paath (Ang after Ang): each Shabad crossing, from the new Shabad's first pangti (its header, read just
+    // before, is unlabelled) to the new Shabad on screen
+    cross: canonFolder(row.content_folder) === '4-akhand-paath' ? crossings(sv, ds, row, eventsFile) : [],
   };
+}
+function crossings(sv, ds, row, eventsFile) {
+  // the first moment (from 5 s before the previous Shabad's end) the next Shabad is on screen;
+  // null = not shown before the next Shabad's own end
+  // (on screen = the Shabad's id, or a pangti of its text inside a Bani the app opened, e.g. a Vaar)
+  const T = sv.loadTruth(ds, row);
+  const sh = T.shabads.slice().sort((x, y) => x.start - y.start);
+  const st = sv.screenStates(sv.loadEvents(eventsFile).events);
+  const out = [];
+  for (let i = 1; i < sh.length; i++) {
+    const ids = new Set(sh[i].ids.map(String));
+    const texts = T.lines.filter((l) => l.start >= sh[i].start - 0.5 && l.start < sh[i].end).map((l) => l.norm);
+    const isNext = (x) => ids.has(String(x.shabad)) || (x.verse != null && texts.some((t) => sv.same(sv.norm(sv.textOf(x.verse) || ''), t)));
+    const hit = st.find((x) => x.t >= sh[i - 1].end - 5 && x.t <= sh[i].end && !x.seeking && isNext(x));
+    // seconds after the new Shabad's first pangti begins (negative = already up while its header was read)
+    out.push(hit ? +(hit.t - sh[i].start).toFixed(1) : null);
+  }
+  return out;
 }
 
 // ---------------------------------------------------------------- aggregation --------
@@ -126,6 +150,13 @@ function group(sv, clips) {
     stayed_main_n: ev.filter((e) => e.kind === 'stayed').length,
     parmaan_n: pm.length, parmaan_shown: ok(pm).length,
   };
+  // Akhand Paath: Shabad crossings (every next Shabad), delay from its first pangti (negative = up during the header); lines reached = pangtis that reached the screen of all labelled pangtis
+  const cr = clips.flatMap((c) => c.cross || []);
+  if (cr.length) {
+    const found = cr.filter((x) => x != null);
+    Object.assign(g, { cross_n: cr.length, cross_missed: cr.length - found.length, cross_p50_s: r1(quant(found, 0.5)), cross_p90_s: r1(quant(found, 0.9)),
+      lines_total: head ? head.behind_n + head.lines_missed : null });
+  }
   g.thin = ['pangti_clips', 'find_n', 'switch_n'].filter((k) => g[k] > 0 && g[k] < THIN).concat(g.clips < THIN ? ['clips'] : []);
   return g;
 }
@@ -155,7 +186,7 @@ function build(sv, clips, sets, tier = 'main') {
   const push = (key, level, title, cs, extra = {}) => { rows.push({ key, level, title, ...(cs.length ? { ...group(sv, cs), mic: micSplit(sv, cs) } : { clips: 0 }), ...extra }); };
   for (const top of TOP) {
     const cs = clips.filter((c) => c.folder.split('/')[0] === top);
-    const none = tier === 'hard' ? `no ${tierTitle(tier, sets)} recording of this behaviour has a replay runner` : top === '4-akhand-paath' ? 'no runner yet: the Sehaj Paath clips have the Shabads of each Ang in order but no times, and GAB has no replay suite for them' : 'no clip of this behaviour was run';
+    const none = tier === 'hard' ? `no ${tierTitle(tier, sets)} recording of this behaviour has a replay runner` : top === '4-akhand-paath' ? 'no Akhand Paath clip with times in this split (suite apaath: the clips with publisher-slide line answers)' : 'no clip of this behaviour was run';
     push(top, 'behaviour', TOP_TITLE[top], cs, cs.length ? {} : { note: none });
     // the Banis each behaviour should cover are listed (as 'no clips yet') in the main tier only
     const subs = [...new Set([...cs.map((c) => c.folder).filter((f) => f.includes('/')), ...(tier === 'hard' ? [] : (sets.expectBanis[top] || []).map((b) => `${top}/${b}`))])].sort();
@@ -233,6 +264,11 @@ function markdown(card) {
     const name = r.level === 'behaviour' ? `**${r.title}**` : `&nbsp;&nbsp;${r.title}`;
     L.push(`| ${name} | ${cellsOf(r).join(' | ')} |`);
   }
+  const ap = card.rows.find((x) => x.key === '4-akhand-paath' && x.clips);
+  if (ap) {
+    L.push('');
+    L.push(`Akhand Paath (Ang after Ang): in sequence (right Shabad up) ${f(ap.right_shabad_pct, '%')} · wrong ${ap.wrong_s_per_h != null ? r1(ap.wrong_s_per_h / 36) : '-'}% (${f(ap.wrong_s_per_h)} s/h) · searching/blank ${f(ap.blank_pct, '%')} · behind the reader p50 / p90 ${f(ap.behind_p50_s)} / ${f(ap.behind_p90_s)} s · pangtis reached ${ap.behind_n} of ${f(ap.lines_total)} · Shabad crossings ${f(ap.cross_n)} (${f(ap.cross_missed)} not shown), new Shabad up p50 / p90 ${f(ap.cross_p50_s)} / ${f(ap.cross_p90_s)} s after its first pangti begins (negative = during its header)`);
+  }
   L.push('');
   L.push('Named clip sets of earlier reports (so an old number can be checked on its own clips):');
   L.push('');
@@ -285,7 +321,7 @@ const GUARD = {
   switch_p50_s: [-1, 0.2, 'switch time p50 s'],
   switch_missed: [-1, 0, 'switches never found'],
 };
-const INFO = { pangti_near_pct: [1, 0.1, 'same or neighbouring pangti % (info)'], find_p90_s: [-1, 0.2, 'time to find p90 s (info)'], switch_p90_s: [-1, 0.2, 'switch time p90 s (info)'], pangti_never_shown: [-1, 0, 'line-truth clips never shown (info)'], parmaan_shown: [1, 0, 'parmaans shown (info)'],
+const INFO = { pangti_near_pct: [1, 0.1, 'same or neighbouring pangti % (info)'], cross_p50_s: [-1, 0.2, 'Akhand Paath crossing delay p50 s (info)'], cross_p90_s: [-1, 0.2, 'Akhand Paath crossing delay p90 s (info)'], cross_missed: [-1, 0, 'Akhand Paath crossings not shown (info)'], find_p90_s: [-1, 0.2, 'time to find p90 s (info)'], switch_p90_s: [-1, 0.2, 'switch time p90 s (info)'], pangti_never_shown: [-1, 0, 'line-truth clips never shown (info)'], parmaan_shown: [1, 0, 'parmaans shown (info)'],
   // info only: its denominator moves (a build that stays on the main Shabad turns a switch into 'stayed')
   switch_within10_n: [1, 0, 'switches found within 10 s (info)'] };
 function compare(A, B) {

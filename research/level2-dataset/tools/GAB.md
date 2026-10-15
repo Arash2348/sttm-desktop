@@ -55,8 +55,16 @@ them (the user's list; a Bani with no clip reads "no clips yet"), and the named 
 
 Mic path (mixer feed / room mic / 50/50) stays as a second table. Which recording counts as which is in
 `gab-micpath.json` (Fremont YouTube livestream = mixer feed; Jaspal's laptop recordings = room mic).
-`4-akhand-paath` has no replay runner yet (the Sehaj clips have the order of Shabads but no times), so it reads "no
-runner yet".
+**Akhand Paath (Oct 15 2026):** `4-akhand-paath` is scored by suite `apaath` (`akhand-bench.js`: whole clip from t=0,
+Bani routes on as in the app; manifest rows with `suite_jobs apaath:<id>`). The 10 YouTube Ang-after-Ang videos (ytap_*,
+each at 1x and 1.35x) carry line answers from the publisher's burned-in pangti slides, frame-checked by an independent
+verifier: their own line basis **publisher slides, frame-checked** (`broadcast-caption`), a headline basis like human
+(not our aligner), so Lag shows on the leaderboard. Split by source video (sha1 of the video id, each x1.35 with its 1x):
+6 train / 2 dev (cKpg64jaTAo, PB6nfe3QKn4) / 2 test (mUPs0SqeXvY, XEhUI8Vurj8), set on Oct 14 before any scoring (they
+were all test). Akhand-only numbers in the scorecard line under the table: in sequence (right Shabad up) %, wrong % and
+s/h, behind the reader p50/p90, pangtis reached of all labelled, and Shabad crossings (every next Shabad: seconds from
+its first pangti to on screen, negative = already up during its header; crossing numbers are information in compare).
+The Sehaj clips sp01-03 still have no times and no runner.
 
 ### v1.1 -> v1.2 (Oct 14 2026): tiers
 
