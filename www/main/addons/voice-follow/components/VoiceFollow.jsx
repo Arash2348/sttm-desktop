@@ -62,6 +62,8 @@ const {
   orderFreeLineScore,
   sameGurbani,
 } = require('./switchPolicy');
+// Respecting the sevadaar's line moves (tag / adopt / hold), unit-tested in lineRespect.test.js.
+const { createLineRespect, lineOfVerse } = require('./lineRespect');
 
 // maxLineScore lives in ./switchPolicy (same implementation, unit-tested there)
 // so the benchmarked length-penalty math is shared, not duplicated.
@@ -801,7 +803,12 @@ const VoiceFollow = () => {
   // timeline continues and the sevadaar's own changes can be told apart as overrides.
   const visibleRef = useRef(false);
   const shadowing = () => SHADOW_BUILD && !visibleRef.current;
+  // Every line the app itself puts on screen passes through mirror(), so it is tagged here:
+  // any other change of the screen line is the sevadaar's (see lineRespect.js).
+  const lineRespectRef = useRef(null);
+  if (!lineRespectRef.current) lineRespectRef.current = createLineRespect();
   const mirror = (update) => {
+    if (update.verseId != null) lineRespectRef.current.appWrote(update.verseId, Date.now());
     if (SHADOW_BUILD) shadowBus.system(update);
   };
   // Stable identities (useCallback): these feed other hooks' dependency lists, and a new
@@ -1185,6 +1192,46 @@ const VoiceFollow = () => {
   const srcRef = useRef(null);
   const linesRef = useRef([]); // [{ verseId }] indexed by aligner lineIndex
   const lastVerseRef = useRef(null);
+  // The sevadaar moved the line on the main screen (the Shabad pane, arrow keys, a
+  // controller): follow on from their pangti. `onScreen` names the content on screen
+  // (shabad id, or 'bani:<id>'). The app's own line writes are tagged in mirror().
+  const sevadaarLineRef = useRef(null);
+  sevadaarLineRef.current = (verseId, onScreen) => {
+    const lr = lineRespectRef.current;
+    const now = Date.now();
+    const f = followerRef.current;
+    const cur = currentShabadIdRef.current;
+    const following =
+      autopilotRef.current &&
+      phaseRef.current === 'following' &&
+      !lockingRef.current &&
+      !shadowing() &&
+      !!f &&
+      typeof f.seek === 'function';
+    const line = f ? lineOfVerse(f.verseIds, verseId, curCursorRef.current) : -1;
+    const kind = lr.classify(verseId, {
+      now,
+      following,
+      sameShabad: cur != null && onScreen != null && String(cur) === String(onScreen),
+      known: line >= 0,
+    });
+    if (kind !== 'sevadaar' || verseId === lastVerseRef.current) return;
+    if (!f.seek(line)) return;
+    const from = lastVerseRef.current;
+    lastVerseRef.current = verseId;
+    curCursorRef.current = line;
+    if (seqReadRef.current.id === cur) seqReadRef.current.last = line;
+    lr.adopt(verseId, line, now, f);
+    setPos({ lineIndex: line, wordIndex: -1, confidence: 1, shabadId: cur });
+    const fields = { session: sessionIdRef.current, shabadId: cur, from, to: verseId };
+    sessionLog.logEvent('sevadaar_line', fields);
+    if (SHADOW_BUILD && shadowBus.active()) shadowBus.note({ type: 'sevadaar_line', ...fields });
+  };
+  const activeVerseId = useStoreState((state) => state.navigator.activeVerseId);
+  useEffect(() => {
+    const onScreen = isSundarGutkaBani ? `${BANI_KEY}${sundarGutkaBaniId}` : activeShabadId;
+    sevadaarLineRef.current(activeVerseId, onScreen);
+  }, [activeVerseId]);
   const lockedVerseRef = useRef(null); // { verseId, verse } the current Shabad was locked at
   const followingKeyRef = useRef(null); // session key: `shabad:<id>` or `bani:<id>`
   // Blind-detect session state (mutable, avoids re-render churn per decode).
@@ -3585,19 +3632,39 @@ const VoiceFollow = () => {
           // switch is being evaluated (the current shabad is likely being left).
           const evaluatingSwitch = switchCandRef.current && switchCandRef.current.wins >= 1;
           if (evaluatingSwitch || out.confidence < UI_MOVE_CONF) return;
-          setPos({
-            lineIndex: out.lineIndex,
-            wordIndex: out.wordIndex,
-            confidence: out.confidence,
-            shabadId: currentShabadIdRef.current,
-          });
-          if (out.verseId != null && out.verseId !== lastVerseRef.current) {
+          // Just after a sevadaar line move, their pangti stands unless the follower moves
+          // on to the next one or clearly insists on another (lineRespect.js). No hold:
+          // always written, as before.
+          const lr = lineRespectRef.current;
+          const nowMs = Date.now();
+          const gate = lr.gate(out, nowMs, f);
+          if (gate.write) {
+            setPos({
+              lineIndex: out.lineIndex,
+              wordIndex: out.wordIndex,
+              confidence: out.confidence,
+              shabadId: currentShabadIdRef.current,
+            });
+          }
+          if (gate.write && out.verseId != null && out.verseId !== lastVerseRef.current) {
             lastVerseRef.current = out.verseId;
             setActiveVerseId(out.verseId);
             setLineNumber(
               ((curProf && curProf.screenLines && curProf.screenLines[out.lineIndex]) ??
                 out.lineIndex) + 1,
             );
+            const moved = lr.afterWrite(out.verseId, out.lineIndex, nowMs, f);
+            if (moved) {
+              const fields = {
+                session: sessionIdRef.current,
+                shabadId: currentShabadIdRef.current,
+                ...moved,
+                why: gate.reason,
+              };
+              const type = moved.kind === 'next' ? 'sevadaar_line_next' : 'sevadaar_line_override';
+              sessionLog.logEvent(type, fields);
+              if (SHADOW_BUILD && shadowBus.active()) shadowBus.note({ type, ...fields });
+            }
           }
           // Straight-through reading of a Rehras or Sohila shabad: open the Bani.
           const sid = currentShabadIdRef.current;
