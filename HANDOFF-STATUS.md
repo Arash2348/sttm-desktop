@@ -149,6 +149,28 @@ human-tapped). Not yet on Hugging Face: only human-checked keys go there.
 but not run: the session's safety guard blocks sending the HF / Azure keys to the VM (metadata) or reading the VM's
 own copies; needs the owner's explicit OK. The key was pasted in chat: rotate it.
 
+## Brief for the Mac session: fill the x86 Akhand / Renton windows on the GCP VM (paste into Claude on the Mac)
+
+> The cloud session cannot send the HF / Azure keys to the VM (its safety mode), so this runs from the Mac, which
+> already reaches the VM and holds the keys. Goal: record the missing model windows of three candidate builds on the
+> x86-recorded clips (GAB-Akhand l3*, Renton Finds rn*) on vf-record itself (the machine that recorded them), push
+> them to Azure bench-cache/, stop the VM. ~30-60 min, ~$1-2. Owner OK given Oct 15 2026; budget rules unchanged.
+>
+> 1. Start vf-record (us-east1-b, project vf-bench-sttm) with its usual 6 h self-stop; ssh in.
+> 2. On the VM, as the user that holds ~/.vf-hf-token and ~/.vf-azure-sas:
+>    ```sh
+>    export HF_TOKEN=$(cat ~/.vf-hf-token) VF_AZURE_SAS=$(cat ~/.vf-azure-sas)
+>    sudo -E bash -c 'mkdir -p /home/user && cd /home/user && rm -rf sttm-desktop &&
+>      git clone -q --depth 200 -b claude/sweet-brahmagupta-x0uez6 https://github.com/Arash2348/sttm-desktop &&
+>      cd sttm-desktop && bash research/cloud-gab/vm/vm-job.sh fill-x86 2>&1 | tee /tmp/fill-x86.log'
+>    ```
+>    (vm-job.sh runs setup.sh --model: node deps, GAB tools + cloud patch, BaniDB, HF audio, the int8 model with sha
+>    check; builds v6-prob / v6-ctc / v6-prob-ctc as committed constants on d71b304; vf-check --fill on l3 + rfinds
+>    (platform guard: only linux-x64 entries are recorded into); pushes the grown entries to Azure; pushes replays
+>    to bench-results/.) It needs node 22 on PATH (vm-startup.sh shows how to install it into /opt/node).
+> 3. Check the log ends with "fill-x86 done" and "pushed to Azure bench-cache", then STOP the VM.
+> 4. Tell the cloud session; it scores GAB-Akhand for the three builds from the shared cache in seconds.
+
 ## Open questions for the owner
 
 1. Add `HF_TOKEN` and `VF_AZURE_SAS` to this cloud environment's settings (environment menu in the session's
