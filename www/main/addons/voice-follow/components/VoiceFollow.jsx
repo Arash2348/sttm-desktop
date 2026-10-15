@@ -205,6 +205,64 @@ const SWITCH_CAND_MIN_LINE_CHARS = 15;
 // (misses switches: recall 68->60%), so raising it is not safe. The 9s stress ceiling
 // (~35% on-correct) is latency-bound (react time ~4-5s vs 9s dwell), not tunable.
 const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a switch
+// Fix 1 (V6 Shabad-level evidence): a Shabad is found when enough of ITS pangtis have been
+// heard, not only when one ~35-letter window wins several decodes in a row. Each confidently
+// matched pangti adds to its Shabad's total: a new pangti adds 1, a repeat of one already
+// heard SHEV_REPEAT, a pangti next to (within 2 lines of) one heard recently SHEV_SEQ extra.
+// Totals fade with a time constant of SHEV_TAU_DECODES decodes (~30 s at the 0.5 s hop, not
+// 3 s), and a pangti matched for a different Shabad scales the others by SHEV_RIVAL.
+// Searching: the unique full-text leader of a decode (score >= SHEV_SEARCH_MIN, margin >=
+// AP_LOCK_TEXT_MARGIN) is the matched pangti; a Shabad locks when its total reaches
+// SHEV_LOCK over >= 2 distinct pangtis, at least SHEV_LEAD times the next Shabad, while it
+// leads this decode. Following: a switch-judge WIN (the current pangti's own gate against
+// look-alike phrases: score >= SWITCH_ACOUSTIC_MIN and margin over the current Shabad) is the
+// matched pangti; a win commits when the Shabad's total reaches SHEV_SWITCH over >= 2
+// distinct pangtis. Additive: every existing route is unchanged. 0 = off.
+const SHEV_LOCK = 3;
+const SHEV_SWITCH = 2.3;
+const SHEV_LEAD = 2;
+const SHEV_REPEAT = 0.3;
+const SHEV_SEQ = 0.25;
+const SHEV_TAU_DECODES = 60;
+const SHEV_RIVAL = 0.9;
+const SHEV_SEARCH_MIN = 0.45;
+// One Shabad-level evidence store: Map shabadId -> Map(lineKey -> { w, at }); `now` is a decode
+// counter. Returns the Shabad's total after adding (lineIndex null = no order bonus).
+function shevAdd(store, now, id, key, lineIndex) {
+  const fade = (e) => e.w * Math.exp(-(now - e.at) / SHEV_TAU_DECODES);
+  store.forEach((lines, sid) => {
+    if (sid === id) return;
+    lines.forEach((e) => {
+      e.w = fade(e) * SHEV_RIVAL; // eslint-disable-line no-param-reassign
+      e.at = now; // eslint-disable-line no-param-reassign
+    });
+  });
+  let lines = store.get(id);
+  if (!lines) {
+    lines = new Map();
+    store.set(id, lines);
+  }
+  const old = lines.get(key);
+  let add = old ? SHEV_REPEAT : 1;
+  if (!old && lineIndex != null)
+    lines.forEach((e) => {
+      if (e.idx != null && Math.abs(e.idx - lineIndex) <= 2 && fade(e) >= 0.5) add = 1 + SHEV_SEQ;
+    });
+  lines.set(key, { w: Math.min(2, (old ? fade(old) : 0) + add), at: now, idx: lineIndex });
+  return shevTotal(store, now, id);
+}
+function shevTotal(store, now, id) {
+  const lines = store.get(id);
+  if (!lines) return { total: 0, distinct: 0 };
+  let total = 0;
+  let distinct = 0;
+  lines.forEach((e) => {
+    const w = e.w * Math.exp(-(now - e.at) / SHEV_TAU_DECODES);
+    total += w;
+    if (w >= 0.25) distinct += 1;
+  });
+  return { total, distinct };
+}
 // Same-Gurbani lock (ported from cycle 11): the same text stored as two shabads (Aarti in
 // Sohila and in Dhanasari, a Rehras shabad and its SGGS original) searches as an exact
 // tie, and a tie never locks. 1 = while searching, treat such copies as one candidate.
@@ -1136,6 +1194,10 @@ const VoiceFollow = () => {
   const flIndexLoadingRef = useRef(null); // in-flight index promise
   const lineCacheRef = useRef(new Map()); // shabadId -> { linesNorm, verses } | null (loading)
   const bsWinsRef = useRef(new Map()); // backstop wins banked per shabadId (survives screen flap)
+  const judgeNRef = useRef(0); // judged following decodes (clock for the fix-1 holds)
+  const winAtRef = useRef(new Map()); // shabadId -> judged decode of its last switch win
+  const shevRef = useRef(new Map()); // Shabad-level evidence while following (fix 1 V6)
+  const shevAtRef = useRef(0); // judged decode of the last following-phase add (one per decode per Shabad)
   const sameGurbaniRef = useRef(new Map()); // 'a:b' -> Promise<boolean> (DUP_AWARE_LOCK)
   const bsAdoptKeyRef = useRef(''); // last screened field we ran adoption against
   const flIndexFailAtRef = useRef(0); // last index-build failure (backoff clock)
@@ -1456,6 +1518,8 @@ const VoiceFollow = () => {
     switchCandRef.current = null;
     backstopRef.current = null;
     bsWinsRef.current.clear();
+    winAtRef.current.clear();
+    shevRef.current.clear();
     bsAdoptKeyRef.current = '';
     setSwitchView(null);
     cleanup();
@@ -1663,6 +1727,8 @@ const VoiceFollow = () => {
     switchCandRef.current = null;
     backstopRef.current = null;
     bsWinsRef.current.clear();
+    winAtRef.current.clear();
+    shevRef.current.clear();
     bsAdoptKeyRef.current = '';
     setSwitchView(null);
     contextEvidenceRef.current = null;
@@ -2114,6 +2180,8 @@ const VoiceFollow = () => {
         }
         backstopRef.current = null;
         bsWinsRef.current.clear();
+        winAtRef.current.clear();
+        shevRef.current.clear();
         bsAdoptKeyRef.current = '';
         if (cand.shabadId !== currentShabadIdRef.current) {
           currentShabadIdRef.current = cand.shabadId;
@@ -2523,6 +2591,33 @@ const VoiceFollow = () => {
                 return;
             }
           }
+          if (SHEV_LOCK > 0 && top && top.score >= SHEV_SEARCH_MIN && margin >= AP_LOCK_TEXT_MARGIN) {
+            if (!memory.shev) memory.shev = new Map();
+            const ev = shevAdd(memory.shev, step, top.shabadId, top.verseId, null);
+            let next = 0;
+            memory.shev.forEach((_, sid) => {
+              if (sid !== top.shabadId) next = Math.max(next, shevTotal(memory.shev, step, sid).total);
+            });
+            if (ev.total >= SHEV_LOCK && ev.distinct >= 2 && ev.total >= SHEV_LEAD * next) {
+              let profile;
+              try {
+                profile = await loadShabadProfile(top.shabadId);
+              } catch (_) {
+                return;
+              }
+              if (stale()) return;
+              const at = profile.verses.findIndex((v) => v.verseId === top.verseId);
+              if (at >= 0) {
+                memory.shev = null;
+                autopilotLock({
+                  shabadId: top.shabadId,
+                  verseId: top.verseId,
+                  verse: profile.displayLines[at],
+                });
+                return;
+              }
+            }
+          }
           if (top) {
             if (!memory.entries.some((e) => e.hyp === hyp)) {
               memory.entries.push({
@@ -2886,6 +2981,10 @@ const VoiceFollow = () => {
           return;
         }
         const curId = currentShabadIdRef.current;
+        judgeNRef.current += 1;
+        const judgeN = judgeNRef.current;
+        const sinceWin = (id) =>
+          winAtRef.current.has(id) ? judgeN - winAtRef.current.get(id) : Infinity;
         const tiedLeaderIds = new Set();
         if (
           textCandidates.length > 1 &&
@@ -2948,7 +3047,7 @@ const VoiceFollow = () => {
           hypLen: hypFull.length,
           hypMin: SWITCH_HYP_MIN,
         };
-        const stepSlot = (slot, sCand) => {
+        const stepSlot = (slot, sCand, lineIndex = -1) => {
           // Suppress confirmation only for identities in the tied leader set.
           const vetoed =
             !!(vetoRef.current && vetoRef.current.id === slot.shabadId) ||
@@ -2961,10 +3060,21 @@ const VoiceFollow = () => {
             return false;
           }
           const step = nextSwitchWins(slot.wins, sCand, sCurFull, acousticCfg);
+          if (step.wins > slot.wins) winAtRef.current.set(slot.shabadId, judgeN);
+          let shevOk = false;
+          if (SHEV_SWITCH > 0 && lineIndex >= 0 && !step.held && step.wins > slot.wins) {
+            const key = `${slot.shabadId}`;
+            const ev =
+              shevAtRef.current === `${judgeN}:${key}`
+                ? shevTotal(shevRef.current, judgeN, slot.shabadId)
+                : shevAdd(shevRef.current, judgeN, slot.shabadId, lineIndex, lineIndex);
+            shevAtRef.current = `${judgeN}:${key}`;
+            shevOk = ev.total >= SHEV_SWITCH && ev.distinct >= 2;
+          }
           slot.wins = step.wins; // eslint-disable-line no-param-reassign
           // Held decodes judged nothing — keep showing the last judged score.
           if (!step.held) slot.lastScore = sCand; // eslint-disable-line no-param-reassign
-          return slot.wins >= SWITCH_CONFIRM;
+          return slot.wins >= SWITCH_CONFIRM || shevOk;
         };
         const decaySlot = (slot) => {
           slot.wins = Math.max(0, slot.wins - 1); // eslint-disable-line no-param-reassign
@@ -3005,8 +3115,8 @@ const VoiceFollow = () => {
                   if (switchCandRef.current === sc) switchCandRef.current = null;
                 });
             } else if (sc.linesNorm) {
-              const sCand = maxLineScore(hypFull, sc.linesNorm, SWITCH_CAND_MIN_LINE_CHARS);
-              sc.committed = stepSlot(sc, sCand);
+              const mv = bestLineMatch(hypFull, sc.linesNorm, SWITCH_CAND_MIN_LINE_CHARS);
+              sc.committed = stepSlot(sc, mv.s, mv.index);
             }
           }
         }
@@ -3108,7 +3218,7 @@ const VoiceFollow = () => {
                 bs.verseId = v.verseId;
                 bs.display = prof.displayLines[m.index] || '';
               }
-              bs.committed = stepSlot(bs, m.s);
+              bs.committed = stepSlot(bs, m.s, m.index);
               bsWinsRef.current.set(bs.shabadId, bs.wins);
             } else if (decaySlot(bs)) {
               bsWinsRef.current.delete(bs.shabadId);
@@ -3141,6 +3251,7 @@ const VoiceFollow = () => {
               const m = bestLineMatch(hypFull, prev.profile.linesNorm, SWITCH_CAND_MIN_LINE_CHARS);
               if (m.index >= 0) {
                 const step = nextSwitchWins(rs.wins, m.s, sCurFull, acousticCfg);
+                if (step.wins > rs.wins) winAtRef.current.set(rs.shabadId, judgeN);
                 rs.wins = step.wins;
                 if (!step.held) {
                   rs.lastScore = m.s;
@@ -3486,6 +3597,8 @@ const VoiceFollow = () => {
     switchCandRef.current = null;
     backstopRef.current = null;
     bsWinsRef.current.clear();
+    winAtRef.current.clear();
+    shevRef.current.clear();
     bsAdoptKeyRef.current = '';
     setSwitchView(null);
     contextEvidenceRef.current = null;
