@@ -8,8 +8,8 @@
 // windows of 30 s): the right Shabad fit best in 79% of windows against the app's own search
 // candidates, and in half of the windows where 9.0.3 was still searching it led by > 40.
 //
-// No new model passes: the evidence is stitched from the recognizer's own 10 s decode windows
-// (one every ~10 s of history), so the verifier costs only the alignment arithmetic.
+// No new model passes: the evidence is the middle slice of each of the recognizer's own decode
+// passes (where the model hears best), so the verifier costs only the alignment arithmetic.
 // Port of research/follower-bench/align.js (score only, no backtracking).
 const { spoken } = require('./spoken');
 
@@ -119,46 +119,20 @@ function shabadFit(emis, lines) {
   return bv;
 }
 
-// Recognizer pass history -> one emission matrix over the last `spanS` seconds, built from
-// non-overlapping 10 s passes (newest first, each ending ~10 s before the previous one began).
-// history: [{ end: samples pushed when the pass ran, len: window samples, emis }]
-function stitch(history, { spanS = 30, sr = 16000, fps = 25 } = {}) {
-  if (!history.length) return null;
-  const picked = [];
-  const used = new Set();
-  const newest = history[history.length - 1].end;
-  let edge = newest;
-  // walk back: each step takes the pass whose end is nearest the start of the one after it. The
-  // recognizer keeps at most one pass per second for older audio, so a gap or overlap of up to
-  // 1.5 s is accepted (a second of doubled or missing frames barely moves a 30 s fit).
-  const nearest = (at) => {
-    let best = null;
-    let bd = Infinity;
-    history.forEach((h) => {
-      const d = Math.abs(h.end - at);
-      if (!used.has(h) && d <= 1.5 * sr && d < bd) {
-        best = h;
-        bd = d;
-      }
-    });
-    return best;
-  };
-  while (picked.length < Math.ceil(spanS / 10) + 1) {
-    const best = nearest(edge);
-    if (!best) break;
-    used.add(best);
-    picked.unshift(best);
-    edge = best.end - best.len;
-    if ((newest - edge) / sr >= spanS) break;
-  }
-  if (!picked.length) return null;
-  const { C } = picked[0].emis;
-  const frames = picked.reduce((a, h) => a + h.emis.frames, 0);
+// Recognizer pass slices (recognizer.js passHistory: the middle of each pass, tiling the audio)
+// -> one emission matrix over the last `spanS` seconds.
+// slices: [{ t0, t1 (sample positions), frames, C, data }], oldest first
+function stitch(slices, { spanS = 30, sr = 16000, fps = 25 } = {}) {
+  if (!slices.length) return null;
+  const newest = slices[slices.length - 1].t1;
+  const use = slices.filter((x) => x.t1 > newest - spanS * sr);
+  const { C } = use[0];
+  const frames = use.reduce((n, x) => n + x.frames, 0);
   const data = new Float32Array(frames * C);
   let o = 0;
-  picked.forEach((h) => {
-    data.set(h.emis.data.subarray(0, h.emis.frames * C), o);
-    o += h.emis.frames * C;
+  use.forEach((x) => {
+    data.set(x.data, o);
+    o += x.frames * C;
   });
   return { data, frames, C, seconds: frames / fps };
 }

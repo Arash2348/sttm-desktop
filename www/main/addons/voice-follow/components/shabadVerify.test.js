@@ -53,26 +53,27 @@ test('audio of nothing in the text costs every Shabad the same garbage price', (
   assert.ok(Math.abs(a - b) < 1e-6);
 });
 
-test('stitch joins non-overlapping 10 s passes, newest last', () => {
+test('stitch joins slices oldest to newest over the last 30 s', () => {
   const sr = 16000;
-  const pass = (endS) => ({
-    end: endS * sr,
-    len: 10 * sr,
-    emis: { data: new Float32Array(250 * C).fill(endS), frames: 250, C },
-  });
-  const history = [];
-  for (let t = 10; t <= 40; t += 0.6) history.push(pass(Math.round(t * 10) / 10));
-  const s = stitch(history, { spanS: 30 });
-  assert.ok(s.seconds >= 29 && s.seconds <= 31, `seconds ${s.seconds}`);
-  // last frame comes from the newest pass
-  assert.strictEqual(s.data[(s.frames - 1) * C], history[history.length - 1].emis.data[0]);
+  const slices = [];
+  for (let k = 0; k < 80; k++)
+    slices.push({
+      t0: k * 0.6 * sr,
+      t1: (k + 1) * 0.6 * sr,
+      frames: 15,
+      C,
+      data: new Float32Array(15 * C).fill(k),
+    });
+  const s = stitch(slices, { spanS: 30 });
+  assert.ok(s.seconds >= 29.9 && s.seconds <= 30.6, `seconds ${s.seconds}`);
+  assert.strictEqual(s.data[(s.frames - 1) * C], 79);
 });
 
 test('stitch returns null with no history', () => {
   assert.strictEqual(stitch([]), null);
 });
 
-test('the recognizer keeps 35 s of passes, thinned, and stitch reaches 30 s from them', async () => {
+test('the recognizer keeps the middle of each pass, tiling ~40 s, through a wrapper', async () => {
   const fake = {
     emissions: async (buf) => ({
       data: new Float32Array(Math.floor(buf.length / 640) * C),
@@ -88,14 +89,12 @@ test('the recognizer keeps 35 s of passes, thinned, and stitch reaches 30 s from
   rec.push = (pcm) => real.push(pcm);
   rec.passHistory.on = true;
   const chunk = new Float32Array(0.128 * 16000);
-  // 50 s of audio, one chunk at a time (as the app pushes it)
+  // 60 s of audio, one chunk at a time (as the app pushes it)
   // eslint-disable-next-line no-await-in-loop
-  for (let k = 0; k < Math.ceil(50 / 0.128); k++) await rec.push(chunk);
-  const span =
-    (rec.passHistory.list[rec.passHistory.list.length - 1].end - rec.passHistory.list[0].end) /
-    16000;
-  assert.ok(span >= 30 && span <= 35.5, `kept ${span} s`);
-  assert.ok(rec.passHistory.list.length < 50, `kept ${rec.passHistory.list.length} passes`);
-  const s = stitch(rec.passHistory.list, { spanS: 30 });
-  assert.ok(s && s.seconds >= 29, `stitched ${s && s.seconds} s`);
+  for (let k = 0; k < Math.ceil(60 / 0.128); k++) await rec.push(chunk);
+  const L = rec.passHistory.list;
+  for (let k = 1; k < L.length; k++)
+    assert.strictEqual(L[k].t0, L[k - 1].t1, 'slices tile with no gap');
+  const s = stitch(L, { spanS: 30 });
+  assert.ok(s && s.seconds >= 29.5, `stitched ${s && s.seconds} s`);
 });

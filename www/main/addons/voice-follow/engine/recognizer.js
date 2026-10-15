@@ -40,16 +40,27 @@ class Recognizer {
     const emis = await this.infer.emissions(this.buf);
     const ph = this.passHistory;
     if (ph.on) {
-      ph.list.push({ end: this.pushed, len: this.buf.length, emis });
-      // keep ~35 s: every pass of the last 12 s, older ones thinned to one per second
-      // (stitching needs one pass every ~10 s); compare each with the last one KEPT
-      const keep = [];
-      ph.list.forEach((h) => {
-        const age = this.pushed - h.end;
-        if (age > 35 * SR) return;
-        if (age <= 12 * SR || !keep.length || h.end - keep[keep.length - 1].end >= SR) keep.push(h);
-      });
-      ph.list.splice(0, ph.list.length, ...keep);
+      // keep only the MIDDLE of each pass (the frames between the previous pass's centre and this
+      // one's), where the model hears best; consecutive slices tile the audio with no seams
+      const len = this.buf.length;
+      const start = this.pushed - len;
+      const centre = this.pushed - len / 2;
+      const from = ph.lastCentre == null ? start : Math.max(start, ph.lastCentre);
+      const perSample = emis.frames / len;
+      const a = Math.round((from - start) * perSample);
+      const b = Math.round((centre - start) * perSample);
+      if (b > a) {
+        ph.list.push({
+          t0: from,
+          t1: centre,
+          frames: b - a,
+          C: emis.C,
+          data: emis.data.slice(a * emis.C, b * emis.C),
+        });
+        ph.lastCentre = centre;
+      }
+      const cut = this.pushed - 40 * SR;
+      while (ph.list.length && ph.list[0].t1 < cut) ph.list.shift();
     }
     const hyp = this.infer.decode(this.infer.greedy(emis));
     if (norm(hyp).length < this.minHyp) return null;
