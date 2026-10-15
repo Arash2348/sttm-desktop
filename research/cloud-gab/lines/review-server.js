@@ -30,7 +30,7 @@ function manifest() {
     if (!l.trim()) continue;
     // simple CSV (quoted fields with commas)
     const v = []; let cur = '', q = false;
-    for (const ch of l) { if (ch === '"') q = !q; else if (ch === ',' && !q) { v.push(cur); cur = ''; } else cur += ch; }
+    for (let i = 0; i < l.length; i++) { const ch = l[i]; if (q && ch === '"' && l[i + 1] === '"') { cur += '"'; i++; } else if (ch === '"') q = !q; else if (ch === ',' && !q) { v.push(cur); cur = ''; } else cur += ch; }
     v.push(cur);
     const r = Object.fromEntries(k.map((x, i) => [x, v[i]]));
     out[r.id] = r;

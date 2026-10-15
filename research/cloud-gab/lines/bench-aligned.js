@@ -9,7 +9,7 @@ const path = require('path');
 const argv = process.argv.slice(2);
 const arg = (n, d) => { const i = argv.indexOf(`--${n}`); return i >= 0 ? argv[i + 1] : d; };
 const SRC = '/home/user/gab/bench', KEYS = '/home/user/gab/lines/keys', OUT = arg('out', '/home/user/gab/bench-aligned');
-const split = (l) => { const v = []; let cur = '', q = false; for (const ch of l) { if (ch === '"') q = !q; else if (ch === ',' && !q) { v.push(cur); cur = ''; } else cur += ch; } v.push(cur); return v; };
+const split = (l) => { const v = []; let cur = '', q = false; for (let i = 0; i < l.length; i++) { const ch = l[i]; if (q && ch === '"' && l[i + 1] === '"') { cur += '"'; i++; } else if (ch === '"') q = !q; else if (ch === ',' && !q) { v.push(cur); cur = ''; } else cur += ch; } v.push(cur); return v; }; // a doubled quote inside quotes is one literal quote
 const join = (v) => v.map((x) => (/[",\n]/.test(x) ? `"${x.replace(/"/g, '""')}"` : x)).join(',');
 const [head, ...rows] = fs.readFileSync(path.join(SRC, 'manifest.csv'), 'utf8').split('\n');
 const k = split(head); const iId = k.indexOf('id'), iF = k.indexOf('content_folder'), iN = k.indexOf('lines_n'), iS = k.indexOf('lines_source');
