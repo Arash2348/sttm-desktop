@@ -69,8 +69,9 @@ node "$REPO/research/cloud-gab/fetch-audio.js" main,hard,akhand prac
 [[ " $* " == *" --test "* ]] && node "$REPO/research/cloud-gab/fetch-audio.js" main,hard,akhand test
 
 # 6. build worktrees (name:rev), node_modules symlinked
-if [[ " $* " == *" --builds "* ]]; then
-  specs="${*##*--builds }"; specs="${specs%% --*}"
+specs=""; take=0
+for a in "$@"; do case "$a" in --builds) take=1;; --*) take=0;; *) [ $take = 1 ] && specs="$specs $a";; esac; done
+if [ -n "$specs" ]; then
   for s in $specs; do
     d="/root/personal/${s%%:*}"
     [ -d "$d" ] || git -C "$REPO" worktree add -q --detach "$d" "${s#*:}"

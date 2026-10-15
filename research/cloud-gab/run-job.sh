@@ -9,11 +9,11 @@
 # so results are shared by tree). Replay only: never runs the speech model, never writes bench-cache/.
 set -euo pipefail
 NAME=$1 REV=$2 TIERS=$3 CONSTS=${4:-}
-SPLIT=(); [[ " $* " == *" --split test "* ]] && SPLIT=(--split test)
+TEST=""; [[ " $* " == *" --split test "* ]] && TEST=1
 REPO="$(cd "$(dirname "$0")/../.." && pwd)"
 TOOLS=/home/user/gab-tools/research/level2-dataset/tools
 LOG=/home/user/gab/logs; mkdir -p "$LOG"
-bash "$REPO/research/cloud-gab/setup.sh" ${SPLIT:+--test} --builds "$NAME:$REV"
+if [ -n "$TEST" ]; then bash "$REPO/research/cloud-gab/setup.sh" --test --builds "$NAME:$REV"; else bash "$REPO/research/cloud-gab/setup.sh" --builds "$NAME:$REV"; fi
 D=/root/personal/$NAME
 if [ -n "$CONSTS" ] && [ "$(git -C "$D" log -1 --format=%s)" != "Experiment: $CONSTS" ]; then
   for kv in $CONSTS; do
@@ -27,7 +27,7 @@ echo "[cloud-gab] $NAME app tree $(git -C "$D" rev-parse --short=12 HEAD:www)"
 node "$REPO/research/cloud-gab/results-sync.js" pull
 cd "$TOOLS"
 for t in $TIERS; do
-  VF_MIN_FREE_GB=3 ./gab run "$D" --set "$t" --tier full --jobs "$(nproc)" --manifest hf "${SPLIT[@]}" > "$LOG/$NAME-$t.log" 2>&1 || echo "[cloud-gab] $NAME $t exit $?"
+  VF_MIN_FREE_GB=3 ./gab run "$D" --set "$t" --tier full --jobs "$(nproc)" --manifest hf ${TEST:+--split test} > "$LOG/$NAME-$t.log" 2>&1 || echo "[cloud-gab] $NAME $t exit $?"
   grep -E "^\| \*\*Kirtan|INCOMPLETE|not run|Timing" "$LOG/$NAME-$t.log" | cut -c1-300 || true
   node "$REPO/research/cloud-gab/results-sync.js" push
   # free the model output of this tier before the next one (results are kept)
