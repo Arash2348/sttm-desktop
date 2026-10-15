@@ -56,6 +56,8 @@ const { norm: vfNorm, partialRatio } = engine;
 // Pure, unit-tested switch/display policy (see switchPolicy.js + .test.js).
 const {
   nextSwitchWins,
+  nextSolidWins,
+  switchCommitReady,
   nextEmptyStreak,
   maxLineScore,
   bestLineMatch,
@@ -222,6 +224,11 @@ const SWITCH_SOLID_CHARS = 16;
 // look-alike phrases: score >= SWITCH_ACOUSTIC_MIN and margin over the current Shabad) is the
 // matched pangti; a win commits when the Shabad's total reaches SHEV_SWITCH over >= 2
 // distinct pangtis. Additive: every existing route is unchanged. 0 = off.
+// Akhand Kirtan round 1 (solid-win guard): a switch commits on SWITCH_CONFIRM wins only when at
+// least SWITCH_COMMIT_SOLID of those wins were heard on a solid decode (>= SWITCH_SOLID_CHARS
+// letters). GAB-Hard kh17: the 3-wins rule made a 32 s false switch on 8-9 letter decodes.
+// The Shabad-level route (SHEV_SWITCH) already counts only solid wins. 0 = off.
+const SWITCH_COMMIT_SOLID = 1;
 const SHEV_LOCK = 2;
 const SHEV_SWITCH = 2.3;
 const SHEV_LEAD = 2;
@@ -3087,13 +3094,18 @@ const VoiceFollow = () => {
             shevAtRef.current = `${judgeN}:${key}`;
             shevOk = ev.total >= SHEV_SWITCH && ev.distinct >= 2;
           }
+          // eslint-disable-next-line no-param-reassign
+          slot.solid = nextSolidWins(slot.solid, slot.wins, step.wins, hypFull.length, SWITCH_SOLID_CHARS);
           slot.wins = step.wins; // eslint-disable-line no-param-reassign
           // Held decodes judged nothing — keep showing the last judged score.
           if (!step.held) slot.lastScore = sCand; // eslint-disable-line no-param-reassign
-          return slot.wins >= SWITCH_CONFIRM || shevOk;
+          return (
+            switchCommitReady(slot.wins, slot.solid, SWITCH_CONFIRM, SWITCH_COMMIT_SOLID) || shevOk
+          );
         };
         const decaySlot = (slot) => {
           slot.wins = Math.max(0, slot.wins - 1); // eslint-disable-line no-param-reassign
+          if (slot.wins === 0) slot.solid = 0; // eslint-disable-line no-param-reassign
           return slot.wins === 0;
         };
 

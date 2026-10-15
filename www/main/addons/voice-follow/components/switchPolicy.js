@@ -30,6 +30,21 @@ function nextSwitchWins(wins, sCand, sCur, cfg) {
   return { wins: wins + (strong ? 2 : 1), decisive: strong, held: false };
 }
 
+// Solid-win guard (Akhand Kirtan round 1): a switch run may commit on the win count only when
+// at least needSolid of its wins came from a SOLID decode (>= solidChars letters heard). In hall
+// audio a run of wins on 8-9 letter fragments ("mera naam") can match some other Shabad three
+// times in a row; one well-heard decode in the run is what separates a real switch from that.
+// Returns the run's solid-win count after this decode: +1 on a solid win, 0 once the run's wins
+// fall to 0 (the run is over), otherwise unchanged.
+function nextSolidWins(solid, prevWins, wins, hypLen, solidChars) {
+  if (wins <= 0) return 0;
+  if (wins > prevWins && (hypLen || 0) >= solidChars) return (solid || 0) + 1;
+  return solid || 0;
+}
+function switchCommitReady(wins, solid, confirm, needSolid) {
+  return wins >= confirm && (!(needSolid > 0) || (solid || 0) >= needSolid);
+}
+
 // Hold the visible candidate shortlist across transient empty decodes.
 // Sung audio often yields a decode with no banidb hit; wiping the shortlist
 // on every such decode makes the candidates flash and vanish. Only clear
@@ -178,6 +193,8 @@ function sameGurbani(linesA, linesB) {
 module.exports = {
   sameGurbani,
   nextSwitchWins,
+  nextSolidWins,
+  switchCommitReady,
   nextEmptyStreak,
   maxLineScore,
   screenByFirstLetters,

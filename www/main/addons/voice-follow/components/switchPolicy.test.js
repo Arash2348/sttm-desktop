@@ -4,6 +4,8 @@ const assert = require('node:assert/strict');
 
 const {
   nextSwitchWins,
+  nextSolidWins,
+  switchCommitReady,
   nextEmptyStreak,
   maxLineScore,
   screenByFirstLetters,
@@ -283,5 +285,37 @@ describe('sameGurbani', () => {
     ];
     assert.equal(sameGurbani(aarti, other), false);
     assert.equal(sameGurbani(aarti, []), false);
+  });
+});
+
+describe('solid-win guard', () => {
+  const SOLID = 16;
+  it('counts only wins heard on a solid decode', () => {
+    let solid = 0;
+    solid = nextSolidWins(solid, 0, 1, 9, SOLID); // thin win
+    assert.equal(solid, 0);
+    solid = nextSolidWins(solid, 1, 2, 20, SOLID); // solid win
+    assert.equal(solid, 1);
+    solid = nextSolidWins(solid, 2, 2, 30, SOLID); // held: no new win
+    assert.equal(solid, 1);
+  });
+  it('resets when the run falls back to zero wins', () => {
+    assert.equal(nextSolidWins(2, 1, 0, 30, SOLID), 0);
+  });
+  it('blocks a commit made only of thin wins (GAB-Hard kh17 shape)', () => {
+    let wins = 0;
+    let solid = 0;
+    [8, 9, 9].forEach((len) => {
+      const next = wins + 1;
+      solid = nextSolidWins(solid, wins, next, len, SOLID);
+      wins = next;
+    });
+    assert.equal(wins, 3);
+    assert.equal(switchCommitReady(wins, solid, 3, 1), false);
+    assert.equal(switchCommitReady(wins, solid, 3, 0), true); // guard off = old rule
+  });
+  it('commits once one win in the run was solid', () => {
+    assert.equal(switchCommitReady(3, 1, 3, 1), true);
+    assert.equal(switchCommitReady(2, 1, 3, 1), false);
   });
 });
