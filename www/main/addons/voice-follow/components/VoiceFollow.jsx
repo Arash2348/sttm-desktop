@@ -20,6 +20,7 @@ const engine = require('../engine');
 const { Follower: AcousticFollower } = require('../engine/follower');
 const { SP: AcousticSP } = require('../engine/sentencepiece');
 const { localCtcScore, frameMax } = require('../engine/ctcLocal');
+const { shabadFit, stitch, pangtiTokens } = require('../engine/shabadVerify');
 const { createRendererRetrieval } = require('../engine/retrieval/renderer-client');
 const sessionLog = require('../engine/session-log');
 const { createBoard, mergeTranscript } = require('./liveBoard');
@@ -246,6 +247,20 @@ const PROBATION_CONFIRM = 2;
 // (the whole-window score costs ~1.7 ms). 0 = off (the whole-window score, as before).
 const AK_LOCAL_CTC = 0;
 const AK_LOCAL_CTC_MARGIN = 2;
+// Akhand Kirtan 2 (Shabad verifier, engine/shabadVerify.js): while searching, the Shabads the text
+// search keeps proposing (pooled over the last VERIFY_POOL_DECODES decodes, top VERIFY_POOL by
+// how often) are force-aligned over the last VERIFY_SPAN_S seconds, stitched from the recognizer's
+// own passes (no extra model passes), every VERIFY_EVERY decodes. A Shabad that out-fits every
+// other by VERIFY_LOCK (log-score) on VERIFY_CONFIRM checks in a row is locked. Offline on GAB-Akhand
+// practice: the right Shabad fit best in 79% of 30 s windows vs the app's candidates; a lead > 40
+// was right 18 times and wrong 2 in the windows where 9.0.3 was still searching. 0 = off.
+const VERIFY_LOCK = 0;
+const VERIFY_CONFIRM = 2;
+const VERIFY_EVERY = 3;
+const VERIFY_POOL = 25;
+const VERIFY_POOL_DECODES = 50;
+const VERIFY_SPAN_S = 30;
+const VERIFY_MIN_S = 20;
 const SHEV_LOCK = 2;
 const SHEV_SWITCH = 2.3;
 const SHEV_LEAD = 2;
@@ -2547,6 +2562,70 @@ const VoiceFollow = () => {
                 verse: poolProfile.rawLines[at],
               });
               return;
+            }
+          }
+          if (VERIFY_LOCK > 0 && acousticRecognizer) {
+            acousticRecognizer.keepHistory = true;
+            if (!memory.vpool) memory.vpool = new Map();
+            leaders.forEach((c, rank) => {
+              const e = memory.vpool.get(c.shabadId) || { n: 0, verseId: c.verseId };
+              e.n += 1;
+              e.step = step;
+              if (rank === 0) e.verseId = c.verseId;
+              memory.vpool.set(c.shabadId, e);
+            });
+            memory.vpool.forEach((e, id) => {
+              if (step - e.step > VERIFY_POOL_DECODES) memory.vpool.delete(id);
+            });
+            if (step % VERIFY_EVERY === 0 && memory.vpool.size >= 2) {
+              const emis = stitch(acousticRecognizer.history, { spanS: VERIFY_SPAN_S });
+              if (emis && emis.seconds >= VERIFY_MIN_S) {
+                const pool = [...memory.vpool.entries()]
+                  .sort((a, b) => b[1].n - a[1].n)
+                  .slice(0, VERIFY_POOL);
+                const profiles = await Promise.all(
+                  pool.map(([id]) => loadShabadProfile(id).catch(() => null)),
+                );
+                if (stale()) return;
+                if (!memory.acousticSP) memory.acousticSP = AcousticSP.load();
+                const fits = pool
+                  .map(([id, e], k) =>
+                    profiles[k]
+                      ? {
+                          id,
+                          verseId: e.verseId,
+                          profile: profiles[k],
+                          score: shabadFit(
+                            emis,
+                            profiles[k].displayLines.map((line) =>
+                              pangtiTokens(memory.acousticSP, line),
+                            ),
+                          ),
+                        }
+                      : null,
+                  )
+                  .filter(Boolean)
+                  .sort((a, b) => b.score - a.score);
+                if (fits.length >= 2) {
+                  const lead = fits[0].score - fits[1].score;
+                  const win = lead >= VERIFY_LOCK;
+                  memory.vwins =
+                    win && memory.vlast === fits[0].id ? (memory.vwins || 0) + 1 : +win;
+                  memory.vlast = win ? fits[0].id : null;
+                  if (memory.vwins >= VERIFY_CONFIRM) {
+                    const { profile } = fits[0];
+                    let at = profile.verses.findIndex((v) => v.verseId === fits[0].verseId);
+                    if (at < 0) at = 0;
+                    memory.vpool = null;
+                    autopilotLock({
+                      shabadId: fits[0].id,
+                      verseId: profile.verses[at].verseId,
+                      verse: profile.displayLines[at],
+                    });
+                    return;
+                  }
+                }
+              }
             }
           }
           if (
