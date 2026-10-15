@@ -44,6 +44,9 @@ function items() {
   const dir = path.join(LINES, 'review');
   const all = [];
   for (const f of fs.existsSync(dir) ? fs.readdirSync(dir).sort() : []) if (f.endsWith('.items.json')) all.push(...JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')));
+  // recordings with the fewest open pangtis first: each finished recording is fully human-checked (scoreable) sooner
+  const n = {}; for (const it of all) n[it.clip] = (n[it.clip] || 0) + 1;
+  all.sort((a, b) => n[a.clip] - n[b.clip] || a.clip.localeCompare(b.clip) || a.start - b.start);
   return all.map((it) => ({ ...it, source: `${(MAN[it.clip] || {}).gurdwara || ''}${it.why ? ` · ${it.why}` : ''}`, hasAudio: fs.existsSync(wavOf(it.clip)) }));
 }
 function answers() {

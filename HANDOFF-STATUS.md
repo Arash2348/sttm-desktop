@@ -113,6 +113,42 @@ HF audio, Mac path layout), `run-job.sh` (one helper session = one build replaye
 (replay results shared in Azure `bench-results/`, so a build replayed once is never replayed again in any session).
 Measured: replay ~32x real time on 4 cores (Akhand 3 min, Hard 5 min, main ~30 min per build).
 
+## Pangti-level answer keys for all of GAB (cloud, Oct 15 2026)
+
+Every GAB clip with Shabad / Bani truth (307 clips, 31.3 h, all tiers and both splits) is force-aligned pangti by
+pangti with TWO speech models (Karanbir int8 = the app's; Surinder pa-v3-kirtan fp32 with a NeMo mel front end;
+same 256-token vocabulary), inside each truth row's window (`research/cloud-gab/lines/line-build.js`).
+
+**Accuracy, measured on GAB-Hard's 29 human-keyed clips** (`line-eval.js`; human = sevadaar screen, lags 0-3 s):
+
+| aligned start | starts | right pangti on the human screen | human start within 3 s |
+|---|---|---|---|
+| both models agree within 1 s + heard words match (check >= 0.5): **auto-accepted** | 273 | **97%** (n 162 on practice) | 45% (screen lag) |
+| both agree, weak word match | 166 | ~65% | 30% |
+| one model only | 371 | 41% | 13% |
+
+| tier · folder | clips | pangti starts | auto-accepted | to review |
+|---|---|---|---|---|
+| main · kirtan | 144 | 5,496 | 3,064 | 2,578 |
+| main · Bani recited | 47 | 1,047 | 944 | 151 |
+| main · Bani sung | 55 | 2,120 | 1,239 | 939 |
+| GAB-Akhand | 32 | 819 | 440 | 402 |
+| GAB-Hard (already human; calibration only) | 29 | 810 | 273 | 0 |
+| **total** | **307** | **10,292** | **5,960** | **4,070** |
+
+Human-labels-first: every aligned key is `aligned-*` (secondary) until a person confirms it; the review queue holds
+every not-auto-accepted start plus a 5% spot check of the accepted ones. Shared in Azure `gab-lines/` (keys,
+alignments, review items; no audio, no model output).
+
+**Review on the Mac:** `bash research/cloud-gab/lines/review-mac.sh` (pulls the queue, opens http://localhost:8772;
+Pangti Start Check design; recordings with the fewest open pangtis first) and `review-mac.sh --push` after a session
+(prints the human-confirmed count, shares the answers). `line-apply.js` writes the final keys (human-confirmed /
+human-tapped). Not yet on Hugging Face: only human-checked keys go there.
+
+**GCP VM:** the service-account key works (VM vf-record found STOPPED). VM jobs (`research/cloud-gab/vm/`) are written
+but not run: the session's safety guard blocks sending the HF / Azure keys to the VM (metadata) or reading the VM's
+own copies; needs the owner's explicit OK. The key was pasted in chat: rotate it.
+
 ## Open questions for the owner
 
 1. Add `HF_TOKEN` and `VF_AZURE_SAS` to this cloud environment's settings (environment menu in the session's
