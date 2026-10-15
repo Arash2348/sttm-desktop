@@ -21,6 +21,7 @@ const { Follower: AcousticFollower } = require('../engine/follower');
 const { SP: AcousticSP } = require('../engine/sentencepiece');
 const { createRendererRetrieval } = require('../engine/retrieval/renderer-client');
 const sessionLog = require('../engine/session-log');
+const windowClock = require('../engine/clock');
 const { createBoard, mergeTranscript } = require('./liveBoard');
 const { installDemoAudio } = require('./devAudio');
 
@@ -153,6 +154,13 @@ const AP_SEARCH_WIN_S = 10; // recognizer window while SEARCHING (matches standa
 // recall 85->83) and was ~a wash on the 9s stress stream — not voice-agnostic, so 4 stays.
 const AP_FOLLOW_WIN_S = 4; // recognizer window while FOLLOWING (fast switching)
 const AP_REC_HOP_S = 0.5; // recognizer decode hop while in autopilot
+// Window alignment (engine/clock): at each lock or switch the new follower and the following
+// recognizer start from the session's last seconds of audio (not an empty buffer) and decode
+// on one session grid, so their windows are the same audio (one model pass) and do not depend
+// on the moment of the lock. Off = the build without it, exactly.
+const { WINDOW_ALIGN } = windowClock;
+// ...the following recognizer is seeded too (off: it starts empty, on the grid).
+const WINDOW_ALIGN_SEED_RECOGNIZER = true;
 // Audio the engines have not consumed yet is a backlog: recognised text (and the screen)
 // is that far behind the room. On a computer that decodes slower than real time it
 // would grow without limit (5-10 s per minute at a Gurdwara PC, 50-84 s by the end of a
@@ -973,6 +981,7 @@ const VoiceFollow = () => {
   const saveAudioRef = useRef(true);
   saveAudioRef.current = saveAudio;
   const ringRef = useRef(null); // rolling audio for corrections
+  const clockRef = useRef(null); // window alignment: the session clock (engine/clock)
   const sessionIdRef = useRef(null);
   const sessionStartRef = useRef(0);
   const lastAutoDecisionRef = useRef(0);
@@ -2025,6 +2034,7 @@ const VoiceFollow = () => {
         const prevBefore = prevShabadRef.current;
         phaseRef.current = 'following';
         lastVerseRef.current = null;
+        if (WINDOW_ALIGN && clockRef.current) windowClock.seedEngine(follower, clockRef.current);
         followerRef.current = follower;
         // The panel shows the new Shabad's standing at once (a lock is strong evidence);
         // the first following decode replaces this a moment later.
@@ -2191,6 +2201,11 @@ const VoiceFollow = () => {
               hopS: AP_REC_HOP_S,
             });
             if (session !== sessionRef.current) return;
+            if (WINDOW_ALIGN && clockRef.current) {
+              windowClock.seedEngine(recognizer, clockRef.current, {
+                seed: WINDOW_ALIGN_SEED_RECOGNIZER,
+              });
+            }
             recognizerRef.current = recognizer;
           }
         } catch (_) {
@@ -3467,6 +3482,7 @@ const VoiceFollow = () => {
   const startAutopilot = useCallback(async () => {
     cleanup();
     const session = sessionRef.current;
+    clockRef.current = null;
     autopilotRef.current = true;
     recognizingRef.current = true;
     phaseRef.current = 'searching';
@@ -3546,6 +3562,12 @@ const VoiceFollow = () => {
             ringRef.current = sessionLog.createRing(CORRECTION_SECONDS, sr);
           }
           ringRef.current.push(pcm);
+          if (WINDOW_ALIGN) {
+            if (!clockRef.current || clockRef.current.inputSr !== sr) {
+              clockRef.current = new windowClock.SessionClock({ inputSr: sr });
+            }
+            clockRef.current.advance(pcm);
+          }
         }
         // Detection runs on EVERY chunk, in both phases. This is what makes
         // autopilot un-stuck: the moment a different shabad clearly takes over,

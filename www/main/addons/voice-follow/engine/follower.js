@@ -2,6 +2,7 @@
 // token-passing line decoder + CTC word alignment. Mirrors push().
 const { resampleTo16k, norm, SR, BLANK } = require('./infer');
 const pace = require('./pace');
+const { appendTo } = require('./clock');
 const { partialRatio, partialRatioAlignment } = require('./fuzz');
 
 const NEG = -1e30;
@@ -174,16 +175,23 @@ class Follower {
     const c = this.c;
     const res = resampleTo16k(pcm, this.inputSr);
     this.win = Math.floor(pace.windowS('follower', c.windowS) * SR); // performance tier
-    if (res.length) {
-      let merged = new Float32Array(this.buf.length + res.length);
-      merged.set(this.buf, 0); merged.set(res, this.buf.length);
-      if (merged.length > this.win) merged = merged.slice(merged.length - this.win);
-      this.buf = merged;
-      this.acc += res.length;
+    if (this.clock) {
+      // Window alignment (engine/clock): seeded at the lock, decodes on the session grid
+      // (the recognizer's beat is a grid point, so no separate beat rule is needed).
+      appendTo(this, pcm, res, this.win);
+      if (!this.clock.due(pcm, pace.hopS('follower', c.hopS)) || this.buf.length < SR) return null;
+    } else {
+      if (res.length) {
+        let merged = new Float32Array(this.buf.length + res.length);
+        merged.set(this.buf, 0); merged.set(res, this.buf.length);
+        if (merged.length > this.win) merged = merged.slice(merged.length - this.win);
+        this.buf = merged;
+        this.acc += res.length;
+      }
+      this.hop = Math.floor(pace.hopS('follower', c.hopS) * SR); // performance tier
+      if ((this.acc < this.hop && !pace.onBeat(pcm)) || this.buf.length < SR) return null;
+      this.acc = 0;
     }
-    this.hop = Math.floor(pace.hopS('follower', c.hopS) * SR); // performance tier
-    if ((this.acc < this.hop && !pace.onBeat(pcm)) || this.buf.length < SR) return null;
-    this.acc = 0;
 
     const emis0 = await this.infer.emissions(this.buf);
     const hyp = norm(this.infer.decode(this._greedy(emis0)));

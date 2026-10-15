@@ -15,6 +15,7 @@
 // { verseIndex, verseId, lineIndex, wordIndex, confidence } or null.
 const { resampleTo16k, SR } = require('./infer');
 const pace = require('./pace');
+const { appendTo } = require('./clock');
 const { spoken } = require('./spoken');
 
 // Tuned on research/follower-bench at a 0.125 s listening step; ships at 0.25 s, the same
@@ -448,7 +449,8 @@ class FollowerV2 {
   async push(pcm) {
     const res = resampleTo16k(pcm, this.inputSr);
     this.win = Math.floor(pace.windowS(this.sung ? 'follower' : 'paath', this.base.windowS) * SR);
-    if (res.length) {
+    if (this.clock) appendTo(this, pcm, res, this.win);
+    else if (res.length) {
       let merged = new Float32Array(this.buf.length + res.length);
       merged.set(this.buf, 0);
       merged.set(res, this.buf.length);
@@ -464,8 +466,14 @@ class FollowerV2 {
       this.hop = Math.floor(hopS * SR);
       this.c = this.scaled(hopS / this.base.hopS);
     }
-    if ((this.acc < this.hop && !pace.onBeat(pcm)) || this.buf.length < SR) return null;
-    this.acc = 0;
+    if (this.clock) {
+      // Window alignment (engine/clock): seeded at the lock, decodes on the session grid
+      // (the recognizer's beat is a grid point, so no separate beat rule is needed).
+      if (!this.clock.due(pcm, hopS) || this.buf.length < SR) return null;
+    } else {
+      if ((this.acc < this.hop && !pace.onBeat(pcm)) || this.buf.length < SR) return null;
+      this.acc = 0;
+    }
     const emis = await this.infer.emissions(this.buf);
     const h = [...simplify(this.infer.decode(this.infer.greedy(emis)))];
     if (h.length < this.c.minHyp) return null;
