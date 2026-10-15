@@ -1,5 +1,5 @@
 {
-  "_doc": "GAB v1.2 configuration (see GAB.md). sets = named clip sets that earlier reports used, scored as their own rows so an old number can be reproduced on its own clips. A set matches manifest rows by suite (any suite_jobs entry '<suite>:'), optional folder prefix and optional split. coldFirst = suites whose clips were cut from inside a performance: the first Shabad/Bani is already being sung at t=0, so its find time is measured from t=0 (the app was started while it was sung), never from the truth window start. exclude = clips left out of every number, with the reason (dataset truth to fix). expectBanis = the Banis each behaviour should cover (the user's list); a Bani with no clip shows as 'no clips yet'. tiers = which recordings each GAB tier scores (data, not code): a tier with `gurdwara` takes the manifest rows whose gurdwara matches that regex (case-insensitive); a tier with `excludeTiers` takes every row that is in none of those tiers. `gab run` / `compare` score the main tier unless `--set hard` (or `gab hard ...`); the two tiers are never mixed in one scorecard or compare. A set with `tier` is a row only in that tier.",
+  "_doc": "GAB v1.3 configuration (see GAB.md). sets = named clip sets that earlier reports used, scored as their own rows so an old number can be reproduced on its own clips. A set matches manifest rows by suite (any suite_jobs entry '<suite>:'), optional folder prefix and optional split. coldFirst = suites whose clips were cut from inside a performance: the first Shabad/Bani is already being sung at t=0, so its find time is measured from t=0 (the app was started while it was sung), never from the truth window start. exclude = clips left out of every number, with the reason (dataset truth to fix). expectBanis = the Banis each behaviour should cover (the user's list); a Bani with no clip shows as 'no clips yet'. tiers = which recordings each GAB tier scores (data, not code): a tier with `gurdwara` takes the manifest rows whose gurdwara matches that regex (case-insensitive); a tier with `excludeTiers` takes every row that is in none of those tiers. A tier rule may also match a tag in the row's notes (`notes` regex), so new recordings join a tier from their manifest row. `gab run` / `compare` score the main tier unless `--set hard` / `--set akhand` (or `gab hard ...` / `gab akhand ...`); tiers are never mixed in one scorecard or compare. A set with `tier` is a row only in that tier.",
   "sets": [
     {
       "key": "set:L2-41",
@@ -39,6 +39,32 @@
       "key": "set:renton-oct11",
       "title": "Renton Oct 11 production parts (test split: reconciliation only)",
       "suite": "renton"
+    },
+    {
+      "key": "set:renton-finds",
+      "title": "Renton Finds darbars (Sep 25 reviewer; full darbars cut per Shabad, real switches)",
+      "folder": "1-kirtan-shabad",
+      "suite": "rfinds"
+    },
+    {
+      "key": "set:yuba",
+      "title": "Gurdwara Yuba City (Jas Gurbani recordings; Cycle 10 unseen-venue test)",
+      "folder": "1-kirtan-shabad",
+      "suite": "yuba"
+    },
+    {
+      "key": "set:l3-toronto",
+      "title": "AKJ Toronto Smagam 2022 (Friday train; Saturday test)",
+      "suite": "l3",
+      "tier": "akhand",
+      "gurdwara": "Toronto"
+    },
+    {
+      "key": "set:l3-manchester",
+      "title": "Manchester Smagam 2024 Rehnsabhai",
+      "suite": "l3",
+      "tier": "akhand",
+      "gurdwara": "Manchester"
     }
   ],
   "coldFirst": {
@@ -74,14 +100,21 @@
     "main": {
       "title": "GAB",
       "excludeTiers": [
-        "hard"
+        "hard",
+        "akhand"
       ],
-      "doc": "everything except GAB-Hard; the priority, and what a build is judged on"
+      "doc": "everything except GAB-Hard and GAB-Akhand Kirtan; the priority, and what a build is judged on"
     },
     "hard": {
       "title": "GAB-Hard (Fremont hall, laptop mic)",
       "gurdwara": "Fremont \\(Jaspal\\)",
       "doc": "Jaspal's STTM Desktop recordings at Gurdwara Sahib Fremont (kh01-kh32): a resonant hall, the laptop mic far from the ragis, little clean audio. Tracked, not the priority (user decision Oct 14 2026). The Fremont YouTube livestream clips (clip04-clip09, mixer feed) stay in main: add 'Fremont' without '(Jaspal)' here to move them."
+    },
+    "akhand": {
+      "title": "GAB-Akhand Kirtan (smagam, many singers)",
+      "gurdwara": "AKJ|Akhand Kirtan|Rehnsabhai|Rainsabai|Raensabai|Rensbai",
+      "notes": "\\btags:[^;]*\\bakhand-kirtan\\b",
+      "doc": "Akhand Kirtan smagams (AKJ Toronto 2022, Manchester 2024 Rehnsabhai; Level 3 of the human sheet): 5-15 singers, the sangat singing along, many instruments, a resonant sound. Its own tier (user, Oct 14 2026), never mixed with main GAB or GAB-Hard; tracked, never used to tune (level3 policy). Rule = data, not ids: a manifest row joins when its gurdwara/source names AKJ, Akhand Kirtan or a Rehnsabhai/Rainsabai, or its notes carry the tag `tags: akhand-kirtan`."
     }
   }
 }

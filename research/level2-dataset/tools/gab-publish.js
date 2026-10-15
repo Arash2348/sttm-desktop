@@ -1,6 +1,7 @@
 /* gab-publish.js — gab publish <main scorecard.json> --hard <hard scorecard.json> --name "<build name>" [--status merged|candidate]
  *                               [--note "..."] [--order N] [--base <commit>] [--preview <dir>] [--dry-run] [--allow-dirty] [--site-only]
  *                 gab publish --batch <batch.json> [--preview <dir>] [--dry-run]
+ *                               (--akhand <gab akhand scorecard.json> / batch "akhand": the GAB-Akhand Kirtan scorecard of the same build, optional)
  *                               batch.json = [{ "main": "<file>", "hard": "<file>", "name", "status", "order", "base", "note" }, ...]:
  *                               every build in one commit per repo (use it when the GAB version changes: all rows re-scored)
  *
@@ -86,8 +87,10 @@ function checkCard(card, want, allowDirty) {
   if (/^test/.test(card.split) || /test/.test(card.split.split(' ')[0])) throw new Error('test-split numbers are never published (GAB.md, split rule)');
   if (card.build.dirty && !allowDirty) throw new Error('the build had uncommitted edits; commit them and re-run gab (or pass --allow-dirty)');
 }
-function resultOf(card, hardCard, { name, status, note, order, base }) {
+function resultOf(card, hardCard, { name, status, note, order, base }, akhandCard = null) {
   if (hardCard && hardCard.build.commit !== card.build.commit) throw new Error(`main and hard scorecards are different builds (${card.build.commit} vs ${hardCard.build.commit})`);
+  if (akhandCard && akhandCard.build.commit !== card.build.commit) throw new Error(`main and akhand scorecards are different builds (${card.build.commit} vs ${akhandCard.build.commit})`);
+  const tierPart = (c, set) => (c ? { set, set_title: c.setTitle || G.tierTitle(set), manifest: c.manifest.sha, split: c.split.split(' ')[0], tier: c.tier, not_run: notRunOf(c), rows: tierRows(c) } : null);
   return {
     gab: card.gab, name, status, note: note || null, order: order ?? null, base: base || null,
     commit: card.build.commit, vf_feature_version: card.build.featureVersion || null, subject: card.build.subject || null,
@@ -95,18 +98,20 @@ function resultOf(card, hardCard, { name, status, note, order, base }) {
     set: 'main', set_title: card.setTitle || G.tierTitle('main'),
     not_run: notRunOf(card),
     rows: tierRows(card),
-    hard: hardCard ? { set: 'hard', set_title: hardCard.setTitle || G.tierTitle('hard'), manifest: hardCard.manifest.sha, split: hardCard.split.split(' ')[0], tier: hardCard.tier, not_run: notRunOf(hardCard), rows: tierRows(hardCard) } : null,
+    hard: tierPart(hardCard, 'hard'),
+    // GAB-Akhand Kirtan (v1.3): optional; a result without it shows 'not scored yet' in that column
+    akhand: tierPart(akhandCard, 'akhand'),
   };
 }
 // "vs its base" verdict for every row, with gab compare's guardrail logic (G.compare): a candidate against the build it
 // was made from (--base <commit>), a merged build against the merged build before it (by order). Recomputed for every
 // result on every publish, so a new or re-scored build never leaves a stale verdict.
 // one tier of a result as a scorecard for G.compare (main: res.rows; hard: res.hard.rows)
-const part = (res, set) => (set === 'hard' ? res.hard : res);
+const part = (res, set) => (set === 'main' ? res : res[set]);
 const asCard = (res, set = 'main') => ({ set, build: { name: res.name, commit: res.commit }, manifest: { sha: part(res, set).manifest }, tier: part(res, set).tier, split: part(res, set).split, rows: part(res, set).rows });
 const TITLE = { '1-kirtan-shabad': 'Kirtan', '2-bani-recited': 'Bani recited', '3-bani-sung-like-kirtan': 'Bani sung', '4-akhand-paath': 'Akhand Paath' };
 function verdicts(all) {
-  for (const set of ['main', 'hard']) verdictsFor(all.filter((r) => part(r, set)), set);
+  for (const set of ['main', 'hard', 'akhand']) verdictsFor(all.filter((r) => part(r, set)), set);
   return all;
 }
 function verdictsFor(all, set) {
@@ -154,6 +159,7 @@ function section(entries) {
     { t: 'Bani sung: right Bani', v: (e) => get(e.rows, '3-bani-sung-like-kirtan', 'right_shabad_pct'), u: '%', dir: 1 },
     { t: 'Bani sung: wrong Bani (s per hour)', v: (e) => get(e.rows, '3-bani-sung-like-kirtan', 'wrong_s_per_h'), u: '', dir: -1 },
     { t: 'GAB-Hard kirtan: right Shabad', v: (e) => (e.hard ? get(e.hard.rows, '1-kirtan-shabad', 'right_shabad_pct') : null), u: '%', dir: 1 },
+    { t: 'Akhand Kirtan: right Shabad', v: (e) => (e.akhand ? get(e.akhand.rows, '1-kirtan-shabad', 'right_shabad_pct') : null), u: '%', dir: 1 },
   ];
   const rel = entries.filter((e) => kindOf(e) !== 'experiment');
   const exp = entries.filter((e) => kindOf(e) === 'experiment');
@@ -187,7 +193,7 @@ function section(entries) {
     '🟢 best · 🟡 in between · 🔴 worst, compared with the other versions in the same column. Higher % is better; fewer wrong-Shabad seconds is better.', '',
     '### Versions', '', head, sep, ...relRows, '',
     ...(expRows.length ? ['### Ideas being tested (not in the app)', '', 'Each idea is compared with the version it was built from: 🟢 better, 🔴 worse, ➖ same.', '', head, sep, ...expRows, ''] : []),
-    'Main GAB is everyday Gurdwara audio (livestream and mixer feeds, studio paath). GAB-Hard is the Fremont hall laptop-mic recordings, tracked apart. Kirtan pangti numbers are not shown yet: main kirtan has no line-by-line answers.', '',
+    'Main GAB is everyday Gurdwara audio (livestream and mixer feeds, studio paath). GAB-Hard is the Fremont hall laptop-mic recordings, tracked apart. GAB-Akhand Kirtan is smagam kirtan (many singers, the sangat singing along, many instruments), tracked apart. Kirtan pangti numbers are not shown yet: main kirtan has no line-by-line answers.', '',
     '<details><summary>Exact code tested (commit ids)</summary>', '', ...commits, '', '</details>', '', END].join('\n');
 }
 
@@ -220,28 +226,36 @@ async function main(args) {
     let msg = 'GAB leaderboard: page files';
     // the builds to publish now: [{ res, slug, card, hardCard }] (one, or a --batch)
     const pub = [];
-    const readCard = (f) => {
+    const readCard = (f, allowIncomplete = false) => {
       const card = JSON.parse(fs.readFileSync(path.resolve(f), 'utf8'));
-      // A run where some clip did not replay (cache miss / replay error) is not a result.
-      if (card.incomplete && card.incomplete.length) throw new Error(`${f} is INCOMPLETE (${card.incomplete.length} clip run(s) did not replay); fill and rerun before publishing`);
+      // A run where some clip did not replay (cache miss / replay error) is not a result. Exception (batch entry
+      // "allowIncomplete": true): an older build whose cache gaps cannot be filled without mixing platforms; only cache
+      // misses are allowed, and every behaviour holding one is published as 'not scored' (tierRows), never as a number.
+      if (card.incomplete && card.incomplete.length) {
+        const errs = card.incomplete.filter((m) => m.why !== 'cache miss');
+        if (!allowIncomplete || errs.length) throw new Error(`${f} is INCOMPLETE (${card.incomplete.length} clip run(s) did not replay); fill and rerun before publishing`);
+        console.log(`  ${f}: ${card.incomplete.length} cache-miss clip runs; their behaviours are published as 'not scored' (allowIncomplete)`);
+      }
       return card;
     };
     const addOne = (o) => {
-      const card = readCard(o.main);
+      const card = readCard(o.main, !!o.allowIncomplete);
       checkCard(card, 'main', allowDirty);
       if (!o.hard) throw new Error(`${o.name}: every build needs its GAB-Hard scorecard too (--hard <gab run --set hard scorecard.json>)`);
-      const hardCard = readCard(o.hard);
+      const hardCard = readCard(o.hard, !!o.allowIncomplete);
       checkCard(hardCard, 'hard', allowDirty);
+      const akhandCard = o.akhand ? readCard(o.akhand, !!o.allowIncomplete) : null;
+      if (akhandCard) checkCard(akhandCard, 'akhand', allowDirty);
       const status = (o.status || 'merged') === 'merged' ? 'merged' : 'candidate, not merged';
       if (status !== 'merged' && !o.base) throw new Error(`${o.name}: a candidate needs --base <commit of the build it was made from> (its "vs base" verdict)`);
-      const res = resultOf(card, hardCard, { name: o.name.replace(/\|/g, '/'), status, note: o.note, order: o.order != null ? Number(o.order) : null, base: o.base });
-      pub.push({ res, slug: slugOf(o.name, card.build.commit), card, hardCard, files: o });
+      const res = resultOf(card, hardCard, { name: o.name.replace(/\|/g, '/'), status, note: o.note, order: o.order != null ? Number(o.order) : null, base: o.base }, akhandCard);
+      pub.push({ res, slug: slugOf(o.name, card.build.commit), card, hardCard, akhandCard, files: o });
     };
     if (opt('batch')) for (const o of JSON.parse(fs.readFileSync(opt('batch'), 'utf8'))) addOne(o);
     else if (!siteOnly) {
-      const file = args.find((a) => !a.startsWith('--') && a.endsWith('.json') && a !== opt('hard'));
+      const file = args.find((a) => !a.startsWith('--') && a.endsWith('.json') && a !== opt('hard') && a !== opt('akhand'));
       if (!file || !opt('name')) throw new Error('gab publish <main scorecard.json> --hard <hard scorecard.json> --name "<build name>" [--status merged|candidate]   (or --batch <batch.json>)');
-      addOne({ main: file, hard: opt('hard'), name: opt('name'), status: opt('status'), order: opt('order'), base: opt('base'), note: opt('note') });
+      addOne({ main: file, hard: opt('hard'), akhand: opt('akhand'), name: opt('name'), status: opt('status'), order: opt('order'), base: opt('base'), note: opt('note') });
     }
     const prev = JSON.parse(await hfText('space', SPACE, 'results/index.json') || '{"results":[]}');
     // --replace <slug>: the new result takes the place of an earlier row (a candidate that has since been merged)
@@ -250,7 +264,7 @@ async function main(args) {
     const slugs = new Set(pub.map((p) => p.slug));
     const index = { results: [...prev.results.filter((x) => !slugs.has(x.slug) && !gone.includes(x.slug)), ...pub.map((p) => ({ slug: p.slug, file: `${p.slug}.json`, name: p.res.name, commit: p.res.commit, date: p.res.date, order: p.res.order }))] };
     for (const p of pub) console.log(`row: ${p.res.name} | ${p.res.status} | ${p.res.commit} | Voice-Follow ${p.res.vf_feature_version || 'not stamped'} | ${p.res.gab} | ${p.res.split} ${p.res.tier} | ${p.res.date} | main ${p.card.rows.filter((r) => r.level === 'behaviour').reduce((a, r) => a + (r.clips || 0), 0)} clips, hard ${p.hardCard.rows.filter((r) => r.level === 'behaviour').reduce((a, r) => a + (r.clips || 0), 0)} clips`);
-    if (pub.length) msg = pub.length === 1 ? `GAB leaderboard: ${pub[0].res.name} (${pub[0].res.commit}, ${pub[0].res.split}, ${pub[0].res.tier}, main + hard)` : `GAB leaderboard: ${G.GAB_VERSION}, ${pub.length} builds re-scored (main GAB + GAB-Hard)`;
+    if (pub.length) msg = pub.length === 1 ? `GAB leaderboard: ${pub[0].res.name} (${pub[0].res.commit}, ${pub[0].res.split}, ${pub[0].res.tier}, main + hard${pub[0].akhandCard ? ' + akhand' : ''})` : `GAB leaderboard: ${G.GAB_VERSION}, ${pub.length} builds re-scored (main GAB + GAB-Hard${pub.some((p) => p.akhandCard) ? ' + GAB-Akhand Kirtan' : ''})`;
     fs.writeFileSync(path.join(S, 'index.json'), JSON.stringify(index, null, 1));
     spaceOps.push(['results/index.json', 'index.json']);
     // every result (read fresh), with its "vs base" verdicts recomputed per tier; each results file is rewritten.
@@ -268,7 +282,7 @@ async function main(args) {
     index.results.forEach((e, i) => { fs.writeFileSync(path.join(S, `result-${i}.json`), JSON.stringify(all[i], null, 1)); spaceOps.push([`results/${e.file}`, `result-${i}.json`]); });
     const sorted = [...all].sort((a, b) => (a.order ?? 99) - (b.order ?? 99) || a.date.localeCompare(b.date));
     const vsText = (v) => (v && v.against ? `${v.against}: ${v.pass ? 'PASS' : `FAIL (${v.worse.map((w) => `${w.title} ${w.scope} ${w.metric} ${w.a} -> ${w.b}`).join('; ')})`}${v.info_worse && v.info_worse.length ? ` | info rows worse: ${v.info_worse.map((w) => `${w.title} ${w.metric} ${w.a} -> ${w.b}`).join('; ')}` : ''}` : '-');
-    for (const r of sorted) console.log(`${r.name}\n   main vs ${r.vs.kind}: ${vsText(r.vs)}\n   hard vs ${r.hard.vs.kind}: ${vsText(r.hard.vs)}`);
+    for (const r of sorted) console.log(`${r.name}\n   main vs ${r.vs.kind}: ${vsText(r.vs)}\n   hard vs ${r.hard.vs.kind}: ${vsText(r.hard.vs)}${r.akhand ? `\n   akhand vs ${r.akhand.vs.kind}: ${vsText(r.akhand.vs)}` : ''}`);
     // --preview <dir>: write the Space as it would be (page files + results) into <dir> and stop (nothing pushed)
     if (opt('preview')) {
       const P = path.resolve(opt('preview'));
@@ -296,6 +310,11 @@ async function main(args) {
       fs.copyFileSync(path.resolve(p.files.hard), path.join(S, `sch-${i}.json`));
       fs.writeFileSync(path.join(S, `sch-${i}.md`), `${G.markdown(p.hardCard)}\n`);
       dsOps.push([`scores/gab/${p.slug}/scorecard.json`, `sc-${i}.json`], [`scores/gab/${p.slug}/scorecard.md`, `sc-${i}.md`], [`scores/gab/${p.slug}/scorecard-hard.json`, `sch-${i}.json`], [`scores/gab/${p.slug}/scorecard-hard.md`, `sch-${i}.md`]);
+      if (p.akhandCard) {
+        fs.copyFileSync(path.resolve(p.files.akhand), path.join(S, `sca-${i}.json`));
+        fs.writeFileSync(path.join(S, `sca-${i}.md`), `${G.markdown(p.akhandCard)}\n`);
+        dsOps.push([`scores/gab/${p.slug}/scorecard-akhand.json`, `sca-${i}.json`], [`scores/gab/${p.slug}/scorecard-akhand.md`, `sca-${i}.md`]);
+      }
     });
     if (newReadme !== readme) dsOps.push(['README.md', 'README.md'], ['LEADERBOARD.md', 'LEADERBOARD.md']);
     else console.log('dataset card: Leaderboard section unchanged, not touched');

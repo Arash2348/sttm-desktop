@@ -79,6 +79,12 @@ function localEntries(root, model, codec, clips) {
   return out;
 }
 
+// platform provenance of a local entry (vf-check.js writes provenance.json; none = recorded on the Mac before the
+// stamp existed): pushed into the manifest entry, and written back next to a pulled entry
+function provenanceOf(dir) {
+  try { const p = JSON.parse(fs.readFileSync(path.join(dir, 'provenance.json'), 'utf8')); return { platform: p.platform, cpu: p.cpu || null, host: p.host || null }; } catch (_) { return { platform: 'darwin-arm64' }; }
+}
+
 async function push({ root, model, codec, clips, commit, log = console.log }) {
   const remote = await list();
   const manKey = `${PREFIX}/manifest.json`;
@@ -94,7 +100,7 @@ async function push({ root, model, codec, clips, commit, log = console.log }) {
     await put(`${k}.bin`, fs.readFileSync(e.bin));
     await put(`${k}.index.jsonl`, fs.readFileSync(e.idx), 'application/x-ndjson');
     const windows = fs.readFileSync(e.idx, 'utf8').split('\n').filter(Boolean).length;
-    man.entries[`${model}/${codec}/${e.sha}`] = { clip: e.id, sha256: e.sha, model, codec, size: e.size, indexSize: e.indexSize, windows, recordedAt: fs.statSync(e.bin).mtime.toISOString(), recordedOn: commit || null };
+    man.entries[`${model}/${codec}/${e.sha}`] = { clip: e.id, sha256: e.sha, model, codec, size: e.size, indexSize: e.indexSize, windows, recordedAt: fs.statSync(e.bin).mtime.toISOString(), recordedOn: commit || null, ...provenanceOf(e.dir) };
     bytes += e.size + e.indexSize;
     n += 1;
     log(`  pushed ${e.id} (${(e.size / 1e6).toFixed(1)} MB, ${windows} windows)`);
@@ -106,6 +112,7 @@ async function push({ root, model, codec, clips, commit, log = console.log }) {
 // Fetch clips that are missing locally or smaller than the remote copy.
 async function pull({ root, model, codec, clips, log = console.log }) {
   const remote = await list();
+  let man = null;
   let n = 0;
   let bytes = 0;
   for (const c of clips) {
@@ -125,6 +132,11 @@ async function pull({ root, model, codec, clips, log = console.log }) {
     fs.writeFileSync(path.join(d, 'index.jsonl.part'), i);
     fs.renameSync(`${bin}.part`, bin);
     fs.renameSync(path.join(d, 'index.jsonl.part'), path.join(d, 'index.jsonl'));
+    try {
+      if (man == null) { const mb = await get(`${PREFIX}/manifest.json`); man = mb ? JSON.parse(mb.toString('utf8')) : { entries: {} }; }
+      const me = man.entries[`${model}/${codec}/${audioSha(c.wav)}`];
+      if (me && me.platform) fs.writeFileSync(path.join(d, 'provenance.json'), `${JSON.stringify({ platform: me.platform, cpu: me.cpu || null, host: me.host || null, pulledFrom: 'azure bench-cache manifest' }, null, 1)}\n`);
+    } catch (_) { /* provenance is advisory on pull */ }
     n += 1;
     bytes += b.length + i.length;
     log(`  pulled ${c.id} (${(b.length / 1e6).toFixed(1)} MB)`);

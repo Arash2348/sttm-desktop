@@ -162,6 +162,39 @@ const SUITES = {
     },
     direction: (name) => (/in-sequence/.test(name) ? 1 : -1),
   },
+  // Human-verified main-tab rows of the Level-2 Google Sheet added to GAB on Oct 14 2026 (Cycle 10 cuts:
+  // <prefix>NN_<video>_<start-30>-<end+10>.wav, the same runner and naming as l2). optIn: vf-check runs them only
+  // when named; GAB plays them from its manifest. Their cache was recorded on x86 (GCP vf-record), see GAB.md.
+  rfinds: {
+    title: 'Renton Finds darbars (81, Sep 25 reviewer)',
+    optIn: true,
+    smoke: [],
+    sentinel: ['rn01', 'rn20', 'rn40', 'rn60', 'rn80'],
+    jobs: () => sheetJobs('renton-finds-truth.json', 'rn'),
+    metrics: null,
+    score(dir) { return SUITES.l2.score(dir); },
+    direction: (name) => (/right|found <=/.test(name) ? 1 : -1),
+  },
+  yuba: {
+    title: 'Gurdwara Yuba City (Jas Gurbani recordings, 17)',
+    optIn: true,
+    smoke: [],
+    sentinel: ['yuba01', 'yuba07', 'yuba13'],
+    jobs: () => sheetJobs('yuba-jas.json', 'yuba'),
+    metrics: null,
+    score(dir) { return SUITES.l2.score(dir); },
+    direction: (name) => (/right|found <=/.test(name) ? 1 : -1),
+  },
+  l3: {
+    title: 'Level 3 smagams (AKJ Toronto 2022, Manchester 2024)',
+    optIn: true,
+    smoke: [],
+    sentinel: ['l3clip01', 'l3clip05', 'l3clip15'],
+    jobs: () => sheetJobs('level3-human-sheet.json', 'l3clip'),
+    metrics: null,
+    score(dir) { return SUITES.l2.score(dir); },
+    direction: (name) => (/right|found <=/.test(name) ? 1 : -1),
+  },
   renton: {
     title: 'Renton Oct 11 parts (7)',
     smoke: ['rt11_hukamnama'],

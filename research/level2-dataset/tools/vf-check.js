@@ -331,6 +331,32 @@ async function politeTurn() {
   }
 }
 
+// Platform provenance (Oct 14 2026): the int8 model's output differs between Apple silicon and x86 (~0.9% of
+// frames flip argmax), so one clip's cache entry must hold windows from ONE platform. Each entry records its
+// platform in provenance.json (written on first record here, or on pull from the Azure manifest); an entry
+// without one predates the stamp and was recorded on this Mac (darwin-arm64). Recording into an entry of another
+// platform is refused (never mix x86 windows into a Mac entry, or the other way round).
+const PLATFORM = `${process.platform}-${process.arch}`;
+const entryDirOf = (id) => path.join(CACHE, `${modelSha(MODEL, CACHE).slice(0, 12)}-${CODEC}`, id);
+function entryPlatform(id) {
+  const d = entryDirOf(id);
+  try { return JSON.parse(fs.readFileSync(path.join(d, 'provenance.json'), 'utf8')).platform; } catch (_) { /* none */ }
+  return fs.existsSync(path.join(d, 'index.jsonl')) ? 'darwin-arm64' : null;
+}
+function platformGuard(jobs, say = console.log) {
+  const bad = jobs.filter((j) => { const p = entryPlatform(j.id); return p && p !== PLATFORM; });
+  if (bad.length) say(`  REFUSED to record ${bad.length} clip(s) whose cache entry was recorded on another platform (this is ${PLATFORM}; never mix): ${[...new Set(bad.map((j) => `${j.id} (${entryPlatform(j.id)})`))].join(' ')}`);
+  return jobs.filter((j) => !bad.includes(j));
+}
+function stampProvenance(jobs) {
+  for (const j of jobs) {
+    const d = entryDirOf(j.id);
+    const f = path.join(d, 'provenance.json');
+    if (fs.existsSync(f) || !fs.existsSync(path.join(d, 'index.jsonl'))) continue;
+    fs.writeFileSync(f, `${JSON.stringify({ platform: PLATFORM, cpu: (os.cpus()[0] || {}).model || null, host: process.env.VF_RECORD_HOST || os.hostname(), firstRecordedAt: new Date().toISOString() }, null, 1)}\n`);
+  }
+}
+
 // --fill-new: record ONLY the clips the cache does not have yet (new benchmark recordings), after first trying the
 // shared Azure copy; --push then uploads what was recorded. Meant for a nightly run after hf-ingest.js:
 //   node vf-check.js --fill-new --roots <release worktree> [--suites jaspal] [--split train,dev] [--push]
@@ -372,7 +398,7 @@ async function record(opts = {}) {
   // suite by suite (each root in turn), so every suite is complete for all roots as early as possible
   for (const s of suites) {
     for (const [ri, root] of roots.entries()) {
-      const jobs = selectJobs([s], { only, sentinel: flag('sentinel') });
+      const jobs = platformGuard(selectJobs([s], { only, sentinel: flag('sentinel') }));
       if (!jobs.length) continue;
       const side = ri === 0 ? 'base' : `root${ri}`;
       const tasks = makeTasks(jobs, side, root, outRoot, 'record', { perClip: true });
@@ -390,6 +416,7 @@ async function record(opts = {}) {
         Object.assign(all.status, st.status);
       }
       const st = all;
+      stampProvenance(jobs);
       const rec = Object.values(st.status).reduce((a, x) => a + (x.recorded || 0), 0);
       const hit = Object.values(st.status).reduce((a, x) => a + (x.hits || 0), 0);
       const bad = Object.entries(st.status).filter(([, x]) => x.code);
@@ -493,9 +520,10 @@ async function check() {
   if (missed.length && flag('fill')) {
     say(`${missed.length} clip runs went past the cache (their behaviour diverged); recording them (model, under the lock) ...`);
     const tf = now();
-    const bySide = (side) => missed.filter(([s]) => s === side).map(([, j]) => j);
+    const bySide = (side) => platformGuard(missed.filter(([s]) => s === side).map(([, j]) => j), say);
     const rec = [...makeTasks(bySide('base'), 'base', base, outRoot, 'record', { perClip: true }), ...makeTasks(bySide('cand'), 'cand', cand, outRoot, 'record', { perClip: true })];
     await runLocked({ jobs: 1, tasks: rec, verbose: true }, path.join(outRoot, 'fill.plan.json'), { threads: 3 });
+    stampProvenance([...bySide('base'), ...bySide('cand')]);
     const again = [...makeTasks(bySide('base'), 'base', base, outRoot, 'replay'), ...makeTasks(bySide('cand'), 'cand', cand, outRoot, 'replay')];
     const st2 = await runLocked({ jobs: JOBS, tasks: again }, path.join(outRoot, 'replay2.plan.json'));
     Object.assign(status, st2.status);

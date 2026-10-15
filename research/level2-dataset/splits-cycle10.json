@@ -1,0 +1,4017 @@
+{
+ "seed": 20260925,
+ "rule": "split by recording (video), stratified by venue; previous holdouts kept in test; Yuba City = unseen-venue test; hall test = test only; L3 separate; playlist sample (240 of 729) split by singer 70/10/20; karansea benchmark = external test only; karansea canonical captions = fine-tune training",
+ "recordings": [
+  {
+   "vid": "aQiVq9ZK8hA",
+   "venue": "Renton",
+   "level": "L2",
+   "rows": 1,
+   "sec": 212,
+   "split": "train"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Renton",
+   "level": "L2",
+   "rows": 16,
+   "sec": 7063,
+   "split": "train"
+  },
+  {
+   "vid": "IT9dBWP9hiw",
+   "venue": "Fremont",
+   "level": "L2",
+   "rows": 1,
+   "sec": 375,
+   "split": "train"
+  },
+  {
+   "vid": "X8EN_dxTxFY",
+   "venue": "Fremont",
+   "level": "L2",
+   "rows": 3,
+   "sec": 748,
+   "split": "train"
+  },
+  {
+   "vid": "TRFTO4-HsGk",
+   "venue": "Fremont",
+   "level": "L2",
+   "rows": 2,
+   "sec": 774,
+   "split": "test"
+  },
+  {
+   "vid": "5Nj1odTqjr8",
+   "venue": "Harmandir Sahib",
+   "level": "L2",
+   "rows": 2,
+   "sec": 726,
+   "split": "train"
+  },
+  {
+   "vid": "AhRd4zcvGwA",
+   "venue": "Harmandir Sahib",
+   "level": "L2",
+   "rows": 2,
+   "sec": 1322,
+   "split": "train"
+  },
+  {
+   "vid": "au0r538sNKo",
+   "venue": "Harmandir Sahib",
+   "level": "L2",
+   "rows": 2,
+   "sec": 731,
+   "split": "train"
+  },
+  {
+   "vid": "CqX9GifIDnk",
+   "venue": "Harmandir Sahib",
+   "level": "L2",
+   "rows": 1,
+   "sec": 500,
+   "split": "test"
+  },
+  {
+   "vid": "eYgMiglXTpk",
+   "venue": "Harmandir Sahib",
+   "level": "L2",
+   "rows": 4,
+   "sec": 2078,
+   "split": "train"
+  },
+  {
+   "vid": "yLEY7N51wyM",
+   "venue": "Harmandir Sahib",
+   "level": "L2",
+   "rows": 2,
+   "sec": 597,
+   "split": "dev"
+  },
+  {
+   "vid": "duc_Yh0-hwY",
+   "venue": "Harmandir Sahib",
+   "level": "L2",
+   "rows": 1,
+   "sec": 575,
+   "split": "train"
+  },
+  {
+   "vid": "guDwBxnCTnI",
+   "venue": "Harmandir Sahib",
+   "level": "L2",
+   "rows": 2,
+   "sec": 903,
+   "split": "train"
+  },
+  {
+   "vid": "Mhy6xcAdKRQ",
+   "venue": "Harmandir Sahib",
+   "level": "L2",
+   "rows": 2,
+   "sec": 455,
+   "split": "test"
+  },
+  {
+   "vid": "T9zISL2FYrQ",
+   "venue": "Harmandir Sahib",
+   "level": "L2",
+   "rows": 2,
+   "sec": 1007,
+   "split": "train"
+  },
+  {
+   "vid": "xYk_5SClw2M",
+   "venue": "Harmandir Sahib",
+   "level": "L2",
+   "rows": 1,
+   "sec": 406,
+   "split": "test"
+  },
+  {
+   "vid": "rspWQFcyIs4",
+   "venue": "Harmandir Sahib",
+   "level": "L2",
+   "rows": 1,
+   "sec": 479,
+   "split": "dev"
+  },
+  {
+   "vid": "-E-PjJz00j8",
+   "venue": "Renton",
+   "level": "L2",
+   "rows": 2,
+   "sec": 1690,
+   "split": "train"
+  },
+  {
+   "vid": "h37nNWBwZxk",
+   "venue": "Renton",
+   "level": "L2",
+   "rows": 2,
+   "sec": 1265,
+   "split": "train"
+  },
+  {
+   "vid": "-0qd72W9sG8",
+   "venue": "Renton",
+   "level": "L2",
+   "rows": 6,
+   "sec": 1770,
+   "split": "test"
+  },
+  {
+   "vid": "jqEe6HCdGfo",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 473,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "Z3EZXcfJwAA",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 405,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "PKY0BQ8UB_E",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 534,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "2JBgXsU_fWI",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 702,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "J_AvMnaS_VI",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 266,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "NnnDZUscqvY",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 275,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "OSyPLtJWTXE",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 627,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "pDMz6_zhhDI",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 498,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "dDqADgSger4",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 335,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "PNXh-g-VsG8",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 821,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "AI5tu-IuNKw",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 160,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "CywrKsn6BmU",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 894,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "am1LMfhcGZ4",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 338,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "iA7SWl8kFM8",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 645,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "3cRxk-7gG4k",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 860,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "2n2WB_X3D5c",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 872,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "UsjYm_4ZZAw",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 532,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "O5Cyf05GSdQ",
+   "venue": "Yuba City",
+   "level": "L2",
+   "rows": 1,
+   "sec": 474,
+   "split": "test-unseen-venue"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Renton",
+   "level": "L2",
+   "rows": 23,
+   "sec": 8170,
+   "split": "train"
+  },
+  {
+   "vid": "vvCujWQITiU",
+   "venue": "Renton",
+   "level": "L2",
+   "rows": 13,
+   "sec": 5550,
+   "split": "train"
+  },
+  {
+   "vid": "zuCiaw0exFA",
+   "venue": "Renton",
+   "level": "L2",
+   "rows": 13,
+   "sec": 7335,
+   "split": "test"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Renton",
+   "level": "L2",
+   "rows": 18,
+   "sec": 8145,
+   "split": "dev"
+  },
+  {
+   "vid": "WuciQokua6w",
+   "venue": "AKJ Toronto 2022 Fri",
+   "level": "L3",
+   "rows": 4,
+   "sec": 1390,
+   "split": "L3-train"
+  },
+  {
+   "vid": "Q5QFYd6sL_w",
+   "venue": "AKJ Toronto 2022 Sat",
+   "level": "L3",
+   "rows": 9,
+   "sec": 4375,
+   "split": "L3-test"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "level": "L3",
+   "rows": 19,
+   "sec": 3147,
+   "split": "L3-train"
+  },
+  {
+   "vid": "IZOsmkdmmcg",
+   "venue": "karansea benchmark v1",
+   "level": "external",
+   "rows": 3,
+   "sec": null,
+   "split": "test-external",
+   "label": "karansea line-level GT (MIT); 3 start offsets"
+  },
+  {
+   "vid": "kZhIA8P6xWI",
+   "venue": "karansea benchmark v1",
+   "level": "external",
+   "rows": 3,
+   "sec": null,
+   "split": "test-external",
+   "label": "karansea line-level GT (MIT); 3 start offsets"
+  },
+  {
+   "vid": "kchMJPK9Axs",
+   "venue": "karansea benchmark v1",
+   "level": "external",
+   "rows": 3,
+   "sec": null,
+   "split": "test-external",
+   "label": "karansea line-level GT (MIT); 3 start offsets"
+  },
+  {
+   "vid": "zOtIpxMT9hU",
+   "venue": "karansea benchmark v1",
+   "level": "external",
+   "rows": 3,
+   "sec": null,
+   "split": "test-external",
+   "label": "karansea line-level GT (MIT); 3 start offsets"
+  },
+  {
+   "vid": "cANTWzO5P4Y",
+   "venue": "karansea eval-kirtan-canonical",
+   "level": "external",
+   "rows": 573,
+   "sec": 5040,
+   "split": "train-lines",
+   "label": "573 human caption lines, one recording; fine-tune data"
+  },
+  {
+   "vid": "8PyO4xcBFKc",
+   "venue": "Playlist 729 · kamaljit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Tis Kadey Na Aave Tott"
+  },
+  {
+   "vid": "2EEJ2wGAV_0",
+   "venue": "Playlist 729 · jagtar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Kirtan Hoa Rain Sabaayi"
+  },
+  {
+   "vid": "ltSXNRiYW9U",
+   "venue": "Playlist 729 · sarabjit patna",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Sukh Tera Dita Lahiye"
+  },
+  {
+   "vid": "uwt81ewlh9Q",
+   "venue": "Playlist 729 · harinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Berha Bandh Na Sakio Bandhan Ki Vela"
+  },
+  {
+   "vid": "Jgieuzdlr7I",
+   "venue": "Playlist 729 · mukhtiar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Tere Bharosey Piyare Main Laad"
+  },
+  {
+   "vid": "ePoPMaX6G8s",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Sabh Kai Sangi Naahi Door"
+  },
+  {
+   "vid": "MSw2BMb7jBs",
+   "venue": "Playlist 729 · jagtar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Prabh Mero It Ut Sada Sahai"
+  },
+  {
+   "vid": "rXCCxv4685s",
+   "venue": "Playlist 729 · kamaljit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Man Beche Satgur Ke Paas"
+  },
+  {
+   "vid": "gcTpezQ6Uf4",
+   "venue": "Playlist 729 · davinder sodhi",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Mera Pyara Pritam"
+  },
+  {
+   "vid": "oGb_3S_UKj4",
+   "venue": "Playlist 729 · gurkirat",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Meetha Lagei Tera Bhana"
+  },
+  {
+   "vid": "GlBvFEsBU-o",
+   "venue": "Playlist 729 · baldev wadala",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Kaho Nanak Hum Loon Harami"
+  },
+  {
+   "vid": "obIzApRCiKE",
+   "venue": "Playlist 729 · onkar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Phir Vichhoda Kade Na Hoye"
+  },
+  {
+   "vid": "dkgbjtA2ZNs",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Hau Reh Na Saka"
+  },
+  {
+   "vid": "-vJaHmL6Mdk",
+   "venue": "Playlist 729 · nirmal khalsa",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Sarwar Hans Dhurey"
+  },
+  {
+   "vid": "IhlioPFkcPo",
+   "venue": "Playlist 729 · dalbir",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Dhan Guru Pyare"
+  },
+  {
+   "vid": "k1UkanHNHBQ",
+   "venue": "Playlist 729 · gagandip",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Rangi Le Jihaba Har Ke Naye"
+  },
+  {
+   "vid": "SdyJ3pKMatg",
+   "venue": "Playlist 729 · nirmal khalsa",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Rajan Ke Raja / Bhai Nirmal Singh Ji Khalsa / English Lyrics & Meaning / Shabad Gurbani / 4k"
+  },
+  {
+   "vid": "y2liCFsH8E4",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Kaun Jaane Gun Tere"
+  },
+  {
+   "vid": "dGoP6VAwbuA",
+   "venue": "Playlist 729 · onkar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Satgur Daya Kare"
+  },
+  {
+   "vid": "9S6GSjM7A0I",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Man Tu Mat Maan Kare"
+  },
+  {
+   "vid": "I3_uMdV9v7I",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Aades Baba Aades (Babar Bani)"
+  },
+  {
+   "vid": "IIDm8K2-x-c",
+   "venue": "Playlist 729 · harjinder srinagar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Ab Kalu Aayo Re"
+  },
+  {
+   "vid": "BHSZIjn3kfY",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Teri Saran Puran Dayala"
+  },
+  {
+   "vid": "PY4ZRP4JKrs",
+   "venue": "Playlist 729 · niranjan",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Jini Mainda Laal Rijhaya"
+  },
+  {
+   "vid": "pfytkuSCxq8",
+   "venue": "Playlist 729 · baldev wadala",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Aap Gawaye Seva Karey"
+  },
+  {
+   "vid": "CRmQb8YeUm0",
+   "venue": "Playlist 729 · gurdev",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Jat Kat Pekhaun Ekey Ohi"
+  },
+  {
+   "vid": "CyVihDsrE4s",
+   "venue": "Playlist 729 · ravinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Kaho Nanak Sab Teri Wadiyai / Bhai Ravinder  Singh Ji / Punjabi , English Lyrics & Meaning / 4k"
+  },
+  {
+   "vid": "VtQ4nCGOHOE",
+   "venue": "Playlist 729 · baldev wadala",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Ab Main Koun Upaao Karo"
+  },
+  {
+   "vid": "_N86IyTPcvo",
+   "venue": "Playlist 729 · ravinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Meharvaan Sahib Meharvaan"
+  },
+  {
+   "vid": "_zX3OlPtNGY",
+   "venue": "Playlist 729 · ravinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Mera Baid Guru Govinda"
+  },
+  {
+   "vid": "ixkJNBMjgKo",
+   "venue": "Playlist 729 · singer not in title",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Aavho Meet Peyare Mangal Gavoh Nare  Bhai Kamaljit Singh Ji"
+  },
+  {
+   "vid": "WHSg-q7leMg",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Daya Karo Basoh Mann"
+  },
+  {
+   "vid": "yTZ7S3l19PI",
+   "venue": "Playlist 729 · jasbir",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Mera Mann Laga Tohe"
+  },
+  {
+   "vid": "mUfUYdTTCdQ",
+   "venue": "Playlist 729 · gagandip",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Gur Ka Shabd Rakhvare"
+  },
+  {
+   "vid": "G6LEEFQFDYU",
+   "venue": "Playlist 729 · mukhtiar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Sun Nah Prabhu Jio"
+  },
+  {
+   "vid": "EtIeZSKwwPI",
+   "venue": "Playlist 729 · singer not in title",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Rakha Ek Hamara Swami  Bhai Jasbir Singh Ji Paonta Sahib"
+  },
+  {
+   "vid": "EhEtBrNGoLU",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Beh Sakhiya Jas Gawah"
+  },
+  {
+   "vid": "UErbZt0ENPo",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Deen Bisareo Re Diwane"
+  },
+  {
+   "vid": "n1nHcv_9Uno",
+   "venue": "Playlist 729 · satvinder & harvinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Man Mahi Man Mahi Mere Govinda"
+  },
+  {
+   "vid": "CiQ47lxomhI",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Har Aape Ghat Ghat Vartada"
+  },
+  {
+   "vid": "xvsD-WTNNQM",
+   "venue": "Playlist 729 · nirmal khalsa",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Birtha Janam Gawaye"
+  },
+  {
+   "vid": "Th0usi7guOs",
+   "venue": "Playlist 729 · gurkirat",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Saache Sahiba Kiya Naahee Ghar Tere"
+  },
+  {
+   "vid": "V1h4wnF4Hcg",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Chal Darhaar Divaan Bulaya"
+  },
+  {
+   "vid": "oEWHEnYQ4Hs",
+   "venue": "Playlist 729 · jagtar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Aage Sukh Mere Meeta"
+  },
+  {
+   "vid": "wvpsrLD5OWM",
+   "venue": "Playlist 729 · maninder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Ab Tuhi Main Nahi"
+  },
+  {
+   "vid": "uMzn0_ZXQ4M",
+   "venue": "Playlist 729 · maninder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Mati Ko Putra"
+  },
+  {
+   "vid": "Z2JQw275dWk",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Mil Sakhiyan Puchhe"
+  },
+  {
+   "vid": "pQ-0GbUY9HI",
+   "venue": "Playlist 729 · jagtar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Har Ji Mata Har Ji Pita"
+  },
+  {
+   "vid": "GXV2xpSWkjQ",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Mu Laalan Seu Preet Bani"
+  },
+  {
+   "vid": "BVzyhPJzslc",
+   "venue": "Playlist 729 · nirmal",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Bahut Janam Bichhare The Madho"
+  },
+  {
+   "vid": "t5NYRvNdHS4",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Ram Mau Ko Taar"
+  },
+  {
+   "vid": "fZs6hxt_vvY",
+   "venue": "Playlist 729 · mohakam",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Bhalo Samo Simran Ki Baria"
+  },
+  {
+   "vid": "3NJ4PrFyoI8",
+   "venue": "Playlist 729 · niranjan",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Bolo Sach Naam Kartar"
+  },
+  {
+   "vid": "JOlBnew_974",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Ram Simar Pachhtahega"
+  },
+  {
+   "vid": "uimfybMNv-8",
+   "venue": "Playlist 729 · davinder sodhi",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Je Gur Jhidke Ta Mitha Lage"
+  },
+  {
+   "vid": "x8hcxmvmxKo",
+   "venue": "Playlist 729 · ravinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Sache Marag Chaldian / Bhai Ravinder Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4K"
+  },
+  {
+   "vid": "r-bAvpz9UcA",
+   "venue": "Playlist 729 · jagtar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Tere Bharose Pyare"
+  },
+  {
+   "vid": "jEJ0KHeL5Vc",
+   "venue": "Playlist 729 · nirmal khalsa",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Rajan Ke Raja / Bhai Nirmal Singh Ji Khalsa / Punjabi Lyrics & Meaning / Shabad Gurbani / 4k"
+  },
+  {
+   "vid": "P0exT2faENE",
+   "venue": "Playlist 729 · inderjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Bachan Guru Jo Pure Kaheo"
+  },
+  {
+   "vid": "pHnhIxgeKSM",
+   "venue": "Playlist 729 · satvinder & harvinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Bhagtan Ki Tek Tun"
+  },
+  {
+   "vid": "raLoElcrrcc",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Mera Muj Main Kish Nahi"
+  },
+  {
+   "vid": "fq9uVRio53s",
+   "venue": "Playlist 729 · lakhwinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Deho Sandesro"
+  },
+  {
+   "vid": "NslSdpvMBSM",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Wadda Mera Gobind"
+  },
+  {
+   "vid": "TF8RwlKBZyE",
+   "venue": "Playlist 729 · jasbir",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Tumri Kripa Mein Sukh Ghanere"
+  },
+  {
+   "vid": "x_Lnm1tyAB0",
+   "venue": "Playlist 729 · sri guru teg bahadur",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Salok Mahalla 9"
+  },
+  {
+   "vid": "a8sF9srWHHc",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Tu Samrath Wada"
+  },
+  {
+   "vid": "_Fqz_fQGDvM",
+   "venue": "Playlist 729 · anup",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Gun Gawa Din Raat"
+  },
+  {
+   "vid": "xQvWcXFPxYo",
+   "venue": "Playlist 729 · harnam",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Gurmat Riday Garibi Aavey"
+  },
+  {
+   "vid": "uKROwTRck-E",
+   "venue": "Playlist 729 · vir arvinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Mann Mere Bhule Kapat Na Kije"
+  },
+  {
+   "vid": "7bc93BDoQrM",
+   "venue": "Playlist 729 · anup",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Baksh Avgan Sab Mere"
+  },
+  {
+   "vid": "gUWkf9AmQxE",
+   "venue": "Playlist 729 · nirmal",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Vaho Vaho Karteya Mann Nirmal Hove"
+  },
+  {
+   "vid": "lCN0dWjYtIQ",
+   "venue": "Playlist 729 · inderjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Vin Boleya Sabh Kish Janda"
+  },
+  {
+   "vid": "VmWGKVvPx6k",
+   "venue": "Playlist 729 · dalbir",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Suno Binantiyan Swami Mere Ram"
+  },
+  {
+   "vid": "NSxclteJ4ys",
+   "venue": "Playlist 729 · nirmal nagpuri",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Tujh Bin Kavan Rijhave"
+  },
+  {
+   "vid": "rbrf7Fk2R7o",
+   "venue": "Playlist 729 · niranjan",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Tere Bankey Loean"
+  },
+  {
+   "vid": "f4yhOTJumwM",
+   "venue": "Playlist 729 · harbans",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Kya Tain Khatteya Kahan Gavaeya"
+  },
+  {
+   "vid": "su43PzZRqgo",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Hoan Vanjha Kurban Sai Apne"
+  },
+  {
+   "vid": "tnsQbX9npCM",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Aakhan Aukha Naanka"
+  },
+  {
+   "vid": "vSWEbpN84iU",
+   "venue": "Playlist 729 · hari",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Mahima Na Jaaney Bed"
+  },
+  {
+   "vid": "Hn3f1dBv_A8",
+   "venue": "Playlist 729 · niranjan",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Ja Tu Mere Wal Hai"
+  },
+  {
+   "vid": "cy6K8DkXtf0",
+   "venue": "Playlist 729 · nirmal khalsa",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Sabhe Ghat Ram Boley"
+  },
+  {
+   "vid": "ixGmGVK4jTE",
+   "venue": "Playlist 729 · davinder sodhi",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Bhalo Bhalo Re Kirtaniyan"
+  },
+  {
+   "vid": "dJJyh8m-PDU",
+   "venue": "Playlist 729 · dalbir",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Tera Kiya Meetha Laage"
+  },
+  {
+   "vid": "kEz8KafLr9M",
+   "venue": "Playlist 729 · jagjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Ram Simar Ram Simar"
+  },
+  {
+   "vid": "znD8do6TDGI",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Koi Jan Har Syon Devei Jor"
+  },
+  {
+   "vid": "JUmv8vHsDQE",
+   "venue": "Playlist 729 · kamaljit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Prabh Ji Ko Naam Japat Man Chain"
+  },
+  {
+   "vid": "tv3cnICCYf0",
+   "venue": "Playlist 729 · jagtar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Jisnu Tu Baksh Leh Mere Pyare"
+  },
+  {
+   "vid": "hWuRM_wFKbE",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Puchho Sant Mero Thakur Kaisa"
+  },
+  {
+   "vid": "LsgUCRtyuC8",
+   "venue": "Playlist 729 · jasbir",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Baba Maya Sath Na Hoye"
+  },
+  {
+   "vid": "yjk4lYv8A1Y",
+   "venue": "Playlist 729 · harprit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Karamheen Dhan Karai Benanti"
+  },
+  {
+   "vid": "USjtOga1Z0g",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Waddi Hu Wadda Apaar Tera Martba"
+  },
+  {
+   "vid": "crIA8xAcJ_k",
+   "venue": "Playlist 729 · ravinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Jo Sarnee Aaveh Sarab Sukh Paveh"
+  },
+  {
+   "vid": "4Oh7ajIYVkU",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Prabh Ehai Manorath Mera"
+  },
+  {
+   "vid": "DPqtItS2YEM",
+   "venue": "Playlist 729 · davinder sodhi",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Nedhe Nedhe Sabh Ko Kahe"
+  },
+  {
+   "vid": "gs-yk31OXTE",
+   "venue": "Playlist 729 · inderjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Gur Taar Taranhareya"
+  },
+  {
+   "vid": "D5ZGOQZiAE0",
+   "venue": "Playlist 729 · jasbir",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Mul Kharidi Lala Gola"
+  },
+  {
+   "vid": "DVkTc59EWpQ",
+   "venue": "Playlist 729 · niranjan",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Ari Bai Gobind Naam Mat Bisre"
+  },
+  {
+   "vid": "ZT-Hsb2ZS94",
+   "venue": "Playlist 729 · nirmal khalsa",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Thapeya Na Jaye"
+  },
+  {
+   "vid": "ki2wpVFjc7E",
+   "venue": "Playlist 729 · dalbir",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Har Dharo Kirpa"
+  },
+  {
+   "vid": "XPPkwReK674",
+   "venue": "Playlist 729 · gurcharan",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Gur Sant Jano Pyara Main Milya"
+  },
+  {
+   "vid": "5UV75aoSD4Y",
+   "venue": "Playlist 729 · davinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Chitt Aave Us Parbrahm / Bhai Davinder Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4k"
+  },
+  {
+   "vid": "QyxDWalFwRA",
+   "venue": "Playlist 729 · gagandip",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Sagal Jee Sarnagatee"
+  },
+  {
+   "vid": "mjYpuZj3o6Q",
+   "venue": "Playlist 729 · ravinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Naam Mile Taan Jeevan"
+  },
+  {
+   "vid": "6sgZdDmmmV0",
+   "venue": "Playlist 729 · balwinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Ganga Ki Lehar"
+  },
+  {
+   "vid": "ahuB3MlolHY",
+   "venue": "Playlist 729 · harjinder srinagar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Gun Govind Gahe"
+  },
+  {
+   "vid": "4eqrwqwxSxw",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Kou Har Samaan Nahi Raja"
+  },
+  {
+   "vid": "-uQeFFox_UY",
+   "venue": "Playlist 729 · satvinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Jo Mange Thakur Apne Te"
+  },
+  {
+   "vid": "YVZzTW9r3nE",
+   "venue": "Playlist 729 · nirmal khalsa",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Aapni Kheti Rakh Lai"
+  },
+  {
+   "vid": "wcMvYDpM0Fk",
+   "venue": "Playlist 729 · harjinder srinagar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Att Ucha Taka Darbara"
+  },
+  {
+   "vid": "1hjhQbH5FzM",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Mere Lalan Ki Sobha"
+  },
+  {
+   "vid": "Pm_nJZfnUuo",
+   "venue": "Playlist 729 · gurkirat",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Sabhe Icha Purian"
+  },
+  {
+   "vid": "Vzo12-5pCbY",
+   "venue": "Playlist 729 · inderjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Ab Hum Chali Thakur Peh Haar"
+  },
+  {
+   "vid": "OBNwiXK0FC4",
+   "venue": "Playlist 729 · nirmal khalsa",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Aiko Har Raveya"
+  },
+  {
+   "vid": "G5RQ-PE5eHY",
+   "venue": "Playlist 729 · davinder sodhi",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Hum Rulte Phirte"
+  },
+  {
+   "vid": "kYHziCwqtzs",
+   "venue": "Playlist 729 · anup",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Rangan Rango Seevan Seevoh"
+  },
+  {
+   "vid": "GVfX7GH9tIE",
+   "venue": "Playlist 729 · inderjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Mahima Kahi Na Jae"
+  },
+  {
+   "vid": "RhwYDvPUZt8",
+   "venue": "Playlist 729 · kamaljit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Ja Ke Hirde Vaseya Tu Karte"
+  },
+  {
+   "vid": "BalL36e9-6s",
+   "venue": "Playlist 729 · kamaljit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Ekai Ekai Ek Tuhi"
+  },
+  {
+   "vid": "CYnq6burHVs",
+   "venue": "Playlist 729 · inderjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Kaise Baatan Se Jaaiye"
+  },
+  {
+   "vid": "5IvG7U9nVlM",
+   "venue": "Playlist 729 · nirmal khalsa",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Bighan Na Kou Laagta"
+  },
+  {
+   "vid": "JfAZbPIom9k",
+   "venue": "Playlist 729 · tarbalbir",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Tum Daate Thakur Pratipalak"
+  },
+  {
+   "vid": "qkAN9QuvUBc",
+   "venue": "Playlist 729 · kamaljit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Sadho Gobind Ke Gun Gavao / Bhai Kamaljeet Singh Ji / Punjabi , English Lyrics & Meaning / 4K"
+  },
+  {
+   "vid": "LQPR8bnmW_E",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Aise Gur Ko Bal Bal Jaiye"
+  },
+  {
+   "vid": "jpPiuxEx_wg",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Anad Bhaya Vadbhaagi Ho"
+  },
+  {
+   "vid": "-IBoKeFB5xk",
+   "venue": "Playlist 729 · jagtar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Raam Naam Kahey Na Darraiya"
+  },
+  {
+   "vid": "Ghny8tpsHAU",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Darshan Mangu Deh Pyare"
+  },
+  {
+   "vid": "My36c2BY9DI",
+   "venue": "Playlist 729 · tarbalbir",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Taati Vaho Na Lagayi / Bhai Tarbalbir Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4k"
+  },
+  {
+   "vid": "tZMvOaWb_Es",
+   "venue": "Playlist 729 · inderjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Jaani Na Jaayi Taa Ki Gaat"
+  },
+  {
+   "vid": "j_GRe_1u18g",
+   "venue": "Playlist 729 · satvinder & harvinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Vas Mere Pyariya"
+  },
+  {
+   "vid": "FinRvTSgPV0",
+   "venue": "Playlist 729 · jasbir",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Chinta Chhad Achint Raho"
+  },
+  {
+   "vid": "_j2x2jnhIpk",
+   "venue": "Playlist 729 · onkar una",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Beanta Beant Gun Tere"
+  },
+  {
+   "vid": "JjYiEqcx7sg",
+   "venue": "Playlist 729 · satvinder & harvinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Ab Hum Chali Thakur Peh Haar"
+  },
+  {
+   "vid": "rgj7VHyetNs",
+   "venue": "Playlist 729 · baldev wadala",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Hum Nirgun Tu Data"
+  },
+  {
+   "vid": "QGMR2CDAopI",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Kaya Soche Baran Bara"
+  },
+  {
+   "vid": "8EXRGN7V-Ak",
+   "venue": "Playlist 729 · gagandip",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Gur Pura Mera"
+  },
+  {
+   "vid": "lfI9X3k2tHk",
+   "venue": "Playlist 729 · jagtar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Meri Mat Bauri"
+  },
+  {
+   "vid": "TbQKuiiyJjQ",
+   "venue": "Playlist 729 · baldev wadala",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Mere Man Naam Nit Nit Leh"
+  },
+  {
+   "vid": "r1f7PKNebPM",
+   "venue": "Playlist 729 · ravinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Sajjan Mere Rangle / Bhai Ravinder Singh / Punjabi , English Lyrics & Meaning / Shabad Gurbani / 4k"
+  },
+  {
+   "vid": "6kJAlkBhNmU",
+   "venue": "Playlist 729 · jagtar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Prabh Keejei Kirpa Nidhaan"
+  },
+  {
+   "vid": "W7HNWqFCZ4I",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Jo Jo Tere Bhagat Dukhaye"
+  },
+  {
+   "vid": "TvrfGUlBt5M",
+   "venue": "Playlist 729 · jarnail khalsa",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Sir Dhar ke Tali Te Aaja"
+  },
+  {
+   "vid": "rHFxp_3IHKI",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Aisi Preet Karho Man Mere"
+  },
+  {
+   "vid": "Po0VQ4l8Dwo",
+   "venue": "Playlist 729 · niranjan",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Koi Koi Sajaan Aaye / Bhai Niranjan Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4k"
+  },
+  {
+   "vid": "WvpjvtIv4R8",
+   "venue": "Playlist 729 · maninder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Tum Siyu Jori"
+  },
+  {
+   "vid": "HdFrBjKkeqM",
+   "venue": "Playlist 729 · jarnail khalsa bhindranwale",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Sir Dhar ke Tali Te Aaja (Intro)"
+  },
+  {
+   "vid": "Grx2v2JqB3s",
+   "venue": "Playlist 729 · davinder sodhi",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Sukh Hove Din Raati"
+  },
+  {
+   "vid": "Q688fFcq_yY",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Rahiyo Sant Hown Toal / Bhai Harjinder Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4k"
+  },
+  {
+   "vid": "CXSVc-21JeI",
+   "venue": "Playlist 729 · gagandip",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Gur Ka Darshan Dekh Dekh Jivaa"
+  },
+  {
+   "vid": "8jPfV43JB6o",
+   "venue": "Playlist 729 · shokin",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Har Milne Nu Man Lochda"
+  },
+  {
+   "vid": "IceVNtSoIZ0",
+   "venue": "Playlist 729 · sandip",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Aavan Jaan Ek Khel Banaya"
+  },
+  {
+   "vid": "0RChrVjvw-8",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Sun Yaar Hamare Sajan / Bhai Sarabjit Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4K"
+  },
+  {
+   "vid": "y2GgVh_1Gdc",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Aisi Kirpa Mohe Karo / Bhai Harjinder Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4k"
+  },
+  {
+   "vid": "fE3YJ8S-6dU",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "4.Saajan Aaye Vuthey Ghar Maahi / Bhai Harjinder Singh Ji / Punjabi , English Lyrics & Meaning / 4k"
+  },
+  {
+   "vid": "QYagDjqVxqI",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "E Man Harji Dhaiaye / Bhai Sarabjit  Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4k"
+  },
+  {
+   "vid": "4zmAYBR0EdY",
+   "venue": "Playlist 729 · harjinder & niranjan",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "kar kirpa vasoh mere Hirday / Harjinder & Niranjan Singh / Punjabi , English Lyrics & Meaning / 4k"
+  },
+  {
+   "vid": "6hVmVD7nRbE",
+   "venue": "Playlist 729 · nirmal",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Tum Kahiyat Ho Jagat Gur Swami"
+  },
+  {
+   "vid": "j3YQ7Em8VaM",
+   "venue": "Playlist 729 · bahi manprit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Sansar Samundey / Bahi Manpreet Singh Ji / Punjabi , English Lyrics & Meaning / Shabad Gurbani / HD"
+  },
+  {
+   "vid": "NdUFewFQpk4",
+   "venue": "Playlist 729 · lakhwinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Ek Shabad Mere Pran Basat Hai / Bhai Lakhwinder Singh Ji / Punjabi , English lyrics & Meaning/ 4K"
+  },
+  {
+   "vid": "-av88baf-QU",
+   "venue": "Playlist 729 · gopal",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Darshan Dijiye Khol Kiwar / Bhai Gopal Singh Ji Ragi / Punjabi , English Lyrics & Meaning / 4k Video"
+  },
+  {
+   "vid": "Huj0l1Da1x8",
+   "venue": "Playlist 729 · jaswinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Aise Gur Ko Bal Bal Jaiye / Bhai Jaswinder Singh Ji / Punjabi , English Lyrics & Meaning / 4k"
+  },
+  {
+   "vid": "58RUhOQchv0",
+   "venue": "Playlist 729 · gopal",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Bang Ke Bangali"
+  },
+  {
+   "vid": "gDLsFaOnaPk",
+   "venue": "Playlist 729 · nirmal",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Ghar Meh Thakur"
+  },
+  {
+   "vid": "b63cccsZoYM",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Kou Har Samaan Nahi Raja / Bhai Harjinder Singh Ji / Punjabi , English Lyrics & Meaning / 4k Video"
+  },
+  {
+   "vid": "5oRDUdwebmo",
+   "venue": "Playlist 729 · tarbalbir",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Ramdas Sarover Nahte"
+  },
+  {
+   "vid": "2jiFzXl80Y4",
+   "venue": "Playlist 729 · harcharan",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Satgur Purakh Amritsar Wadbhaagi Naveh / Bhai Harcharan Singh / Punjabi , English Lyrics & Meaning"
+  },
+  {
+   "vid": "CylzYniF8Z4",
+   "venue": "Playlist 729 · rai",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Gagan Damama Bajeyo"
+  },
+  {
+   "vid": "qrD7GezLa10",
+   "venue": "Playlist 729 · kamaljit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Patit Pavit Bhaye Raam Kehat Hi / Bhai Kamaljeet Singh Ji / Punjabi , English Lyrics & Meaning / 4K"
+  },
+  {
+   "vid": "CWnkauhF0Q8",
+   "venue": "Playlist 729 · ravinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Pehla Maran Kabool"
+  },
+  {
+   "vid": "Pz85EZoH_gM",
+   "venue": "Playlist 729 · kamaljit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Main Garib Sach Tekh Toon"
+  },
+  {
+   "vid": "1hpn6cgdlQY",
+   "venue": "Playlist 729 · jabartor",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Jaha Dane Taha Khane / Bhai Jabartor Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4k"
+  },
+  {
+   "vid": "gyBBplEWAps",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Kaya Soche Baram Bara / Bhai Sarabjit Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4k"
+  },
+  {
+   "vid": "rcLARL6IdTA",
+   "venue": "Playlist 729 · lakhwinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Jin Prem Kio / Bhai Lakhwinder Singh Ji / English Lyrics & Meaning /Shabad Gurbani / 4k"
+  },
+  {
+   "vid": "OwRxJ4Is8jA",
+   "venue": "Playlist 729 · niranjan",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Koi Koi Saajan/Bhai Niranjan Singh/With English translation And English + Punjabi Meaning"
+  },
+  {
+   "vid": "dkc-CKdfU3I",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Bande Khoj Dil (Shabad Introduction)/Bhai Harjinder Singh Ji/Punjabi Meaning/Shabad Gurbani/4K"
+  },
+  {
+   "vid": "1V_rKg772SQ",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Aisi Preet Karo / Bhai Sarabjit Singh Ji / Punjabi , English Lyrics & Meaning / Shabd Gurbani / 4K"
+  },
+  {
+   "vid": "wrA9_JaJuUE",
+   "venue": "Playlist 729 · nirmal",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Madho Sat Sangat Sharan Tumhari"
+  },
+  {
+   "vid": "ldBz6566ky4",
+   "venue": "Playlist 729 · lakhwinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Jis No Teri Nadar / Bhai Lakhwinder Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / HD"
+  },
+  {
+   "vid": "5hlwun2T2n4",
+   "venue": "Playlist 729 · satvinder & harvinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Shlok Bhagat Kabir Ji"
+  },
+  {
+   "vid": "8X1KpGJziOk",
+   "venue": "Playlist 729 · onkar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Kirpa Karho Deen Ke Daate"
+  },
+  {
+   "vid": "ZMWsVfCGztc",
+   "venue": "Playlist 729 · surjit rasila",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Saheb Lekha Mangsi"
+  },
+  {
+   "vid": "IeqsPVJIa_A",
+   "venue": "Playlist 729 · gurdev",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Sagle Dukh Jaye / Bhai Gurdev Singh Ji / Punjabi , English Lyrics & Meaning / Shabad Gurbani / 4k"
+  },
+  {
+   "vid": "YXb4Wvi7K4A",
+   "venue": "Playlist 729 · tarbalbir",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Hoye Sahaye Aap"
+  },
+  {
+   "vid": "VmHC85_AQKY",
+   "venue": "Playlist 729 · kamaljit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Aao Ji Aao Hamaare / Bhai Kamaljeet Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4K"
+  },
+  {
+   "vid": "SLdT44F-pKs",
+   "venue": "Playlist 729 · nirmal",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Bighan Na Kou Laagta / Bhai Nirmal  Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4k"
+  },
+  {
+   "vid": "QG_2pVI79kw",
+   "venue": "Playlist 729 · kamaljit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Tu Chit Aaveh Teri Maya / Bhai Kamaljeet Singh Ji / Punjabi , English Lyrics & Meaning / 4k"
+  },
+  {
+   "vid": "zKwRpeLQPBE",
+   "venue": "Playlist 729 · surinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Pritam Ke Des Kaise Baatan Se Jaaiye"
+  },
+  {
+   "vid": "LZrjO2rDlYY",
+   "venue": "Playlist 729 · nirbhai",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Kaun Jaane Gun Tere"
+  },
+  {
+   "vid": "l_m7pJftAog",
+   "venue": "Playlist 729 · nirbhai",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Hoye Ikatar Milo Mere Bhai"
+  },
+  {
+   "vid": "eJWkYzdjnWQ",
+   "venue": "Playlist 729 · maninder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Ab Tuhi / Bhai Maninder Singh Ji / English , Punjabi Lyrics and Meaning / HD"
+  },
+  {
+   "vid": "C0DuZ6y_SJ4",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Satgur Bachan Tumhare / Bhai Sarabjit Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4k"
+  },
+  {
+   "vid": "2lWwPfdArnA",
+   "venue": "Playlist 729 · maninder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Maati Ko Putra / Bhai Maninder Singh Ji / Gurbani / Eng translation And Eng + Pbi Meaning / 4k"
+  },
+  {
+   "vid": "aIy3d9dWqqU",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Puta Mata Ki Asis / Bhai Harjinder Singh / Punjabi , English Lyrics & Meaning / Shabad Gurbani / 4k"
+  },
+  {
+   "vid": "U3TzR891laI",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Mann Kya Kehta / Bhai Sarabjit Singh Ji / Punjabi , English lyrics & Meaning / Shabd Gurbani / 4K"
+  },
+  {
+   "vid": "c4tKrF1eRmk",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Gobind Milan Ki Eh Teri Bariya / Bhai Harjinder Singh Ji / Punjabi , English Lyrics & Meaning / 4k"
+  },
+  {
+   "vid": "P5VO_qCvz3A",
+   "venue": "Playlist 729 · sarabjit darbar",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Deen Dyal/Bhai Sarabjit Singh Hazoori Ragi Darbar Sahib/English translation,English+Punjabi Meaning"
+  },
+  {
+   "vid": "XBW7V3sAFNc",
+   "venue": "Playlist 729 · mehtab",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Kinka Ek Jis Jee Basavey / Bhai Mehtab Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4k"
+  },
+  {
+   "vid": "Wc9sVm1-shE",
+   "venue": "Playlist 729 · dalbir",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Mera Baid Guru Govinda"
+  },
+  {
+   "vid": "u24ANprv_FQ",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "dev karo daya mohe marag lavo / Bhai Sarabjit Singh Ji / English , Punjabi lyrics and Meaning / HD"
+  },
+  {
+   "vid": "1qRqFfxQ3_0",
+   "venue": "Playlist 729 · dalbir",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Shri Ram Naama Uchar Mana"
+  },
+  {
+   "vid": "TwlIhnftWnY",
+   "venue": "Playlist 729 · ravinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Nit Japiyei Saas Giraas / Bhai Ravinder Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4K"
+  },
+  {
+   "vid": "9GrtqAZcdCI",
+   "venue": "Playlist 729 · rai",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Main Banda Baikharid"
+  },
+  {
+   "vid": "9JfbSsvKNnk",
+   "venue": "Playlist 729 · kamaljit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Jisda Karta Mittar"
+  },
+  {
+   "vid": "_l9FhmKtFVM",
+   "venue": "Playlist 729 · singer not in title",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Mool Manter (Path)With English translation And English + Punjabi Meaning / 4k (UHD)"
+  },
+  {
+   "vid": "WjMP78pxwh4",
+   "venue": "Playlist 729 · harjinder & niranjan",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Sabh Jot Teri Jagjeevna"
+  },
+  {
+   "vid": "sjSsP9pZW6Y",
+   "venue": "Playlist 729 · amritpal",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Sab Jee Tumhare Jee Tu Jeeaa Ka Daatara"
+  },
+  {
+   "vid": "Mtuc8zjsdL4",
+   "venue": "Playlist 729 · niranjan",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Koi Koi Sajan Aaye Kahe"
+  },
+  {
+   "vid": "EiQ7StYMnbo",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Koi Jan Har Seo Devo Jor / Bhai Harjinder Singh  / Punjabi , English Lyrics & Meaning / Gurbani / 4k"
+  },
+  {
+   "vid": "S1lBwzMv-8Q",
+   "venue": "Playlist 729 · rai",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Mel Leho Dayal Deh Paye Duareya"
+  },
+  {
+   "vid": "_Dzo0eRWcEU",
+   "venue": "Playlist 729 · nirmal",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Nanak Dukhiya Sab Sansaar"
+  },
+  {
+   "vid": "MbOhQgtd-Qo",
+   "venue": "Playlist 729 · harcharan khalsa",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Tu Saajan Tu Preetam Mera / Bhai Harcharan Singh Ji Khalsa / Punjabi , English Lyrics & Meaning / 4k"
+  },
+  {
+   "vid": "Z8RbmXAp4eI",
+   "venue": "Playlist 729 · kamaljit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Main Garib Sach Tek Toon / Bhai Kamaljeet Singh Ji / Punjabi , English Lyrics & Meaning / 4K"
+  },
+  {
+   "vid": "7s3nvhhpazk",
+   "venue": "Playlist 729 · satinder sartaj",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Dhan Dhan Ramdas Gur / Dr.Satinder Sartaj / Punjabi , English Lyrics & Meaning / Shabad Gurbani / 4k"
+  },
+  {
+   "vid": "U_W5hHfatDU",
+   "venue": "Playlist 729 · lakhwinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Nanak Kisnau Aakhiye"
+  },
+  {
+   "vid": "eAW2jmFCXto",
+   "venue": "Playlist 729 · ravinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Kisno Kahiye Nanka / Bhai Ravinder Singh Ji / Punjabi,English Lyrics & Meaning / Shabad Gurbani / 4K"
+  },
+  {
+   "vid": "tUuUjPCizrA",
+   "venue": "Playlist 729 · anup",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Paap Kaavdeya Tera Koi Na Beli Ram"
+  },
+  {
+   "vid": "w8lyBizkFic",
+   "venue": "Playlist 729 · lakhwinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Jo Hoye Maran Parvaan / Bhai Lakhwinder Singh Ji / Punjabi , English Lyrics & / Shabad Gurbani / 4k"
+  },
+  {
+   "vid": "Kjm-O-CEQ5I",
+   "venue": "Playlist 729 · bakshish",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Nar Achet Paap Te Dar Re"
+  },
+  {
+   "vid": "Im4IxStKBAM",
+   "venue": "Playlist 729 · niranjan & harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Maangna Maangan Neeka"
+  },
+  {
+   "vid": "XCUXODhuQhk",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Jaikar Kiyo Dharmiya Ka / Bhai Sarabjit Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4K"
+  },
+  {
+   "vid": "VJhFu658RSc",
+   "venue": "Playlist 729 · rai",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Mohe Na Bisaro Main Jann Tera"
+  },
+  {
+   "vid": "HshIBCAhyR8",
+   "venue": "Playlist 729 · lakhwinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Darshan Parsiye Guru Ke / Bhai Lakhwinder Singh / Punjabi , English lyrics & Meaning / Gurbani / 4k"
+  },
+  {
+   "vid": "Uy2AlGs58OE",
+   "venue": "Playlist 729 · satvinder & harvinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Deho Darash Prabh Mere"
+  },
+  {
+   "vid": "W28XlZNgDak",
+   "venue": "Playlist 729 · harbans",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Panch Baar Gang Jaye"
+  },
+  {
+   "vid": "SkWzy9AVbz0",
+   "venue": "Playlist 729 · diljit dosanjh",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Deh Shiva Bar Mohe Ehai / Diljit Dosanjh / Punjabi Lyrics & Meaning /Shabad Gurbani / 4k"
+  },
+  {
+   "vid": "COLVa8W1VMo",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Raati Jaye Sune Gurbani / Bhai Sarabjit Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4k"
+  },
+  {
+   "vid": "5ORLM1X64Rk",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Jale Hari Thale Hari / Bhai Sarabjit  Singh Ji / Punjabi Lyrics & Meaning / Shabad Gurbani / 4K"
+  },
+  {
+   "vid": "-E3tL337nVk",
+   "venue": "Playlist 729 · lakhwinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Jap Man Mere Gobind Ko Baani / Bhai Lakhwinder Singh Ji / Punjabi , English Lyrics & Meaning / 4K"
+  },
+  {
+   "vid": "Sdd5ZKMf4D0",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Kab Gal Lawege / Bhai Harjinder Singh Ji / Punjabi , English Lyrics & Meaning / Shabad Gurbani / 4k"
+  },
+  {
+   "vid": "P1feZbHH7nc",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Mera Mujh Meh Kichh Nahin / Bhai Sarabjit Singh Ji / Punjabi , English Lyrics & Meaning / 4K Video"
+  },
+  {
+   "vid": "Bly-jHMe0zI",
+   "venue": "Playlist 729 · diljit dosanjh",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Deh Shiva Bar Mohe Ehai / Diljit Dosanjh / English Lyrics & Meaning /Shabad Gurbani / 4k"
+  },
+  {
+   "vid": "VCXpDWjVPkY",
+   "venue": "Playlist 729 · harjinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Man Bairaag Bhaya / Bhai Harjinder Singh Ji / Punjabi , English Lyrics & Meaning / Gurbani / 4k"
+  },
+  {
+   "vid": "wFRDgk5gECE",
+   "venue": "Playlist 729 · kamaljit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Sabh Main Sachaa Eko Soaee / Bhai Kamaljeet Singh Ji / Punjabi , English Lyrics & Meaning / 4K Video"
+  },
+  {
+   "vid": "YHkgtxPxqdc",
+   "venue": "Playlist 729 · chardikala jatha",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Ab Gur Ramdas Ko / Chardikala Jatha / Punjabi , English Lyrics & Meaning / Shabad Gurbani / 4k Video"
+  },
+  {
+   "vid": "YC0P3ZGg4Z4",
+   "venue": "Playlist 729 · sarabjit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Hum Kookar Tere Darbar / Bhai Sarabjit Singh Ji / Punjabi , English Lyrics & Meaning / 4K Video"
+  },
+  {
+   "vid": "eDQqttJhovk",
+   "venue": "Playlist 729 · kamaljit",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Tu Beant Ko Virla Jaane / Bhai Kamaljeet Singh Ji / Punjabi , English Lyrics & Meaning / 4k Video"
+  },
+  {
+   "vid": "72gv1J27FfI",
+   "venue": "Playlist 729 · ravinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Papi Te Raakhe Narayan"
+  },
+  {
+   "vid": "WXBxmG0fuhU",
+   "venue": "Playlist 729 · davinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Lanka Ghad Sohne Ka Paya"
+  },
+  {
+   "vid": "7USm4fo715E",
+   "venue": "Playlist 729 · lakhwinder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-test",
+   "label": "title-matched (silver)",
+   "title": "Tere Lalle / Bhai Lakhwinder Singh Ji / Punjabi , English lyrics & Meaning / Shabad Gurbani / 4K"
+  },
+  {
+   "vid": "clWZGmdrzNI",
+   "venue": "Playlist 729 · gagandip",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-train",
+   "label": "title-matched (silver)",
+   "title": "Hai Koi Ram Pyaro Gave"
+  },
+  {
+   "vid": "XIGPgJLMNrI",
+   "venue": "Playlist 729 · maninder",
+   "level": "L2-playlist",
+   "rows": 1,
+   "sec": null,
+   "split": "playlist-dev",
+   "label": "title-matched (silver)",
+   "title": "Ravidas Jaape"
+  }
+ ],
+ "rows": [
+  {
+   "vid": "aQiVq9ZK8hA",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 23215,
+   "b": 23427,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 468,
+   "b": 491,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 3956,
+   "b": 4366,
+   "level": "L2"
+  },
+  {
+   "vid": "IT9dBWP9hiw",
+   "venue": "Gurdwara Sahib Fremont",
+   "a": 4178,
+   "b": 4553,
+   "level": "L2"
+  },
+  {
+   "vid": "X8EN_dxTxFY",
+   "venue": "Gurdwara Sahib Fremont, CA",
+   "a": 1065,
+   "b": 1130,
+   "level": "L2"
+  },
+  {
+   "vid": "X8EN_dxTxFY",
+   "venue": "Gurdwara Sahib Fremont, CA",
+   "a": 1160,
+   "b": 1456,
+   "level": "L2"
+  },
+  {
+   "vid": "X8EN_dxTxFY",
+   "venue": "Gurdwara Sahib Fremont, CA",
+   "a": 1563,
+   "b": 1950,
+   "level": "L2"
+  },
+  {
+   "vid": "TRFTO4-HsGk",
+   "venue": "Gurdwara Sahib Fremont, CA",
+   "a": 10301,
+   "b": 10569,
+   "level": "L2"
+  },
+  {
+   "vid": "TRFTO4-HsGk",
+   "venue": "Gurdwara Sahib Fremont, CA",
+   "a": 11383,
+   "b": 11889,
+   "level": "L2"
+  },
+  {
+   "vid": "5Nj1odTqjr8",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 1703,
+   "b": 2193,
+   "level": "L2"
+  },
+  {
+   "vid": "5Nj1odTqjr8",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 2947,
+   "b": 3183,
+   "level": "L2"
+  },
+  {
+   "vid": "AhRd4zcvGwA",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 445,
+   "b": 1585,
+   "level": "L2"
+  },
+  {
+   "vid": "AhRd4zcvGwA",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 4452,
+   "b": 4634,
+   "level": "L2"
+  },
+  {
+   "vid": "au0r538sNKo",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 505,
+   "b": 825,
+   "level": "L2"
+  },
+  {
+   "vid": "au0r538sNKo",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 1161,
+   "b": 1572,
+   "level": "L2"
+  },
+  {
+   "vid": "CqX9GifIDnk",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 795,
+   "b": 1295,
+   "level": "L2"
+  },
+  {
+   "vid": "eYgMiglXTpk",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 5668,
+   "b": 6638,
+   "level": "L2"
+  },
+  {
+   "vid": "yLEY7N51wyM",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 5687,
+   "b": 5961,
+   "level": "L2"
+  },
+  {
+   "vid": "yLEY7N51wyM",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 6049,
+   "b": 6372,
+   "level": "L2"
+  },
+  {
+   "vid": "duc_Yh0-hwY",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 665,
+   "b": 1240,
+   "level": "L2"
+  },
+  {
+   "vid": "eYgMiglXTpk",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 283,
+   "b": 653,
+   "level": "L2"
+  },
+  {
+   "vid": "eYgMiglXTpk",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 2747,
+   "b": 3062,
+   "level": "L2"
+  },
+  {
+   "vid": "eYgMiglXTpk",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 4244,
+   "b": 4667,
+   "level": "L2"
+  },
+  {
+   "vid": "guDwBxnCTnI",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 1020,
+   "b": 1438,
+   "level": "L2"
+  },
+  {
+   "vid": "Mhy6xcAdKRQ",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 79,
+   "b": 352,
+   "level": "L2"
+  },
+  {
+   "vid": "Mhy6xcAdKRQ",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 604,
+   "b": 786,
+   "level": "L2"
+  },
+  {
+   "vid": "guDwBxnCTnI",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 469,
+   "b": 954,
+   "level": "L2"
+  },
+  {
+   "vid": "T9zISL2FYrQ",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 771,
+   "b": 1050,
+   "level": "L2"
+  },
+  {
+   "vid": "T9zISL2FYrQ",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 1952,
+   "b": 2680,
+   "level": "L2"
+  },
+  {
+   "vid": "xYk_5SClw2M",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 1679,
+   "b": 2085,
+   "level": "L2"
+  },
+  {
+   "vid": "rspWQFcyIs4",
+   "venue": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "a": 4213,
+   "b": 4692,
+   "level": "L2"
+  },
+  {
+   "vid": "-E-PjJz00j8",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 925,
+   "b": 1565,
+   "level": "L2"
+  },
+  {
+   "vid": "-E-PjJz00j8",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 1615,
+   "b": 2665,
+   "level": "L2"
+  },
+  {
+   "vid": "h37nNWBwZxk",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 1040,
+   "b": 1150,
+   "level": "L2"
+  },
+  {
+   "vid": "h37nNWBwZxk",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 1150,
+   "b": 2305,
+   "level": "L2"
+  },
+  {
+   "vid": "-0qd72W9sG8",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 21470,
+   "b": 22100,
+   "level": "L2"
+  },
+  {
+   "vid": "-0qd72W9sG8",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 22925,
+   "b": 23020,
+   "level": "L2"
+  },
+  {
+   "vid": "-0qd72W9sG8",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 23025,
+   "b": 23145,
+   "level": "L2"
+  },
+  {
+   "vid": "-0qd72W9sG8",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 23195,
+   "b": 23470,
+   "level": "L2"
+  },
+  {
+   "vid": "-0qd72W9sG8",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 23480,
+   "b": 23745,
+   "level": "L2"
+  },
+  {
+   "vid": "-0qd72W9sG8",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 20985,
+   "b": 21370,
+   "level": "L2"
+  },
+  {
+   "vid": "jqEe6HCdGfo",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 473,
+   "level": "L2"
+  },
+  {
+   "vid": "Z3EZXcfJwAA",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 405,
+   "level": "L2"
+  },
+  {
+   "vid": "PKY0BQ8UB_E",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 534,
+   "level": "L2"
+  },
+  {
+   "vid": "2JBgXsU_fWI",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 702,
+   "level": "L2"
+  },
+  {
+   "vid": "J_AvMnaS_VI",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 266,
+   "level": "L2"
+  },
+  {
+   "vid": "NnnDZUscqvY",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 275,
+   "level": "L2"
+  },
+  {
+   "vid": "OSyPLtJWTXE",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 627,
+   "level": "L2"
+  },
+  {
+   "vid": "pDMz6_zhhDI",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 498,
+   "level": "L2"
+  },
+  {
+   "vid": "dDqADgSger4",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 335,
+   "level": "L2"
+  },
+  {
+   "vid": "PNXh-g-VsG8",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 821,
+   "level": "L2"
+  },
+  {
+   "vid": "AI5tu-IuNKw",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 160,
+   "level": "L2"
+  },
+  {
+   "vid": "CywrKsn6BmU",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 894,
+   "level": "L2"
+  },
+  {
+   "vid": "am1LMfhcGZ4",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 338,
+   "level": "L2"
+  },
+  {
+   "vid": "iA7SWl8kFM8",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 645,
+   "level": "L2"
+  },
+  {
+   "vid": "3cRxk-7gG4k",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 860,
+   "level": "L2"
+  },
+  {
+   "vid": "2n2WB_X3D5c",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 872,
+   "level": "L2"
+  },
+  {
+   "vid": "UsjYm_4ZZAw",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 532,
+   "level": "L2"
+  },
+  {
+   "vid": "O5Cyf05GSdQ",
+   "venue": "Gurudwara Yuba City",
+   "a": 0,
+   "b": 474,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 2085,
+   "b": 2185,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 2500,
+   "b": 2900,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 3050,
+   "b": 3335,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 3335,
+   "b": 3620,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 3780,
+   "b": 3900,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 4060,
+   "b": 4390,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 4390,
+   "b": 4635,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 4700,
+   "b": 5440,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 5440,
+   "b": 5700,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 5820,
+   "b": 6195,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 6200,
+   "b": 6560,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 6615,
+   "b": 7060,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 7060,
+   "b": 7280,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 7280,
+   "b": 8100,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 8230,
+   "b": 8535,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 8535,
+   "b": 8765,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 8765,
+   "b": 9425,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 9425,
+   "b": 9700,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 9740,
+   "b": 10115,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 10442,
+   "b": 10802,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 11520,
+   "b": 11950,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 11950,
+   "b": 12300,
+   "level": "L2"
+  },
+  {
+   "vid": "EyKDbSzESi0",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 13125,
+   "b": 13325,
+   "level": "L2"
+  },
+  {
+   "vid": "vvCujWQITiU",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 25,
+   "b": 145,
+   "level": "L2"
+  },
+  {
+   "vid": "vvCujWQITiU",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 205,
+   "b": 300,
+   "level": "L2"
+  },
+  {
+   "vid": "vvCujWQITiU",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 615,
+   "b": 1375,
+   "level": "L2"
+  },
+  {
+   "vid": "vvCujWQITiU",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 1375,
+   "b": 2360,
+   "level": "L2"
+  },
+  {
+   "vid": "vvCujWQITiU",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 2620,
+   "b": 2810,
+   "level": "L2"
+  },
+  {
+   "vid": "vvCujWQITiU",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 3090,
+   "b": 3625,
+   "level": "L2"
+  },
+  {
+   "vid": "vvCujWQITiU",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 3625,
+   "b": 3845,
+   "level": "L2"
+  },
+  {
+   "vid": "vvCujWQITiU",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 3945,
+   "b": 4905,
+   "level": "L2"
+  },
+  {
+   "vid": "vvCujWQITiU",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 5055,
+   "b": 5270,
+   "level": "L2"
+  },
+  {
+   "vid": "vvCujWQITiU",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 5510,
+   "b": 6385,
+   "level": "L2"
+  },
+  {
+   "vid": "vvCujWQITiU",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 6385,
+   "b": 6540,
+   "level": "L2"
+  },
+  {
+   "vid": "vvCujWQITiU",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 6920,
+   "b": 7220,
+   "level": "L2"
+  },
+  {
+   "vid": "vvCujWQITiU",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 7320,
+   "b": 7460,
+   "level": "L2"
+  },
+  {
+   "vid": "zuCiaw0exFA",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 45,
+   "b": 560,
+   "level": "L2"
+  },
+  {
+   "vid": "zuCiaw0exFA",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 560,
+   "b": 1295,
+   "level": "L2"
+  },
+  {
+   "vid": "zuCiaw0exFA",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 1420,
+   "b": 1920,
+   "level": "L2"
+  },
+  {
+   "vid": "zuCiaw0exFA",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 2105,
+   "b": 3220,
+   "level": "L2"
+  },
+  {
+   "vid": "zuCiaw0exFA",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 7300,
+   "b": 7980,
+   "level": "L2"
+  },
+  {
+   "vid": "zuCiaw0exFA",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 7980,
+   "b": 8380,
+   "level": "L2"
+  },
+  {
+   "vid": "zuCiaw0exFA",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 8380,
+   "b": 9085,
+   "level": "L2"
+  },
+  {
+   "vid": "zuCiaw0exFA",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 9085,
+   "b": 9970,
+   "level": "L2"
+  },
+  {
+   "vid": "zuCiaw0exFA",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 9970,
+   "b": 10590,
+   "level": "L2"
+  },
+  {
+   "vid": "zuCiaw0exFA",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 10620,
+   "b": 10795,
+   "level": "L2"
+  },
+  {
+   "vid": "zuCiaw0exFA",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 10860,
+   "b": 11405,
+   "level": "L2"
+  },
+  {
+   "vid": "zuCiaw0exFA",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 11495,
+   "b": 11650,
+   "level": "L2"
+  },
+  {
+   "vid": "zuCiaw0exFA",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 11795,
+   "b": 12100,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 15,
+   "b": 590,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 2795,
+   "b": 2935,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 2935,
+   "b": 3465,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 3525,
+   "b": 4030,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 5545,
+   "b": 6105,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 6970,
+   "b": 7160,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 10295,
+   "b": 10480,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 10480,
+   "b": 10735,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 10870,
+   "b": 11140,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 11180,
+   "b": 11570,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 11600,
+   "b": 11805,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 11870,
+   "b": 12155,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 12685,
+   "b": 13265,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 13265,
+   "b": 14800,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 16445,
+   "b": 16825,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 16825,
+   "b": 17350,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 17350,
+   "b": 17920,
+   "level": "L2"
+  },
+  {
+   "vid": "iattXPs7Chg",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 17920,
+   "b": 18385,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 520,
+   "b": 610,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 930,
+   "b": 1055,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 1090,
+   "b": 1710,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 1710,
+   "b": 2385,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 2385,
+   "b": 3475,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 3475,
+   "b": 3595,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 3595,
+   "b": 3765,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 6365,
+   "b": 6780,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 6895,
+   "b": 7465,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 7465,
+   "b": 8555,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 8900,
+   "b": 9530,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 9775,
+   "b": 10090,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 10090,
+   "b": 10650,
+   "level": "L2"
+  },
+  {
+   "vid": "l0EIMAuC0_U",
+   "venue": "Gurdwara Sahib Renton",
+   "a": 10650,
+   "b": 10810,
+   "level": "L2"
+  },
+  {
+   "vid": "WuciQokua6w",
+   "venue": "AKJ Toronto 2022 Fri",
+   "a": 90,
+   "b": 605,
+   "level": "L3"
+  },
+  {
+   "vid": "WuciQokua6w",
+   "venue": "AKJ Toronto 2022 Fri",
+   "a": 605,
+   "b": 915,
+   "level": "L3"
+  },
+  {
+   "vid": "WuciQokua6w",
+   "venue": "AKJ Toronto 2022 Fri",
+   "a": 915,
+   "b": 1260,
+   "level": "L3"
+  },
+  {
+   "vid": "WuciQokua6w",
+   "venue": "AKJ Toronto 2022 Fri",
+   "a": 1740,
+   "b": 1960,
+   "level": "L3"
+  },
+  {
+   "vid": "Q5QFYd6sL_w",
+   "venue": "AKJ Toronto 2022 Sat",
+   "a": 115,
+   "b": 1190,
+   "level": "L3"
+  },
+  {
+   "vid": "Q5QFYd6sL_w",
+   "venue": "AKJ Toronto 2022 Sat",
+   "a": 1390,
+   "b": 1865,
+   "level": "L3"
+  },
+  {
+   "vid": "Q5QFYd6sL_w",
+   "venue": "AKJ Toronto 2022 Sat",
+   "a": 2595,
+   "b": 2995,
+   "level": "L3"
+  },
+  {
+   "vid": "Q5QFYd6sL_w",
+   "venue": "AKJ Toronto 2022 Sat",
+   "a": 3065,
+   "b": 3425,
+   "level": "L3"
+  },
+  {
+   "vid": "Q5QFYd6sL_w",
+   "venue": "AKJ Toronto 2022 Sat",
+   "a": 3425,
+   "b": 3795,
+   "level": "L3"
+  },
+  {
+   "vid": "Q5QFYd6sL_w",
+   "venue": "AKJ Toronto 2022 Sat",
+   "a": 3795,
+   "b": 3905,
+   "level": "L3"
+  },
+  {
+   "vid": "Q5QFYd6sL_w",
+   "venue": "AKJ Toronto 2022 Sat",
+   "a": 4120,
+   "b": 4415,
+   "level": "L3"
+  },
+  {
+   "vid": "Q5QFYd6sL_w",
+   "venue": "AKJ Toronto 2022 Sat",
+   "a": 4415,
+   "b": 4515,
+   "level": "L3"
+  },
+  {
+   "vid": "Q5QFYd6sL_w",
+   "venue": "AKJ Toronto 2022 Sat",
+   "a": 4520,
+   "b": 5710,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 15,
+   "b": 210,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 210,
+   "b": 355,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 645,
+   "b": 740,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 740,
+   "b": 1065,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 1530,
+   "b": 1630,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 1730,
+   "b": 1810,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 1975,
+   "b": 2040,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 2080,
+   "b": 2105,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 2420,
+   "b": 2780,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 2815,
+   "b": 3100,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 3328,
+   "b": 3470,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 3615,
+   "b": 3810,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 3810,
+   "b": 4275,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 4320,
+   "b": 4620,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 4620,
+   "b": 4660,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 4680,
+   "b": 4730,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 4730,
+   "b": 4830,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 4830,
+   "b": 4875,
+   "level": "L3"
+  },
+  {
+   "vid": "V9r_8qByAXs",
+   "venue": "Manchester 2024",
+   "a": 4880,
+   "b": 5015,
+   "level": "L3"
+  }
+ ]
+}

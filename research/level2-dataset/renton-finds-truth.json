@@ -1,0 +1,1136 @@
+[
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 2085,
+  "end_s": 2185,
+  "line": "ਸੁੰਨ ਸੰਧਿਆ ਤੇਰੀ ਦੇਵ ਦੇਵਾਕਰ ਅਧਪਤਿ ਆਦਿ ਸਮਾਈ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   4894
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 2500,
+  "end_s": 2900,
+  "line": "ਇਨਹੀ ਕੀ ਕ੍ਰਿਪਾ ਕੇ ਸਜੇ ਹਮ ਹੈ ਨਹੀ ਮੋ ਸੇ ਗਰੀਬ ਕਰੋਰ ਪਰੇ ॥੨॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   9476
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 3050,
+  "end_s": 3335,
+  "line": "ਇਨਹੀ ਕੇ ਪ੍ਰਸਾਦਿ ਸੁ ਬਿਦਿਆ ਲਈ ਇਨਹੀ ਕੀ ਕ੍ਰਿਪਾ ਸਭ ਸਤ੍ਰ ਮਰੇ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   9476
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 3335,
+  "end_s": 3620,
+  "line": "ਮਰਣੁ ਨ ਮੰਦਾ ਲੋਕਾ ਆਖੀਐ ਜੇ ਮਰਿ ਜਾਣੈ ਐਸਾ ਕੋਇ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   2195
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 3780,
+  "end_s": 3900,
+  "line": "ਥਾਪਿਆ ਨ ਜਾਇ ਕੀਤਾ ਨ ਹੋਇ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   5
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 4060,
+  "end_s": 4390,
+  "line": "ਸਤਿਗੁਰੁ ਨਾਨਕੁ ਪ੍ਰਗਟਿਆ ਮਿਟੀ ਧੁੰਧੁ ਜਗਿ ਚਾਨਣੁ ਹੋਆ।",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   40027
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 4390,
+  "end_s": 4635,
+  "line": "ਬਿਖੈ ਬਨੁ ਫੀਕਾ ਤਿਆਗਿ ਰੀ ਸਖੀਏ ਨਾਮੁ ਮਹਾ ਰਸੁ ਪੀਓ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   3011
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 4700,
+  "end_s": 5440,
+  "line": "ਇਸੁ ਮਨ ਕਉ ਬਸੰਤ ਕੀ ਲਗੈ ਨ ਸੋਇ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   4186
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 5440,
+  "end_s": 5700,
+  "line": "ਚਰਨ ਕਮਲ ਪ੍ਰਭ ਕੇ ਨਿਤ ਧਿਆਵਉ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   3025
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 5820,
+  "end_s": 6195,
+  "line": "ਗੁਰ ਰਸਨਾ ਅੰਮ੍ਰਿਤੁ ਬੋਲਦੀ ਹਰਿ ਨਾਮਿ ਸੁਹਾਵੀ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   2776
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 6200,
+  "end_s": 6560,
+  "line": "ਅੰਮ੍ਰਿਤ ਰਸੁ ਹਰਿ ਕੀਰਤਨੋ ਕੋ ਵਿਰਲਾ ਪੀਵੈ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   1551
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 6615,
+  "end_s": 7060,
+  "line": "ਸਿਮਰਿ ਸਿਮਰਿ ਸਿਮਰਿ ਨਾਮੁ ਜੀਵਾ ਤਨੁ ਮਨੁ ਹੋਇ ਨਿਹਾਲਾ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   2861
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 7060,
+  "end_s": 7280,
+  "line": "ਰਾਮ ਰਸਾਇਣੁ ਨਿਤ ਉਠਿ ਪੀਵਹੁ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   4073
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 7280,
+  "end_s": 8100,
+  "line": "ਅੰਮ੍ਰਿਤੁ ਪੀਵਹੁ ਸਦਾ ਚਿਰੁ ਜੀਵਹੁ ਹਰਿ ਸਿਮਰਤ ਅਨਦ ਅਨੰਤਾ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   1839
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 8230,
+  "end_s": 8535,
+  "line": "ਆਵਹੁ ਮੀਤ ਪਿਆਰੇ ॥ ਮੰਗਲ ਗਾਵਹੁ ਨਾਰੇ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   2885
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 8535,
+  "end_s": 8765,
+  "line": "ਬਿਰਹਾ ਬਿਰਹਾ ਆਖੀਐ ਬਿਰਹਾ ਤੂ ਸੁਲਤਾਨੁ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   5246
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 8765,
+  "end_s": 9425,
+  "line": "ਅੰਮ੍ਰਿਤੁ ਪੀਵਹੁ ਸਦਾ ਚਿਰੁ ਜੀਵਹੁ ਹਰਿ ਸਿਮਰਤ ਅਨਦ ਅਨੰਤਾ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   1839
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 9425,
+  "end_s": 9700,
+  "line": "ਸੁਰਿ ਨਰ ਮੁਨਿ ਜਨ ਅੰਮ੍ਰਿਤੁ ਖੋਜਦੇ ਸੁ ਅੰਮ੍ਰਿਤੁ ਗੁਰ ਤੇ ਪਾਇਆ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   3375
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 9740,
+  "end_s": 10115,
+  "line": "ਮੋਤੀ ਤ ਮੰਦਰ ਊਸਰਹਿ ਰਤਨੀ ਤ ਹੋਹਿ ਜੜਾਉ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   54
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 10442,
+  "end_s": 10802,
+  "line": "ਹੇ ਗੋਬਿੰਦ ਹੇ ਗੋਪਾਲ ਹੇ ਦਇਆਲ ਲਾਲ ॥੧॥ ਰਹਾਉ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   4594
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 11520,
+  "end_s": 11950,
+  "line": "ਨਿਮਖ ਨ ਬਿਸਰਉ ਤੁਮੑ ਕਉ ਹਰਿ ਹਰਿ ਸਦਾ ਭਜਹੁ ਜਗਦੀਸ ॥੧॥ ਰਹਾਉ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   1839
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 11950,
+  "end_s": 12300,
+  "line": "ਦਰਸ ਤੇਰੇ ਕੀ ਪਿਆਸ ਮਨਿ ਲਾਗੀ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   1512
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 13125,
+  "end_s": 13325,
+  "line": "ਗੁਰਿ ਪੂਰੈ ਚਰਨੀ ਲਾਇਆ ॥",
+  "video_id": "EyKDbSzESi0",
+  "shabad_ids": [
+   2358
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 25,
+  "end_s": 145,
+  "line": "ਨਾਮੁ ਤੇਰੋ ਆਰਤੀ ਮਜਨੁ ਮੁਰਾਰੇ ॥",
+  "video_id": "vvCujWQITiU",
+  "shabad_ids": [
+   2638
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 205,
+  "end_s": 300,
+  "line": "ਸੁੰਨ ਸੰਧਿਆ ਤੇਰੀ ਦੇਵ ਦੇਵਾਕਰ ਅਧਪਤਿ ਆਦਿ ਸਮਾਈ ॥",
+  "video_id": "vvCujWQITiU",
+  "shabad_ids": [
+   4894
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 615,
+  "end_s": 1375,
+  "line": "ਅਬ ਮੋਹਿ ਜੀਵਨ ਪਦਵੀ ਪਾਈ ॥",
+  "video_id": "vvCujWQITiU",
+  "shabad_ids": [
+   3686
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 1375,
+  "end_s": 2360,
+  "line": "ਮਉਲਾ ਖੇਲ ਕਰੇ ਸਭਿ ਆਪੇ ॥ ਇਕਿ ਕਢੇ ਇਕਿ ਲਹਰਿ ਵਿਆਪੇ ॥",
+  "video_id": "vvCujWQITiU",
+  "shabad_ids": [
+   3735
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 2620,
+  "end_s": 2810,
+  "line": "ਖ਼ਾਲਸਾ ਮੇਰੋ ਪਛ ਅਰ ਪਾਤਾ ॥",
+  "video_id": "vvCujWQITiU",
+  "shabad_ids": [
+   43000
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 3090,
+  "end_s": 3625,
+  "line": "ਸੁਰਿ ਨਰ ਮੁਨਿ ਜਨ ਅੰਮ੍ਰਿਤੁ ਖੋਜਦੇ ਸੁ ਅੰਮ੍ਰਿਤੁ ਗੁਰ ਤੇ ਪਾਇਆ ॥",
+  "video_id": "vvCujWQITiU",
+  "shabad_ids": [
+   3375
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 3625,
+  "end_s": 3845,
+  "line": "ਅਉਗਣੁ ਕੋ ਨ ਚਿਤਾਰਦਾ ਗਲ ਸੇਤੀ ਲਾਇਕ ॥",
+  "video_id": "vvCujWQITiU",
+  "shabad_ids": [
+   3950
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 3945,
+  "end_s": 4905,
+  "line": "ਰੇ ਨਰ ਇਹ ਸਾਚੀ ਜੀਅ ਧਾਰਿ ॥",
+  "video_id": "vvCujWQITiU",
+  "shabad_ids": [
+   2401
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 5055,
+  "end_s": 5270,
+  "line": "ੴ ਸਤਿ ਨਾਮੁ ਕਰਤਾ ਪੁਰਖੁ ਨਿਰਭਉ ਨਿਰਵੈਰੁ ਅਕਾਲ ਮੂਰਤਿ ਅਜੂਨੀ ਸੈਭੰ ਗੁਰ ਪ੍ਰਸਾਦਿ ॥",
+  "video_id": "vvCujWQITiU",
+  "shabad_ids": [
+   1
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 5510,
+  "end_s": 6385,
+  "line": "ਮਨੁ ਨ ਰਹੈ ਕੈਸੇ ਮਿਲਉ ਪਿਆਰੇ ॥੧॥",
+  "video_id": "vvCujWQITiU",
+  "shabad_ids": [
+   1450
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 6385,
+  "end_s": 6540,
+  "line": "ਨਾਨਕ ਦਾਸੁ ਸਦਾ ਗੁਣ ਗਾਵੈ ਇਕ ਭੋਰੀ ਨਦਰਿ ਨਿਹਾਲੀਐ ਜੀਉ ॥੪॥੨੧॥੨੮॥",
+  "video_id": "vvCujWQITiU",
+  "shabad_ids": [
+   297
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 6920,
+  "end_s": 7220,
+  "line": "ਪੂਤਾ ਮਾਤਾ ਕੀ ਆਸੀਸ ॥",
+  "video_id": "vvCujWQITiU",
+  "shabad_ids": [
+   1839
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 7320,
+  "end_s": 7460,
+  "line": "ਅਨੰਦੁ ਭਇਆ ਮੇਰੀ ਮਾਏ ਸਤਿਗੁਰੂ ਮੈ ਪਾਇਆ ॥",
+  "video_id": "vvCujWQITiU",
+  "shabad_ids": [
+   333375
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 45,
+  "end_s": 560,
+  "line": "ਏਕੁ ਤੂੰ ਤਾ ਸਭੁ ਕਿਛੁ ਹੈ ਮੈ ਤੁਧੁ ਬਿਨੁ ਦੂਜਾ ਨਾਹੀ ॥੧॥",
+  "video_id": "zuCiaw0exFA",
+  "shabad_ids": [
+   1481
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "test"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 560,
+  "end_s": 1295,
+  "line": "ਏਕੈ ਏਕੈ ਏਕ ਤੂਹੀ ॥",
+  "video_id": "zuCiaw0exFA",
+  "shabad_ids": [
+   3294
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "test"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 1420,
+  "end_s": 1920,
+  "line": "ਸਾਹਿਬੁ ਮੇਰਾ ਏਕੋ ਹੈ ॥",
+  "video_id": "zuCiaw0exFA",
+  "shabad_ids": [
+   1374
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "test"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 2105,
+  "end_s": 3220,
+  "line": "ਤੇਰੀ ਭਗਤਿ ਨ ਛੋਡਉ ਭਾਵੈ ਲੋਗੁ ਹਸੈ ॥",
+  "video_id": "zuCiaw0exFA",
+  "shabad_ids": [
+   4244
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "test"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 7300,
+  "end_s": 7980,
+  "line": "ਸੁਪਨ ਚਰਿਤ੍ਰ ਚਿਤ੍ਰ ਬਾਨਕ ਬਨੇ ਬਚਿਤ੍ਰ ਪਾਵਨ ਪਵਿਤ੍ਰ ਮਿਤ੍ਰ ਆਜ ਮੋਰੇ ਆਏ ਹੈਂ ॥",
+  "video_id": "zuCiaw0exFA",
+  "shabad_ids": [
+   41235
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "test"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 7980,
+  "end_s": 8380,
+  "line": "ਸਬਦੇ ਸਦਾ ਬਸੰਤੁ ਹੈ ਜਿਤੁ ਤਨੁ ਮਨੁ ਹਰਿਆ ਹੋਇ ॥",
+  "video_id": "zuCiaw0exFA",
+  "shabad_ids": [
+   5478
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "test"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 8380,
+  "end_s": 9085,
+  "line": "ਏਕੁ ਪਿਤਾ ਏਕਸ ਕੇ ਹਮ ਬਾਰਿਕ ਤੂ ਮੇਰਾ ਗੁਰ ਹਾਈ ॥",
+  "video_id": "zuCiaw0exFA",
+  "shabad_ids": [
+   2311
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "test"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 9085,
+  "end_s": 9970,
+  "line": "ਦੀਨੁ ਬਿਸਾਰਿਓ ਰੇ ਦਿਵਾਨੇ ਦੀਨੁ ਬਿਸਾਰਿਓ ਰੇ ॥",
+  "video_id": "zuCiaw0exFA",
+  "shabad_ids": [
+   3970
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "test"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 9970,
+  "end_s": 10590,
+  "line": "ਮਨ ਕਿਉ ਬੈਰਾਗੁ ਕਰਹਿਗਾ ਸਤਿਗੁਰੁ ਮੇਰਾ ਪੂਰਾ ॥",
+  "video_id": "zuCiaw0exFA",
+  "shabad_ids": [
+   1452
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "test"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 10620,
+  "end_s": 10795,
+  "line": "ਰਾਮਕਲੀ ਮਹਲਾ ੩ ਅਨੰਦੁ",
+  "video_id": "zuCiaw0exFA",
+  "shabad_ids": [
+   333375
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "test"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 10860,
+  "end_s": 11405,
+  "line": "ਪਵਣੁ ਗੁਰੂ ਪਾਣੀ ਪਿਤਾ ਮਾਤਾ ਧਰਤਿ ਮਹਤੁ ॥",
+  "video_id": "zuCiaw0exFA",
+  "shabad_ids": [
+   39
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "test"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 11495,
+  "end_s": 11650,
+  "line": "ਕਰਿ ਕਿਰਪਾ ਦੀਓ ਮੋਹਿ ਨਾਮਾ ਬੰਧਨ ਤੇ ਛੁਟਕਾਏ ॥",
+  "video_id": "zuCiaw0exFA",
+  "shabad_ids": [
+   2558
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "test"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 11795,
+  "end_s": 12100,
+  "line": "ਆਪੇ ਆਪਿ ਨਿਰੰਜਨੁ ਸੋਇ ॥",
+  "video_id": "zuCiaw0exFA",
+  "shabad_ids": [
+   5
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "test"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 15,
+  "end_s": 590,
+  "line": "ਗੁਰੂ ਗੁਰੂ ਜਪਿ ਮੀਤ ਹਮਾਰੇ ॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   574
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 2795,
+  "end_s": 2935,
+  "line": "ਪੜਿਆ ਹੋਵੈ ਗੁਨਹਗਾਰੁ ਤਾ ਓਮੀ ਸਾਧੁ ਨ ਮਾਰੀਐ ॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   1725
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 2935,
+  "end_s": 3465,
+  "line": "ਮਿਲੁ ਮੇਰੇ ਬੀਠੁਲਾ ਲੈ ਬਾਹੜੀ ਵਲਾਇ ॥ ਮਿਲੁ ਮੇਰੇ ਰਮਈਆ ਮੈ ਲੇਹਿ ਛਡਾਇ ॥੧॥ ਰਹਾਉ ॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   266
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 3525,
+  "end_s": 4030,
+  "line": "ਵਡੇ ਮੇਰੇ ਸਾਹਿਬਾ ਗਹਿਰ ਗੰਭੀਰਾ ਗੁਣੀ ਗਹੀਰਾ ॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   41
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 5545,
+  "end_s": 6105,
+  "line": "ਦੂਰਹੁ ਦੇਖਿ ਡੰਡਉਤਿ ਕਰਿ ਛਡਿ ਸਿੰਘਾਸਣੁ ਹਰਿ ਜੀ ਆਏ।",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   40226
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 6970,
+  "end_s": 7160,
+  "line": "ਚੰਗਿਆਈਆ ਬੁਰਿਆਈਆ ਵਾਚੈ ਧਰਮੁ ਹਦੂਰਿ ॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   39
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 10295,
+  "end_s": 10480,
+  "line": "ਸਤਿਗੁਰੁ ਨਾਨਕੁ ਪ੍ਰਗਟਿਆ ਮਿਟੀ ਧੁੰਧੁ ਜਗਿ ਚਾਨਣੁ ਹੋਆ।",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   40027
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 10480,
+  "end_s": 10735,
+  "line": "ਤੈਸੇ ਹੀ ਹਰਿ ਬਸੇ ਨਿਰੰਤਰਿ ਘਟ ਹੀ ਖੋਜਹੁ ਭਾਈ ॥੧॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   2614
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 10870,
+  "end_s": 11140,
+  "line": "ਥਾਪਿਆ ਨ ਜਾਇ ਕੀਤਾ ਨ ਹੋਇ ॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   5
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 11180,
+  "end_s": 11570,
+  "line": "ਰਹਿਤ ਬਿਕਾਰ ਅਲਪ ਮਾਇਆ ਤੇ ਅਹੰਬੁਧਿ ਬਿਖੁ ਤਿਆਗੀ ॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   4331
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 11600,
+  "end_s": 11805,
+  "line": "ਨਿਵਰੇ ਦੂਤ ਦੁਸਟ ਬੈਰਾਈ ਗੁਰ ਪੂਰੇ ਕਾ ਜਪਿਆ ਜਾਪੁ ॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   3104
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 11870,
+  "end_s": 12155,
+  "line": "ੴ ਸਤਿ ਨਾਮੁ ਕਰਤਾ ਪੁਰਖੁ ਨਿਰਭਉ ਨਿਰਵੈਰੁ ਅਕਾਲ ਮੂਰਤਿ ਅਜੂਨੀ ਸੈਭੰ ਗੁਰ ਪ੍ਰਸਾਦਿ ॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   1
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 12685,
+  "end_s": 13265,
+  "line": "ਐਸੇ ਲਾਲਨੁ ਪਾਇਓ ਰੀ ਸਖੀ ॥੧॥ ਰਹਾਉ ॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   1591
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 13265,
+  "end_s": 14800,
+  "line": "ਮਨ ਰੇ ਕਿਉ ਛੂਟਹਿ ਬਿਨੁ ਪਿਆਰ ॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   164
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 16445,
+  "end_s": 16825,
+  "line": "ਬਲਿ ਬਲਿ ਜਾਉ ਸਿਆਮ ਸੁੰਦਰ ਕਉ ਅਕਥ ਕਥਾ ਜਾ ਕੀ ਬਾਤ ਸੁਨੀ ॥੩॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   3120
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 16825,
+  "end_s": 17350,
+  "line": "ਖੂਬੁ ਤੇਰੀ ਪਗਰੀ ਮੀਠੇ ਤੇਰੇ ਬੋਲ ॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   2782
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 17350,
+  "end_s": 17920,
+  "line": "ਸੋਹਣੇ ਨਕ ਜਿਨ ਲੰਮੜੇ ਵਾਲਾ ॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   2171
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 17920,
+  "end_s": 18385,
+  "line": "ਜੋ ਹਮ ਕਉ ਹਰਿ ਨਾਮੁ ਚਿਤਾਰੇ ॥੧॥ ਰਹਾਉ ॥",
+  "video_id": "iattXPs7Chg",
+  "shabad_ids": [
+   2819
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "dev"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 520,
+  "end_s": 610,
+  "line": "ਗਗਨ ਮੈ ਥਾਲੁ ਰਵਿ ਚੰਦੁ ਦੀਪਕ ਬਨੇ ਤਾਰਿਕਾ ਮੰਡਲ ਜਨਕ ਮੋਤੀ ॥",
+  "video_id": "l0EIMAuC0_U",
+  "shabad_ids": [
+   2533
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 930,
+  "end_s": 1055,
+  "line": "ਚੱਤ੍ਰ ਚੱਕ੍ਰ ਵਰਤੀ ਚੱਤ੍ਰ ਚੱਕ੍ਰ ਭੁਗਤੇ ॥",
+  "video_id": "l0EIMAuC0_U",
+  "shabad_ids": [
+   7423
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 1090,
+  "end_s": 1710,
+  "line": "ਗੁਰ ਪੂਰੇ ਕੀ ਸਰਣੀ ਉਬਰੇ ਕਾਰਜ ਸਗਲ ਸਵਾਰੇ ॥੧॥",
+  "video_id": "l0EIMAuC0_U",
+  "shabad_ids": [
+   2345
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 1710,
+  "end_s": 2385,
+  "line": "ਬਿਸਰਿ ਗਈ ਸਭ ਤਾਤਿ ਪਰਾਈ ॥",
+  "video_id": "l0EIMAuC0_U",
+  "shabad_ids": [
+   4713
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 2385,
+  "end_s": 3475,
+  "line": "ਤਪਤ ਕੜਾਹਾ ਬੁਝਿ ਗਇਆ ਗੁਰਿ ਸੀਤਲ ਨਾਮੁ ਦੀਓ ॥੧॥ ਰਹਾਉ ॥",
+  "video_id": "l0EIMAuC0_U",
+  "shabad_ids": [
+   3694
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 3475,
+  "end_s": 3595,
+  "line": "ਹਰਿ ਭਗਤਿ ਖਜਾਨਾ ਬਖਸਿਆ ਗੁਰਿ ਨਾਨਕਿ ਕੀਆ ਪਸਾਉ ਜੀਉ ॥",
+  "video_id": "l0EIMAuC0_U",
+  "shabad_ids": [
+   2883
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 3595,
+  "end_s": 3765,
+  "line": "ਸਚੁ ਪੂੰਜੀ ਸਚੁ ਵਖਰੋ ਨਾਨਕ ਘਰਿ ਪਾਇਆ ॥੪॥੫॥੧੪॥",
+  "video_id": "l0EIMAuC0_U",
+  "shabad_ids": [
+   3694
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 6365,
+  "end_s": 6780,
+  "line": "ੴ ਸਤਿ ਨਾਮੁ ਕਰਤਾ ਪੁਰਖੁ ਨਿਰਭਉ ਨਿਰਵੈਰੁ ਅਕਾਲ ਮੂਰਤਿ ਅਜੂਨੀ ਸੈਭੰ ਗੁਰ ਪ੍ਰਸਾਦਿ ॥",
+  "video_id": "l0EIMAuC0_U",
+  "shabad_ids": [
+   1
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 6895,
+  "end_s": 7465,
+  "line": "ਅਨੰਦੁ ਭਇਆ ਮੇਰੀ ਮਾਏ ਸਤਿਗੁਰੂ ਮੈ ਪਾਇਆ ॥",
+  "video_id": "l0EIMAuC0_U",
+  "shabad_ids": [
+   333375
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 7465,
+  "end_s": 8555,
+  "line": "ਗਾਉ ਗਾਉ ਰੀ ਦੁਲਹਨੀ ਮੰਗਲਚਾਰਾ ॥",
+  "video_id": "l0EIMAuC0_U",
+  "shabad_ids": [
+   1791
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 8900,
+  "end_s": 9530,
+  "line": "ਸਾਜਨਾ ਸੰਤ ਆਉ ਮੇਰੈ ॥੧॥ ਰਹਾਉ ॥",
+  "video_id": "l0EIMAuC0_U",
+  "shabad_ids": [
+   4721
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 9775,
+  "end_s": 10090,
+  "line": "ਧੰਨੁ ਧੰਨੁ ਧੰਨੁ ਜਨੁ ਆਇਆ ॥",
+  "video_id": "l0EIMAuC0_U",
+  "shabad_ids": [
+   1077
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 10090,
+  "end_s": 10650,
+  "line": "ਹਮ ਰੁਲਤੇ ਫਿਰਤੇ ਕੋਈ ਬਾਤ ਨ ਪੂਛਤਾ ਗੁਰ ਸਤਿਗੁਰ ਸੰਗਿ ਕੀਰੇ ਹਮ ਥਾਪੇ ॥",
+  "video_id": "l0EIMAuC0_U",
+  "shabad_ids": [
+   499
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ },
+ {
+  "gurdwara": "Gurdwara Sahib Renton",
+  "type": "KIRTAN",
+  "start_s": 10650,
+  "end_s": 10810,
+  "line": "ਐਸੇ ਗੁਰ ਕਉ ਬਲਿ ਬਲਿ ਜਾਈਐ ਆਪਿ ਮੁਕਤੁ ਮੋਹਿ ਤਾਰੈ ॥੧॥ ਰਹਾਉ ॥",
+  "video_id": "l0EIMAuC0_U",
+  "shabad_ids": [
+   4725
+  ],
+  "verse_ids": [],
+  "human": "Yes (Renton Finds reviewer 2026-09-25)",
+  "split": "train"
+ }
+]

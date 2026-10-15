@@ -36,6 +36,16 @@
       "User test",
       "room-mic",
       "laptop mic at home"
+    ],
+    [
+      "Yuba City",
+      "mixer-feed",
+      "Gurdwara Yuba City kirtan videos (Jas Gurbani YouTube uploads of the program; board / recording feed, not a mic in the hall; assumed, unconfirmed)"
+    ],
+    [
+      "AKJ|Akhand Kirtan|Smagam|Rehnsabhai|Rainsabai",
+      "mixer-feed",
+      "smagam livestream (AKJ.Org, Manchester Rehnsabhai YouTube); broadcast feed of many singers and the sangat (assumed, unconfirmed)"
     ]
   ],
   "byAcoustics": {

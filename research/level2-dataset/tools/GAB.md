@@ -6,9 +6,41 @@ cache), so a check takes seconds to minutes instead of hours, and the same build
 
 Dataset: Hugging Face `khalisfoundation/GurbaniAutopilotBench` (private). Tools: `research/level2-dataset/tools/`
 on branch `vf-cached-replay` (`gab.js`, `gab-score.js`, `gab-harvest.js`, `gab-review.js`, `gab-publish.js`).
-Version: every scorecard says `GAB v1.2`, its tier (`set`: main or hard) and the manifest hash it used. Leaderboard: the private Space
+Version: every scorecard says `GAB v1.3`, its tier (`set`: main, hard or akhand) and the manifest hash it used. Leaderboard: the private Space
 [khalisfoundation/GAB-leaderboard](https://huggingface.co/spaces/khalisfoundation/GAB-leaderboard) (static page; one
 JSON per build; `gab publish` writes it).
+
+## v1.3 (Oct 14 2026): the rest of the human sheet, and a third tier, GAB-Akhand Kirtan
+
+The main tab of the Level-2 Google Sheet ("Human-Fully Sheet (100% Human Verified) - Level 2", 172 verified rows) was
+only partly in GAB (the 41 L2 rows). v1.3 adds the other 131 rows, as Cycle 10 cut them (`gab-add-sheet-rows.js`,
+suites `rfinds`, `yuba`, `l3` in vf-suites.js; truth files renton-finds-truth.json, yuba-jas.json,
+level3-human-sheet.json, splits from splits-cycle10.json):
+
+| group | clips (train / dev / test) | audio | tier | split rule |
+|---|---|---|---|---|
+| Renton Finds (full Renton darbars, Sep 25 reviewer) | 81 (50 / 18 / 13) | 10.85 h | main | Cycle 10 per recording; zuCiaw0exFA stays test |
+| Gurdwara Yuba City (Jas Gurbani recordings) | 17 (0 / 0 / 17) | 2.55 h | main | Cycle 10's unseen-venue test, kept test (row 8, pDMz6_zhhDI, has no audio cut) |
+| Level 3 smagams: AKJ Toronto 2022 Fri / Sat, Manchester 2024 Rehnsabhai | 32 (23 / 0 / 9) | 2.8 h | **akhand** | Toronto Saturday = test (Cycle 10 L3-test); Friday + Manchester = train |
+
+Truth per clip (Shabad level, human; boundaries a few seconds approximate): the clip's own row, plus the earlier
+main-tab row of the same recording where it reaches into the 30 s lead-in, so a Shabad change inside the clip is a
+real switch (Renton darbars and smagams run Shabad after Shabad); the 10 s tail is left unlabelled. The user's ear-check
+answers (clip-notes.json: also_correct, end_override_s, exclude) are applied. No line truth (lines.csv header only).
+The 7 other rows of level3-human-sheet.json are repeat stretches of a Shabad already on the main tab: not added.
+
+**GAB-Akhand Kirtan** (`--set akhand`, `gab akhand run|compare ...`): kirtan with many singers (5-15), the sangat singing
+along, many instruments, a resonant sound. Tracked on its own (leaderboard column "Akhand Kirtan" and a branch in each
+version's tree), never mixed with main GAB or GAB-Hard, never used to tune (level-3 policy). The rule is data, not ids
+(gab-sets.json `tiers.akhand`): a manifest row joins when its gurdwara names AKJ / Akhand Kirtan / a Rehnsabhai, or its
+notes carry `tags: akhand-kirtan`. Main GAB = every row in neither GAB-Hard nor GAB-Akhand Kirtan.
+
+**Cache recorded on x86 (GCP vf-record).** These 130 clips had no cache entry, so their model output was recorded on
+the GCP VM (Intel Xeon, linux-x64) for every published build, and pushed to the shared Azure bench-cache. x86 output
+differs slightly from the Mac's (~0.9 % of frames flip argmax); one clip never mixes the two: each entry carries
+`provenance.json` (platform, CPU, host; also in the Azure manifest entry), and vf-check refuses to record into an entry
+of another platform (an entry without the stamp predates it and is a Mac entry). The manifest notes of each new clip
+say "cache: recorded on x86". A build that later asks for new windows on these clips must be filled on x86 (the VM).
 
 ## Two tiers: GAB and GAB-Hard (v1.2, Oct 14 2026)
 
@@ -107,8 +139,9 @@ cd ~/personal/sttm-replay/research/level2-dataset/tools
 ./gab compare upstream ~/personal/<worktree> [--tier full]   # main GAB before/after, PASS only if no guarded number is worse
 ./gab hard upstream --tier full                              # GAB-Hard only (= gab run upstream --tier full --set hard)
 ./gab hard compare upstream ~/personal/<worktree> --tier full # GAB-Hard before/after (its own guardrails)
+./gab akhand upstream --tier full                            # GAB-Akhand Kirtan only (= gab run upstream --tier full --set akhand)
 ./gab slowpc upstream ~/personal/<worktree>                   # simulated slow PC (timing only, never on the leaderboard)
-./gab publish <main run>/scorecard.json --hard <hard run>/scorecard.json --name "<build name>" --order N [--status candidate --base 2cb8b003]   # one row (both tiers) on the Space
+./gab publish <main run>/scorecard.json --hard <hard run>/scorecard.json [--akhand <akhand run>/scorecard.json] --name "<build name>" --order N [--status candidate --base 2cb8b003]   # one row (both tiers) on the Space
 ./gab publish --batch batch.json        # every build in one commit (after a GAB version change); see gab-publish.js
 ```
 `<build>` is a worktree or a git rev of `~/personal/sttm-desktop` (`upstream` = khalis/experimental-release).

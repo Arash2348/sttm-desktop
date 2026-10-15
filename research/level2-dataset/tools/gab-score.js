@@ -33,13 +33,16 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const GAB_VERSION = 'GAB v1.2';
+const GAB_VERSION = 'GAB v1.3';
 // ---------------------------------------------------------------- tiers -------------
-// gab-sets.json `tiers`: { main: { excludeTiers: ['hard'] }, hard: { gurdwara: '<regex>' } }
+// gab-sets.json `tiers`: { main: { excludeTiers: ['hard', 'akhand'] }, hard: { gurdwara: '<regex>' }, akhand: { gurdwara: '<regex>', notes: '<tag regex>' } }
 function tierOf(row, sets = loadSets()) {
   const T = sets.tiers || { main: {} };
-  for (const [k, t] of Object.entries(T)) if (t.gurdwara && new RegExp(t.gurdwara, 'i').test(row.gurdwara || '')) return k;
-  return Object.keys(T).find((k) => !T[k].gurdwara) || 'main';
+  // a tier rule matches on the gurdwara / source name OR a tag in the notes (`tags: akhand-kirtan`), so new
+  // recordings of that kind join the tier from their manifest row alone; first matching tier wins (file order)
+  const hit = (t) => (t.gurdwara && new RegExp(t.gurdwara, 'i').test(row.gurdwara || '')) || (t.notes && new RegExp(t.notes, 'i').test(row.notes || ''));
+  for (const [k, t] of Object.entries(T)) if (hit(t)) return k;
+  return Object.keys(T).find((k) => !T[k].gurdwara && !T[k].notes) || 'main';
 }
 const inTier = (row, tier, sets) => tier === 'all' || tierOf(row, sets) === tier;
 const tierTitle = (tier, sets = loadSets()) => ((sets.tiers || {})[tier] || {}).title || tier;
@@ -179,17 +182,17 @@ function micSplit(sv, clips) {
   return { ...by, '50/50': w };
 }
 
-const setMatch = (s, c) => (!s.suite || (c.suiteJobs || '').split(';').some((j) => j.startsWith(`${s.suite}:`))) && (!s.folder || c.folder === s.folder || c.folder.startsWith(`${s.folder}/`)) && (!s.split || c.split === s.split);
+const setMatch = (s, c) => (!s.suite || (c.suiteJobs || '').split(';').some((j) => j.startsWith(`${s.suite}:`))) && (!s.folder || c.folder === s.folder || c.folder.startsWith(`${s.folder}/`)) && (!s.split || c.split === s.split) && (!s.gurdwara || new RegExp(s.gurdwara, 'i').test(c.gurdwara || ''));
 // rows: each behaviour (top folder), its Banis (incl. expected ones with no clip), the named sets, and all folders
 function build(sv, clips, sets, tier = 'main') {
   const rows = [];
   const push = (key, level, title, cs, extra = {}) => { rows.push({ key, level, title, ...(cs.length ? { ...group(sv, cs), mic: micSplit(sv, cs) } : { clips: 0 }), ...extra }); };
   for (const top of TOP) {
     const cs = clips.filter((c) => c.folder.split('/')[0] === top);
-    const none = tier === 'hard' ? `no ${tierTitle(tier, sets)} recording of this behaviour has a replay runner` : top === '4-akhand-paath' ? 'no Akhand Paath clip with times in this split (suite apaath: the clips with publisher-slide line answers)' : 'no clip of this behaviour was run';
+    const none = tier !== 'main' ? `no ${tierTitle(tier, sets)} recording of this behaviour has a replay runner` : top === '4-akhand-paath' ? 'no Akhand Paath clip with times in this split (suite apaath: the clips with publisher-slide line answers)' : 'no clip of this behaviour was run';
     push(top, 'behaviour', TOP_TITLE[top], cs, cs.length ? {} : { note: none });
     // the Banis each behaviour should cover are listed (as 'no clips yet') in the main tier only
-    const subs = [...new Set([...cs.map((c) => c.folder).filter((f) => f.includes('/')), ...(tier === 'hard' ? [] : (sets.expectBanis[top] || []).map((b) => `${top}/${b}`))])].sort();
+    const subs = [...new Set([...cs.map((c) => c.folder).filter((f) => f.includes('/')), ...(tier !== 'main' ? [] : (sets.expectBanis[top] || []).map((b) => `${top}/${b}`))])].sort();
     for (const sub of subs) { const x = cs.filter((c) => c.folder === sub); push(sub, 'bani', sub.split('/').slice(1).join('/'), x, x.length ? {} : { note: 'no clips yet in this split' }); }
   }
   for (const s of sets.sets) { if (s.tier && s.tier !== tier) continue; const x = clips.filter((c) => setMatch(s, c)); if (x.length) push(s.key, 'set', s.title, x); }
