@@ -1469,7 +1469,7 @@ const VoiceFollow = () => {
     // Ceremonies (Anand Karaj, Antam Sanskar, …) are free-form and not supported.
     if (isCeremonyBani) {
       setStatus('error');
-      setDetail("Voice-Follow supports Shabads and Banis — ceremonies aren't supported yet.");
+      setDetail("Voice Autopilot supports Shabads and Banis — ceremonies aren't supported yet.");
       return;
     }
     const isBani = isSundarGutkaBani && !!sundarGutkaBaniId;
@@ -3761,7 +3761,7 @@ const VoiceFollow = () => {
       // Switched to an unsupported content type — stop cleanly.
       stop();
       setStatus('error');
-      setDetail("Voice-Follow supports Shabads and Banis — ceremonies aren't supported yet.");
+      setDetail("Voice Autopilot supports Shabads and Banis — ceremonies aren't supported yet.");
       return;
     }
     let key = null;
@@ -3915,9 +3915,9 @@ const VoiceFollow = () => {
   // Human-readable status line (avoids surfacing internal states like "idle").
   let statusText =
     status === 'idle'
-      ? 'Press Start for Gurbani Voice Follow'
+      ? 'Press Start for Voice Autopilot'
       : `${STATUS_LABEL[status] || status}${detail ? ` · ${detail}` : ''}`;
-  if (hiddenRun || (SHADOW_BUILD && !active)) statusText = 'Press Start for Gurbani Voice Follow';
+  if (hiddenRun || (SHADOW_BUILD && !active)) statusText = 'Press Start for Voice Autopilot';
 
   // Live stats (shown while listening). Word is 1-based like the line; confidence
   // reads as a friendly percentage.
@@ -4177,8 +4177,8 @@ const VoiceFollow = () => {
   );
 
   const ratingAsk = SHADOW_BUILD && !active && askRating && (
-    <div className="vf-rate" role="group" aria-label="How did Voice-Follow do?">
-      <span>How did Voice-Follow do?</span>
+    <div className="vf-rate" role="group" aria-label="How did Voice Autopilot do?">
+      <span>How did Voice Autopilot do?</span>
       <button type="button" onClick={() => rate('up')} title="Good" aria-label="Good">
         👍
       </button>
