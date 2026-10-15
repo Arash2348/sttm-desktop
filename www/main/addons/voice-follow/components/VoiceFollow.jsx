@@ -205,6 +205,10 @@ const SWITCH_CAND_MIN_LINE_CHARS = 15;
 // (misses switches: recall 68->60%), so raising it is not safe. The 9s stress ceiling
 // (~35% on-correct) is latency-bound (react time ~4-5s vs 9s dwell), not tunable.
 const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a switch
+// Fix 1: progress is carried across a pause (or a change of judging slot) only for wins earned
+// on a SOLID decode, at least this many letters heard. A win on a few letters (a repeated short
+// phrase such as "mera naam") is real for that moment but too thin to build on later.
+const SWITCH_SOLID_CHARS = 16;
 // Fix 1 (V6 Shabad-level evidence): a Shabad is found when enough of ITS pangtis have been
 // heard, not only when one ~35-letter window wins several decodes in a row. Each confidently
 // matched pangti adds to its Shabad's total: a new pangti adds 1, a repeat of one already
@@ -3065,9 +3069,16 @@ const VoiceFollow = () => {
             return false;
           }
           const step = nextSwitchWins(slot.wins, sCand, sCurFull, acousticCfg);
-          if (step.wins > slot.wins) winAtRef.current.set(slot.shabadId, judgeN);
+          if (step.wins > slot.wins && hypFull.length >= SWITCH_SOLID_CHARS)
+            winAtRef.current.set(slot.shabadId, judgeN);
           let shevOk = false;
-          if (SHEV_SWITCH > 0 && lineIndex >= 0 && !step.held && step.wins > slot.wins) {
+          if (
+            SHEV_SWITCH > 0 &&
+            lineIndex >= 0 &&
+            !step.held &&
+            step.wins > slot.wins &&
+            hypFull.length >= SWITCH_SOLID_CHARS
+          ) {
             const key = `${slot.shabadId}`;
             const ev =
               shevAtRef.current === `${judgeN}:${key}`
@@ -3256,7 +3267,8 @@ const VoiceFollow = () => {
               const m = bestLineMatch(hypFull, prev.profile.linesNorm, SWITCH_CAND_MIN_LINE_CHARS);
               if (m.index >= 0) {
                 const step = nextSwitchWins(rs.wins, m.s, sCurFull, acousticCfg);
-                if (step.wins > rs.wins) winAtRef.current.set(rs.shabadId, judgeN);
+                if (step.wins > rs.wins && hypFull.length >= SWITCH_SOLID_CHARS)
+                  winAtRef.current.set(rs.shabadId, judgeN);
                 rs.wins = step.wins;
                 if (!step.held) {
                   rs.lastScore = m.s;
