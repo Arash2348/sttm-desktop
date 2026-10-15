@@ -1,6 +1,7 @@
 // JS port of karansea_recognize.py KaranseaRecognizer.
 const { resampleTo16k, norm, SR } = require('./infer');
 const pace = require('./pace');
+const { appendTo } = require('./clock');
 
 class Recognizer {
   constructor(infer, { inputSr = 48000, windowS = 10.0, hopS = 0.6, minHyp = 2 } = {}) {
@@ -23,19 +24,28 @@ class Recognizer {
   async push(pcm) {
     const res = resampleTo16k(pcm, this.inputSr);
     this.win = Math.floor(pace.windowS('recognizer', this.windowS) * SR);
-    if (res.length) {
-      let merged = new Float32Array(this.buf.length + res.length);
-      merged.set(this.buf, 0);
-      merged.set(res, this.buf.length);
-      if (merged.length > this.win) merged = merged.slice(merged.length - this.win);
-      this.buf = merged;
-      this.acc += res.length;
-      this.pushed += res.length;
+    this.pushed += res.length; // audio seen so far (the verifier's pass slices are placed by it)
+    if (this.clock) {
+      // Window alignment (engine/clock): seeded at the lock, decodes on the session grid.
+      appendTo(this, pcm, res, this.win);
+      if (!this.clock.due(pcm, pace.hopS('recognizer', this.hopS)) || this.buf.length < SR) {
+        return null;
+      }
+      pace.markBeat(pcm);
+    } else {
+      if (res.length) {
+        let merged = new Float32Array(this.buf.length + res.length);
+        merged.set(this.buf, 0);
+        merged.set(res, this.buf.length);
+        if (merged.length > this.win) merged = merged.slice(merged.length - this.win);
+        this.buf = merged;
+        this.acc += res.length;
+      }
+      this.hop = Math.floor(pace.hopS('recognizer', this.hopS) * SR); // performance tier
+      if (this.acc < this.hop || this.buf.length < SR) return null;
+      this.acc = 0;
+      pace.markBeat(pcm);
     }
-    this.hop = Math.floor(pace.hopS('recognizer', this.hopS) * SR); // performance tier
-    if (this.acc < this.hop || this.buf.length < SR) return null;
-    this.acc = 0;
-    pace.markBeat(pcm);
 
     const emis = await this.infer.emissions(this.buf);
     const ph = this.passHistory;

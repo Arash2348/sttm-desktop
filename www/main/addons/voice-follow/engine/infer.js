@@ -94,7 +94,9 @@ class Infer {
   async emissions(buf) {
     // The memo serves the aligned tiers only: in the fast tier (a computer that keeps up)
     // every window is a model pass, exactly as before the tiers existed.
-    const memo = this.memo && pace.current().aligned ? this.memo : null;
+    // With window alignment (engine/clock) the following windows are the recognizer's in every
+    // tier, so the memo serves every tier (Infer.memoAll, set by engine/index).
+    const memo = this.memo && (Infer.memoAll || pace.current().aligned) ? this.memo : null;
     if (memo && Infer.sameWindow(memo.buf, buf)) {
       this.perf.repeats += 1;
       return memo.out;

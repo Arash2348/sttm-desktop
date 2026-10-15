@@ -19,6 +19,10 @@ const NITNEM = require('./assets/nitnem-lines');
 const { partialRatio } = require('./fuzz');
 const modelManager = require('./model-manager');
 const pace = require('./pace');
+const { WINDOW_ALIGN } = require('./clock');
+
+// Window alignment (engine/clock): the follower's windows are the recognizer's, in every tier.
+Infer.memoAll = WINDOW_ALIGN;
 
 let inferPromise = null; // shared session (load the model once)
 let sp = null; // tokenizer is cheap + stateless, share it too
