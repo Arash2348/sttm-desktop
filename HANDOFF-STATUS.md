@@ -12,11 +12,11 @@ cache, Hugging Face token or Azure SAS, so GAB cannot run here. Every change is 
 
 | commit | what it does | aimed at | constant (0 = off) |
 |---|---|---|---|
-| `a4fb38e1` `3afefd23` `ef1d9f86` | V6 Shabad-level evidence (cherry-picked unchanged from `vf-fix1-v6` @ `488c3721`) | idea 1: score V6 on Akhand | `SHEV_LOCK`, `SHEV_SWITCH` |
-| `e6359d10` | **Solid-win guard:** a switch commits on the win count only when at least one win in the run was heard on a solid decode (>= 16 letters) | GAB-Hard kh17: 32 s false switch on 8-9 letter decodes, the one reason V6 failed Hard | `SWITCH_COMMIT_SOLID = 1` |
-| `b547f58d` | **Probation after a first lock:** after a lock made while searching (not a switch, tap or Bani), until the locked Shabad is heard clearly once (a solid decode scoring >= 0.65 on it), for at most ~60 s, a rival Shabad switches in on 2 wins instead of 3 | idea 2: GAB-Akhand ytak_0typ, wrong lock at 9.7 s, right Shabad only at 95 s | `PROBATION_DECODES = 120`, `PROBATION_CONFIRM = 2` |
-| `e60c6148` | Lint only: V6 had 5 lint errors (would fail CI); no behaviour change | | |
-| `b7f4161e` | **Local pangti scoring** (`engine/ctcLocal.js`): the search-phase acoustic check scores each candidate pangti where it is sung inside the 10 s window, instead of aligning the whole pangti from the window's first frame. **Off on this branch** | idea 4 | `AK_LOCAL_CTC = 0` (experiment: `= 2`) |
+| `f3859279` `da64ce48` `488c3721` | V6 Shabad-level evidence (the `vf-fix1-v6` commits themselves; this branch starts from them) | idea 1: score V6 on Akhand | `SHEV_LOCK`, `SHEV_SWITCH` |
+| `31ed091a` | **Solid-win guard:** a switch commits on the win count only when at least one win in the run was heard on a solid decode (>= 16 letters) | GAB-Hard kh17: 32 s false switch on 8-9 letter decodes, the one reason V6 failed Hard | `SWITCH_COMMIT_SOLID = 1` |
+| `eea1d2f8` | **Probation after a first lock:** after a lock made while searching (not a switch, tap or Bani), until the locked Shabad is heard clearly once (a solid decode scoring >= 0.65 on it), for at most ~60 s, a rival Shabad switches in on 2 wins instead of 3 | idea 2: GAB-Akhand ytak_0typ, wrong lock at 9.7 s, right Shabad only at 95 s | `PROBATION_DECODES = 120`, `PROBATION_CONFIRM = 2` |
+| `c6d36ded` | Lint only: V6 had 5 lint errors (would fail CI); no behaviour change | | |
+| `8c7a6ca8` | **Local pangti scoring** (`engine/ctcLocal.js`): the search-phase acoustic check scores each candidate pangti where it is sung inside the 10 s window, instead of aligning the whole pangti from the window's first frame. **Off on this branch** | idea 4 | `AK_LOCAL_CTC = 0` (experiment: `= 2`) |
 
 Idea 3 (careful first lock, 2+ distinct pangtis) is already what V6's search lock does (`ev.distinct >= 2`),
 so it gets measured with V6. A stricter rule for the older single-phrase lock routes would slow main GAB's
@@ -40,7 +40,7 @@ once at the end.
 ```sh
 cd ~/personal/sttm-desktop && git fetch arash claude/sweet-brahmagupta-x0uez6
 git branch vf-akhand-kirtan-1 arash/claude/sweet-brahmagupta-x0uez6
-for c in ef1d9f86:ak-v6 e6359d10:ak-solid b547f58d:ak-probation vf-akhand-kirtan-1:ak-ctc; do
+for c in 488c3721:ak-v6 31ed091a:ak-solid eea1d2f8:ak-probation vf-akhand-kirtan-1:ak-ctc; do
   git worktree add ~/personal/${c#*:} ${c%%:*} && ln -s ~/personal/sttm-desktop/node_modules ~/personal/${c#*:}/node_modules
 done
 # the experiment: local pangti scoring on (committed, so GAB's per-tree result cache sees a new tree)
