@@ -9,8 +9,9 @@
 // With the clock (WINDOW_ALIGN on), while following:
 //   * the component advances the clock once per audio chunk, BEFORE the engines see it, and
 //     the clock keeps the last RING_S seconds of session audio (16 kHz, as the engines hear it);
-//   * an engine created at a lock or switch is seeded with that audio (seed()), so its first
-//     window is already a full window and its first decode is the next grid point;
+//   * an engine created at a lock or switch (opts.clock) starts from that audio at its first
+//     push, so its first window is already a full window and its first decode is the next
+//     grid point;
 //   * engines decode only when the session's sample count crosses a multiple of their step
 //     (due()). The steps are whole numbers of the 0.25 s base step, and the base step is a
 //     whole number of audio chunks (the cadence the engines already had: every 2 chunks of
@@ -81,27 +82,33 @@ class SessionClock {
   }
 }
 
-// An engine joining the session: its buffer becomes the session's recent audio (trimmed to
-// the engine's window at its next push), and the chunk that audio ends with is not appended
-// a second time when it is pushed next. seed = false: the engine starts empty, on the grid.
-function seedEngine(engine, clock, { seed = true } = {}) {
-  if (!engine || !clock) return;
-  Object.assign(engine, { clock, acc: 0 });
-  if (seed) Object.assign(engine, { buf: clock.tail(), seenLast: clock.last });
+// Clock mode for an engine (opts.clock at creation). An engine joins the session at its
+// first push: its buffer becomes the session's recent audio up to and including that chunk
+// (trimmed to the engine's window), as if it had always been listening. Joining at the first
+// push (not at creation) keeps the buffer exact however long the lock took to build the engine.
+// opts.seed === false: the engine starts empty, on the grid.
+function clockOpts(engine, opts = {}) {
+  if (!opts.clock) return;
+  Object.assign(engine, { clock: opts.clock, seedFromClock: opts.seed !== false });
 }
 
-// Append a pushed chunk to an engine's buffer (clock mode); the chunk its seed already ended
-// with is skipped.
+function concat(a, b) {
+  const merged = new Float32Array(a.length + b.length);
+  merged.set(a, 0);
+  merged.set(b, a.length);
+  return merged;
+}
+
+// Append a pushed chunk to an engine's buffer (clock mode).
 function appendTo(engine, pcm, res, win) {
   let { buf } = engine;
-  if (engine.seenLast !== pcm) {
-    const merged = new Float32Array(buf.length + res.length);
-    merged.set(buf, 0);
-    merged.set(res, buf.length);
-    buf = merged;
-  }
+  if (engine.seedFromClock) {
+    // first push: the session's audio; the chunk being pushed is its last one
+    buf = engine.clock.tail();
+    if (engine.clock.last !== pcm) buf = concat(buf, res);
+  } else buf = concat(buf, res);
   if (buf.length > win) buf = buf.slice(buf.length - win);
-  Object.assign(engine, { buf, seenLast: null });
+  Object.assign(engine, { buf, seedFromClock: false });
 }
 
-module.exports = { WINDOW_ALIGN, BASE_STEP_S, SessionClock, seedEngine, appendTo };
+module.exports = { WINDOW_ALIGN, BASE_STEP_S, SessionClock, clockOpts, appendTo };

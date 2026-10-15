@@ -15,7 +15,7 @@
 // { verseIndex, verseId, lineIndex, wordIndex, confidence } or null.
 const { resampleTo16k, SR } = require('./infer');
 const pace = require('./pace');
-const { appendTo } = require('./clock');
+const { appendTo, clockOpts } = require('./clock');
 const { spoken } = require('./spoken');
 
 // Tuned on research/follower-bench at a 0.125 s listening step; ships at 0.25 s, the same
@@ -172,6 +172,7 @@ class FollowerV2 {
       this.cur = Math.min(opts.startLine, lines.length - 1);
     }
     this.tick = 0;
+    clockOpts(this, opts); // window alignment (engine/clock)
   }
 
   // Best end position in text[a..b] for an alignment that ends at the end of the heard

@@ -982,6 +982,9 @@ const VoiceFollow = () => {
   saveAudioRef.current = saveAudio;
   const ringRef = useRef(null); // rolling audio for corrections
   const clockRef = useRef(null); // window alignment: the session clock (engine/clock)
+  // Creation options of an engine that joins the session at a lock or switch.
+  const alignOpts = (seed = true) =>
+    WINDOW_ALIGN && clockRef.current ? { clock: clockRef.current, seed } : {};
   const sessionIdRef = useRef(null);
   const sessionStartRef = useRef(0);
   const lastAutoDecisionRef = useRef(0);
@@ -2016,9 +2019,11 @@ const VoiceFollow = () => {
                   // A Bani opened from the Shabad line just locked starts there (opts.startAt:
                   // the paath-line and two-shabads-in-order rules).
                   startAt: !!opts.startAt,
+                  ...alignOpts(),
                 })
               : await engine.createFollower(profile.verses, {
                   inputSr: sampleRateRef.current,
+                  ...alignOpts(),
                 });
         } catch (e) {
           if (session !== sessionRef.current) return;
@@ -2034,7 +2039,6 @@ const VoiceFollow = () => {
         const prevBefore = prevShabadRef.current;
         phaseRef.current = 'following';
         lastVerseRef.current = null;
-        if (WINDOW_ALIGN && clockRef.current) windowClock.seedEngine(follower, clockRef.current);
         followerRef.current = follower;
         // The panel shows the new Shabad's standing at once (a lock is strong evidence);
         // the first following decode replaces this a moment later.
@@ -2199,13 +2203,9 @@ const VoiceFollow = () => {
               inputSr: sampleRateRef.current,
               windowS: AP_FOLLOW_WIN_S, // now following: short window = fast next switch
               hopS: AP_REC_HOP_S,
+              ...alignOpts(WINDOW_ALIGN_SEED_RECOGNIZER),
             });
             if (session !== sessionRef.current) return;
-            if (WINDOW_ALIGN && clockRef.current) {
-              windowClock.seedEngine(recognizer, clockRef.current, {
-                seed: WINDOW_ALIGN_SEED_RECOGNIZER,
-              });
-            }
             recognizerRef.current = recognizer;
           }
         } catch (_) {
@@ -3563,9 +3563,9 @@ const VoiceFollow = () => {
           }
           ringRef.current.push(pcm);
           if (WINDOW_ALIGN) {
-            if (!clockRef.current || clockRef.current.inputSr !== sr) {
-              clockRef.current = new windowClock.SessionClock({ inputSr: sr });
-            }
+            // One clock per session (engines keep a reference to it); a late sample rate updates it.
+            if (!clockRef.current) clockRef.current = new windowClock.SessionClock({ inputSr: sr });
+            clockRef.current.inputSr = sr;
             clockRef.current.advance(pcm);
           }
         }
