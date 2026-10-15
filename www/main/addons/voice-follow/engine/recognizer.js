@@ -15,8 +15,8 @@ class Recognizer {
     this.acc = 0;
     // Shabad verifier (shabadVerify.js): when set, each pass's emissions are kept for ~35 s so a
     // long window can be stitched from passes already run (no extra model passes)
-    this.keepHistory = false;
-    this.history = [];
+    // one shared object changed in place, so it works through wrappers (Object.create(rec) in the bench driver)
+    this.passHistory = { on: false, list: [] };
     this.pushed = 0;
   }
 
@@ -38,17 +38,18 @@ class Recognizer {
     pace.markBeat(pcm);
 
     const emis = await this.infer.emissions(this.buf);
-    if (this.keepHistory) {
-      this.history.push({ end: this.pushed, len: this.buf.length, emis });
+    const ph = this.passHistory;
+    if (ph.on) {
+      ph.list.push({ end: this.pushed, len: this.buf.length, emis });
       // keep ~35 s: every pass of the last 12 s, older ones thinned to one per second
       // (stitching needs one pass every ~10 s); compare each with the last one KEPT
       const keep = [];
-      this.history.forEach((h) => {
+      ph.list.forEach((h) => {
         const age = this.pushed - h.end;
         if (age > 35 * SR) return;
         if (age <= 12 * SR || !keep.length || h.end - keep[keep.length - 1].end >= SR) keep.push(h);
       });
-      this.history = keep;
+      ph.list.splice(0, ph.list.length, ...keep);
     }
     const hyp = this.infer.decode(this.infer.greedy(emis));
     if (norm(hyp).length < this.minHyp) return null;

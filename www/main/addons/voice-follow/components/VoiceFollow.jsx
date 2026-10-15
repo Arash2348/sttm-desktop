@@ -2565,7 +2565,7 @@ const VoiceFollow = () => {
             }
           }
           if (VERIFY_LOCK > 0 && acousticRecognizer) {
-            acousticRecognizer.keepHistory = true;
+            if (acousticRecognizer.passHistory) acousticRecognizer.passHistory.on = true;
             if (!memory.vpool) memory.vpool = new Map();
             leaders.forEach((c, rank) => {
               const e = memory.vpool.get(c.shabadId) || { n: 0, verseId: c.verseId };
@@ -2578,7 +2578,9 @@ const VoiceFollow = () => {
               if (step - e.step > VERIFY_POOL_DECODES) memory.vpool.delete(id);
             });
             if (step % VERIFY_EVERY === 0 && memory.vpool.size >= 2) {
-              const emis = stitch(acousticRecognizer.history, { spanS: VERIFY_SPAN_S });
+              const emis = stitch(acousticRecognizer.passHistory?.list || [], {
+                spanS: VERIFY_SPAN_S,
+              });
               if (emis && emis.seconds >= VERIFY_MIN_S) {
                 const pool = [...memory.vpool.entries()]
                   .sort((a, b) => b[1].n - a[1].n)
