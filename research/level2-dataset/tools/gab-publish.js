@@ -220,7 +220,12 @@ async function main(args) {
     let msg = 'GAB leaderboard: page files';
     // the builds to publish now: [{ res, slug, card, hardCard }] (one, or a --batch)
     const pub = [];
-    const readCard = (f) => JSON.parse(fs.readFileSync(path.resolve(f), 'utf8'));
+    const readCard = (f) => {
+      const card = JSON.parse(fs.readFileSync(path.resolve(f), 'utf8'));
+      // A run where some clip did not replay (cache miss / replay error) is not a result.
+      if (card.incomplete && card.incomplete.length) throw new Error(`${f} is INCOMPLETE (${card.incomplete.length} clip run(s) did not replay); fill and rerun before publishing`);
+      return card;
+    };
     const addOne = (o) => {
       const card = readCard(o.main);
       checkCard(card, 'main', allowDirty);

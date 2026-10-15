@@ -351,7 +351,8 @@ function compareMarkdown(c, A, B) {
   }
   L.push(`| (${nSame} more metric cells unchanged) | | | | | |`);
   L.push('');
-  L.push(`GUARDRAILS: ${c.pass ? 'PASS (no guarded metric worse)' : `FAIL (${c.worse.length} worse: ${c.worse.map((w) => `${title(w.key)} ${w.scope} ${w.metric} ${w.a} -> ${w.b}`).join('; ')})`} · ${c.better.length} better`);
+  if (c.incomplete && c.incomplete.length) L.push(`GUARDRAILS: INCOMPLETE (no verdict: ${c.incomplete.length} clip run(s) did not replay: ${c.incomplete.map((m) => `${m.key} (${m.why})`).join(', ')}) · ${c.better.length} better / ${c.worse.length} worse on the clips that did run`);
+  else L.push(`GUARDRAILS: ${c.pass ? 'PASS (no guarded metric worse)' : `FAIL (${c.worse.length} worse: ${c.worse.map((w) => `${title(w.key)} ${w.scope} ${w.metric} ${w.a} -> ${w.b}`).join('; ')})`} · ${c.better.length} better`);
   L.push('Guarded = each behaviour, all clips and per mic path (mixer feed, room mic, 50/50); per-Bani rows, named sets and the mixed all-behaviours row are information only, and so are pangti % and seconds behind when they rest on aligner-only line answers or fewer than 3 clips. Tolerances: right % 0.1 pt, seconds behind 0.05 s (p50) / 0.1 s (p90), wrong s/h 1, find / switch time 0.2 s, not found / switches never found 0.');
   return L.join('\n');
 }

@@ -107,6 +107,12 @@ cd ~/personal/sttm-replay/research/level2-dataset/tools
 `--manifest hf` scores against the manifest + answer keys on Hugging Face instead of the local copy
 `~/personal/vf-benchmark`. `--folders 2-bani-recited/japji` narrows it. Output: `results/gab/<time>-run/scorecard.{md,json}`.
 
+**INCOMPLETE (Oct 15 2026):** if any clip on either side did not replay (a CACHE MISS: the build asked the speech
+model for windows the cache does not have, e.g. a lock or switch at a new moment starts the follower's windows at a new
+offset; or a replay error), `gab run` / `gab compare` print `INCOMPLETE` with the clips listed, never PASS, and exit 3;
+`gab publish` refuses such a scorecard. Before this, the missed clip was silently dropped from one side and the compare
+could print PASS on unequal clip sets. Fill the missing windows (`gab fill`, or `vf-check --fill`) and rerun.
+
 Guardrails (`gab compare`, per tier: main compare guards main only, `gab hard compare` guards hard only): each behaviour, all clips and per mic path (mixer, room, 50/50).
 Worse beyond a tiny tolerance on any of right %, sangat-sees-pangti %, seconds behind, wrong s/h, time to find,
 not found, switch time p50, switches never found = FAIL (switches found within 10 s is information only: a build that

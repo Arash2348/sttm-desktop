@@ -238,6 +238,15 @@ async function replay(A, B, jobs, outDir) {
   if (!fs.existsSync(rep)) throw new Error(`vf-check replay failed (exit ${code}):\n${out.split('\n').slice(-15).join('\n')}`);
   return JSON.parse(fs.readFileSync(rep, 'utf8'));
 }
+// Clips that did not replay (cache miss = the build asked the model for new windows; or a replay
+// error), on the given sides. Any such clip makes the run/compare INCOMPLETE: no verdict, exit 3.
+function unreplayed(rep, sides) {
+  return [...rep.missed.map((m) => ({ ...m, why: 'cache miss' })), ...rep.failed.map((m) => ({ ...m, why: 'replay error' }))]
+    .filter((m) => sides.some((s) => m.key.startsWith(`${s}/`)));
+}
+function incompleteNote(bad) {
+  return `INCOMPLETE: ${bad.length} clip run(s) did not replay, so these numbers are not a verdict (fill the missing windows with \`gab fill\` or vf-check --fill, then rerun): ${bad.map((m) => `${m.key} (${m.why})`).join(', ')}`;
+}
 function eventsFile(outDir, side, j) {
   const tr = path.join(outDir, side, j.suite, 'trace', `${j.id}.events.jsonl`);
   if (fs.existsSync(tr)) return tr;
@@ -307,7 +316,10 @@ async function cmdRun() {
   write(path.join(out, 'scorecard.json'), card);
   const md = G.markdown(card);
   write(path.join(out, 'scorecard.md'), md);
+  const badRun = unreplayed(rep, ['base']);
+  if (badRun.length) { card.incomplete = badRun; write(path.join(out, 'scorecard.json'), card); }
   console.log(`\n${md}\n\nscorecard: ${path.join(out, 'scorecard.json')}`);
+  if (badRun.length) { console.log(`\n${incompleteNote(badRun)}`); process.exitCode = 3; }
   if (!flag('keep')) fs.rmSync(path.join(out, 'replay'), { recursive: true, force: true });
 }
 
@@ -329,6 +341,9 @@ async function cmdCompare() {
   const changed = sel.jobs.filter((j) => { const a = scr(eventsFile(path.join(out, 'replay'), 'base', j)); const b = scr(eventsFile(path.join(out, 'replay'), 'cand', j)); return a != null && b != null && a !== b; }).map((j) => j.row.id);
   const c = G.compare(ca, cb);
   c.screenChanged = changed;
+  // A clip that did not replay on either side leaves the two scorecards on different clips: no verdict.
+  const badCmp = unreplayed(rep, ['base', 'cand']);
+  if (badCmp.length) { c.incomplete = badCmp; c.pass = false; }
   const total = r1(now() - t0);
   for (const card of [ca, cb]) card.timings.total_s = total;
   write(path.join(out, 'scorecard-A.json'), ca);
@@ -338,7 +353,8 @@ async function cmdCompare() {
   write(path.join(out, 'compare.md'), md);
   console.log(`\n${md}\n\ncompare: ${path.join(out, 'compare.json')}`);
   if (!flag('keep')) fs.rmSync(path.join(out, 'replay'), { recursive: true, force: true });
-  process.exitCode = c.pass ? 0 : 1;
+  if (badCmp.length) console.log(`\n${incompleteNote(badCmp)}`);
+  process.exitCode = badCmp.length ? 3 : c.pass ? 0 : 1;
 }
 
 async function cmdSlowpc() {
