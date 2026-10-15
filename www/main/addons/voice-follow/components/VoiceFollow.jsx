@@ -258,6 +258,7 @@ const VERIFY_LOCK = 0;
 const VERIFY_CONFIRM = 2;
 const VERIFY_EVERY = 3;
 const VERIFY_POOL = 25;
+const VERIFY_CANDS = 12; // search results per decode that feed the pool (the app itself uses the top 3)
 const VERIFY_POOL_DECODES = 50;
 const VERIFY_SPAN_S = 30;
 const VERIFY_MIN_S = 20;
@@ -2468,7 +2469,19 @@ const VoiceFollow = () => {
           transcriptAbortRef.current?.abort();
           const request = new AbortController();
           transcriptAbortRef.current = request;
-          let leaders = await searchCanonicalText(text, 3 + DUP_AWARE_LOCK, request.signal);
+          // the verifier pools a wider candidate list (VERIFY_CANDS); everything else keeps the top 3
+          const wide =
+            VERIFY_LOCK > 0
+              ? await searchCanonicalText(
+                  text,
+                  Math.max(VERIFY_CANDS, 3 + DUP_AWARE_LOCK),
+                  request.signal,
+                )
+              : null;
+          let leaders =
+            VERIFY_LOCK > 0
+              ? wide && wide.slice(0, 3 + DUP_AWARE_LOCK)
+              : await searchCanonicalText(text, 3 + DUP_AWARE_LOCK, request.signal);
           if (DUP_AWARE_LOCK) leaders = await distinctLeaders(leaders, 3);
           if (
             session !== sessionRef.current ||
@@ -2567,7 +2580,7 @@ const VoiceFollow = () => {
           if (VERIFY_LOCK > 0 && acousticRecognizer) {
             if (acousticRecognizer.passHistory) acousticRecognizer.passHistory.on = true;
             if (!memory.vpool) memory.vpool = new Map();
-            leaders.forEach((c, rank) => {
+            (wide || leaders).forEach((c, rank) => {
               const e = memory.vpool.get(c.shabadId) || { n: 0, verseId: c.verseId };
               e.n += 1;
               e.step = step;
