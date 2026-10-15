@@ -16,7 +16,12 @@ const DIR = '/home/user/gab/clips';
       if (fs.existsSync(out)) continue;
       const u = `https://huggingface.co/datasets/khalisfoundation/GurbaniAutopilotBench/resolve/main/${r.audio.split('/').map(encodeURIComponent).join('/')}`;
       try {
-        const res = await fetch(u, { headers: { Authorization: `Bearer ${process.env.HF_TOKEN}` } });
+        let res;
+        for (let k = 0; ; k++) { // back off on Hugging Face rate limits (429) and server errors
+          res = await fetch(u, { headers: { Authorization: `Bearer ${process.env.HF_TOKEN}` } });
+          if (res.ok || !(res.status === 429 || res.status >= 500) || k >= 8) break;
+          await new Promise((ok) => setTimeout(ok, Math.min(120, 5 * 2 ** k) * 1000 * (0.75 + Math.random() / 2)));
+        }
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const b = Buffer.from(await res.arrayBuffer()); fs.writeFileSync(out + '.part', b); fs.renameSync(out + '.part', out); n++; bytes += b.length;
       } catch (e) { fail.push(`${r.id}: ${e.message}`); }
