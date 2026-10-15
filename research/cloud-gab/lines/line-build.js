@@ -29,7 +29,9 @@ const BENCH = process.env.VF_BENCHMARK_HF || '/root/personal/live-darbar-venues/
 const CLIPS = '/home/user/gab/clips';
 const USERDATA = '/home/user/gab/userdata';
 const MODELS = ['karanbir', 'surinder'];
-const AGREE_S = 1.0, AUDIT = 0.05, PADW = 3;
+const AGREE_S = 1.0, SURE_CHECK = 0.5, AUDIT = 0.05, PADW = 3;
+// measured on GAB-Hard's 20 human-keyed clips (line-eval.js, Oct 15 2026): both models agree within 1 s AND the heard
+// text matches the pangti (check >= 0.5) -> 97% on the right pangti (n 162); agree but check < 0.5 ~65%; one model 41%
 
 const { parseCsv, canonRows } = require(path.join(TOOLS, 'vf-manifest'));
 const G = require(path.join(TOOLS, 'gab-score'));
@@ -110,21 +112,23 @@ function alignClip(model, row, emisFile, truth) {
 function combine(row, A, B) {
   // a Karanbir segment is "agreed" when Surinder has the same pangti starting within AGREE_S
   const agreed = A.map((s) => B.some((o) => o.verseId === s.verseId && Math.abs(o.start - s.start) <= AGREE_S));
+  const sure = A.map((s, i) => agreed[i] && s.check >= SURE_CHECK);
+  const src = (i) => (sure[i] ? 'aligned-2model-sure' : agreed[i] ? 'aligned-2model' : 'aligned-1model');
   const dir = path.join(LINES, 'keys', row.content_folder, row.id);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'lines.csv'), ['verseId,start_s,end_s,confidence,source',
-    ...A.map((s, i) => `${s.verseId},${s.start},${s.end},${s.check},${agreed[i] ? 'aligned-2model' : 'aligned-1model'}`)].join('\n') + '\n');
+    ...A.map((s, i) => `${s.verseId},${s.start},${s.end},${s.check},${src(i)}`)].join('\n') + '\n');
   const items = [];
   A.forEach((s, i) => {
     const audit = parseInt(crypto.createHash('sha1').update(`${row.id}|${i}`).digest('hex').slice(0, 8), 16) / 0xffffffff < AUDIT;
-    if (agreed[i] && !audit) return;
+    if (sure[i] && !audit) return;
     const other = B.filter((o) => o.verseId === s.verseId).sort((x, y) => Math.abs(x.start - s.start) - Math.abs(y.start - s.start))[0];
     items.push({ id: `${row.id}#${i}`, clip: row.id, folder: row.content_folder, verseId: s.verseId, line: s.text, start: s.start,
       other: other ? other.start : null, otherLabel: 'second model', prev: i > 0 ? A[i - 1].text : '', next: i + 1 < A.length ? A[i + 1].text : '',
-      why: agreed[i] ? 'audit' : other ? `models ${Math.abs(other.start - s.start).toFixed(1)} s apart` : 'second model did not find this pangti here',
+      kind: src(i), why: sure[i] ? 'spot check of an auto-accepted start' : agreed[i] ? 'models agree, but the heard words match weakly' : other ? `models ${Math.abs(other.start - s.start).toFixed(1)} s apart` : 'second model did not find this pangti here',
       source: row.gurdwara || '' });
   });
-  return { segments: A.length, agreed: agreed.filter(Boolean).length, review: items.length, items };
+  return { segments: A.length, agreed: agreed.filter(Boolean).length, sure: sure.filter(Boolean).length, review: items.length, items };
 }
 
 (async () => {
@@ -151,14 +155,17 @@ function combine(row, A, B) {
         const truth = readCsv(path.join(BENCH, row.content_folder, row.id, 'shabads.csv')).filter((t) => t.shabadId);
         if (!truth.length) { console.log(`${row.id}: no Shabad/Bani truth, skipped`); continue; }
         const segs = {};
-        for (const m of MODELS) segs[m] = alignClip(m, row, await emisFor(m, row), truth);
+        for (const m of MODELS) {
+          const prev = path.join(LINES, 'align', m, `${row.id}.json`);
+          segs[m] = fs.existsSync(prev) && !argv.includes('--realign') ? JSON.parse(fs.readFileSync(prev, 'utf8')).segs : alignClip(m, row, await emisFor(m, row), truth);
+        }
         const c = combine(row, segs.karanbir, segs.surinder);
-        summary[row.id] = { folder: row.content_folder, tier: tiers.find((t) => G.inTier(row, t, sets)), segments: c.segments, agreed: c.agreed, review: c.review, at: new Date().toISOString() };
+        summary[row.id] = { folder: row.content_folder, tier: tiers.find((t) => G.inTier(row, t, sets)), segments: c.segments, agreed: c.agreed, sure: c.sure, review: c.review, at: new Date().toISOString() };
         fs.mkdirSync(path.join(LINES, 'review'), { recursive: true });
         fs.writeFileSync(path.join(LINES, 'review', `${row.id}.items.json`), JSON.stringify(c.items));
         fs.writeFileSync(sumFile, JSON.stringify(summary, null, 1));
         done++;
-        console.log(`[${done}/${rows.length} ${((Date.now() - t0) / 60000).toFixed(1)} min] ${row.id}: ${c.segments} pangti starts, ${c.agreed} agreed, ${c.review} to review`);
+        console.log(`[${done}/${rows.length} ${((Date.now() - t0) / 60000).toFixed(1)} min] ${row.id}: ${c.segments} pangti starts, ${c.agreed} agreed (${c.sure} sure), ${c.review} to review`);
       } catch (e) { console.log(`${row.id}: FAILED ${String(e.message).slice(0, 300)}`); }
     }
   }));
