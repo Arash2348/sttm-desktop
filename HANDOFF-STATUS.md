@@ -74,6 +74,45 @@ GAB-Akhand it must move right Shabad %, wrong s/h or find time the right way. St
 | Probation | ytak_0typ right Shabad in ~10-20 s, not 95 s | a correct lock the model never hears clearly can be switched away from in its first minute: main wrong s/h |
 | Local scoring | better first lock on many-voice audio | the 2-nat margin is a guess; tune `AK_LOCAL_CTC` (1-3) and the margin on train+dev only |
 
+## GAB results, round 1 (cloud, Oct 15 2026; practice split = train + dev; replay from the shared cache)
+
+**Baseline check:** 9.0.3 (3fafc0ba) on full GAB-Akhand reproduces the published v1.3 row exactly (78.2% right Shabad,
+398.3 wrong s/h, find 5.8 / 38.1 s, 7 not found, switches 6 / 1 / 3). GAB-Hard: 52.8% right Shabad, 47.7% right pangti.
+
+| step (vs the one before) | GAB-Hard (20 clips) | GAB-Akhand (23 clips) | main GAB | call |
+|---|---|---|---|---|
+| V6 (488c3721) vs 9.0.3 | FAIL: wrong Shabad 350.8 -> 358.9 s/h (33 better, right Shabad 52.8 -> 58%) | PASS: right Shabad 78.2 -> 78.8%, not found 7 -> 6 | running | promising, not keepable alone |
+| solid-win guard (31ed091a) vs V6 | **FAIL**: right Shabad 58 -> 48.8%, wrong 358.9 -> 456.9 s/h, not found 7 -> 8 | INCOMPLETE (7 clips) | - | **dropped** |
+| V6 + probation (`SWITCH_COMMIT_SOLID = 0`) vs V6 | **PASS, 17 better**: right Shabad 58 -> 58.4%, right pangti 48.8 -> 49.2%, fremont-train find p50 100.4 -> 89.1 s | INCOMPLETE (9 clips) | not run | **best so far** |
+| V6 + local scoring (`AK_LOCAL_CTC = 2`) vs V6 | INCOMPLETE (10 clips) | INCOMPLETE | INCOMPLETE (53 clips, with the guard on) | cannot judge yet |
+| all constants 0 vs V6 (check) | identical | identical | - | constant = 0 really removes a step |
+| window alignment (122acabb) vs 9.0.3 | INCOMPLETE (11) | INCOMPLETE (22) | INCOMPLETE (186 of ~200) | needs a near-full re-record |
+
+**INCOMPLETE = the change asks the speech model for windows the cache has never seen** (a lock or switch at a new moment).
+Replay-only rule: not recorded here. Where each clip can be filled (a clip never mixes machines; Azure manifest platform):
+
+| clips | cached on | fill where |
+|---|---|---|
+| Akhand L3 (32), Renton Finds rn (81), Yuba (17) | linux-x64 (GCP VM) | GCP VM, or this x86 cloud container (model int8 sha 5f9e41d867de downloads publicly from karansea/...shabad-preview) |
+| L2 clip*, paath pt*, Aarti aa*/bn*, Hard kh*, nw*, rt*, ytap/ytas/sp | darwin-arm64 (Mac) | the Mac only |
+
+**Mac fill for the two finalists** (variants are constants on `d71b304`, committed so GAB's per-tree cache sees them):
+```sh
+cd ~/personal/sttm-desktop && git fetch arash claude/sweet-brahmagupta-x0uez6
+for v in "v6-prob:SWITCH_COMMIT_SOLID=0" "v6-prob-ctc:SWITCH_COMMIT_SOLID=0 AK_LOCAL_CTC=2"; do
+  n=${v%%:*}; git worktree add --detach ~/personal/$n d71b304 && ln -s ~/personal/sttm-desktop/node_modules ~/personal/$n/node_modules
+  for kv in ${v#*:}; do sed -i '' "s/^const ${kv%%=*} = [^;]*;/const ${kv%%=*} = ${kv#*=};/" ~/personal/$n/www/main/addons/voice-follow/components/VoiceFollow.jsx; done
+  git -C ~/personal/$n -c user.name=cloud-gab -c user.email=cloud-gab@localhost commit -qam "Experiment: ${v#*:}" --date 2026-01-01T00:00:00Z
+done
+cd <GAB tools> && ./gab fill --root ~/personal/v6-prob && ./gab fill --root ~/personal/v6-prob-ctc   # records Mac clips only, pushes to Azure
+```
+App tree hashes (must match the cloud): v6-prob d04e5aee6242, v6-prob-ctc ab8536eeb6da.
+
+**Cloud infrastructure (new):** `research/cloud-gab/` — `setup.sh` (one command: deps, GAB tools + cloud patch, BaniDB,
+HF audio, Mac path layout), `run-job.sh` (one helper session = one build replayed on given tiers), `results-sync.js`
+(replay results shared in Azure `bench-results/`, so a build replayed once is never replayed again in any session).
+Measured: replay ~32x real time on 4 cores (Akhand 3 min, Hard 5 min, main ~30 min per build).
+
 ## Open questions for the owner
 
 1. Add `HF_TOKEN` and `VF_AZURE_SAS` to this cloud environment's settings (environment menu in the session's
