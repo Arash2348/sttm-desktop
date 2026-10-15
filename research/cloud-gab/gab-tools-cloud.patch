@@ -1,5 +1,5 @@
 diff --git a/research/level2-dataset/tools/gab.js b/research/level2-dataset/tools/gab.js
-index 6e57021..ac14f4a 100644
+index 6e57021..e37d77a 100644
 --- a/research/level2-dataset/tools/gab.js
 +++ b/research/level2-dataset/tools/gab.js
 @@ -38,13 +38,13 @@ const G = require('./gab-score');
@@ -18,6 +18,16 @@ index 6e57021..ac14f4a 100644
  const HF_REPO = 'khalisfoundation/GurbaniAutopilotBench';
  const hfToken = () => process.env.HF_TOKEN || (fs.existsSync(path.join(os.homedir(), '.vf-hf-token')) ? fs.readFileSync(path.join(os.homedir(), '.vf-hf-token'), 'utf8').trim() : '');
  async function hfGet(repo, file) {
+@@ -206,6 +206,9 @@ function freeBytes(dir) {
+ // Pull every entry that is missing locally (thorough: also partial ones) from the shared Azure bench-cache.
+ // Returns the ids still missing in both places (= need the model).
+ async function pullMissing(clips, { thorough = false, say = console.log } = {}) {
++  // VF_NO_EMIS_PULL=1 (cloud-gab): the builds' replays come from the shared results cache (results-sync.js pull), so
++  // the model output is not fetched; a build that does need a replay then reports a cache miss = INCOMPLETE, never PASS
++  if (process.env.VF_NO_EMIS_PULL === '1') return [];
+   const uniq = [...new Map(clips.map((c) => [c.id, { id: c.id, wav: c.wav }])).values()].filter((c) => fs.existsSync(c.wav));
+   const todo = thorough ? uniq : uniq.filter((c) => !cachedLocally(c.id));
+   if (!todo.length) return [];
 diff --git a/research/level2-dataset/tools/remote-cache.js b/research/level2-dataset/tools/remote-cache.js
 index bb2861c..4eabf09 100644
 --- a/research/level2-dataset/tools/remote-cache.js
