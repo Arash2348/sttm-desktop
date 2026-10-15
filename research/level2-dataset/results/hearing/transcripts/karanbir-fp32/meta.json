@@ -1,0 +1,14 @@
+{
+ "format": "ONNX model.onnx (as published)",
+ "front_end": "in the ONNX graph (author export)",
+ "decoder": "greedy CTC, blank 256, sentencepiece decode (model card script)",
+ "file": "/Users/asingh02/AAI/models/karansea-shabad-ctc/model.onnx",
+ "model": "karanbir-fp32",
+ "sha256": "5ba46679b8956cff6bd9dfdb83632ca9c3021539f4decb530427faa7740b242b",
+ "size": 479742667,
+ "window_s": 4.0,
+ "hop_s": 1.0,
+ "started": "2026-10-14 20:01",
+ "seconds": 311,
+ "windows": 5994
+}

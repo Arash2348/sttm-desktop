@@ -1,0 +1,21 @@
+{
+ "format": "NeMo baniguru_offline_v1.nemo (fp32 PyTorch, torch.load weights_only=True), nemo 1.23.0rc0 config",
+ "front_end": "NeMo AudioToMelSpectrogramPreprocessor from the checkpoint config ({'features': 80, 'n_fft': 512, 'window_size': 0.025, 'window_stride': 0.01, 'normalize': 'per_feature'}, defaults preemph 0.97, log add 2^-24, eval: no dither)",
+ "decoder": "greedy CTC over the pa slice [3840,4096) + blank 5632 of the shared CTC head (= AI4Bharat multisoftmax language mask), pa sentencepiece decode",
+ "file": "/Users/asingh02/AAI/models/sukhpal-baniguru-v1/baniguru_offline_v1.nemo",
+ "loaded_tensors": {
+  "preprocessor.": 2,
+  "encoder.": 686,
+  "ctc_decoder.": 2,
+  "decoder.": 5,
+  "joint.": 6
+ },
+ "model": "sukhpal-ctc",
+ "sha256": "0214688920a5a92854f76dd8e7116e0e7f64db4c2a715d03f0c6a18b900a11ef",
+ "size": 523182080,
+ "window_s": 4.0,
+ "hop_s": 1.0,
+ "started": "2026-10-14 20:52",
+ "seconds": 1984,
+ "windows": 5994
+}

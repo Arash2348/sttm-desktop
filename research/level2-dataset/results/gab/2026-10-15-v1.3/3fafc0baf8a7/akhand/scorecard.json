@@ -1,0 +1,1051 @@
+{
+ "gab": "GAB v1.3",
+ "createdAt": "2026-10-15 04:28",
+ "build": {
+  "name": null,
+  "root": "/Users/asingh02/personal/live-darbar-venues/cache/worktrees/3fafc0baf8a7",
+  "commit": "3fafc0baf8a7",
+  "dirty": false,
+  "subject": "Merge pull request #2244 from Arash2348/vf-panel-tweaks",
+  "featureVersion": "9.0.3"
+ },
+ "manifest": {
+  "sha": "87155c50d6ce",
+  "rows": 345,
+  "path": "/home/asingh02/personal/vf-benchmark/manifest.csv"
+ },
+ "set": "akhand",
+ "tier": "full",
+ "split": "dev (train + dev rows; test held out)",
+ "folders": null,
+ "notRun": [],
+ "timings": {
+  "replay_s": 284,
+  "clip_runs": 12,
+  "reused": 0,
+  "load": "48.1 29.8 16.8",
+  "score_s": 1.5,
+  "total_s": 285.6
+ },
+ "setTitle": "GAB-Akhand Kirtan (smagam, many singers)",
+ "rows": [
+  {
+   "key": "1-kirtan-shabad",
+   "level": "behaviour",
+   "title": "Kirtan of a Shabad",
+   "clips": 23,
+   "hours": 1.51,
+   "sessions": 2,
+   "right_shabad_pct": 78.2,
+   "shabad_clips": 23,
+   "shabad_voiced_min": 80.2,
+   "wrong_s_per_h": 398.3,
+   "blank_pct": 10.7,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "pangti_clips": 0,
+   "pangti_never_shown": 0,
+   "behind_p50_s": null,
+   "behind_p90_s": null,
+   "behind_n": 0,
+   "lines": [],
+   "find_p50_s": 5.8,
+   "find_p90_s": 38.1,
+   "find_n": 23,
+   "not_found": 7,
+   "find_cold_n": 10,
+   "switch_p50_s": 0.2,
+   "switch_p90_s": 81.6,
+   "switch_n": 10,
+   "switch_missed": 3,
+   "switch_within10_n": 6,
+   "switch_later_n": 1,
+   "stayed_main_n": 0,
+   "parmaan_n": 0,
+   "parmaan_shown": 0,
+   "thin": [],
+   "mic": {
+    "mixer-feed": {
+     "clips": 23,
+     "hours": 1.51,
+     "right_shabad_pct": 78.2,
+     "pangti_pct": null,
+     "behind_p50_s": null,
+     "wrong_s_per_h": 398.3,
+     "find_p50_s": 5.8,
+     "pangti_basis": null,
+     "pangti_clips": 0,
+     "find_n": 23
+    },
+    "50/50": {
+     "right_shabad_pct": null,
+     "right_shabad_pct_basis": "mixer-feed only",
+     "pangti_pct": null,
+     "behind_p50_s": null,
+     "wrong_s_per_h": null,
+     "wrong_s_per_h_basis": "mixer-feed only",
+     "find_p50_s": null,
+     "find_p50_s_basis": "mixer-feed only"
+    }
+   }
+  },
+  {
+   "key": "2-bani-recited",
+   "level": "behaviour",
+   "title": "Bani recited (paath)",
+   "clips": 0,
+   "note": "no GAB-Akhand Kirtan (smagam, many singers) recording of this behaviour has a replay runner"
+  },
+  {
+   "key": "3-bani-sung-like-kirtan",
+   "level": "behaviour",
+   "title": "Bani sung like kirtan",
+   "clips": 0,
+   "note": "no GAB-Akhand Kirtan (smagam, many singers) recording of this behaviour has a replay runner"
+  },
+  {
+   "key": "4-akhand-paath",
+   "level": "behaviour",
+   "title": "Akhand Paath (Ang after Ang)",
+   "clips": 0,
+   "note": "no GAB-Akhand Kirtan (smagam, many singers) recording of this behaviour has a replay runner"
+  },
+  {
+   "key": "set:l3-toronto",
+   "level": "set",
+   "title": "AKJ Toronto Smagam 2022 (Friday train; Saturday test)",
+   "clips": 4,
+   "hours": 0.43,
+   "sessions": 1,
+   "right_shabad_pct": 88.3,
+   "shabad_clips": 4,
+   "shabad_voiced_min": 24.2,
+   "wrong_s_per_h": 223.4,
+   "blank_pct": 5.5,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "pangti_clips": 0,
+   "pangti_never_shown": 0,
+   "behind_p50_s": null,
+   "behind_p90_s": null,
+   "behind_n": 0,
+   "lines": [],
+   "find_p50_s": 27.9,
+   "find_p90_s": 27.9,
+   "find_n": 4,
+   "not_found": 2,
+   "find_cold_n": 2,
+   "switch_p50_s": 0,
+   "switch_p90_s": 0,
+   "switch_n": 2,
+   "switch_missed": 0,
+   "switch_within10_n": 2,
+   "switch_later_n": 0,
+   "stayed_main_n": 0,
+   "parmaan_n": 0,
+   "parmaan_shown": 0,
+   "thin": [
+    "switch_n"
+   ],
+   "mic": {
+    "mixer-feed": {
+     "clips": 4,
+     "hours": 0.43,
+     "right_shabad_pct": 88.3,
+     "pangti_pct": null,
+     "behind_p50_s": null,
+     "wrong_s_per_h": 223.4,
+     "find_p50_s": 27.9,
+     "pangti_basis": null,
+     "pangti_clips": 0,
+     "find_n": 4
+    },
+    "50/50": {
+     "right_shabad_pct": null,
+     "right_shabad_pct_basis": "mixer-feed only",
+     "pangti_pct": null,
+     "behind_p50_s": null,
+     "wrong_s_per_h": null,
+     "wrong_s_per_h_basis": "mixer-feed only",
+     "find_p50_s": null,
+     "find_p50_s_basis": "mixer-feed only"
+    }
+   }
+  },
+  {
+   "key": "set:l3-manchester",
+   "level": "set",
+   "title": "Manchester Smagam 2024 Rehnsabhai",
+   "clips": 19,
+   "hours": 1.08,
+   "sessions": 1,
+   "right_shabad_pct": 73.8,
+   "shabad_clips": 19,
+   "shabad_voiced_min": 56.1,
+   "wrong_s_per_h": 473.7,
+   "blank_pct": 13,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "pangti_clips": 0,
+   "pangti_never_shown": 0,
+   "behind_p50_s": null,
+   "behind_p90_s": null,
+   "behind_n": 0,
+   "lines": [],
+   "find_p50_s": 5.8,
+   "find_p90_s": 38.1,
+   "find_n": 19,
+   "not_found": 5,
+   "find_cold_n": 8,
+   "switch_p50_s": 4.3,
+   "switch_p90_s": 81.6,
+   "switch_n": 8,
+   "switch_missed": 3,
+   "switch_within10_n": 4,
+   "switch_later_n": 1,
+   "stayed_main_n": 0,
+   "parmaan_n": 0,
+   "parmaan_shown": 0,
+   "thin": [],
+   "mic": {
+    "mixer-feed": {
+     "clips": 19,
+     "hours": 1.08,
+     "right_shabad_pct": 73.8,
+     "pangti_pct": null,
+     "behind_p50_s": null,
+     "wrong_s_per_h": 473.7,
+     "find_p50_s": 5.8,
+     "pangti_basis": null,
+     "pangti_clips": 0,
+     "find_n": 19
+    },
+    "50/50": {
+     "right_shabad_pct": null,
+     "right_shabad_pct_basis": "mixer-feed only",
+     "pangti_pct": null,
+     "behind_p50_s": null,
+     "wrong_s_per_h": null,
+     "wrong_s_per_h_basis": "mixer-feed only",
+     "find_p50_s": null,
+     "find_p50_s_basis": "mixer-feed only"
+    }
+   }
+  },
+  {
+   "key": "all",
+   "level": "all",
+   "title": "All behaviours together (mixed; not a headline)",
+   "clips": 23,
+   "hours": 1.51,
+   "sessions": 2,
+   "right_shabad_pct": 78.2,
+   "shabad_clips": 23,
+   "shabad_voiced_min": 80.2,
+   "wrong_s_per_h": 398.3,
+   "blank_pct": 10.7,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "pangti_clips": 0,
+   "pangti_never_shown": 0,
+   "behind_p50_s": null,
+   "behind_p90_s": null,
+   "behind_n": 0,
+   "lines": [],
+   "find_p50_s": 5.8,
+   "find_p90_s": 38.1,
+   "find_n": 23,
+   "not_found": 7,
+   "find_cold_n": 10,
+   "switch_p50_s": 0.2,
+   "switch_p90_s": 81.6,
+   "switch_n": 10,
+   "switch_missed": 3,
+   "switch_within10_n": 6,
+   "switch_later_n": 1,
+   "stayed_main_n": 0,
+   "parmaan_n": 0,
+   "parmaan_shown": 0,
+   "thin": [],
+   "mic": {
+    "mixer-feed": {
+     "clips": 23,
+     "hours": 1.51,
+     "right_shabad_pct": 78.2,
+     "pangti_pct": null,
+     "behind_p50_s": null,
+     "wrong_s_per_h": 398.3,
+     "find_p50_s": 5.8,
+     "pangti_basis": null,
+     "pangti_clips": 0,
+     "find_n": 23
+    },
+    "50/50": {
+     "right_shabad_pct": null,
+     "right_shabad_pct_basis": "mixer-feed only",
+     "pangti_pct": null,
+     "behind_p50_s": null,
+     "wrong_s_per_h": null,
+     "wrong_s_per_h_basis": "mixer-feed only",
+     "find_p50_s": null,
+     "find_p50_s_basis": "mixer-feed only"
+    }
+   }
+  }
+ ],
+ "micAssumptions": {
+  "AKJ Toronto Smagam 2022 (AKJ.Org) [hall]": "mixer-feed (smagam livestream (AKJ.Org, Manchester Rehnsabhai YouTube); broadcast feed of many singers and the sangat (assumed, unconfirmed))",
+  "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri) [hall]": "mixer-feed (smagam livestream (AKJ.Org, Manchester Rehnsabhai YouTube); broadcast feed of many singers and the sangat (assumed, unconfirmed))"
+ },
+ "clips": [
+  {
+   "id": "l3clip01",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.15,
+   "right_shabad_pct": 88.8,
+   "wrong_s_per_h": 202,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 30,
+     "window": [
+      30,
+      545
+     ],
+     "unit": "2596",
+     "find": 27.9
+    }
+   ]
+  },
+  {
+   "id": "l3clip02",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.1,
+   "right_shabad_pct": 77.8,
+   "wrong_s_per_h": 338.8,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "cold",
+     "at": 0,
+     "window": [
+      0,
+      30
+     ],
+     "unit": "2596",
+     "find": null
+    },
+    {
+     "kind": "switch",
+     "at": 30,
+     "window": [
+      30,
+      340
+     ],
+     "unit": "1435",
+     "find": 0
+    }
+   ]
+  },
+  {
+   "id": "l3clip03",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.11,
+   "right_shabad_pct": 92,
+   "wrong_s_per_h": 223.7,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "cold",
+     "at": 0,
+     "window": [
+      0,
+      30
+     ],
+     "unit": "1435",
+     "find": null
+    },
+    {
+     "kind": "switch",
+     "at": 30,
+     "window": [
+      30,
+      375
+     ],
+     "unit": "3523",
+     "find": 0
+    }
+   ]
+  },
+  {
+   "id": "l3clip04",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.07,
+   "right_shabad_pct": 97.1,
+   "wrong_s_per_h": 94.9,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 30,
+     "window": [
+      30,
+      250
+     ],
+     "unit": "2554",
+     "find": 0
+    }
+   ]
+  },
+  {
+   "id": "l3clip15",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.06,
+   "right_shabad_pct": 100,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 15,
+     "window": [
+      15,
+      210
+     ],
+     "unit": "5288",
+     "find": 0
+    }
+   ]
+  },
+  {
+   "id": "l3clip16",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.05,
+   "right_shabad_pct": 12.5,
+   "wrong_s_per_h": 2604.9,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "cold",
+     "at": 0,
+     "window": [
+      0,
+      30
+     ],
+     "unit": "5288",
+     "find": 8.2
+    },
+    {
+     "kind": "switch",
+     "at": 30,
+     "window": [
+      30,
+      175
+     ],
+     "unit": "5280",
+     "find": null
+    }
+   ]
+  },
+  {
+   "id": "l3clip18",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.04,
+   "right_shabad_pct": 94.8,
+   "wrong_s_per_h": 124.9,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 30,
+     "window": [
+      30,
+      125
+     ],
+     "unit": "145",
+     "find": 3.8
+    }
+   ]
+  },
+  {
+   "id": "l3clip19",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.1,
+   "right_shabad_pct": 98.7,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "cold",
+     "at": 0,
+     "window": [
+      0,
+      30
+     ],
+     "unit": "145",
+     "find": 4.1
+    },
+    {
+     "kind": "switch",
+     "at": 30,
+     "window": [
+      30,
+      355
+     ],
+     "unit": "4564",
+     "find": 0.2
+    }
+   ]
+  },
+  {
+   "id": "l3clip21",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.04,
+   "right_shabad_pct": 61.9,
+   "wrong_s_per_h": 1352.2,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 30,
+     "window": [
+      30,
+      130
+     ],
+     "unit": "3236",
+     "find": 38.1
+    }
+   ]
+  },
+  {
+   "id": "l3clip22",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.03,
+   "right_shabad_pct": 99.6,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 30,
+     "window": [
+      30,
+      110
+     ],
+     "unit": "3705",
+     "find": 0.2
+    }
+   ]
+  },
+  {
+   "id": "l3clip23",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.03,
+   "right_shabad_pct": 0,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 30,
+     "window": [
+      30,
+      95
+     ],
+     "unit": "3745",
+     "find": null
+    }
+   ]
+  },
+  {
+   "id": "l3clip24",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.02,
+   "right_shabad_pct": 87.2,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 30,
+     "window": [
+      30,
+      55
+     ],
+     "unit": "2174",
+     "find": 0
+    }
+   ]
+  },
+  {
+   "id": "l3clip26",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.11,
+   "right_shabad_pct": 98.4,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 30,
+     "window": [
+      30,
+      390
+     ],
+     "unit": "4239",
+     "find": 5.8
+    }
+   ]
+  },
+  {
+   "id": "l3clip27",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.09,
+   "right_shabad_pct": 95.1,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 30,
+     "window": [
+      30,
+      315
+     ],
+     "unit": "200",
+     "find": 14
+    }
+   ]
+  },
+  {
+   "id": "l3clip29",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.05,
+   "right_shabad_pct": 90.8,
+   "wrong_s_per_h": 169.7,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 30,
+     "window": [
+      30,
+      172
+     ],
+     "unit": "2017",
+     "find": 5.8
+    }
+   ]
+  },
+  {
+   "id": "l3clip31",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.07,
+   "right_shabad_pct": 97.1,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 30,
+     "window": [
+      30,
+      225
+     ],
+     "unit": "1563",
+     "find": 2.3
+    }
+   ]
+  },
+  {
+   "id": "l3clip32",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.14,
+   "right_shabad_pct": 77.4,
+   "wrong_s_per_h": 119.3,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "cold",
+     "at": 0,
+     "window": [
+      0,
+      30
+     ],
+     "unit": "1563",
+     "find": null
+    },
+    {
+     "kind": "switch",
+     "at": 30,
+     "window": [
+      30,
+      495
+     ],
+     "unit": "3152",
+     "find": 81.6
+    }
+   ]
+  },
+  {
+   "id": "l3clip34",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.09,
+   "right_shabad_pct": 38.8,
+   "wrong_s_per_h": 2188.8,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 30,
+     "window": [
+      30,
+      330
+     ],
+     "unit": "1680",
+     "find": 183.5
+    }
+   ]
+  },
+  {
+   "id": "l3clip35",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.02,
+   "right_shabad_pct": 27.4,
+   "wrong_s_per_h": 2031.4,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "cold",
+     "at": 0,
+     "window": [
+      0,
+      30
+     ],
+     "unit": "1680",
+     "find": 10.8
+    },
+    {
+     "kind": "switch",
+     "at": 30,
+     "window": [
+      30,
+      70
+     ],
+     "unit": "5042",
+     "find": null
+    }
+   ]
+  },
+  {
+   "id": "l3clip36",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.03,
+   "right_shabad_pct": 65,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "cold",
+     "at": 0,
+     "window": [
+      0,
+      10
+     ],
+     "unit": "5042",
+     "find": null
+    },
+    {
+     "kind": "switch",
+     "at": 30,
+     "window": [
+      30,
+      80
+     ],
+     "unit": "5190",
+     "find": 7.9
+    }
+   ]
+  },
+  {
+   "id": "l3clip37",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.04,
+   "right_shabad_pct": 12,
+   "wrong_s_per_h": 22.1,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "cold",
+     "at": 0,
+     "window": [
+      0,
+      30
+     ],
+     "unit": "5190",
+     "find": 14.3
+    },
+    {
+     "kind": "switch",
+     "at": 30,
+     "window": [
+      30,
+      130
+     ],
+     "unit": "5009",
+     "find": null
+    }
+   ]
+  },
+  {
+   "id": "l3clip38",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.02,
+   "right_shabad_pct": 53.9,
+   "wrong_s_per_h": 9.6,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "cold",
+     "at": 0,
+     "window": [
+      0,
+      30
+     ],
+     "unit": "5009",
+     "find": null
+    },
+    {
+     "kind": "switch",
+     "at": 30,
+     "window": [
+      30,
+      75
+     ],
+     "unit": "5199",
+     "find": 4.3
+    }
+   ]
+  },
+  {
+   "id": "l3clip39",
+   "folder": "1-kirtan-shabad",
+   "suite": "l3",
+   "split": "train",
+   "mic": "mixer-feed",
+   "hours": 0.05,
+   "right_shabad_pct": 65.7,
+   "wrong_s_per_h": 649.8,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": null,
+   "never_shown": false,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "cold",
+     "at": 0,
+     "window": [
+      0,
+      25
+     ],
+     "unit": "5199",
+     "find": null
+    },
+    {
+     "kind": "switch",
+     "at": 30,
+     "window": [
+      30,
+      165
+     ],
+     "unit": "5046",
+     "find": 0
+    }
+   ]
+  }
+ ],
+ "scoreErrors": []
+}

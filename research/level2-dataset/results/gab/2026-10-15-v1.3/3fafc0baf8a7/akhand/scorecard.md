@@ -1,0 +1,30 @@
+## GAB v1.3 scorecard — GAB-Akhand Kirtan (smagam, many singers) — 3fafc0baf8a7
+
+build `/Users/asingh02/personal/live-darbar-venues/cache/worktrees/3fafc0baf8a7` @ 3fafc0baf8a7 · Voice-Follow 9.0.3 · manifest 87155c50d6ce (345 rows) · set **akhand** · tier **full** · split **dev (train + dev rows; test held out)** · 2026-10-15 04:28
+
+| behaviour | clips · audio | right Shabad/Bani on screen (human truth) | sangat sees the right pangti (truth basis; coverage) | same or neighbouring pangti | seconds behind p50 / p90 | wrong Shabad s per hour | time to find p50 / p90 s | switch: found within 10 s / later / never; p50 |
+|---|---|---|---|---|---|---|---|---|
+| **Kirtan of a Shabad** | 23 · 1.51 h | 78.2% | - (no line truth) | - | - | 398.3 | 5.8 / 38.1 (n 23, 10 cold, 7 not found) | 6 within 10 s / 1 later / 3 never (n 10); p50 0.2 s over found |
+| **Bani recited (paath)** | no GAB-Akhand Kirtan (smagam, many singers) recording of this behaviour has a replay runner |  |  |  |  |  |  |  |
+| **Bani sung like kirtan** | no GAB-Akhand Kirtan (smagam, many singers) recording of this behaviour has a replay runner |  |  |  |  |  |  |  |
+| **Akhand Paath (Ang after Ang)** | no GAB-Akhand Kirtan (smagam, many singers) recording of this behaviour has a replay runner |  |  |  |  |  |  |  |
+
+Named clip sets of earlier reports (so an old number can be checked on its own clips):
+
+| set | clips · audio | right Shabad/Bani | sangat sees the right pangti | same or neighbouring | seconds behind p50 / p90 | wrong s/h | find p50 / p90 s | switch: within 10 s / later / never; p50 |
+|---|---|---|---|---|---|---|---|---|
+| AKJ Toronto Smagam 2022 (Friday train; Saturday test) | 4 · 0.43 h | 88.3% | - (no line truth) | - | - | 223.4 | 27.9 / 27.9 (n 4, 2 cold, 2 not found) | 2 within 10 s / 0 later / 0 never (n 2); p50 0 s over found (thin) |
+| Manchester Smagam 2024 Rehnsabhai | 19 · 1.08 h | 73.8% | - (no line truth) | - | - | 473.7 | 5.8 / 38.1 (n 19, 8 cold, 5 not found) | 4 within 10 s / 1 later / 3 never (n 8); p50 4.3 s over found |
+| All behaviours together (mixed; not a headline) | 23 · 1.51 h | 78.2% | - (no line truth) | - | - | 398.3 | 5.8 / 38.1 (n 23, 10 cold, 7 not found) | 6 within 10 s / 1 later / 3 never (n 10); p50 0.2 s over found |
+
+Mic path, second view (50/50 = mean of mixer feed and room mic):
+
+| behaviour | mic path | clips | right Shabad/Bani | sangat sees the right pangti | seconds behind p50 | wrong Shabad s/h | find p50 s |
+|---|---|---|---|---|---|---|---|
+| Kirtan of a Shabad | mixer-feed | 23 | 78.2% | - | - | 398.3 | 5.8 |
+
+Mic path assumptions (gab-micpath.json): AKJ Toronto Smagam 2022 (AKJ.Org) [hall] = mixer-feed; Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri) [hall] = mixer-feed.
+
+How to read: right Shabad/Bani % and wrong s/h rest on human answer keys for every clip. Same or neighbouring pangti adds the time the screen is one pangti behind or ahead (in kirtan the ragi sings two pangtis as one phrase, and the answer key marks the partner as wrong); information only. Sangat-sees-pangti % and seconds behind need line-level answer keys; their basis is printed (human = the sevadaar's screen or a person; aligned, ear-checked = made by our aligner and spot-checked by ear; aligned = made by our aligner only, not a headline). Find = first Shabad/Bani of a clip ("cold" = the app was started while it was being sung, timed from t=0); switch = a later, different Shabad/Bani, timed from its start, counted only when the screen showed something else when it began (a return to the main Shabad after a parmaan that the screen never left is "stayed on main Shabad", correct, not a switch); p50 is over found switches only, so read it with "never"; a parmaan is also counted as shown / not shown. (thin) = fewer than 3 clips or events behind the number.
+
+Timing: total 285.6 s (replay 284 s, scoring 1.5 s), 12 clip runs, 0 reused; load average 48.1 29.8 16.8.

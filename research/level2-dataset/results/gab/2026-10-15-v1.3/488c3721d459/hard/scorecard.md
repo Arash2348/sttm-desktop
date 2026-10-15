@@ -1,0 +1,32 @@
+## GAB v1.3 scorecard — GAB-Hard (Fremont hall, laptop mic) — 488c3721d459
+
+build `/Users/asingh02/personal/live-darbar-venues/cache/worktrees/488c3721d459` @ 488c3721d459 · Voice-Follow 9.0.3 · manifest 87155c50d6ce (345 rows) · set **hard** · tier **full** · split **dev (train + dev rows; test held out)** · 2026-10-15 05:00
+
+| behaviour | clips · audio | right Shabad/Bani on screen (human truth) | sangat sees the right pangti (truth basis; coverage) | same or neighbouring pangti | seconds behind p50 / p90 | wrong Shabad s per hour | time to find p50 / p90 s | switch: found within 10 s / later / never; p50 |
+|---|---|---|---|---|---|---|---|---|
+| **Kirtan of a Shabad** | 20 · 2.79 h | 58% | **48.8%** (human; 13 clips, +7 never shown) | 66.1% | 2.25 / 18.81 (143 pangtis, human) | 358.9 | 28.8 / 125.5 (n 20, 4 cold, 7 not found) | 1 within 10 s / 2 later / 2 never (n 5); p50 17.9 s over found; 3 stayed on main Shabad; parmaan shown 1 of 6 |
+| **Bani recited (paath)** | no GAB-Hard (Fremont hall, laptop mic) recording of this behaviour has a replay runner |  |  |  |  |  |  |  |
+| **Bani sung like kirtan** | no GAB-Hard (Fremont hall, laptop mic) recording of this behaviour has a replay runner |  |  |  |  |  |  |  |
+| **Akhand Paath (Ang after Ang)** | no GAB-Hard (Fremont hall, laptop mic) recording of this behaviour has a replay runner |  |  |  |  |  |  |  |
+
+Named clip sets of earlier reports (so an old number can be checked on its own clips):
+
+| set | clips · audio | right Shabad/Bani | sangat sees the right pangti | same or neighbouring | seconds behind p50 / p90 | wrong s/h | find p50 / p90 s | switch: within 10 s / later / never; p50 |
+|---|---|---|---|---|---|---|---|---|
+| Fremont kirtan, dev sessions (Jaspal, sevadaar screen = human line truth) | 11 · 1.31 h | 71.3% | **63%** (human; 8 clips, +3 never shown) | 83.8% | 2.25 / 23.07 (72 pangtis, human) | 246 | 16.4 / 85.3 (n 11, 3 not found) | 0 within 10 s / 0 later / 1 never (n 1); p50 - s over found; 1 stayed on main Shabad; parmaan shown 0 of 1 (thin) |
+| Fremont kirtan, train sessions | 9 · 1.48 h | 47% | **37.3%** (human; 5 clips, +4 never shown) | 51.9% | 2.27 / 16.38 (71 pangtis, human) | 452.1 | 100.4 / 206.8 (n 9, 4 cold, 4 not found) | 1 within 10 s / 2 later / 1 never (n 4); p50 17.9 s over found; 2 stayed on main Shabad; parmaan shown 1 of 5 |
+| All behaviours together (mixed; not a headline) | 20 · 2.79 h | 58% | **48.8%** (human; 13 clips, +7 never shown) | 66.1% | 2.25 / 18.81 (143 pangtis, human) | 358.9 | 28.8 / 125.5 (n 20, 4 cold, 7 not found) | 1 within 10 s / 2 later / 2 never (n 5); p50 17.9 s over found; 3 stayed on main Shabad; parmaan shown 1 of 6 |
+
+Mic path, second view (50/50 = mean of mixer feed and room mic):
+
+| behaviour | mic path | clips | right Shabad/Bani | sangat sees the right pangti | seconds behind p50 | wrong Shabad s/h | find p50 s |
+|---|---|---|---|---|---|---|---|
+| Kirtan of a Shabad | room-mic | 20 | 58% | 48.8% (human, 13) | 2.25 | 358.9 | 28.8 |
+
+Mic path assumptions (gab-micpath.json): Gurdwara Sahib Fremont (Jaspal) [laptop-mic] = room-mic.
+
+How to read: right Shabad/Bani % and wrong s/h rest on human answer keys for every clip. Same or neighbouring pangti adds the time the screen is one pangti behind or ahead (in kirtan the ragi sings two pangtis as one phrase, and the answer key marks the partner as wrong); information only. Sangat-sees-pangti % and seconds behind need line-level answer keys; their basis is printed (human = the sevadaar's screen or a person; aligned, ear-checked = made by our aligner and spot-checked by ear; aligned = made by our aligner only, not a headline). Find = first Shabad/Bani of a clip ("cold" = the app was started while it was being sung, timed from t=0); switch = a later, different Shabad/Bani, timed from its start, counted only when the screen showed something else when it began (a return to the main Shabad after a parmaan that the screen never left is "stayed on main Shabad", correct, not a switch); p50 is over found switches only, so read it with "never"; a parmaan is also counted as shown / not shown. (thin) = fewer than 3 clips or events behind the number.
+
+Not run (2): no replay runner for this clip yet: kh16, kh23.
+
+Timing: total 528.2 s (replay 525.9 s, scoring 2 s), 10 clip runs, 0 reused; load average 57.9 61.4 56.4.

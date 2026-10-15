@@ -1,0 +1,1084 @@
+{
+ "gab": "GAB v1.3",
+ "createdAt": "2026-10-15 04:34",
+ "build": {
+  "name": null,
+  "root": "/Users/asingh02/personal/live-darbar-venues/cache/worktrees/db8f47cb870d",
+  "commit": "db8f47cb870d",
+  "dirty": false,
+  "subject": "Merge pull request #2242 from Arash2348/vf-aarti-fast",
+  "featureVersion": "9.0.1"
+ },
+ "manifest": {
+  "sha": "87155c50d6ce",
+  "rows": 345,
+  "path": "/home/asingh02/personal/vf-benchmark/manifest.csv"
+ },
+ "set": "hard",
+ "tier": "full",
+ "split": "dev (train + dev rows; test held out)",
+ "folders": null,
+ "notRun": [
+  {
+   "id": "kh16_sttm_desktop_2026_10_11T13_52_01_944Z",
+   "folder": "3-bani-sung-like-kirtan/asa-di-vaar",
+   "why": "no replay runner for this clip yet"
+  },
+  {
+   "id": "kh23_sttm_desktop_2026_10_13T01_50_01_713Z",
+   "folder": "3-bani-sung-like-kirtan/aarti",
+   "why": "no replay runner for this clip yet"
+  }
+ ],
+ "timings": {
+  "replay_s": 649.6,
+  "clip_runs": 10,
+  "reused": 0,
+  "load": "70.3 55.1 32.0",
+  "score_s": 2.2,
+  "total_s": 652
+ },
+ "setTitle": "GAB-Hard (Fremont hall, laptop mic)",
+ "rows": [
+  {
+   "key": "1-kirtan-shabad",
+   "level": "behaviour",
+   "title": "Kirtan of a Shabad",
+   "clips": 20,
+   "hours": 2.79,
+   "sessions": 5,
+   "right_shabad_pct": 52.8,
+   "shabad_clips": 20,
+   "shabad_voiced_min": 156.3,
+   "wrong_s_per_h": 350.8,
+   "blank_pct": 37.4,
+   "pangti_pct": 47.7,
+   "pangti_near_pct": 65.3,
+   "pangti_basis": "human",
+   "pangti_clips": 11,
+   "pangti_never_shown": 9,
+   "behind_p50_s": 2.27,
+   "behind_p90_s": 20.23,
+   "behind_n": 136,
+   "lines": [
+    {
+     "basis": "human",
+     "pct": 47.7,
+     "near_pct": 65.3,
+     "clips": 11,
+     "never_shown": 9,
+     "voiced_min": 123.2,
+     "behind_p50_s": 2.27,
+     "behind_p90_s": 20.23,
+     "behind_n": 136,
+     "lines_missed": 148,
+     "audit": null
+    }
+   ],
+   "find_p50_s": 51.7,
+   "find_p90_s": 125.5,
+   "find_n": 20,
+   "not_found": 9,
+   "find_cold_n": 4,
+   "switch_p50_s": 17.9,
+   "switch_p90_s": 518.1,
+   "switch_n": 5,
+   "switch_missed": 2,
+   "switch_within10_n": 1,
+   "switch_later_n": 2,
+   "stayed_main_n": 3,
+   "parmaan_n": 6,
+   "parmaan_shown": 1,
+   "thin": [],
+   "mic": {
+    "room-mic": {
+     "clips": 20,
+     "hours": 2.79,
+     "right_shabad_pct": 52.8,
+     "pangti_pct": 47.7,
+     "behind_p50_s": 2.27,
+     "wrong_s_per_h": 350.8,
+     "find_p50_s": 51.7,
+     "pangti_basis": "human",
+     "pangti_clips": 11,
+     "find_n": 20
+    },
+    "50/50": {
+     "right_shabad_pct": null,
+     "right_shabad_pct_basis": "room-mic only",
+     "pangti_pct": null,
+     "pangti_pct_basis": "room-mic only",
+     "behind_p50_s": null,
+     "behind_p50_s_basis": "room-mic only",
+     "wrong_s_per_h": null,
+     "wrong_s_per_h_basis": "room-mic only",
+     "find_p50_s": null,
+     "find_p50_s_basis": "room-mic only"
+    }
+   }
+  },
+  {
+   "key": "2-bani-recited",
+   "level": "behaviour",
+   "title": "Bani recited (paath)",
+   "clips": 0,
+   "note": "no GAB-Hard (Fremont hall, laptop mic) recording of this behaviour has a replay runner"
+  },
+  {
+   "key": "3-bani-sung-like-kirtan",
+   "level": "behaviour",
+   "title": "Bani sung like kirtan",
+   "clips": 0,
+   "note": "no GAB-Hard (Fremont hall, laptop mic) recording of this behaviour has a replay runner"
+  },
+  {
+   "key": "4-akhand-paath",
+   "level": "behaviour",
+   "title": "Akhand Paath (Ang after Ang)",
+   "clips": 0,
+   "note": "no GAB-Hard (Fremont hall, laptop mic) recording of this behaviour has a replay runner"
+  },
+  {
+   "key": "set:fremont-dev",
+   "level": "set",
+   "title": "Fremont kirtan, dev sessions (Jaspal, sevadaar screen = human line truth)",
+   "clips": 11,
+   "hours": 1.31,
+   "sessions": 3,
+   "right_shabad_pct": 61.1,
+   "shabad_clips": 11,
+   "shabad_voiced_min": 70.7,
+   "wrong_s_per_h": 246,
+   "blank_pct": 32.1,
+   "pangti_pct": 64,
+   "pangti_near_pct": 86.6,
+   "pangti_basis": "human",
+   "pangti_clips": 6,
+   "pangti_never_shown": 5,
+   "behind_p50_s": 2.13,
+   "behind_p90_s": 23.07,
+   "behind_n": 66,
+   "lines": [
+    {
+     "basis": "human",
+     "pct": 64,
+     "near_pct": 86.6,
+     "clips": 6,
+     "never_shown": 5,
+     "voiced_min": 49.9,
+     "behind_p50_s": 2.13,
+     "behind_p90_s": 23.07,
+     "behind_n": 66,
+     "lines_missed": 23,
+     "audit": null
+    }
+   ],
+   "find_p50_s": 14.9,
+   "find_p90_s": 51.7,
+   "find_n": 11,
+   "not_found": 5,
+   "find_cold_n": 0,
+   "switch_p50_s": null,
+   "switch_p90_s": null,
+   "switch_n": 1,
+   "switch_missed": 1,
+   "switch_within10_n": 0,
+   "switch_later_n": 0,
+   "stayed_main_n": 1,
+   "parmaan_n": 1,
+   "parmaan_shown": 0,
+   "thin": [
+    "switch_n"
+   ],
+   "mic": {
+    "room-mic": {
+     "clips": 11,
+     "hours": 1.31,
+     "right_shabad_pct": 61.1,
+     "pangti_pct": 64,
+     "behind_p50_s": 2.13,
+     "wrong_s_per_h": 246,
+     "find_p50_s": 14.9,
+     "pangti_basis": "human",
+     "pangti_clips": 6,
+     "find_n": 11
+    },
+    "50/50": {
+     "right_shabad_pct": null,
+     "right_shabad_pct_basis": "room-mic only",
+     "pangti_pct": null,
+     "pangti_pct_basis": "room-mic only",
+     "behind_p50_s": null,
+     "behind_p50_s_basis": "room-mic only",
+     "wrong_s_per_h": null,
+     "wrong_s_per_h_basis": "room-mic only",
+     "find_p50_s": null,
+     "find_p50_s_basis": "room-mic only"
+    }
+   }
+  },
+  {
+   "key": "set:fremont-train",
+   "level": "set",
+   "title": "Fremont kirtan, train sessions",
+   "clips": 9,
+   "hours": 1.48,
+   "sessions": 2,
+   "right_shabad_pct": 46,
+   "shabad_clips": 9,
+   "shabad_voiced_min": 85.6,
+   "wrong_s_per_h": 437.4,
+   "blank_pct": 41.8,
+   "pangti_pct": 36.5,
+   "pangti_near_pct": 50.7,
+   "pangti_basis": "human",
+   "pangti_clips": 5,
+   "pangti_never_shown": 4,
+   "behind_p50_s": 2.47,
+   "behind_p90_s": 18.31,
+   "behind_n": 70,
+   "lines": [
+    {
+     "basis": "human",
+     "pct": 36.5,
+     "near_pct": 50.7,
+     "clips": 5,
+     "never_shown": 4,
+     "voiced_min": 73.3,
+     "behind_p50_s": 2.47,
+     "behind_p90_s": 18.31,
+     "behind_n": 70,
+     "lines_missed": 125,
+     "audit": null
+    }
+   ],
+   "find_p50_s": 100.4,
+   "find_p90_s": 208.9,
+   "find_n": 9,
+   "not_found": 4,
+   "find_cold_n": 4,
+   "switch_p50_s": 17.9,
+   "switch_p90_s": 518.1,
+   "switch_n": 4,
+   "switch_missed": 1,
+   "switch_within10_n": 1,
+   "switch_later_n": 2,
+   "stayed_main_n": 2,
+   "parmaan_n": 5,
+   "parmaan_shown": 1,
+   "thin": [],
+   "mic": {
+    "room-mic": {
+     "clips": 9,
+     "hours": 1.48,
+     "right_shabad_pct": 46,
+     "pangti_pct": 36.5,
+     "behind_p50_s": 2.47,
+     "wrong_s_per_h": 437.4,
+     "find_p50_s": 100.4,
+     "pangti_basis": "human",
+     "pangti_clips": 5,
+     "find_n": 9
+    },
+    "50/50": {
+     "right_shabad_pct": null,
+     "right_shabad_pct_basis": "room-mic only",
+     "pangti_pct": null,
+     "pangti_pct_basis": "room-mic only",
+     "behind_p50_s": null,
+     "behind_p50_s_basis": "room-mic only",
+     "wrong_s_per_h": null,
+     "wrong_s_per_h_basis": "room-mic only",
+     "find_p50_s": null,
+     "find_p50_s_basis": "room-mic only"
+    }
+   }
+  },
+  {
+   "key": "all",
+   "level": "all",
+   "title": "All behaviours together (mixed; not a headline)",
+   "clips": 20,
+   "hours": 2.79,
+   "sessions": 5,
+   "right_shabad_pct": 52.8,
+   "shabad_clips": 20,
+   "shabad_voiced_min": 156.3,
+   "wrong_s_per_h": 350.8,
+   "blank_pct": 37.4,
+   "pangti_pct": 47.7,
+   "pangti_near_pct": 65.3,
+   "pangti_basis": "human",
+   "pangti_clips": 11,
+   "pangti_never_shown": 9,
+   "behind_p50_s": 2.27,
+   "behind_p90_s": 20.23,
+   "behind_n": 136,
+   "lines": [
+    {
+     "basis": "human",
+     "pct": 47.7,
+     "near_pct": 65.3,
+     "clips": 11,
+     "never_shown": 9,
+     "voiced_min": 123.2,
+     "behind_p50_s": 2.27,
+     "behind_p90_s": 20.23,
+     "behind_n": 136,
+     "lines_missed": 148,
+     "audit": null
+    }
+   ],
+   "find_p50_s": 51.7,
+   "find_p90_s": 125.5,
+   "find_n": 20,
+   "not_found": 9,
+   "find_cold_n": 4,
+   "switch_p50_s": 17.9,
+   "switch_p90_s": 518.1,
+   "switch_n": 5,
+   "switch_missed": 2,
+   "switch_within10_n": 1,
+   "switch_later_n": 2,
+   "stayed_main_n": 3,
+   "parmaan_n": 6,
+   "parmaan_shown": 1,
+   "thin": [],
+   "mic": {
+    "room-mic": {
+     "clips": 20,
+     "hours": 2.79,
+     "right_shabad_pct": 52.8,
+     "pangti_pct": 47.7,
+     "behind_p50_s": 2.27,
+     "wrong_s_per_h": 350.8,
+     "find_p50_s": 51.7,
+     "pangti_basis": "human",
+     "pangti_clips": 11,
+     "find_n": 20
+    },
+    "50/50": {
+     "right_shabad_pct": null,
+     "right_shabad_pct_basis": "room-mic only",
+     "pangti_pct": null,
+     "pangti_pct_basis": "room-mic only",
+     "behind_p50_s": null,
+     "behind_p50_s_basis": "room-mic only",
+     "wrong_s_per_h": null,
+     "wrong_s_per_h_basis": "room-mic only",
+     "find_p50_s": null,
+     "find_p50_s_basis": "room-mic only"
+    }
+   }
+  }
+ ],
+ "micAssumptions": {
+  "Gurdwara Sahib Fremont (Jaspal) [laptop-mic]": "room-mic (STTM Desktop on the sevadaar's laptop in the hall (laptop mic; unconfirmed, ask Jaspal))"
+ },
+ "clips": [
+  {
+   "id": "kh11_sttm_desktop_2026_10_11T02_40_20_422Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "dev",
+   "mic": "room-mic",
+   "hours": 0.14,
+   "right_shabad_pct": 0,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": "human",
+   "never_shown": true,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 31.7,
+     "window": [
+      31.7,
+      496.3
+     ],
+     "unit": "3031",
+     "find": null
+    }
+   ]
+  },
+  {
+   "id": "kh12_sttm_desktop_2026_10_11T02_50_05_783Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "dev",
+   "mic": "room-mic",
+   "hours": 0.25,
+   "right_shabad_pct": 97.8,
+   "wrong_s_per_h": 0,
+   "pangti_pct": 71.5,
+   "pangti_near_pct": 89.7,
+   "pangti_basis": "human",
+   "never_shown": false,
+   "behind_p50_s": 2.13,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 43.7,
+     "window": [
+      43.7,
+      905.3
+     ],
+     "unit": "4261",
+     "find": 0
+    }
+   ]
+  },
+  {
+   "id": "kh13_sttm_desktop_2026_10_11T03_07_57_411Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "dev",
+   "mic": "room-mic",
+   "hours": 0.14,
+   "right_shabad_pct": 0,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": "human",
+   "never_shown": true,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 3.3,
+     "window": [
+      3.3,
+      491.1
+     ],
+     "unit": "2554",
+     "find": null
+    }
+   ]
+  },
+  {
+   "id": "kh14_sttm_desktop_2026_10_11T13_42_38_291Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "dev",
+   "mic": "room-mic",
+   "hours": 0.02,
+   "right_shabad_pct": 0,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": "human",
+   "never_shown": true,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 16.7,
+     "window": [
+      16.7,
+      75.1
+     ],
+     "unit": "5451",
+     "find": null
+    }
+   ]
+  },
+  {
+   "id": "kh15_sttm_desktop_2026_10_11T13_45_00_522Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "dev",
+   "mic": "room-mic",
+   "hours": 0.12,
+   "right_shabad_pct": 96.8,
+   "wrong_s_per_h": 0,
+   "pangti_pct": 70.5,
+   "pangti_near_pct": 89.2,
+   "pangti_basis": "human",
+   "never_shown": false,
+   "behind_p50_s": 0.76,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 26.4,
+     "window": [
+      26.4,
+      414.8
+     ],
+     "unit": "1848",
+     "find": 12.5
+    }
+   ]
+  },
+  {
+   "id": "kh17_sttm_desktop_2026_10_11T18_10_13_059Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "train",
+   "mic": "room-mic",
+   "hours": 0.27,
+   "right_shabad_pct": 67.1,
+   "wrong_s_per_h": 621.1,
+   "pangti_pct": 61.5,
+   "pangti_near_pct": 66,
+   "pangti_basis": "human",
+   "never_shown": false,
+   "behind_p50_s": 5.04,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 75.7,
+     "window": [
+      75.7,
+      440.3
+     ],
+     "unit": "5447",
+     "find": 98.4
+    },
+    {
+     "kind": "switch",
+     "at": 440.3,
+     "window": [
+      440.3,
+      517.1
+     ],
+     "unit": "5443",
+     "find": null,
+     "parmaan": true
+    },
+    {
+     "kind": "switch",
+     "at": 517.1,
+     "window": [
+      517.1,
+      600.6
+     ],
+     "unit": "3590",
+     "find": null,
+     "parmaan": true
+    },
+    {
+     "kind": "switch",
+     "at": 600.6,
+     "window": [
+      600.6,
+      986.9
+     ],
+     "unit": "5447",
+     "find": 1.5
+    }
+   ]
+  },
+  {
+   "id": "kh18_sttm_desktop_2026_10_11T20_00_12_780Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "train",
+   "mic": "room-mic",
+   "hours": 0.12,
+   "right_shabad_pct": 0,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": "human",
+   "never_shown": true,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "cold",
+     "at": 0,
+     "window": [
+      2.2,
+      417.5
+     ],
+     "unit": "5445",
+     "find": null
+    }
+   ]
+  },
+  {
+   "id": "kh19_sttm_desktop_2026_10_11T20_08_08_535Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "train",
+   "mic": "room-mic",
+   "hours": 0.11,
+   "right_shabad_pct": 78.3,
+   "wrong_s_per_h": 0,
+   "pangti_pct": 59.3,
+   "pangti_near_pct": 78.3,
+   "pangti_basis": "human",
+   "never_shown": false,
+   "behind_p50_s": 0.8,
+   "audit": null,
+   "events": [
+    {
+     "kind": "cold",
+     "at": 0,
+     "window": [
+      1.7,
+      405.3
+     ],
+     "unit": "5460",
+     "find": 89.1
+    }
+   ]
+  },
+  {
+   "id": "kh20_sttm_desktop_2026_10_11T20_15_43_327Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "train",
+   "mic": "room-mic",
+   "hours": 0.21,
+   "right_shabad_pct": 64,
+   "wrong_s_per_h": 300,
+   "pangti_pct": 35.9,
+   "pangti_near_pct": 59.4,
+   "pangti_basis": "human",
+   "never_shown": false,
+   "behind_p50_s": 3.5,
+   "audit": null,
+   "events": [
+    {
+     "kind": "cold",
+     "at": 0,
+     "window": [
+      2.2,
+      277.5
+     ],
+     "unit": "4086",
+     "find": 208.9
+    },
+    {
+     "kind": "switch",
+     "at": 277.5,
+     "window": [
+      277.5,
+      299.3
+     ],
+     "unit": "3590",
+     "find": null,
+     "parmaan": true
+    },
+    {
+     "kind": "stayed",
+     "at": 299.3,
+     "window": [
+      299.3,
+      438.4
+     ],
+     "unit": "4086"
+    },
+    {
+     "kind": "switch",
+     "at": 438.4,
+     "window": [
+      438.4,
+      492.5
+     ],
+     "unit": "4725",
+     "find": 15.8,
+     "parmaan": true
+    },
+    {
+     "kind": "switch",
+     "at": 492.5,
+     "window": [
+      492.5,
+      656.8
+     ],
+     "unit": "4086",
+     "find": 17.9
+    },
+    {
+     "kind": "switch",
+     "at": 656.8,
+     "window": [
+      656.8,
+      665.5
+     ],
+     "unit": "1067",
+     "find": null,
+     "parmaan": true
+    },
+    {
+     "kind": "stayed",
+     "at": 665.5,
+     "window": [
+      665.5,
+      754.8
+     ],
+     "unit": "4086"
+    }
+   ]
+  },
+  {
+   "id": "kh21_sttm_desktop_2026_10_11T20_29_16_335Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "train",
+   "mic": "room-mic",
+   "hours": 0.11,
+   "right_shabad_pct": 65,
+   "wrong_s_per_h": 0,
+   "pangti_pct": 49.8,
+   "pangti_near_pct": 60.1,
+   "pangti_basis": "human",
+   "never_shown": false,
+   "behind_p50_s": 10.02,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 21.4,
+     "window": [
+      21.4,
+      380.4
+     ],
+     "unit": "2068",
+     "find": 125.5
+    }
+   ]
+  },
+  {
+   "id": "kh22_sttm_desktop_2026_10_11T20_36_12_345Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "train",
+   "mic": "room-mic",
+   "hours": 0.06,
+   "right_shabad_pct": 0,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": "human",
+   "never_shown": true,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 12.8,
+     "window": [
+      12.8,
+      222.4
+     ],
+     "unit": "41235",
+     "find": null
+    }
+   ]
+  },
+  {
+   "id": "kh24_sttm_desktop_2026_10_13T02_34_02_550Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "dev",
+   "mic": "room-mic",
+   "hours": 0.04,
+   "right_shabad_pct": 0,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": "human",
+   "never_shown": true,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 17.6,
+     "window": [
+      17.6,
+      160.6
+     ],
+     "unit": "4949",
+     "find": null
+    }
+   ]
+  },
+  {
+   "id": "kh25_sttm_desktop_2026_10_13T02_37_22_571Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "dev",
+   "mic": "room-mic",
+   "hours": 0.08,
+   "right_shabad_pct": 0,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": "human",
+   "never_shown": true,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 196.9,
+     "window": [
+      196.9,
+      288.3
+     ],
+     "unit": "5172",
+     "find": null
+    }
+   ]
+  },
+  {
+   "id": "kh26_sttm_desktop_2026_10_13T02_43_13_981Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "dev",
+   "mic": "room-mic",
+   "hours": 0.07,
+   "right_shabad_pct": 26.2,
+   "wrong_s_per_h": 2443.9,
+   "pangti_pct": 26.6,
+   "pangti_near_pct": 94.1,
+   "pangti_basis": "human",
+   "never_shown": false,
+   "behind_p50_s": 15.02,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 7.6,
+     "window": [
+      7.6,
+      89.2
+     ],
+     "unit": "5171",
+     "find": 14.9
+    },
+    {
+     "kind": "switch",
+     "at": 89.2,
+     "window": [
+      89.2,
+      262
+     ],
+     "unit": "5172",
+     "find": null
+    }
+   ]
+  },
+  {
+   "id": "kh27_sttm_desktop_2026_10_13T02_48_34_427Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "dev",
+   "mic": "room-mic",
+   "hours": 0.19,
+   "right_shabad_pct": 74.5,
+   "wrong_s_per_h": 636.4,
+   "pangti_pct": 49.6,
+   "pangti_near_pct": 77.3,
+   "pangti_basis": "human",
+   "never_shown": false,
+   "behind_p50_s": 2.88,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 22,
+     "window": [
+      22,
+      370.2
+     ],
+     "unit": "2774",
+     "find": 51.7
+    },
+    {
+     "kind": "switch",
+     "at": 370.2,
+     "window": [
+      370.2,
+      487.2
+     ],
+     "unit": "2763",
+     "find": null,
+     "parmaan": true
+    },
+    {
+     "kind": "stayed",
+     "at": 487.2,
+     "window": [
+      487.2,
+      684.5
+     ],
+     "unit": "2774"
+    }
+   ]
+  },
+  {
+   "id": "kh28_sttm_desktop_2026_10_13T03_01_13_513Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "dev",
+   "mic": "room-mic",
+   "hours": 0.2,
+   "right_shabad_pct": 100,
+   "wrong_s_per_h": 0,
+   "pangti_pct": 88,
+   "pangti_near_pct": 98.9,
+   "pangti_basis": "human",
+   "never_shown": false,
+   "behind_p50_s": 2.59,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 114,
+     "window": [
+      114,
+      716.8
+     ],
+     "unit": "2778",
+     "find": 0
+    }
+   ]
+  },
+  {
+   "id": "kh29_sttm_desktop_2026_10_13T03_13_38_540Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "dev",
+   "mic": "room-mic",
+   "hours": 0.06,
+   "right_shabad_pct": 92.5,
+   "wrong_s_per_h": 0,
+   "pangti_pct": 44.5,
+   "pangti_near_pct": 57,
+   "pangti_basis": "human",
+   "never_shown": false,
+   "behind_p50_s": 4.02,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 5.1,
+     "window": [
+      5.1,
+      231.8
+     ],
+     "unit": "2776",
+     "find": 16.9
+    }
+   ]
+  },
+  {
+   "id": "kh30_sttm_desktop_2026_10_14T02_35_12_435Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "train",
+   "mic": "room-mic",
+   "hours": 0.03,
+   "right_shabad_pct": 0,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": "human",
+   "never_shown": true,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 49.7,
+     "window": [
+      49.7,
+      124.3
+     ],
+     "unit": "3867",
+     "find": null
+    }
+   ]
+  },
+  {
+   "id": "kh31_sttm_desktop_2026_10_14T02_38_09_370Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "train",
+   "mic": "room-mic",
+   "hours": 0.55,
+   "right_shabad_pct": 36.5,
+   "wrong_s_per_h": 737.4,
+   "pangti_pct": 18.2,
+   "pangti_near_pct": 32.9,
+   "pangti_basis": "human",
+   "never_shown": false,
+   "behind_p50_s": 2.22,
+   "audit": null,
+   "events": [
+    {
+     "kind": "begins",
+     "at": 19.9,
+     "window": [
+      19.9,
+      613.4
+     ],
+     "unit": "553",
+     "find": 100.4
+    },
+    {
+     "kind": "switch",
+     "at": 613.4,
+     "window": [
+      613.4,
+      1374.8
+     ],
+     "unit": "2773",
+     "find": 518.1
+    },
+    {
+     "kind": "switch",
+     "at": 1374.8,
+     "window": [
+      1374.8,
+      1992.1
+     ],
+     "unit": "2781",
+     "find": null
+    }
+   ]
+  },
+  {
+   "id": "kh32_sttm_desktop_2026_10_14T03_11_54_037Z",
+   "folder": "1-kirtan-shabad",
+   "suite": "jaspal",
+   "split": "train",
+   "mic": "room-mic",
+   "hours": 0.01,
+   "right_shabad_pct": 0,
+   "wrong_s_per_h": 0,
+   "pangti_pct": null,
+   "pangti_near_pct": null,
+   "pangti_basis": "human",
+   "never_shown": true,
+   "behind_p50_s": null,
+   "audit": null,
+   "events": [
+    {
+     "kind": "cold",
+     "at": 0,
+     "window": [
+      1.1,
+      38
+     ],
+     "unit": "5451",
+     "find": null
+    }
+   ]
+  }
+ ],
+ "scoreErrors": []
+}

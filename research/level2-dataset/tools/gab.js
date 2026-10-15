@@ -18,6 +18,9 @@
  *   gab publish --batch <batch.json>                      -> every build in one commit (after a GAB version change)
  *   gab harvest [...]                                      -> Azure sessions -> review queue (gab-harvest.js)
  *   gab review [--queue <dir>] [--port 8771]              -> yes/no ear-check app over a review queue (gab-review.js)
+ *   gab label pick|first|review|apply|upload <batch> ...  -> line-level answer keys: slide OCR + aligner, a person
+ *                                                             checks the unsure pangti starts (sttm-desktop
+ *                                                             research/level2-dataset/linelabel, LINE-LABEL.md)
  *
  * <build> = an app worktree path, or a git rev of ~/personal/sttm-desktop (`upstream` = khalis/experimental-release);
  * a rev gets a detached worktree under <cache>/worktrees/<sha12> (same place vf-check uses).
@@ -431,7 +434,8 @@ async function cmdIngest() {
 const commands = { run: cmdRun, compare: cmdCompare, slowpc: cmdSlowpc, pull: cmdPull, fill: cmdFill, ingest: cmdIngest,
   publish: () => require('./gab-publish').main(argv.slice(1)),
   harvest: () => require('./gab-harvest').main(argv.slice(1)),
-  review: () => require('./gab-review').main(argv.slice(1)) };
+  review: () => require('./gab-review').main(argv.slice(1)),
+  label: () => { const r = require('child_process').spawnSync(process.execPath, [path.join(os.homedir(), 'personal/sttm-desktop/research/level2-dataset/linelabel/label.js'), ...argv.slice(1)], { stdio: 'inherit' }); process.exitCode = r.status; } };
 if (require.main === module) {
   if (!commands[cmd]) {
     console.log(fs.readFileSync(__filename, 'utf8').split('*/')[0].split('\n').slice(1).map((l) => l.replace(/^ \* ?/, '').replace(/^\/\* ?/, '')).join('\n'));

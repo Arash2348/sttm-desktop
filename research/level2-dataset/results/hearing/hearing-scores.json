@@ -1,0 +1,2385 @@
+{
+ "createdAt": "2026-10-15T05:43:37.960Z",
+ "corpus": "97f67774fcf00cdd.json",
+ "models": {
+  "karanbir-fp32": {
+   "format": "ONNX model.onnx (as published)",
+   "front_end": "in the ONNX graph (author export)",
+   "decoder": "greedy CTC, blank 256, sentencepiece decode (model card script)",
+   "file": "/Users/asingh02/AAI/models/karansea-shabad-ctc/model.onnx",
+   "model": "karanbir-fp32",
+   "sha256": "5ba46679b8956cff6bd9dfdb83632ca9c3021539f4decb530427faa7740b242b",
+   "size": 479742667,
+   "window_s": 4,
+   "hop_s": 1,
+   "started": "2026-10-14 20:01",
+   "seconds": 311,
+   "windows": 5994
+  },
+  "karanbir-int8": {
+   "format": "ONNX model.int8.onnx (as published)",
+   "front_end": "in the ONNX graph (author export)",
+   "decoder": "greedy CTC, blank 256, sentencepiece decode (model card script)",
+   "file": "/Users/asingh02/AAI/models/karansea-shabad-ctc/model.int8.onnx",
+   "model": "karanbir-int8",
+   "sha256": "5f9e41d867dee2883796e290eef85abc11cbd32fe0f10c1f763a638d824634f9",
+   "size": 184311219,
+   "window_s": 4,
+   "hop_s": 1,
+   "started": "2026-10-14 19:51",
+   "seconds": 320,
+   "windows": 5994
+  },
+  "sukhpal-ctc": {
+   "format": "NeMo baniguru_offline_v1.nemo (fp32 PyTorch, torch.load weights_only=True), nemo 1.23.0rc0 config",
+   "front_end": "NeMo AudioToMelSpectrogramPreprocessor from the checkpoint config ({'features': 80, 'n_fft': 512, 'window_size': 0.025, 'window_stride': 0.01, 'normalize': 'per_feature'}, defaults preemph 0.97, log add 2^-24, eval: no dither)",
+   "decoder": "greedy CTC over the pa slice [3840,4096) + blank 5632 of the shared CTC head (= AI4Bharat multisoftmax language mask), pa sentencepiece decode",
+   "file": "/Users/asingh02/AAI/models/sukhpal-baniguru-v1/baniguru_offline_v1.nemo",
+   "loaded_tensors": {
+    "preprocessor.": 2,
+    "encoder.": 686,
+    "ctc_decoder.": 2,
+    "decoder.": 5,
+    "joint.": 6
+   },
+   "model": "sukhpal-ctc",
+   "sha256": "0214688920a5a92854f76dd8e7116e0e7f64db4c2a715d03f0c6a18b900a11ef",
+   "size": 523182080,
+   "window_s": 4,
+   "hop_s": 1,
+   "started": "2026-10-14 20:52",
+   "seconds": 1984,
+   "windows": 5994
+  },
+  "sukhpal-rnnt": {
+   "format": "NeMo baniguru_offline_v1.nemo (fp32 PyTorch, torch.load weights_only=True), nemo 1.23.0rc0 config",
+   "front_end": "NeMo AudioToMelSpectrogramPreprocessor from the checkpoint config ({'features': 80, 'n_fft': 512, 'window_size': 0.025, 'window_stride': 0.01, 'normalize': 'per_feature'}, defaults preemph 0.97, log add 2^-24, eval: no dither)",
+   "decoder": "greedy RNNT (max 10 symbols/frame) with the joint's pa output head (256 + blank) and language-local prediction-net labels, pa sentencepiece decode",
+   "file": "/Users/asingh02/AAI/models/sukhpal-baniguru-v1/baniguru_offline_v1.nemo",
+   "loaded_tensors": {
+    "preprocessor.": 2,
+    "encoder.": 686,
+    "ctc_decoder.": 2,
+    "decoder.": 5,
+    "joint.": 6
+   },
+   "model": "sukhpal-rnnt",
+   "sha256": "0214688920a5a92854f76dd8e7116e0e7f64db4c2a715d03f0c6a18b900a11ef",
+   "size": 523182080,
+   "window_s": 4,
+   "hop_s": 1,
+   "started": "2026-10-14 22:07",
+   "windows": 21,
+   "machines": {
+    "GCP vf-record (Intel Xeon 2.8 GHz, x86, nemo 3.0.0 / torch 2.14.1+cpu, 6 threads)": "main tier (7) + kh11, kh12, kh13, kh15",
+    "Mac (Apple Silicon, nemo 3.0.0 / torch 2.14.0, 4 threads)": "kh19, kh20, kh27 + akhand tier (7)"
+   },
+   "note": "split across two machines for speed (fp32 PyTorch; CPU differences are numerically tiny); same code, same model file sha256"
+  },
+  "surinder-ctc": {
+   "format": "NeMo indicconformer-pa-v3-kirtan.nemo (fp32 PyTorch, torch.load weights_only=True), nemo 1.23.0rc0 config",
+   "front_end": "NeMo AudioToMelSpectrogramPreprocessor from the checkpoint config ({'features': 80, 'n_fft': 512, 'window_size': 0.025, 'window_stride': 0.01, 'normalize': 'per_feature'}, defaults preemph 0.97, log add 2^-24, eval: no dither)",
+   "decoder": "greedy CTC over the pa slice [3840,4096) + blank 5632 of the shared CTC head (= AI4Bharat multisoftmax language mask), pa sentencepiece decode",
+   "file": "/Users/asingh02/AAI/models/surinder-kirtan/indicconformer-pa-v3-kirtan.nemo",
+   "loaded_tensors": {
+    "preprocessor.": 2,
+    "encoder.": 686,
+    "ctc_decoder.": 2,
+    "decoder.": 5,
+    "joint.": 6
+   },
+   "model": "surinder-ctc",
+   "sha256": "e62806695685046513caeb0aee66f82b02f650880c02552e2dfadd5f329ffc34",
+   "size": 523192320,
+   "window_s": 4,
+   "hop_s": 1,
+   "started": "2026-10-14 20:11",
+   "seconds": 2019,
+   "windows": 5994
+  },
+  "surinder-rnnt": {
+   "format": "NeMo indicconformer-pa-v3-kirtan.nemo (fp32 PyTorch, torch.load weights_only=True), nemo 1.23.0rc0 config",
+   "front_end": "NeMo AudioToMelSpectrogramPreprocessor from the checkpoint config ({'features': 80, 'n_fft': 512, 'window_size': 0.025, 'window_stride': 0.01, 'normalize': 'per_feature'}, defaults preemph 0.97, log add 2^-24, eval: no dither)",
+   "decoder": "greedy RNNT (max 10 symbols/frame) with the joint's pa output head (256 + blank) and language-local prediction-net labels, pa sentencepiece decode",
+   "file": "/Users/asingh02/AAI/models/surinder-kirtan/indicconformer-pa-v3-kirtan.nemo",
+   "loaded_tensors": {
+    "preprocessor.": 2,
+    "encoder.": 686,
+    "ctc_decoder.": 2,
+    "decoder.": 5,
+    "joint.": 6
+   },
+   "model": "surinder-rnnt",
+   "sha256": "e62806695685046513caeb0aee66f82b02f650880c02552e2dfadd5f329ffc34",
+   "size": 523192320,
+   "window_s": 4,
+   "hop_s": 1,
+   "started": "2026-10-14 22:28",
+   "windows": 21,
+   "machines": {
+    "GCP vf-record (Intel Xeon 2.8 GHz, x86, nemo 3.0.0 / torch 2.14.1+cpu, 6 threads)": "main tier (7) + kh11, kh12, kh13, kh15",
+    "Mac (Apple Silicon, nemo 3.0.0 / torch 2.14.0, 4 threads)": "kh19, kh20, kh27 + akhand tier (7)"
+   },
+   "note": "split across two machines for speed (fp32 PyTorch; CPU differences are numerically tiny); same code, same model file sha256"
+  }
+ },
+ "agg": [
+  {
+   "tier": "main",
+   "model": "karanbir-fp32",
+   "clips": 7,
+   "n": 1820,
+   "hit1": 19.2,
+   "hit5": 32.8,
+   "usable": 57.6,
+   "simMed": 57.1,
+   "simMean": 53.8,
+   "simN": 93,
+   "simUsableMed": 58.3,
+   "simUsableN": 90,
+   "simChanceMed": 32.7,
+   "vote": 59.3,
+   "voteWrong": 17.6
+  },
+  {
+   "tier": "main",
+   "model": "karanbir-int8",
+   "clips": 7,
+   "n": 1820,
+   "hit1": 19.2,
+   "hit5": 32.7,
+   "usable": 57.6,
+   "simMed": 58.8,
+   "simMean": 53.9,
+   "simN": 93,
+   "simUsableMed": 59.4,
+   "simUsableN": 90,
+   "simChanceMed": 32.7,
+   "vote": 59.3,
+   "voteWrong": 17.7
+  },
+  {
+   "tier": "main",
+   "model": "sukhpal-ctc",
+   "clips": 7,
+   "n": 1820,
+   "hit1": 21.3,
+   "hit5": 34.8,
+   "usable": 59,
+   "simMed": 55.6,
+   "simMean": 56.1,
+   "simN": 93,
+   "simUsableMed": 55.9,
+   "simUsableN": 92,
+   "simChanceMed": 31,
+   "vote": 61.2,
+   "voteWrong": 18.1
+  },
+  {
+   "tier": "main",
+   "model": "sukhpal-rnnt",
+   "clips": 7,
+   "n": 1820,
+   "hit1": 21.8,
+   "hit5": 34.8,
+   "usable": 54.7,
+   "simMed": 46.2,
+   "simMean": 49.1,
+   "simN": 93,
+   "simUsableMed": 54.5,
+   "simUsableN": 81,
+   "simChanceMed": 30.8,
+   "vote": 63.9,
+   "voteWrong": 19.6
+  },
+  {
+   "tier": "main",
+   "model": "surinder-ctc",
+   "clips": 7,
+   "n": 1820,
+   "hit1": 16.9,
+   "hit5": 27.9,
+   "usable": 54.7,
+   "simMed": 61.5,
+   "simMean": 58.8,
+   "simN": 93,
+   "simUsableMed": 61.5,
+   "simUsableN": 91,
+   "simChanceMed": 33.3,
+   "vote": 56.1,
+   "voteWrong": 21.6
+  },
+  {
+   "tier": "main",
+   "model": "surinder-rnnt",
+   "clips": 7,
+   "n": 1820,
+   "hit1": 13.5,
+   "hit5": 21.9,
+   "usable": 40.6,
+   "simMed": 54.5,
+   "simMean": 51.9,
+   "simN": 93,
+   "simUsableMed": 70,
+   "simUsableN": 73,
+   "simChanceMed": 31.6,
+   "vote": 45.2,
+   "voteWrong": 28
+  },
+  {
+   "tier": "main",
+   "model": "APP (Karanbir int8, upstream 3fafc0ba)",
+   "clips": 7,
+   "n": 1820,
+   "shown": 94.5,
+   "appHeard5": 32.3,
+   "appHeardUsable": 58.1,
+   "heardNotShown": 1.1,
+   "shownNotHeard": 62.9,
+   "appHeardNotShown": 1.4,
+   "voteNotShown": 0.8,
+   "shownNoVote": 36,
+   "gap4s": -61.8
+  },
+  {
+   "tier": "hard",
+   "model": "karanbir-fp32",
+   "clips": 7,
+   "n": 1958,
+   "hit1": 2.5,
+   "hit5": 4.4,
+   "usable": 38.7,
+   "simMed": 0,
+   "simMean": 21.3,
+   "simN": 1958,
+   "simUsableMed": 53.8,
+   "simUsableN": 757,
+   "simChanceMed": 28.6,
+   "vote": 6.6,
+   "voteWrong": 8.6
+  },
+  {
+   "tier": "hard",
+   "model": "karanbir-int8",
+   "clips": 7,
+   "n": 1958,
+   "hit1": 2.5,
+   "hit5": 4.5,
+   "usable": 38,
+   "simMed": 0,
+   "simMean": 21,
+   "simN": 1958,
+   "simUsableMed": 53.8,
+   "simUsableN": 745,
+   "simChanceMed": 28.6,
+   "vote": 7.4,
+   "voteWrong": 11
+  },
+  {
+   "tier": "hard",
+   "model": "sukhpal-ctc",
+   "clips": 7,
+   "n": 1958,
+   "hit1": 2.8,
+   "hit5": 4.2,
+   "usable": 28.8,
+   "simMed": 0,
+   "simMean": 15.3,
+   "simN": 1958,
+   "simUsableMed": 50,
+   "simUsableN": 564,
+   "simChanceMed": 28.6,
+   "vote": 11.6,
+   "voteWrong": 0
+  },
+  {
+   "tier": "hard",
+   "model": "sukhpal-rnnt",
+   "clips": 7,
+   "n": 1958,
+   "hit1": 2.3,
+   "hit5": 4.2,
+   "usable": 20.7,
+   "simMed": 0,
+   "simMean": 11.4,
+   "simN": 1958,
+   "simUsableMed": 50,
+   "simUsableN": 406,
+   "simChanceMed": 28.6,
+   "vote": 8.6,
+   "voteWrong": 4.5
+  },
+  {
+   "tier": "hard",
+   "model": "surinder-ctc",
+   "clips": 7,
+   "n": 1958,
+   "hit1": 3.9,
+   "hit5": 6.6,
+   "usable": 41.5,
+   "simMed": 0,
+   "simMean": 22.7,
+   "simN": 1958,
+   "simUsableMed": 54.5,
+   "simUsableN": 813,
+   "simChanceMed": 28.6,
+   "vote": 11.8,
+   "voteWrong": 24.1
+  },
+  {
+   "tier": "hard",
+   "model": "surinder-rnnt",
+   "clips": 7,
+   "n": 1958,
+   "hit1": 2.9,
+   "hit5": 4.7,
+   "usable": 20.3,
+   "simMed": 0,
+   "simMean": 12.3,
+   "simN": 1958,
+   "simUsableMed": 56.3,
+   "simUsableN": 397,
+   "simChanceMed": 26.1,
+   "vote": 10.6,
+   "voteWrong": 21.7
+  },
+  {
+   "tier": "hard",
+   "model": "APP (Karanbir int8, upstream 3fafc0ba)",
+   "clips": 7,
+   "n": 1958,
+   "shown": 52.4,
+   "appHeard5": 8.4,
+   "appHeardUsable": 60.4,
+   "heardNotShown": 1.3,
+   "shownNotHeard": 49.2,
+   "appHeardNotShown": 4.9,
+   "voteNotShown": 1.4,
+   "shownNoVote": 46.5,
+   "gap4s": -47.9
+  },
+  {
+   "tier": "akhand",
+   "model": "karanbir-fp32",
+   "clips": 7,
+   "n": 1989,
+   "hit1": 7.5,
+   "hit5": 11.8,
+   "usable": 47.6,
+   "simMed": 0,
+   "simMean": 24.8,
+   "simN": 1451,
+   "simUsableMed": 55.6,
+   "simUsableN": 640,
+   "simChanceMed": 25,
+   "vote": 36.2,
+   "voteWrong": 18.8
+  },
+  {
+   "tier": "akhand",
+   "model": "karanbir-int8",
+   "clips": 7,
+   "n": 1989,
+   "hit1": 7.9,
+   "hit5": 12,
+   "usable": 47.3,
+   "simMed": 0,
+   "simMean": 24.8,
+   "simN": 1451,
+   "simUsableMed": 55.6,
+   "simUsableN": 636,
+   "simChanceMed": 25,
+   "vote": 33.7,
+   "voteWrong": 19.6
+  },
+  {
+   "tier": "akhand",
+   "model": "sukhpal-ctc",
+   "clips": 7,
+   "n": 1989,
+   "hit1": 9.9,
+   "hit5": 16,
+   "usable": 58.6,
+   "simMed": 18.2,
+   "simMean": 27.5,
+   "simN": 1451,
+   "simUsableMed": 50,
+   "simUsableN": 736,
+   "simChanceMed": 25,
+   "vote": 35.1,
+   "voteWrong": 31.9
+  },
+  {
+   "tier": "akhand",
+   "model": "sukhpal-rnnt",
+   "clips": 7,
+   "n": 1989,
+   "hit1": 8.7,
+   "hit5": 14,
+   "usable": 49.9,
+   "simMed": 0,
+   "simMean": 23.5,
+   "simN": 1451,
+   "simUsableMed": 50,
+   "simUsableN": 615,
+   "simChanceMed": 25,
+   "vote": 27,
+   "voteWrong": 37.9
+  },
+  {
+   "tier": "akhand",
+   "model": "surinder-ctc",
+   "clips": 7,
+   "n": 1989,
+   "hit1": 7.8,
+   "hit5": 11.9,
+   "usable": 53.6,
+   "simMed": 0,
+   "simMean": 24.8,
+   "simN": 1451,
+   "simUsableMed": 50,
+   "simUsableN": 655,
+   "simChanceMed": 25,
+   "vote": 24.4,
+   "voteWrong": 36.3
+  },
+  {
+   "tier": "akhand",
+   "model": "surinder-rnnt",
+   "clips": 7,
+   "n": 1989,
+   "hit1": 6.4,
+   "hit5": 9.3,
+   "usable": 37.5,
+   "simMed": 0,
+   "simMean": 16.7,
+   "simN": 1451,
+   "simUsableMed": 41.7,
+   "simUsableN": 450,
+   "simChanceMed": 25,
+   "vote": 17.3,
+   "voteWrong": 37.4
+  },
+  {
+   "tier": "akhand",
+   "model": "APP (Karanbir int8, upstream 3fafc0ba)",
+   "clips": 7,
+   "n": 1989,
+   "shown": 74.6,
+   "appHeard5": 13,
+   "appHeardUsable": 50.8,
+   "heardNotShown": 1.3,
+   "shownNotHeard": 64,
+   "appHeardNotShown": 2.2,
+   "voteNotShown": 3.1,
+   "shownNoVote": 44,
+   "gap4s": -62.6
+  }
+ ],
+ "clips": [
+  {
+   "clip": "clip01",
+   "tier": "main",
+   "windows": 241,
+   "models": {
+    "karanbir-fp32": {
+     "n": 241,
+     "hit1": 23.2,
+     "hit5": 47.3,
+     "usable": 72.6,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 64.3,
+     "voteWrong": 30.3
+    },
+    "karanbir-int8": {
+     "n": 241,
+     "hit1": 23.2,
+     "hit5": 46.5,
+     "usable": 73.4,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 63.9,
+     "voteWrong": 31.1
+    },
+    "sukhpal-ctc": {
+     "n": 241,
+     "hit1": 19.9,
+     "hit5": 53.1,
+     "usable": 75.9,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 56,
+     "voteWrong": 35.7
+    },
+    "sukhpal-rnnt": {
+     "n": 241,
+     "hit1": 22,
+     "hit5": 51.5,
+     "usable": 65.1,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 51.5,
+     "voteWrong": 39.4
+    },
+    "surinder-ctc": {
+     "n": 241,
+     "hit1": 19.1,
+     "hit5": 39.8,
+     "usable": 63.1,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 55.6,
+     "voteWrong": 36.1
+    },
+    "surinder-rnnt": {
+     "n": 241,
+     "hit1": 13.3,
+     "hit5": 29.5,
+     "usable": 43.2,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 50.2,
+     "voteWrong": 42.7
+    }
+   },
+   "app": {
+    "trace": "/Users/asingh02/personal/live-darbar-venues/cache/replays/c357ce5e3e061316/l2/trace/clip01_aQiVq9ZK8hA_23185-23437.events.jsonl",
+    "n": 241,
+    "shown": 97.5,
+    "appHeard5": 47.7,
+    "appHeardUsable": 71.8,
+    "heardNotShown": 0.4,
+    "shownNotHeard": 51.5,
+    "appHeardNotShown": 1.2,
+    "voteNotShown": 0,
+    "shownNoVote": 33.6
+   }
+  },
+  {
+   "clip": "clip03",
+   "tier": "main",
+   "windows": 297,
+   "models": {
+    "karanbir-fp32": {
+     "n": 297,
+     "hit1": 9.1,
+     "hit5": 19.5,
+     "usable": 43.4,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 22.6,
+     "voteWrong": 33.7
+    },
+    "karanbir-int8": {
+     "n": 297,
+     "hit1": 8.8,
+     "hit5": 19.2,
+     "usable": 43.1,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 21.9,
+     "voteWrong": 33.7
+    },
+    "sukhpal-ctc": {
+     "n": 297,
+     "hit1": 9.4,
+     "hit5": 18.2,
+     "usable": 50.5,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 22.9,
+     "voteWrong": 28.6
+    },
+    "sukhpal-rnnt": {
+     "n": 297,
+     "hit1": 7.4,
+     "hit5": 16.8,
+     "usable": 39.4,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 25.3,
+     "voteWrong": 46.1
+    },
+    "surinder-ctc": {
+     "n": 297,
+     "hit1": 6.4,
+     "hit5": 14.5,
+     "usable": 32,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 24.9,
+     "voteWrong": 12.1
+    },
+    "surinder-rnnt": {
+     "n": 297,
+     "hit1": 2,
+     "hit5": 8.1,
+     "usable": 18.9,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 0,
+     "voteWrong": 22.2
+    }
+   },
+   "app": {
+    "trace": "/Users/asingh02/personal/live-darbar-venues/cache/replays/c357ce5e3e061316/l2/trace/clip03_l0EIMAuC0_U_3926-4376.events.jsonl",
+    "n": 297,
+    "shown": 99,
+    "appHeard5": 19.2,
+    "appHeardUsable": 45.8,
+    "heardNotShown": 0.3,
+    "shownNotHeard": 80.1,
+    "appHeardNotShown": 0.7,
+    "voteNotShown": 0,
+    "shownNoVote": 77.1
+   }
+  },
+  {
+   "clip": "clip05",
+   "tier": "main",
+   "windows": 94,
+   "models": {
+    "karanbir-fp32": {
+     "n": 94,
+     "hit1": 23.4,
+     "hit5": 33,
+     "usable": 96.8,
+     "simMed": 57.1,
+     "simMean": 53.8,
+     "simN": 93,
+     "vote": 75.5,
+     "voteWrong": 10.6
+    },
+    "karanbir-int8": {
+     "n": 94,
+     "hit1": 23.4,
+     "hit5": 31.9,
+     "usable": 96.8,
+     "simMed": 58.8,
+     "simMean": 53.9,
+     "simN": 93,
+     "vote": 73.4,
+     "voteWrong": 12.8
+    },
+    "sukhpal-ctc": {
+     "n": 94,
+     "hit1": 33,
+     "hit5": 43.6,
+     "usable": 98.9,
+     "simMed": 55.6,
+     "simMean": 56.1,
+     "simN": 93,
+     "vote": 79.8,
+     "voteWrong": 13.8
+    },
+    "sukhpal-rnnt": {
+     "n": 94,
+     "hit1": 33,
+     "hit5": 42.6,
+     "usable": 87.2,
+     "simMed": 46.2,
+     "simMean": 49.1,
+     "simN": 93,
+     "vote": 80.9,
+     "voteWrong": 12.8
+    },
+    "surinder-ctc": {
+     "n": 94,
+     "hit1": 25.5,
+     "hit5": 38.3,
+     "usable": 97.9,
+     "simMed": 61.5,
+     "simMean": 58.8,
+     "simN": 93,
+     "vote": 74.5,
+     "voteWrong": 16
+    },
+    "surinder-rnnt": {
+     "n": 94,
+     "hit1": 24.5,
+     "hit5": 33,
+     "usable": 77.7,
+     "simMed": 54.5,
+     "simMean": 51.9,
+     "simN": 93,
+     "vote": 80.9,
+     "voteWrong": 5.3
+    }
+   },
+   "app": {
+    "trace": "/Users/asingh02/personal/live-darbar-venues/cache/replays/c357ce5e3e061316/l2/trace/clip05_X8EN_dxTxFY_1035-1140.events.jsonl",
+    "n": 94,
+    "shown": 69.1,
+    "appHeard5": 28.7,
+    "appHeardUsable": 88.3,
+    "heardNotShown": 5.3,
+    "shownNotHeard": 42.6,
+    "appHeardNotShown": 7.4,
+    "voteNotShown": 13.8,
+    "shownNoVote": 9.6
+   }
+  },
+  {
+   "clip": "clip06",
+   "tier": "main",
+   "windows": 297,
+   "models": {
+    "karanbir-fp32": {
+     "n": 297,
+     "hit1": 35.7,
+     "hit5": 49.2,
+     "usable": 69.4,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 83.8,
+     "voteWrong": 1.7
+    },
+    "karanbir-int8": {
+     "n": 297,
+     "hit1": 36,
+     "hit5": 49.2,
+     "usable": 69.4,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 83.8,
+     "voteWrong": 1.7
+    },
+    "sukhpal-ctc": {
+     "n": 297,
+     "hit1": 38.4,
+     "hit5": 50.8,
+     "usable": 70.7,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 86.2,
+     "voteWrong": 0
+    },
+    "sukhpal-rnnt": {
+     "n": 297,
+     "hit1": 39.1,
+     "hit5": 52.2,
+     "usable": 68.7,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 87.9,
+     "voteWrong": 0
+    },
+    "surinder-ctc": {
+     "n": 297,
+     "hit1": 35,
+     "hit5": 47.8,
+     "usable": 76.4,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 84.2,
+     "voteWrong": 9.4
+    },
+    "surinder-rnnt": {
+     "n": 297,
+     "hit1": 30.3,
+     "hit5": 42.1,
+     "usable": 63.6,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 81.5,
+     "voteWrong": 10.4
+    }
+   },
+   "app": {
+    "trace": "/Users/asingh02/personal/live-darbar-venues/cache/replays/c357ce5e3e061316/l2/trace/clip06_X8EN_dxTxFY_1130-1466.events.jsonl",
+    "n": 297,
+    "shown": 88.2,
+    "appHeard5": 47.5,
+    "appHeardUsable": 70.7,
+    "heardNotShown": 1.3,
+    "shownNotHeard": 40.4,
+    "appHeardNotShown": 1.7,
+    "voteNotShown": 0,
+    "shownNoVote": 4.4
+   }
+  },
+  {
+   "clip": "clip12",
+   "tier": "main",
+   "windows": 297,
+   "models": {
+    "karanbir-fp32": {
+     "n": 297,
+     "hit1": 15.2,
+     "hit5": 23.6,
+     "usable": 46.5,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 49.8,
+     "voteWrong": 15.5
+    },
+    "karanbir-int8": {
+     "n": 297,
+     "hit1": 15.5,
+     "hit5": 23.9,
+     "usable": 46.8,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 49.8,
+     "voteWrong": 14.8
+    },
+    "sukhpal-ctc": {
+     "n": 297,
+     "hit1": 17.2,
+     "hit5": 24.9,
+     "usable": 46.5,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 56.2,
+     "voteWrong": 23.6
+    },
+    "sukhpal-rnnt": {
+     "n": 297,
+     "hit1": 17.5,
+     "hit5": 24.2,
+     "usable": 43.4,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 65,
+     "voteWrong": 25.3
+    },
+    "surinder-ctc": {
+     "n": 297,
+     "hit1": 11.8,
+     "hit5": 18.2,
+     "usable": 52.5,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 46.1,
+     "voteWrong": 30
+    },
+    "surinder-rnnt": {
+     "n": 297,
+     "hit1": 9.4,
+     "hit5": 15.8,
+     "usable": 38.4,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 42.4,
+     "voteWrong": 37.7
+    }
+   },
+   "app": {
+    "trace": "/Users/asingh02/personal/live-darbar-venues/cache/replays/c357ce5e3e061316/l2/trace/clip12_AhRd4zcvGwA_415-1595.events.jsonl",
+    "n": 297,
+    "shown": 98,
+    "appHeard5": 23.6,
+    "appHeardUsable": 48.5,
+    "heardNotShown": 0.7,
+    "shownNotHeard": 74.7,
+    "appHeardNotShown": 0.7,
+    "voteNotShown": 0,
+    "shownNoVote": 48.1
+   }
+  },
+  {
+   "clip": "clip17",
+   "tier": "main",
+   "windows": 297,
+   "models": {
+    "karanbir-fp32": {
+     "n": 297,
+     "hit1": 12.8,
+     "hit5": 32,
+     "usable": 49.5,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 69,
+     "voteWrong": 17.8
+    },
+    "karanbir-int8": {
+     "n": 297,
+     "hit1": 13.1,
+     "hit5": 32.3,
+     "usable": 48.8,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 71,
+     "voteWrong": 17.8
+    },
+    "sukhpal-ctc": {
+     "n": 297,
+     "hit1": 13.5,
+     "hit5": 31,
+     "usable": 49.2,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 60.3,
+     "voteWrong": 18.9
+    },
+    "sukhpal-rnnt": {
+     "n": 297,
+     "hit1": 14.8,
+     "hit5": 30.3,
+     "usable": 48.8,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 69,
+     "voteWrong": 5.1
+    },
+    "surinder-ctc": {
+     "n": 297,
+     "hit1": 12.5,
+     "hit5": 26.6,
+     "usable": 42.1,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 59.6,
+     "voteWrong": 22.2
+    },
+    "surinder-rnnt": {
+     "n": 297,
+     "hit1": 10.8,
+     "hit5": 20.2,
+     "usable": 32.3,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 47.8,
+     "voteWrong": 20.2
+    }
+   },
+   "app": {
+    "trace": "/Users/asingh02/personal/live-darbar-venues/cache/replays/c357ce5e3e061316/l2/trace/clip17_eYgMiglXTpk_5638-6648.events.jsonl",
+    "n": 297,
+    "shown": 98.7,
+    "appHeard5": 32,
+    "appHeardUsable": 50.8,
+    "heardNotShown": 1,
+    "shownNotHeard": 67.3,
+    "appHeardNotShown": 1,
+    "voteNotShown": 0.3,
+    "shownNoVote": 27.9
+   }
+  },
+  {
+   "clip": "clip33",
+   "tier": "main",
+   "windows": 297,
+   "models": {
+    "karanbir-fp32": {
+     "n": 297,
+     "hit1": 18.5,
+     "hit5": 27.9,
+     "usable": 54.9,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 62,
+     "voteWrong": 11.1
+    },
+    "karanbir-int8": {
+     "n": 297,
+     "hit1": 18.2,
+     "hit5": 27.9,
+     "usable": 54.9,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 61.6,
+     "voteWrong": 11.1
+    },
+    "sukhpal-ctc": {
+     "n": 297,
+     "hit1": 25.3,
+     "hit5": 31.3,
+     "usable": 51.9,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 78.5,
+     "voteWrong": 6.4
+    },
+    "sukhpal-rnnt": {
+     "n": 297,
+     "hit1": 26.3,
+     "hit5": 34.3,
+     "usable": 54.5,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 77.1,
+     "voteWrong": 7.4
+    },
+    "surinder-ctc": {
+     "n": 297,
+     "hit1": 14.1,
+     "hit5": 19.5,
+     "usable": 50.2,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 60.3,
+     "voteWrong": 24.2
+    },
+    "surinder-rnnt": {
+     "n": 297,
+     "hit1": 11.4,
+     "hit5": 13.5,
+     "usable": 36,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 39.1,
+     "voteWrong": 44.8
+    }
+   },
+   "app": {
+    "trace": "/Users/asingh02/personal/live-darbar-venues/cache/replays/c357ce5e3e061316/l2/trace/clip33_-E-PjJz00j8_1585-2675.events.jsonl",
+    "n": 297,
+    "shown": 94.3,
+    "appHeard5": 27.6,
+    "appHeardUsable": 53.9,
+    "heardNotShown": 1.3,
+    "shownNotHeard": 67.7,
+    "appHeardNotShown": 1,
+    "voteNotShown": 0,
+    "shownNoVote": 32.7
+   }
+  },
+  {
+   "clip": "kh11_sttm_desktop_2026_10_11T02_40_20_422Z",
+   "tier": "hard",
+   "windows": 267,
+   "models": {
+    "karanbir-fp32": {
+     "n": 267,
+     "hit1": 0.7,
+     "hit5": 1.9,
+     "usable": 33.3,
+     "simMed": 0,
+     "simMean": 16.9,
+     "simN": 267,
+     "vote": 0,
+     "voteWrong": 5.2
+    },
+    "karanbir-int8": {
+     "n": 267,
+     "hit1": 0.4,
+     "hit5": 1.9,
+     "usable": 30.7,
+     "simMed": 0,
+     "simMean": 15.6,
+     "simN": 267,
+     "vote": 0,
+     "voteWrong": 5.2
+    },
+    "sukhpal-ctc": {
+     "n": 267,
+     "hit1": 0,
+     "hit5": 1.5,
+     "usable": 30.7,
+     "simMed": 0,
+     "simMean": 12.7,
+     "simN": 267,
+     "vote": 0,
+     "voteWrong": 0
+    },
+    "sukhpal-rnnt": {
+     "n": 267,
+     "hit1": 0,
+     "hit5": 3.4,
+     "usable": 22.5,
+     "simMed": 0,
+     "simMean": 9.9,
+     "simN": 267,
+     "vote": 0,
+     "voteWrong": 10.5
+    },
+    "surinder-ctc": {
+     "n": 267,
+     "hit1": 0.7,
+     "hit5": 3,
+     "usable": 37.1,
+     "simMed": 0,
+     "simMean": 18.9,
+     "simN": 267,
+     "vote": 0,
+     "voteWrong": 34.8
+    },
+    "surinder-rnnt": {
+     "n": 267,
+     "hit1": 0,
+     "hit5": 3.7,
+     "usable": 18.4,
+     "simMed": 0,
+     "simMean": 9.9,
+     "simN": 267,
+     "vote": 0,
+     "voteWrong": 27.7
+    }
+   },
+   "app": {
+    "trace": "/Users/asingh02/personal/live-darbar-venues/cache/replays/c357ce5e3e061316/jaspal/trace/kh11_sttm_desktop_2026_10_11T02_40_20_422Z.events.jsonl",
+    "n": 267,
+    "shown": 0,
+    "appHeard5": 6,
+    "appHeardUsable": 79.4,
+    "heardNotShown": 1.9,
+    "shownNotHeard": 0,
+    "appHeardNotShown": 6,
+    "voteNotShown": 0,
+    "shownNoVote": 0
+   }
+  },
+  {
+   "clip": "kh12_sttm_desktop_2026_10_11T02_50_05_783Z",
+   "tier": "hard",
+   "windows": 255,
+   "models": {
+    "karanbir-fp32": {
+     "n": 255,
+     "hit1": 1.6,
+     "hit5": 3.5,
+     "usable": 27.8,
+     "simMed": 0,
+     "simMean": 15.8,
+     "simN": 255,
+     "vote": 3.5,
+     "voteWrong": 0
+    },
+    "karanbir-int8": {
+     "n": 255,
+     "hit1": 1.6,
+     "hit5": 3.1,
+     "usable": 28.6,
+     "simMed": 0,
+     "simMean": 16,
+     "simN": 255,
+     "vote": 8.6,
+     "voteWrong": 0
+    },
+    "sukhpal-ctc": {
+     "n": 255,
+     "hit1": 1.2,
+     "hit5": 1.2,
+     "usable": 22.7,
+     "simMed": 0,
+     "simMean": 11.5,
+     "simN": 255,
+     "vote": 11,
+     "voteWrong": 0
+    },
+    "sukhpal-rnnt": {
+     "n": 255,
+     "hit1": 0.8,
+     "hit5": 1.2,
+     "usable": 17.6,
+     "simMed": 0,
+     "simMean": 8.6,
+     "simN": 255,
+     "vote": 0,
+     "voteWrong": 16.5
+    },
+    "surinder-ctc": {
+     "n": 255,
+     "hit1": 2.7,
+     "hit5": 3.9,
+     "usable": 43.5,
+     "simMed": 0,
+     "simMean": 23,
+     "simN": 255,
+     "vote": 7.5,
+     "voteWrong": 31
+    },
+    "surinder-rnnt": {
+     "n": 255,
+     "hit1": 1.6,
+     "hit5": 2.4,
+     "usable": 23.5,
+     "simMed": 0,
+     "simMean": 14.4,
+     "simN": 255,
+     "vote": 0,
+     "voteWrong": 34.9
+    }
+   },
+   "app": {
+    "trace": "/Users/asingh02/personal/live-darbar-venues/cache/replays/c357ce5e3e061316/jaspal/trace/kh12_sttm_desktop_2026_10_11T02_50_05_783Z.events.jsonl",
+    "n": 255,
+    "shown": 100,
+    "appHeard5": 2.7,
+    "appHeardUsable": 27.8,
+    "heardNotShown": 0,
+    "shownNotHeard": 96.9,
+    "appHeardNotShown": 0,
+    "voteNotShown": 0,
+    "shownNoVote": 91.4
+   }
+  },
+  {
+   "clip": "kh13_sttm_desktop_2026_10_11T03_07_57_411Z",
+   "tier": "hard",
+   "windows": 295,
+   "models": {
+    "karanbir-fp32": {
+     "n": 295,
+     "hit1": 0.3,
+     "hit5": 1.4,
+     "usable": 16.6,
+     "simMed": 0,
+     "simMean": 8.9,
+     "simN": 295,
+     "vote": 0,
+     "voteWrong": 9.5
+    },
+    "karanbir-int8": {
+     "n": 295,
+     "hit1": 0.3,
+     "hit5": 1.4,
+     "usable": 15.9,
+     "simMed": 0,
+     "simMean": 8.5,
+     "simN": 295,
+     "vote": 0,
+     "voteWrong": 9.5
+    },
+    "sukhpal-ctc": {
+     "n": 295,
+     "hit1": 0,
+     "hit5": 0,
+     "usable": 3.7,
+     "simMed": 0,
+     "simMean": 1.5,
+     "simN": 295,
+     "vote": 0,
+     "voteWrong": 0
+    },
+    "sukhpal-rnnt": {
+     "n": 295,
+     "hit1": 0,
+     "hit5": 0,
+     "usable": 2.7,
+     "simMed": 0,
+     "simMean": 1.2,
+     "simN": 295,
+     "vote": 0,
+     "voteWrong": 0
+    },
+    "surinder-ctc": {
+     "n": 295,
+     "hit1": 0,
+     "hit5": 1.7,
+     "usable": 17.3,
+     "simMed": 0,
+     "simMean": 8.5,
+     "simN": 295,
+     "vote": 0,
+     "voteWrong": 23.4
+    },
+    "surinder-rnnt": {
+     "n": 295,
+     "hit1": 0,
+     "hit5": 1,
+     "usable": 11.2,
+     "simMed": 0,
+     "simMean": 5.9,
+     "simN": 295,
+     "vote": 0,
+     "voteWrong": 24.1
+    }
+   },
+   "app": {
+    "trace": "/Users/asingh02/personal/live-darbar-venues/cache/replays/c357ce5e3e061316/jaspal/trace/kh13_sttm_desktop_2026_10_11T03_07_57_411Z.events.jsonl",
+    "n": 295,
+    "shown": 0,
+    "appHeard5": 10.2,
+    "appHeardUsable": 74.6,
+    "heardNotShown": 1.4,
+    "shownNotHeard": 0,
+    "appHeardNotShown": 10.2,
+    "voteNotShown": 0,
+    "shownNoVote": 0
+   }
+  },
+  {
+   "clip": "kh15_sttm_desktop_2026_10_11T13_45_00_522Z",
+   "tier": "hard",
+   "windows": 272,
+   "models": {
+    "karanbir-fp32": {
+     "n": 272,
+     "hit1": 2.2,
+     "hit5": 4,
+     "usable": 44.1,
+     "simMed": 0,
+     "simMean": 25.4,
+     "simN": 272,
+     "vote": 0,
+     "voteWrong": 16.2
+    },
+    "karanbir-int8": {
+     "n": 272,
+     "hit1": 2.9,
+     "hit5": 5.1,
+     "usable": 43,
+     "simMed": 0,
+     "simMean": 24.9,
+     "simN": 272,
+     "vote": 1.1,
+     "voteWrong": 12.5
+    },
+    "sukhpal-ctc": {
+     "n": 272,
+     "hit1": 3.3,
+     "hit5": 6.3,
+     "usable": 26.5,
+     "simMed": 0,
+     "simMean": 17.2,
+     "simN": 272,
+     "vote": 12.5,
+     "voteWrong": 0
+    },
+    "sukhpal-rnnt": {
+     "n": 272,
+     "hit1": 5.1,
+     "hit5": 7,
+     "usable": 16.9,
+     "simMed": 0,
+     "simMean": 12.5,
+     "simN": 272,
+     "vote": 23.5,
+     "voteWrong": 7
+    },
+    "surinder-ctc": {
+     "n": 272,
+     "hit1": 4.4,
+     "hit5": 8.1,
+     "usable": 30.9,
+     "simMed": 0,
+     "simMean": 19.1,
+     "simN": 272,
+     "vote": 18.8,
+     "voteWrong": 17.3
+    },
+    "surinder-rnnt": {
+     "n": 272,
+     "hit1": 3.3,
+     "hit5": 4,
+     "usable": 12.9,
+     "simMed": 0,
+     "simMean": 10,
+     "simN": 272,
+     "vote": 17.3,
+     "voteWrong": 6.3
+    }
+   },
+   "app": {
+    "trace": "/Users/asingh02/personal/live-darbar-venues/cache/replays/c357ce5e3e061316/jaspal/trace/kh15_sttm_desktop_2026_10_11T13_45_00_522Z.events.jsonl",
+    "n": 272,
+    "shown": 96.3,
+    "appHeard5": 4.8,
+    "appHeardUsable": 43.8,
+    "heardNotShown": 0.4,
+    "shownNotHeard": 91.5,
+    "appHeardNotShown": 1.1,
+    "voteNotShown": 0,
+    "shownNoVote": 95.2
+   }
+  },
+  {
+   "clip": "kh19_sttm_desktop_2026_10_11T20_08_08_535Z",
+   "tier": "hard",
+   "windows": 297,
+   "models": {
+    "karanbir-fp32": {
+     "n": 297,
+     "hit1": 7.1,
+     "hit5": 11.8,
+     "usable": 66,
+     "simMed": 42.9,
+     "simMean": 35.9,
+     "simN": 297,
+     "vote": 21.2,
+     "voteWrong": 27.9
+    },
+    "karanbir-int8": {
+     "n": 297,
+     "hit1": 6.4,
+     "hit5": 11.1,
+     "usable": 65.7,
+     "simMed": 42.9,
+     "simMean": 35.6,
+     "simN": 297,
+     "vote": 20.5,
+     "voteWrong": 27.9
+    },
+    "sukhpal-ctc": {
+     "n": 297,
+     "hit1": 8.4,
+     "hit5": 11.4,
+     "usable": 53.9,
+     "simMed": 30,
+     "simMean": 29.2,
+     "simN": 297,
+     "vote": 23.9,
+     "voteWrong": 0
+    },
+    "sukhpal-rnnt": {
+     "n": 297,
+     "hit1": 6.7,
+     "hit5": 10.8,
+     "usable": 42.8,
+     "simMed": 0,
+     "simMean": 24.4,
+     "simN": 297,
+     "vote": 33,
+     "voteWrong": 0
+    },
+    "surinder-ctc": {
+     "n": 297,
+     "hit1": 14.1,
+     "hit5": 19.2,
+     "usable": 73.7,
+     "simMed": 50,
+     "simMean": 42.4,
+     "simN": 297,
+     "vote": 34.7,
+     "voteWrong": 23.9
+    },
+    "surinder-rnnt": {
+     "n": 297,
+     "hit1": 11.1,
+     "hit5": 16.2,
+     "usable": 41.8,
+     "simMed": 0,
+     "simMean": 27.4,
+     "simN": 297,
+     "vote": 42.1,
+     "voteWrong": 14.5
+    }
+   },
+   "app": {
+    "trace": "/Users/asingh02/personal/live-darbar-venues/cache/replays/c357ce5e3e061316/jaspal/trace/kh19_sttm_desktop_2026_10_11T20_08_08_535Z.events.jsonl",
+    "n": 297,
+    "shown": 71,
+    "appHeard5": 15.8,
+    "appHeardUsable": 74.1,
+    "heardNotShown": 1,
+    "shownNotHeard": 60.9,
+    "appHeardNotShown": 6.4,
+    "voteNotShown": 0,
+    "shownNoVote": 50.5
+   }
+  },
+  {
+   "clip": "kh20_sttm_desktop_2026_10_11T20_15_43_327Z",
+   "tier": "hard",
+   "windows": 296,
+   "models": {
+    "karanbir-fp32": {
+     "n": 296,
+     "hit1": 2.7,
+     "hit5": 3.7,
+     "usable": 37.5,
+     "simMed": 0,
+     "simMean": 21.1,
+     "simN": 296,
+     "vote": 9.5,
+     "voteWrong": 0
+    },
+    "karanbir-int8": {
+     "n": 296,
+     "hit1": 2.7,
+     "hit5": 3.7,
+     "usable": 36.5,
+     "simMed": 0,
+     "simMean": 20.7,
+     "simN": 296,
+     "vote": 9.5,
+     "voteWrong": 9.5
+    },
+    "sukhpal-ctc": {
+     "n": 296,
+     "hit1": 0.3,
+     "hit5": 1,
+     "usable": 23.6,
+     "simMed": 0,
+     "simMean": 11.3,
+     "simN": 296,
+     "vote": 0,
+     "voteWrong": 0
+    },
+    "sukhpal-rnnt": {
+     "n": 296,
+     "hit1": 0,
+     "hit5": 1,
+     "usable": 15.9,
+     "simMed": 0,
+     "simMean": 7.5,
+     "simN": 296,
+     "vote": 0,
+     "voteWrong": 0
+    },
+    "surinder-ctc": {
+     "n": 296,
+     "hit1": 2,
+     "hit5": 3.4,
+     "usable": 36.1,
+     "simMed": 0,
+     "simMean": 20,
+     "simN": 296,
+     "vote": 16.6,
+     "voteWrong": 8.4
+    },
+    "surinder-rnnt": {
+     "n": 296,
+     "hit1": 0.3,
+     "hit5": 0.7,
+     "usable": 13.5,
+     "simMed": 0,
+     "simMean": 7.6,
+     "simN": 296,
+     "vote": 0,
+     "voteWrong": 23
+    }
+   },
+   "app": {
+    "trace": "/Users/asingh02/personal/live-darbar-venues/cache/replays/c357ce5e3e061316/jaspal/trace/kh20_sttm_desktop_2026_10_11T20_15_43_327Z.events.jsonl",
+    "n": 296,
+    "shown": 24,
+    "appHeard5": 9.8,
+    "appHeardUsable": 69.9,
+    "heardNotShown": 2.7,
+    "shownNotHeard": 23,
+    "appHeardNotShown": 8.4,
+    "voteNotShown": 9.5,
+    "shownNoVote": 24
+   }
+  },
+  {
+   "clip": "kh27_sttm_desktop_2026_10_13T02_48_34_427Z",
+   "tier": "hard",
+   "windows": 276,
+   "models": {
+    "karanbir-fp32": {
+     "n": 276,
+     "hit1": 2.5,
+     "hit5": 4.3,
+     "usable": 43.8,
+     "simMed": 0,
+     "simMean": 24,
+     "simN": 276,
+     "vote": 10.9,
+     "voteWrong": 0
+    },
+    "karanbir-int8": {
+     "n": 276,
+     "hit1": 2.5,
+     "hit5": 5.1,
+     "usable": 44.6,
+     "simMed": 0,
+     "simMean": 24.9,
+     "simN": 276,
+     "vote": 10.9,
+     "voteWrong": 10.1
+    },
+    "sukhpal-ctc": {
+     "n": 276,
+     "hit1": 5.8,
+     "hit5": 8,
+     "usable": 40.2,
+     "simMed": 0,
+     "simMean": 23.3,
+     "simN": 276,
+     "vote": 34.1,
+     "voteWrong": 0
+    },
+    "sukhpal-rnnt": {
+     "n": 276,
+     "hit1": 3.3,
+     "hit5": 5.8,
+     "usable": 26.4,
+     "simMed": 0,
+     "simMean": 15.4,
+     "simN": 276,
+     "vote": 2.5,
+     "voteWrong": 0
+    },
+    "surinder-ctc": {
+     "n": 276,
+     "hit1": 2.9,
+     "hit5": 6.2,
+     "usable": 51.4,
+     "simMed": 18.2,
+     "simMean": 26.9,
+     "simN": 276,
+     "vote": 3.3,
+     "voteWrong": 31.9
+    },
+    "surinder-rnnt": {
+     "n": 276,
+     "hit1": 3.3,
+     "hit5": 4.3,
+     "usable": 20.3,
+     "simMed": 0,
+     "simMean": 10.8,
+     "simN": 276,
+     "vote": 12.7,
+     "voteWrong": 22.5
+    }
+   },
+   "app": {
+    "trace": "/Users/asingh02/personal/live-darbar-venues/cache/replays/c357ce5e3e061316/jaspal/trace/kh27_sttm_desktop_2026_10_13T02_48_34_427Z.events.jsonl",
+    "n": 276,
+    "shown": 82.2,
+    "appHeard5": 8,
+    "appHeardUsable": 48.2,
+    "heardNotShown": 1.8,
+    "shownNotHeard": 79,
+    "appHeardNotShown": 1.4,
+    "voteNotShown": 0,
+    "shownNoVote": 71.4
+   }
+  },
+  {
+   "clip": "ytak_tD1clsfI2oA_full",
+   "tier": "akhand",
+   "windows": 297,
+   "models": {
+    "karanbir-fp32": {
+     "n": 297,
+     "hit1": 2.4,
+     "hit5": 4.7,
+     "usable": 35,
+     "simMed": 0,
+     "simMean": 16.1,
+     "simN": 297,
+     "vote": 10.1,
+     "voteWrong": 30.3
+    },
+    "karanbir-int8": {
+     "n": 297,
+     "hit1": 2.4,
+     "hit5": 4.4,
+     "usable": 34.3,
+     "simMed": 0,
+     "simMean": 15.8,
+     "simN": 297,
+     "vote": 10.1,
+     "voteWrong": 30
+    },
+    "sukhpal-ctc": {
+     "n": 297,
+     "hit1": 3.7,
+     "hit5": 7.4,
+     "usable": 42.4,
+     "simMed": 0,
+     "simMean": 18.9,
+     "simN": 297,
+     "vote": 12.1,
+     "voteWrong": 31.6
+    },
+    "sukhpal-rnnt": {
+     "n": 297,
+     "hit1": 2.7,
+     "hit5": 7.4,
+     "usable": 36.4,
+     "simMed": 0,
+     "simMean": 16.9,
+     "simN": 297,
+     "vote": 11.1,
+     "voteWrong": 41.1
+    },
+    "surinder-ctc": {
+     "n": 297,
+     "hit1": 3,
+     "hit5": 4.7,
+     "usable": 41.1,
+     "simMed": 0,
+     "simMean": 18,
+     "simN": 297,
+     "vote": 9.8,
+     "voteWrong": 40.7
+    },
+    "surinder-rnnt": {
+     "n": 297,
+     "hit1": 2.4,
+     "hit5": 2.4,
+     "usable": 26.3,
+     "simMed": 0,
+     "simMean": 10.2,
+     "simN": 297,
+     "vote": 9.8,
+     "voteWrong": 27.6
+    }
+   },
+   "app": {
+    "trace": "results/hearing/app-akhand/ytak_tD1clsfI2oA_full.events.jsonl",
+    "n": 297,
+    "shown": 9.8,
+    "appHeard5": 6.7,
+    "appHeardUsable": 37,
+    "heardNotShown": 3,
+    "shownNotHeard": 8.4,
+    "appHeardNotShown": 5.1,
+    "voteNotShown": 0.7,
+    "shownNoVote": 0.3
+   }
+  },
+  {
+   "clip": "ytak_zi5pmQuTN5Q_full",
+   "tier": "akhand",
+   "windows": 297,
+   "models": {
+    "karanbir-fp32": {
+     "n": 297,
+     "hit1": 9.8,
+     "hit5": 14.8,
+     "usable": 50.2,
+     "simMed": 20,
+     "simMean": 30.3,
+     "simN": 297,
+     "vote": 40.4,
+     "voteWrong": 31.6
+    },
+    "karanbir-int8": {
+     "n": 297,
+     "hit1": 9.8,
+     "hit5": 14.5,
+     "usable": 47.8,
+     "simMed": 0,
+     "simMean": 29.4,
+     "simN": 297,
+     "vote": 40.4,
+     "voteWrong": 31
+    },
+    "sukhpal-ctc": {
+     "n": 297,
+     "hit1": 9.1,
+     "hit5": 15.5,
+     "usable": 63,
+     "simMed": 33.3,
+     "simMean": 33,
+     "simN": 297,
+     "vote": 39.4,
+     "voteWrong": 43.1
+    },
+    "sukhpal-rnnt": {
+     "n": 297,
+     "hit1": 8.8,
+     "hit5": 13.5,
+     "usable": 56.2,
+     "simMed": 33.3,
+     "simMean": 30.8,
+     "simN": 297,
+     "vote": 41.4,
+     "voteWrong": 46.1
+    },
+    "surinder-ctc": {
+     "n": 297,
+     "hit1": 6.1,
+     "hit5": 9.4,
+     "usable": 60.6,
+     "simMed": 33.3,
+     "simMean": 32.9,
+     "simN": 297,
+     "vote": 25.9,
+     "voteWrong": 42.8
+    },
+    "surinder-rnnt": {
+     "n": 297,
+     "hit1": 5.1,
+     "hit5": 9.4,
+     "usable": 50.8,
+     "simMed": 27.3,
+     "simMean": 27.6,
+     "simN": 297,
+     "vote": 21.5,
+     "voteWrong": 47.8
+    }
+   },
+   "app": {
+    "trace": "results/hearing/app-akhand/ytak_zi5pmQuTN5Q_full.events.jsonl",
+    "n": 297,
+    "shown": 76.1,
+    "appHeard5": 14.8,
+    "appHeardUsable": 55.6,
+    "heardNotShown": 1,
+    "shownNotHeard": 62.6,
+    "appHeardNotShown": 1,
+    "voteNotShown": 0.7,
+    "shownNoVote": 36.4
+   }
+  },
+  {
+   "clip": "ytak_kB3vqpPMiGQ_0-2873",
+   "tier": "akhand",
+   "windows": 263,
+   "models": {
+    "karanbir-fp32": {
+     "n": 263,
+     "hit1": 4.6,
+     "hit5": 6.8,
+     "usable": 32.3,
+     "simMed": 0,
+     "simMean": 21.5,
+     "simN": 263,
+     "vote": 31.9,
+     "voteWrong": 0
+    },
+    "karanbir-int8": {
+     "n": 263,
+     "hit1": 5.3,
+     "hit5": 8,
+     "usable": 33.1,
+     "simMed": 0,
+     "simMean": 21.9,
+     "simN": 263,
+     "vote": 26.2,
+     "voteWrong": 0
+    },
+    "sukhpal-ctc": {
+     "n": 263,
+     "hit1": 6.8,
+     "hit5": 9.5,
+     "usable": 36.9,
+     "simMed": 0,
+     "simMean": 24.8,
+     "simN": 263,
+     "vote": 32.3,
+     "voteWrong": 0
+    },
+    "sukhpal-rnnt": {
+     "n": 263,
+     "hit1": 4.6,
+     "hit5": 6.8,
+     "usable": 24.3,
+     "simMed": 0,
+     "simMean": 17.1,
+     "simN": 263,
+     "vote": 22.8,
+     "voteWrong": 0
+    },
+    "surinder-ctc": {
+     "n": 263,
+     "hit1": 4.2,
+     "hit5": 6.1,
+     "usable": 22.1,
+     "simMed": 0,
+     "simMean": 15.4,
+     "simN": 263,
+     "vote": 19.8,
+     "voteWrong": 10.3
+    },
+    "surinder-rnnt": {
+     "n": 263,
+     "hit1": 1.1,
+     "hit5": 2.7,
+     "usable": 11,
+     "simMed": 0,
+     "simMean": 7.8,
+     "simN": 263,
+     "vote": 0,
+     "voteWrong": 0
+    }
+   },
+   "app": {
+    "trace": "results/hearing/app-akhand/ytak_kB3vqpPMiGQ_0-2873.events.jsonl",
+    "n": 263,
+    "shown": 100,
+    "appHeard5": 9.1,
+    "appHeardUsable": 35,
+    "heardNotShown": 0,
+    "shownNotHeard": 92,
+    "appHeardNotShown": 0,
+    "voteNotShown": 0,
+    "shownNoVote": 73.8
+   }
+  },
+  {
+   "clip": "ytak_0typLHmkekM_0-2271",
+   "tier": "akhand",
+   "windows": 297,
+   "models": {
+    "karanbir-fp32": {
+     "n": 297,
+     "hit1": 9.1,
+     "hit5": 13.5,
+     "usable": 41.8,
+     "simMed": 0,
+     "simMean": 27.2,
+     "simN": 297,
+     "vote": 56.2,
+     "voteWrong": 0
+    },
+    "karanbir-int8": {
+     "n": 297,
+     "hit1": 9.8,
+     "hit5": 12.8,
+     "usable": 42.4,
+     "simMed": 0,
+     "simMean": 27.4,
+     "simN": 297,
+     "vote": 53.9,
+     "voteWrong": 0
+    },
+    "sukhpal-ctc": {
+     "n": 297,
+     "hit1": 10.1,
+     "hit5": 14.8,
+     "usable": 40.7,
+     "simMed": 0,
+     "simMean": 28.4,
+     "simN": 297,
+     "vote": 49.2,
+     "voteWrong": 5.7
+    },
+    "sukhpal-rnnt": {
+     "n": 297,
+     "hit1": 7.1,
+     "hit5": 12.5,
+     "usable": 32.3,
+     "simMed": 0,
+     "simMean": 23.4,
+     "simN": 297,
+     "vote": 14.5,
+     "voteWrong": 13.5
+    },
+    "surinder-ctc": {
+     "n": 297,
+     "hit1": 5.7,
+     "hit5": 10.8,
+     "usable": 31,
+     "simMed": 0,
+     "simMean": 22.3,
+     "simN": 297,
+     "vote": 23.9,
+     "voteWrong": 7.4
+    },
+    "surinder-rnnt": {
+     "n": 297,
+     "hit1": 3.7,
+     "hit5": 5.4,
+     "usable": 15.5,
+     "simMed": 0,
+     "simMean": 12.1,
+     "simN": 297,
+     "vote": 4.7,
+     "voteWrong": 24.6
+    }
+   },
+   "app": {
+    "trace": "results/hearing/app-akhand/ytak_0typLHmkekM_0-2271.events.jsonl",
+    "n": 297,
+    "shown": 69,
+    "appHeard5": 11.8,
+    "appHeardUsable": 42.1,
+    "heardNotShown": 3.7,
+    "shownNotHeard": 59.9,
+    "appHeardNotShown": 4.4,
+    "voteNotShown": 18.9,
+    "shownNoVote": 34
+   }
+  },
+  {
+   "clip": "ytak_Q5QFYd6sL_w_1867-2594",
+   "tier": "akhand",
+   "windows": 297,
+   "models": {
+    "karanbir-fp32": {
+     "n": 297,
+     "hit1": 12.1,
+     "hit5": 18.2,
+     "usable": 59.9,
+     "simMed": 26.3,
+     "simMean": 28.6,
+     "simN": 297,
+     "vote": 58.2,
+     "voteWrong": 4.7
+    },
+    "karanbir-int8": {
+     "n": 297,
+     "hit1": 12.8,
+     "hit5": 17.5,
+     "usable": 60.3,
+     "simMed": 26.7,
+     "simMean": 28.9,
+     "simN": 297,
+     "vote": 47.1,
+     "voteWrong": 11.1
+    },
+    "sukhpal-ctc": {
+     "n": 297,
+     "hit1": 16.5,
+     "hit5": 21.2,
+     "usable": 69,
+     "simMed": 35,
+     "simMean": 32.2,
+     "simN": 297,
+     "vote": 47.1,
+     "voteWrong": 41.4
+    },
+    "sukhpal-rnnt": {
+     "n": 297,
+     "hit1": 16.5,
+     "hit5": 20.2,
+     "usable": 60.6,
+     "simMed": 33.3,
+     "simMean": 28.7,
+     "simN": 297,
+     "vote": 43.4,
+     "voteWrong": 42.8
+    },
+    "surinder-ctc": {
+     "n": 297,
+     "hit1": 15.8,
+     "hit5": 19.2,
+     "usable": 68.4,
+     "simMed": 36.8,
+     "simMean": 34.3,
+     "simN": 297,
+     "vote": 41.1,
+     "voteWrong": 44.1
+    },
+    "surinder-rnnt": {
+     "n": 297,
+     "hit1": 16.2,
+     "hit5": 18.2,
+     "usable": 49.2,
+     "simMed": 0,
+     "simMean": 24.6,
+     "simN": 297,
+     "vote": 44.8,
+     "voteWrong": 41.1
+    }
+   },
+   "app": {
+    "trace": "results/hearing/app-akhand/ytak_Q5QFYd6sL_w_1867-2594.events.jsonl",
+    "n": 297,
+    "shown": 91.2,
+    "appHeard5": 18.5,
+    "appHeardUsable": 63,
+    "heardNotShown": 0.7,
+    "shownNotHeard": 74.4,
+    "appHeardNotShown": 1,
+    "voteNotShown": 0,
+    "shownNoVote": 44.1
+   }
+  },
+  {
+   "clip": "l3clip01",
+   "tier": "akhand",
+   "windows": 269,
+   "models": {
+    "karanbir-fp32": {
+     "n": 269,
+     "hit1": 3.3,
+     "hit5": 5.9,
+     "usable": 43.9,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 3.3,
+     "voteWrong": 44.6
+    },
+    "karanbir-int8": {
+     "n": 269,
+     "hit1": 3.7,
+     "hit5": 6.3,
+     "usable": 43.5,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 3.3,
+     "voteWrong": 44.6
+    },
+    "sukhpal-ctc": {
+     "n": 269,
+     "hit1": 8.6,
+     "hit5": 18.6,
+     "usable": 68.8,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 17.8,
+     "voteWrong": 53.9
+    },
+    "sukhpal-rnnt": {
+     "n": 269,
+     "hit1": 8.6,
+     "hit5": 13.8,
+     "usable": 62.1,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 13.4,
+     "voteWrong": 69.1
+    },
+    "surinder-ctc": {
+     "n": 269,
+     "hit1": 7.4,
+     "hit5": 12.6,
+     "usable": 66.2,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 10,
+     "voteWrong": 62.1
+    },
+    "surinder-rnnt": {
+     "n": 269,
+     "hit1": 5.2,
+     "hit5": 8.6,
+     "usable": 52,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 4.8,
+     "voteWrong": 71
+    }
+   },
+   "app": {
+    "trace": "results/hearing/app-akhand/l3clip01.events.jsonl",
+    "n": 269,
+    "shown": 83.6,
+    "appHeard5": 9.3,
+    "appHeardUsable": 48.3,
+    "heardNotShown": 0.7,
+    "shownNotHeard": 78.1,
+    "appHeardNotShown": 3,
+    "voteNotShown": 0.7,
+    "shownNoVote": 81
+   }
+  },
+  {
+   "clip": "l3clip26",
+   "tier": "akhand",
+   "windows": 269,
+   "models": {
+    "karanbir-fp32": {
+     "n": 269,
+     "hit1": 10.8,
+     "hit5": 18.2,
+     "usable": 70.3,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 50.9,
+     "voteWrong": 20.4
+    },
+    "karanbir-int8": {
+     "n": 269,
+     "hit1": 11.2,
+     "hit5": 20.1,
+     "usable": 69.9,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 53.2,
+     "voteWrong": 20.8
+    },
+    "sukhpal-ctc": {
+     "n": 269,
+     "hit1": 14.1,
+     "hit5": 25.7,
+     "usable": 91.1,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 46.8,
+     "voteWrong": 47.2
+    },
+    "sukhpal-rnnt": {
+     "n": 269,
+     "hit1": 13,
+     "hit5": 24.2,
+     "usable": 78.4,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 42.4,
+     "voteWrong": 52.8
+    },
+    "surinder-ctc": {
+     "n": 269,
+     "hit1": 12.6,
+     "hit5": 20.4,
+     "usable": 86.6,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 40.1,
+     "voteWrong": 47.2
+    },
+    "surinder-rnnt": {
+     "n": 269,
+     "hit1": 10.8,
+     "hit5": 18.2,
+     "usable": 57.6,
+     "simMed": null,
+     "simMean": null,
+     "simN": 0,
+     "vote": 33.8,
+     "voteWrong": 49.8
+    }
+   },
+   "app": {
+    "trace": "results/hearing/app-akhand/l3clip26.events.jsonl",
+    "n": 269,
+    "shown": 98.5,
+    "appHeard5": 20.8,
+    "appHeardUsable": 75.1,
+    "heardNotShown": 0,
+    "shownNotHeard": 78.4,
+    "appHeardNotShown": 0.4,
+    "voteNotShown": 0,
+    "shownNoVote": 45.4
+   }
+  }
+ ],
+ "examples": [
+  {
+   "tier": "main",
+   "clip": "clip05",
+   "t": 42,
+   "truth": "ਦੁਸਟ ਦੂਤ ਪਰਮੇਸਰਿ ਮਾਰੇ ॥",
+   "spread": 100,
+   "by": {
+    "karanbir-fp32": {
+     "text": "ਦੁਸਟ ਦੂਤਿ ਪਰਵੇਸਰ",
+     "sim": 85.71428571428571,
+     "rank": 0
+    },
+    "karanbir-int8": {
+     "text": "ਦੁਸਟ ਦੂਤਿ ਪਰਵੇਸਰ",
+     "sim": 85.71428571428571,
+     "rank": 0
+    },
+    "sukhpal-ctc": {
+     "text": "ਦੁਸਟ ਦੂਤ ਪਰਮੇਸਰ",
+     "sim": 100,
+     "rank": 0
+    },
+    "sukhpal-rnnt": {
+     "text": "ਦੁਸਟ ਦੂਤ ਪਰਮੇਸਰ",
+     "sim": 100,
+     "rank": 0
+    },
+    "surinder-ctc": {
+     "text": "ਦੁਸਟਿ ਦੂਤਿ",
+     "sim": 77.77777777777777,
+     "rank": 0
+    },
+    "surinder-rnnt": {
+     "text": "ਦੁਸਟ ਦੂਤ",
+     "sim": 0,
+     "rank": -1
+    }
+   }
+  },
+  {
+   "tier": "hard",
+   "clip": "kh11_sttm_desktop_2026_10_11T02_40_20_422Z",
+   "t": 77,
+   "truth": "ਐਸੀ ਪ੍ਰੀਤਿ ਕਰਹੁ ਮਨ ਮੇਰੇ ॥",
+   "spread": 100,
+   "by": {
+    "karanbir-fp32": {
+     "text": "ਐਸੀ ਨ ਮਨ",
+     "sim": 0,
+     "rank": -1
+    },
+    "karanbir-int8": {
+     "text": "ਐਸੀ ਮਨ",
+     "sim": 0,
+     "rank": -1
+    },
+    "sukhpal-ctc": {
+     "text": "ਸਛ ਤੇ ਦਪ ਮਹ",
+     "sim": 25,
+     "rank": -1
+    },
+    "sukhpal-rnnt": {
+     "text": "ਅਛੂ",
+     "sim": 0,
+     "rank": -1
+    },
+    "surinder-ctc": {
+     "text": "ਐਸੀ ਪ੍ਰੀਤ ਕਰ",
+     "sim": 90,
+     "rank": 0
+    },
+    "surinder-rnnt": {
+     "text": "ਐਸੀ ਪ੍ਰੀਤ",
+     "sim": 100,
+     "rank": 2
+    }
+   }
+  },
+  {
+   "tier": "akhand",
+   "clip": "ytak_tD1clsfI2oA_full",
+   "t": 42,
+   "truth": "ਗੁਰਮਤਿ ਮਨੂਆ ਅਸਥਿਰੁ ਰਾਖਹੁ ਇਨ ਬਿਧਿ ਅੰਮ੍ਰਿਤੁ ਪੀਓਈਐ ॥੧॥ ਰਹਾਉ ॥",
+   "spread": 100,
+   "by": {
+    "karanbir-fp32": {
+     "text": "ਥਿਰੁ ਰਾਖਹੁ",
+     "sim": 100,
+     "rank": 0
+    },
+    "karanbir-int8": {
+     "text": "ਥਿਰੁ ਰਾਖਹੁ",
+     "sim": 100,
+     "rank": 0
+    },
+    "sukhpal-ctc": {
+     "text": "ਥਿਰ ਰਾਖਹੁ",
+     "sim": 87.5,
+     "rank": 0
+    },
+    "sukhpal-rnnt": {
+     "text": "ਥਿਰ ਰਾਖਹੁ",
+     "sim": 87.5,
+     "rank": 0
+    },
+    "surinder-ctc": {
+     "text": "ਥਿਰਿ ਰਾਖਹੁ",
+     "sim": 88.88888888888889,
+     "rank": 0
+    },
+    "surinder-rnnt": {
+     "text": "ਥਿਰੁ ਰਾਖ",
+     "sim": 0,
+     "rank": -1
+    }
+   }
+  }
+ ]
+}

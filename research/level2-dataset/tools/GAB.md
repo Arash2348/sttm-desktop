@@ -42,6 +42,20 @@ differs slightly from the Mac's (~0.9 % of frames flip argmax); one clip never m
 of another platform (an entry without the stamp predates it and is a Mac entry). The manifest notes of each new clip
 say "cache: recorded on x86". A build that later asks for new windows on these clips must be filled on x86 (the VM).
 
+**v1.3 baseline, 9.0.3 release (3fafc0ba), practice split (train + dev), from cache:**
+
+| tier / row | clips · audio | right Shabad | wrong s/h | find p50 / p90 (not found) | switches: within 10 s / later / never |
+|---|---|---|---|---|---|
+| main GAB, kirtan (L2-41 + Renton Finds) | 109 · 13.86 h | 92.6% | 111.2 | 7.2 / 32.3 s (13 of 109) | 18 / 2 / 1 (n 21) |
+| &nbsp;&nbsp;L2-41 only (was the whole v1.2 kirtan row) | 41 · 5.19 h | 98.4% | 24.6 | 13.3 / 38.9 s (0) | none in these clips |
+| &nbsp;&nbsp;Renton Finds darbars | 68 · 8.67 h | 89.3% | 159.7 | 0 / 18.9 s (13 of 68) | 18 / 2 / 1 (n 21) |
+| GAB-Akhand Kirtan (AKJ Toronto Fri + Manchester) | 23 · 1.51 h | 78.2% | 398.3 | 5.8 / 38.1 s (7 of 23) | 6 / 1 / 3 (n 10) |
+
+Switch p50 over found is 0 s: the sheet's Shabad starts are a few seconds approximate, and at many Renton changes the app
+already shows the new Shabad when the marked start comes. The 132 old clips replay to exactly the published v1.2
+numbers (scored on the GCP VM from the shared cache; identical screen events), so v1.2 -> v1.3 changes come only from
+the new clips.
+
 ## Two tiers: GAB and GAB-Hard (v1.2, Oct 14 2026)
 
 | tier | recordings | role |

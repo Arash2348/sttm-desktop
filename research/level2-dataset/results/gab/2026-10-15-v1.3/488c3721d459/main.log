@@ -1,0 +1,11 @@
+GAB v1.3 run: GAB (--set main) · manifest 87155c50d6ce · tier full · split dev · 216 clips (19.20 h of audio), 8 without a runner · load 51.7 57.1 51.0
+  build /Users/asingh02/personal/live-darbar-venues/cache/worktrees/488c3721d459 @ 488c3721d459
+pulling 399 MB of cache entries from Azure bench-cache ...
+pulled 4 entries (399 MB) from Azure
+  12 clips are in neither the local nor the Azure cache (not run; record them with gab fill): ytap_-1yA1ufOku0_2000-2600 ytap_-1yA1ufOku0_2000-2600_x1.35 ytap_5N6Cgw8WAaY_1200-1800 ytap_5N6Cgw8WAaY_1200-1800_x1.35 ytap_67Z-uUuScfs_300-900 ytap_67Z-uUuScfs_300-900_x1.35 ytap_DDHRQqbEnyo_1200-1800 ytap_DDHRQqbEnyo_1200-1800_x1.35 ytap_OrG2-IsMDfg_1500-2100 ytap_OrG2-IsMDfg_1500-2100_x1.35 ytap_q_dwf8YWdXY_300-900 ytap_q_dwf8YWdXY_300-900_x1.35
+  FAIL base/l2 4 clips 100.4s (cache miss in clip24_guDwBxnCTnI_990-1448, 1 requeued)
+  FAIL base/l2 2 clips 64.2s (cache miss in clip35_h37nNWBwZxk_1120-2315)
+  FAIL base/paath 19 clips 164.7s (cache miss in pt21_KSgSkLjLuA0_370-440, 12 requeued)
+  FAIL base/paath 19 clips 360s (cache miss in pt55_SC1gipmk214_432-502, 3 requeued)
+  FAIL base/paath 19 clips 396.8s (cache miss in pt61_4PEORBA2KdU_518-588, 2 requeued)
+  FAIL base/l2 3 clips 13.1s (cache miss in clip15_au0r538sNKo_1131-1582, 2 requeued)

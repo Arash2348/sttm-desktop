@@ -1,0 +1,25 @@
+{
+ "format": "NeMo baniguru_offline_v1.nemo (fp32 PyTorch, torch.load weights_only=True), nemo 1.23.0rc0 config",
+ "front_end": "NeMo AudioToMelSpectrogramPreprocessor from the checkpoint config ({'features': 80, 'n_fft': 512, 'window_size': 0.025, 'window_stride': 0.01, 'normalize': 'per_feature'}, defaults preemph 0.97, log add 2^-24, eval: no dither)",
+ "decoder": "greedy RNNT (max 10 symbols/frame) with the joint's pa output head (256 + blank) and language-local prediction-net labels, pa sentencepiece decode",
+ "file": "/Users/asingh02/AAI/models/sukhpal-baniguru-v1/baniguru_offline_v1.nemo",
+ "loaded_tensors": {
+  "preprocessor.": 2,
+  "encoder.": 686,
+  "ctc_decoder.": 2,
+  "decoder.": 5,
+  "joint.": 6
+ },
+ "model": "sukhpal-rnnt",
+ "sha256": "0214688920a5a92854f76dd8e7116e0e7f64db4c2a715d03f0c6a18b900a11ef",
+ "size": 523182080,
+ "window_s": 4.0,
+ "hop_s": 1.0,
+ "started": "2026-10-14 22:07",
+ "windows": 21,
+ "machines": {
+  "GCP vf-record (Intel Xeon 2.8 GHz, x86, nemo 3.0.0 / torch 2.14.1+cpu, 6 threads)": "main tier (7) + kh11, kh12, kh13, kh15",
+  "Mac (Apple Silicon, nemo 3.0.0 / torch 2.14.0, 4 threads)": "kh19, kh20, kh27 + akhand tier (7)"
+ },
+ "note": "split across two machines for speed (fp32 PyTorch; CPU differences are numerically tiny); same code, same model file sha256"
+}

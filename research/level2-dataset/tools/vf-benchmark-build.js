@@ -287,12 +287,16 @@ for (const c of clips) {
   let duration = c.duration;
   if (!flag('no-audio')) ({ duration } = putAudio(c.wav, path.join(dir, 'audio.wav')));
   else duration = wavInfo(fs.realpathSync(c.wav)).duration;
-  const lines = c.lines || [];
-  fs.writeFileSync(path.join(dir, 'lines.csv'), csv('verseId,start_s,end_s,confidence,source', lines));
+  // a line key a person reviewed (linelabel, meta.json line_label) is never replaced by a rebuild from machine truth
+  const prevMeta = (() => { try { return J(path.join(dir, 'meta.json')); } catch (_) { return null; } })();
+  const reviewed = prevMeta && prevMeta.line_label && fs.existsSync(path.join(dir, 'lines.csv'));
+  const lines = reviewed ? fs.readFileSync(path.join(dir, 'lines.csv'), 'utf8').trim().split('\n').slice(1).filter(Boolean) : c.lines || [];
+  if (!reviewed) fs.writeFileSync(path.join(dir, 'lines.csv'), csv('verseId,start_s,end_s,confidence,source', lines));
   fs.writeFileSync(path.join(dir, 'shabads.csv'), csv('shabadId,start_s,end_s,source', c.shabads));
   const meta = { id: c.id, content_folder: c.folder, bani: c.bani || null, bani_id: c.baniId ?? null, gurdwara: c.gurdwara, reader: c.reader || null, acoustics: c.acoustics, origin: c.origin,
     source_file: path.basename(c.wav), duration_s: r1(duration), split: c.split, session: c.session || undefined, truth_provenance: c.truth_provenance, suite_jobs: c.suite_jobs, cache: cached(c.cacheId) ? 'yes' : 'no', cache_id: c.cacheId,
-    lines_n: lines.length, lines_source: lines.length ? lines[0].source : 'none', shabads_n: c.shabads.length, notes: c.notes || '' };
+    lines_n: lines.length, lines_source: reviewed ? prevMeta.lines_source : lines.length ? lines[0].source : 'none', shabads_n: c.shabads.length, notes: c.notes || '',
+    ...(reviewed ? { line_label: prevMeta.line_label } : {}) };
   fs.writeFileSync(path.join(dir, 'meta.json'), `${JSON.stringify(meta, null, 1)}\n`);
   rows.push({ ...meta, session: c.session || '', audio: `${c.folder}/${c.id}/audio.wav`, _src: c.src, _range: c.srcRange });
 }

@@ -229,7 +229,7 @@ function applyEarChecks(ds, row, lines) {
   const vs = earChecks(ds).filter((v) => v.rec === row.id);
   const a = { checked: 0, confirmed: 0, unsure: 0, rejected: 0 };
   for (const l of lines) {
-    let verdict = /REJECTED/i.test(l.src || '') ? 'no' : /human-confirmed/.test(l.src || '') ? 'yes' : /human-unsure/.test(l.src || '') ? 'unsure' : null;
+    let verdict = /REJECTED/i.test(l.src || '') ? 'no' : /human-(confirmed|corrected)/.test(l.src || '') ? 'yes' : /human-unsure/.test(l.src || '') ? 'unsure' : null;
     const v = vs.find((x) => Math.abs(x.t - l.start) < 0.15 && x.ids.some((id) => (l.ids || []).includes(id)));
     if (v) verdict = v.verdict;
     if (!verdict) continue;
