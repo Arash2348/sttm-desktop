@@ -40,8 +40,22 @@ ln -sfn "$GAB/bench" /root/personal/vf-benchmark
 ln -sfn "$REPO" /root/personal/sttm-desktop
 ln -sfn "$GAB/userdata" "/root/Library/Application Support/SikhiToTheMax"
 [ -e /Users/asingh02/personal ] || ln -s /root/personal /Users/asingh02/personal
-# replay never loads the model; the cache directory is named by its sha (5f9e41d867de in Azure), seeded here
+# replay never loads the model; the cache directory is named by its sha (5f9e41d867de in Azure), seeded here.
+# --model puts the real int8 model there (needed only to record / fill / align); its sha is checked, and the memo keeps
+# the same placeholder sha so saved replays (keyed by it) stay shared between sessions with and without the model
 M=/Users/asingh02/AAI/models/karansea-shabad-ctc/model.int8.onnx
+if [[ " $* " == *" --model "* ]] && [ "$(stat -c %s "$M" 2>/dev/null || echo 0)" -lt 1000000 ]; then
+  say "speech model (184 MB, public)"
+  curl -sSL -f -o "$M.part" "https://huggingface.co/karansea/indicconformer-stt-pa-ctc-shabad-preview/resolve/main/model.int8.onnx?download=true"
+  [ "$(sha256sum "$M.part" | cut -c1-12)" = 5f9e41d867de ] || { say "model sha mismatch"; exit 1; }
+  mv "$M.part" "$M"
+fi
+if [[ " $* " == *" --model "* ]] && [ ! -s /home/user/gab/model/surinder/indicconformer-pa-ctc.onnx ]; then
+  say "second model for line alignment (Surinder pa-v3-kirtan fp32, 482 MB, public)"
+  mkdir -p /home/user/gab/model/surinder
+  curl -sSL -f -o /home/user/gab/model/surinder/indicconformer-pa-ctc.onnx "https://huggingface.co/surindersinghssj/indicconformer-pa-v3-kirtan/resolve/main/onnx-pa-only/fp32/indicconformer-pa-ctc.onnx"
+fi
+[ -s "$M" ] && [ "$(stat -c %s "$M")" -gt 1000000 ] && { mkdir -p /home/user/gab/model; ln -sfn "$M" /home/user/gab/model/model.int8.onnx; }
 [ -e "$M" ] || echo "placeholder: replay never runs the model" > "$M"
 node -e 'const fs=require("fs"),M=process.argv[1],f="/root/personal/live-darbar-venues/cache/model-sha.json";const st=fs.statSync(M);let m={};try{m=JSON.parse(fs.readFileSync(f))}catch(_){};m[`${fs.realpathSync(M)}|${st.size}|${st.mtimeMs}`]="5f9e41d867de0000placeholder-sha12-from-azure";fs.writeFileSync(f,JSON.stringify(m,null,1))' "$M"
 # BSD lockf -> flock

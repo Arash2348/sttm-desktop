@@ -8,7 +8,8 @@
 // What is shared: vf-check's saved replays of committed app trees (<cache>/replays/<key>/<suite>/<clip>.json and
 // trace/<clip>.events.jsonl), keyed by sha1(app tree | harness files | model | codec), so a build that any session
 // replayed once is never replayed again. Screen events and scores only: no audio, no model output, no secrets.
-// Writes only under bench-results/ (never bench-cache/), never deletes, never overwrites an existing blob.
+// Writes only under its --prefix (default bench-results/replays; never bench-cache/), never deletes, and never
+// overwrites an existing blob unless --overwrite (used for summaries that are rewritten on purpose).
 // SAS from env VF_AZURE_SAS (whitespace stripped), never printed.
 const fs = require('fs');
 const os = require('os');
@@ -16,13 +17,22 @@ const path = require('path');
 const zlib = require('zlib');
 
 const BASE = 'https://banidb.blob.core.windows.net/voice-follow-training-data';
-const PREFIX = 'bench-results/replays';
-const LOCAL = path.join(process.env.VF_EMIS_CACHE || path.join(os.homedir(), 'personal/live-darbar-venues/cache'), 'replays');
+const argv = process.argv.slice(2);
+const opt = (n, d) => { const i = argv.indexOf(`--${n}`); return i >= 0 ? argv[i + 1] : d; };
+// --prefix / --dir share any other result folder the same way (e.g. --prefix gab-lines --dir /home/user/gab/lines);
+// --skip <regex> leaves matching local paths out of a push (e.g. bulky model output)
+const PREFIX = opt('prefix', 'bench-results/replays');
+if (/^bench-cache/.test(PREFIX)) throw new Error('results-sync never writes bench-cache/ (model output goes through remote-cache.js)');
+const SKIP = opt('skip') ? new RegExp(opt('skip')) : null;
+const LOCAL = opt('dir', path.join(process.env.VF_EMIS_CACHE || path.join(os.homedir(), 'personal/live-darbar-venues/cache'), 'replays'));
 const sas = () => {
-  const s = (process.env.VF_AZURE_SAS || '').replace(/\s+/g, '').replace(/^\?/, '');
+  // env, or the owner's own Mac file (~/.vf-azure-sas, as remote-cache.js)
+  const s = (process.env.VF_AZURE_SAS || (() => { try { return fs.readFileSync(path.join(os.homedir(), '.vf-azure-sas'), 'utf8'); } catch (_) { return ''; } })()).replace(/\s+/g, '').replace(/^\?/, '');
   if (!s) throw new Error('VF_AZURE_SAS is not set');
-  return require('/home/user/gab-tools/research/level2-dataset/tools/remote-cache').fixTimes(s);
+  return fixTimes(s);
 };
+// st / se are plain timestamps; a hand-edited copy can lose a '-' or ':' (same repair as remote-cache.js)
+const fixTimes = (s) => s.split('&').map((p) => { const m = p.match(/^(st|se)=(.*)$/); if (!m) return p; const d = decodeURIComponent(m[2]).replace(/\D/g, ''); return d.length === 14 ? `${m[1]}=${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}T${d.slice(8, 10)}:${d.slice(10, 12)}:${d.slice(12, 14)}Z` : p; }).join('&');
 const redact = (s) => String(s).replace(/sig=[^&\s"']+/g, 'sig=REDACTED');
 const blobUrl = (key) => `${BASE}/${key.split('/').map(encodeURIComponent).join('/')}?${sas()}`;
 
@@ -54,7 +64,7 @@ async function pool(items, n, fn) {
 }
 
 (async () => {
-  const cmd = process.argv[2];
+  const cmd = argv[0];
   const remote = await list();
   if (cmd === 'list') {
     const by = {};
@@ -62,11 +72,12 @@ async function pool(items, n, fn) {
     for (const [k, n] of Object.entries(by)) console.log(k, n, 'files');
     console.log(`${remote.size} files in ${PREFIX}`);
   } else if (cmd === 'push') {
-    const todo = localFiles().filter((f) => !remote.has(`${PREFIX}/${f}.gz`));
+    const overwrite = argv.includes('--overwrite');
+    const todo = localFiles().filter((f) => (!SKIP || !SKIP.test(f)) && (overwrite || !remote.has(`${PREFIX}/${f}.gz`)));
     let bytes = 0;
     await pool(todo, 8, async (f) => {
       const body = zlib.gzipSync(fs.readFileSync(path.join(LOCAL, f)));
-      const res = await fetch(blobUrl(`${PREFIX}/${f}.gz`), { method: 'PUT', body, headers: { 'x-ms-blob-type': 'BlockBlob', 'If-None-Match': '*', 'content-type': 'application/gzip' } });
+      const res = await fetch(blobUrl(`${PREFIX}/${f}.gz`), { method: 'PUT', body, headers: { 'x-ms-blob-type': 'BlockBlob', ...(overwrite ? {} : { 'If-None-Match': '*' }), 'content-type': 'application/gzip' } });
       if (!res.ok && res.status !== 409) throw new Error(`PUT ${f}: HTTP ${res.status} ${redact((await res.text()).slice(0, 120))}`);
       bytes += body.length;
     });

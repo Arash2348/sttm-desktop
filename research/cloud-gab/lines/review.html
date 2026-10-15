@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pangti Review</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gurmukhi:wght@500;600&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+  :root { --bg:#f4f2ee; --card:#fff; --ink:#1c1a17; --muted:#6b665e; --line:#ddd8cf; --bar:#c9c2b6; --bar-played:#8f877a;
+    --yes:#1f7a45; --no:#b33a2a; --early:#2a5fb3; --late:#8a4fb0; --unsure:#8a8378; --marker:#e08a00; --other:#2a7fa8; --tap:#1f7a45; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1a1916; --card:#24221e; --ink:#eeeae2; --muted:#a8a296; --line:#3a3731; --bar:#4a463e; --bar-played:#9d958a; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:"Source Sans 3","Helvetica Neue",Arial,sans-serif; }
+  .wrap { max-width:900px; margin:0 auto; padding:24px 16px 48px; }
+  header { display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  h1 { font-size:22px; margin:0; } .count { color:var(--muted); font-variant-numeric:tabular-nums; }
+  .progress { height:6px; background:var(--line); border-radius:3px; margin:10px 0 4px; overflow:hidden; } .progress div { height:100%; background:var(--yes); width:0; }
+  .help { color:var(--muted); font-size:14px; margin:6px 0 18px; line-height:1.5; }
+  kbd { font-family:inherit; font-size:12px; border:1px solid var(--line); border-bottom-width:2px; border-radius:4px; padding:0 5px; background:var(--card); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px; }
+  .meta { color:var(--muted); font-size:13px; letter-spacing:.02em; }
+  .gurmukhi { font-family:"Noto Sans Gurmukhi",sans-serif; word-break:keep-all; overflow-wrap:normal; hyphens:none; }
+  .ctx { color:var(--muted); font-size:18px; margin:10px 0 0; line-height:1.5; }
+  .ctx span { font-family:"Source Sans 3",sans-serif; font-size:12px; text-transform:uppercase; letter-spacing:.06em; margin-right:8px; }
+  .line { font-size:34px; font-weight:600; margin:10px 0; line-height:1.45; }
+  .wave { position:relative; height:84px; margin:16px 0 26px; cursor:crosshair; user-select:none; }
+  .bars { position:absolute; inset:0; display:flex; align-items:center; gap:1px; } .bars i { flex:1; background:var(--bar); border-radius:1px; min-height:2px; } .bars i.played { background:var(--bar-played); }
+  .mk { position:absolute; top:-6px; bottom:-6px; width:3px; border-radius:2px; transform:translateX(-1px); pointer-events:none; }
+  .mk b { position:absolute; top:calc(100% + 4px); left:50%; transform:translateX(-50%); font-size:12px; font-weight:600; white-space:nowrap; }
+  .mk.main { background:var(--marker); } .mk.main b { color:var(--marker); }
+  .mk.other { background:var(--other); opacity:.55; } .mk.other b { color:var(--other); top:auto; bottom:calc(100% + 2px); }
+  .mk.tap { background:var(--tap); width:4px; } .mk.tap b { color:var(--tap); }
+  .head { position:absolute; top:0; bottom:0; width:2px; background:var(--ink); opacity:.7; pointer-events:none; }
+  .tapinfo { min-height:22px; font-size:15px; color:var(--tap); font-weight:600; }
+  .buttons { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:14px; }
+  button { font:inherit; font-weight:700; font-size:16px; border:0; border-radius:10px; padding:14px 8px; color:#fff; cursor:pointer; }
+  button small { display:block; font-weight:400; font-size:12px; opacity:.9; margin-top:2px; }
+  .y{background:var(--yes)} .n{background:var(--no)} .e{background:var(--early)} .l{background:var(--late)} .u{background:var(--unsure)} .t{background:var(--tap); width:100%; margin-top:10px}
+  button:disabled { opacity:.35; cursor:default; }
+  .row { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+  .ghost { background:transparent; color:var(--ink); border:1px solid var(--line); font-weight:600; padding:8px 14px; font-size:15px; }
+  input[type=text], select { font:inherit; padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--ink); }
+  input[type=text] { flex:1; min-width:200px; }
+  .find { background:var(--card); border:1px solid var(--other); border-radius:10px; padding:10px 12px; margin-top:12px; font-size:15px; }
+  .status { color:var(--muted); font-size:13px; margin-top:10px; } .done { text-align:center; padding:40px 10px; }
+  @media (max-width:640px) { .buttons { grid-template-columns:repeat(2,1fr); } .line { font-size:26px; } }
+</style></head><body>
+<div class="wrap">
+  <header><h1>Pangti review <span id="sub" style="font-weight:400;color:var(--muted);font-size:16px"></span></h1><span class="count" id="count"></span></header>
+  <div class="progress"><div id="prog"></div></div>
+  <p class="help">Listen. Does the pangti in large letters start at the <b style="color:var(--marker)">orange mark</b>? The faint blue mark is where the second model put it.
+    If not, <b>tap the real start</b>: click the bars, or press <kbd>Space</kbd> the moment it starts while playing.
+    Keys: <kbd>Y</kbd> yes · <kbd>E</kbd> earlier · <kbd>L</kbd> later · <kbd>W</kbd> wrong pangti · <kbd>U</kbd> not sure · <kbd>Enter</kbd> save my tap ·
+    <kbd>←</kbd><kbd>→</kbd> nudge tap 0.1 s · <kbd>R</kbd> replay · <kbd>P</kbd> longer listen · <kbd>B</kbd> back.
+    <select id="filter"><option value="">all items</option></select></p>
+  <div class="card" id="card"></div>
+</div>
+<audio id="audio" preload="auto"></audio>
+<script>
+const PRE = 4, POST = 5, NBARS = 140, REACTION = 0.25;
+let all = [], items = [], answers = {}, i = 0;
+const env = {};
+let win = null, tap = null, finding = null, stopAt = null, raf = null;
+const audio = document.getElementById('audio'), card = document.getElementById('card');
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const fmt = (t) => { const m = Math.floor(t / 60); return `${m}:${(t - 60 * m).toFixed(1).padStart(4, '0')}`; };
+const $ = (id) => document.getElementById(id);
+const qs = new URLSearchParams(location.search);
+
+async function load() {
+  all = (await (await fetch('items.json')).json()).filter((it) => it.hasAudio);
+  answers = await (await fetch('answers.json')).json();
+  const groups = [...new Set(all.map((it) => it.clip.replace(/[_\d].*$/, '')))];
+  $('filter').innerHTML += groups.map((g) => `<option value="${esc(g)}">${esc(g)} clips</option>`).join('') + '<option value="kind:aligned-1model">only one model found it</option><option value="kind:aligned-2model">models agree, weak match</option><option value="kind:aligned-2model-sure">spot checks</option>';
+  $('filter').value = qs.get('f') || '';
+  $('filter').addEventListener('change', () => { qs.set('f', $('filter').value); history.replaceState(null, '', `?${qs}`); apply(); });
+  apply();
+}
+function apply() {
+  const f = $('filter').value;
+  items = all.filter((it) => !f || (f.startsWith('kind:') ? it.kind === f.slice(5) : it.clip.startsWith(f)));
+  $('sub').textContent = `· ${new Set(items.map((x) => x.clip)).size} recordings`;
+  i = items.findIndex((it) => !answers[it.id]); if (i < 0) i = items.length;
+  render();
+}
+function save(id) {
+  fetch('answer', { method: 'POST', body: JSON.stringify({ ...answers[id], itemId: id }) })
+    .then((r) => { $('status') && ($('status').textContent = r.ok ? 'Saved' : 'Not saved'); })
+    .catch(() => { $('status') && ($('status').textContent = 'Not saved: is the review server still running?'); });
+}
+function counts() {
+  const done = items.filter((it) => answers[it.id]).length;
+  $('count').textContent = `${done} of ${items.length} answered`;
+  $('prog').style.width = `${items.length ? (100 * done) / items.length : 0}%`;
+}
+function render() {
+  counts(); stop(); tap = null; finding = null;
+  if (i >= items.length) { card.innerHTML = `<div class="done"><h2>All done here. Thank you.</h2><p class="help">Every answer is saved. Pick another group above, or close this tab.</p><button class="ghost" onclick="i=Math.max(0,items.length-1);render()">Go back to the last one</button></div>`; return; }
+  const it = items[i], prev = answers[it.id];
+  card.innerHTML = `
+    <div class="meta">${esc(it.clip)} · ${esc(it.source)} · at ${fmt(it.start)} · item ${i + 1} of ${items.length}${prev ? ' · your answer: ' + esc(prev.answer) + (prev.tap != null ? ' at ' + fmt(prev.tap) : '') : ''}</div>
+    <div class="ctx gurmukhi"><span>before</span>${esc(it.prev) || '—'}</div>
+    <div class="line gurmukhi">${esc(it.line)}</div>
+    <div class="ctx gurmukhi"><span>after</span>${esc(it.next) || '—'}</div>
+    <div class="wave" id="wave"><div class="bars" id="bars"></div><div class="head" id="head" style="left:0"></div></div>
+    <div class="tapinfo" id="tapinfo"></div>
+    <div class="buttons">
+      <button class="y" data-a="yes">Yes<small>starts at the mark</small></button>
+      <button class="e" data-a="earlier">Earlier<small>it started before</small></button>
+      <button class="l" data-a="later">Later<small>it starts after</small></button>
+      <button class="n" data-a="wrong">Wrong pangti<small>not this pangti here</small></button>
+      <button class="u" data-a="unsure">Not sure<small>can't tell</small></button>
+    </div>
+    <button class="t" id="savetap" disabled>Save my tap (Enter)<small>the pangti starts where I tapped</small></button>
+    <div id="findbox"></div>
+    <div class="row"><button class="ghost" id="replay">Replay (R)</button><button class="ghost" id="longer">Longer listen (P)</button><button class="ghost" id="back">Back (B)</button>
+      <input type="text" id="note" placeholder="Note (optional)" value="${esc(prev && prev.note)}"></div>
+    <div class="status" id="status"></div>`;
+  card.querySelectorAll('button[data-a]').forEach((b) => b.addEventListener('click', () => answer(b.dataset.a)));
+  $('savetap').addEventListener('click', () => answer('tap'));
+  $('replay').addEventListener('click', () => play());
+  $('longer').addEventListener('click', () => setWindow(it.start - 10, it.start + 12, true));
+  $('back').addEventListener('click', back);
+  $('wave').addEventListener('click', (ev) => { const r = ev.currentTarget.getBoundingClientRect(); const t = win.a + ((ev.clientX - r.left) / r.width) * (win.b - win.a); setTap(t, 'click'); play(Math.max(win.a, t - 0.3)); });
+  const src = `audio/${encodeURIComponent(it.clip)}.wav`;
+  if (!audio.src.endsWith(src)) audio.src = src;
+  setWindow(it.start - PRE, it.start + POST, true);
+}
+async function setWindow(a, b, autoplay) {
+  const it = items[i]; win = { a: Math.max(0, a), b };
+  if (!env[it.clip]) env[it.clip] = await (await fetch(`env/${encodeURIComponent(it.clip)}.json`)).json();
+  const E = env[it.clip], peaks = [];
+  for (let k = 0; k < NBARS; k++) { const s = Math.floor((win.a + (k / NBARS) * (win.b - win.a)) * E.hz), e = Math.max(s + 1, Math.floor((win.a + ((k + 1) / NBARS) * (win.b - win.a)) * E.hz)); let m = 0; for (let j = s; j < e && j < E.v.length; j++) m = Math.max(m, E.v[j]); peaks.push(m); }
+  const top = Math.max(...peaks, 0.001);
+  $('bars').innerHTML = peaks.map((p) => `<i style="height:${Math.max(3, (p / top) * 100)}%"></i>`).join('');
+  drawMarks(); if (autoplay) play();
+}
+const pct = (t) => `${(100 * (t - win.a)) / (win.b - win.a)}%`;
+const inWin = (t) => t != null && t >= win.a && t <= win.b;
+function drawMarks() {
+  const it = items[i], wave = $('wave');
+  wave.querySelectorAll('.mk').forEach((m) => m.remove());
+  const add = (t, cls, label) => { if (!inWin(t)) return; const m = document.createElement('div'); m.className = `mk ${cls}`; m.style.left = pct(t); m.innerHTML = `<b>${label}</b>`; wave.appendChild(m); };
+  add(it.start, 'main', 'starts here?');
+  if (it.other != null && Math.abs(it.other - it.start) > 0.3) add(it.other, 'other', it.otherLabel || 'second model');
+  if (tap != null) add(tap.t, 'tap', 'your tap');
+  $('tapinfo').textContent = tap != null ? `Your tap: ${fmt(tap.t)} (${(tap.t - it.start >= 0 ? '+' : '') + (tap.t - it.start).toFixed(1)} s from the mark). Enter saves it; arrows nudge it.` : '';
+  $('savetap').disabled = tap == null;
+}
+function setTap(t, how) { tap = { t: Math.max(0, +t.toFixed(2)), how }; drawMarks(); }
+function play(from) {
+  if (!win) return; const start = from != null ? from : win.a; stopAt = win.b;
+  const go = () => { audio.currentTime = start; audio.play().catch(() => { $('status') && ($('status').textContent = 'Press R (or Replay) to hear it.'); }); tick(); };
+  if (audio.readyState >= 1) go(); else audio.addEventListener('loadedmetadata', go, { once: true });
+}
+function stop() { audio.pause(); if (raf) cancelAnimationFrame(raf); raf = null; }
+function tick() {
+  const t = audio.currentTime;
+  if (win && $('head')) { $('head').style.left = pct(Math.min(Math.max(t, win.a), win.b)); const bars = $('bars').children, k = Math.floor(((t - win.a) / (win.b - win.a)) * bars.length); for (let j = 0; j < bars.length; j++) bars[j].classList.toggle('played', j < k); }
+  if (stopAt != null && t >= stopAt) { audio.pause(); raf = null; return; }
+  if (!audio.paused) raf = requestAnimationFrame(tick);
+}
+function back() { if (i > 0) { i -= 1; render(); } }
+function answer(a) {
+  const it = items[i];
+  if ((a === 'earlier' || a === 'later') && tap == null && finding !== a) {
+    finding = a;
+    $('findbox').innerHTML = `<div class="find">Where does it really start? Tap it (click the bars, or <kbd>Space</kbd> while playing), then press <kbd>Enter</kbd>. <button class="ghost" id="notime" style="margin-left:8px">Save “${a}” without a time</button></div>`;
+    $('notime').addEventListener('click', () => answer(a));
+    if (a === 'earlier') setWindow(it.start - 12, it.start + 2, true); else setWindow(it.start - 1, it.start + 12, true);
+    return;
+  }
+  const note = ($('note') || {}).value || '';
+  const t = a === 'yes' || a === 'wrong' || a === 'unsure' ? null : tap ? tap.t : null;
+  const kind = a === 'tap' && tap ? (tap.t < it.start - 0.3 ? 'earlier' : tap.t > it.start + 0.3 ? 'later' : 'yes') : a;
+  answers[it.id] = { answer: a === 'tap' ? 'tap' : a, direction: a === 'tap' ? kind : null, tap: t, tapHow: t != null ? tap.how : null, note, clip: it.clip, verseId: it.verseId, start: it.start, kind: it.kind, at: new Date().toISOString() };
+  save(it.id); i += 1; render();
+}
+document.addEventListener('keydown', (e) => {
+  if (e.target && (e.target.id === 'note' || e.target.id === 'filter')) { if (e.key === 'Escape') e.target.blur(); return; }
+  if (i >= items.length) return;
+  const k = e.key.toLowerCase(), map = { y: 'yes', e: 'earlier', l: 'later', w: 'wrong', n: 'wrong', u: 'unsure' };
+  if (map[k]) { e.preventDefault(); answer(map[k]); }
+  else if (k === ' ') { e.preventDefault(); if (!audio.paused) setTap(audio.currentTime - REACTION, 'key'); else play(); }
+  else if (k === 'enter') { e.preventDefault(); if (tap != null) answer(finding || 'tap'); }
+  else if (k === 'arrowleft' && tap) { e.preventDefault(); setTap(tap.t - 0.1, tap.how); play(Math.max(win.a, tap.t - 0.3)); }
+  else if (k === 'arrowright' && tap) { e.preventDefault(); setTap(tap.t + 0.1, tap.how); play(Math.max(win.a, tap.t - 0.3)); }
+  else if (k === 'r') { e.preventDefault(); play(); }
+  else if (k === 'p') { e.preventDefault(); setWindow(items[i].start - 10, items[i].start + 12, true); }
+  else if (k === 'b') { e.preventDefault(); back(); }
+});
+load();
+</script></body></html>

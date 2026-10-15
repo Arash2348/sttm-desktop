@@ -25,7 +25,7 @@ const TOOLS = '/home/user/gab-tools/research/level2-dataset/tools';
 const FB = '/home/user/gab-tools/research/follower-bench';
 const APP_ROOT = '/home/user/sttm-desktop';
 const LINES = process.env.LINES || '/home/user/gab/lines';
-const BENCH = process.env.VF_BENCHMARK_HF || '/root/personal/live-darbar-venues/cache/gab-hf/04ad4e622cb0';
+const BENCH = process.env.VF_BENCHMARK || '/home/user/gab/bench'; // manifest.csv (setup.sh) + truth csv files fetched below
 const CLIPS = '/home/user/gab/clips';
 const USERDATA = '/home/user/gab/userdata';
 const MODELS = ['karanbir', 'surinder'];
@@ -45,6 +45,8 @@ function textFor(spec) {
     const sch = JSON.parse(fs.readFileSync(path.join(USERDATA, 'realm-schema-evergreen.json')));
     realm = new Realm({ path: path.join(USERDATA, 'sttmdesktop-evergreen-v2.realm'), schema: sch.schemas, schemaVersion: sch.schemaVersion, readOnly: true });
   }
+  // 'a|b' = either Shabad counts (the same text in two places): align with the first; scoring compares by text
+  spec = String(spec).split('|')[0];
   if (String(spec).startsWith('bani:')) {
     const id = Number(String(spec).slice(5));
     const verses = [...realm.objects('Banis_Shabad').filtered('Bani.ID == $0', id).sorted('Seq')]
@@ -66,6 +68,18 @@ const run = (args, env = {}) => new Promise((resolve) => {
   p.on('close', (code) => resolve({ code, err }));
 });
 const readCsv = (f) => { if (!fs.existsSync(f)) return []; const [h, ...rows] = fs.readFileSync(f, 'utf8').trim().split('\n'); const k = h.split(','); return rows.map((l) => Object.fromEntries(l.split(',').map((v, i) => [k[i], v]))); };
+
+// the clip's answer keys from the Hugging Face dataset (once)
+async function fetchTruth(row) {
+  for (const f of ['shabads.csv', 'lines.csv']) {
+    const out = path.join(BENCH, row.content_folder, row.id, f);
+    if (fs.existsSync(out)) continue;
+    const r = await fetch(`https://huggingface.co/datasets/khalisfoundation/GurbaniAutopilotBench/resolve/main/${[row.content_folder, row.id, f].map(encodeURIComponent).join('/')}`, { headers: { Authorization: `Bearer ${process.env.HF_TOKEN}` } });
+    if (!r.ok) continue;
+    fs.mkdirSync(path.dirname(out), { recursive: true });
+    fs.writeFileSync(out, await r.text());
+  }
+}
 
 async function emisFor(model, row) {
   const out = path.join(LINES, 'emis', model, `${row.id}.f32`);
@@ -109,7 +123,7 @@ function alignClip(model, row, emisFile, truth) {
   return segs;
 }
 
-function combine(row, A, B) {
+function combine(row, A, B, human = false) {
   // a Karanbir segment is "agreed" when Surinder has the same pangti starting within AGREE_S
   const agreed = A.map((s) => B.some((o) => o.verseId === s.verseId && Math.abs(o.start - s.start) <= AGREE_S));
   const sure = A.map((s, i) => agreed[i] && s.check >= SURE_CHECK);
@@ -121,7 +135,7 @@ function combine(row, A, B) {
   const items = [];
   A.forEach((s, i) => {
     const audit = parseInt(crypto.createHash('sha1').update(`${row.id}|${i}`).digest('hex').slice(0, 8), 16) / 0xffffffff < AUDIT;
-    if (sure[i] && !audit) return;
+    if (human || (sure[i] && !audit)) return;
     const other = B.filter((o) => o.verseId === s.verseId).sort((x, y) => Math.abs(x.start - s.start) - Math.abs(y.start - s.start))[0];
     items.push({ id: `${row.id}#${i}`, clip: row.id, folder: row.content_folder, verseId: s.verseId, line: s.text, start: s.start,
       other: other ? other.start : null, otherLabel: 'second model', prev: i > 0 ? A[i - 1].text : '', next: i + 1 < A.length ? A[i + 1].text : '',
@@ -152,6 +166,7 @@ function combine(row, A, B) {
   await Promise.all(Array.from({ length: Number(arg('jobs', 2)) }, async () => {
     for (let row; (row = q.shift());) {
       try {
+        await fetchTruth(row);
         const truth = readCsv(path.join(BENCH, row.content_folder, row.id, 'shabads.csv')).filter((t) => t.shabadId);
         if (!truth.length) { console.log(`${row.id}: no Shabad/Bani truth, skipped`); continue; }
         const segs = {};
@@ -159,7 +174,13 @@ function combine(row, A, B) {
           const prev = path.join(LINES, 'align', m, `${row.id}.json`);
           segs[m] = fs.existsSync(prev) && !argv.includes('--realign') ? JSON.parse(fs.readFileSync(prev, 'utf8')).segs : alignClip(m, row, await emisFor(m, row), truth);
         }
-        const c = combine(row, segs.karanbir, segs.surinder);
+        // clips that already have human pangti truth (GAB-Hard) are the aligner's accuracy check, not review work
+        const human = readCsv(path.join(BENCH, row.content_folder, row.id, 'lines.csv')).some((l) => l.source === 'human');
+        const c = combine(row, segs.karanbir, segs.surinder, human);
+        // model output is bulky (~26 KB per second per model): dropped once aligned unless --keep-emis
+        if (!argv.includes('--keep-emis')) for (const m of MODELS) fs.rmSync(path.join(LINES, 'emis', m, `${row.id}.f32`), { force: true });
+        fs.rmSync(path.join(LINES, 'work', 'karanbir', row.id), { recursive: true, force: true });
+        fs.rmSync(path.join(LINES, 'work', 'surinder', row.id), { recursive: true, force: true });
         summary[row.id] = { folder: row.content_folder, tier: tiers.find((t) => G.inTier(row, t, sets)), segments: c.segments, agreed: c.agreed, sure: c.sure, review: c.review, at: new Date().toISOString() };
         fs.mkdirSync(path.join(LINES, 'review'), { recursive: true });
         fs.writeFileSync(path.join(LINES, 'review', `${row.id}.items.json`), JSON.stringify(c.items));

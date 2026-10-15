@@ -8,7 +8,7 @@ const path = require('path');
 const argv = process.argv.slice(2);
 const arg = (n, d) => { const i = argv.indexOf(`--${n}`); return i >= 0 ? argv[i + 1] : d; };
 const KEYS = arg('keys', '/home/user/gab/lines/keys');
-const TRUTH = arg('truth', '/root/personal/live-darbar-venues/cache/gab-hf/04ad4e622cb0');
+const TRUTH = arg('truth', '/home/user/gab/bench');
 const read = (f) => { const [h, ...r] = fs.readFileSync(f, 'utf8').trim().split('\n'); const k = h.split(','); return r.map((l) => Object.fromEntries(l.split(',').map((v, i) => [k[i], v]))); };
 const by = {};
 let clips = 0;
