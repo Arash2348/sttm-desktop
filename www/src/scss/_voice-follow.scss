@@ -834,6 +834,12 @@ $vf2-yellow-bar: #f2c200;
   padding: 9px 16px;
   border-top: 1px solid var(--vf-line);
   animation: vf2-fade 0.28s ease-out;
+  transition: opacity 0.6s ease;
+
+  // No new match for a while: the card stays (still tappable) but fades before it goes.
+  &.is-fading {
+    opacity: 0.45;
+  }
 
   .vf2-cand-line {
     font-size: 16px;

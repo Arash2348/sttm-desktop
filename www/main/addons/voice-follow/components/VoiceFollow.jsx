@@ -22,6 +22,7 @@ const { SP: AcousticSP } = require('../engine/sentencepiece');
 const { createRendererRetrieval } = require('../engine/retrieval/renderer-client');
 const sessionLog = require('../engine/session-log');
 const { createBoard, mergeTranscript } = require('./liveBoard');
+const { createShelf } = require('./candidateShelf');
 const { installDemoAudio } = require('./devAudio');
 
 installDemoAudio(); // developer demos only (VF_DEMO_WAV); a no-op otherwise
@@ -516,6 +517,9 @@ const MarkedLine = ({ line, keys }) => {
 MarkedLine.propTypes = { line: PropTypes.string, keys: PropTypes.arrayOf(PropTypes.string) };
 MarkedLine.defaultProps = { line: '', keys: [] };
 const HEARD_CLEAR_MS = 5000; // strip empties after this long without a confident word
+const BOARD_LOG_MS = 1000; // session log: the candidate list at most once a second, on change
+// The pangti a candidate card shows: the line it was heard on, else its first verse.
+const cardLine = (b) => (b.line || (b.verse ? anvaad.unicode(b.verse) : '')).trim();
 const HEARD_TENTATIVE_WORDS = 2; // the tail of a decode is still being sung: not merged until it settles
 const HEARD_SHOW_WORDS = 10; // the strip shows this many settled words, newest always in view
 const RATING_ASK_MS = 20000; // after Stop, the one-tap rating stays for this long
@@ -1038,11 +1042,77 @@ const VoiceFollow = () => {
   if (!boardRef.current) boardRef.current = createBoard();
   const [board, setBoard] = useState([]);
   const boardAtRef = useRef(0);
+  // Possible new Shabads as listed (candidateShelf.js): cards stay long enough to be read
+  // and tapped, keep their places, and fade before they go. Display only.
+  const shelfRef = useRef(null);
+  if (!shelfRef.current) shelfRef.current = createShelf();
+  const [shelf, setShelf] = useState([]);
+  const heardLastRef = useRef(0); // when a word was last heard confidently (ms)
+  const liveLeadRef = useRef(null); // the Shabad in the change card (its own card, not listed)
+  const boardLogRef = useRef({ at: 0, sig: '' });
+  const resetShelf = useCallback(() => {
+    shelfRef.current.reset();
+    liveLeadRef.current = null;
+    setShelf([]);
+  }, []);
   const publishBoard = useCallback((force = false) => {
     const now = Date.now();
     if (!force && now - boardAtRef.current < 180) return;
     boardAtRef.current = now;
-    setBoard(boardRef.current.snapshot());
+    const snap = boardRef.current.snapshot();
+    setBoard(snap);
+    const cur = phaseRef.current === 'following' ? currentShabadIdRef.current : null;
+    const bani = curBaniShabadsRef.current;
+    // Listed: any Shabad in contention other than the one on screen (under any id) or a
+    // member of the Bani on screen; while following, never the judge's scratch work under
+    // 1%; and only with a pangti to show (never an empty row).
+    const hide = [cur, liveLeadRef.current].filter((x) => x != null);
+    const items = snap.filter(
+      (b) =>
+        b.role !== 'current' &&
+        b.shabadId !== cur &&
+        !(cur != null && bani && bani.has(b.shabadId)) &&
+        (cur == null || b.pct >= 0.01) &&
+        !!cardLine(b),
+    );
+    const listed = shelfRef.current.update({
+      now,
+      items,
+      current: cur,
+      heardAt: heardLastRef.current,
+      hide,
+    });
+    setShelf(listed);
+    // Session log (shadow sessions): the cards as listed, about once a second and only when
+    // they changed, so how long a candidate stayed readable can be measured.
+    if (SHADOW_BUILD && shadowBus.active() && now - boardLogRef.current.at >= BOARD_LOG_MS) {
+      const r2 = (x) => Math.round(x * 100) / 100;
+      const curCard = snap.find((b) => b.role === 'current');
+      const cards = [
+        ...(curCard
+          ? [{ id: curCard.shabadId, pct: r2(curCard.pct), role: 'current', vis: 1 }]
+          : []),
+        ...(liveLeadRef.current != null
+          ? [{ id: liveLeadRef.current, role: 'change', vis: 1 }]
+          : []),
+        ...listed.map((c, i) => ({
+          id: c.shabadId,
+          pct: r2(c.pct),
+          role: 'candidate',
+          vis: visibleRef.current ? 1 : 0,
+          pos: i,
+          ...(c.fading ? { fading: 1 } : {}),
+        })),
+        ...shelfRef.current
+          .waiting()
+          .map((w) => ({ id: w.shabadId, pct: r2(w.pct), role: 'candidate', vis: 0 })),
+      ];
+      const sig = JSON.stringify(cards);
+      if (sig !== boardLogRef.current.sig) {
+        boardLogRef.current = { at: now, sig };
+        shadowBus.note({ type: 'board', cards });
+      }
+    }
   }, []);
   const heardRef = useRef('');
   const [heard, setHeard] = useState('');
@@ -1100,6 +1170,7 @@ const VoiceFollow = () => {
       heardAtRef.current = now;
       setHeard(`${heardRef.current}\u0001${tentativeRef.current}`);
     }
+    heardLastRef.current = now;
     clearTimeout(heardClearRef.current);
     heardClearRef.current = setTimeout(() => {
       heardRef.current = '';
@@ -1449,6 +1520,7 @@ const VoiceFollow = () => {
     setLiveCands({ sCur: 0, items: [] });
     boardRef.current.reset();
     setBoard([]);
+    resetShelf();
     vetoRef.current = null;
     prevShabadRef.current = null;
     returnSlotRef.current = null;
@@ -1656,6 +1728,7 @@ const VoiceFollow = () => {
     setLiveCands({ sCur: 0, items: [] });
     boardRef.current.reset();
     setBoard([]);
+    resetShelf();
     vetoRef.current = null;
     prevShabadRef.current = null;
     returnSlotRef.current = null;
@@ -2301,8 +2374,14 @@ const VoiceFollow = () => {
   const pickCandidate = useCallback(
     async (c) => {
       if (!c || c.shabadId == null || lockingRef.current) return;
+      // Which card was tapped (place in the list, its % then), for the board timeline.
       if (SHADOW_BUILD && visibleRef.current)
-        shadowBus.note({ type: 'vf_pick', shabadId: c.shabadId });
+        shadowBus.note({
+          type: 'vf_pick',
+          shabadId: c.shabadId,
+          ...(c.pos != null ? { pos: c.pos } : { from: 'change' }),
+          ...(c.pct != null ? { pct: Math.round(c.pct * 100) / 100 } : {}),
+        });
       let verse = c.verse || null;
       try {
         if (!verse && c.verseId != null) verse = await banidb.getVerse(c.shabadId, c.verseId);
@@ -3247,6 +3326,13 @@ const VoiceFollow = () => {
           const next = speaking
             ? live.filter((x) => x.score >= SWITCH_ACOUSTIC_MIN).slice(0, 3)
             : [];
+          // The Shabad in the change card is listed there, not among the candidates.
+          {
+            const top = next
+              .filter((x) => x.shabadId !== currentShabadIdRef.current)
+              .reduce((m, c) => (!m || c.wins > m.wins ? c : m), null);
+            liveLeadRef.current = top && top.wins >= 1 ? top.shabadId : null;
+          }
           // Publish only when the picture changed (ids or wins), and at most
           // ~3x/s: the recognizer shares this thread, so needless re-renders
           // of the panel cost decode latency.
@@ -3479,6 +3565,7 @@ const VoiceFollow = () => {
     setLiveCands({ sCur: 0, items: [] });
     boardRef.current.reset();
     setBoard([]);
+    resetShelf();
     vetoRef.current = null;
     prevShabadRef.current = null;
     returnSlotRef.current = null;
@@ -3876,6 +3963,13 @@ const VoiceFollow = () => {
   useEffect(() => {
     setAutopilotLive(active);
   }, [active, setAutopilotLive]);
+  // A held card fades and goes on time even when no decode arrives (a pause in the singing).
+  const shelfShown = shelf.length > 0;
+  useEffect(() => {
+    if (!active || !shelfShown) return undefined;
+    const timer = setInterval(() => publishBoard(true), 1000);
+    return () => clearInterval(timer);
+  }, [active, shelfShown, publishBoard]);
   // Keep the microphone list current: devices come and go, and their names only
   // appear once the microphone has been allowed (so read it again after a session).
   useEffect(() => {
@@ -4107,9 +4201,10 @@ const VoiceFollow = () => {
   };
   // A candidate row shows the pangti the engine heard being sung, wherever it falls in
   // the Shabad, so the sevadaar can recognise it at once (as the 8.6 panel did).
-  // Nothing heard for a few seconds (the hearing strip has cleared): no candidates, no change.
+  // Nothing heard for a few seconds (the hearing strip has cleared): no change card. The
+  // candidate list has its own, longer hold (candidateShelf.js).
   const hearingNow = heardKeys.length > 0;
-  const nameLine = (b) => (b.line || (b.verse ? anvaad.unicode(b.verse) : '')).trim();
+  const nameLine = cardLine;
   const curFirst =
     (curProfileRef.current && curProfileRef.current.displayLines
       ? curProfileRef.current.displayLines[0]
@@ -4118,25 +4213,18 @@ const VoiceFollow = () => {
     !!line &&
     ((liveLine && engine.norm(line) === engine.norm(liveLine)) ||
       (curFirst && engine.norm(line) === engine.norm(curFirst)));
-  const boardOthers = board
-    .filter((b) => b.role !== 'current' && !(currentView && b.shabadId === currentView.id))
-    // While following, a challenger under 1% is the judge's scratch work, not a contender.
-    .filter((b) => !currentView || b.pct >= 0.01)
+  // The listed cards come from the shelf (publishBoard): held, steady and fading there.
+  // They are not tied to the hearing strip: a pause in the singing does not empty the list.
+  const boardOthers = shelf
+    .filter((b) => !(currentView && b.shabadId === currentView.id))
     .filter(
       (b) => !(currentView && liveLead && liveLead.wins >= 1 && b.shabadId === liveLead.shabadId),
     )
-    // A Shabad that belongs to the Bani on screen is not a different Shabad either.
-    .filter(
-      (b) =>
-        !(currentView && curBaniShabadsRef.current && curBaniShabadsRef.current.has(b.shabadId)),
-    )
     .map((b) => ({ ...b, line: nameLine(b) }))
-    // A candidate with no pangti to show yet is not listed (never an empty "…" row).
     .filter((b) => !!b.line)
-    .filter(() => hearingNow)
     // The same Gurbani under another id (a Bani copy of a Shabad) is not a different Shabad.
     .filter((b) => !(currentView && sameAsCurrent(b.line)))
-    .slice(0, 3);
+    .slice(0, 5);
   const leadLine = liveLead ? nameLine(liveLead) : '';
   // The change card's percentage: the live board's, else the judge's own match score.
   let leadPct = 0;
@@ -4352,7 +4440,7 @@ const VoiceFollow = () => {
               <div className="vf2-empty">{i18n.t('VOICE_FOLLOW.NONE_NOW')}</div>
             )}
             {boardOthers.map((c, i) => (
-              <div className="vf2-shabad-row" key={c.shabadId}>
+              <div className={`vf2-shabad-row${c.fading ? ' is-fading' : ''}`} key={c.shabadId}>
                 <span className="vf2-cand-line">
                   <MarkedLine line={c.line} keys={heardKeys} />
                 </span>
@@ -4361,7 +4449,7 @@ const VoiceFollow = () => {
                 <button
                   type="button"
                   className={`vf2-switch${i === 0 ? ' is-primary' : ''}`}
-                  onClick={() => pickCandidate(c)}
+                  onClick={() => pickCandidate({ ...c, pos: i })}
                   title={i18n.t(currentView ? 'VOICE_FOLLOW.SWITCH_TIP' : 'VOICE_FOLLOW.OPEN_TIP')}
                 >
                   {i18n.t(currentView ? 'VOICE_FOLLOW.SWITCH' : 'VOICE_FOLLOW.OPEN')}
