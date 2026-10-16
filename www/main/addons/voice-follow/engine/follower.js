@@ -42,6 +42,10 @@ const DEFAULTS = {
   // advCost, and the move to it needs no margin: it wins as soon as its words start to outweigh the old ones.
   // armAt 0 = off.
   armAt: 0, armBonus: 0.15,
+  // armTail > 0: the pre-arm also needs the NEXT pangti's opening heard at the end of the decode (its first
+  // armTail letters, partial match >= tailGuard), so a ragi repeating the pangti just sung does not trigger it
+  // (profiles 4 and 5 lost 2.4-2.6 points of right pangti that way).
+  armTail: 0,
 };
 
 function argmax(a) { let bi = 0, bv = -Infinity; for (let i = 0; i < a.length; i++) if (a[i] > bv) { bv = a[i]; bi = i; } return bi; }
@@ -229,8 +233,13 @@ class Follower {
   // armAt: have the last armAt words of the current pangti been heard? (then the next pangti is pre-armed)
   _armed() {
     const c = this.c;
-    return c.armAt > 0 && this.cur !== null && this.wiLine === this.cur && this.cur + 1 < this.linesNorm.length
+    const lastWords = c.armAt > 0 && this.cur !== null && this.wiLine === this.cur && this.cur + 1 < this.linesNorm.length
       && this.maxWi >= 0 && this.maxWi >= (this.nwords[this.cur] || 0) - c.armAt;
+    if (!lastWords || !(c.armTail > 0)) return lastWords;
+    const hyp = this.lastHyp || '';
+    if (hyp.length < c.armTail) return false;
+    const head = this.linesNorm[this.cur + 1].slice(0, c.armTail + c.tailSlack);
+    return partialRatio(hyp.slice(-c.armTail), head) / 100 >= c.tailGuard;
   }
 
   _freeze(why, emis) {
@@ -299,6 +308,7 @@ class Follower {
     }
 
     this.miss = 0;
+    this.lastHyp = hyp;
     const top = this._viterbi(emis);
     this.tailDbg = null;
     const tailNext = this._tailNext(hyp);

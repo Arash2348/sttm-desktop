@@ -85,3 +85,12 @@ test('armAt: once the last word of the pangti is heard, the next pangti wins as 
   assert.strictEqual(off[5], 0, 'without the pre-arm the window still says A');
   assert.strictEqual(on[4], 1, 'pre-armed: on B at the first window where B has begun');
 });
+
+test('armTail: a repeat of the pangti just sung does not pre-arm, the opening of the next pangti does', async () => {
+  const repeat = [nA, nA, nA, nA, nA, nA];
+  const on = await run(repeat, { armAt: 1, armBonus: 0.15, armTail: 8 });
+  assert.strictEqual(on[5], 0, 'ragi repeats A: stays on A');
+  const half = norm(A).slice(16) + norm(B).slice(0, 16);
+  const moved = await run([nA, nA, nA, nA, half, half], { marginGate: 0.3, gateNear: true, armAt: 1, armBonus: 0.15, armTail: 8 });
+  assert.strictEqual(moved[4], 1, 'B has begun: moves at once');
+});
