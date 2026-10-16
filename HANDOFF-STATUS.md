@@ -262,6 +262,11 @@ Verdicts so far (all on identical recording sets, scorecards compared recording 
 - Akhand Paath sequence-mode build (eb789375): 6 of 11 recordings replayed (98% right Bani), 5 need windows.
 - Leaderboard Space PR #7 (page: Sung Bani name, compact Big picture) open; #6 and #2 closed as superseded.
 
+- Near-twin veto (NEAR_TWIN, exp-on-904 02afebe) and simran hold (SIMRAN_HOLD, f677da3), both off, both on top of 9.0.5;
+  VM builds twin3 / twin6 / simran1 queued for the next fill (all main suites + l3). Note: VoiceFollow.jsx carries 5
+  prettier-only lint errors from the experiment profile blocks (also in 9.0.5); fix them in the next release commit
+  (formatting changes the app tree, so not mid-experiment).
+
 ## Open questions for the owner
 
 1. Add `HF_TOKEN` and `VF_AZURE_SAS` to this cloud environment's settings (environment menu in the session's
