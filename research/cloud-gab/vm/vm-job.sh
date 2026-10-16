@@ -40,9 +40,31 @@ FSUITES="${FSUITES:-l3}"
 push_cache() { # the grown linux-x64 entries to Azure bench-cache/, the replays to bench-results/
   node -e '
     const {SUITES}=require("./vf-suites");const r=require("./remote-cache");const fs=require("fs");
-    const clips=[];for(const s of ["l3","rfinds"])for(const j of SUITES[s].jobs()){const p="/root/personal/live-darbar-venues/cache/5f9e41d867de-q16/"+j.id+"/provenance.json";let pl=null;try{pl=JSON.parse(fs.readFileSync(p)).platform}catch(_){}if(pl==="linux-x64")clips.push({id:j.id,wav:j.wav});}
-    r.push({root:"/root/personal/live-darbar-venues/cache",model:"5f9e41d867de",codec:"q16",clips,commit:"cloud-gab fill-x86",log:()=>{}}).then(x=>console.log("pushed to Azure bench-cache:",JSON.stringify(x)));'
+    const clips=[];for(const s of process.argv[1].split(","))for(const j of SUITES[s].jobs()){const p="/root/personal/live-darbar-venues/cache/5f9e41d867de-q16/"+j.id+"/provenance.json";let pl=null;try{pl=JSON.parse(fs.readFileSync(p)).platform}catch(_){}if(pl==="linux-x64")clips.push({id:j.id,wav:j.wav});}
+    r.push({root:"/root/personal/live-darbar-venues/cache",model:"5f9e41d867de",codec:"q16",clips,commit:"cloud-gab fill-x86",log:()=>{}}).then(x=>console.log("pushed to Azure bench-cache:",JSON.stringify(x)));' "$FSUITES"
   node "$REPO/research/cloud-gab/results-sync.js" push
+}
+# Akhand Paath (owner's P0): give the 4-akhand-paath rows their runner locally (hf-akhand-paath/jobs.js, same edit as the
+# GAB PR), fetch the practice-split captioned recordings, record their model output on 9.0.4, push, score the row.
+apaath() {
+  local BENCH=/home/user/gab/bench
+  node "$REPO/research/cloud-gab/hf-akhand-paath/jobs.js" --local "$BENCH/manifest.csv"
+  local IDS
+  IDS=$(cd "$TOOLS" && node -e 'const {parseCsv,canonRows}=require("./vf-manifest");const rows=canonRows(parseCsv(require("fs").readFileSync(process.argv[1],"utf8")));console.log(rows.filter(r=>r.content_folder==="4-akhand-paath"&&r.split!=="test"&&r.id.startsWith("ytap_")).map(r=>r.id).join(","))' "$BENCH/manifest.csv")
+  echo "apaath: $IDS"
+  for id in ${IDS//,/ }; do
+    mkdir -p "$BENCH/4-akhand-paath/$id"
+    for f in audio.wav shabads.csv lines.csv meta.json; do
+      [ -s "$BENCH/4-akhand-paath/$id/$f" ] || curl -sS -f -L -H "Authorization: Bearer $HF_TOKEN" -o "$BENCH/4-akhand-paath/$id/$f" "https://huggingface.co/datasets/khalisfoundation/GurbaniAutopilotBench/resolve/main/4-akhand-paath/$id/$f" || echo "apaath: $id/$f not fetched"
+    done
+  done
+  cd "$TOOLS"
+  node vf-check.js --record --roots $P/r904 --suites apaath --only "$IDS" --no-pull > /home/user/gab/apaath-record.log 2>&1; echo "apaath record exit $?"
+  grep -E "REFUSED|recorded|error|done:" /home/user/gab/apaath-record.log | tail -5
+  FSUITES=apaath push_cache
+  VF_MIN_FREE_GB=3 ./gab run $P/r904 --set main --tier full --jobs "$NP" --manifest "$BENCH" --folders 4-akhand-paath > /home/user/gab/apaath-score.log 2>&1; echo "apaath score exit $?"
+  grep -E "^\| \*\*Akhand Paath|INCOMPLETE|Not run" /home/user/gab/apaath-score.log | cut -c1-300
+  echo "apaath done"
 }
 fill_x86() {
   cd "$TOOLS"
@@ -76,7 +98,8 @@ lines() {
   echo "lines done"
 }
 case "$JOB" in
-  fill-x86*) fill_x86 ;;
+  fill-x86*) fill_x86; [[ "$JOB" == *apaath* ]] && apaath ;;
+  apaath*) apaath ;;
   lines*) lines ;;
   all*) fill_x86 & lines; wait ;;
   *) echo "unknown job $JOB"; exit 2 ;;
