@@ -22,6 +22,8 @@ ZONE=$(curl -sf -H Metadata-Flavor:Google "$MD/zone" | sed 's#.*/##')
 echo "keys read from Secret Manager"
 # 6 h hard stop, whatever happens
 shutdown -P +360 "cg-job 6 h limit" >/dev/null 2>&1 || true
+# system tools (also on a machine that already has node from an earlier boot)
+command -v unzip >/dev/null && command -v ffmpeg >/dev/null || { apt-get update -qq >/dev/null 2>&1; apt-get install -y -qq git curl ffmpeg xz-utils unzip build-essential python3 >/dev/null 2>&1; }
 # node 22
 if ! /opt/node/bin/node -v 2>/dev/null | grep -q '^v22'; then
   apt-get install -y -qq git curl ffmpeg xz-utils unzip build-essential python3 >/dev/null 2>&1
