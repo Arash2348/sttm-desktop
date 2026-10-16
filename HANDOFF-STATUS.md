@@ -214,9 +214,9 @@ Every session works against these, in this order. Numbers = GAB v1.3 practice, 9
 |---|---|---|---|
 | P0 | Kirtan (main GAB) | right pangti ~92%; behind the singer faster than 1.2 s (target 0.9 s) | right pangti 87.9%, behind p50 1.18 s, right Shabad 92.6% |
 | P0 | Paath (Bani recited) | done for now: HOLD, never regress | right Bani 95.7%, right pangti 95.9%, behind 0.4 s |
-| P0 | Akhand Paath | add the row to GAB and the leaderboard, then right Bani / right pangti ~95% and behind comparable to paath | no row yet (4-akhand-paath clips exist, none scored) |
+| P0 | Akhand Paath | add the row to GAB and the leaderboard, then right Bani / right pangti ~95% and behind comparable to paath | row live with its own column: right Bani 97.7%, right pangti 96%, behind 0.33 s (8 recordings; sp01-03 now keyed, 11-recording re-score pending). Goal met: HOLD |
 | P1 | Bani sung like kirtan (Aarti confounds) | right Shabad and right pangti ~90% | 84.2% / 82.2% (Aarti set 82.5% / 80.9%) |
-| P1 | Akhand Kirtan | right Shabad and right pangti 85% | 78.2% / 76% (best measured ~79.5% with V6 + verifier) |
+| P1 | Akhand Kirtan | right Shabad and right pangti 85% | 78.2% / 76%; stack (V6 + local scoring + verifier top 6 / bar 40, tree 1f2723dba122) 81.0% / 76.7%, wrong +4.8 s/h, main + Fremont guardrail running |
 | P2 | Fremont hall, laptop mic | no goal (sangat will sit closer with a mixer mic; Fremont mainly trains another model); nice to keep improving | 52.8% / 47.7% |
 
 Guardrails: main GAB behaviours never regress (right Shabad, right pangti, wrong-Shabad s/h, behind); GAB-Hard only
@@ -225,6 +225,17 @@ against a big regression. Standing instruction: don't ask, just do; report what 
 **Cache goal:** "Make the cache exhaustive in everything we do, so future changes score lightning fast." Whenever the VM
 is up, use spare time to fill every window any candidate asks for, on every tier, and push it to Azure; prefer
 fixed-grid (window-align) recordings so new app changes replay from the cache instead of coming back INCOMPLETE.
+
+## In flight (Oct 16, 06:05 UTC)
+
+- Akhand Kirtan stack `v6-stack` (42b8d7e + SWITCH_COMMIT_SOLID=0 PROBATION_DECODES=0 AK_LOCAL_CTC=2 VERIFY_LOCK=40
+  VERIFY_CANDS=6): Akhand 81.0 / 76.7 / find 4.8 s / wrong 403 s/h (V6 78.8 / 75.5 / 5.8 / 398). Helper scoring main + hard
+  (`run-job.sh v6-stack ...`). Keep if main holds. VM (`fill-x86-v9`) now recording v6-ctc and v6-vk6l40 Renton windows.
+- Kirtan fix 2 on 9.0.4 (exp-on-904 53220a0, KIRTAN_FOLLOW=1/2/3 = kf1/kf2/kf3): helpers replaying main + akhand.
+- Aarti sung profiles on 9.0.4 (AARTI_FOLLOW=1/2 = aarti1x/aarti2x, main): helpers replaying.
+- Akhand Paath sequence-mode build (eb789375): 6 of 11 recordings replayed (98% right Bani), 5 need windows; record on
+  the VM after the Akhand Kirtan fill (vm-job.sh apaath() records r904 only: point it at the eb789375 worktree).
+- Leaderboard Space PR #7 (page: Sung Bani name, compact Big picture) open; #6 and #2 closed as superseded.
 
 ## Open questions for the owner
 
