@@ -217,6 +217,11 @@ Gurbani wording) still hold.
    only for builds worth the main-tier check); then window alignment's one full GAB re-record on the VM (~2-3 h,
    ~$5; a second boot is fine under the $150 cap, 6 h self-stop per boot).
 
+3. **Priorities (owner, Oct 16 02:35 UTC):** (1) main kirtan, Aarti, Rehras, paath; (2) Akhand Kirtan. Fremont hall /
+   laptop mic (GAB-Hard) is NOT a target to improve: its fix is a mic, or a mic placed closer, not app logic. Keep rule:
+   main GAB is a hard guardrail (never worse); GAB-Hard guards only against a big regression, never a reason to drop a
+   change that wins on Akhand Kirtan or main GAB over a small Fremont number (e.g. V6's +8 s/h wrong Shabad).
+
 ## Open questions for the owner
 
 1. Add `HF_TOKEN` and `VF_AZURE_SAS` to this cloud environment's settings (environment menu in the session's
