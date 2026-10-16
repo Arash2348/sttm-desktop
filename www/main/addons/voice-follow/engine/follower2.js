@@ -339,9 +339,11 @@ class FollowerV2 {
     const a = this.lineStart[Math.max(0, this.cur - c.back)];
     const b = this.lineEnd[Math.min(this.lineEnd.length - 1, this.cur + c.ahead)];
     const Lc = this.align(h, a, b, this.cur);
+    this.last = { Lc, G: null }; // for opts.onTrace (the bench's follower trace); no effect on decisions
     const needGlobal =
       !Lc || Lc.score < c.minScore + c.jumpMargin || this.tick % c.globalEvery === 0 || this.cand;
     const G = needGlobal ? this.align(h, 0, last, null, this.cur) : null;
+    this.last.G = G;
     // Far jump: the whole-Bani match is elsewhere and clearly better.
     if (
       G &&
@@ -485,7 +487,14 @@ class FollowerV2 {
     const emis = await this.infer.emissions(this.buf);
     const h = [...simplify(this.infer.decode(this.infer.greedy(emis)))];
     if (h.length < this.c.minHyp) return null;
-    return this.decide(h);
+    this.last = null;
+    const out = this.decide(h);
+    if (this.c.onTrace) {
+      const L = this.last || {};
+      const at = (r) => (r ? { line: this.lineAt[r.end], end: r.end, score: Number(r.score.toFixed(3)) } : null);
+      this.c.onTrace({ h: h.join(''), cur: this.cur, local: at(L.Lc), global: at(L.G), cand: this.cand, noMatch: this.noMatch, ahead: this.ahead, out: out ? out.lineIndex : null });
+    }
+    return out;
   }
 }
 

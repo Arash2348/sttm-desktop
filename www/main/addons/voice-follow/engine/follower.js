@@ -21,6 +21,21 @@ const DEFAULTS = {
   minHypJump: 8,
   // Decodes a 2..skipSpan-line skip must persist (default: same as dwellAdv).
   dwellSkip: null,
+  // Faster hand-off to the next line (tailAdv > 0, letters): the END of the window's transcript is what is
+  // being sung now. When its last tailAdv letters match the start of the next line (its first
+  // tailAdv + tailSlack letters) at tailGuard or better, and better than anything in the current line by
+  // tailMargin, on tailConfirm decodes in a row, the cursor moves on at once, without waiting for the next
+  // line to outweigh the current one over the whole window: at a 4 s window that wait is 1-3 s, GAB-Kirtan's
+  // largest pangti loss (9.0.4: 587 of 1,218 pangti changes caught 1-3 s late). 0 = off.
+  tailAdv: 0, tailSlack: 6, tailGuard: 0.75, tailMargin: 0.15, tailConfirm: 1,
+  // GAB-Kirtan 9.0.4 stalls (3 s+ late at a pangti change, 5 Renton recordings, 288 s of waiting): 56% of that
+  // time the follower froze, and 122 of those 160 s were the margin gate (the two best lines within marginGate),
+  // 77 s of them with the sung line among the two. gateNear: the gate only guards far jumps; a near-equal pair that
+  // includes the current line, its neighbours (backSpan / skipSpan), a rahao line or a line already sung is decided
+  // by the line scores (continuity, jump costs) instead of frozen. 30 of the 50 stalls were returns to an earlier
+  // pangti (a repeat): revisitDwell = decodes a jump back to a rahao line or a line already sung must persist
+  // (null = the far-jump dwell), and such a return needs no minHypJump letters.
+  gateNear: false, revisitDwell: null,
 };
 
 function argmax(a) { let bi = 0, bv = -Infinity; for (let i = 0; i < a.length; i++) if (a[i] > bv) { bv = a[i]; bi = i; } return bi; }
@@ -61,6 +76,27 @@ class Follower {
     // Bound here: test wrappers built with Object.create(follower) must still move THIS
     // follower, not set fields on the wrapper.
     this.seek = this.seek.bind(this);
+    this.tailLast = null;
+    this.tailHits = 0;
+  }
+
+  // tailAdv: does the end of this transcript say the NEXT line has begun? -> that line's index, else null
+  _tailNext(hyp) {
+    const c = this.c;
+    if (this.cur === null || c.tailAdv <= 0 || this.cur + 1 >= this.linesNorm.length || hyp.length < c.tailAdv) return null;
+    const next = this.cur + 1;
+    const tail = hyp.slice(-c.tailAdv);
+    const head = this.linesNorm[next].slice(0, c.tailAdv + c.tailSlack);
+    const tNext = head.length >= c.tailAdv ? partialRatio(tail, head) / 100 : 0;
+    const tCur = this.linesNorm[this.cur] ? partialRatio(tail, this.linesNorm[this.cur]) / 100 : 0;
+    this.tailDbg = { tNext, tCur }; // read by the bench's follower trace
+    if (tNext >= c.tailGuard && tNext - tCur >= c.tailMargin) {
+      this.tailHits = this.tailLast === next ? this.tailHits + 1 : 1;
+      this.tailLast = next;
+      return this.tailHits >= c.tailConfirm ? next : null;
+    }
+    this.tailHits = 0; this.tailLast = null;
+    return null;
   }
 
   // The sevadaar moved the screen to `line`: follow on from there. The line memory is
@@ -72,6 +108,8 @@ class Follower {
     this.cur = line;
     this.challenger = null;
     this.dwell = 0;
+    this.tailHits = 0;
+    this.tailLast = null;
     this.initCand = null;
     this.initCount = 0;
     this.miss = 0;
@@ -180,7 +218,11 @@ class Follower {
     return argmax(nw);
   }
 
-  _freeze() {
+  _freeze(why, emis) {
+    if (this.c.onTrace) { // the bench's follower trace: why nothing was decided this window
+      const top2 = emis ? emis.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0]).slice(0, 2) : null;
+      this.c.onTrace({ freeze: why, cur: this.cur, miss: this.miss + 1, top2 });
+    }
     this.miss += 1;
     this.initCand = null; this.initCount = 0;
     if (this.c.release && this.miss >= this.c.release && this.cur !== null) {
@@ -208,14 +250,18 @@ class Follower {
 
     const emis0 = await this.infer.emissions(this.buf);
     const hyp = norm(this.infer.decode(this._greedy(emis0)));
-    if (hyp.length < c.minHyp) return this._freeze();
+    if (hyp.length < c.minHyp) return this._freeze('fewLetters');
 
     const emis = this.linesNorm.map((ln) => (ln ? partialRatio(hyp, ln) / 100.0 : 0.0));
     let emax = -Infinity; for (const v of emis) if (v > emax) emax = v;
-    if (emax < c.guard) return this._freeze();
+    if (emax < c.guard) return this._freeze('guard', emis);
     if (c.marginGate > 0 && emis.length >= 2) {
       const sorted = [...emis].sort((a, b) => a - b);
-      if (sorted[sorted.length - 1] - sorted[sorted.length - 2] < c.marginGate) return this._freeze();
+      if (sorted[sorted.length - 1] - sorted[sorted.length - 2] < c.marginGate) {
+        const near = (l) => this.cur !== null && ((l >= this.cur - c.backSpan && l <= this.cur + c.skipSpan) || this.isRahao[l] || this.visited.has(l));
+        const top2 = emis.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0]).slice(0, 2).map((x) => x[1]);
+        if (!(c.gateNear && top2.some(near))) return this._freeze('marginGate', emis);
+      }
     }
     if (c.acousticGate > 0) {
       const stride = (this.buf.length / SR) / Math.max(1, emis0.frames);
@@ -234,14 +280,21 @@ class Follower {
       let bestAc = idx[0]; for (const ci of idx) if (acs[ci] > acs[bestAc]) bestAc = ci;
       const vals = Object.values(acs).sort((a, b) => a - b);
       const med = vals[Math.floor((vals.length - 1) / 2)] * 0.5 + vals[Math.ceil((vals.length - 1) / 2)] * 0.5;
-      if (bestAc !== top1 || (acs[top1] - med) < c.acousticGate) return this._freeze();
+      if (bestAc !== top1 || (acs[top1] - med) < c.acousticGate) return this._freeze('acousticGate', emis);
     }
 
     this.miss = 0;
     const top = this._viterbi(emis);
-    if (c.onTrace) c.onTrace({ hyp, top, cur: this.cur, emisTop: emis[top], emisCur: this.cur == null ? null : emis[this.cur], scoreTop: this.score[top], scoreCur: this.cur == null ? null : this.score[this.cur], dwell: this.dwell, challenger: this.challenger });
+    this.tailDbg = null;
+    const tailNext = this._tailNext(hyp);
+    if (c.onTrace && !this.tracedLines) { this.tracedLines = true; c.onTrace({ lines: this.linesNorm, verseIds: this.verseIds, nwords: this.nwords }); }
+    if (c.onTrace) c.onTrace({ hyp, top, tail: this.tailDbg, maxWi: this.maxWi, wiLine: this.wiLine, cur: this.cur, emisTop: emis[top], emisCur: this.cur == null ? null : emis[this.cur], scoreTop: this.score[top], scoreCur: this.cur == null ? null : this.score[this.cur], dwell: this.dwell, challenger: this.challenger, tailNext });
 
-    if (this.cur === null) {
+    if (tailNext !== null) {
+      // the next line has begun: move now, and let it lead the line scores so the next decode does not flip back
+      this.score[tailNext] = Math.max(this.score[tailNext], this.score[this.cur] + c.margin);
+      this.cur = tailNext; this.challenger = null; this.dwell = 0; this.tailHits = 0; this.tailLast = null;
+    } else if (this.cur === null) {
       if (top === this.initCand) this.initCount += 1;
       else { this.initCand = top; this.initCount = 1; }
       if (this.initCount >= c.initConfirm) { this.cur = top; this.initCand = null; this.initCount = 0; }
@@ -252,12 +305,14 @@ class Follower {
       if (top === this.challenger) this.dwell += 1;
       else { this.challenger = top; this.dwell = 1; }
       const d = top - this.cur;
+      const revisit = d < -c.backSpan && c.revisitDwell != null && (this.isRahao[top] || this.visited.has(top));
       let need;
       if (d === 1) need = c.dwellAdv;
       else if (d >= 2 && d <= c.skipSpan) need = c.dwellSkip == null ? c.dwellAdv : c.dwellSkip;
       else if (d >= -c.backSpan && d <= -1) need = c.dwellBack;
+      else if (revisit) need = c.revisitDwell;
       else need = c.dwell;
-      const evid = d === 1 || ((c.jumpEmisGap <= 0 || emis[top] - emis[this.cur] >= c.jumpEmisGap) && hyp.length >= c.minHypJump);
+      const evid = d === 1 || revisit || ((c.jumpEmisGap <= 0 || emis[top] - emis[this.cur] >= c.jumpEmisGap) && hyp.length >= c.minHypJump);
       if (evid && this.dwell >= need && this.score[top] >= this.score[this.cur] + c.margin) {
         this.cur = top; this.challenger = null; this.dwell = 0;
       }
