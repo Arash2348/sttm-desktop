@@ -53,6 +53,7 @@ const cpuSample = () =>
   );
 
 const { norm: vfNorm, partialRatio } = engine;
+const { SimranGate } = require('../engine/simran');
 
 // Pure, unit-tested switch/display policy (see switchPolicy.js + .test.js).
 const {
@@ -239,6 +240,10 @@ const DUP_AWARE_LOCK = 1;
 // candidates whose text scores are within NEAR_TWIN of each other is vetoed like an exact tie, until the words that
 // tell them apart are heard. 0 = exact ties only (as 9.0.5).
 const NEAR_TWIN = 0;
+// Simran hold (owner, Oct 16): while the sangat chants Waheguru simran in the middle of a Shabad (10 s to 10 min,
+// common in Akhand Kirtan), the screen holds its pangti and nothing is searched or switched on the simran itself;
+// the singing that follows decides (the same pangti, another pangti, or a new Shabad). engine/simran.js. 0 = off.
+const SIMRAN_HOLD = 0;
 // Mool Mantar home (ported from cycle 12): the Mool Mantar begins dozens of shabads, so
 // it ties exactly and never locks, leaving nothing on screen. After this many distinct
 // heard fragments that tie between Japji's Mool Mantar and other shabads, show Japji's
@@ -1255,6 +1260,7 @@ const VoiceFollow = () => {
   const flIndexLoadingRef = useRef(null); // in-flight index promise
   const lineCacheRef = useRef(new Map()); // shabadId -> { linesNorm, verses } | null (loading)
   const bsWinsRef = useRef(new Map()); // backstop wins banked per shabadId (survives screen flap)
+  const simranRef = useRef(null); // SIMRAN_HOLD gate (engine/simran.js)
   const sameGurbaniRef = useRef(new Map()); // 'a:b' -> Promise<boolean> (DUP_AWARE_LOCK)
   const bsAdoptKeyRef = useRef(''); // last screened field we ran adoption against
   const flIndexFailAtRef = useRef(0); // last index-build failure (backoff clock)
@@ -3740,7 +3746,10 @@ const VoiceFollow = () => {
           if (session !== sessionRef.current || recognizerRef.current !== r) return;
           if (rout && rout.text) {
             noteHeard(rout.text, rout.confidence);
-            handleTranscript(rout.text);
+            if (SIMRAN_HOLD && !simranRef.current) simranRef.current = new SimranGate();
+            // Simran: hold what is on screen; nothing is searched or switched on the Name alone.
+            const simran = SIMRAN_HOLD ? simranRef.current.push(rout.text) : false;
+            if (!simran) handleTranscript(rout.text);
           }
         }
         // While following, also advance the follower for the live line/word cursor.
@@ -3756,6 +3765,8 @@ const VoiceFollow = () => {
           // Follower released (singer paused, or moved on): hold on screen —
           // the acoustic switch test handles a real move to another shabad.
           if (out.lineIndex == null || out.verseIndex === -1) return;
+          // Simran (SIMRAN_HOLD): the pangti on screen stands until the singing resumes.
+          if (SIMRAN_HOLD && simranRef.current && simranRef.current.on) return;
           // Remember where we are so the switch test can score the current shabad
           // relative to the cursor (not as a global max over all its lines).
           curCursorRef.current = out.lineIndex;
