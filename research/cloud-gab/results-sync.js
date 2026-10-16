@@ -27,7 +27,7 @@ const SKIP = opt('skip') ? new RegExp(opt('skip')) : null;
 const LOCAL = opt('dir', path.join(process.env.VF_EMIS_CACHE || path.join(os.homedir(), 'personal/live-darbar-venues/cache'), 'replays'));
 const sas = () => {
   // env, or the owner's own Mac file (~/.vf-azure-sas, as remote-cache.js)
-  const s = (process.env.VF_AZURE_SAS || (() => { try { return fs.readFileSync(path.join(os.homedir(), '.vf-azure-sas'), 'utf8'); } catch (_) { return ''; } })()).replace(/\s+/g, '').replace(/^\?/, '');
+  const s = (process.env.VF_AZURE_SAS || (() => { try { return fs.readFileSync(path.join(os.homedir(), '.vf-azure-sas'), 'utf8'); } catch (_) { return ''; } })()).replace(/\s+/g, '').replace(/^['"]+|['"]+$/g, '').replace(/^[^?]*\?/, '');
   if (!s) throw new Error('VF_AZURE_SAS is not set');
   return fixTimes(s);
 };
