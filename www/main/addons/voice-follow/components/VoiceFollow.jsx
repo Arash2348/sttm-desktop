@@ -165,7 +165,7 @@ const KIRTAN_TAIL_ADV = 0;
 // Kirtan follower profile (P0): the 3 s+ stalls at pangti changes are mostly the margin gate freezing on two
 // near-equal pangtis (one of them the sung one) and slow returns to the rahao / a pangti already sung.
 // KIRTAN_FOLLOW picks a profile from KIRTAN_PROFILES (engine/follower.js options); 0 = as 9.0.4.
-const KIRTAN_FOLLOW = 0;
+const KIRTAN_FOLLOW = 1;
 const KIRTAN_PROFILES = [
   {},
   { gateNear: true },
