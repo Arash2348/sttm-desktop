@@ -52,6 +52,8 @@ mk kf4 f6c8ab0 KIRTAN_FOLLOW=4
 mk kf5 f6c8ab0 KIRTAN_FOLLOW=5
 # P0 Akhand Paath: the Shabad-sequence mode candidate (reads the sequence instead of Ang after Ang)
 mk akpaath eb789375
+# 9.0.5 as merged (vf-9.0.4 @ 1271040): the held-back test split check before it goes to experimental
+mk v905 1271040
 # owner (Oct 16): the Akhand verdict first: verifier builds + probation, Akhand (l3) only; Renton later for the keepers
 FILL="${FILL:-v6-prob v6-base3 v6-verify5 v6-vk3l10 v6-vk3l20 v6-vk6l40 v6-ctc v6-prob-ctc r904 window-align}"
 FSUITES="${FSUITES:-l3}"
@@ -121,6 +123,19 @@ score_builds() {
   node "$REPO/research/cloud-gab/results-sync.js" push
   echo "score done"
 }
+# cg-test: the held-back test split, once, on builds about to ship (GAB.md split rule): records the windows a build
+# needs on the test recordings (--fill, this machine's platform only) and scores every tier; results to Azure
+test_split() {
+  cd "$TOOLS"
+  for b in ${TEST_BUILDS:-}; do
+    for t in main akhand hard; do
+      VF_MIN_FREE_GB=3 ./gab run $P/$b --set $t --tier full --jobs "$NP" --manifest hf --split test --fill > /home/user/gab/test-$b-$t.log 2>&1; echo "test $b $t exit $?"
+      grep -E "^\| \*\*|INCOMPLETE|Not run|Timing" /home/user/gab/test-$b-$t.log | cut -c1-240
+    done
+  done
+  node "$REPO/research/cloud-gab/results-sync.js" push
+  echo "test done"
+}
 lines() {
   cd "$REPO/research/cloud-gab/lines"
   local J=$(( (NP - 4) / 2 )); [ $J -lt 2 ] && J=2
@@ -132,6 +147,8 @@ lines() {
 case "$JOB" in
   fill-x86*) fill_x86; [[ "$JOB" == *apaath* ]] && apaath; [ -n "${SCORE:-}" ] && score_builds ;;
   apaath*) apaath ;;
+  score*) score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
+  test*) test_split ;;
   lines*) lines ;;
   all*) fill_x86 & lines; wait ;;
   *) echo "unknown job $JOB"; exit 2 ;;
