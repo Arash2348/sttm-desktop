@@ -233,6 +233,12 @@ const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a swit
 // Sohila and in Dhanasari, a Rehras shabad and its SGGS original) searches as an exact
 // tie, and a tie never locks. 1 = while searching, treat such copies as one candidate.
 const DUP_AWARE_LOCK = 1;
+// Near-twin Shabads (owner's listening check, Oct 16, GAB-Akhand l3clip16): Baba Farid Ji's Salok 72 opens with
+// almost the same words as the second pangti of Salok 71 (ਜੋ ਸਿਰੁ ਸਾਂਈ ਨਾ ਨਿਵੈ ਸੋ ਸਿਰੁ ...), and the switch judge
+// took Salok 72 while the ragi sang only Salok 71 (72% of that recording on the wrong Salok). A switch between two
+// candidates whose text scores are within NEAR_TWIN of each other is vetoed like an exact tie, until the words that
+// tell them apart are heard. 0 = exact ties only (as 9.0.5).
+const NEAR_TWIN = 0;
 // Mool Mantar home (ported from cycle 12): the Mool Mantar begins dozens of shabads, so
 // it ties exactly and never locks, leaving nothing on screen. After this many distinct
 // heard fragments that tie between Japji's Mool Mantar and other shabads, show Japji's
@@ -3058,10 +3064,10 @@ const VoiceFollow = () => {
         const tiedLeaderIds = new Set();
         if (
           textCandidates.length > 1 &&
-          Math.abs(textCandidates[0].score - textCandidates[1].score) < 1e-9
+          Math.abs(textCandidates[0].score - textCandidates[1].score) < Math.max(1e-9, NEAR_TWIN)
         ) {
           const tied = textCandidates.filter(
-            (candidate) => Math.abs(candidate.score - textCandidates[0].score) < 1e-9,
+            (candidate) => Math.abs(candidate.score - textCandidates[0].score) < Math.max(1e-9, NEAR_TWIN),
           );
           // The same Gurbani stored twice (Aarti's "Gagan mai thaal" in Dhanasari and in
           // Sohila, Rehras's "So dar" and its Asa original) ties exactly on EVERY decode, and
