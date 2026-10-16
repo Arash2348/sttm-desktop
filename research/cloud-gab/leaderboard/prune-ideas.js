@@ -15,12 +15,12 @@ const commit = process.argv.includes('--commit'); const page = process.argv.incl
   const sha = (await (await get(`${API}/revision/main`)).json()).sha;
   const idx = JSON.parse(await (await get(`https://huggingface.co/spaces/${SPACE}/resolve/${sha}/results/index.json`)).text());
   const drop = idx.results.filter((r) => args.some((a) => new RegExp(a, 'i').test(`${r.slug} ${r.label || ''} ${r.name || ''}`)));
-  if (!drop.length) throw new Error('no row matches');
+  if (!drop.length && !page) throw new Error('no row matches');
   const keep = { ...idx, results: idx.results.filter((r) => !drop.includes(r)) };
   console.log(`main @ ${sha.slice(0, 12)}: dropping ${drop.map((r) => `${r.slug} (${r.label || r.name})`).join(', ')}; ${keep.results.length} rows stay${page ? '; page from this folder' : ''}`);
   if (!commit) { console.log('dry run (add --commit to open the PR)'); return; }
   const ops = [
-    { key: 'header', value: { parentCommit: sha, summary: `Leaderboard: drop ${drop.length} idea row(s) no longer under evaluation${page ? '; Akhand Paath gets its own column' : ''}`, description: `Removed: ${drop.map((r) => r.label || r.name || r.slug).join(', ')} (superseded by later work; the owner keeps only live ideas on the board). ${page ? 'index.html: the Every-version table gains an Akhand Paath column (reading Ang after Ang), and the ≈ mark now appears only on two-model aligned keys, not on publisher-slide keys.' : ''}` } },
+    { key: 'header', value: { parentCommit: sha, summary: drop.length ? `Leaderboard: drop ${drop.length} idea row(s) no longer under evaluation${page ? '; page update' : ''}` : 'Leaderboard page update', description: `${drop.length ? `Removed: ${drop.map((r) => r.label || r.name || r.slug).join(', ')} (superseded by later work; the owner keeps only live ideas on the board). ` : ''}${page ? (process.env.PAGE_NOTE || 'index.html from research/cloud-gab/leaderboard on the sttm-desktop fork.') : ''}` } },
     { key: 'file', value: { path: 'results/index.json', content: Buffer.from(JSON.stringify(keep, null, 1)).toString('base64'), encoding: 'base64' } },
     ...drop.map((r) => ({ key: 'deletedFile', value: { path: `results/${r.file}` } })),
     ...(page ? [{ key: 'file', value: { path: 'index.html', content: fs.readFileSync(path.join(__dirname, 'index.html')).toString('base64'), encoding: 'base64' } }] : []),
