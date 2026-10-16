@@ -50,6 +50,8 @@ mk aarti1x 53220a0 AARTI_FOLLOW=1
 mk aarti2x 53220a0 AARTI_FOLLOW=2
 mk kf4 f6c8ab0 KIRTAN_FOLLOW=4
 mk kf5 f6c8ab0 KIRTAN_FOLLOW=5
+# P0 Akhand Paath: the Shabad-sequence mode candidate (reads the sequence instead of Ang after Ang)
+mk akpaath eb789375
 # owner (Oct 16): the Akhand verdict first: verifier builds + probation, Akhand (l3) only; Renton later for the keepers
 FILL="${FILL:-v6-prob v6-base3 v6-verify5 v6-vk3l10 v6-vk3l20 v6-vk6l40 v6-ctc v6-prob-ctc r904 window-align}"
 FSUITES="${FSUITES:-l3}"
