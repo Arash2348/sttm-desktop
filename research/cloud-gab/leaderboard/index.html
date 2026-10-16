@@ -108,9 +108,11 @@ td.v .pg .ch { font-size: 9.5px; }
 select { font: inherit; font-size: 13px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px; }
 .tools { color: var(--muted); font-size: 13px; margin: 16px 0 6px; }
 .tools b { color: var(--ink); }
+/* compact: one line per situation; the small print sits inline after each number */
 #big td.k1 { box-shadow: inset 3px 0 0 var(--c); font-weight: 600; }
-#big td { white-space: nowrap; }
-#big td .u { display: block; font-weight: 400; font-size: 11px; color: var(--muted); }
+#big td, #big th { white-space: nowrap; padding: 5px 10px; font-size: 13px; }
+#big td .u { display: inline; margin-left: 5px; font-weight: 400; font-size: 11px; color: var(--muted); }
+#big th .u { display: block; font-weight: 400; font-size: 11px; color: var(--muted); }
 #big td.none { color: var(--muted); font-size: 12px; text-align: left; }
 @media (max-width: 560px) {
   .page { padding: 16px 12px; }
@@ -164,7 +166,7 @@ const SIT = [
 ];
 const num = (x) => (x == null || x === '' ? null : Number(x));
 const BIG_N = 6;
-const BIG_TH = '<th>Hours<span class="u">recordings</span></th><th>Right Shabad</th><th>Right pangti</th><th>Behind the singer<span class="u">typical / worst 10%, s</span></th><th>Wrong Shabad<span class="u">seconds per hour</span></th><th>Time to find<span class="u">typical / worst 10%, s</span></th>';
+const BIG_TH = '<th>Hours<span class="u">recordings</span></th><th>Right Shabad</th><th>Right pangti</th><th>Behind the singer<span class="u">typical / worst 10%, s</span></th><th>Wrong Shabad<span class="u">s per hour</span></th><th>Time to find<span class="u">typical / worst 10%, s · starts missed</span></th>';
 function bigCells(r, p, none) {
   if (r && r.incomplete) return `<td class="none" colspan="${BIG_N}" title="${esc(r.note || '')}">${typeof r.incomplete === 'number' ? `not scored: ${r.incomplete} recording${r.incomplete > 1 ? 's need' : ' needs'} speech-model output this version asks for, not saved yet` : 'not scored yet'}</td>`;
   if (!has(r)) return `<td class="none" colspan="${BIG_N}">${esc(none || 'no recordings yet')}</td>`;
@@ -172,12 +174,12 @@ function bigCells(r, p, none) {
   const mk = pmark(r.pangti_basis);
   const two = (a, b, kind) => `${g(a)}${g(b) != null ? ` / ${g(b)}` : ''} s${chg(g(a), pg(a), kind)}`;
   const nf = g('not_found');
-  return `<td>${g('hours') != null ? `${g('hours')} h` : '–'}<span class="u">${g('clips')} recording${g('clips') === 1 ? '' : 's'}</span></td>`
+  return `<td>${g('hours') != null ? `${Number(g('hours')).toFixed(1)} h` : '–'}<span class="u">· ${g('clips')}</span></td>`
     + `<td>${g('right_shabad_pct')}%${chg(g('right_shabad_pct'), pg('right_shabad_pct'), 'pct')}</td>`
     + `<td>${g('pangti_pct') != null ? `${g('pangti_pct')}%${mk}${chg(g('pangti_pct'), pg('pangti_pct'), 'pct')}` : '–'}</td>`
     + `<td>${g('behind_p50_s') != null ? `${two('behind_p50_s', 'behind_p90_s', 'sec')}${mk}` : '–'}</td>`
     + `<td>${g('wrong_s_per_h') != null ? `${g('wrong_s_per_h')}${chg(g('wrong_s_per_h'), pg('wrong_s_per_h'), 'wrong')}` : '–'}</td>`
-    + `<td>${g('find_p50_s') != null ? two('find_p50_s', 'find_p90_s', 'sec') : '–'}${nf ? `<span class="u" title="recordings whose first Shabad or Bani never reached the screen (a later one in the same recording may have)">${nf} of ${g('find_n')} starts missed</span>` : ''}</td>`;
+    + `<td>${g('find_p50_s') != null ? two('find_p50_s', 'find_p90_s', 'sec') : '–'}${nf ? `<span class="u" title="recordings whose first Shabad or Bani never reached the screen (a later one in the same recording may have)">· ${nf} of ${g('find_n')} missed</span>` : ''}</td>`;
 }
 function sitRow(res, s) {
   if (s.tier && !res[s.tier]) return { incomplete: true };
