@@ -226,15 +226,23 @@ against a big regression. Standing instruction: don't ask, just do; report what 
 is up, use spare time to fill every window any candidate asks for, on every tier, and push it to Azure; prefer
 fixed-grid (window-align) recordings so new app changes replay from the cache instead of coming back INCOMPLETE.
 
-## In flight (Oct 16, 06:05 UTC)
+## In flight (Oct 16, 07:10 UTC)
 
-- Akhand Kirtan stack `v6-stack` (42b8d7e + SWITCH_COMMIT_SOLID=0 PROBATION_DECODES=0 AK_LOCAL_CTC=2 VERIFY_LOCK=40
-  VERIFY_CANDS=6): Akhand 81.0 / 76.7 / find 4.8 s / wrong 403 s/h (V6 78.8 / 75.5 / 5.8 / 398). Helper scoring main + hard
-  (`run-job.sh v6-stack ...`). Keep if main holds. VM (`fill-x86-v9`) now recording v6-ctc and v6-vk6l40 Renton windows.
-- Kirtan fix 2 on 9.0.4 (exp-on-904 53220a0, KIRTAN_FOLLOW=1/2/3 = kf1/kf2/kf3): helpers replaying main + akhand.
-- Aarti sung profiles on 9.0.4 (AARTI_FOLLOW=1/2 = aarti1x/aarti2x, main): helpers replaying.
-- Akhand Paath sequence-mode build (eb789375): 6 of 11 recordings replayed (98% right Bani), 5 need windows; record on
-  the VM after the Akhand Kirtan fill (vm-job.sh apaath() records r904 only: point it at the eb789375 worktree).
+Verdicts so far (all on identical recording sets, scorecards compared recording by recording):
+- Kirtan fix 2: profile 1 (gate guards far jumps only) = KEEPER: main right pangti +0.4 (87.4 vs 87.0 on 104
+  recordings), lag / wrong / right Shabad identical, Akhand right pangti 75.5 -> 77.3 and lag 1.62 -> 1.38 s.
+  Profiles 2 and 3 (cheap returns, one-decode step back) lose more than they gain: OUT. Fremont check pending.
+- Akhand keepers: local scoring (ctc) passes main (wrong +1.6 s/h, rest equal on 101 recordings): KEEPER, 79.7% on
+  Akhand. Verifier (top 6 / bar 40) and the stack FAIL main as set: wrong Shabad +17..23 s/h from rn75 (confirms a
+  wrong Shabad while the sangat chants), rn05, rn09, rn67. Cause: the lead has no absolute floor (nonsense audio).
+- Fix built: branch `ak-stack2` (0452ce2) = Akhand lineage 42b8d7e + window alignment (f589ce7, 122acab cherry-picked;
+  decodes on a fixed grid, so ONE fill serves every variant) + `VERIFY_FLOOR` (best Shabad within N nats/s of the
+  unconstrained decode, engine freeFit) + `VERIFY_DRY` (trace every check via __recordSwitch, never lock). 71 tests.
+- VM job fill-x86-v10: builds stack2 / stack2-dry / stack2-wa on all suites, then scores them on all tiers
+  (`cg-score`), results to Azure. Then: sweep VERIFY_LOCK x VERIFY_FLOOR offline from the stack2-dry traces
+  (switch-comparison events with verify:true: lead, gapS, fits), pick the floor, score the variant (replays only).
+- Aarti sung profiles on 9.0.4 (aarti1x / aarti2x, main): helpers replaying.
+- Akhand Paath sequence-mode build (eb789375): 6 of 11 recordings replayed (98% right Bani), 5 need windows.
 - Leaderboard Space PR #7 (page: Sung Bani name, compact Big picture) open; #6 and #2 closed as superseded.
 
 ## Open questions for the owner
