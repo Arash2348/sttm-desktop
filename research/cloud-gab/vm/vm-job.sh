@@ -85,7 +85,7 @@ apaath() {
   local BENCH=/home/user/gab/bench
   node "$REPO/research/cloud-gab/hf-akhand-paath/jobs.js" --local "$BENCH/manifest.csv"
   local IDS
-  IDS=$(cd "$TOOLS" && node -e 'const {parseCsv,canonRows}=require("./vf-manifest");const rows=canonRows(parseCsv(require("fs").readFileSync(process.argv[1],"utf8")));console.log(rows.filter(r=>r.content_folder==="4-akhand-paath"&&r.split!=="test"&&r.id.startsWith("ytap_")).map(r=>r.id).join(","))' "$BENCH/manifest.csv")
+  IDS=$(cd "$TOOLS" && node -e 'const {parseCsv,canonRows}=require("./vf-manifest");const rows=canonRows(parseCsv(require("fs").readFileSync(process.argv[1],"utf8")));console.log(rows.filter(r=>r.content_folder==="4-akhand-paath"&&(process.env.AP_SPLIT==="test"?r.split==="test":r.split!=="test")&&r.id.startsWith("ytap_")).map(r=>r.id).join(","))' "$BENCH/manifest.csv")
   echo "apaath: $IDS"
   for id in ${IDS//,/ }; do
     mkdir -p "$BENCH/4-akhand-paath/$id"
@@ -97,7 +97,7 @@ apaath() {
   node vf-check.js --record --roots $P/r904 --suites apaath --only "$IDS" --no-pull > /home/user/gab/apaath-record.log 2>&1; echo "apaath record exit $?"
   grep -E "REFUSED|recorded|error|done:" /home/user/gab/apaath-record.log | tail -5
   FSUITES=apaath push_cache
-  VF_MIN_FREE_GB=3 ./gab run $P/r904 --set main --tier full --jobs "$NP" --manifest "$BENCH" --folders 4-akhand-paath > /home/user/gab/apaath-score.log 2>&1; echo "apaath score exit $?"
+  VF_MIN_FREE_GB=3 ./gab run $P/r904 --set main --tier full --jobs "$NP" --manifest "$BENCH" --folders 4-akhand-paath ${AP_SPLIT:+--split $AP_SPLIT} > /home/user/gab/apaath-score.log 2>&1; echo "apaath score exit $?"
   grep -E "^\| \*\*Akhand Paath|INCOMPLETE|Not run" /home/user/gab/apaath-score.log | cut -c1-300
   echo "apaath done"
 }
@@ -160,6 +160,7 @@ lines() {
 }
 case "$JOB" in
   fill-x86*) fill_x86; [[ "$JOB" == *apaath* ]] && apaath; [ -n "${SCORE:-}" ] && score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
+  apaath-test*) AP_SPLIT=test apaath; node "$REPO/research/cloud-gab/results-sync.js" push ;;
   apaath*) apaath ;;
   score*) score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
   test*) test_split ;;
