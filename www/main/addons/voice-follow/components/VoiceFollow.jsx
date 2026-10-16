@@ -20,7 +20,7 @@ const engine = require('../engine');
 const { Follower: AcousticFollower } = require('../engine/follower');
 const { SP: AcousticSP } = require('../engine/sentencepiece');
 const { localCtcScore, frameMax } = require('../engine/ctcLocal');
-const { shabadFit, stitch, pangtiTokens } = require('../engine/shabadVerify');
+const { shabadFit, stitch, pangtiTokens, freeFit } = require('../engine/shabadVerify');
 const { createRendererRetrieval } = require('../engine/retrieval/renderer-client');
 const sessionLog = require('../engine/session-log');
 const windowClock = require('../engine/clock');
@@ -287,6 +287,13 @@ const VERIFY_CANDS = 12; // search results per decode that feed the pool (the ap
 const VERIFY_POOL_DECODES = 50;
 const VERIFY_SPAN_S = 30;
 const VERIFY_MIN_S = 20;
+// Absolute floor: the best Shabad may fall short of the unconstrained decode (freeFit) by at most this
+// many nats per second of the window; a lead over other Shabads measured on chant or noise does not
+// count. 0 = off (the lead alone decides, as in 9.0.4's Akhand round).
+const VERIFY_FLOOR = 0;
+// 1 = run and trace every check (lead, floor gap, the fits) but never lock on it: offline sweeps
+// of VERIFY_LOCK / VERIFY_FLOOR from the bench's trace. Off in the app.
+const VERIFY_DRY = 0;
 const SHEV_LOCK = 2;
 const SHEV_SWITCH = 2.3;
 const SHEV_LEAD = 2;
@@ -2672,11 +2679,24 @@ const VoiceFollow = () => {
                   .sort((a, b) => b.score - a.score);
                 if (fits.length >= 2) {
                   const lead = fits[0].score - fits[1].score;
-                  const win = lead >= VERIFY_LOCK;
+                  const free = VERIFY_FLOOR > 0 || VERIFY_DRY ? freeFit(emis) : null;
+                  const gapS = free == null ? 0 : (free - fits[0].score) / emis.seconds;
+                  const win = lead >= VERIFY_LOCK && (VERIFY_FLOOR <= 0 || gapS <= VERIFY_FLOOR);
                   memory.vwins =
                     win && memory.vlast === fits[0].id ? (memory.vwins || 0) + 1 : +win;
                   memory.vlast = win ? fits[0].id : null;
-                  if (memory.vwins >= VERIFY_CONFIRM) {
+                  // bench trace only (the driver defines __recordSwitch; the app has no such global)
+                  if (typeof globalThis.__recordSwitch === 'function')
+                    globalThis.__recordSwitch({
+                      verify: true,
+                      sec: Math.round(emis.seconds * 10) / 10,
+                      lead: Math.round(lead),
+                      free: free == null ? null : Math.round(free),
+                      gapS: Math.round(gapS * 10) / 10,
+                      wins: memory.vwins,
+                      fits: fits.slice(0, 8).map((f) => [f.id, Math.round(f.score), memory.vpool.get(f.id)?.n || 0]),
+                    });
+                  if (!VERIFY_DRY && memory.vwins >= VERIFY_CONFIRM) {
                     const { profile } = fits[0];
                     let at = profile.verses.findIndex((v) => v.verseId === fits[0].verseId);
                     if (at < 0) at = 0;

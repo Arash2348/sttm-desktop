@@ -119,6 +119,28 @@ function shabadFit(emis, lines) {
   return bv;
 }
 
+// The unconstrained best path over the same frames, scored the same way (blanks x BLANK_SCALE, tokens
+// floored, never below the garbage rate): no Shabad can beat it, and a Shabad that was really sung comes
+// within a few nats per second of it, while on chant, talk or music the best pool Shabad falls far short
+// even when it "leads" the others. The verifier's absolute floor (VERIFY_FLOOR).
+function freeFit(emis) {
+  const { data: lp, frames: T, C } = emis;
+  let sum = 0;
+  for (let t = 0; t < T; t++) {
+    const row = t * C;
+    let best = TOKEN_FLOOR;
+    for (let c = 0; c < C; c++) {
+      if (c === BLANK) continue;
+      const v = lp[row + c];
+      if (v > best) best = v;
+    }
+    const b = lp[row + BLANK] * BLANK_SCALE;
+    if (b > best) best = b;
+    sum += best > GARBAGE ? best : GARBAGE;
+  }
+  return sum;
+}
+
 // Recognizer pass slices (recognizer.js passHistory: the middle of each pass, tiling the audio)
 // -> one emission matrix over the last `spanS` seconds.
 // slices: [{ t0, t1 (sample positions), frames, C, data }], oldest first
@@ -137,4 +159,4 @@ function stitch(slices, { spanS = 30, sr = 16000, fps = 25 } = {}) {
   return { data, frames, C, seconds: frames / fps };
 }
 
-module.exports = { shabadFit, stitch, pangtiTokens, BLANK };
+module.exports = { shabadFit, freeFit, stitch, pangtiTokens, BLANK };

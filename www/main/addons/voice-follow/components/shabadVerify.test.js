@@ -1,7 +1,7 @@
 // Shabad verifier (engine/shabadVerify.js): whole-Shabad fit over a stitched window.
 const test = require('node:test');
 const assert = require('node:assert');
-const { shabadFit, stitch, BLANK } = require('../engine/shabadVerify');
+const { shabadFit, freeFit, stitch, BLANK } = require('../engine/shabadVerify');
 const { Recognizer } = require('../engine/recognizer');
 
 const C = 257;
@@ -97,4 +97,22 @@ test('the recognizer keeps the middle of each pass, tiling ~40 s, through a wrap
     assert.strictEqual(L[k].t0, L[k - 1].t1, 'slices tile with no gap');
   const s = stitch(L, { spanS: 30 });
   assert.ok(s && s.seconds >= 29.5, `stitched ${s && s.seconds} s`);
+});
+
+test('freeFit: no Shabad beats the unconstrained decode; the sung one comes close, a stranger falls far short', () => {
+  const sung = [
+    [5, 6, 7],
+    [8, 9, 10],
+  ];
+  const other = [
+    [40, 41, 42],
+    [43, 44, 45],
+  ];
+  const emis = heard([5, 6, 7, 8, 9, 10], { per: 6, gap: 2 });
+  const free = freeFit(emis);
+  const seconds = emis.frames / 25;
+  assert.ok(free >= shabadFit(emis, sung));
+  assert.ok(free >= shabadFit(emis, other));
+  assert.ok((free - shabadFit(emis, sung)) / seconds < 10, 'sung Shabad within 10 nats/s of the free path');
+  assert.ok((free - shabadFit(emis, other)) / seconds > 20, 'a stranger falls far short (bounded by the garbage rate, 30 nats/s)');
 });
