@@ -163,6 +163,17 @@ const AP_FOLLOW_WIN_S = 4; // recognizer window while FOLLOWING (fast switching)
 // outweigh the current one over the whole 4 s window (1-3 s late on 587 of 1,218 pangti changes in 9.0.4).
 // engine/follower.js tailAdv; 0 = off.
 const KIRTAN_TAIL_ADV = 0;
+// Kirtan follower profile (P0): the 3 s+ stalls at pangti changes are mostly the margin gate freezing on two
+// near-equal pangtis (one of them the sung one) and slow returns to the rahao / a pangti already sung.
+// KIRTAN_FOLLOW picks a profile from KIRTAN_PROFILES (engine/follower.js options); 0 = as 9.0.4.
+const KIRTAN_FOLLOW = 0;
+const KIRTAN_PROFILES = [
+  {},
+  { gateNear: true },
+  { gateNear: true, revisitDwell: 1 },
+  { gateNear: true, revisitDwell: 1, dwellBack: 1, guard: 0.5 },
+];
+const kirtanFollowOpts = () => ({ tailAdv: KIRTAN_TAIL_ADV, ...(KIRTAN_PROFILES[KIRTAN_FOLLOW] || {}) });
 const AP_REC_HOP_S = 0.5; // recognizer decode hop while in autopilot
 // Audio the engines have not consumed yet is a backlog: recognised text (and the screen)
 // is that far behind the room. On a computer that decodes slower than real time it
@@ -1732,7 +1743,7 @@ const VoiceFollow = () => {
             baniId: sundarGutkaBaniId,
             ...aartiFollowOpts(sundarGutkaBaniId),
           })
-        : await engine.createFollower(verses, { inputSr: sampleRate, tailAdv: KIRTAN_TAIL_ADV });
+        : await engine.createFollower(verses, { inputSr: sampleRate, ...kirtanFollowOpts() });
       if (session !== sessionRef.current) return;
       followerRef.current = follower;
     } catch (e) {
@@ -2150,7 +2161,7 @@ const VoiceFollow = () => {
                 })
               : await engine.createFollower(profile.verses, {
                   inputSr: sampleRateRef.current,
-                  tailAdv: KIRTAN_TAIL_ADV,
+                  ...kirtanFollowOpts(),
                 });
         } catch (e) {
           if (session !== sessionRef.current) return;

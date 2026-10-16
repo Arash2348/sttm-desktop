@@ -28,6 +28,14 @@ const DEFAULTS = {
   // line to outweigh the current one over the whole window: at a 4 s window that wait is 1-3 s, GAB-Kirtan's
   // largest pangti loss (9.0.4: 587 of 1,218 pangti changes caught 1-3 s late). 0 = off.
   tailAdv: 0, tailSlack: 6, tailGuard: 0.75, tailMargin: 0.15, tailConfirm: 1,
+  // GAB-Kirtan 9.0.4 stalls (3 s+ late at a pangti change, 5 Renton recordings, 288 s of waiting): 56% of that
+  // time the follower froze, and 122 of those 160 s were the margin gate (the two best lines within marginGate),
+  // 77 s of them with the sung line among the two. gateNear: the gate only guards far jumps; a near-equal pair that
+  // includes the current line, its neighbours (backSpan / skipSpan), a rahao line or a line already sung is decided
+  // by the line scores (continuity, jump costs) instead of frozen. 30 of the 50 stalls were returns to an earlier
+  // pangti (a repeat): revisitDwell = decodes a jump back to a rahao line or a line already sung must persist
+  // (null = the far-jump dwell), and such a return needs no minHypJump letters.
+  gateNear: false, revisitDwell: null,
 };
 
 function argmax(a) { let bi = 0, bv = -Infinity; for (let i = 0; i < a.length; i++) if (a[i] > bv) { bv = a[i]; bi = i; } return bi; }
@@ -226,7 +234,11 @@ class Follower {
     if (emax < c.guard) return this._freeze('guard', emis);
     if (c.marginGate > 0 && emis.length >= 2) {
       const sorted = [...emis].sort((a, b) => a - b);
-      if (sorted[sorted.length - 1] - sorted[sorted.length - 2] < c.marginGate) return this._freeze('marginGate', emis);
+      if (sorted[sorted.length - 1] - sorted[sorted.length - 2] < c.marginGate) {
+        const near = (l) => this.cur !== null && ((l >= this.cur - c.backSpan && l <= this.cur + c.skipSpan) || this.isRahao[l] || this.visited.has(l));
+        const top2 = emis.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0]).slice(0, 2).map((x) => x[1]);
+        if (!(c.gateNear && top2.some(near))) return this._freeze('marginGate', emis);
+      }
     }
     if (c.acousticGate > 0) {
       const stride = (this.buf.length / SR) / Math.max(1, emis0.frames);
@@ -270,12 +282,14 @@ class Follower {
       if (top === this.challenger) this.dwell += 1;
       else { this.challenger = top; this.dwell = 1; }
       const d = top - this.cur;
+      const revisit = d < -c.backSpan && c.revisitDwell != null && (this.isRahao[top] || this.visited.has(top));
       let need;
       if (d === 1) need = c.dwellAdv;
       else if (d >= 2 && d <= c.skipSpan) need = c.dwellSkip == null ? c.dwellAdv : c.dwellSkip;
       else if (d >= -c.backSpan && d <= -1) need = c.dwellBack;
+      else if (revisit) need = c.revisitDwell;
       else need = c.dwell;
-      const evid = d === 1 || ((c.jumpEmisGap <= 0 || emis[top] - emis[this.cur] >= c.jumpEmisGap) && hyp.length >= c.minHypJump);
+      const evid = d === 1 || revisit || ((c.jumpEmisGap <= 0 || emis[top] - emis[this.cur] >= c.jumpEmisGap) && hyp.length >= c.minHypJump);
       if (evid && this.dwell >= need && this.score[top] >= this.score[this.cur] + c.margin) {
         this.cur = top; this.challenger = null; this.dwell = 0;
       }
