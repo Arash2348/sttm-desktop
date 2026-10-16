@@ -59,6 +59,8 @@ mk twin3 02afebe KIRTAN_FOLLOW=1 NEAR_TWIN=0.03
 mk twin6 02afebe KIRTAN_FOLLOW=1 NEAR_TWIN=0.06
 # simran hold on top of 9.0.5 (owner, Oct 16: hold the pangti while the sangat chants Waheguru simran)
 mk simran1 f677da3 KIRTAN_FOLLOW=1 SIMRAN_HOLD=1
+# 9.0.6 candidate: 9.0.4 + near-twin 0.03 + Aarti profile 1, WITHOUT the gate fix (9.0.5's gate fix did not hold on the test split)
+mk cand906 02afebe NEAR_TWIN=0.03 AARTI_FOLLOW=1
 # owner (Oct 16): the Akhand verdict first: verifier builds + probation, Akhand (l3) only; Renton later for the keepers
 FILL="${FILL:-v6-prob v6-base3 v6-verify5 v6-vk3l10 v6-vk3l20 v6-vk6l40 v6-ctc v6-prob-ctc r904 window-align}"
 FSUITES="${FSUITES:-l3}"
