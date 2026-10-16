@@ -187,7 +187,11 @@ class Follower {
     return argmax(nw);
   }
 
-  _freeze() {
+  _freeze(why, emis) {
+    if (this.c.onTrace) { // the bench's follower trace: why nothing was decided this window
+      const top2 = emis ? emis.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0]).slice(0, 2) : null;
+      this.c.onTrace({ freeze: why, cur: this.cur, miss: this.miss + 1, top2 });
+    }
     this.miss += 1;
     this.initCand = null; this.initCount = 0;
     if (this.c.release && this.miss >= this.c.release && this.cur !== null) {
@@ -215,14 +219,14 @@ class Follower {
 
     const emis0 = await this.infer.emissions(this.buf);
     const hyp = norm(this.infer.decode(this._greedy(emis0)));
-    if (hyp.length < c.minHyp) return this._freeze();
+    if (hyp.length < c.minHyp) return this._freeze('fewLetters');
 
     const emis = this.linesNorm.map((ln) => (ln ? partialRatio(hyp, ln) / 100.0 : 0.0));
     let emax = -Infinity; for (const v of emis) if (v > emax) emax = v;
-    if (emax < c.guard) return this._freeze();
+    if (emax < c.guard) return this._freeze('guard', emis);
     if (c.marginGate > 0 && emis.length >= 2) {
       const sorted = [...emis].sort((a, b) => a - b);
-      if (sorted[sorted.length - 1] - sorted[sorted.length - 2] < c.marginGate) return this._freeze();
+      if (sorted[sorted.length - 1] - sorted[sorted.length - 2] < c.marginGate) return this._freeze('marginGate', emis);
     }
     if (c.acousticGate > 0) {
       const stride = (this.buf.length / SR) / Math.max(1, emis0.frames);
@@ -241,7 +245,7 @@ class Follower {
       let bestAc = idx[0]; for (const ci of idx) if (acs[ci] > acs[bestAc]) bestAc = ci;
       const vals = Object.values(acs).sort((a, b) => a - b);
       const med = vals[Math.floor((vals.length - 1) / 2)] * 0.5 + vals[Math.ceil((vals.length - 1) / 2)] * 0.5;
-      if (bestAc !== top1 || (acs[top1] - med) < c.acousticGate) return this._freeze();
+      if (bestAc !== top1 || (acs[top1] - med) < c.acousticGate) return this._freeze('acousticGate', emis);
     }
 
     this.miss = 0;
