@@ -109,6 +109,7 @@ select { font: inherit; font-size: 13px; color: var(--ink); background: var(--pa
 .tools { color: var(--muted); font-size: 13px; margin: 16px 0 6px; }
 .tools b { color: var(--ink); }
 /* compact: one line per situation; the small print sits inline after each number */
+.ps { color: var(--muted); font-weight: 700; margin-left: 1px; cursor: help; }
 #big td.k1 { box-shadow: inset 3px 0 0 var(--c); font-weight: 600; }
 #big td, #big th { white-space: nowrap; padding: 5px 10px; font-size: 13px; }
 #big td .u { display: inline; margin-left: 5px; font-weight: 400; font-size: 11px; color: var(--muted); }
@@ -139,7 +140,7 @@ select { font: inherit; font-size: 13px; color: var(--ink); background: var(--pa
   <h1>GAB: Gurbani Autopilot Bench</h1>
   <p class="sub">Each cell: <b>right Shabad</b> (the right Shabad or Bani on screen) and, below it, <b>right pangti</b> (the very pangti being sung or read) · ≈ pangti keys from two-model alignment, spot-checked by a person; otherwise keyed by a person · ▲▼ change vs the version before, shown only beyond noise · tap a version for what went into it</p>
   <div class="box big"><div class="bigbar"><span>Big picture</span><select id="bigsel" aria-label="version shown in the big picture"></select><span class="note">one version across every situation · hours of recordings behind each number · worst 10% = the slowest tenth</span></div><table id="big"></table></div>
-  <p class="tools"><b>Every version</b> · right Shabad % per version, oldest at the bottom</p>
+  <p class="tools"><b>Every version</b> · right Shabad % per version, oldest at the bottom · <sup class="ps">*</sup> scored on the recordings that replayed; a few more need speech-model output not recorded yet (hover for how many)</p>
   <div class="box"><table id="board"></table></div>
 </div>
 <script>
@@ -355,7 +356,8 @@ function render() {
     const bar = BARS ? `<div class="bar" style="--c: var(${c.col || HCOL[c.key]})"><i style="width:${v}%"></i>${b != null ? `<b style="left:calc(${b}% - 1px)" title="version before: ${b}%"></b>` : ''}</div>` : '';
     const pg = ppct(res, c.key, c.tier); const pb = pv ? ppct(pv, c.key, c.tier) : null;
     const pl = pg != null ? `<div class="pg" title="right pangti: the screen is on the pangti being sung or read">pangti ${pg}%${pmark(pbasis(res, c.key, c.tier))}${chg(pg, pb, 'pct')}</div>` : '';
-    return `<td class="v">${v}%${chg(v, b, 'pct')}${bar}${pl}</td>`;
+    const pr = rowOf(tierRowsOf(res, c.tier), c.key); const star = pr && pr.partial ? `<sup class="ps" title="${esc(pr.note || 'partial')}">*</sup>` : '';
+    return `<td class="v">${v}%${star}${chg(v, b, 'pct')}${bar}${pl}</td>`;
   };
   LAG = LAG_SRC.find((src) => RESULTS.some((x) => src.get(x) != null)) || LAG_SRC[0];
   const scell = (res, c) => {

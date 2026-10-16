@@ -37,10 +37,20 @@ index 28e64ef..c9bd1ed 100644
        split: G.split(r), session: `${G.venue}-${r.video_id}`, truth_provenance: G.provenance(k, r), suite_jobs: `${G.suite}:${id}`,
        cache: 'no', cache_id: job.id, lines_n: 0, lines_source: 'none', shabads_n: truthRows.length,
 diff --git a/research/level2-dataset/tools/gab-publish.js b/research/level2-dataset/tools/gab-publish.js
-index b2f3a47..688a4df 100644
+index b2f3a47..68246bf 100644
 --- a/research/level2-dataset/tools/gab-publish.js
 +++ b/research/level2-dataset/tools/gab-publish.js
-@@ -109,7 +109,7 @@ function resultOf(card, hardCard, { name, status, note, order, base }, akhandCar
+@@ -76,6 +76,9 @@ function tierRows(card) {
+     if (r.mic) o.mic = Object.fromEntries(Object.entries(r.mic).map(([cls, m]) => [cls, m]));
+     const scope = r.level === 'set' ? (G.loadSets().sets.find((x) => x.key === r.key) || {}).folder : r.key;
+     const miss = scope ? cacheMiss.filter((n) => n.folder === scope || n.folder.startsWith(`${scope}/`)) : [];
++    // VF_PARTIAL=1 (owner, Oct 16): keep the numbers from the recordings that did replay, marked partial (the page shows
++    // them with an asterisk); the missing recordings need speech-model output only the machine that first recorded them can add
++    if (miss.length && process.env.VF_PARTIAL === '1') return { ...o, partial: miss.length, note: `partial: scored on ${o.clips} recordings; ${miss.length} more need speech-model output not recorded yet` };
+     if (miss.length) return { key: r.key, level: r.level, title: r.title, clips: 0, incomplete: miss.length, note: `incomplete: ${miss.length} clips need speech-model windows that are not in the cache yet (gab fill), so this build has no comparable number here` };
+     return o;
+   });
+@@ -109,7 +112,7 @@ function resultOf(card, hardCard, { name, status, note, order, base }, akhandCar
  // one tier of a result as a scorecard for G.compare (main: res.rows; hard: res.hard.rows)
  const part = (res, set) => (set === 'main' ? res : res[set]);
  const asCard = (res, set = 'main') => ({ set, build: { name: res.name, commit: res.commit }, manifest: { sha: part(res, set).manifest }, tier: part(res, set).tier, split: part(res, set).split, rows: part(res, set).rows });
@@ -49,7 +59,7 @@ index b2f3a47..688a4df 100644
  function verdicts(all) {
    for (const set of ['main', 'hard', 'akhand']) verdictsFor(all.filter((r) => part(r, set)), set);
    return all;
-@@ -159,7 +159,7 @@ function section(entries) {
+@@ -159,7 +162,7 @@ function section(entries) {
      { t: 'Bani sung: right Bani', v: (e) => get(e.rows, '3-bani-sung-like-kirtan', 'right_shabad_pct'), u: '%', dir: 1 },
      { t: 'Bani sung: wrong Bani (s per hour)', v: (e) => get(e.rows, '3-bani-sung-like-kirtan', 'wrong_s_per_h'), u: '', dir: -1 },
      { t: 'GAB-Hard kirtan: right Shabad', v: (e) => (e.hard ? get(e.hard.rows, '1-kirtan-shabad', 'right_shabad_pct') : null), u: '%', dir: 1 },
@@ -58,7 +68,7 @@ index b2f3a47..688a4df 100644
    ];
    const rel = entries.filter((e) => kindOf(e) !== 'experiment');
    const exp = entries.filter((e) => kindOf(e) === 'experiment');
-@@ -193,7 +193,7 @@ function section(entries) {
+@@ -193,7 +196,7 @@ function section(entries) {
      '🟢 best · 🟡 in between · 🔴 worst, compared with the other versions in the same column. Higher % is better; fewer wrong-Shabad seconds is better.', '',
      '### Versions', '', head, sep, ...relRows, '',
      ...(expRows.length ? ['### Ideas being tested (not in the app)', '', 'Each idea is compared with the version it was built from: 🟢 better, 🔴 worse, ➖ same.', '', head, sep, ...expRows, ''] : []),
@@ -67,7 +77,7 @@ index b2f3a47..688a4df 100644
      '<details><summary>Exact code tested (commit ids)</summary>', '', ...commits, '', '</details>', '', END].join('\n');
  }
  
-@@ -204,8 +204,10 @@ from huggingface_hub import HfApi, CommitOperationAdd, CommitOperationDelete
+@@ -204,8 +207,10 @@ from huggingface_hub import HfApi, CommitOperationAdd, CommitOperationDelete
  api = HfApi(token=os.environ['HF_TOKEN'])
  repo, typ, msg, s = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
  ops = [CommitOperationAdd(dst, os.path.join(s, src)) if src else CommitOperationDelete(dst) for dst, src in json.load(open(os.path.join(s, 'ops.json')))]
@@ -93,6 +103,27 @@ index eb0129b..0db1030 100644
  const THIN = 3;
  const r1 = (x) => (x == null || Number.isNaN(x) ? null : +x.toFixed(1));
  const r2 = (x) => (x == null || Number.isNaN(x) ? null : +x.toFixed(2));
+diff --git a/research/level2-dataset/tools/gab-space/gab-names.json b/research/level2-dataset/tools/gab-space/gab-names.json
+index c0da80c..f54ea76 100644
+--- a/research/level2-dataset/tools/gab-space/gab-names.json
++++ b/research/level2-dataset/tools/gab-space/gab-names.json
+@@ -104,6 +104,14 @@
+     "New behaviour",
+     "Speed"
+    ]
++  },
++  "1271040c": {
++   "label": "9.0.5 · gate fix (fork only, did not hold on the test split)",
++   "kind": "experiment"
++  },
++  "32282957": {
++   "label": "9.0.6 · near-twin hold + Aarti profile 1 (candidate)",
++   "kind": "experiment"
+   }
+  }
+-}
++}
+\ No newline at end of file
 diff --git a/research/level2-dataset/tools/gab.js b/research/level2-dataset/tools/gab.js
 index 6e57021..c2069b4 100644
 --- a/research/level2-dataset/tools/gab.js
