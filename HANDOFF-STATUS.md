@@ -225,6 +225,11 @@ Shabad, Bani, Ang (never "page"); never split a Gurbani word. Code still has a G
 engine/shabadVerify.js: rename it (UNMATCHED) in the next change that touches that file (renaming now would change the
 app tree and break the VM's cached replays mid-fill).
 
+**Generalise, don't overfit (owner, Oct 16):** every gain must carry to future, unseen recordings. Tune only on the
+practice (dev) split; the test split is held back and checked before a release; prefer changes that help many venues
+over settings that fit a few recordings (GAB-Akhand is mostly two smagams; the weak recordings are all one video).
+**Keep working (owner, Oct 16):** never stop or pause because of a new message from the owner; stop only when told to.
+
 **Owner's trade-off rule (Oct 16):** never push one track at the cost of another; everything should rise together. On
 any trade-off P0 beats P1 beats P2, and normal Kirtan comes first of all. Akhand Kirtan (P1) is model-limited: push it as
 far as logic allows without touching other tracks, then report what a model change would take.
