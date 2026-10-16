@@ -3085,7 +3085,11 @@ const VoiceFollow = () => {
           const copies = tied.every(
             (candidate) => candidate === tied[0] || knownSame(tied[0].shabadId, candidate.shabadId),
           );
-          if (!copies) {
+          // A near (not exact) tie that includes the Shabad on screen is a real switch starting, not twins:
+          // holding it only keeps the old Shabad up a few seconds longer (GAB test split, Renton rn45 / rn47).
+          const exact = tied.every((candidate) => Math.abs(candidate.score - tied[0].score) < 1e-9);
+          const nearWithCurrent = !exact && tied.some((candidate) => candidate.shabadId === curId);
+          if (!copies && !nearWithCurrent) {
             tied.forEach((candidate) => {
               tiedLeaderIds.add(candidate.shabadId);
               bsWinsRef.current.delete(candidate.shabadId);
