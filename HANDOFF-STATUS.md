@@ -219,6 +219,10 @@ Every session works against these, in this order. Numbers = GAB v1.3 practice, 9
 | P1 | Akhand Kirtan | right Shabad and right pangti 85% | 78.2% / 76%; stack (V6 + local scoring + verifier top 6 / bar 40, tree 1f2723dba122) 81.0% / 76.7%, wrong +4.8 s/h, main + Fremont guardrail running |
 | P2 | Fremont hall, laptop mic | no goal (sangat will sit closer with a mixer mic; Fremont mainly trains another model); nice to keep improving | 52.8% / 47.7% |
 
+**Owner's trade-off rule (Oct 16):** never push one track at the cost of another; everything should rise together. On
+any trade-off P0 beats P1 beats P2, and normal Kirtan comes first of all. Akhand Kirtan (P1) is model-limited: push it as
+far as logic allows without touching other tracks, then report what a model change would take.
+
 Guardrails: main GAB behaviours never regress (right Shabad, right pangti, wrong-Shabad s/h, behind); GAB-Hard only
 against a big regression. Standing instruction: don't ask, just do; report what was done.
 
