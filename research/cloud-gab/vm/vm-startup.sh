@@ -24,7 +24,7 @@ echo "keys read from Secret Manager"
 shutdown -P +360 "cg-job 6 h limit" >/dev/null 2>&1 || true
 # node 22
 if ! /opt/node/bin/node -v 2>/dev/null | grep -q '^v22'; then
-  apt-get install -y -qq git curl ffmpeg xz-utils >/dev/null 2>&1
+  apt-get install -y -qq git curl ffmpeg xz-utils unzip build-essential python3 >/dev/null 2>&1
   curl -sfL https://nodejs.org/dist/v22.22.0/node-v22.22.0-linux-x64.tar.xz | tar -xJ -C /opt && rm -rf /opt/node && mv /opt/node-v22.22.0-linux-x64 /opt/node
 fi
 export PATH=/opt/node/bin:$PATH
