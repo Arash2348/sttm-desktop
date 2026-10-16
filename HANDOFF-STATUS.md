@@ -198,6 +198,14 @@ model passes, so it replays from the cache except where it changes later windows
 > 3. Check the log ends with "fill-x86 done" and "pushed to Azure bench-cache", then STOP the VM.
 > 4. Tell the cloud session; it scores GAB-Akhand for the three builds from the shared cache in seconds.
 
+## Owner's standing instruction (Oct 16 2026)
+
+"Don't ask me, just do things." Every session working on this: do not stop to ask the owner for OKs, choices or
+confirmations; pick the sensible option, do it, and report what was done. Ask only when a step is impossible without
+the owner (a key or account only they hold, or a platform safety check that needs their approval typed in that
+session), and then give the exact one-line step. The hard rules above (keys, no deletes in Azure, no AWS, budget,
+Gurbani wording) still hold.
+
 ## Open questions for the owner
 
 1. Add `HF_TOKEN` and `VF_AZURE_SAS` to this cloud environment's settings (environment menu in the session's
