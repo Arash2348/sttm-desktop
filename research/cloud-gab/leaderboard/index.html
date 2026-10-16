@@ -102,6 +102,16 @@ td.v .pg { margin-top: 3px; font-size: 11.5px; color: var(--muted); font-variant
 td.v .pg .ch { font-size: 9.5px; }
 .ap { margin-left: 2px; color: var(--muted); cursor: help; }
 .sd td:first-child { min-width: 170px; }
+/* big picture: one version across every situation */
+.bigbar { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; padding: 10px 12px; border-bottom: 1px solid var(--line); font-size: 14px; font-weight: 600; }
+.bigbar .note { font-weight: 400; color: var(--muted); font-size: 12px; }
+select { font: inherit; font-size: 13px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px; }
+.tools { color: var(--muted); font-size: 13px; margin: 16px 0 6px; }
+.tools b { color: var(--ink); }
+#big td.k1 { box-shadow: inset 3px 0 0 var(--c); font-weight: 600; }
+#big td { white-space: nowrap; }
+#big td .u { display: block; font-weight: 400; font-size: 11px; color: var(--muted); }
+#big td.none { color: var(--muted); font-size: 12px; text-align: left; }
 @media (max-width: 560px) {
   .page { padding: 16px 12px; }
   th, td { padding: 8px 6px; }
@@ -112,6 +122,7 @@ td.v .pg .ch { font-size: 9.5px; }
   /* phone: the table scrolls inside its box; spine and name stay put */
   .box { overflow-x: auto; }
   #board { min-width: 760px; }
+  #big { min-width: 760px; }
   td.tl, th.tl { position: sticky; left: 0; z-index: 2; background: var(--panel); min-width: 30px; width: 30px; }
   tbody tr.ver td.nm, thead th.vh { position: sticky; left: 30px; z-index: 2; background: var(--panel); min-width: 120px; max-width: 130px; white-space: normal; box-shadow: 1px 0 0 var(--line); }
   tr.now td.tl, tr.now td.nm { background: color-mix(in srgb, var(--app-dot) 4%, var(--panel)); }
@@ -125,6 +136,8 @@ td.v .pg .ch { font-size: 9.5px; }
 <div class="page">
   <h1>GAB: Gurbani Autopilot Bench</h1>
   <p class="sub">Each cell: <b>right Shabad</b> (the right Shabad or Bani on screen) and, below it, <b>right pangti</b> (the very pangti being sung or read) · ≈ pangti keys from two-model alignment, spot-checked by a person; otherwise keyed by a person · ▲▼ change vs the version before, shown only beyond noise · tap a version for what went into it</p>
+  <div class="box big"><div class="bigbar"><span>Big picture</span><select id="bigsel" aria-label="version shown in the big picture"></select><span class="note">one version across every situation · hours of recordings behind each number · worst 10% = the slowest tenth</span></div><table id="big"></table></div>
+  <p class="tools"><b>Every version</b> · right Shabad % per version, oldest at the bottom</p>
   <div class="box"><table id="board"></table></div>
 </div>
 <script>
@@ -137,6 +150,44 @@ const HEAD = [
   // GAB-Akhand Kirtan (its own tier: smagam kirtan, many singers, sangat singing along); kirtan rows of res.akhand
   { t: 'Akhand Kirtan', key: '5-akhand-kirtan', tier: 'akhand', col: '--a' },
 ];
+// ---- big picture: one version across every situation, six numbers each (hours, right Shabad, right pangti, behind
+// the singer p50 / p90, wrong Shabad s/h, time to find p50 / p90); the table below it is unchanged
+const SIT = [
+  { t: 'Kirtan', sub: 'everyday Gurdwara', key: '1-kirtan-shabad', col: '--k' },
+  { t: 'Paath', sub: 'Bani read aloud', key: '2-bani-recited', col: '--p' },
+  { t: 'Aarti and sung Bani', sub: 'Bani sung like kirtan', key: '3-bani-sung-like-kirtan', col: '--s' },
+  { t: 'Akhand Paath', sub: 'Ang after Ang', key: '4-akhand-paath', col: '--p', none: 'not scored yet: no Akhand Paath recording is in the practice set GAB scores, and none has a replay runner yet' },
+  { t: 'Kirtan, laptop mic', sub: 'Fremont hall (GAB-Hard)', key: '1-kirtan-shabad', tier: 'hard', col: '--k' },
+  { t: 'Akhand Kirtan', sub: 'smagam, many singers', key: '5-akhand-kirtan', tier: 'akhand', col: '--a' },
+];
+const num = (x) => (x == null || x === '' ? null : Number(x));
+const BIG_N = 6;
+const BIG_TH = '<th>Hours<span class="u">recordings</span></th><th>Right Shabad</th><th>Right pangti</th><th>Behind the singer<span class="u">typical / worst 10%, s</span></th><th>Wrong Shabad<span class="u">seconds per hour</span></th><th>Time to find<span class="u">typical / worst 10%, s</span></th>';
+function bigCells(r, p, none) {
+  if (r && r.incomplete) return `<td class="none" colspan="${BIG_N}" title="${esc(r.note || '')}">${typeof r.incomplete === 'number' ? `not scored: ${r.incomplete} recording${r.incomplete > 1 ? 's need' : ' needs'} speech-model output this version asks for, not saved yet` : 'not scored yet'}</td>`;
+  if (!has(r)) return `<td class="none" colspan="${BIG_N}">${esc(none || 'no recordings yet')}</td>`;
+  const g = (k) => num(r[k]); const pg = (k) => (p && has(p) ? num(p[k]) : null);
+  const mk = pmark(r.pangti_basis);
+  const two = (a, b, kind) => `${g(a)}${g(b) != null ? ` / ${g(b)}` : ''} s${chg(g(a), pg(a), kind)}`;
+  const nf = g('not_found');
+  return `<td>${g('hours') != null ? `${g('hours')} h` : '–'}<span class="u">${g('clips')} recording${g('clips') === 1 ? '' : 's'}</span></td>`
+    + `<td>${g('right_shabad_pct')}%${chg(g('right_shabad_pct'), pg('right_shabad_pct'), 'pct')}</td>`
+    + `<td>${g('pangti_pct') != null ? `${g('pangti_pct')}%${mk}${chg(g('pangti_pct'), pg('pangti_pct'), 'pct')}` : '–'}</td>`
+    + `<td>${g('behind_p50_s') != null ? `${two('behind_p50_s', 'behind_p90_s', 'sec')}${mk}` : '–'}</td>`
+    + `<td>${g('wrong_s_per_h') != null ? `${g('wrong_s_per_h')}${chg(g('wrong_s_per_h'), pg('wrong_s_per_h'), 'wrong')}` : '–'}</td>`
+    + `<td>${g('find_p50_s') != null ? two('find_p50_s', 'find_p90_s', 'sec') : '–'}${nf ? `<span class="u" title="recordings whose first Shabad or Bani never reached the screen (a later one in the same recording may have)">${nf} of ${g('find_n')} starts missed</span>` : ''}</td>`;
+}
+function sitRow(res, s) {
+  if (s.tier && !res[s.tier]) return { incomplete: true };
+  const rows = tierRowsOf(res, s.tier);
+  return rowOf(rows, s.key) || rows.find((x) => x.key === s.key && x.incomplete) || null;
+}
+let BIG_LIST = []; let BIG_CUR = null;
+function renderBig(res) {
+  const pv = PREV.get(res);
+  const body = SIT.map((s) => `<tr><td class="k1" style="--c: var(${s.col})">${esc(s.t)}<span class="u">${esc(s.sub)}</span></td>${bigCells(sitRow(res, s), pv ? sitRow(pv, s) : null, s.none)}</tr>`).join('');
+  document.getElementById('big').innerHTML = `<thead><tr><th>Situation</th>${BIG_TH}</tr></thead><tbody>${body}</tbody>`;
+}
 // the rows of one GAB tier of a result (main = res.rows; hard / akhand = res.hard.rows / res.akhand.rows)
 const tierRowsOf = (res, tier) => (!tier || tier === 'main' ? res.rows : (res[tier] || {}).rows) || [];
 // expanded view: a tree built from the scorecard rows (behaviour -> mic -> Bani -> mic type), no fixed list
@@ -311,6 +362,13 @@ function render() {
     return `<tr class="ver ${{ experiment: 'idea', 'older version': 'old' }[kindOf(res)] || ''}${isNow ? ' now' : ''}${i === rows.length - 1 ? ' lastver' : ''}" data-i="${i}" tabindex="0" aria-expanded="false">${tl()}${nameCell(g, isNow)}${HEAD.map((c) => cell(res, c)).join('')}${SPEED.map((c) => scell(res, c)).join('')}</tr><tr class="det" hidden>${tl('d')}<td colspan="${HEAD.length + SPEED.length + 1}">${detail(res)}</td></tr>`; }).join('');
   CUR_G = null;
   document.getElementById('board').innerHTML = `<thead><tr class="grp">${SPINE ? '<th class="tl"></th>' : ''}<th></th><th colspan="${HEAD.length}" class="g">Accuracy <span>right Shabad % · right pangti % below</span></th><th colspan="${SPEED.length}" class="g s">Speed <span>seconds, lower is better</span></th></tr><tr>${SPINE ? '<th class="tl"></th>' : ''}<th class="vh">Version</th>${HEAD.map((c) => `<th style="--c: var(${c.col || HCOL[c.key]})"${c.tier === 'akhand' ? ' title="GAB-Akhand Kirtan: smagam kirtan with many singers and the sangat singing along (its own tier)"' : ''}>${BARS ? '<span class="hdot"></span>' : ''}${c.t}</th>`).join('')}${SPEED.map((c) => `<th class="s${c.t === 'Lag' ? ' lag' : ''}" title="${esc(c.tip())}">${c.t}<span class="u">${esc(c.sub()).replace('\n', '<br>')}</span></th>`).join('')}</tr></thead><tbody>${body}</tbody>`;
+  // big picture: the version in the app now unless the reader picked another
+  BIG_LIST = rows.map((g) => ({ res: g.rep, name: kindOf(g.rep) === 'experiment' ? `Idea: ${String(g.rep.label || g.rep.name).split(' · ')[0]}` : `${SYSTEM.latin} ${g.ver}${g === nowG ? ' (in the app now)' : ''}` }));
+  const sel = document.getElementById('bigsel');
+  sel.innerHTML = BIG_LIST.map((x, i) => `<option value="${i}">${esc(x.name)}</option>`).join('');
+  let ci = BIG_LIST.findIndex((x) => x.res === BIG_CUR); if (ci < 0) ci = Math.max(0, BIG_LIST.findIndex((x) => nowG && x.res === nowG.rep));
+  sel.value = String(ci); BIG_CUR = (BIG_LIST[ci] || {}).res || null;
+  if (BIG_CUR) renderBig(BIG_CUR);
   const q = new URLSearchParams(location.search).get('open');
   if (q) document.querySelectorAll('tr.ver').forEach((tr) => { if (rows[tr.dataset.i] && rows[tr.dataset.i].builds.some((x) => String(x.commit).startsWith(q))) toggle(tr); });
 }
@@ -333,6 +391,7 @@ document.getElementById('board').addEventListener('click', (e) => {
   if (e.target.closest('tr.node')) { const t = e.target.closest('tr.node').querySelector('button.tw'); if (t) t.click(); return; }
   const tr = e.target.closest('tr.ver'); if (tr) toggle(tr);
 });
+document.getElementById('bigsel').addEventListener('change', (e) => { BIG_CUR = (BIG_LIST[Number(e.target.value)] || {}).res || null; if (BIG_CUR) renderBig(BIG_CUR); });
 document.getElementById('board').addEventListener('keydown', (e) => { const tr = e.target.closest('tr.ver'); if (tr && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); toggle(tr); } });
 (async () => {
   try { const N = await (await fetch('gab-names.json', { cache: 'no-store' })).json(); if (N.system) SYSTEM = N.system; TYPEOF = Object.fromEntries(Object.entries(N.builds || {}).filter(([, b]) => b.type).map(([c, b]) => [c, [].concat(b.type)])); WHY = Object.fromEntries(Object.entries(N.builds || {}).map(([c, b]) => [c, b.why || ''])); } catch (e) { /* fallback name */ }
