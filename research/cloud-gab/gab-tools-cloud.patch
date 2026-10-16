@@ -130,7 +130,7 @@ index bb2861c..1230fff 100644
    const s = (process.env.VF_AZURE_SAS || (() => {
      try { return fs.readFileSync(path.join(os.homedir(), '.vf-azure-sas'), 'utf8'); } catch (_) { return ''; }
 -  })()).trim().replace(/^\?/, '');
-+  })()).replace(/\s+/g, '').replace(/^['"]+|['"]+$/g, '').replace(/^[^?]*\?/, ''); // a pasted copy may carry spaces, quotes or the whole URL: keep the query only
++  })()).replace(/\s+/g, '').replace(/^['"]+|['"]+$/g, '').replace(/^[^?]*\?/, '').replace(/%$/, ''); // a pasted copy may carry spaces, quotes, the whole URL or zsh's end-of-line % mark: keep the query only
    if (!s) throw new Error('no SAS: set VF_AZURE_SAS or create ~/.vf-azure-sas (mode 600)');
 -  return s;
 +  return fixTimes(s);
