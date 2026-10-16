@@ -157,6 +157,12 @@ const AP_SEARCH_WIN_S = 10; // recognizer window while SEARCHING (matches standa
 // second raagi's stream but REGRESSED the primary 86-min stream (erroneous 13.2->14.9,
 // recall 85->83) and was ~a wash on the 9s stress stream — not voice-agnostic, so 4 stays.
 const AP_FOLLOW_WIN_S = 4; // recognizer window while FOLLOWING (fast switching)
+// Kirtan pangti hand-off (P0, GAB-Kirtan right pangti 87.9% -> 92%): the line follower moves to the next
+// pangti as soon as the END of its transcript (the last KIRTAN_TAIL_ADV letters, what is sung now) matches
+// the next pangti's start clearly better than the current pangti, instead of waiting for the next pangti to
+// outweigh the current one over the whole 4 s window (1-3 s late on 587 of 1,218 pangti changes in 9.0.4).
+// engine/follower.js tailAdv; 0 = off.
+const KIRTAN_TAIL_ADV = 0;
 const AP_REC_HOP_S = 0.5; // recognizer decode hop while in autopilot
 // Audio the engines have not consumed yet is a backlog: recognised text (and the screen)
 // is that far behind the room. On a computer that decodes slower than real time it
@@ -1711,7 +1717,7 @@ const VoiceFollow = () => {
             inputSr: sampleRate,
             baniId: sundarGutkaBaniId,
           })
-        : await engine.createFollower(verses, { inputSr: sampleRate });
+        : await engine.createFollower(verses, { inputSr: sampleRate, tailAdv: KIRTAN_TAIL_ADV });
       if (session !== sessionRef.current) return;
       followerRef.current = follower;
     } catch (e) {
@@ -2128,6 +2134,7 @@ const VoiceFollow = () => {
                 })
               : await engine.createFollower(profile.verses, {
                   inputSr: sampleRateRef.current,
+                  tailAdv: KIRTAN_TAIL_ADV,
                 });
         } catch (e) {
           if (session !== sessionRef.current) return;

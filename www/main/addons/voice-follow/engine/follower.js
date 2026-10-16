@@ -21,6 +21,13 @@ const DEFAULTS = {
   minHypJump: 8,
   // Decodes a 2..skipSpan-line skip must persist (default: same as dwellAdv).
   dwellSkip: null,
+  // Faster hand-off to the next line (tailAdv > 0, letters): the END of the window's transcript is what is
+  // being sung now. When its last tailAdv letters match the start of the next line (its first
+  // tailAdv + tailSlack letters) at tailGuard or better, and better than anything in the current line by
+  // tailMargin, on tailConfirm decodes in a row, the cursor moves on at once, without waiting for the next
+  // line to outweigh the current one over the whole window: at a 4 s window that wait is 1-3 s, GAB-Kirtan's
+  // largest pangti loss (9.0.4: 587 of 1,218 pangti changes caught 1-3 s late). 0 = off.
+  tailAdv: 0, tailSlack: 6, tailGuard: 0.75, tailMargin: 0.15, tailConfirm: 1,
 };
 
 function argmax(a) { let bi = 0, bv = -Infinity; for (let i = 0; i < a.length; i++) if (a[i] > bv) { bv = a[i]; bi = i; } return bi; }
@@ -58,6 +65,26 @@ class Follower {
     this.visited = new Set();
     this.wiLine = null;
     this.maxWi = -1;
+    this.tailLast = null;
+    this.tailHits = 0;
+  }
+
+  // tailAdv: does the end of this transcript say the NEXT line has begun? -> that line's index, else null
+  _tailNext(hyp) {
+    const c = this.c;
+    if (this.cur === null || c.tailAdv <= 0 || this.cur + 1 >= this.linesNorm.length || hyp.length < c.tailAdv) return null;
+    const next = this.cur + 1;
+    const tail = hyp.slice(-c.tailAdv);
+    const head = this.linesNorm[next].slice(0, c.tailAdv + c.tailSlack);
+    const tNext = head.length >= c.tailAdv ? partialRatio(tail, head) / 100 : 0;
+    const tCur = this.linesNorm[this.cur] ? partialRatio(tail, this.linesNorm[this.cur]) / 100 : 0;
+    if (tNext >= c.tailGuard && tNext - tCur >= c.tailMargin) {
+      this.tailHits = this.tailLast === next ? this.tailHits + 1 : 1;
+      this.tailLast = next;
+      return this.tailHits >= c.tailConfirm ? next : null;
+    }
+    this.tailHits = 0; this.tailLast = null;
+    return null;
   }
 
   _greedy(emis) { return this.infer.greedy(emis); }
@@ -220,7 +247,12 @@ class Follower {
     const top = this._viterbi(emis);
     if (c.onTrace) c.onTrace({ hyp, top, cur: this.cur, emisTop: emis[top], emisCur: this.cur == null ? null : emis[this.cur], scoreTop: this.score[top], scoreCur: this.cur == null ? null : this.score[this.cur], dwell: this.dwell, challenger: this.challenger });
 
-    if (this.cur === null) {
+    const tailNext = this._tailNext(hyp);
+    if (tailNext !== null) {
+      // the next line has begun: move now, and let it lead the line scores so the next decode does not flip back
+      this.score[tailNext] = Math.max(this.score[tailNext], this.score[this.cur] + c.margin);
+      this.cur = tailNext; this.challenger = null; this.dwell = 0; this.tailHits = 0; this.tailLast = null;
+    } else if (this.cur === null) {
       if (top === this.initCand) this.initCount += 1;
       else { this.initCand = top; this.initCount = 1; }
       if (this.initCount >= c.initConfirm) { this.cur = top; this.initCand = null; this.initCount = 0; }
