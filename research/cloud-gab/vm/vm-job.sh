@@ -43,6 +43,13 @@ mk v6-stack 42b8d7e SWITCH_COMMIT_SOLID=0 PROBATION_DECODES=0 AK_LOCAL_CTC=2 VER
 mk stack2 0452ce2 SWITCH_COMMIT_SOLID=0 PROBATION_DECODES=0 AK_LOCAL_CTC=2 VERIFY_LOCK=40 VERIFY_CANDS=6
 mk stack2-dry 0452ce2 SWITCH_COMMIT_SOLID=0 PROBATION_DECODES=0 AK_LOCAL_CTC=2 VERIFY_LOCK=40 VERIFY_CANDS=6 VERIFY_DRY=1
 mk stack2-wa 0452ce2 SWITCH_COMMIT_SOLID=0 PROBATION_DECODES=0
+# 9.0.4 lineage (branch exp-on-904): Aarti sung-follower profiles (P1 Sung Bani) and the Kirtan pre-arm profiles
+# (P0 lag); the cloud helpers for these were refused by the platform, so the VM records and scores them (cg-fill /
+# cg-score), main tier, against 9.0.4's own windows
+mk aarti1x 53220a0 AARTI_FOLLOW=1
+mk aarti2x 53220a0 AARTI_FOLLOW=2
+mk kf4 f6c8ab0 KIRTAN_FOLLOW=4
+mk kf5 f6c8ab0 KIRTAN_FOLLOW=5
 # owner (Oct 16): the Akhand verdict first: verifier builds + probation, Akhand (l3) only; Renton later for the keepers
 FILL="${FILL:-v6-prob v6-base3 v6-verify5 v6-vk3l10 v6-vk3l20 v6-vk6l40 v6-ctc v6-prob-ctc r904 window-align}"
 FSUITES="${FSUITES:-l3}"
