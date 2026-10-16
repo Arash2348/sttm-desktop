@@ -33,6 +33,7 @@ if [ -d sttm-desktop/.git ]; then git -C sttm-desktop fetch -q origin "$BRANCH" 
 else git clone -q --depth 200 -b "$BRANCH" https://github.com/Arash2348/sttm-desktop sttm-desktop; fi
 git -C sttm-desktop fetch -q --depth 200 origin '+refs/heads/*:refs/remotes/origin/*' || true
 cd sttm-desktop && echo "code $(git rev-parse --short HEAD)"
+FILL="$(get cg-fill || true)" FSUITES="$(get cg-suites || true)"; [ -n "$FILL" ] || unset FILL; [ -n "$FSUITES" ] || unset FSUITES; export FILL FSUITES
 bash research/cloud-gab/vm/vm-job.sh "$JOB" && echo "JOB DONE $JOB $(date -u +%FT%TZ)" || echo "JOB FAILED $JOB (exit $?) $(date -u +%FT%TZ)"
 echo "$JOB" > $DONE
 sync; sleep 5; poweroff

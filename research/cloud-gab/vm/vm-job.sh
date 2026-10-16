@@ -27,9 +27,15 @@ mk v6-ctc d71b304 SWITCH_COMMIT_SOLID=0 PROBATION_DECODES=0 AK_LOCAL_CTC=2
 mk v6-prob-ctc d71b304 SWITCH_COMMIT_SOLID=0 AK_LOCAL_CTC=2
 mk v6-base3 1fb64d8 SWITCH_COMMIT_SOLID=0 PROBATION_DECODES=0
 mk v6-verify5 2245c15 SWITCH_COMMIT_SOLID=0 PROBATION_DECODES=0 VERIFY_LOCK=40
+# verifier settings from the sweep (top 3 / top 6 candidates, lower bars)
+mk v6-vk3l10 2245c15 SWITCH_COMMIT_SOLID=0 PROBATION_DECODES=0 VERIFY_LOCK=10 VERIFY_CANDS=3
+mk v6-vk3l20 2245c15 SWITCH_COMMIT_SOLID=0 PROBATION_DECODES=0 VERIFY_LOCK=20 VERIFY_CANDS=3
+mk v6-vk6l40 2245c15 SWITCH_COMMIT_SOLID=0 PROBATION_DECODES=0 VERIFY_LOCK=40 VERIFY_CANDS=6
 mk r904 2802526
 mk window-align 122acab
-FILL="${FILL:-v6-prob v6-ctc v6-prob-ctc v6-base3 v6-verify5 r904 window-align}"
+# owner (Oct 16): the Akhand verdict first: verifier builds + probation, Akhand (l3) only; Renton later for the keepers
+FILL="${FILL:-v6-prob v6-base3 v6-verify5 v6-vk3l10 v6-vk3l20 v6-vk6l40 v6-ctc v6-prob-ctc r904 window-align}"
+FSUITES="${FSUITES:-l3}"
 
 push_cache() { # the grown linux-x64 entries to Azure bench-cache/, the replays to bench-results/
   node -e '
@@ -42,7 +48,7 @@ fill_x86() {
   cd "$TOOLS"
   # the x86 clips (practice + test), pulled from Azure with their provenance
   local ONLY
-  ONLY=$(node -e 'const {SUITES}=require("./vf-suites");const ids=[];for(const s of ["l3","rfinds"])for(const j of SUITES[s].jobs())ids.push(j.clip);console.log(ids.join(","))')
+  ONLY=$(node -e 'const {SUITES}=require("./vf-suites");const ids=[];for(const s of process.argv[1].split(","))for(const j of SUITES[s].jobs())ids.push(j.clip);console.log(ids.join(","))' "$FSUITES")
   node -e '
     const {SUITES}=require("./vf-suites");const r=require("./remote-cache");const {modelSha}=require("./emis-cache");
     const clips=[];for(const s of ["l3","rfinds"])for(const j of SUITES[s].jobs())clips.push({id:j.id,wav:j.wav});
@@ -50,7 +56,7 @@ fill_x86() {
   node "$REPO/research/cloud-gab/results-sync.js" pull
   for c in $FILL; do
     echo "fill: $c"
-    node vf-check.js --base $P/ak-v6 --cand $P/$c --suites l3,rfinds --only "$ONLY" --fill --no-pull --replay-only --jobs $(( NP > 8 ? NP / 2 : 4 )) --out /home/user/gab/fill-$c > /home/user/gab/fill-$c.log 2>&1; echo "fill $c exit $?"
+    node vf-check.js --base $P/ak-v6 --cand $P/$c --suites "$FSUITES" --only "$ONLY" --fill --no-pull --replay-only --jobs $(( NP > 8 ? NP / 2 : 4 )) --out /home/user/gab/fill-$c > /home/user/gab/fill-$c.log 2>&1; echo "fill $c exit $?"
     grep -E "REFUSED|recording|went past|replay-only|error" /home/user/gab/fill-$c.log | head -8
     push_cache
   done

@@ -206,6 +206,17 @@ the owner (a key or account only they hold, or a platform safety check that need
 session), and then give the exact one-line step. The hard rules above (keys, no deletes in Azure, no AWS, budget,
 Gurbani wording) still hold.
 
+## Owner's standing goals (Oct 16 2026)
+
+1. **Key objective: GAB-Akhand Kirtan above 85% right Shabad, with main GAB and GAB-Hard no worse.** Iterate
+   ruthlessly, fundamental method and design changes included (tracker: Key objectives).
+2. **"Make the cache exhaustive in everything we do, so future changes score lightning fast."** Whenever the VM is
+   up, use spare time to fill every window any candidate asks for, on every tier, and push it to Azure; prefer
+   fixed-grid (window-align) recordings so new app changes replay from the cache instead of coming back INCOMPLETE.
+   VM queue order (owner, Oct 16): the Shabad verifier builds and probation first, Akhand (l3) before Renton (rfinds,
+   only for builds worth the main-tier check); then window alignment's one full GAB re-record on the VM (~2-3 h,
+   ~$5; a second boot is fine under the $150 cap, 6 h self-stop per boot).
+
 ## Open questions for the owner
 
 1. Add `HF_TOKEN` and `VF_AZURE_SAS` to this cloud environment's settings (environment menu in the session's
