@@ -1,3 +1,76 @@
+diff --git a/research/level2-dataset/tools/folder-names.js b/research/level2-dataset/tools/folder-names.js
+index 304c564..c1e220d 100644
+--- a/research/level2-dataset/tools/folder-names.js
++++ b/research/level2-dataset/tools/folder-names.js
+@@ -4,7 +4,9 @@
+ //   2-bani-recited/<bani>        a Bani read aloud           (was 2-paath-bani/<bani>)
+ //   3-bani-sung-like-kirtan/<b>  a Bani sung like kirtan     (was 3-bani-sung/<bani>)
+ //   4-akhand-paath                                                              (unchanged)
++//   5-akhand-kirtan               Akhand Kirtan smagams: many singers, sangat singing along (Oct 16 2026, user's choice;
++//                                 these were in 1-kirtan-shabad; the GAB-Akhand tier rule still finds them by gurdwara)
+ const ALIASES = [[/^2-paath-bani(?=\/|$)/, '2-bani-recited'], [/^3-bani-sung(?=\/|$)/, '3-bani-sung-like-kirtan']];
+ const canonFolder = (f) => ALIASES.reduce((s, [re, to]) => s.replace(re, to), String(f || ''));
+-const TOP = ['1-kirtan-shabad', '2-bani-recited', '3-bani-sung-like-kirtan', '4-akhand-paath'];
++const TOP = ['1-kirtan-shabad', '2-bani-recited', '3-bani-sung-like-kirtan', '4-akhand-paath', '5-akhand-kirtan'];
+ module.exports = { canonFolder, TOP, ALIASES };
+diff --git a/research/level2-dataset/tools/gab-add-sheet-rows.js b/research/level2-dataset/tools/gab-add-sheet-rows.js
+index 28e64ef..c9bd1ed 100644
+--- a/research/level2-dataset/tools/gab-add-sheet-rows.js
++++ b/research/level2-dataset/tools/gab-add-sheet-rows.js
+@@ -7,7 +7,7 @@
+  *
+  *   node gab-add-sheet-rows.js [--out ~/personal/vf-benchmark] [--dry-run] [--x86 rn,yuba,l3clip] [--azure] [--hf]
+  *
+- * Writes <out>/1-kirtan-shabad/<id>/{audio.wav (APFS clone of the clip), shabads.csv, lines.csv (header only: no line
++ * Writes <out>/1-kirtan-shabad/<id>/ (Akhand Kirtan smagams: <out>/5-akhand-kirtan/<id>/){audio.wav (APFS clone of the clip), shabads.csv, lines.csv (header only: no line
+  * truth), meta.json} and APPENDS the rows to <out>/manifest.csv (existing rows are never changed; a re-run replaces
+  * only its own rows); --hf also appends them to the manifest on Hugging Face (downloaded, never overwritten) and
+  * uploads the clip folders. Truth per clip (Shabad level, human): the clip's own sheet row, plus the part of the previous
+@@ -108,7 +108,8 @@ for (const G of GROUPS) {
+     const x86 = X86.some((p) => id.startsWith(p));
+     const lead = truthRows.filter((t) => !t.own);
+     const meta = {
+-      id, content_folder: '1-kirtan-shabad', bani: null, bani_id: null, gurdwara: r.gurdwara, reader: null, acoustics: 'hall',
++      // Akhand Kirtan smagams get their own folder (user, Oct 16 2026); the GAB-Akhand tier rule decides
++      id, content_folder: require('./gab-score').tierOf({ gurdwara: r.gurdwara, notes: G.tags }) === 'akhand' ? '5-akhand-kirtan' : '1-kirtan-shabad', bani: null, bani_id: null, gurdwara: r.gurdwara, reader: null, acoustics: 'hall',
+       origin: r.link || `https://youtu.be/${r.video_id}?t=${r.start_s}`, source_file: path.basename(job.wav), duration_s: r2(dur),
+       split: G.split(r), session: `${G.venue}-${r.video_id}`, truth_provenance: G.provenance(k, r), suite_jobs: `${G.suite}:${id}`,
+       cache: 'no', cache_id: job.id, lines_n: 0, lines_source: 'none', shabads_n: truthRows.length,
+diff --git a/research/level2-dataset/tools/gab-publish.js b/research/level2-dataset/tools/gab-publish.js
+index b2f3a47..c519a41 100644
+--- a/research/level2-dataset/tools/gab-publish.js
++++ b/research/level2-dataset/tools/gab-publish.js
+@@ -109,7 +109,7 @@ function resultOf(card, hardCard, { name, status, note, order, base }, akhandCar
+ // one tier of a result as a scorecard for G.compare (main: res.rows; hard: res.hard.rows)
+ const part = (res, set) => (set === 'main' ? res : res[set]);
+ const asCard = (res, set = 'main') => ({ set, build: { name: res.name, commit: res.commit }, manifest: { sha: part(res, set).manifest }, tier: part(res, set).tier, split: part(res, set).split, rows: part(res, set).rows });
+-const TITLE = { '1-kirtan-shabad': 'Kirtan', '2-bani-recited': 'Bani recited', '3-bani-sung-like-kirtan': 'Bani sung', '4-akhand-paath': 'Akhand Paath' };
++const TITLE = { '1-kirtan-shabad': 'Kirtan', '2-bani-recited': 'Bani recited', '3-bani-sung-like-kirtan': 'Bani sung', '4-akhand-paath': 'Akhand Paath', '5-akhand-kirtan': 'Akhand Kirtan' };
+ function verdicts(all) {
+   for (const set of ['main', 'hard', 'akhand']) verdictsFor(all.filter((r) => part(r, set)), set);
+   return all;
+@@ -159,7 +159,7 @@ function section(entries) {
+     { t: 'Bani sung: right Bani', v: (e) => get(e.rows, '3-bani-sung-like-kirtan', 'right_shabad_pct'), u: '%', dir: 1 },
+     { t: 'Bani sung: wrong Bani (s per hour)', v: (e) => get(e.rows, '3-bani-sung-like-kirtan', 'wrong_s_per_h'), u: '', dir: -1 },
+     { t: 'GAB-Hard kirtan: right Shabad', v: (e) => (e.hard ? get(e.hard.rows, '1-kirtan-shabad', 'right_shabad_pct') : null), u: '%', dir: 1 },
+-    { t: 'Akhand Kirtan: right Shabad', v: (e) => (e.akhand ? get(e.akhand.rows, '1-kirtan-shabad', 'right_shabad_pct') : null), u: '%', dir: 1 },
++    { t: 'Akhand Kirtan: right Shabad', v: (e) => (e.akhand ? (get(e.akhand.rows, '5-akhand-kirtan', 'right_shabad_pct') ?? get(e.akhand.rows, '1-kirtan-shabad', 'right_shabad_pct')) : null), u: '%', dir: 1 },
+   ];
+   const rel = entries.filter((e) => kindOf(e) !== 'experiment');
+   const exp = entries.filter((e) => kindOf(e) === 'experiment');
+diff --git a/research/level2-dataset/tools/gab-score.js b/research/level2-dataset/tools/gab-score.js
+index eb0129b..0db1030 100644
+--- a/research/level2-dataset/tools/gab-score.js
++++ b/research/level2-dataset/tools/gab-score.js
+@@ -47,7 +47,7 @@ function tierOf(row, sets = loadSets()) {
+ const inTier = (row, tier, sets) => tier === 'all' || tierOf(row, sets) === tier;
+ const tierTitle = (tier, sets = loadSets()) => ((sets.tiers || {})[tier] || {}).title || tier;
+ const { TOP, canonFolder } = require('./folder-names');
+-const TOP_TITLE = { '1-kirtan-shabad': 'Kirtan of a Shabad', '2-bani-recited': 'Bani recited (paath)', '3-bani-sung-like-kirtan': 'Bani sung like kirtan', '4-akhand-paath': 'Akhand Paath (Ang after Ang)' };
++const TOP_TITLE = { '1-kirtan-shabad': 'Kirtan of a Shabad', '2-bani-recited': 'Bani recited (paath)', '3-bani-sung-like-kirtan': 'Bani sung like kirtan', '4-akhand-paath': 'Akhand Paath (Ang after Ang)', '5-akhand-kirtan': 'Akhand Kirtan (smagam, many singers)' };
+ const THIN = 3;
+ const r1 = (x) => (x == null || Number.isNaN(x) ? null : +x.toFixed(1));
+ const r2 = (x) => (x == null || Number.isNaN(x) ? null : +x.toFixed(2));
 diff --git a/research/level2-dataset/tools/gab.js b/research/level2-dataset/tools/gab.js
 index 6e57021..c2069b4 100644
 --- a/research/level2-dataset/tools/gab.js
@@ -43,7 +116,7 @@ index 6e57021..c2069b4 100644
    const todo = thorough ? uniq : uniq.filter((c) => !cachedLocally(c.id));
    if (!todo.length) return [];
 diff --git a/research/level2-dataset/tools/remote-cache.js b/research/level2-dataset/tools/remote-cache.js
-index bb2861c..607195a 100644
+index bb2861c..1230fff 100644
 --- a/research/level2-dataset/tools/remote-cache.js
 +++ b/research/level2-dataset/tools/remote-cache.js
 @@ -15,12 +15,15 @@ const crypto = require('crypto');

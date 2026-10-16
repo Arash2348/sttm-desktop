@@ -135,12 +135,12 @@ const HEAD = [
   { t: 'Paath', key: '2-bani-recited' },
   { t: 'Sung Bani', key: '3-bani-sung-like-kirtan' },
   // GAB-Akhand Kirtan (its own tier: smagam kirtan, many singers, sangat singing along); kirtan rows of res.akhand
-  { t: 'Akhand Kirtan', key: '1-kirtan-shabad', tier: 'akhand', col: '--a' },
+  { t: 'Akhand Kirtan', key: '5-akhand-kirtan', tier: 'akhand', col: '--a' },
 ];
 // the rows of one GAB tier of a result (main = res.rows; hard / akhand = res.hard.rows / res.akhand.rows)
 const tierRowsOf = (res, tier) => (!tier || tier === 'main' ? res.rows : (res[tier] || {}).rows) || [];
 // expanded view: a tree built from the scorecard rows (behaviour -> mic -> Bani -> mic type), no fixed list
-const BEH_NAME = { '1-kirtan-shabad': 'Kirtan', '2-bani-recited': 'Paath (recited Bani)', '3-bani-sung-like-kirtan': 'Aarti and sung Bani', '4-akhand-paath': 'Akhand Paath' };
+const BEH_NAME = { '1-kirtan-shabad': 'Kirtan', '2-bani-recited': 'Paath (recited Bani)', '3-bani-sung-like-kirtan': 'Aarti and sung Bani', '4-akhand-paath': 'Akhand Paath', '5-akhand-kirtan': 'Akhand Kirtan' };
 const BANI = { japji: 'Japji Sahib', jaap: 'Jaap Sahib', 'tav-prasad-savaiye': 'Tav Prasad Savaiye', chaupai: 'Chaupai Sahib', 'anand-40': 'Anand Sahib', anand: 'Anand Sahib', rehras: 'Rehras Sahib', sohila: 'Kirtan Sohila', sukhmani: 'Sukhmani Sahib', saloks: 'Saloks', aarti: 'Aarti', 'asa-di-vaar': 'Asa di Vaar' };
 const MIC = { 'mixer-feed': 'Mixer feed', 'room-mic': 'Room mic', studio: 'Studio', unknown: 'Mic not known' };
 // Nitnem order first, then anything new (alphabetical)
@@ -149,7 +149,8 @@ const ord = (slug) => { const i = ORDER.indexOf(slug); return i < 0 ? 99 : i; };
 const nice = (slug) => BANI[slug] || slug.replace(/-/g, ' ').replace(/^./, (c) => c.toUpperCase());
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const kindOf = (r) => r.kind || (r.status === 'merged' ? 'release' : 'experiment');
-const rowOf = (rows, key) => (rows || []).find((x) => x.key === key && x.clips) || null;
+// Akhand Kirtan has its own folder since Oct 16 2026 (5-akhand-kirtan); results scored before that keep it under 1-kirtan-shabad
+const rowOf = (rows, key) => (rows || []).find((x) => x.key === key && x.clips) || (key === '5-akhand-kirtan' ? rowOf(rows, '1-kirtan-shabad') : null);
 // pangti level: % of the time the screen is on the pangti being sung or read; '≈' marks keys made by aligning the audio
 // with two speech models (a person confirmed 20 of 20 random ones), plain = keys made by a person
 const ppct = (res, key, tier) => { const r = rowOf(tierRowsOf(res, tier), key); return r && r.pangti_pct != null ? Number(r.pangti_pct) : null; };
@@ -248,7 +249,7 @@ function tree(res) {
 // GAB-Akhand Kirtan branch: its kirtan row, then one child per smagam set (AKJ Toronto, Manchester, ...)
 function akhandNode(res) {
   const rows = tierRowsOf(res, 'akhand');
-  const r = rows.find((x) => x.key === '1-kirtan-shabad');
+  const r = rows.find((x) => x.key === '5-akhand-kirtan') || rows.find((x) => x.key === '1-kirtan-shabad');
   if (!res.akhand) return [{ id: 'akhand', name: 'Akhand Kirtan', row: null, raw: { incomplete: true }, kids: [] }];
   const kids = rows.filter((x) => x.level === 'set' && has(x)).map((x) => ({ id: `akhand|${x.key}`, name: x.title.split(' (')[0], row: x, kids: [] }));
   return [{ id: 'akhand', name: 'Akhand Kirtan', row: r && (has(r) || r.incomplete) ? r : null, kids: has(r) ? kids : [] }];
