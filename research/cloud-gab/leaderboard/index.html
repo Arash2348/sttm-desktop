@@ -52,12 +52,12 @@ tr.det > td { padding: 0 12px 12px 26px; background: var(--sub); text-align: lef
 .sd .tw { display: inline-block; width: 16px; background: none; border: 0; padding: 0; color: var(--muted); font: inherit; font-size: 12px; cursor: pointer; text-align: left; }
 
 /* ---- timeline spine, content-colour bars, change-type chips ---- */
-:root { --k: #d9822b; --p: #3b7dd8; --s: #8a5cc7; --a: #2f9a7a; --spine: #cfcac0;
+:root { --k: #d9822b; --p: #3b7dd8; --s: #8a5cc7; --a: #2f9a7a; --ap: #1f8f9b; --spine: #cfcac0;
   --t-acc: #2f8f83; --t-spd: #3b7dd8; --t-pc: #b7791f; --t-ui: #8a5cc7; --t-inf: #7a7a72; --t-new: #c2507a; --app-dot: #1f5f8b; }
 
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --k: #e9a050; --p: #6aa0ec; --s: #ab86e0; --a: #5cc4a2; --spine: #4a4843; --app-dot: #9cc8ea;
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --k: #e9a050; --p: #6aa0ec; --s: #ab86e0; --a: #5cc4a2; --ap: #5fc3cc; --spine: #4a4843; --app-dot: #9cc8ea;
   --t-acc: #5cc3b5; --t-spd: #6aa0ec; --t-pc: #d9a24a; --t-ui: #ab86e0; --t-inf: #a3a39a; --t-new: #e07fa3; } }
-:root[data-theme="dark"] { --k: #e9a050; --p: #6aa0ec; --s: #ab86e0; --a: #5cc4a2; --spine: #4a4843; --app-dot: #9cc8ea;
+:root[data-theme="dark"] { --k: #e9a050; --p: #6aa0ec; --s: #ab86e0; --a: #5cc4a2; --ap: #5fc3cc; --spine: #4a4843; --app-dot: #9cc8ea;
   --t-acc: #5cc3b5; --t-spd: #6aa0ec; --t-pc: #d9a24a; --t-ui: #ab86e0; --t-inf: #a3a39a; --t-new: #e07fa3; }
 .ch { display: inline-block; border-radius: 999px; padding: 0 6px; line-height: 16px; font-size: 10.5px; vertical-align: 1px; }
 .ch.up { background: color-mix(in srgb, var(--better-ink) 14%, var(--panel)); } .ch.dn { background: color-mix(in srgb, var(--worse-ink) 14%, var(--panel)); }
@@ -147,6 +147,8 @@ const HEAD = [
   { t: 'Kirtan', key: '1-kirtan-shabad' },
   { t: 'Paath', key: '2-bani-recited' },
   { t: 'Sung Bani', key: '3-bani-sung-like-kirtan' },
+  // Akhand Paath (reading Ang after Ang): its own column since Oct 16 2026 (owner's P0); keys = publisher slides
+  { t: 'Akhand Paath', key: '4-akhand-paath', col: '--ap' },
   // GAB-Akhand Kirtan (its own tier: smagam kirtan, many singers, sangat singing along); kirtan rows of res.akhand
   { t: 'Akhand Kirtan', key: '5-akhand-kirtan', tier: 'akhand', col: '--a' },
 ];
@@ -156,7 +158,7 @@ const SIT = [
   { t: 'Kirtan', sub: 'everyday Gurdwara', key: '1-kirtan-shabad', col: '--k' },
   { t: 'Paath', sub: 'Bani read aloud', key: '2-bani-recited', col: '--p' },
   { t: 'Aarti and sung Bani', sub: 'Bani sung like kirtan', key: '3-bani-sung-like-kirtan', col: '--s' },
-  { t: 'Akhand Paath', sub: 'Ang after Ang', key: '4-akhand-paath', col: '--p', none: 'not scored yet: no Akhand Paath recording is in the practice set GAB scores, and none has a replay runner yet' },
+  { t: 'Akhand Paath', sub: 'Ang after Ang', key: '4-akhand-paath', col: '--ap', none: 'not scored yet: no Akhand Paath recording is in the practice set GAB scores, and none has a replay runner yet' },
   { t: 'Kirtan, laptop mic', sub: 'Fremont hall (GAB-Hard)', key: '1-kirtan-shabad', tier: 'hard', col: '--k' },
   { t: 'Akhand Kirtan', sub: 'smagam, many singers', key: '5-akhand-kirtan', tier: 'akhand', col: '--a' },
 ];
@@ -206,11 +208,13 @@ const rowOf = (rows, key) => (rows || []).find((x) => x.key === key && x.clips) 
 // with two speech models (a person confirmed 20 of 20 random ones), plain = keys made by a person
 const ppct = (res, key, tier) => { const r = rowOf(tierRowsOf(res, tier), key); return r && r.pangti_pct != null ? Number(r.pangti_pct) : null; };
 const pbasis = (res, key, tier) => { const r = rowOf(tierRowsOf(res, tier), key); return r ? r.pangti_basis : null; };
-const pmark = (basis) => (basis && basis !== 'human' ? '<span class="ap" title="pangti keys from two-model alignment, spot-checked by a person">≈</span>' : '');
+// ≈ only on keys made by aligning the audio with two models; keys made or frame-checked by a person (human,
+// publisher slides) carry no mark
+const pmark = (basis) => (basis && /^aligned/.test(String(basis)) ? '<span class="ap" title="pangti keys from two-model alignment, spot-checked by a person">≈</span>' : '');
 const pct = (res, key, tier) => { const r = rowOf(tierRowsOf(res, tier), key); return r && r.right_shabad_pct != null ? Number(r.right_shabad_pct) : null; };
 let RESULTS = []; let WHY = {};
 const TCOL = { Accuracy: '--t-acc', Speed: '--t-spd', 'Slow PCs': '--t-pc', 'Panel/UI': '--t-ui', Infrastructure: '--t-inf', 'New behaviour': '--t-new' };
-const HCOL = { '1-kirtan-shabad': '--k', '2-bani-recited': '--p', '3-bani-sung-like-kirtan': '--s' };
+const HCOL = { '1-kirtan-shabad': '--k', '2-bani-recited': '--p', '3-bani-sung-like-kirtan': '--s', '4-akhand-paath': '--ap' };
 let TYPEOF = {};
 const chipsOf = (res) => { const t = TYPEOF[String(res.commit).slice(0, 8)] || []; return t.length ? `<span class="chips">${t.map((x) => `<span class="chip" style="--c: var(${TCOL[x] || '--t-inf'})">${esc(x)}</span>`).join('')}</span>` : ''; };
 const SPINE = true; const CHIPS = true; const BARS = true;
