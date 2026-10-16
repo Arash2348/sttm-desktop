@@ -37,7 +37,7 @@ index 28e64ef..c9bd1ed 100644
        split: G.split(r), session: `${G.venue}-${r.video_id}`, truth_provenance: G.provenance(k, r), suite_jobs: `${G.suite}:${id}`,
        cache: 'no', cache_id: job.id, lines_n: 0, lines_source: 'none', shabads_n: truthRows.length,
 diff --git a/research/level2-dataset/tools/gab-publish.js b/research/level2-dataset/tools/gab-publish.js
-index b2f3a47..c519a41 100644
+index b2f3a47..688a4df 100644
 --- a/research/level2-dataset/tools/gab-publish.js
 +++ b/research/level2-dataset/tools/gab-publish.js
 @@ -109,7 +109,7 @@ function resultOf(card, hardCard, { name, status, note, order, base }, akhandCar
@@ -58,6 +58,28 @@ index b2f3a47..c519a41 100644
    ];
    const rel = entries.filter((e) => kindOf(e) !== 'experiment');
    const exp = entries.filter((e) => kindOf(e) === 'experiment');
+@@ -193,7 +193,7 @@ function section(entries) {
+     '🟢 best · 🟡 in between · 🔴 worst, compared with the other versions in the same column. Higher % is better; fewer wrong-Shabad seconds is better.', '',
+     '### Versions', '', head, sep, ...relRows, '',
+     ...(expRows.length ? ['### Ideas being tested (not in the app)', '', 'Each idea is compared with the version it was built from: 🟢 better, 🔴 worse, ➖ same.', '', head, sep, ...expRows, ''] : []),
+-    'Main GAB is everyday Gurdwara audio (livestream and mixer feeds, studio paath). GAB-Hard is the Fremont hall laptop-mic recordings, tracked apart. GAB-Akhand Kirtan is smagam kirtan (many singers, the sangat singing along, many instruments), tracked apart. Kirtan pangti numbers are not shown yet: main kirtan has no line-by-line answers.', '',
++    'Main GAB is everyday Gurdwara audio (livestream and mixer feeds, studio paath). GAB-Hard is the Fremont hall laptop-mic recordings, tracked apart. GAB-Akhand Kirtan is smagam kirtan (many singers, the sangat singing along, many instruments), tracked apart. Pangti numbers (right pangti %) are shown under each Shabad number on the leaderboard; outside GAB-Hard they rest on audited two-model aligned keys (a person confirmed 20 of 20 random ones).', '',
+     '<details><summary>Exact code tested (commit ids)</summary>', '', ...commits, '', '</details>', '', END].join('\n');
+ }
+ 
+@@ -204,8 +204,10 @@ from huggingface_hub import HfApi, CommitOperationAdd, CommitOperationDelete
+ api = HfApi(token=os.environ['HF_TOKEN'])
+ repo, typ, msg, s = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+ ops = [CommitOperationAdd(dst, os.path.join(s, src)) if src else CommitOperationDelete(dst) for dst, src in json.load(open(os.path.join(s, 'ops.json')))]
+-r = api.create_commit(repo_id=repo, repo_type=typ, operations=ops, commit_message=msg)
+-print('committed', len(ops), 'files to', repo, r.oid)
++# VF_HF_CREATE_PR=1: a token that may only open pull requests publishes as one PR per repo (a maintainer merges it)
++pr = os.environ.get('VF_HF_CREATE_PR') == '1'
++r = api.create_commit(repo_id=repo, repo_type=typ, operations=ops, commit_message=msg, create_pr=pr)
++print('opened PR' if pr else 'committed', len(ops), 'files to', repo, r.pr_url if pr else r.oid)
+ `;
+   fs.writeFileSync(path.join(S, 'push.py'), py);
+   fs.writeFileSync(path.join(S, 'ops.json'), JSON.stringify(ops));
 diff --git a/research/level2-dataset/tools/gab-score.js b/research/level2-dataset/tools/gab-score.js
 index eb0129b..0db1030 100644
 --- a/research/level2-dataset/tools/gab-score.js
@@ -116,7 +138,7 @@ index 6e57021..c2069b4 100644
    const todo = thorough ? uniq : uniq.filter((c) => !cachedLocally(c.id));
    if (!todo.length) return [];
 diff --git a/research/level2-dataset/tools/remote-cache.js b/research/level2-dataset/tools/remote-cache.js
-index bb2861c..1230fff 100644
+index bb2861c..1dda5f5 100644
 --- a/research/level2-dataset/tools/remote-cache.js
 +++ b/research/level2-dataset/tools/remote-cache.js
 @@ -15,12 +15,15 @@ const crypto = require('crypto');
