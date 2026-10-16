@@ -32,6 +32,9 @@ if [ ! -d "$TOOLS_WT" ]; then
   git -C "$TOOLS_WT" apply "$REPO/research/cloud-gab/gab-tools-cloud.patch"
 fi
 ln -sfn "$REPO/node_modules" "$TOOLS_WT/node_modules"
+# the leaderboard page lives on the fork (research/cloud-gab/leaderboard); gab publish ships tools/gab-space/index.html,
+# so keep that copy current or a publish puts the older page back (it did once, Oct 16)
+cp "$REPO/research/cloud-gab/leaderboard/index.html" "$TOOLS/gab-space/index.html"
 
 # 3. the Mac layout the tools expect, by symlink (no tool edits needed for paths)
 mkdir -p "$GAB"/{bench,clips,userdata} /root/personal/live-darbar-venues/cache "/root/Library/Application Support" /Users/asingh02/AAI/models/karansea-shabad-ctc
