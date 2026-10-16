@@ -33,6 +33,9 @@ mk v6-vk3l20 2245c15 SWITCH_COMMIT_SOLID=0 PROBATION_DECODES=0 VERIFY_LOCK=20 VE
 mk v6-vk6l40 2245c15 SWITCH_COMMIT_SOLID=0 PROBATION_DECODES=0 VERIFY_LOCK=40 VERIFY_CANDS=6
 mk r904 2802526
 mk window-align 122acab
+# P1 Akhand Kirtan stack (owner's keep rule: headline up, wrong-Shabad time not up): local pangti scoring + the
+# verifier at top 6 / bar 40, probation off, on the session branch (42b8d7e)
+mk v6-stack 42b8d7e SWITCH_COMMIT_SOLID=0 PROBATION_DECODES=0 AK_LOCAL_CTC=2 VERIFY_LOCK=40 VERIFY_CANDS=6
 # owner (Oct 16): the Akhand verdict first: verifier builds + probation, Akhand (l3) only; Renton later for the keepers
 FILL="${FILL:-v6-prob v6-base3 v6-verify5 v6-vk3l10 v6-vk3l20 v6-vk6l40 v6-ctc v6-prob-ctc r904 window-align}"
 FSUITES="${FSUITES:-l3}"
