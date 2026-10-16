@@ -65,6 +65,9 @@ mk cand906 02afebe NEAR_TWIN=0.03 AARTI_FOLLOW=1
 mk cand906b 747b9b7 NEAR_TWIN=0.03 AARTI_FOLLOW=1
 # P0 Kirtan lag: two-signal pre-arm (profile 6) on 9.0.4
 mk kf6 c803b53 KIRTAN_FOLLOW=6
+# P0 Kirtan lag: shorter line-follower window (3.0 s, 2.5 s) on 9.0.4
+mk kf7 7e5a23b KIRTAN_FOLLOW=7
+mk kf8 7e5a23b KIRTAN_FOLLOW=8
 # owner (Oct 16): the Akhand verdict first: verifier builds + probation, Akhand (l3) only; Renton later for the keepers
 FILL="${FILL:-v6-prob v6-base3 v6-verify5 v6-vk3l10 v6-vk3l20 v6-vk6l40 v6-ctc v6-prob-ctc r904 window-align}"
 FSUITES="${FSUITES:-l3}"
