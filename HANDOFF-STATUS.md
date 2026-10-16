@@ -219,6 +219,12 @@ Every session works against these, in this order. Numbers = GAB v1.3 practice, 9
 | P1 | Akhand Kirtan | right Shabad and right pangti 85% | 78.2% / 76%; stack (V6 + local scoring + verifier top 6 / bar 40, tree 1f2723dba122) 81.0% / 76.7%, wrong +4.8 s/h, main + Fremont guardrail running |
 | P2 | Fremont hall, laptop mic | no goal (sangat will sit closer with a mixer mic; Fremont mainly trains another model); nice to keep improving | 52.8% / 47.7% |
 
+**Wording (owner, Oct 16):** we are talking about Guru's Bani. Never call any of it, or anything the model hears, "garbage",
+"junk", "noise text" or similar; say "text that matches no pangti", "unmatched audio", "wrong letters". Gurbani, pangti,
+Shabad, Bani, Ang (never "page"); never split a Gurbani word. Code still has a GARBAGE constant in
+engine/shabadVerify.js: rename it (UNMATCHED) in the next change that touches that file (renaming now would change the
+app tree and break the VM's cached replays mid-fill).
+
 **Owner's trade-off rule (Oct 16):** never push one track at the cost of another; everything should rise together. On
 any trade-off P0 beats P1 beats P2, and normal Kirtan comes first of all. Akhand Kirtan (P1) is model-limited: push it as
 far as logic allows without touching other tracks, then report what a model change would take.
