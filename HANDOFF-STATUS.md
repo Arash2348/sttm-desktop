@@ -229,6 +229,7 @@ app tree and break the VM's cached replays mid-fill).
 practice (dev) split; the test split is held back and checked before a release; prefer changes that help many venues
 over settings that fit a few recordings (GAB-Akhand is mostly two smagams; the weak recordings are all one video).
 **Promote to experimental (owner, Oct 16):** a release goes to khalisfoundation experimental-release only when the owner is fully confident: nothing degraded on any track, on the practice split AND the held-back test split.
+**Listening checks (owner, Oct 16):** always give the owner short clips embedded in a page (the Smagam Listening Check artifact, https://claude.ai/artifact/8atyGsZgwPTiUwu85Gjtr5), cut at the exact moment, with the pangti shown; never only YouTube links.
 **Keep working (owner, Oct 16):** never stop or pause because of a new message from the owner; stop only when told to.
 
 **Owner's trade-off rule (Oct 16):** never push one track at the cost of another; everything should rise together. On
