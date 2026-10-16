@@ -36,6 +36,12 @@ const DEFAULTS = {
   // pangti (a repeat): revisitDwell = decodes a jump back to a rahao line or a line already sung must persist
   // (null = the far-jump dwell), and such a return needs no minHypJump letters.
   gateNear: false, revisitDwell: null,
+  // Next-pangti pre-arm (Kirtan P0, lag): 587 of the 1,218 pangti changes in main GAB showed 1-3 s late because
+  // the 4 s window still mostly holds the pangti just sung. Once the last armAt words of the current pangti have
+  // been heard (the word position the app already tracks), the NEXT pangti's prior gets armBonus instead of paying
+  // advCost, and the move to it needs no margin: it wins as soon as its words start to outweigh the old ones.
+  // armAt 0 = off.
+  armAt: 0, armBonus: 0.15,
 };
 
 function argmax(a) { let bi = 0, bv = -Infinity; for (let i = 0; i < a.length; i++) if (a[i] > bv) { bv = a[i]; bi = i; } return bi; }
@@ -201,10 +207,12 @@ class Follower {
     for (let l = 0; l < L; l++) prev[l] = this.score[l] * c.decay;
     let pmax = -Infinity; for (const v of prev) if (v > pmax) pmax = v;
     const jumpBase = pmax - c.jumpCost;
+    const armed = this._armed();
     const nw = new Float64Array(L);
     for (let l = 0; l < L; l++) {
       let best = prev[l];
       for (let d = 1; d <= c.skipSpan; d++) if (l - d >= 0) best = Math.max(best, prev[l - d] - c.advCost * d);
+      if (armed && l === this.cur + 1) best = Math.max(best, prev[this.cur] + c.armBonus);
       for (let d = 1; d <= c.backSpan; d++) if (l + d < L) best = Math.max(best, prev[l + d] - c.backCost * d);
       let j = jumpBase;
       if (this.isRahao[l]) j += c.rahaoBonus;
@@ -216,6 +224,13 @@ class Follower {
     for (let l = 0; l < L; l++) nw[l] -= nmax;
     this.score = nw;
     return argmax(nw);
+  }
+
+  // armAt: have the last armAt words of the current pangti been heard? (then the next pangti is pre-armed)
+  _armed() {
+    const c = this.c;
+    return c.armAt > 0 && this.cur !== null && this.wiLine === this.cur && this.cur + 1 < this.linesNorm.length
+      && this.maxWi >= 0 && this.maxWi >= (this.nwords[this.cur] || 0) - c.armAt;
   }
 
   _freeze(why, emis) {
@@ -288,7 +303,7 @@ class Follower {
     this.tailDbg = null;
     const tailNext = this._tailNext(hyp);
     if (c.onTrace && !this.tracedLines) { this.tracedLines = true; c.onTrace({ lines: this.linesNorm, verseIds: this.verseIds, nwords: this.nwords }); }
-    if (c.onTrace) c.onTrace({ hyp, top, tail: this.tailDbg, maxWi: this.maxWi, wiLine: this.wiLine, cur: this.cur, emisTop: emis[top], emisCur: this.cur == null ? null : emis[this.cur], scoreTop: this.score[top], scoreCur: this.cur == null ? null : this.score[this.cur], dwell: this.dwell, challenger: this.challenger, tailNext });
+    if (c.onTrace) c.onTrace({ hyp, top, tail: this.tailDbg, maxWi: this.maxWi, wiLine: this.wiLine, cur: this.cur, emisTop: emis[top], emisCur: this.cur == null ? null : emis[this.cur], scoreTop: this.score[top], scoreCur: this.cur == null ? null : this.score[this.cur], dwell: this.dwell, challenger: this.challenger, tailNext, armed: this._armed() });
 
     if (tailNext !== null) {
       // the next line has begun: move now, and let it lead the line scores so the next decode does not flip back
@@ -313,7 +328,8 @@ class Follower {
       else if (revisit) need = c.revisitDwell;
       else need = c.dwell;
       const evid = d === 1 || revisit || ((c.jumpEmisGap <= 0 || emis[top] - emis[this.cur] >= c.jumpEmisGap) && hyp.length >= c.minHypJump);
-      if (evid && this.dwell >= need && this.score[top] >= this.score[this.cur] + c.margin) {
+      const margin = d === 1 && this._armed() ? 0 : c.margin;
+      if (evid && this.dwell >= need && this.score[top] >= this.score[this.cur] + margin) {
         this.cur = top; this.challenger = null; this.dwell = 0;
       }
     }

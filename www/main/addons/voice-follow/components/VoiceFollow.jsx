@@ -171,6 +171,9 @@ const KIRTAN_PROFILES = [
   { gateNear: true },
   { gateNear: true, revisitDwell: 1 },
   { gateNear: true, revisitDwell: 1, dwellBack: 1, guard: 0.5 },
+  // 4, 5: profile 1 (kept: +0.4 right pangti main, +1.8 Akhand) + the next-pangti pre-arm for the 1-3 s lag
+  { gateNear: true, armAt: 1, armBonus: 0.15 },
+  { gateNear: true, armAt: 2, armBonus: 0.1 },
 ];
 const kirtanFollowOpts = () => ({ tailAdv: KIRTAN_TAIL_ADV, ...(KIRTAN_PROFILES[KIRTAN_FOLLOW] || {}) });
 const AP_REC_HOP_S = 0.5; // recognizer decode hop while in autopilot

@@ -75,3 +75,13 @@ test('revisitDwell: a return to the rahao pangti already sung needs one decode, 
   assert.strictEqual(slow[10], 3, 'recited: the first decode of the repeat still shows the last pangti');
   assert.strictEqual(fast[10], 0, 'revisitDwell 1: back on the rahao at once');
 });
+
+test('armAt: once the last word of the pangti is heard, the next pangti wins as soon as its words outweigh the old ones', async () => {
+  // A heard in full (last word reached), then a window where A still scores a little above B
+  const half = norm(A).slice(16) + norm(B).slice(0, 16); // A 0.58, B 0.43
+  const script = [nA, nA, nA, nA, half, half];
+  const off = await run(script, { marginGate: 0.3, gateNear: true });
+  const on = await run(script, { marginGate: 0.3, gateNear: true, armAt: 1, armBonus: 0.15 });
+  assert.strictEqual(off[5], 0, 'without the pre-arm the window still says A');
+  assert.strictEqual(on[4], 1, 'pre-armed: on B at the first window where B has begun');
+});
