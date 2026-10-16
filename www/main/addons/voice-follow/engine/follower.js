@@ -78,6 +78,7 @@ class Follower {
     const head = this.linesNorm[next].slice(0, c.tailAdv + c.tailSlack);
     const tNext = head.length >= c.tailAdv ? partialRatio(tail, head) / 100 : 0;
     const tCur = this.linesNorm[this.cur] ? partialRatio(tail, this.linesNorm[this.cur]) / 100 : 0;
+    this.tailDbg = { tNext, tCur }; // read by the bench's follower trace
     if (tNext >= c.tailGuard && tNext - tCur >= c.tailMargin) {
       this.tailHits = this.tailLast === next ? this.tailHits + 1 : 1;
       this.tailLast = next;
@@ -245,9 +246,11 @@ class Follower {
 
     this.miss = 0;
     const top = this._viterbi(emis);
-    if (c.onTrace) c.onTrace({ hyp, top, cur: this.cur, emisTop: emis[top], emisCur: this.cur == null ? null : emis[this.cur], scoreTop: this.score[top], scoreCur: this.cur == null ? null : this.score[this.cur], dwell: this.dwell, challenger: this.challenger });
-
+    this.tailDbg = null;
     const tailNext = this._tailNext(hyp);
+    if (c.onTrace && !this.tracedLines) { this.tracedLines = true; c.onTrace({ lines: this.linesNorm, verseIds: this.verseIds, nwords: this.nwords }); }
+    if (c.onTrace) c.onTrace({ hyp, top, tail: this.tailDbg, maxWi: this.maxWi, wiLine: this.wiLine, cur: this.cur, emisTop: emis[top], emisCur: this.cur == null ? null : emis[this.cur], scoreTop: this.score[top], scoreCur: this.cur == null ? null : this.score[this.cur], dwell: this.dwell, challenger: this.challenger, tailNext });
+
     if (tailNext !== null) {
       // the next line has begun: move now, and let it lead the line scores so the next decode does not flip back
       this.score[tailNext] = Math.max(this.score[tailNext], this.score[this.cur] + c.margin);
