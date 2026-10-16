@@ -360,6 +360,20 @@ const baniIdOf = (id) =>
 const PAATH_BANIS = [1000, 10, 2, 4, 6, 7, 9, 22]; // Anand 6, Anand, Japji, Jaap, Savaiye x2, Chaupai, Aarti
 const AARTI_BANI = 22;
 const AARTI_SHARED_BANIS = [21, 23]; // Rehras, Sohila
+// Aarti follows on the position follower with the recited-Bani profile, but it is sung, and a medley
+// whose pieces ragis take in their own order. GAB-Aarti 9.0.4 (research/cloud-gab/diag): 11.6 of the
+// missing 19 points are pangtis shown 10 s late or never; aa02's trace shows a 45 s stall at a jump
+// back of ~180 lines on slow held notes (the follower released, and a fresh lock needs a 0.6 match).
+// AARTI_FOLLOW picks a profile from AARTI_PROFILES (engine/follower2.js options); 0 = as 9.0.4.
+const AARTI_FOLLOW = 0;
+const AARTI_PROFILES = [
+  {},
+  // sung, like Asa di Vaar, plus cheaper far jumps and re-locks
+  { back: 8, backDwell: 2, backDwell1: 4, distCost: 0.01, skipGain: 3, noMatchHops: 48, jumpMargin: 0.1, jumpScore: 0.3, lockScore: 0.5, lockMargin: 0.1 },
+  // ...and quicker still: two windows confirm a jump or a lock, a smaller margin over other Gurbani
+  { back: 8, backDwell: 2, backDwell1: 4, distCost: 0.01, skipGain: 3, noMatchHops: 64, jumpMargin: 0.05, jumpScore: 0.25, jumpDwell: 2, lockScore: 0.45, lockMargin: 0.05, lockDwell: 2 },
+];
+const aartiFollowOpts = (baniId) => (Number(baniId) === AARTI_BANI ? AARTI_PROFILES[AARTI_FOLLOW] || {} : {});
 const PAATH_FAMILY = {
   1000: 'anand',
   10: 'anand',
@@ -1716,6 +1730,7 @@ const VoiceFollow = () => {
         ? await engine.createPaathFollower(verses, {
             inputSr: sampleRate,
             baniId: sundarGutkaBaniId,
+            ...aartiFollowOpts(sundarGutkaBaniId),
           })
         : await engine.createFollower(verses, { inputSr: sampleRate, tailAdv: KIRTAN_TAIL_ADV });
       if (session !== sessionRef.current) return;
@@ -2127,6 +2142,7 @@ const VoiceFollow = () => {
               ? await engine.createPaathFollower(profile.verses, {
                   inputSr: sampleRateRef.current,
                   baniId,
+                  ...aartiFollowOpts(baniId),
                   startLine: profile.verses.findIndex((v) => v.verseId === cand.verseId),
                   // A Bani opened from the Shabad line just locked starts there (opts.startAt:
                   // the paath-line and two-shabads-in-order rules).
