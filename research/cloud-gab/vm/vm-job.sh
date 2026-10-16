@@ -56,8 +56,13 @@ fill_x86() {
   node "$REPO/research/cloud-gab/results-sync.js" pull
   for c in $FILL; do
     echo "fill: $c"
-    node vf-check.js --base $P/ak-v6 --cand $P/$c --suites "$FSUITES" --only "$ONLY" --fill --no-pull --replay-only --jobs $(( NP > 8 ? NP / 2 : 4 )) --out /home/user/gab/fill-$c > /home/user/gab/fill-$c.log 2>&1; echo "fill $c exit $?"
-    grep -E "REFUSED|recording|went past|replay-only|error" /home/user/gab/fill-$c.log | head -8
+    # a lock at a new moment asks for windows past what one round recorded: fill until a round has no cache miss (max 5)
+    for round in 1 2 3 4 5; do
+      node vf-check.js --base $P/ak-v6 --cand $P/$c --suites "$FSUITES" --only "$ONLY" --fill --no-pull --replay-only --jobs $(( NP > 8 ? NP / 2 : 4 )) --out /home/user/gab/fill-$c > /home/user/gab/fill-$c.log 2>&1; echo "fill $c round $round exit $?"
+      grep -E "REFUSED|recording|went past|replay-only|error" /home/user/gab/fill-$c.log | head -8
+      grep -qE "replay-only: .* [1-9][0-9]* cache misses" /home/user/gab/fill-$c.log || break
+      grep -qE "REFUSED to record" /home/user/gab/fill-$c.log && ! grep -qE "recording [1-9]" /home/user/gab/fill-$c.log && break
+    done
     push_cache
   done
   echo "fill-x86 done"
