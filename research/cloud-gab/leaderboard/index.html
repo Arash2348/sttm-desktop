@@ -157,7 +157,7 @@ const HEAD = [
 const SIT = [
   { t: 'Kirtan', sub: 'everyday Gurdwara', key: '1-kirtan-shabad', col: '--k' },
   { t: 'Paath', sub: 'Bani read aloud', key: '2-bani-recited', col: '--p' },
-  { t: 'Aarti and sung Bani', sub: 'Bani sung like kirtan', key: '3-bani-sung-like-kirtan', col: '--s' },
+  { t: 'Sung Bani', sub: 'Aarti, Asa di Vaar, Rehras sung like kirtan', key: '3-bani-sung-like-kirtan', col: '--s' },
   { t: 'Akhand Paath', sub: 'Ang after Ang', key: '4-akhand-paath', col: '--ap', none: 'not scored yet: no Akhand Paath recording is in the practice set GAB scores, and none has a replay runner yet' },
   { t: 'Kirtan, laptop mic', sub: 'Fremont hall (GAB-Hard)', key: '1-kirtan-shabad', tier: 'hard', col: '--k' },
   { t: 'Akhand Kirtan', sub: 'smagam, many singers', key: '5-akhand-kirtan', tier: 'akhand', col: '--a' },
@@ -193,7 +193,7 @@ function renderBig(res) {
 // the rows of one GAB tier of a result (main = res.rows; hard / akhand = res.hard.rows / res.akhand.rows)
 const tierRowsOf = (res, tier) => (!tier || tier === 'main' ? res.rows : (res[tier] || {}).rows) || [];
 // expanded view: a tree built from the scorecard rows (behaviour -> mic -> Bani -> mic type), no fixed list
-const BEH_NAME = { '1-kirtan-shabad': 'Kirtan', '2-bani-recited': 'Paath (recited Bani)', '3-bani-sung-like-kirtan': 'Aarti and sung Bani', '4-akhand-paath': 'Akhand Paath', '5-akhand-kirtan': 'Akhand Kirtan' };
+const BEH_NAME = { '1-kirtan-shabad': 'Kirtan', '2-bani-recited': 'Paath (recited Bani)', '3-bani-sung-like-kirtan': 'Sung Bani', '4-akhand-paath': 'Akhand Paath', '5-akhand-kirtan': 'Akhand Kirtan' };
 const BANI = { japji: 'Japji Sahib', jaap: 'Jaap Sahib', 'tav-prasad-savaiye': 'Tav Prasad Savaiye', chaupai: 'Chaupai Sahib', 'anand-40': 'Anand Sahib', anand: 'Anand Sahib', rehras: 'Rehras Sahib', sohila: 'Kirtan Sohila', sukhmani: 'Sukhmani Sahib', saloks: 'Saloks', aarti: 'Aarti', 'asa-di-vaar': 'Asa di Vaar' };
 const MIC = { 'mixer-feed': 'Mixer feed', 'room-mic': 'Room mic', studio: 'Studio', unknown: 'Mic not known' };
 // Nitnem order first, then anything new (alphabetical)
