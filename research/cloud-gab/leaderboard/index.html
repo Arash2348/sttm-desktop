@@ -98,6 +98,10 @@ tr.now td { background: color-mix(in srgb, var(--app-dot) 4%, var(--panel)); }
 tr.idea .bar > i { background: repeating-linear-gradient(135deg, var(--c) 0 4px, color-mix(in srgb, var(--c) 45%, var(--panel)) 4px 7px); }
 th .hdot { display: inline-block; width: 9px; height: 9px; border-radius: 2px; background: var(--c); margin-right: 5px; vertical-align: 0; }
 .sd td.k1 { box-shadow: inset 3px 0 0 var(--c); }
+td.v .pg { margin-top: 3px; font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.v .pg .ch { font-size: 9.5px; }
+.ap { margin-left: 2px; color: var(--muted); cursor: help; }
+.sd td:first-child { min-width: 170px; }
 @media (max-width: 560px) {
   .page { padding: 16px 12px; }
   th, td { padding: 8px 6px; }
@@ -120,7 +124,7 @@ th .hdot { display: inline-block; width: 9px; height: 9px; border-radius: 2px; b
 <body>
 <div class="page">
   <h1>GAB: Gurbani Autopilot Bench</h1>
-  <p class="sub">▲▼ change vs the version before, shown only beyond noise · tap a version for what went into it</p>
+  <p class="sub">Each cell: <b>right Shabad</b> (the right Shabad or Bani on screen) and, below it, <b>right pangti</b> (the very pangti being sung or read) · ≈ pangti keys from two-model alignment, spot-checked by a person; otherwise keyed by a person · ▲▼ change vs the version before, shown only beyond noise · tap a version for what went into it</p>
   <div class="box"><table id="board"></table></div>
 </div>
 <script>
@@ -146,6 +150,11 @@ const nice = (slug) => BANI[slug] || slug.replace(/-/g, ' ').replace(/^./, (c) =
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const kindOf = (r) => r.kind || (r.status === 'merged' ? 'release' : 'experiment');
 const rowOf = (rows, key) => (rows || []).find((x) => x.key === key && x.clips) || null;
+// pangti level: % of the time the screen is on the pangti being sung or read; '≈' marks keys made by aligning the audio
+// with two speech models (a person confirmed 20 of 20 random ones), plain = keys made by a person
+const ppct = (res, key, tier) => { const r = rowOf(tierRowsOf(res, tier), key); return r && r.pangti_pct != null ? Number(r.pangti_pct) : null; };
+const pbasis = (res, key, tier) => { const r = rowOf(tierRowsOf(res, tier), key); return r ? r.pangti_basis : null; };
+const pmark = (basis) => (basis && basis !== 'human' ? '<span class="ap" title="pangti keys from two-model alignment, spot-checked by a person">≈</span>' : '');
 const pct = (res, key, tier) => { const r = rowOf(tierRowsOf(res, tier), key); return r && r.right_shabad_pct != null ? Number(r.right_shabad_pct) : null; };
 let RESULTS = []; let WHY = {};
 const TCOL = { Accuracy: '--t-acc', Speed: '--t-spd', 'Slow PCs': '--t-pc', 'Panel/UI': '--t-ui', Infrastructure: '--t-inf', 'New behaviour': '--t-new' };
@@ -246,11 +255,13 @@ function akhandNode(res) {
 }
 const walk = (nodes, f, d = 0) => nodes.forEach((n) => { f(n, d); walk(n.kids, f, d + 1); });
 function nodeCells(n, pn) {
-  if (n.row && n.row.incomplete) return `<td class="none" colspan="2" title="${esc(n.row.note || '')}">not scored: ${n.row.incomplete} recording${n.row.incomplete > 1 ? 's need' : ' needs'} speech-model output this version asks for, not saved yet</td>`;
-  if (!has(n.row)) return `<td class="none" colspan="3">${n.raw && n.raw.incomplete ? 'not scored yet' : 'no recordings yet'}</td>`;
+  if (n.row && n.row.incomplete) return `<td class="none" colspan="3" title="${esc(n.row.note || '')}">not scored: ${n.row.incomplete} recording${n.row.incomplete > 1 ? 's need' : ' needs'} speech-model output this version asks for, not saved yet</td>`;
+  if (!has(n.row)) return `<td class="none" colspan="4">${n.raw && n.raw.incomplete ? 'not scored yet' : 'no recordings yet'}</td>`;
   const r = Number(n.row.right_shabad_pct); const w = Number(n.row.wrong_s_per_h);
   const p = pn && has(pn.row) ? pn.row : null;
-  return `<td>${r}%${chg(r, p ? Number(p.right_shabad_pct) : null, 'pct')}</td><td>${w}${chg(w, p ? Number(p.wrong_s_per_h) : null, 'wrong')}</td><td class="spd">${esc(speedTxt(n.row)) || '–'}</td>`;
+  const pg = n.row.pangti_pct != null ? Number(n.row.pangti_pct) : null;
+  const pcell = `<td>${pg != null ? `${pg}%${pmark(n.row.pangti_basis)}${chg(pg, p && p.pangti_pct != null ? Number(p.pangti_pct) : null, 'pct')}` : '–'}</td>`;
+  return `<td>${r}%${chg(r, p ? Number(p.right_shabad_pct) : null, 'pct')}</td>${pcell}<td>${w}${chg(w, p ? Number(p.wrong_s_per_h) : null, 'wrong')}</td><td class="spd">${esc(speedTxt(n.row)) || '–'}</td>`;
 }
 function detail(res) {
   const out = []; const pv = PREV.get(res); const pnodes = {};
@@ -261,7 +272,7 @@ function detail(res) {
     const hc = HCOL[n.id.split('|')[0].split('/')[0]] || (n.id.split('|')[0] === 'akhand' ? '--a' : null);
     out.push(`<tr class="node"${kid} data-id="${esc(n.id)}"><td class="${hc ? 'k1' : ''}" style="padding-left:${6 + d * 16}px;${hc ? `--c: var(${hc})` : ''}">${open ? `<button type="button" class="tw" aria-expanded="false">▸</button>` : '<span class="tw"></span>'}${esc(n.name)}</td>${nodeCells(n, pnodes[n.id])}</tr>`);
   });
-  return `${CUR_G ? `<div class="items">${itemsHtml(CUR_G)}</div>` : ''}<table class="sd"><thead><tr><th></th><th>Right</th><th>Wrong (s/h)</th><th>Speed</th></tr></thead><tbody>${out.join('')}</tbody></table>`;
+  return `${CUR_G ? `<div class="items">${itemsHtml(CUR_G)}</div>` : ''}<table class="sd"><thead><tr><th></th><th>Right Shabad</th><th>Right pangti</th><th>Wrong (s/h)</th><th>Speed</th></tr></thead><tbody>${out.join('')}</tbody></table>`;
 }
 function render() {
   const byOrd = (a, b) => (a.order ?? -99) - (b.order ?? -99) || String(a.date).localeCompare(String(b.date));
@@ -284,7 +295,9 @@ function render() {
     const v = pct(res, c.key, c.tier); if (v == null) return '<td class="v" title="not scored yet">–</td>';
     const pv = PREV.get(res); const b = pv ? pct(pv, c.key, c.tier) : null;
     const bar = BARS ? `<div class="bar" style="--c: var(${c.col || HCOL[c.key]})"><i style="width:${v}%"></i>${b != null ? `<b style="left:calc(${b}% - 1px)" title="version before: ${b}%"></b>` : ''}</div>` : '';
-    return `<td class="v">${v}%${chg(v, b, 'pct')}${bar}</td>`;
+    const pg = ppct(res, c.key, c.tier); const pb = pv ? ppct(pv, c.key, c.tier) : null;
+    const pl = pg != null ? `<div class="pg" title="right pangti: the screen is on the pangti being sung or read">pangti ${pg}%${pmark(pbasis(res, c.key, c.tier))}${chg(pg, pb, 'pct')}</div>` : '';
+    return `<td class="v">${v}%${chg(v, b, 'pct')}${bar}${pl}</td>`;
   };
   LAG = LAG_SRC.find((src) => RESULTS.some((x) => src.get(x) != null)) || LAG_SRC[0];
   const scell = (res, c) => {
@@ -296,7 +309,7 @@ function render() {
   const body = rows.map((g, i) => { CUR_G = g; const res = g.rep; const isNow = g === nowG;
     return `<tr class="ver ${{ experiment: 'idea', 'older version': 'old' }[kindOf(res)] || ''}${isNow ? ' now' : ''}${i === rows.length - 1 ? ' lastver' : ''}" data-i="${i}" tabindex="0" aria-expanded="false">${tl()}${nameCell(g, isNow)}${HEAD.map((c) => cell(res, c)).join('')}${SPEED.map((c) => scell(res, c)).join('')}</tr><tr class="det" hidden>${tl('d')}<td colspan="${HEAD.length + SPEED.length + 1}">${detail(res)}</td></tr>`; }).join('');
   CUR_G = null;
-  document.getElementById('board').innerHTML = `<thead><tr class="grp">${SPINE ? '<th class="tl"></th>' : ''}<th></th><th colspan="${HEAD.length}" class="g">Accuracy <span>right %</span></th><th colspan="${SPEED.length}" class="g s">Speed <span>seconds, lower is better</span></th></tr><tr>${SPINE ? '<th class="tl"></th>' : ''}<th class="vh">Version</th>${HEAD.map((c) => `<th style="--c: var(${c.col || HCOL[c.key]})"${c.tier === 'akhand' ? ' title="GAB-Akhand Kirtan: smagam kirtan with many singers and the sangat singing along (its own tier)"' : ''}>${BARS ? '<span class="hdot"></span>' : ''}${c.t}</th>`).join('')}${SPEED.map((c) => `<th class="s${c.t === 'Lag' ? ' lag' : ''}" title="${esc(c.tip())}">${c.t}<span class="u">${esc(c.sub()).replace('\n', '<br>')}</span></th>`).join('')}</tr></thead><tbody>${body}</tbody>`;
+  document.getElementById('board').innerHTML = `<thead><tr class="grp">${SPINE ? '<th class="tl"></th>' : ''}<th></th><th colspan="${HEAD.length}" class="g">Accuracy <span>right Shabad % · right pangti % below</span></th><th colspan="${SPEED.length}" class="g s">Speed <span>seconds, lower is better</span></th></tr><tr>${SPINE ? '<th class="tl"></th>' : ''}<th class="vh">Version</th>${HEAD.map((c) => `<th style="--c: var(${c.col || HCOL[c.key]})"${c.tier === 'akhand' ? ' title="GAB-Akhand Kirtan: smagam kirtan with many singers and the sangat singing along (its own tier)"' : ''}>${BARS ? '<span class="hdot"></span>' : ''}${c.t}</th>`).join('')}${SPEED.map((c) => `<th class="s${c.t === 'Lag' ? ' lag' : ''}" title="${esc(c.tip())}">${c.t}<span class="u">${esc(c.sub()).replace('\n', '<br>')}</span></th>`).join('')}</tr></thead><tbody>${body}</tbody>`;
   const q = new URLSearchParams(location.search).get('open');
   if (q) document.querySelectorAll('tr.ver').forEach((tr) => { if (rows[tr.dataset.i] && rows[tr.dataset.i].builds.some((x) => String(x.commit).startsWith(q))) toggle(tr); });
 }
