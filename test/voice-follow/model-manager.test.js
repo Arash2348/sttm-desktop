@@ -4,10 +4,11 @@ const os = require('os');
 const vm = require('vm');
 const assert = require('node:assert/strict');
 const { test } = require('node:test');
+
 const file = path.resolve(__dirname, '../../www/main/addons/voice-follow/engine/model-manager.js');
 const bytes = 184311219;
 
-function fixture(t, type = 'renderer', fsOverride = {}) {
+function fixture(t, type = 'renderer', fsOverride = {}, envVars = undefined) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'vf-model-cache-test-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const profile = path.join(root, 'profile');
@@ -41,7 +42,7 @@ function fixture(t, type = 'renderer', fsOverride = {}) {
       return require(id);
     },
     mod,
-    { type, pid: process.pid },
+    { type, pid: process.pid, env: envVars },
   );
   // Sparse files check the existing size-based cache contract, not ONNX validity.
   function write(location, size = bytes) {
@@ -98,5 +99,37 @@ test('failed migration preserves the legacy file and removes its incomplete dest
   assert.equal(fs.existsSync(f.target), false);
   assert.ok(fs.existsSync(f.legacy));
   assert.deepEqual(fs.readdirSync(path.dirname(f.target)), []);
+  assert.equal(f.downloads(), 0);
+});
+
+test('the default speech model is the current one (Karanbir int8)', (t) => {
+  const f = fixture(t);
+  assert.equal(f.manager.modelId(), 'karanbir-int8');
+  assert.equal(f.manager.ASR_MODEL, 'karanbir-int8');
+  assert.equal(f.manager.MODEL_BYTES, bytes);
+});
+test('VF_ASR_MODEL picks another model by id, with its own file and size', async (t) => {
+  const f = fixture(t, 'renderer', {}, { VF_ASR_MODEL: 'surinder-v3-int8' });
+  assert.equal(f.manager.modelId(), 'surinder-v3-int8');
+  const target = path.join(path.dirname(f.target), 'surinder-pa-v3-kirtan.int8.onnx');
+  assert.equal(f.manager.modelPath(), target);
+  f.write(target, bytes); // wrong size: not ready, and not hosted yet, so no download is tried
+  await assert.rejects(f.manager.ensureModel(), /not hosted yet/);
+  assert.equal(f.downloads(), 0);
+  f.write(target, f.manager.MODELS['surinder-v3-int8'].bytes);
+  assert.equal(await f.manager.ensureModel(), target);
+});
+test('an unknown model id fails loudly', (t) => {
+  const f = fixture(t, 'renderer', {}, { VF_ASR_MODEL: 'nope' });
+  assert.throws(() => f.manager.modelPath(), /unknown speech model nope/);
+});
+test('VF_ASR_MODEL_PATH runs any file that exists, never downloads', async (t) => {
+  const f = fixture(
+    t,
+    'renderer',
+    {},
+    { VF_ASR_MODEL_PATH: path.join(os.tmpdir(), 'vf-no-such-model.onnx') },
+  );
+  await assert.rejects(f.manager.ensureModel(), /speech model not found/);
   assert.equal(f.downloads(), 0);
 });

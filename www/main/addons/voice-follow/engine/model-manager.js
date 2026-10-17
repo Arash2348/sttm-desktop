@@ -1,15 +1,65 @@
-// Downloads + caches the karansea CTC model so voice-follow needs zero user
-// setup. On first use we fetch the 184 MB int8 model from Hugging Face (public,
-// MIT) into the app's userData dir; subsequent runs use the cached copy.
+// Downloads + caches the speech model so voice-follow needs zero user setup. On first use we
+// fetch the model from Hugging Face into the app's userData dir; later runs use the cached copy.
+//
+// Model swap: every model below honours the app's one ONNX contract, so nothing else changes
+// when the model does (engine/infer.js, the followers, GAB's replay harness):
+//   inputs  audio [1, T] float32 16 kHz mono, audio_len [1] int64
+//   outputs log_probs [1, F, 257] (log-softmax; 40 ms frames), out_len [1] int64
+//   classes = the pa sentencepiece (256 pieces, engine/assets/vocab.js) + blank 256; the mel
+//   front-end is inside the graph.
+// Bhai Surinder Singh's IndicConformer pa-v3-kirtan (Apache-2.0) is exported to this contract by
+// research/model-swap/export_app_onnx.py (NeMo front-end from the .nemo config as a conv STFT, the
+// CTC head cut to the pa slice + blank, int8 = MatMul/Gemm weights only). Its tokenizer is
+// byte-identical to Karanbir's (sha256 63a2e8f1...), so vocab.js / pieces.js are shared.
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const os = require('os');
 
-const MODEL_FILE = 'model.int8.onnx';
-const MODEL_BYTES = 184311219; // known size; used to detect a truncated download
-const MODEL_URL =
-  'https://huggingface.co/karansea/indicconformer-stt-pa-ctc-shabad-preview/resolve/main/model.int8.onnx?download=true';
+const MODELS = {
+  // Karanbir Singh's karansea IndicConformer CTC, int8 (MIT): the model the app has always run.
+  'karanbir-int8': {
+    file: 'model.int8.onnx',
+    bytes: 184311219,
+    url: 'https://huggingface.co/karansea/indicconformer-stt-pa-ctc-shabad-preview/resolve/main/model.int8.onnx?download=true',
+  },
+  // Bhai Surinder Singh's indicconformer-pa-v3-kirtan, exported to the app contract.
+  // url: null until the export is hosted (owner's call); place the file in modelDir() to use it.
+  'surinder-v3-int8': {
+    file: 'surinder-pa-v3-kirtan.int8.onnx',
+    bytes: 187678637,
+    url: null,
+  },
+  'surinder-v3-fp32': {
+    file: 'surinder-pa-v3-kirtan.fp32.onnx',
+    bytes: 483094357,
+    url: null,
+  },
+};
+
+// Which speech model Voice Autopilot runs. Default = the current model (no behaviour change).
+// VF_ASR_MODEL=<id> (benchmarks, testers) overrides it; VF_ASR_MODEL_PATH=<file.onnx> runs any
+// file that honours the contract above (no size check, no download).
+const ASR_MODEL = 'karanbir-int8';
+
+function env(name) {
+  return (process.env && process.env[name]) || '';
+}
+
+function modelId() {
+  const id = env('VF_ASR_MODEL') || ASR_MODEL;
+  if (!MODELS[id])
+    throw new Error(`unknown speech model ${id} (known: ${Object.keys(MODELS).join(', ')})`);
+  return id;
+}
+
+function spec() {
+  return MODELS[modelId()];
+}
+
+const MODEL_FILE = MODELS[ASR_MODEL].file;
+const MODEL_BYTES = MODELS[ASR_MODEL].bytes; // known size; used to detect a truncated download
+const MODEL_URL = MODELS[ASR_MODEL].url;
 
 function modelDir() {
   // Lazy require so this module is usable outside Electron (tests).
@@ -27,22 +77,24 @@ function modelDir() {
 function bundledModelPath() {
   try {
     const res = process.resourcesPath;
-    return res ? path.join(res, 'voice-follow', MODEL_FILE) : null;
+    return res ? path.join(res, 'voice-follow', spec().file) : null;
   } catch (_) {
     return null;
   }
 }
 
 function modelPath() {
+  if (env('VF_ASR_MODEL_PATH')) return env('VF_ASR_MODEL_PATH');
   const bundled = bundledModelPath();
   // eslint-disable-next-line no-use-before-define
   if (bundled && isComplete(bundled)) return bundled;
-  return path.join(modelDir(), MODEL_FILE);
+  return path.join(modelDir(), spec().file);
 }
 
 function isComplete(file) {
   try {
-    return fs.statSync(file).size === MODEL_BYTES;
+    const { size } = fs.statSync(file);
+    return env('VF_ASR_MODEL_PATH') ? size > 0 : size === spec().bytes;
   } catch (_) {
     return false;
   }
@@ -104,10 +156,12 @@ function download(url, dest, onProgress, redirects = 0) {
 // Ensure the model exists locally; download it if missing. onProgress(0..1).
 async function ensureModel(onProgress) {
   if (isReady()) return modelPath();
+  if (env('VF_ASR_MODEL_PATH'))
+    throw new Error(`speech model not found: ${env('VF_ASR_MODEL_PATH')}`);
   fs.mkdirSync(modelDir(), { recursive: true });
   // Earlier renderer versions accidentally used the plain-Node temporary path.
   // Preserve that cache while copying it atomically into the persistent profile.
-  const legacy = path.join(os.tmpdir(), 'sttm', 'voice-follow', MODEL_FILE);
+  const legacy = path.join(os.tmpdir(), 'sttm', 'voice-follow', spec().file);
   const dest = modelPath();
   if (legacy !== dest && isComplete(legacy)) {
     const temporary = `${dest}.${process.pid}.migrate.part`;
@@ -125,11 +179,26 @@ async function ensureModel(onProgress) {
     }
     return dest;
   }
-  await download(MODEL_URL, modelPath(), (r, t) => {
+  if (!spec().url)
+    throw new Error(
+      `speech model ${modelId()} is not hosted yet: put ${spec().file} in ${modelDir()}`,
+    );
+  await download(spec().url, modelPath(), (r, t) => {
     if (onProgress) onProgress(r / t);
   });
   if (!isReady()) throw new Error('downloaded model is incomplete');
   return modelPath();
 }
 
-module.exports = { ensureModel, isReady, modelPath, modelDir, MODEL_URL };
+module.exports = {
+  ensureModel,
+  isReady,
+  modelPath,
+  modelDir,
+  modelId,
+  MODELS,
+  ASR_MODEL,
+  MODEL_FILE,
+  MODEL_BYTES,
+  MODEL_URL,
+};
