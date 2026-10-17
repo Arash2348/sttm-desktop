@@ -7,12 +7,20 @@
 // This shelf keeps what the sevadaar sees steady:
 //  - a card stays at least HOLD_MS after it last had support (a fresh score), fading for
 //    its last FADE_MS instead of popping out, and keeps its last % decaying slowly;
-//  - the cards keep their places: one moves above another only after it has been clearly
-//    ahead (OVERTAKE points) for OVERTAKE_MS; a new card joins at the bottom;
+//  - the cards are ordered by confidence, highest first, with a small hysteresis: a card
+//    moves above another only when it leads by more than SWAP points, so two cards about
+//    level never trade places back and forth;
 //  - up to MAX cards; when full, a newcomer takes a fading card's place, or the weakest
 //    card's after beating it clearly for OVERTAKE_MS, never a card listed < MIN_SHOW_MS ago;
-//  - everything clears when the Shabad on screen changes, or after SILENCE_MS without a
-//    confidently heard word.
+//  - the Shabad the judge is checking as a change ("Changing to") moves out of the list
+//    into its own card and stays there CHANGE_HOLD_MS after the judge lets go of it, so a
+//    one-decode wobble in its wins does not bounce it between the two places; it keeps
+//    its track meanwhile and comes back to the list as the same card;
+//  - a change of the Shabad on screen removes only that Shabad: the other cards stay and
+//    fade on their own timers (the list used to empty at every handover);
+//  - everything clears after SILENCE_MS without a confidently heard word.
+// Each card also carries `prog`: how close it is to being chosen (liveBoard.js), held and
+// decaying like its %, so its bar grows as the Shabad builds toward a switch.
 // Time is whatever `now` the caller passes (ms), so the shelf is deterministic in replay.
 
 const DEFAULTS = {
@@ -20,82 +28,115 @@ const DEFAULTS = {
   holdMs: 8000, // on screen at least this long after its last fresh score
   fadeMs: 3000, // the last part of the hold is shown fading
   silenceMs: 15000, // no confident word for this long: the list empties
-  overtake: 0.05, // a card must lead the one above by this much ...
-  overtakeMs: 2000, // ... for this long to move above it
+  swap: 0.01, // ordered by %: a card moves above another only when ahead by more than this
+  overtake: 0.05, // full list: a newcomer must beat the weakest card by this much ...
+  overtakeMs: 2000, // ... for this long to take its place
   minShowMs: 4000, // a listed card is never replaced by a newcomer before this long
   halfLifeMs: 8000, // a card without new scores keeps its last %, halving over this long
+  changeHoldMs: 2500, // the change card stays this long after the judge stops checking it
 };
 
 function createShelf(params = {}) {
   const P = { ...DEFAULTS, ...params };
-  let tracks = new Map(); // shabadId -> { item, lastAt, lastPct, pct }
+  let tracks = new Map(); // shabadId -> { item, lastAt, lastPct, pct, lastProg, prog }
   let order = []; // shabadIds on the shelf, top first
-  let since = new Map(); // shabadId -> when it started to lead the card above it
   let shownAt = new Map(); // shabadId -> when it was listed
   let waitSince = new Map(); // shabadId (waiting) -> when it started to beat a listed card
   let currentId = null;
+  let change = null; // { id, item, lastAt } the Shabad in the "Changing to" card
 
   function reset() {
     tracks = new Map();
     order = [];
-    since = new Map();
     shownAt = new Map();
     waitSince = new Map();
+    change = null;
   }
+  const drop = (id) => {
+    tracks.delete(id);
+    shownAt.delete(id);
+    waitSince.delete(id);
+    order = order.filter((x) => x !== id);
+  };
 
   const ageOf = (t, now) => now - t.lastAt;
   const isFading = (t, now) => ageOf(t, now) > P.holdMs - P.fadeMs;
+  const decayed = (v, t, now) => v * 0.5 ** (Math.max(0, now - t.lastAt) / P.halfLifeMs);
+
+  const absorb = (it, now) => {
+    const at = Math.min(it.at != null ? it.at : now, now);
+    const t = tracks.get(it.shabadId);
+    if (!t) {
+      tracks.set(it.shabadId, {
+        item: it,
+        lastAt: at,
+        lastPct: it.pct || 0,
+        lastProg: it.prog != null ? it.prog : 0,
+      });
+      return;
+    }
+    t.item = { ...t.item, ...it };
+    if (at > t.lastAt || (at === t.lastAt && it.pct > t.lastPct)) {
+      t.lastAt = at;
+      if (it.pct != null) t.lastPct = it.pct;
+      if (it.prog != null) t.lastProg = it.prog;
+    }
+  };
 
   // items: the Shabads eligible to be listed right now (already filtered by the caller),
-  //   [{ shabadId, pct, at?, ...display fields }]; `at` = when the board last scored it.
-  // hide: ids that must not be listed (the Shabad on screen, the one in the change card).
+  //   [{ shabadId, pct, prog?, at?, ...display fields }]; `at` = when the board last scored it.
+  // current: the Shabad on screen. lead: the Shabad the judge is checking as a change right
+  //   now (or null), { shabadId, ...display fields }.
+  // hide: other ids that must not be listed right now (kept, not forgotten).
   // heardAt: when a word was last heard confidently (ms), 0/null = not yet.
-  function update({ now, items = [], current = null, heardAt = 0, hide = [] }) {
+  function update({ now, items = [], current = null, heardAt = 0, hide = [], lead = null }) {
     if (current !== currentId) {
       currentId = current;
-      reset();
+      if (current != null) drop(current);
+      if (change && change.id === current) change = null;
     }
     if (!heardAt || now - heardAt > P.silenceMs) {
       reset();
       return [];
     }
     const hidden = new Set(hide);
+    if (current != null) hidden.add(current);
     items.forEach((it) => {
-      if (it.shabadId == null || hidden.has(it.shabadId)) return;
-      const at = Math.min(it.at != null ? it.at : now, now);
-      const t = tracks.get(it.shabadId);
-      if (!t) {
-        tracks.set(it.shabadId, { item: it, lastAt: at, lastPct: it.pct });
-        return;
-      }
-      t.item = { ...t.item, ...it };
-      if (at > t.lastAt) {
-        t.lastAt = at;
-        t.lastPct = it.pct;
-      }
+      if (it.shabadId == null || it.shabadId === current) return;
+      absorb(it, now);
     });
-    const present = new Map(items.map((it) => [it.shabadId, it]));
+    // The change card: the judge's lead now, else the last one for a short hold.
+    if (lead && lead.shabadId != null && lead.shabadId !== current) {
+      const prev = change && change.id === lead.shabadId ? change.item : {};
+      change = { id: lead.shabadId, item: { ...prev, ...lead }, lastAt: now };
+      const t = tracks.get(lead.shabadId);
+      if (t) {
+        t.lastAt = Math.max(t.lastAt, now);
+        t.item = { ...t.item, ...lead };
+      }
+    } else if (change && now - change.lastAt > P.changeHoldMs) change = null;
+    const changeId = change ? change.id : null;
+
     [...tracks.keys()].forEach((id) => {
       const t = tracks.get(id);
-      if (hidden.has(id) || ageOf(t, now) > P.holdMs) {
-        tracks.delete(id);
-        since.delete(id);
-        shownAt.delete(id);
-        waitSince.delete(id);
-      }
+      if (id !== changeId && ageOf(t, now) > P.holdMs) drop(id);
     });
     // Shown %: the board's own while it is still scoring the card; afterwards its last
-    // score, decaying slowly (never a sudden drop to nothing).
+    // score, decaying slowly (never a sudden drop to nothing). Same for the progress.
+    const present = new Map(items.map((it) => [it.shabadId, it]));
     tracks.forEach((t, id) => {
-      const live = present.has(id) ? present.get(id).pct : 0;
-      const kept = t.lastPct * 0.5 ** (Math.max(0, now - t.lastAt) / P.halfLifeMs);
+      const live = present.get(id);
       // eslint-disable-next-line no-param-reassign
-      t.pct = Math.max(live, kept);
+      t.pct = Math.max(live ? live.pct || 0 : 0, decayed(t.lastPct, t, now));
+      // eslint-disable-next-line no-param-reassign
+      t.prog = Math.max(live && live.prog != null ? live.prog : 0, decayed(t.lastProg, t, now));
     });
 
-    order = order.filter((id) => tracks.has(id));
+    // Listed: tracked, not on screen, not in the change card, not hidden.
+    const listable = (id) => tracks.has(id) && id !== changeId && !hidden.has(id);
+    order = order.filter(listable);
     const fresh = [...tracks.keys()]
-      .filter((id) => !order.includes(id))
+      .filter((id) => listable(id) && !order.includes(id))
       .sort((a, b) => tracks.get(b).pct - tracks.get(a).pct);
     const list = (id) => {
       order.push(id);
@@ -108,8 +149,7 @@ function createShelf(params = {}) {
         return;
       }
       // Full: a newcomer takes the place of a fading card, or of the weakest card it has
-      // clearly beaten for a while; never of a card listed less than minShowMs ago. It
-      // joins at the bottom either way.
+      // clearly beaten for a while; never of a card listed less than minShowMs ago.
       const open = order.filter((x) => now - shownAt.get(x) >= P.minShowMs);
       if (!open.length) {
         waitSince.delete(id);
@@ -127,25 +167,22 @@ function createShelf(params = {}) {
       } else if (!take) waitSince.delete(id);
       if (take) {
         order = order.filter((x) => x !== weakest);
-        since.delete(weakest);
         shownAt.delete(weakest);
         list(id);
       }
     });
 
-    // Steady order: a card moves up one place only after leading the card above it clearly
-    // for a while.
-    for (let i = 1; i < order.length; i += 1) {
-      const up = order[i - 1];
-      const id = order[i];
-      if (tracks.get(id).pct > tracks.get(up).pct + P.overtake) {
-        if (!since.has(id)) since.set(id, now);
-        if (now - since.get(id) >= P.overtakeMs) {
-          order[i - 1] = id;
-          order[i] = up;
-          since.delete(id);
+    // Ordered by confidence, highest first. A card passes the one above it only when it is
+    // ahead by more than `swap`, so two cards within a point keep their places.
+    for (let pass = 0; pass < order.length; pass += 1) {
+      let moved = false;
+      for (let i = 1; i < order.length; i += 1) {
+        if (tracks.get(order[i]).pct > tracks.get(order[i - 1]).pct + P.swap) {
+          [order[i - 1], order[i]] = [order[i], order[i - 1]];
+          moved = true;
         }
-      } else since.delete(id);
+      }
+      if (!moved) break;
     }
 
     return order.map((id) => {
@@ -154,19 +191,34 @@ function createShelf(params = {}) {
         ...t.item,
         shabadId: id,
         pct: t.pct,
+        prog: t.prog,
         role: 'candidate',
         fading: isFading(t, now),
       };
     });
   }
 
+  // The Shabad in the "Changing to" card (held), or null. `live` = the judge is checking it
+  // right now (false during the short hold after it let go).
+  function changeCard(now) {
+    if (!change) return null;
+    const t = tracks.get(change.id);
+    return {
+      ...(t ? t.item : {}),
+      ...change.item,
+      shabadId: change.id,
+      pct: t ? t.pct : change.item.pct || 0,
+      live: now == null || now - change.lastAt <= 0,
+    };
+  }
+
   // Every Shabad the shelf is holding, listed or waiting for a place (for the session log).
   const waiting = () =>
     [...tracks.entries()]
-      .filter(([id]) => !order.includes(id))
+      .filter(([id]) => !order.includes(id) && !(change && change.id === id))
       .map(([id, t]) => ({ shabadId: id, pct: t.pct }));
 
-  return { update, reset, waiting, params: P };
+  return { update, reset, waiting, changeCard, params: P };
 }
 
 module.exports = { createShelf, DEFAULTS };

@@ -23,7 +23,25 @@ const DEFAULTS = {
   searchK: 256,
   hold: 3000, // ms a challenger stays listed after its last score (its evidence keeps decaying)
   decodeMs: 510,
+  // The switch judge's own bar (VoiceFollow.jsx SWITCH_ACOUSTIC_MIN / _MARGIN), for the
+  // progress toward a switch shown on each candidate's bar. Display only.
+  winMin: 0.65,
+  winMargin: 0.15,
 };
+
+const clamp01 = (x) => Math.min(1, Math.max(0, x));
+// How close a challenger is to being switched to, 0..1: the judge commits after `needed`
+// winning decodes, and a decode wins when the Shabad matches the audio at least `winMin`
+// and beats the Shabad on screen by `winMargin`. Each win is one step; the step in progress
+// fills by how near this decode came to winning (the weaker of the two conditions).
+function switchProgress({ score = 0, wins = 0, needed = 3, sCur = 0 }, P = DEFAULTS) {
+  const near = Math.min(
+    clamp01((score - (P.winMin - 0.3)) / 0.3),
+    clamp01((score - sCur) / P.winMargin),
+  );
+  const steps = Math.max(1, needed);
+  return clamp01((Math.min(Math.max(0, wins), steps) + near) / (steps + 1));
+}
 
 const sigmoid = (x) => 1 / (1 + Math.exp(-x));
 const logit = (p) => {
@@ -36,6 +54,7 @@ function createBoard(params = {}) {
   const E = new Map(); // shabadId -> evidence
   const seen = new Map(); // shabadId -> last time scored (ms)
   const meta = new Map(); // shabadId -> { line, verseId, verse }
+  const judged = new Map(); // shabadId -> progress toward a switch (last decode it was scored)
   let lastAt = 0;
   let current = null;
   let items = []; // [{ shabadId, pct, role }] newest computation
@@ -69,6 +88,7 @@ function createBoard(params = {}) {
       if (c.shabadId === cur) return;
       E.set(c.shabadId, (E.get(c.shabadId) || 0) + P.beta * c.score);
       seen.set(c.shabadId, now);
+      judged.set(c.shabadId, switchProgress({ ...c, sCur }, P));
       remember(c);
     });
     const keys = [cur, ...[...seen.keys()].filter((k) => k !== cur && now - seen.get(k) <= P.hold)];
@@ -84,6 +104,7 @@ function createBoard(params = {}) {
         pct: sigmoid(a * logit(ex[i] / S) + b),
         role: k === cur ? 'current' : 'candidate',
         at: seen.get(k), // when it was last scored (the candidate list holds cards from this)
+        ...(k === cur ? {} : { prog: judged.get(k) || 0 }),
       };
     });
     // Each role is calibrated on its own, so during a change the current card and a challenger
@@ -95,6 +116,7 @@ function createBoard(params = {}) {
       if (k !== cur && now - seen.get(k) > P.hold) {
         seen.delete(k);
         E.delete(k);
+        judged.delete(k);
       }
     });
   }
@@ -113,7 +135,7 @@ function createBoard(params = {}) {
     current = null;
     progressItems = list
       .filter((it) => it.pct >= 0.05)
-      .map((it) => ({ ...it, role: 'candidate', at: now }));
+      .map((it) => ({ ...it, prog: it.pct, role: 'candidate', at: now }));
     progressAt = now;
     if (progressItems.length) items = progressItems;
   }
@@ -133,7 +155,7 @@ function createBoard(params = {}) {
     items = top.map(([sid, v]) => {
       const row = rows && rows.get ? rows.get(sid) : null;
       if (row) remember({ shabadId: sid, verseId: row.verseId, verse: row.verse });
-      return { shabadId: sid, pct: v / total, role: 'candidate', at: now };
+      return { shabadId: sid, pct: v / total, prog: v / total, role: 'candidate', at: now };
     });
   }
 
@@ -142,6 +164,7 @@ function createBoard(params = {}) {
     progressAt = 0;
     E.clear();
     seen.clear();
+    judged.clear();
     items = [];
     current = null;
     lastAt = 0;
@@ -183,4 +206,4 @@ function mergeTranscript(stream, text, keep = 16) {
   return merged.slice(-keep).join(' ');
 }
 
-module.exports = { createBoard, mergeTranscript, DEFAULTS };
+module.exports = { createBoard, mergeTranscript, switchProgress, DEFAULTS };

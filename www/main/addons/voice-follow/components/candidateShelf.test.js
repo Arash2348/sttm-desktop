@@ -38,11 +38,11 @@ describe('candidateShelf', () => {
     assert.equal(out[0].fading, false);
   });
 
-  it('clears when the Shabad on screen changes', () => {
+  it('a change of the Shabad on screen removes only that Shabad; the rest stay', () => {
     const s = createShelf();
-    s.update({ now: 1000, items: [c(7, 0.3, 1000)], current: 1, heardAt: 1000 });
-    const out = s.update({ now: 1500, items: [], current: 2, heardAt: 1500 });
-    assert.deepEqual(ids(out), []);
+    s.update({ now: 1000, items: [c(7, 0.3, 1000), c(8, 0.2, 1000)], current: 1, heardAt: 1000 });
+    const out = s.update({ now: 1500, items: [], current: 7, heardAt: 1500 });
+    assert.deepEqual(ids(out), [8], 'the new Shabad on screen leaves the list, 8 stays');
   });
 
   it('clears after 15 s without a confident word, not after 5 s', () => {
@@ -61,7 +61,7 @@ describe('candidateShelf', () => {
     assert.deepEqual(ids(out), [8]);
   });
 
-  it('new cards join at the bottom; order holds unless clearly overtaken for 2 s', () => {
+  it('ordered by confidence; cards within a point keep their places', () => {
     const s = createShelf();
     let out = s.update({ now: 1000, items: [c(7, 0.2, 1000)], current: 1, heardAt: 1000 });
     out = s.update({
@@ -70,39 +70,76 @@ describe('candidateShelf', () => {
       current: 1,
       heardAt: 1500,
     });
-    assert.deepEqual(ids(out), [7, 8], 'newcomer joins at the bottom even when stronger');
-    // 3 points ahead: never swaps
+    assert.deepEqual(ids(out), [8, 7], 'a stronger newcomer is listed above');
+    // within a point of each other: no swapping back and forth
     for (let t = 2000; t <= 6000; t += 500) {
+      const wob = t % 1000 ? 0.005 : -0.005;
       out = s.update({
         now: t,
-        items: [c(7, 0.2, t), c(8, 0.23, t)],
+        items: [c(7, 0.3 + wob, t), c(8, 0.3 - wob, t)],
         current: 1,
         heardAt: t,
       });
+      assert.deepEqual(ids(out), [8, 7], `steady at ${t}`);
     }
-    assert.deepEqual(ids(out), [7, 8]);
-    // 20 points ahead: swaps only after 2 s
+    // clearly ahead (> 1 point): moves up at once
     out = s.update({
       now: 6500,
-      items: [c(7, 0.2, 6500), c(8, 0.4, 6500)],
+      items: [c(7, 0.35, 6500), c(8, 0.3, 6500)],
       current: 1,
       heardAt: 6500,
     });
     assert.deepEqual(ids(out), [7, 8]);
-    out = s.update({
-      now: 7500,
-      items: [c(7, 0.2, 7500), c(8, 0.4, 7500)],
+  });
+
+  it('the change card holds through a wobble and the card returns to the list as itself', () => {
+    const s = createShelf();
+    const lead = { shabadId: 7, line: 'line 7', wins: 1, prog: 0.4 };
+    s.update({ now: 1000, items: [c(7, 0.3, 1000), c(8, 0.2, 1000)], current: 1, heardAt: 1000 });
+    let out = s.update({
+      now: 1500,
+      items: [c(7, 0.3, 1500), c(8, 0.2, 1500)],
       current: 1,
-      heardAt: 7500,
+      heardAt: 1500,
+      lead,
     });
+    assert.deepEqual(ids(out), [8], 'moved out of the list');
+    assert.equal(s.changeCard(1500).shabadId, 7);
+    // the judge lets go for one decode: the card stays where it is
+    out = s.update({ now: 2000, items: [c(7, 0.3, 2000)], current: 1, heardAt: 2000 });
+    assert.deepEqual(ids(out), [8]);
+    assert.equal(s.changeCard(2000).shabadId, 7);
+    assert.equal(s.changeCard(2000).live, false);
+    // ... and is back the next one
+    s.update({ now: 2500, items: [c(7, 0.3, 2500)], current: 1, heardAt: 2500, lead });
+    assert.equal(s.changeCard(2500).live, true);
+    // let go for longer than the hold: back in the list, not fading
+    out = s.update({ now: 5200, items: [c(7, 0.3, 5200)], current: 1, heardAt: 5200 });
+    assert.equal(s.changeCard(5200), null);
     assert.deepEqual(ids(out), [7, 8]);
-    out = s.update({
-      now: 8600,
-      items: [c(7, 0.2, 8600), c(8, 0.4, 8600)],
+    assert.equal(out[0].fading, false);
+  });
+
+  it('the change card goes when its Shabad is put on screen', () => {
+    const s = createShelf();
+    const lead = { shabadId: 7, line: 'line 7', wins: 2 };
+    s.update({
+      now: 1000,
+      items: [c(7, 0.3, 1000), c(8, 0.2, 1000)],
       current: 1,
-      heardAt: 8600,
+      heardAt: 1000,
+      lead,
     });
-    assert.deepEqual(ids(out), [8, 7]);
+    const out = s.update({ now: 1500, items: [], current: 7, heardAt: 1500 });
+    assert.equal(s.changeCard(1500), null);
+    assert.deepEqual(ids(out), [8]);
+  });
+
+  it('carries progress toward a switch, held and decaying like the %', () => {
+    const s = createShelf();
+    s.update({ now: 1000, items: [{ ...c(7, 0.1, 1000), prog: 0.5 }], current: 1, heardAt: 1000 });
+    const out = s.update({ now: 9000, items: [], current: 1, heardAt: 9000 });
+    assert.ok(out[0].prog > 0.2 && out[0].prog < 0.5);
   });
 
   it('lists up to 5; a newcomer takes a fading card or one it clearly beats for 2 s', () => {
@@ -131,7 +168,7 @@ describe('candidateShelf', () => {
       heardAt: 2000,
     });
     assert.ok(!ids(out).includes(98));
-    // after that, it must lead the weakest clearly for 2 s, then joins at the bottom
+    // after that, it must lead the weakest clearly for 2 s
     out = s.update({
       now: 5000,
       items: [...five(5000), c(98, 0.5, 5000)],
@@ -146,7 +183,7 @@ describe('candidateShelf', () => {
       heardAt: 7100,
     });
     assert.equal(out.length, 5);
-    assert.equal(out[4].shabadId, 98);
+    assert.equal(out[0].shabadId, 98, 'listed, by confidence');
     assert.ok(!ids(out).includes(11));
   });
 
