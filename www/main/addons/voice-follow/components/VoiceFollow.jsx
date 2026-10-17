@@ -272,6 +272,14 @@ const PC_SWITCH = {
   lead: 2,
   cap: 1.5,
 };
+// Repeated pangti (owner's case: "ਦਰਸ ਤੇਰੇ ਕੀ ਪਿਆਸ ਮਨਿ ਲਾਗੀ", Shabad 1512, one pangti sung again and
+// again between long pauses): Pankti Cumulation (switch) also switches when ONE pangti of another
+// Shabad is heard on PC_REPEAT.times separate occasions (at least PC_REPEAT.gapS apart), each
+// scoring >= PC_REPEAT.minScore with a margin >= PC_REPEAT.minMargin over every other Shabad.
+// 2 times showed 1512 60 s sooner on the owner's test but made 2 wrong switches; 3 made none.
+// 0 = off.
+const PC_SWITCH_REPEAT = 0;
+const PC_REPEAT = { times: 3, gapS: 15, minScore: 0.9, minMargin: 0.15 };
 // Shared-pangti hold in the existing switch judge (owner's live test: a pangti shared by several
 // Shabads flipped the screen 6 times): a switch or return WIN counts only when the heard line,
 // searched over all Gurbani, puts that Shabad on top by >= PC_SHARED_HOLD_MARGIN; a shared line
@@ -2931,7 +2939,7 @@ const VoiceFollow = () => {
       ) {
         const curId = currentShabadIdRef.current;
         if (kfSwitchRef.current.cur !== curId || kfSwitchRef.current.session !== session)
-          kfSwitchRef.current = { cur: curId, session, store: new Map(), last: '' };
+          kfSwitchRef.current = { cur: curId, session, store: new Map(), last: '', rep: new Map() };
         const ks = kfSwitchRef.current;
         const kfHeard = vfNorm(text);
         if (curId != null && baniIdOf(curId) == null) {
@@ -2964,7 +2972,22 @@ const VoiceFollow = () => {
                 },
                 PC_SWITCH,
               );
-              if (ev && ev.ready) {
+              let repeated = false;
+              const kfMargin = k0.score - (found[1]?.score || 0);
+              if (
+                PC_SWITCH_REPEAT > 0 &&
+                k0.score >= PC_REPEAT.minScore &&
+                kfMargin >= PC_REPEAT.minMargin
+              ) {
+                const key = `${k0.shabadId}:${k0.verseId}`;
+                const now = Date.now() / 1000;
+                const r = ks.rep.get(key) || { n: 0, last: -Infinity };
+                if (now - r.last >= PC_REPEAT.gapS) r.n += 1;
+                r.last = now;
+                ks.rep.set(key, r);
+                repeated = r.n >= PC_REPEAT.times;
+              }
+              if ((ev && ev.ready) || repeated) {
                 let profile;
                 try {
                   profile = await loadShabadProfile(k0.shabadId);
