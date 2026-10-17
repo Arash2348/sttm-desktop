@@ -213,6 +213,82 @@ const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a swit
 // Sohila and in Dhanasari, a Rehras shabad and its SGGS original) searches as an exact
 // tie, and a tie never locks. 1 = while searching, treat such copies as one candidate.
 const DUP_AWARE_LOCK = 1;
+// Kirtan find (owner, Oct 17): Shabad-level evidence for the FIRST lock. A Shabad is a set of
+// pangtis: each pangti heard adds to its Shabad's total instead of starting over. A new pangti
+// adds its weight (x (1 + KF_SHEV_ADJ) next to a pangti already heard), a repeat only tops it up
+// by KF_SHEV_REPEAT (a fragment sung many times keeps that pangti alive but is not a new one).
+// Weight = how unique the match is (margin over the next distinct Shabad / KF_SHEV_MFULL), so a
+// line shared by two Shabads adds almost nothing. Evidence fades with a time constant of
+// KF_SHEV_TAU_S seconds of SUNG audio: decodes with fewer than KF_SHEV_QUIET letters (alaap,
+// held vowels, tabla, silence) freeze the clock instead of erasing what was heard. A Shabad
+// locks when its total reaches KF_SHEV_LOCK over >= 2 pangtis, KF_SHEV_LEAD times the next
+// Shabad, while it is this decode's top line. Additive: the other routes are unchanged. 0 = off.
+const KF_SHEV = 0;
+const KF_SHEV_SMIN = 0.35;
+const KF_SHEV_MMIN = 0.05;
+const KF_SHEV_MFULL = 0.15;
+const KF_SHEV_REPEAT = 0.15;
+const KF_SHEV_ADJ = 0.35;
+const KF_SHEV_TAU_S = 90;
+const KF_SHEV_QUIET = 8;
+const KF_SHEV_LOCK = 1.4;
+const KF_SHEV_LEAD = 1.5;
+// 1 = quiet decodes freeze the evidence clock (owner: pauses pause, never erase); 0 = always fade.
+const KF_SHEV_FREEZE = 0;
+// Fragments (owner: ragis sing the latter half of a pangti, then its opening): also search the
+// last KF_FRAG_N pangti-sized pieces (>= KF_FRAG_LEN letters, whole words) of the window on their
+// own, so a half pangti counts for its pangti. A piece counts at KF_FRAG_W when it scores
+// >= KF_FRAG_SMIN with a margin >= KF_FRAG_MMIN over the next distinct Shabad. 0 = off.
+const KF_FRAG = 0;
+const KF_FRAG_N = 3;
+const KF_FRAG_LEN = 22;
+const KF_FRAG_SMIN = 0.6;
+const KF_FRAG_MMIN = 0.1;
+const KF_FRAG_W = 0.7;
+// store: Map shabadId -> Map(verseId -> weight). Returns { total, distinct } per Shabad.
+export const kfShevTotal = (lines) => {
+  let total = 0;
+  let distinct = 0;
+  if (lines)
+    lines.forEach((w) => {
+      total += w;
+      if (w >= 0.3) distinct += 1;
+    });
+  return { total, distinct };
+};
+export const kfShevStep = (store, hit, quiet, hopS) => {
+  if (!quiet) {
+    const f = Math.exp(-hopS / KF_SHEV_TAU_S);
+    store.forEach((lines) => lines.forEach((w, v) => lines.set(v, w * f)));
+  }
+  if (!hit || hit.score < (hit.smin ?? KF_SHEV_SMIN) || hit.margin < (hit.mmin ?? KF_SHEV_MMIN))
+    return null;
+  const w = (hit.w ?? 1) * Math.min(1, hit.margin / KF_SHEV_MFULL);
+  let lines = store.get(hit.shabadId);
+  if (!lines) {
+    lines = new Map();
+    store.set(hit.shabadId, lines);
+  }
+  const old = lines.get(hit.verseId);
+  if (old != null) lines.set(hit.verseId, Math.min(1.5, old + KF_SHEV_REPEAT * w));
+  else {
+    let add = w;
+    lines.forEach((e, v) => {
+      if (Math.abs(v - hit.verseId) <= 2 && e >= 0.3) add = w * (1 + KF_SHEV_ADJ);
+    });
+    lines.set(hit.verseId, add);
+  }
+  const own = kfShevTotal(lines);
+  let next = 0;
+  store.forEach((l, sid) => {
+    if (sid !== hit.shabadId) next = Math.max(next, kfShevTotal(l).total);
+  });
+  return {
+    ...own,
+    next,
+    lock: own.total >= KF_SHEV_LOCK && own.distinct >= 2 && own.total >= KF_SHEV_LEAD * next,
+  };
+};
 // Mool Mantar home (ported from cycle 12): the Mool Mantar begins dozens of shabads, so
 // it ties exactly and never locks, leaving nothing on screen. After this many distinct
 // heard fragments that tie between Japji's Mool Mantar and other shabads, show Japji's
@@ -2471,6 +2547,14 @@ const VoiceFollow = () => {
         const { step } = memory;
         memory.entries = memory.entries.filter((e) => step - e.step <= 24);
         const hyp = vfNorm(text);
+        // KF_SHEV clock: sung decodes fade the evidence, quiet ones (alaap, tabla) freeze it
+        if (KF_SHEV > 0 && memory.kf)
+          kfShevStep(
+            memory.kf,
+            null,
+            KF_SHEV_FREEZE > 0 && hyp.length < KF_SHEV_QUIET,
+            AP_REC_HOP_S,
+          );
         if (hyp.length >= 8) {
           const acousticRecognizer = recognizerRef.current;
           const acousticPcm = acousticRecognizer?.buf;
@@ -2653,6 +2737,79 @@ const VoiceFollow = () => {
                 memory.step !== step
               )
                 return;
+            }
+          }
+          if (KF_SHEV > 0 && top && hyp !== memory.kfHyp) {
+            memory.kfHyp = hyp;
+            if (!memory.kf) memory.kf = new Map();
+            const ev = kfShevStep(
+              memory.kf,
+              { shabadId: top.shabadId, verseId: top.verseId, score: top.score, margin },
+              true,
+              0,
+            );
+            let lockId = ev && ev.lock ? top.shabadId : null;
+            let lockVerse = top.verseId;
+            if (KF_FRAG > 0 && lockId == null) {
+              const words = String(text || '')
+                .trim()
+                .split(/\s+/);
+              const pieces = [];
+              let cur = [];
+              for (let i = words.length - 1; i >= 0 && pieces.length < KF_FRAG_N; i -= 1) {
+                cur.unshift(words[i]); // whole words only
+                if (vfNorm(cur.join(' ')).length >= KF_FRAG_LEN) {
+                  pieces.push(cur.join(' '));
+                  cur = [];
+                }
+              }
+              for (let i = 0; i < pieces.length && lockId == null; i += 1) {
+                // eslint-disable-next-line no-await-in-loop
+                let fl = await searchCanonicalText(pieces[i], 3 + DUP_AWARE_LOCK, request.signal);
+                // eslint-disable-next-line no-await-in-loop
+                if (DUP_AWARE_LOCK && fl) fl = await distinctLeaders(fl, 2);
+                if (stale()) return;
+                const f0 = fl?.[0];
+                const fe =
+                  f0 &&
+                  kfShevStep(
+                    memory.kf,
+                    {
+                      shabadId: f0.shabadId,
+                      verseId: f0.verseId,
+                      score: f0.score,
+                      margin: f0.score - (fl[1]?.score || 0),
+                      smin: KF_FRAG_SMIN,
+                      mmin: KF_FRAG_MMIN,
+                      w: KF_FRAG_W,
+                    },
+                    true,
+                    0,
+                  );
+                if (fe && fe.lock) {
+                  lockId = f0.shabadId;
+                  lockVerse = f0.verseId;
+                }
+              }
+            }
+            if (lockId != null) {
+              let profile;
+              try {
+                profile = await loadShabadProfile(lockId);
+              } catch (_) {
+                return;
+              }
+              if (stale()) return;
+              const at = profile.verses.findIndex((v) => v.verseId === lockVerse);
+              if (at >= 0) {
+                memory.kf = null;
+                autopilotLock({
+                  shabadId: lockId,
+                  verseId: lockVerse,
+                  verse: profile.displayLines[at],
+                });
+                return;
+              }
             }
           }
           if (top) {
