@@ -39,9 +39,9 @@ For every recording, four simple questions:
 |---|---|---|---|
 | `1-kirtan-shabad` | kirtan of a Shabad, including whole darbars with several Shabads | 176 | 23.9 |
 | `2-bani-recited` | a Bani read aloud, one folder per Bani: Japji, Jaap, Tav Prasad Savaiye, Chaupai, Anand Sahib, Rehras, Sohila, Saloks | 47 | 1.4 |
-| `3-bani-sung-like-kirtan` | a Bani sung like kirtan by a ragi jatha: Aarti, Rehras, Saloks (Asa di Vaar moved to `5-akhand-kirtan` in v1.4) | 57 | 4.4 |
+| `3-bani-sung-like-kirtan` | a Bani sung like kirtan by a ragi jatha: Aarti, Rehras, Saloks (Asa di Vaar moved to `5-akhand-kirtan` in v1.4) | 56 | 3.3 |
 | `4-akhand-paath` | reading Guru Granth Sahib Ji Ang after Ang | 3 | 0.5 |
-| `5-akhand-kirtan` | Akhand Kirtan: smagams and Asa di Vaar sung in Akhand Kirtan style; many singers, the sangat singing along, many instruments (the GAB-Akhand Kirtan tier) | 37 | 6.2 |
+| `5-akhand-kirtan` | Akhand Kirtan: smagams and Asa di Vaar sung in Akhand Kirtan style; many singers, the sangat singing along, many instruments (the GAB-Akhand Kirtan tier) | 38 | 7.4 |
 | `human-verdicts` | checks made by listening: does a pangti start where the key says, and who was right when the app and the sevadaar disagreed | 90 checks | |
 
 Every recording has its own folder with:
@@ -60,12 +60,17 @@ The owner listened to the Sung Bani recordings and found two problems; a check o
   `5-akhand-kirtan` (manifest notes `tags: akhand-kirtan`); splits unchanged (ytasa1 dev, Newton and ytasa2 test).
 - **Talk is never scored as Bani.** rt11_fareed1 opens with 34 s of the ragi introducing the Shabad in Punjabi; it stays a gap
   (no key), now written in the notes.
-- **Keys fixed.** aa24-aa27 (Renton hall, after Aarti): Jaap Sahib (Chatr chakr verses), Waheguru simran and a Sukhmani Salok
-  (Shabad 880) were keyed as Aarti; now keyed as what is sung, simran and instruments left as gaps. rt11_fareed2: Salok 29
-  (5239) sung inside Salok 28 (5238) is now keyed.
+- **Keys fixed (owner ear check, Oct 17).** aa24-aa26 (Renton hall): the closing Jaap Sahib verses (Chatr chakr) are sung as the
+  end of Aarti, so there Aarti or Jaap Sahib on screen both count (`bani:22|bani:4`); instruments-only stretches are gaps; a
+  Sukhmani Salok (Shabad 880) after Aarti is keyed as itself (aa26, aa27). rt11_fareed2: Salok 29 (5239) sung inside Salok 28
+  (5238) is keyed as a parmaan. rt11_fareed1: from 452 s instruments only, so the key ends there.
+- **Newton recordings left out.** Voice isolation was running on the recording laptop's mic at Khalsa School Newton (Oct 11),
+  so that audio may not be reliable: nw11_session, nw11_asa1, nw11_asa2 and nw11_kirtan2-4 carry `gab-exclude:` (files kept).
+- **Style notes.** kh16 (Fremont, Asa di Vaar) is Akhand Kirtan style with the mic far away: moved to `5-akhand-kirtan`, still
+  scored in GAB-Hard. ytasa1 (Bhai Nirmal Singh Ji Khalsa): style not confirmed by ear; kept in Akhand Kirtan for now.
 - **Each sung moment is scored once.** Cold-start cuts of one Aarti performance overlapped up to 6 times; one
   non-overlapping set of cuts per performance is kept, the rest carry `gab-exclude: <reason>` in the manifest notes
-  (still in the dataset, not scored). nw11_session is scored through its cuts.
+  (still in the dataset, not scored).
 - Numbers from v1.3 and v1.4 are not comparable for Sung Bani and Akhand Kirtan; every scorecard says its version.
 
 ## Where the answers come from
