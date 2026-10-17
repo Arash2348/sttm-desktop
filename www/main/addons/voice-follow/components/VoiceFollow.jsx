@@ -66,6 +66,7 @@ const {
 const { screenTakenByCeremony } = require('./autopilotScreen');
 // Respecting the sevadaar's line moves (tag / adopt / hold), unit-tested in lineRespect.test.js.
 const { createLineRespect, lineOfVerse } = require('./lineRespect');
+const { elapse: pcElapse, addHit: pcAddHit } = require('./panktiCumulation');
 
 // maxLineScore lives in ./switchPolicy (same implementation, unit-tested there)
 // so the benchmarked length-penalty math is shared, not duplicated.
@@ -213,107 +214,70 @@ const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a swit
 // Sohila and in Dhanasari, a Rehras shabad and its SGGS original) searches as an exact
 // tie, and a tie never locks. 1 = while searching, treat such copies as one candidate.
 const DUP_AWARE_LOCK = 1;
-// Kirtan find (owner, Oct 17): Shabad-level evidence for the FIRST lock. A Shabad is a set of
-// pangtis: each pangti heard adds to its Shabad's total instead of starting over. A new pangti
-// adds its weight (x (1 + KF_SHEV_ADJ) next to a pangti already heard), a repeat only tops it up
-// by KF_SHEV_REPEAT (a fragment sung many times keeps that pangti alive but is not a new one).
-// Weight = how unique the match is (margin over the next distinct Shabad / KF_SHEV_MFULL), so a
-// line shared by two Shabads adds almost nothing. Evidence fades with a time constant of
-// KF_SHEV_TAU_S seconds of SUNG audio: decodes with fewer than KF_SHEV_QUIET letters (alaap,
-// held vowels, tabla, silence) freeze the clock instead of erasing what was heard. A Shabad
-// locks when its total reaches KF_SHEV_LOCK over >= 2 pangtis, KF_SHEV_LEAD times the next
-// Shabad, while it is this decode's top line. Additive: the other routes are unchanged. 0 = off.
-const KF_SHEV = 0;
-const KF_SHEV_SMIN = 0.35;
-const KF_SHEV_MMIN = 0.05;
-const KF_SHEV_MFULL = 0.15;
-const KF_SHEV_REPEAT = 0.15;
-const KF_SHEV_ADJ = 0.35;
-const KF_SHEV_TAU_S = 90;
-const KF_SHEV_QUIET = 8;
-const KF_SHEV_LOCK = 1.4;
-const KF_SHEV_LEAD = 1.5;
-// 1 = quiet decodes freeze the evidence clock (owner: pauses pause, never erase); 0 = always fade.
-const KF_SHEV_FREEZE = 0;
-// Fragments (owner: ragis sing the latter half of a pangti, then its opening): also search the
-// last KF_FRAG_N pangti-sized pieces (>= KF_FRAG_LEN letters, whole words) of the window on their
-// own, so a half pangti counts for its pangti. A piece counts at KF_FRAG_W when it scores
-// >= KF_FRAG_SMIN with a margin >= KF_FRAG_MMIN over the next distinct Shabad. 0 = off.
-// Kirtan switches (owner's live test, Oct 16): while following, the pangtis of ANOTHER Shabad add
-// up the same way (KF_SHEV evidence, pauses always freeze the clock), and the screen switches to
-// it once it holds KF_SWITCH_DISTINCT different pangtis, a total >= KF_SWITCH_LOCK and
-// KF_SWITCH_LEAD times any other Shabad. Each heard line (>= KF_SWITCH_MINL letters) is searched
-// over all Gurbani; it counts only when it scores >= KF_SWITCH_SMIN with a margin >= KF_SWITCH_MMIN
-// over the next distinct Shabad (a pangti shared by several Shabads counts ~0). Additive: the
-// acoustic switch judge is unchanged. 0 = off.
-const KF_SWITCH = 0;
-const KF_SWITCH_MINL = 10;
-const KF_SWITCH_SMIN = 0.5;
-const KF_SWITCH_MMIN = 0.1;
-const KF_SWITCH_MFULL = 0.2;
-const KF_SWITCH_LOCK = 2.0;
-const KF_SWITCH_DISTINCT = 3;
-const KF_SWITCH_LEAD = 2;
-// Flip-flops (owner's live test: a pangti shared by several Shabads flipped the screen 6 times):
-// a switch WIN counts only when the heard line, searched over all Gurbani, puts the candidate on
-// top by >= KF_FLIP_MMIN over the next distinct Shabad. A shared line holds the count (no win, no
-// loss). 0 = off.
-// 1 = KF_SHEV never locks a Shabad of Rehras, Sohila, Japji or Aarti: those are read as paath,
-// and the paath rules open the whole Bani (held-back Rehras: KF_SHEV showed its first Shabad
-// early, 3 s scored wrong).
-const KF_SHEV_PAATH_SKIP = 0;
-const KF_FLIP = 0;
-const KF_FLIP_MMIN = 0.05;
-const KF_FRAG = 0;
-const KF_FRAG_N = 3;
-const KF_FRAG_LEN = 22;
-const KF_FRAG_SMIN = 0.6;
-const KF_FRAG_MMIN = 0.1;
-const KF_FRAG_W = 0.7;
-// store: Map shabadId -> Map(verseId -> weight). Returns { total, distinct } per Shabad.
-export const kfShevTotal = (lines) => {
-  let total = 0;
-  let distinct = 0;
-  if (lines)
-    lines.forEach((w) => {
-      total += w;
-      if (w >= 0.3) distinct += 1;
-    });
-  return { total, distinct };
+// Pankti Cumulation (panktiCumulation.js): pangtis add up per Shabad, pauses don't reset. A
+// Shabad is a set of pangtis, so each pangti heard ADDS to its Shabad's confidence instead of the
+// search starting over on every pangti: different pangtis count much more than one pangti twice,
+// a neighbouring pangti gets a bonus, a pangti shared by several Shabads counts about nothing, and
+// alaap, held vowels, tabla and silence freeze the evidence clock instead of erasing it.
+//
+// Pankti Cumulation (first find): while searching, the unique full-text leader of each decode is
+// the heard pangti; a Shabad locks once it holds PC_FIND.distinct different pangtis, a total of
+// PC_FIND.lock and PC_FIND.lead times any other Shabad, while it is this decode's top line.
+// Additive: the other search routes are unchanged. 0 = off.
+const PANKTI_CUMULATION_FIND = 0;
+const PC_FIND = {
+  minScore: 0.35,
+  minMargin: 0.05,
+  marginFull: 0.15,
+  repeat: 0.15,
+  neighbour: 0.35,
+  tauS: 90,
+  lock: 1.4,
+  distinct: 2,
+  lead: 1.5,
+  cap: 1.5,
 };
-export const kfShevStep = (store, hit, quiet, hopS) => {
-  if (!quiet) {
-    const f = Math.exp(-hopS / KF_SHEV_TAU_S);
-    store.forEach((lines) => lines.forEach((w, v) => lines.set(v, w * f)));
-  }
-  if (!hit || hit.score < (hit.smin ?? KF_SHEV_SMIN) || hit.margin < (hit.mmin ?? KF_SHEV_MMIN))
-    return null;
-  const w = (hit.w ?? 1) * Math.min(1, hit.margin / (hit.mfull ?? KF_SHEV_MFULL));
-  let lines = store.get(hit.shabadId);
-  if (!lines) {
-    lines = new Map();
-    store.set(hit.shabadId, lines);
-  }
-  const old = lines.get(hit.verseId);
-  if (old != null) lines.set(hit.verseId, Math.min(1.5, old + KF_SHEV_REPEAT * w));
-  else {
-    let add = w;
-    lines.forEach((e, v) => {
-      if (Math.abs(v - hit.verseId) <= 2 && e >= 0.3) add = w * (1 + KF_SHEV_ADJ);
-    });
-    lines.set(hit.verseId, add);
-  }
-  const own = kfShevTotal(lines);
-  let next = 0;
-  store.forEach((l, sid) => {
-    if (sid !== hit.shabadId) next = Math.max(next, kfShevTotal(l).total);
-  });
-  return {
-    ...own,
-    next,
-    lock: own.total >= KF_SHEV_LOCK && own.distinct >= 2 && own.total >= KF_SHEV_LEAD * next,
-  };
+const PC_QUIET_LETTERS = 8; // a decode with fewer letters heard is a pause (alaap, tabla, silence)
+// 1 = first find: quiet decodes freeze the clock (always on for the switch); 0 = always fade.
+const PC_FIND_FREEZE = 0;
+// 1 = first find never locks a Shabad of Rehras, Sohila, Japji or Aarti: those are read as paath
+// and the paath rules open the whole Bani (held-back Rehras: the first find showed its first
+// Shabad early and 3 s scored wrong). 0 = off.
+const PC_FIND_PAATH_SKIP = 0;
+// Half pangtis (owner: ragis sing the latter half of a pangti, then its opening): also search the
+// last PC_FRAG_PIECES pangti-sized pieces (>= PC_FRAG_LETTERS letters, whole words only) of the
+// window on their own, so a half pangti counts for its pangti, at weight PC_FRAG.w when it scores
+// >= PC_FRAG.minScore with a margin >= PC_FRAG.minMargin. 0 = off.
+const PC_FIND_FRAG = 0;
+const PC_FRAG_PIECES = 3;
+const PC_FRAG_LETTERS = 22;
+const PC_FRAG = { minScore: 0.6, minMargin: 0.1, w: 0.7 };
+// Pankti Cumulation (switch): while following, the pangtis of ANOTHER Shabad add up the same way
+// (pauses always freeze the clock) and the screen switches once that Shabad holds
+// PC_SWITCH.distinct different pangtis, a total of PC_SWITCH.lock and PC_SWITCH.lead times any
+// other Shabad (owner's live test, Oct 16: Shabad 2621 shown 77 s sooner, 0 wrong switches).
+// Each heard line (>= PC_SWITCH_MIN_LETTERS letters) is searched over all Gurbani. Additive: the
+// acoustic switch judge is unchanged. Never while a Bani is followed. 0 = off.
+const PANKTI_CUMULATION_SWITCH = 0;
+const PC_SWITCH_MIN_LETTERS = 10;
+const PC_SWITCH = {
+  minScore: 0.5,
+  minMargin: 0.1,
+  marginFull: 0.2,
+  repeat: 0.15,
+  neighbour: 0.35,
+  tauS: 90,
+  lock: 2.0,
+  distinct: 3,
+  lead: 2,
+  cap: 1.5,
 };
+// Shared-pangti hold in the existing switch judge (owner's live test: a pangti shared by several
+// Shabads flipped the screen 6 times): a switch or return WIN counts only when the heard line,
+// searched over all Gurbani, puts that Shabad on top by >= PC_SHARED_HOLD_MARGIN; a shared line
+// holds the count (no win, no loss). 0 = off.
+const PANKTI_SHARED_HOLD = 0;
+const PC_SHARED_HOLD_MARGIN = 0.05;
 // Mool Mantar home (ported from cycle 12): the Mool Mantar begins dozens of shabads, so
 // it ties exactly and never locks, leaving nothing on screen. After this many distinct
 // heard fragments that tie between Japji's Mool Mantar and other shabads, show Japji's
@@ -1025,7 +989,7 @@ const VoiceFollow = () => {
   const [status, setStatus] = useState('idle'); // idle|connecting|listening|detecting|error|stopped
   const [autopilot] = useState(true); // hands-free: detect + follow + auto-switch, one press
   const vetoRef = useRef(null); // { id, left }: shabad a tap just left, and judged decodes remaining
-  const kfSwitchRef = useRef({ cur: null, session: null, store: new Map(), last: '' }); // KF_SWITCH
+  const kfSwitchRef = useRef({ cur: null, session: null, store: new Map(), last: '' }); // PANKTI_CUMULATION_SWITCH
   const baniLengthRef = useRef('short');
   baniLengthRef.current = baniLength;
   // The user's own length (what they chose), even while Rehras has it raised (by this run,
@@ -2573,13 +2537,13 @@ const VoiceFollow = () => {
         const { step } = memory;
         memory.entries = memory.entries.filter((e) => step - e.step <= 24);
         const hyp = vfNorm(text);
-        // KF_SHEV clock: sung decodes fade the evidence, quiet ones (alaap, tabla) freeze it
-        if (KF_SHEV > 0 && memory.kf)
-          kfShevStep(
+        // Pankti Cumulation clock: sung decodes fade the evidence, quiet ones (alaap, tabla) may freeze it
+        if (PANKTI_CUMULATION_FIND > 0 && memory.kf)
+          pcElapse(
             memory.kf,
-            null,
-            KF_SHEV_FREEZE > 0 && hyp.length < KF_SHEV_QUIET,
             AP_REC_HOP_S,
+            PC_FIND_FREEZE > 0 && hyp.length < PC_QUIET_LETTERS,
+            PC_FIND,
           );
         if (hyp.length >= 8) {
           const acousticRecognizer = recognizerRef.current;
@@ -2765,26 +2729,25 @@ const VoiceFollow = () => {
                 return;
             }
           }
-          if (KF_SHEV > 0 && top && hyp !== memory.kfHyp) {
+          if (PANKTI_CUMULATION_FIND > 0 && top && hyp !== memory.kfHyp) {
             memory.kfHyp = hyp;
             if (!memory.kf) memory.kf = new Map();
-            const ev = kfShevStep(
+            const ev = pcAddHit(
               memory.kf,
               { shabadId: top.shabadId, verseId: top.verseId, score: top.score, margin },
-              true,
-              0,
+              PC_FIND,
             );
-            let lockId = ev && ev.lock ? top.shabadId : null;
+            let lockId = ev && ev.ready ? top.shabadId : null;
             let lockVerse = top.verseId;
-            if (KF_FRAG > 0 && lockId == null) {
+            if (PC_FIND_FRAG > 0 && lockId == null) {
               const words = String(text || '')
                 .trim()
                 .split(/\s+/);
               const pieces = [];
               let cur = [];
-              for (let i = words.length - 1; i >= 0 && pieces.length < KF_FRAG_N; i -= 1) {
+              for (let i = words.length - 1; i >= 0 && pieces.length < PC_FRAG_PIECES; i -= 1) {
                 cur.unshift(words[i]); // whole words only
-                if (vfNorm(cur.join(' ')).length >= KF_FRAG_LEN) {
+                if (vfNorm(cur.join(' ')).length >= PC_FRAG_LETTERS) {
                   pieces.push(cur.join(' '));
                   cur = [];
                 }
@@ -2798,21 +2761,18 @@ const VoiceFollow = () => {
                 const f0 = fl?.[0];
                 const fe =
                   f0 &&
-                  kfShevStep(
+                  pcAddHit(
                     memory.kf,
                     {
                       shabadId: f0.shabadId,
                       verseId: f0.verseId,
                       score: f0.score,
                       margin: f0.score - (fl[1]?.score || 0),
-                      smin: KF_FRAG_SMIN,
-                      mmin: KF_FRAG_MMIN,
-                      w: KF_FRAG_W,
+                      w: PC_FRAG.w,
                     },
-                    true,
-                    0,
+                    { ...PC_FIND, minScore: PC_FRAG.minScore, minMargin: PC_FRAG.minMargin },
                   );
-                if (fe && fe.lock) {
+                if (fe && fe.ready) {
                   lockId = f0.shabadId;
                   lockVerse = f0.verseId;
                 }
@@ -2820,7 +2780,7 @@ const VoiceFollow = () => {
             }
             if (
               lockId != null &&
-              KF_SHEV_PAATH_SKIP > 0 &&
+              PC_FIND_PAATH_SKIP > 0 &&
               poolIndex &&
               (poolIndex.byShabad.get(lockId) || []).some((x) => PAATH_READ_BANIS.includes(x.bani))
             )
@@ -2964,7 +2924,7 @@ const VoiceFollow = () => {
         }
       } else contextEvidenceRef.current = null;
       if (
-        KF_SWITCH > 0 &&
+        PANKTI_CUMULATION_SWITCH > 0 &&
         autopilotRef.current &&
         phaseRef.current === 'following' &&
         !lockingRef.current
@@ -2975,8 +2935,8 @@ const VoiceFollow = () => {
         const ks = kfSwitchRef.current;
         const kfHeard = vfNorm(text);
         if (curId != null && baniIdOf(curId) == null) {
-          kfShevStep(ks.store, null, kfHeard.length < KF_SHEV_QUIET, AP_REC_HOP_S);
-          if (kfHeard.length >= KF_SWITCH_MINL && kfHeard !== ks.last) {
+          pcElapse(ks.store, AP_REC_HOP_S, kfHeard.length < PC_QUIET_LETTERS, PC_SWITCH);
+          if (kfHeard.length >= PC_SWITCH_MIN_LETTERS && kfHeard !== ks.last) {
             ks.last = kfHeard;
             const ctl = new AbortController();
             let found = await searchCanonicalText(text, 4, ctl.signal);
@@ -2994,26 +2954,17 @@ const VoiceFollow = () => {
             const same = k0 && (k0.shabadId === curId || (await isSameGurbani(k0.shabadId, curId)));
             if (kfStale()) return;
             if (k0 && !same && !vetoed) {
-              const ev = kfShevStep(
+              const ev = pcAddHit(
                 ks.store,
                 {
                   shabadId: k0.shabadId,
                   verseId: k0.verseId,
                   score: k0.score,
                   margin: k0.score - (found[1]?.score || 0),
-                  smin: KF_SWITCH_SMIN,
-                  mmin: KF_SWITCH_MMIN,
-                  mfull: KF_SWITCH_MFULL,
                 },
-                true,
-                0,
+                PC_SWITCH,
               );
-              if (
-                ev &&
-                ev.total >= KF_SWITCH_LOCK &&
-                ev.distinct >= KF_SWITCH_DISTINCT &&
-                ev.total >= KF_SWITCH_LEAD * ev.next
-              ) {
+              if (ev && ev.ready) {
                 let profile;
                 try {
                   profile = await loadShabadProfile(k0.shabadId);
@@ -3023,7 +2974,7 @@ const VoiceFollow = () => {
                 if (kfStale()) return;
                 const at = profile ? profile.verses.findIndex((v) => v.verseId === k0.verseId) : -1;
                 if (at >= 0) {
-                  if (SHADOW_BUILD) diag(`vf kirtan switch evidence -> ${k0.shabadId}`);
+                  if (SHADOW_BUILD) diag(`vf pankti cumulation switch -> ${k0.shabadId}`);
                   autopilotLock({
                     shabadId: k0.shabadId,
                     verseId: k0.verseId,
@@ -3343,8 +3294,8 @@ const VoiceFollow = () => {
           hypLen: hypFull.length,
           hypMin: SWITCH_HYP_MIN,
         };
-        let kfFlipTop = null; // KF_FLIP: { key, margin } of the heard line over all Gurbani
-        if (KF_FLIP > 0) {
+        let kfFlipTop = null; // PANKTI_SHARED_HOLD: { id, margin } of the heard line over all Gurbani
+        if (PANKTI_SHARED_HOLD > 0) {
           const ctl = new AbortController();
           let fl0 = await searchCanonicalText(text, 4, ctl.signal);
           if (fl0 && DUP_AWARE_LOCK) fl0 = await distinctLeaders(fl0, 2);
@@ -3371,7 +3322,7 @@ const VoiceFollow = () => {
             step.wins > slot.wins &&
             !(
               (kfFlipTop.id === slot.shabadId || knownSame(kfFlipTop.id, slot.shabadId)) &&
-              kfFlipTop.margin >= KF_FLIP_MMIN
+              kfFlipTop.margin >= PC_SHARED_HOLD_MARGIN
             )
           ) {
             slot.lastScore = sCand; // eslint-disable-line no-param-reassign
@@ -3563,7 +3514,7 @@ const VoiceFollow = () => {
                   step.wins > rs.wins &&
                   !(
                     (kfFlipTop.id === prev.id || knownSame(kfFlipTop.id, prev.id)) &&
-                    kfFlipTop.margin >= KF_FLIP_MMIN
+                    kfFlipTop.margin >= PC_SHARED_HOLD_MARGIN
                   );
                 if (!kfShared) rs.wins = step.wins;
                 if (!step.held) {
