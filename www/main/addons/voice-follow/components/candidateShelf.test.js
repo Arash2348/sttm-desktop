@@ -220,4 +220,22 @@ describe('candidateShelf', () => {
     out = s.update({ now: 32000, items: [e(8, 0.4)], current: 1, heardAt: 32000 });
     assert.deepEqual(ids(out), [8]);
   });
+
+  it('Changing to stays while the evidence stays built up, then returns to the list', () => {
+    const s = createShelf();
+    const e = (id, fill) => ({
+      shabadId: id,
+      pct: 0.02,
+      line: `l${id}`,
+      ev: { total: fill * 2.3, fill },
+    });
+    const lead = { shabadId: 7, line: 'l7', wins: 1 };
+    s.update({ now: 1000, items: [e(7, 0.7)], current: 1, heardAt: 1000, lead });
+    let out = s.update({ now: 5000, items: [e(7, 0.65)], current: 1, heardAt: 5000 });
+    assert.equal(s.changeCard(5000).shabadId, 7, 'judge let go 4 s ago, evidence still 65%');
+    assert.deepEqual(ids(out), []);
+    out = s.update({ now: 9000, items: [e(7, 0.4)], current: 1, heardAt: 9000 });
+    assert.equal(s.changeCard(9000), null);
+    assert.deepEqual(ids(out), [7]);
+  });
 });

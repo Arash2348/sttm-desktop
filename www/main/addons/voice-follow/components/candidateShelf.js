@@ -41,6 +41,7 @@ const DEFAULTS = {
   changeHoldMs: 2500, // the change card stays this long after the judge stops checking it
   evSwap: 0.25, // evidence cards: one passes another only when ahead by more than this
   evOvertake: 0.3, // full list: a newcomer must beat the weakest evidence card by this much
+  changeKeepFill: 0.6, // "Changing to" stays while the Shabad's evidence is this far to the line
 };
 
 function createShelf(params = {}) {
@@ -126,7 +127,13 @@ function createShelf(params = {}) {
         t.lastAt = Math.max(t.lastAt, now);
         t.item = { ...t.item, ...lead };
       }
-    } else if (change && now - change.lastAt > P.changeHoldMs) change = null;
+    } else if (change && now - change.lastAt > P.changeHoldMs) {
+      // An evidence card stays in "Changing to" while its Shabad's evidence stays well built
+      // up, so a wobble in the judge's count does not send it back and forth to the list.
+      const t = tracks.get(change.id);
+      const ev = (items.find((it) => it.shabadId === change.id) || {}).ev || (t && t.ev);
+      if (!(ev && ev.fill >= P.changeKeepFill)) change = null;
+    }
     const changeId = change ? change.id : null;
 
     const present = new Map(items.map((it) => [it.shabadId, it]));
