@@ -160,9 +160,12 @@ test_split() {
 # practice and test, from that namespace only. Mac (q16, darwin-arm64) entries are never read or written here.
 # Resumable: the local cache and saved replays survive the 6 h stop; rerunning the same job skips finished work.
 x86() {
+  # MSHA / MTAG (set by x86m): another speech model's own cache namespace, work folder and scorecard names
+  export MSHA="${MSHA:-5f9e41d867de}"
+  local MW="${MTAG:+-$MTAG}"
   export VF_EMIS_CODEC=q16-x86 VF_RECORD_JOBS="${VF_RECORD_JOBS:-10}" VF_REPLAY_MAX="${VF_REPLAY_MAX:-$(( NP - 2 ))}" VF_REPLAY_SLOTS=8
   unset VF_SPLIT
-  local C=/root/personal/live-darbar-venues/cache BENCH=/home/user/gab/bench W=/home/user/gab/x86 t0=$(date +%s)
+  local C=/root/personal/live-darbar-venues/cache BENCH=/home/user/gab/bench W=/home/user/gab/x86$MW t0=$(date +%s)
   mkdir -p $W/cards
   cd "$TOOLS"
   # Akhand Paath audio + keys live in the benchmark folder (its runner reads them there), both splits
@@ -182,18 +185,18 @@ x86() {
   # seed the x86 namespace: this machine's own linux-x64 q16 entries (local copy), then whatever Azure q16-x86 holds
   node -e '
     const fs=require("fs"),path=require("path");const jobs=require(process.argv[1]);const C=process.argv[2];let n=0;
-    for(const j of jobs){const src=path.join(C,"5f9e41d867de-q16",j.id),dst=path.join(C,"5f9e41d867de-q16-x86",j.id);
+    for(const j of jobs){const src=path.join(C,process.env.MSHA+"-q16",j.id),dst=path.join(C,process.env.MSHA+"-q16-x86",j.id);
       if(fs.existsSync(path.join(dst,"index.jsonl")))continue;let p=null;try{p=JSON.parse(fs.readFileSync(path.join(src,"provenance.json"))).platform}catch(_){}
       if(p!=="linux-x64"||!fs.existsSync(path.join(src,"index.jsonl")))continue;fs.cpSync(src,dst,{recursive:true});n++;}
     console.log("x86: seeded",n,"entries from this machine'"'"'s linux-x64 q16 cache");' $W/jobs.json $C
   node -e '
     const r=require("./remote-cache");const jobs=require(process.argv[1]);
-    r.pull({root:"/root/personal/live-darbar-venues/cache",model:"5f9e41d867de",codec:"q16-x86",clips:jobs.map(j=>({id:j.id,wav:j.wav})),log:()=>{}}).then(x=>console.log("x86: pulled",x.pulled,"q16-x86 entries",(x.bytes/1e9).toFixed(1),"GB"));' $W/jobs.json
+    r.pull({root:"/root/personal/live-darbar-venues/cache",model:process.env.MSHA,codec:"q16-x86",clips:jobs.map(j=>({id:j.id,wav:j.wav})),log:()=>{}}).then(x=>console.log("x86: pulled",x.pulled,"q16-x86 entries",(x.bytes/1e9).toFixed(1),"GB"));' $W/jobs.json
   node "$REPO/research/cloud-gab/results-sync.js" pull
   df -h / | tail -1
   # once (Oct 17): kh04 was recorded by two processes at once in the first x86 run (fremont + jaspal) before the tools
   # serialised that; its x86 entry was never shared, drop it here so it is recorded again cleanly
-  [ -f $W/kh04-reset ] || { rm -rf "$C/5f9e41d867de-q16-x86/kh04_sttm_desktop_2026_10_08T03_51_10_447Z"; touch $W/kh04-reset; echo "x86: kh04 entry reset"; }
+  [ -f $W/kh04-reset ] || { rm -rf "$C/$MSHA-q16-x86/kh04_sttm_desktop_2026_10_08T03_51_10_447Z"; touch $W/kh04-reset; echo "x86: kh04 entry reset"; }
   # record: each FILL build replays every recording; a recording that leaves the cache (no x86 output yet, or a
   # behaviour that asks for new windows) is recorded with the model on this machine, then replayed again
   for b in ${FILL:-$SCORE}; do
@@ -211,19 +214,64 @@ x86() {
   # share: the x86 entries (only those larger than Azure's copy) and the replays
   node -e '
     const r=require("./remote-cache");const jobs=require(process.argv[1]);
-    r.push({root:"/root/personal/live-darbar-venues/cache",model:"5f9e41d867de",codec:"q16-x86",clips:jobs.map(j=>({id:j.id,wav:j.wav})),commit:"cloud-gab x86 reference",log:()=>{}}).then(x=>console.log("x86: pushed to Azure bench-cache q16-x86:",x.pushed,"entries",(x.bytes/1e9).toFixed(1),"GB"));' $W/jobs.json
+    r.push({root:"/root/personal/live-darbar-venues/cache",model:process.env.MSHA,codec:"q16-x86",clips:jobs.map(j=>({id:j.id,wav:j.wav})),commit:"cloud-gab x86 reference",log:()=>{}}).then(x=>console.log("x86: pushed to Azure bench-cache q16-x86:",x.pushed,"entries",(x.bytes/1e9).toFixed(1),"GB"));' $W/jobs.json
   node "$REPO/research/cloud-gab/results-sync.js" push
   # score: every tier, practice and test, x86 namespace only
   for b in ${SCORE:-}; do
     for sp in dev test; do for t in main akhand hard; do
       VF_MIN_FREE_GB=3 ./gab run $P/$b --set $t --tier full --jobs $(( NP - 2 )) --manifest hf --split $sp --out $W/run-$b-$t-$sp > $W/score-$b-$t-$sp.log 2>&1; echo "x86 score $b $t $sp exit $?"
       grep -E "^\| \*\*|INCOMPLETE|Not run" $W/score-$b-$t-$sp.log | cut -c1-240
-      mkdir -p $W/cards/$b; cp $W/run-$b-$t-$sp/scorecard.json $W/cards/$b/$t-$sp.json 2>/dev/null; cp $W/run-$b-$t-$sp/scorecard.md $W/cards/$b/$t-$sp.md 2>/dev/null
+      mkdir -p $W/cards/$b$MW; cp $W/run-$b-$t-$sp/scorecard.json $W/cards/$b$MW/$t-$sp.json 2>/dev/null; cp $W/run-$b-$t-$sp/scorecard.md $W/cards/$b$MW/$t-$sp.md 2>/dev/null
     done; done
   done
   node "$REPO/research/cloud-gab/results-sync.js" push --prefix bench-results/x86-cards --dir $W/cards --overwrite
   node "$REPO/research/cloud-gab/results-sync.js" push
   echo "x86 done ($(( ($(date +%s) - t0) / 60 )) min)"
+}
+# Model swap (owner, Oct 17: Bhai Surinder Singh's speech model in Voice Autopilot). Exports the .nemo to the app's ONNX
+# contract (research/model-swap on branch model-swap-1: fp32 + int8, pa-only CTC head, mel front-end in the graph),
+# checks it (fp32 = NeMo, int8 vs fp32 on 20 windows, 2-thread speed vs Karanbir int8), shares the files in Azure
+# bench-models/, then runs the x86 job once per precision with MODEL = that file: its own cache namespace
+# (bench-cache/<sha12>/q16-x86), work folder /home/user/gab/x86-s<tag><prec>, scorecards bench-results/x86-cards/<build>-s<tag><prec>.
+#   cg-nemo   <hf repo>/<file.nemo> (default: v3; a private repo is read with the VM's HF token)   cg-mstag  short name (default v3)
+#   cg-precs  "int8 fp32" (default)        cg-fill / cg-score  builds (default aarti906 = 9.0.4 + AARTI_FOLLOW=1)
+x86m() {
+  local MS=/root/ms TAG="${MS_TAG:-v3}" NEMO="${MS_NEMO:-surindersinghssj/indicconformer-pa-v3-kirtan/indicconformer-pa-v3-kirtan.nemo}"
+  local D=/root/ms/$TAG-app SRC=/home/user/ms-src
+  mkdir -p $MS
+  git -C "$REPO" worktree remove -f $SRC 2>/dev/null; rm -rf $SRC
+  git -C "$REPO" worktree add -q --detach $SRC origin/model-swap-1 || { echo "x86m: branch model-swap-1 not fetched"; return 1; }
+  if [ ! -s $D/model.int8.onnx ] || [ ! -s $D/model.fp32.onnx ]; then
+    if [ ! -x $MS/venv/bin/python ]; then
+      apt-get install -y -qq python3-venv >/dev/null 2>&1
+      python3 -m venv $MS/venv && $MS/venv/bin/pip install -q --upgrade pip \
+        && $MS/venv/bin/pip install -q torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu \
+        && $MS/venv/bin/pip install -q "nemo_toolkit[asr]==2.1.0" onnx onnxruntime==1.20.1 sentencepiece
+    fi
+    local repo=${NEMO%/*} file=${NEMO##*/}
+    if [ ! -s $MS/$TAG.nemo ]; then
+      curl -sS -f -L -H "Authorization: Bearer $HF_TOKEN" -o $MS/$TAG.nemo.part "https://huggingface.co/$repo/resolve/main/$file" && mv -f $MS/$TAG.nemo.part $MS/$TAG.nemo
+    fi
+    [ -s $MS/$TAG.nemo ] || { echo "x86m: could not download $NEMO (a private repo needs the HF token to have access)"; return 1; }
+    (cd $SRC/research/model-swap && nice -n 5 $MS/venv/bin/python export_app_onnx.py $MS/$TAG.nemo $D) 2>&1 | grep -v -i "warn\|transformers\|NeMo I\|_C._jit" | tail -25
+    [ -s $D/model.int8.onnx ] || { echo "x86m: export failed"; return 1; }
+  fi
+  if [ ! -s $D/verify.json ]; then
+    local CL=/Users/asingh02/personal/live-darbar-venues/clips
+    (cd $SRC/research/model-swap && nice -n 5 $MS/venv/bin/python verify_app_onnx.py --nemo $MS/$TAG.nemo --dir $D --n 20 \
+      --wavs $CL/clip01_aQiVq9ZK8hA_23185-23437.wav,$CL/pt01_vbkJ39xnza8_10-80.wav,$CL/aa01_r1aarti_0-460.wav,$CL/l3clip01_WuciQokua6w_60-615.wav,$CL/kh01_sttm_desktop_2026_10_08T03_18_48_617Z.wav \
+      --speed karanbir-int8=/Users/asingh02/AAI/models/karansea-shabad-ctc/model.int8.onnx) 2>&1 | grep -E "^SUMMARY|^v-|^karanbir" | cut -c1-600
+  fi
+  grep -o '"fp32_text_identical_to_nemo": [0-9]*\|"int8_char_diff_pct": [0-9.]*' $D/verify.json | head -2
+  # the exported files, shared once (add only; never overwrites)
+  node "$REPO/research/cloud-gab/results-sync.js" push --prefix bench-models/surinder-$TAG-app --dir $D 2>&1 | tail -1
+  local prec
+  for prec in ${MS_PRECS:-int8 fp32}; do
+    export MODEL=$D/model.$prec.onnx
+    MSHA=$(sha256sum $MODEL | cut -c1-12) MTAG=s$TAG$prec FILL="${FILL:-aarti906}" SCORE="${SCORE:-aarti906}" x86
+    echo "x86m $TAG $prec done (model $(sha256sum $MODEL | cut -c1-12))"
+  done
+  unset MODEL
 }
 lines() {
   cd "$REPO/research/cloud-gab/lines"
@@ -242,6 +290,7 @@ case "$JOB" in
   apaath*) apaath ;;
   score*) score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
   test*) test_split ;;
+  x86m*) x86m ;;
   x86*) x86 ;;
   lines*) lines ;;
   all*) fill_x86 & lines; wait ;;
