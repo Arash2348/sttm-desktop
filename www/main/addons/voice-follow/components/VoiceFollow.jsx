@@ -254,6 +254,12 @@ const KF_SWITCH_MFULL = 0.2;
 const KF_SWITCH_LOCK = 2.0;
 const KF_SWITCH_DISTINCT = 3;
 const KF_SWITCH_LEAD = 2;
+// Flip-flops (owner's live test: a pangti shared by several Shabads flipped the screen 6 times):
+// a switch WIN counts only when the heard line, searched over all Gurbani, puts the candidate on
+// top by >= KF_FLIP_MMIN over the next distinct Shabad. A shared line holds the count (no win, no
+// loss). 0 = off.
+const KF_FLIP = 0;
+const KF_FLIP_MMIN = 0.05;
 const KF_FRAG = 0;
 const KF_FRAG_N = 3;
 const KF_FRAG_LEN = 22;
@@ -3326,6 +3332,16 @@ const VoiceFollow = () => {
           hypLen: hypFull.length,
           hypMin: SWITCH_HYP_MIN,
         };
+        let kfFlipTop = null; // KF_FLIP: { key, margin } of the heard line over all Gurbani
+        if (KF_FLIP > 0) {
+          const ctl = new AbortController();
+          let fl0 = await searchCanonicalText(text, 4, ctl.signal);
+          if (fl0 && DUP_AWARE_LOCK) fl0 = await distinctLeaders(fl0, 2);
+          if (!isCurrentTranscript() || lockingRef.current) return;
+          kfFlipTop = fl0?.[0]
+            ? { id: fl0[0].shabadId, margin: fl0[0].score - (fl0[1]?.score || 0) }
+            : { id: null, margin: 0 };
+        }
         const stepSlot = (slot, sCand) => {
           // Suppress confirmation only for identities in the tied leader set.
           const vetoed =
@@ -3339,6 +3355,17 @@ const VoiceFollow = () => {
             return false;
           }
           const step = nextSwitchWins(slot.wins, sCand, sCurFull, acousticCfg);
+          if (
+            kfFlipTop &&
+            step.wins > slot.wins &&
+            !(
+              (kfFlipTop.id === slot.shabadId || knownSame(kfFlipTop.id, slot.shabadId)) &&
+              kfFlipTop.margin >= KF_FLIP_MMIN
+            )
+          ) {
+            slot.lastScore = sCand; // eslint-disable-line no-param-reassign
+            return slot.wins >= SWITCH_CONFIRM; // a shared line: hold the count
+          }
           slot.wins = step.wins; // eslint-disable-line no-param-reassign
           // Held decodes judged nothing — keep showing the last judged score.
           if (!step.held) slot.lastScore = sCand; // eslint-disable-line no-param-reassign
@@ -3519,7 +3546,15 @@ const VoiceFollow = () => {
               const m = bestLineMatch(hypFull, prev.profile.linesNorm, SWITCH_CAND_MIN_LINE_CHARS);
               if (m.index >= 0) {
                 const step = nextSwitchWins(rs.wins, m.s, sCurFull, acousticCfg);
-                rs.wins = step.wins;
+                const kfShared =
+                  kfFlipTop &&
+                  baniIdOf(prev.id) == null &&
+                  step.wins > rs.wins &&
+                  !(
+                    (kfFlipTop.id === prev.id || knownSame(kfFlipTop.id, prev.id)) &&
+                    kfFlipTop.margin >= KF_FLIP_MMIN
+                  );
+                if (!kfShared) rs.wins = step.wins;
                 if (!step.held) {
                   rs.lastScore = m.s;
                   rs.index = m.index;
