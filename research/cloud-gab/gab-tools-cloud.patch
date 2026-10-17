@@ -1,5 +1,5 @@
 diff --git a/research/level2-dataset/tools/folder-names.js b/research/level2-dataset/tools/folder-names.js
-index 304c564..c1e220d 100644
+index 304c5647..c1e220d6 100644
 --- a/research/level2-dataset/tools/folder-names.js
 +++ b/research/level2-dataset/tools/folder-names.js
 @@ -4,7 +4,9 @@
@@ -14,7 +14,7 @@ index 304c564..c1e220d 100644
 +const TOP = ['1-kirtan-shabad', '2-bani-recited', '3-bani-sung-like-kirtan', '4-akhand-paath', '5-akhand-kirtan'];
  module.exports = { canonFolder, TOP, ALIASES };
 diff --git a/research/level2-dataset/tools/gab-add-sheet-rows.js b/research/level2-dataset/tools/gab-add-sheet-rows.js
-index 28e64ef..c9bd1ed 100644
+index 28e64efa..c9bd1edd 100644
 --- a/research/level2-dataset/tools/gab-add-sheet-rows.js
 +++ b/research/level2-dataset/tools/gab-add-sheet-rows.js
 @@ -7,7 +7,7 @@
@@ -37,7 +37,7 @@ index 28e64ef..c9bd1ed 100644
        split: G.split(r), session: `${G.venue}-${r.video_id}`, truth_provenance: G.provenance(k, r), suite_jobs: `${G.suite}:${id}`,
        cache: 'no', cache_id: job.id, lines_n: 0, lines_source: 'none', shabads_n: truthRows.length,
 diff --git a/research/level2-dataset/tools/gab-publish.js b/research/level2-dataset/tools/gab-publish.js
-index b2f3a47..68246bf 100644
+index b2f3a47b..68246bf8 100644
 --- a/research/level2-dataset/tools/gab-publish.js
 +++ b/research/level2-dataset/tools/gab-publish.js
 @@ -76,6 +76,9 @@ function tierRows(card) {
@@ -91,9 +91,18 @@ index b2f3a47..68246bf 100644
    fs.writeFileSync(path.join(S, 'push.py'), py);
    fs.writeFileSync(path.join(S, 'ops.json'), JSON.stringify(ops));
 diff --git a/research/level2-dataset/tools/gab-score.js b/research/level2-dataset/tools/gab-score.js
-index eb0129b..0db1030 100644
+index eb0129b4..d2bbf5cc 100644
 --- a/research/level2-dataset/tools/gab-score.js
 +++ b/research/level2-dataset/tools/gab-score.js
+@@ -33,7 +33,7 @@ const fs = require('fs');
+ const path = require('path');
+ const crypto = require('crypto');
+ 
+-const GAB_VERSION = 'GAB v1.3';
++const GAB_VERSION = 'GAB v1.4';
+ // ---------------------------------------------------------------- tiers -------------
+ // gab-sets.json `tiers`: { main: { excludeTiers: ['hard', 'akhand'] }, hard: { gurdwara: '<regex>' }, akhand: { gurdwara: '<regex>', notes: '<tag regex>' } }
+ function tierOf(row, sets = loadSets()) {
 @@ -47,7 +47,7 @@ function tierOf(row, sets = loadSets()) {
  const inTier = (row, tier, sets) => tier === 'all' || tierOf(row, sets) === tier;
  const tierTitle = (tier, sets = loadSets()) => ((sets.tiers || {})[tier] || {}).title || tier;
@@ -104,7 +113,7 @@ index eb0129b..0db1030 100644
  const r1 = (x) => (x == null || Number.isNaN(x) ? null : +x.toFixed(1));
  const r2 = (x) => (x == null || Number.isNaN(x) ? null : +x.toFixed(2));
 diff --git a/research/level2-dataset/tools/gab-space/gab-names.json b/research/level2-dataset/tools/gab-space/gab-names.json
-index c0da80c..f54ea76 100644
+index c0da80c0..f54ea76f 100644
 --- a/research/level2-dataset/tools/gab-space/gab-names.json
 +++ b/research/level2-dataset/tools/gab-space/gab-names.json
 @@ -104,6 +104,14 @@
@@ -125,7 +134,7 @@ index c0da80c..f54ea76 100644
 +}
 \ No newline at end of file
 diff --git a/research/level2-dataset/tools/gab.js b/research/level2-dataset/tools/gab.js
-index 6e57021..c2069b4 100644
+index 6e570213..ed79ba97 100644
 --- a/research/level2-dataset/tools/gab.js
 +++ b/research/level2-dataset/tools/gab.js
 @@ -38,20 +38,24 @@ const G = require('./gab-score');
@@ -158,7 +167,18 @@ index 6e57021..c2069b4 100644
  }
  // --manifest hf[:org/repo]: score against the dataset on Hugging Face (manifest + the selected clips' truth csv files,
  // cached per manifest hash under <cache>/gab-hf/<sha>/); default: the local copy ~/personal/vf-benchmark
-@@ -206,6 +210,9 @@ function freeBytes(dir) {
+@@ -184,6 +188,10 @@ function select({ tier = arg('tier', 'smoke'), folders = arg('folders'), set = g
+   const { exclude } = sets;
+   for (const r of rows) {
+     if (exclude[r.id]) { notRun.push({ id: r.id, folder: r.content_folder, why: `excluded (${exclude[r.id]})` }); continue; }
++    // GAB v1.4: an exclusion can also live in the dataset (manifest notes tag `gab-exclude: <reason>`), e.g. a cut whose
++    // keyed moments another cut of the same performance already scores (each sung moment is scored once)
++    const exTag = /\bgab-exclude:\s*([^;|]+)/i.exec(r.notes || '');
++    if (exTag) { notRun.push({ id: r.id, folder: r.content_folder, why: `excluded (${exTag[1].trim()})` }); continue; }
+     const first = (r.suite_jobs || '').split(';').filter(Boolean)[0];
+     if (!first) { notRun.push({ id: r.id, folder: r.content_folder, why: 'no replay runner for this clip yet' }); continue; }
+     const [suite, clip] = first.split(':');
+@@ -206,6 +214,9 @@ function freeBytes(dir) {
  // Pull every entry that is missing locally (thorough: also partial ones) from the shared Azure bench-cache.
  // Returns the ids still missing in both places (= need the model).
  async function pullMissing(clips, { thorough = false, say = console.log } = {}) {
@@ -169,7 +189,7 @@ index 6e57021..c2069b4 100644
    const todo = thorough ? uniq : uniq.filter((c) => !cachedLocally(c.id));
    if (!todo.length) return [];
 diff --git a/research/level2-dataset/tools/remote-cache.js b/research/level2-dataset/tools/remote-cache.js
-index bb2861c..1dda5f5 100644
+index bb2861c2..1dda5f5d 100644
 --- a/research/level2-dataset/tools/remote-cache.js
 +++ b/research/level2-dataset/tools/remote-cache.js
 @@ -15,12 +15,15 @@ const crypto = require('crypto');
@@ -197,7 +217,7 @@ index bb2861c..1dda5f5 100644
 -module.exports = { push, pull, list, audioSha, redact, PREFIX };
 +module.exports = { push, pull, list, audioSha, redact, fixTimes, PREFIX };
 diff --git a/research/level2-dataset/tools/vf-check.js b/research/level2-dataset/tools/vf-check.js
-index 0ef7cfb..c7fa5e2 100644
+index 0ef7cfb4..c7fa5e28 100644
 --- a/research/level2-dataset/tools/vf-check.js
 +++ b/research/level2-dataset/tools/vf-check.js
 @@ -31,7 +31,7 @@ const { DEFAULT_ROOT, modelSha } = require('./emis-cache');

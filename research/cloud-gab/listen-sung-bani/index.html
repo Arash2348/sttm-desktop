@@ -1,0 +1,52 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sung Bani Listening Check</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1d1b;--mut:#6b6a66;--card:#fff;--line:#e4e1da;--acc:#9a5b13}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161615;--fg:#ecebe7;--mut:#a3a19b;--card:#1f1f1d;--line:#34332f;--acc:#e0a35a}}
+:root[data-theme="dark"]{--bg:#161615;--fg:#ecebe7;--mut:#a3a19b;--card:#1f1f1d;--line:#34332f;--acc:#e0a35a}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,sans-serif}
+main{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:1.4rem;margin:0 0 4px}p.sub{color:var(--mut);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0}
+.q{font-weight:600}.meta{color:var(--mut);font-size:.88rem}.g{font-size:1.05rem}
+audio{width:100%;margin:8px 0}.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opts label{border:1px solid var(--line);border-radius:16px;padding:3px 10px;cursor:pointer;font-size:.92rem}
+.opts input{margin-right:4px}textarea{width:100%;box-sizing:border-box;margin-top:6px;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:6px}
+button{background:var(--acc);color:#fff;border:0;border-radius:8px;padding:10px 16px;font-size:1rem;cursor:pointer}
+h2{font-size:1.05rem;margin:22px 0 4px}
+</style></head><body><main>
+<h1>Sung Bani listening check</h1>
+<p class="sub">15 clips, 10 s each, from the GAB Sung Bani recordings. One question per clip. Pick an answer, add a note if you like, then press Copy my notes at the bottom.</p>
+<div id="list"></div>
+<p><button id="copy">Copy my notes</button> <span id="ok" class="meta"></span></p>
+<script>
+const S=[
+ {h:'Talk inside a Saloks recording (Renton, Oct 11, held back)'},
+ {id:'fareed1-000',m:'rt11_fareed1, 0:00-0:10',q:'Is this the ragi talking (not Bani)?',g:'',o:['Talk, not Bani','Bani sung','Not sure']},
+ {id:'fareed1-026',m:'rt11_fareed1, 0:26-0:36 (key starts at 0:34)',q:'Does the talk end and the singing start near 0:34?',g:'ਏ ਦੁਇ ਨੈਨਾ ਮਤਿ ਛੁਹਉ ਪਿਰ ਦੇਖਨ ਕੀ ਆਸ ॥',o:['Yes, singing starts by 0:34','Talk goes on past 0:34','Not sure']},
+ {id:'fareed1-396',m:'rt11_fareed1, 6:36-6:46 (app jumped to another Shabad at 6:43 for 12 s)',q:'Is this Bani sung, or talk?',g:'ਏ ਦੁਇ ਨੈਨਾ ਮਤਿ ਛੁਹਉ ਪਿਰ ਦੇਖਨ ਕੀ ਆਸ ॥',o:['Bani sung','Talk','Not sure']},
+ {id:'fareed1-452',m:'rt11_fareed1, 7:32-7:42 (end of the recording, keyed as the Salok)',q:'Is the Salok still being sung here?',g:'ਏ ਦੁਇ ਨੈਨਾ ਮਤਿ ਛੁਹਉ ਪਿਰ ਦੇਖਨ ਕੀ ਆਸ ॥',o:['Still sung','Talk or Ardas','Instruments only','Not sure']},
+ {h:'A second Salok inside a Saloks recording (key fixed)'},
+ {id:'fareed2-222',m:'rt11_fareed2, 3:42-3:52 (new key: Salok 29 from 3:44)',q:'Is this Salok 29?',g:'ਰੁਖੀ ਸੁਖੀ ਖਾਇ ਕੈ ਠੰਢਾ ਪਾਣੀ ਪੀਉ ॥',o:['Yes','No, still Salok 28','Not sure']},
+ {id:'fareed2-292',m:'rt11_fareed2, 4:52-5:02 (new key: back to Salok 28 at 4:59)',q:'Does Salok 28 come back here?',g:'ਫਰੀਦਾ ਰੋਟੀ ਮੇਰੀ ਕਾਠ ਕੀ ਲਾਵਣੁ ਮੇਰੀ ਭੁਖ ॥',o:['Yes','No','Not sure']},
+ {h:'After Aarti, Renton hall Sep 25 (keyed as Aarti before; now Jaap Sahib and Sukhmani Salok)'},
+ {id:'aa24-116',m:'aa24, 1:56-2:06 (Aarti ends 2:03, then Jaap Sahib)',q:'Does Aarti end and Jaap Sahib (Chatr chakr) begin here?',g:'ਤੀਨ ਲੋਕ ਜੈ ਜੈ ਕਰੈ ਰਰੈ ਨਾਮੁ ਸਤਿ ਜਾਪ ॥ / ਚੱਤ੍ਰ ਚੱਕ੍ਰ ਵਰਤੀ ਚੱਤ੍ਰ ਚੱਕ੍ਰ ਭੁਗਤੇ ॥',o:['Yes','Still Aarti','Not sure']},
+ {id:'aa26-004',m:'aa26, 0:04-0:14',q:'Is this Jaap Sahib?',g:'ਚੱਤ੍ਰ ਚੱਕ੍ਰ ਵਰਤੀ ਚੱਤ੍ਰ ਚੱਕ੍ਰ ਭੁਗਤੇ ॥',o:['Jaap Sahib','Aarti','Other','Not sure']},
+ {id:'aa26-060',m:'aa26, 1:00-1:10 (no key now)',q:'What is here?',g:'',o:['Instruments only','Waheguru simran','Bani sung','Talk','Not sure']},
+ {id:'aa25-120',m:'aa25, 2:00-2:10 (no key now)',q:'What is here?',g:'',o:['Instruments only','Waheguru simran','Bani sung','Talk','Not sure']},
+ {id:'aa26-098',m:'aa26, 1:38-1:48 (new key: Sukhmani Salok from 1:40)',q:'Is this the Sukhmani Salok?',g:'ਦੀਨ ਦਰਦ ਦੁਖ ਭੰਜਨਾ ਘਟਿ ਘਟਿ ਨਾਥ ਅਨਾਥ ॥',o:['Yes','No','Not sure']},
+ {h:'Asa di Vaar style (moved from Sung Bani to Akhand Kirtan)'},
+ {id:'ytasa1-060',m:'ytasa1: Bhai Nirmal Singh Ji Khalsa, Asa di Vaar, London 2019 (practice)',q:'Style?',g:'',o:['Akhand Kirtan style (many voices)','Ordinary ragi jatha','Not sure']},
+ {id:'nw11asa1-300',m:'nw11_asa1: Khalsa School Newton, Oct 11 (held back)',q:'Style?',g:'',o:['Akhand Kirtan style (many voices)','Ordinary ragi jatha','Not sure']},
+ {id:'nw11asa2-030',m:'nw11_asa2: Khalsa School Newton, Oct 11 (held back)',q:'Style?',g:'',o:['Akhand Kirtan style (many voices)','Ordinary ragi jatha','Not sure']},
+ {id:'kh16-1200',m:'kh16: Gurdwara Sahib Fremont, Oct 11, laptop mic (Fremont tier, not scored)',q:'Style?',g:'',o:['Akhand Kirtan style (many voices)','Ordinary ragi jatha','Not sure']},
+];
+const L=document.getElementById('list');
+S.forEach((s,i)=>{ if(s.h){const h=document.createElement('h2');h.textContent=s.h;L.append(h);return;}
+ const d=document.createElement('div');d.className='card';
+ d.innerHTML=`<div class="q">${s.q}</div><div class="meta">${s.m}</div>${s.g?`<div class="g">${s.g}</div>`:''}<audio controls preload="none" src="${s.id}.mp3"></audio><div class="opts">${s.o.map(o=>`<label><input type="radio" name="${s.id}" value="${o}">${o}</label>`).join('')}</div><textarea rows="1" placeholder="Note (optional)" data-id="${s.id}"></textarea>`;
+ L.append(d);});
+document.getElementById('copy').onclick=async()=>{
+ const t=S.filter(s=>s.id).map(s=>{const a=document.querySelector(`input[name="${s.id}"]:checked`);const n=document.querySelector(`textarea[data-id="${s.id}"]`).value.trim();return `${s.id}: ${a?a.value:'-'}${n?' | '+n:''}`;}).join('\n');
+ try{await navigator.clipboard.writeText(t);document.getElementById('ok').textContent='Copied.';}catch(e){prompt('Copy these notes:',t);} };
+</script></main></body></html>
