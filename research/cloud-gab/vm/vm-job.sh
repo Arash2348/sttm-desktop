@@ -158,8 +158,51 @@ lines() {
   node "$REPO/research/cloud-gab/results-sync.js" push --prefix gab-lines --dir /home/user/gab/lines --skip '^(emis|work)/' --overwrite
   echo "lines done"
 }
+# P0 Sung Bani (owner, Oct 17): the owner's all-Banis-sung Nitnem video (Rt1TyWzPykc) cut into 5-10 min clips
+# (hf-sung-bani/). Fetches the clips from the dataset revision SB_REV (the open PR, refs/pr/N, until merged), records
+# their model output on 9.0.4 (r904) on THIS machine (x86), fills what the 9.0.6 candidate (cand906b) asks for,
+# pushes the cache, scores both builds on just these clips, and shares the scorecards (Azure sung-bani-data/).
+sungbani() {
+  local BENCH=/home/user/gab/sb-bench REV="${SB_REV:-main}" OUTD=/home/user/gab/sb-out
+  mkdir -p "$BENCH" "$OUTD"
+  local R="https://huggingface.co/datasets/khalisfoundation/GurbaniAutopilotBench/resolve/${REV//\//%2F}"
+  curl -sS -f -L -H "Authorization: Bearer $HF_TOKEN" -o "$BENCH/manifest.csv" "$R/manifest.csv" || { echo "sungbani: no manifest at $REV"; return 1; }
+  export VF_BENCHMARK="$BENCH"
+  local IDS
+  IDS=$(cd "$TOOLS" && node -e 'const {parseCsv,canonRows}=require("./vf-manifest");const rows=canonRows(parseCsv(require("fs").readFileSync(process.argv[1],"utf8")));console.log(rows.filter(r=>/^yt[a-z0-9]+_Rt1TyWzPykc_/.test(r.id)&&/apaath:/.test(r.suite_jobs||"")).map(r=>r.id+"@"+r.content_folder).join(","))' "$BENCH/manifest.csv")
+  local ONLY=""
+  for x in ${IDS//,/ }; do
+    local id=${x%@*} f=${x#*@}; ONLY="$ONLY,$id"
+    mkdir -p "$BENCH/$f/$id"
+    for g in audio.wav shabads.csv lines.csv meta.json; do
+      [ -s "$BENCH/$f/$id/$g" ] || curl -sS -f -L -H "Authorization: Bearer $HF_TOKEN" -o "$BENCH/$f/$id/$g" "$R/$f/$id/$g" || echo "sungbani: $id/$g not fetched"
+    done
+  done
+  ONLY=${ONLY#,}; echo "sungbani: $(echo "$ONLY" | tr ',' '\n' | wc -l) clips from $REV"
+  cd "$TOOLS"
+  node "$REPO/research/cloud-gab/results-sync.js" pull >/dev/null 2>&1
+  node vf-check.js --record --roots $P/r904 --suites apaath --only "$ONLY" --no-pull --jobs "$NP" > /home/user/gab/sb-record.log 2>&1; echo "sungbani record r904 exit $?"
+  grep -E "REFUSED|recorded|error|done:" /home/user/gab/sb-record.log | tail -5
+  for round in 1 2 3 4 5; do
+    node vf-check.js --base $P/r904 --cand $P/cand906b --suites apaath --only "$ONLY" --fill --no-pull --replay-only --jobs "$NP" --out /home/user/gab/sb-fill > /home/user/gab/sb-fill.log 2>&1; echo "sungbani fill cand906b round $round exit $?"
+    grep -E "REFUSED|recording|went past|replay-only|error" /home/user/gab/sb-fill.log | head -5
+    grep -qE "replay-only: .* [1-9][0-9]* cache misses" /home/user/gab/sb-fill.log || break
+  done
+  FSUITES=apaath push_cache
+  local PRE="ytjapji_Rt1TyWzPykc,ytjaap_Rt1TyWzPykc,yttavprasad_Rt1TyWzPykc,ytrehras_Rt1TyWzPykc,ytaarti_Rt1TyWzPykc,ytsalokm9_Rt1TyWzPykc,ytsohila_Rt1TyWzPykc"
+  for b in r904 cand906b; do
+    VF_MIN_FREE_GB=3 ./gab run $P/$b --set main --tier full --jobs "$NP" --manifest "$BENCH" --folders 3-bani-sung-like-kirtan --ids "$PRE" > /home/user/gab/sb-score-$b.log 2>&1; echo "sungbani score $b exit $?"
+    grep -E "^\| \*\*|INCOMPLETE|Not run" /home/user/gab/sb-score-$b.log | cut -c1-260
+    local d; d=$(ls -td "$TOOLS"/../results/gab/*-run 2>/dev/null | head -1)
+    [ -n "$d" ] && mkdir -p "$OUTD/$b" && cp "$d"/scorecard.* "$OUTD/$b/" && cp /home/user/gab/sb-score-$b.log "$OUTD/$b/"
+  done
+  node "$REPO/research/cloud-gab/results-sync.js" push
+  node "$REPO/research/cloud-gab/results-sync.js" push --prefix sung-bani-data --dir "$OUTD" --overwrite
+  echo "sungbani done"
+}
 case "$JOB" in
   fill-x86*) fill_x86; [[ "$JOB" == *apaath* ]] && apaath; [ -n "${SCORE:-}" ] && score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
+  sungbani*) sungbani ;;
   apaath-test*) AP_SPLIT=test apaath; node "$REPO/research/cloud-gab/results-sync.js" push ;;
   apaath*) apaath ;;
   score*) score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;

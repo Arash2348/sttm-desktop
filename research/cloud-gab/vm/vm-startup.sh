@@ -38,6 +38,7 @@ cd sttm-desktop && echo "code $(git rev-parse --short HEAD)"
 FILL="$(get cg-fill || true)" FSUITES="$(get cg-suites || true)"; [ -n "$FILL" ] || unset FILL; [ -n "$FSUITES" ] || unset FSUITES; export FILL FSUITES
 SCORE="$(get cg-score || true)"; [ -n "$SCORE" ] || unset SCORE; export SCORE
 TEST_BUILDS="$(get cg-test || true)"; [ -n "$TEST_BUILDS" ] || unset TEST_BUILDS; export TEST_BUILDS
+SB_REV="$(get cg-sbrev || true)"; [ -n "$SB_REV" ] || unset SB_REV; export SB_REV
 bash research/cloud-gab/vm/vm-job.sh "$JOB" && echo "JOB DONE $JOB $(date -u +%FT%TZ)" || echo "JOB FAILED $JOB (exit $?) $(date -u +%FT%TZ)"
 echo "$JOB" > $DONE
 sync; sleep 5; poweroff
