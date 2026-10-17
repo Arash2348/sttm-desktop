@@ -200,7 +200,7 @@ sungbani() {
   FSUITES=apaath push_cache
   local PRE="${SB_IDS:-ytjapji_Rt1TyWzPykc,ytjaap_Rt1TyWzPykc,yttavprasad_Rt1TyWzPykc,ytrehras_Rt1TyWzPykc,ytaarti_Rt1TyWzPykc,ytsalokm9_Rt1TyWzPykc,ytsohila_Rt1TyWzPykc}"
   for b in r904 cand906b; do
-    VF_MIN_FREE_GB=3 ./gab run $P/$b --set main --tier full --jobs "$NP" --manifest "$BENCH" --folders 3-bani-sung-like-kirtan --ids "$PRE" > /home/user/gab/sb-score-$b.log 2>&1; echo "sungbani score $b exit $?"
+    VF_MIN_FREE_GB=3 ./gab run $P/$b --set main --tier full --jobs "$NP" --manifest "$BENCH" --folders 3-bani-sung-like-kirtan --ids "$PRE" ${SB_SPLIT:+--split $SB_SPLIT} > /home/user/gab/sb-score-$b.log 2>&1; echo "sungbani score $b exit $?"
     grep -E "^\| \*\*|INCOMPLETE|Not run" /home/user/gab/sb-score-$b.log | cut -c1-260
     local d; d=$(ls -td "$TOOLS"/../results/gab/*-run 2>/dev/null | head -1)
     [ -n "$d" ] && mkdir -p "$OUTD/$b" && cp "$d"/scorecard.* "$OUTD/$b/" && cp /home/user/gab/sb-score-$b.log "$OUTD/$b/"
