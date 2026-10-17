@@ -101,6 +101,12 @@ in the cloud and no recording is Mac-only.
   `node research/cloud-gab/results-sync.js pull --prefix bench-results/x86-cards --dir <dir>`.
 - **Re-score from shared replays** anywhere (container or Mac with the cloud patch): `node research/cloud-gab/results-sync.js pull`,
   then `VF_NO_EMIS_PULL=1 ./gab run <build> --set main|akhand|hard --tier full --manifest hf [--split test]` (no model, seconds).
+- **First run (Oct 17, job x86-ref-2, ~3 h VM):** 327 GAB recordings (34.7 h) all on x86; 183 recorded new (Mac-only
+  before), 138 copied inside Azure from the earlier x86 entries. Scored: r904 (9.0.4), cand906b (9.0.6 candidate),
+  aarti906 (9.0.4 + AARTI_FOLLOW=1), lev1 (BANI_END_EXIT=1). x86 vs the old mixed numbers for 9.0.4, same recordings:
+  within about 1 point on every track; Bani sung wrong-Bani time 55 -> 23 s/h (practice), GAB-Hard practice pangti 47.7 -> 42.5.
+  Akhand Paath practice now has 11 recordings (sp01-03 added) and Akhand Kirtan test 12 (nw11_session), so those rows
+  differ from older numbers by their clip set too.
 - **Recording speed on the VM:** `VF_RECORD_JOBS` (default 10 there) recordings side by side, 3 model threads each;
   `VF_REPLAY_MAX` widens replays past 4 workers. Both default to the old behaviour (1 and 4) on the Mac.
 
