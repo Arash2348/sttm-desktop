@@ -258,6 +258,10 @@ const KF_SWITCH_LEAD = 2;
 // a switch WIN counts only when the heard line, searched over all Gurbani, puts the candidate on
 // top by >= KF_FLIP_MMIN over the next distinct Shabad. A shared line holds the count (no win, no
 // loss). 0 = off.
+// 1 = KF_SHEV never locks a Shabad of Rehras, Sohila, Japji or Aarti: those are read as paath,
+// and the paath rules open the whole Bani (held-back Rehras: KF_SHEV showed its first Shabad
+// early, 3 s scored wrong).
+const KF_SHEV_PAATH_SKIP = 0;
 const KF_FLIP = 0;
 const KF_FLIP_MMIN = 0.05;
 const KF_FRAG = 0;
@@ -2814,6 +2818,13 @@ const VoiceFollow = () => {
                 }
               }
             }
+            if (
+              lockId != null &&
+              KF_SHEV_PAATH_SKIP > 0 &&
+              poolIndex &&
+              (poolIndex.byShabad.get(lockId) || []).some((x) => PAATH_READ_BANIS.includes(x.bani))
+            )
+              lockId = null;
             if (lockId != null) {
               let profile;
               try {
