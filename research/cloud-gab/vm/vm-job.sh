@@ -166,6 +166,8 @@ sungbani() {
   local BENCH=/home/user/gab/sb-bench REV="${SB_REV:-main}" OUTD=/home/user/gab/sb-out
   mkdir -p "$BENCH" "$OUTD"
   export SB_IDRE
+  # SB_CODEC: the cache namespace these recordings use (q16 = where vf-check records by default); gab and vf-check agree
+  [ -n "${SB_CODEC:-}" ] && export VF_EMIS_CODEC=$SB_CODEC
   local R="https://huggingface.co/datasets/khalisfoundation/GurbaniAutopilotBench/resolve/${REV//\//%2F}"
   if [ -n "${SB_STAGE:-}" ]; then
     # the staged PR files (clips + manifest) from Azure
