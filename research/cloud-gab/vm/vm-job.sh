@@ -197,12 +197,9 @@ sungbani() {
     node -e '
       const fs=require("fs"),path=require("path");const [B,L,ids]=process.argv.slice(1);
       for(const f of fs.readdirSync(path.join(L,"keys"),{recursive:true}).filter(x=>x.endsWith("lines.csv"))){const id=path.basename(path.dirname(f));if(!ids.split(",").some(p=>id.startsWith(p)))continue;
-        const [h,...rows]=fs.readFileSync(path.join(L,"keys",f),"utf8").trim().split("
-");const k=h.split(",");const ci=k.indexOf("confidence"),si=k.indexOf("source");
+        const [h,...rows]=fs.readFileSync(path.join(L,"keys",f),"utf8").trim().split(String.fromCharCode(10));const k=h.split(",");const ci=k.indexOf("confidence"),si=k.indexOf("source");
         const keep=rows.filter(r=>{const c=r.split(",");return c[si]==="aligned-2model-sure";}).map(r=>{const c=r.split(",");c[si]="aligned-2model-audited";return c.join(",");});
-        const dst=path.join(B,path.dirname(f),"lines.csv");fs.writeFileSync(dst,[h,...keep].join("
-")+"
-");console.log("aligned keys",id,keep.length,"of",rows.length);}' "$BENCH" /home/user/gab/lines "$SB_ALIGN"
+        const dst=path.join(B,path.dirname(f),"lines.csv");fs.writeFileSync(dst,[h,...keep].join(String.fromCharCode(10))+String.fromCharCode(10));console.log("aligned keys",id,keep.length,"of",rows.length);}' "$BENCH" /home/user/gab/lines "$SB_ALIGN"
     mkdir -p "$OUTD/keys"; (cd /home/user/gab/lines && cp -r keys align summary.json "$OUTD/keys/" 2>/dev/null)
   fi
   cd "$TOOLS"
