@@ -97,7 +97,7 @@ apaath() {
   node vf-check.js --record --roots $P/r904 --suites apaath --only "$IDS" --no-pull > /home/user/gab/apaath-record.log 2>&1; echo "apaath record exit $?"
   grep -E "REFUSED|recorded|error|done:" /home/user/gab/apaath-record.log | tail -5
   FSUITES=apaath push_cache
-  VF_MIN_FREE_GB=3 ./gab run $P/r904 --set main --tier full --jobs "$NP" --manifest "$BENCH" --folders 4-akhand-paath ${AP_SPLIT:+--split $AP_SPLIT} > /home/user/gab/apaath-score.log 2>&1; echo "apaath score exit $?"
+  VF_MIN_FREE_GB=3 ./gab run $P/r904 --set main --tier full --jobs "${SB_JOBS:-$NP}" --manifest "$BENCH" --folders 4-akhand-paath ${AP_SPLIT:+--split $AP_SPLIT} > /home/user/gab/apaath-score.log 2>&1; echo "apaath score exit $?"
   grep -E "^\| \*\*Akhand Paath|INCOMPLETE|Not run" /home/user/gab/apaath-score.log | cut -c1-300
   echo "apaath done"
 }
@@ -130,7 +130,7 @@ score_builds() {
   cd "$TOOLS"
   for b in ${SCORE:-}; do
     for t in main akhand hard; do
-      VF_MIN_FREE_GB=3 ./gab run $P/$b --set $t --tier full --jobs "$NP" --manifest hf > /home/user/gab/score-$b-$t.log 2>&1; echo "score $b $t exit $?"
+      VF_MIN_FREE_GB=3 ./gab run $P/$b --set $t --tier full --jobs "${SB_JOBS:-$NP}" --manifest hf > /home/user/gab/score-$b-$t.log 2>&1; echo "score $b $t exit $?"
       grep -E "^\| \*\*|INCOMPLETE|Not run|Timing" /home/user/gab/score-$b-$t.log | cut -c1-240
     done
   done
@@ -143,7 +143,7 @@ test_split() {
   cd "$TOOLS"
   for b in ${TEST_BUILDS:-}; do
     for t in main akhand hard; do
-      VF_MIN_FREE_GB=3 ./gab run $P/$b --set $t --tier full --jobs "$NP" --manifest hf --split test --fill > /home/user/gab/test-$b-$t.log 2>&1; echo "test $b $t exit $?"
+      VF_MIN_FREE_GB=3 ./gab run $P/$b --set $t --tier full --jobs "${SB_JOBS:-$NP}" --manifest hf --split test --fill > /home/user/gab/test-$b-$t.log 2>&1; echo "test $b $t exit $?"
       grep -E "^\| \*\*|INCOMPLETE|Not run|Timing" /home/user/gab/test-$b-$t.log | cut -c1-240
     done
   done
@@ -193,8 +193,8 @@ sungbani() {
     # starts both models agree on (within 1 s, words heard: check >= 0.5) as aligned-2model-audited, share the keys
     for x in ${IDS//,/ }; do local id=${x%@*} f=${x#*@} hit=0; for p in ${SB_ALIGN//,/ }; do [[ "$id" == "$p"* ]] && hit=1; done; [ $hit = 1 ] || continue
       cp "$BENCH/$f/$id/audio.wav" "/home/user/gab/clips/$(cd "$TOOLS" && node -e 'const {parseCsv,canonRows}=require("./vf-manifest");const r=canonRows(parseCsv(require("fs").readFileSync(process.argv[1],"utf8"))).find(r=>r.id===process.argv[2]);console.log(r.source_file)' "$BENCH/manifest.csv" "$id")"; done
-    (cd "$REPO/research/cloud-gab/lines" && VF_BENCHMARK="$BENCH" THREADS=4 node line-build.js --tiers main,akhand --ids "$SB_ALIGN" --split "${SB_ALIGN_SPLIT:-dev}" --jobs 4 2>&1 | tail -5)
-    node -e '
+    for asp in ${SB_ALIGN_SPLIT:-dev}; do (cd "$REPO/research/cloud-gab/lines" && VF_BENCHMARK="$BENCH" THREADS=2 node line-build.js --tiers main,akhand --ids "$SB_ALIGN" --split "$asp" --jobs "${SB_ALIGN_JOBS:-4}" 2>&1 | tail -12); done
+    [ "${SB_ALIGN_MODE:-keys}" = audit ] || node -e '
       const fs=require("fs"),path=require("path");const [B,L,ids]=process.argv.slice(1);
       for(const f of fs.readdirSync(path.join(L,"keys"),{recursive:true}).filter(x=>x.endsWith("lines.csv"))){const id=path.basename(path.dirname(f));if(!ids.split(",").some(p=>id.startsWith(p)))continue;
         const [h,...rows]=fs.readFileSync(path.join(L,"keys",f),"utf8").trim().split(String.fromCharCode(10));const k=h.split(",");const ci=k.indexOf("confidence"),si=k.indexOf("source");
@@ -204,10 +204,10 @@ sungbani() {
   fi
   cd "$TOOLS"
   node "$REPO/research/cloud-gab/results-sync.js" pull >/dev/null 2>&1
-  node vf-check.js --record --roots $P/r904 --suites apaath --only "$ONLY" --no-pull --jobs "$NP" > /home/user/gab/sb-record.log 2>&1; echo "sungbani record r904 exit $?"
+  node vf-check.js --record --roots $P/r904 --suites apaath --only "$ONLY" --no-pull --jobs "${SB_JOBS:-$NP}" > /home/user/gab/sb-record.log 2>&1; echo "sungbani record r904 exit $?"
   grep -E "REFUSED|recorded|error|done:" /home/user/gab/sb-record.log | tail -5
   for round in 1 2 3 4 5; do
-    node vf-check.js --base $P/r904 --cand $P/cand906b --suites apaath --only "$ONLY" --fill --no-pull --replay-only --jobs "$NP" --out /home/user/gab/sb-fill > /home/user/gab/sb-fill.log 2>&1; echo "sungbani fill cand906b round $round exit $?"
+    node vf-check.js --base $P/r904 --cand $P/cand906b --suites apaath --only "$ONLY" --fill --no-pull --replay-only --jobs "${SB_JOBS:-$NP}" --out /home/user/gab/sb-fill > /home/user/gab/sb-fill.log 2>&1; echo "sungbani fill cand906b round $round exit $?"
     grep -E "REFUSED|recording|went past|replay-only|error" /home/user/gab/sb-fill.log | head -5
     grep -qE "replay-only: .* [1-9][0-9]* cache misses" /home/user/gab/sb-fill.log || break
   done
@@ -216,7 +216,7 @@ sungbani() {
   for b in r904 cand906b; do
     for sp in ${SB_SPLITS:-dev}; do
       local SPA=""; [ "$sp" = test ] && SPA="--split test"
-      VF_MIN_FREE_GB=3 ./gab run $P/$b --set main --tier full --jobs "$NP" --manifest "$BENCH" --folders 3-bani-sung-like-kirtan --ids "$PRE" $SPA > /home/user/gab/sb-score-$b-$sp.log 2>&1; echo "sungbani score $b $sp exit $?"
+      VF_MIN_FREE_GB=3 ./gab run $P/$b --set main --tier full --jobs "${SB_JOBS:-$NP}" --manifest "$BENCH" --folders "${SB_FOLDERS:-3-bani-sung-like-kirtan}" --ids "$PRE" $SPA > /home/user/gab/sb-score-$b-$sp.log 2>&1; echo "sungbani score $b $sp exit $?"
       grep -E "^\| \*\*|INCOMPLETE|Not run" /home/user/gab/sb-score-$b-$sp.log | cut -c1-260
       local d; d=$(ls -td "$TOOLS"/../results/gab/*-run 2>/dev/null | head -1)
       [ -n "$d" ] && mkdir -p "$OUTD/$b-$sp" && cp "$d"/scorecard.* "$OUTD/$b-$sp/" && cp /home/user/gab/sb-score-$b-$sp.log "$OUTD/$b-$sp/"
