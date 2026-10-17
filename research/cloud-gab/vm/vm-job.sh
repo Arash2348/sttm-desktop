@@ -208,10 +208,10 @@ sungbani() {
   fi
   cd "$TOOLS"
   node "$REPO/research/cloud-gab/results-sync.js" pull >/dev/null 2>&1
-  node vf-check.js --record --roots $P/r904 --suites apaath --only "$ONLY" --no-pull --jobs "$NP" > /home/user/gab/sb-record.log 2>&1; echo "sungbani record r904 exit $?"
+  node vf-check.js --record --roots $P/r904 --suites apaath --only "$ONLY" --jobs "$NP" > /home/user/gab/sb-record.log 2>&1; echo "sungbani record r904 exit $?"
   grep -E "REFUSED|recorded|error|done:" /home/user/gab/sb-record.log | tail -5
   for cb in ${SB_BUILDS:-cand906b}; do for round in 1 2 3 4 5; do
-    node vf-check.js --base $P/r904 --cand $P/$cb --suites apaath --only "$ONLY" --fill --no-pull --replay-only --jobs "$NP" --out /home/user/gab/sb-fill > /home/user/gab/sb-fill.log 2>&1; echo "sungbani fill cand906b round $round exit $?"
+    node vf-check.js --base $P/r904 --cand $P/$cb --suites apaath --only "$ONLY" --fill --no-pull --replay-only --jobs "$NP" --out /home/user/gab/sb-fill > /home/user/gab/sb-fill.log 2>&1; echo "sungbani fill $cb round $round exit $?"
     grep -E "REFUSED|recording|went past|replay-only|error" /home/user/gab/sb-fill.log | head -5
     grep -qE "replay-only: .* [1-9][0-9]* cache misses" /home/user/gab/sb-fill.log || break
   done; done
