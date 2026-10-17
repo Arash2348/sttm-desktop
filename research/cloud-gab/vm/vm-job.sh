@@ -229,9 +229,52 @@ sungbani() {
   node "$REPO/research/cloud-gab/results-sync.js" push --prefix "sung-bani-data/results-${JOB:-sungbani}" --dir "$OUTD" --overwrite
   echo "sungbani done"
 }
+# kfix (Oct 17): the channel clips' model output. Re-record OrVxBqhEvTA (its entry was cut by a VM stop), stamp the
+# entries this VM recorded (linux-x64) that have no provenance, re-push q16 so Azure's partial batch-2 entries are
+# replaced, copy the same x86 entries into the x86-reference namespace q16-x86 (SETUP-GUIDE 3b) and push them, verify
+# every remote entry against the local copy (bin + index sizes), then score 9.0.4 on OrVxBqhEvTA in both namespaces.
+kfix() {
+  local BENCH=/home/user/gab/kf-bench OUTD=/home/user/gab/kf-out C=/root/personal/live-darbar-venues/cache; mkdir -p "$BENCH" "$OUTD"
+  for sp in sung-bani-data/kirtan-gr-b1 sung-bani-data/kirtan-b23; do node "$REPO/research/cloud-gab/results-sync.js" pull --prefix "$sp" --dir "/home/user/gab/kf-stage/$sp" >/dev/null; cp -rn "/home/user/gab/kf-stage/$sp/." "$BENCH/"; done
+  cp "/home/user/gab/kf-stage/sung-bani-data/kirtan-b23/manifest.csv" "$BENCH/manifest.csv"
+  export VF_BENCHMARK="$BENCH" VF_EMIS_CODEC=q16
+  cd "$TOOLS"
+  local IDS; IDS=$(node -e 'const {parseCsv,canonRows}=require("./vf-manifest");console.log(canonRows(parseCsv(require("fs").readFileSync(process.argv[1],"utf8"))).filter(r=>/^(ytgr_|ytraji_|ytsalokm9_QjnT83rU4so_)/.test(r.id)).map(r=>r.id).join(","))' "$BENCH/manifest.csv")
+  echo "kfix: $(echo $IDS | tr , '\n' | wc -l) clips"
+  rm -rf "$C/5f9e41d867de-q16/ytgr_OrVxBqhEvTA_0-546"
+  node vf-check.js --record --roots $P/r904 --suites apaath --only ytgr_OrVxBqhEvTA_0-546 --no-pull > /home/user/gab/kf-record.log 2>&1; echo "kfix record OrVx exit $?"; grep -E "ok |FAIL|done:" /home/user/gab/kf-record.log | tail -3
+  node -e '
+    const fs=require("fs"),os=require("os"),path=require("path");const C=process.argv[1];const ids=process.argv[2].split(",");let n=0,m=0;
+    const cpu=(os.cpus()[0]||{}).model||null;
+    for(const id of ids){const d=path.join(C,"5f9e41d867de-q16",id);if(!fs.existsSync(path.join(d,"emis.bin"))){console.log("kfix: no local q16 entry",id);continue;}
+      const pf=path.join(d,"provenance.json");let p=null;try{p=JSON.parse(fs.readFileSync(pf))}catch(_){}
+      if(!p){fs.writeFileSync(pf,JSON.stringify({platform:"linux-x64",cpu,host:os.hostname(),note:"recorded on this VM by the channel side jobs (Oct 17); stamp added by kfix"},null,1)+"\n");n++;}
+      else if(p.platform!=="linux-x64"){console.log("kfix: SKIP non-x86 entry",id,p.platform);continue;}
+      const x=path.join(C,"5f9e41d867de-q16-x86",id);if(!fs.existsSync(path.join(x,"emis.bin"))){fs.mkdirSync(x,{recursive:true});for(const f of ["emis.bin","index.jsonl","provenance.json"])fs.copyFileSync(path.join(d,f),path.join(x,f));m++;}}
+    console.log("kfix: stamped",n,"entries; copied",m,"into q16-x86");' "$C" "$IDS"
+  node -e '
+    const {SUITES}=require("./vf-suites");const r=require("./remote-cache");const fs=require("fs"),path=require("path");const ids=new Set(process.argv[1].split(","));
+    const clips=SUITES.apaath.jobs().filter(j=>ids.has(j.id)).map(j=>({id:j.id,wav:j.wav}));const C="/root/personal/live-darbar-venues/cache";
+    (async()=>{for(const codec of ["q16","q16-x86"]){const x=await r.push({root:C,model:"5f9e41d867de",codec,clips,commit:"kfix channel clips",log:()=>{}});console.log("kfix: pushed",codec,x.pushed,"entries");}
+      // verify: every remote entry = the local copy (bin and index sizes); remote keys are by audio sha256
+      const rem=await r.list();const crypto=require("crypto");let ok=0,bad=0;
+      for(const codec of ["q16","q16-x86"])for(const c of clips){const sha=crypto.createHash("sha256").update(fs.readFileSync(c.wav)).digest("hex");const d=path.join(C,`5f9e41d867de-${codec}`,c.id);
+        const lb=fs.statSync(path.join(d,"emis.bin")).size,li=fs.statSync(path.join(d,"index.jsonl")).size;const k=`bench-cache/5f9e41d867de/${codec}/${sha}`;
+        const rb=rem.get(`${k}.bin`),ri=rem.get(`${k}.index.jsonl`);if(rb===lb&&ri===li)ok++;else{bad++;console.log("kfix: MISMATCH",codec,c.id,lb,rb,li,ri);}}
+      console.log("kfix: verified",ok,"entries match,",bad,"mismatch");})().catch(e=>{console.log("kfix push error",String(e.message||e).slice(0,200))});' "$IDS"
+  for codec in q16 q16-x86; do
+    VF_EMIS_CODEC=$codec VF_MIN_FREE_GB=3 ./gab run $P/r904 --set main --tier full --jobs 8 --manifest "$BENCH" --folders 1-kirtan-shabad --ids ytgr_OrVxBqhEvTA > /home/user/gab/kf-score-$codec.log 2>&1; echo "kfix score $codec exit $?"
+    sc=$(grep -o 'scorecard: .*json' /home/user/gab/kf-score-$codec.log | tail -1 | cut -d' ' -f2); mkdir -p "$OUTD/$codec"; [ -n "$sc" ] && cp "$(dirname $sc)"/scorecard.* "$OUTD/$codec/"; cp /home/user/gab/kf-score-$codec.log "$OUTD/$codec/"
+    grep -E "Not run|neither|\*\*Kirtan" /home/user/gab/kf-score-$codec.log | cut -c1-220
+  done
+  node "$REPO/research/cloud-gab/results-sync.js" push
+  node "$REPO/research/cloud-gab/results-sync.js" push --prefix sung-bani-data/results-kfix --dir "$OUTD" --overwrite
+  echo "kfix done"
+}
 case "$JOB" in
   fill-x86*) fill_x86; [[ "$JOB" == *apaath* ]] && apaath; [ -n "${SCORE:-}" ] && score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
   sungbani*) sungbani ;;
+  kfix*) kfix ;;
   apaath-test*) AP_SPLIT=test apaath; node "$REPO/research/cloud-gab/results-sync.js" push ;;
   apaath*) apaath ;;
   score*) score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
