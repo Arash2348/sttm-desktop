@@ -188,6 +188,23 @@ sungbani() {
     done
   done
   ONLY=${ONLY#,}; echo "sungbani: $(echo "$ONLY" | tr ',' '\n' | wc -l) clips from $REV"
+  if [ -n "${SB_ALIGN:-}" ]; then
+    # recordings with no on-screen pangtis: two-model forced alignment of the known Bani (line-build.js), keep the
+    # starts both models agree on (within 1 s, words heard: check >= 0.5) as aligned-2model-audited, share the keys
+    for x in ${IDS//,/ }; do local id=${x%@*} f=${x#*@} hit=0; for p in ${SB_ALIGN//,/ }; do [[ "$id" == "$p"* ]] && hit=1; done; [ $hit = 1 ] || continue
+      cp "$BENCH/$f/$id/audio.wav" "/home/user/gab/clips/$(cd "$TOOLS" && node -e 'const {parseCsv,canonRows}=require("./vf-manifest");const r=canonRows(parseCsv(require("fs").readFileSync(process.argv[1],"utf8"))).find(r=>r.id===process.argv[2]);console.log(r.source_file)' "$BENCH/manifest.csv" "$id")"; done
+    (cd "$REPO/research/cloud-gab/lines" && VF_BENCHMARK="$BENCH" THREADS=4 node line-build.js --tiers main,akhand --ids "$SB_ALIGN" --split "${SB_ALIGN_SPLIT:-dev}" --jobs 4 2>&1 | tail -5)
+    node -e '
+      const fs=require("fs"),path=require("path");const [B,L,ids]=process.argv.slice(1);
+      for(const f of fs.readdirSync(path.join(L,"keys"),{recursive:true}).filter(x=>x.endsWith("lines.csv"))){const id=path.basename(path.dirname(f));if(!ids.split(",").some(p=>id.startsWith(p)))continue;
+        const [h,...rows]=fs.readFileSync(path.join(L,"keys",f),"utf8").trim().split("
+");const k=h.split(",");const ci=k.indexOf("confidence"),si=k.indexOf("source");
+        const keep=rows.filter(r=>{const c=r.split(",");return c[si]==="aligned-2model"&&Number(c[ci])>=0.5;}).map(r=>{const c=r.split(",");c[si]="aligned-2model-audited";return c.join(",");});
+        const dst=path.join(B,path.dirname(f),"lines.csv");fs.writeFileSync(dst,[h,...keep].join("
+")+"
+");console.log("aligned keys",id,keep.length,"of",rows.length);}' "$BENCH" /home/user/gab/lines "$SB_ALIGN"
+    mkdir -p "$OUTD/keys"; (cd /home/user/gab/lines && cp -r keys align summary.json "$OUTD/keys/" 2>/dev/null)
+  fi
   cd "$TOOLS"
   node "$REPO/research/cloud-gab/results-sync.js" pull >/dev/null 2>&1
   node vf-check.js --record --roots $P/r904 --suites apaath --only "$ONLY" --no-pull --jobs "$NP" > /home/user/gab/sb-record.log 2>&1; echo "sungbani record r904 exit $?"
@@ -200,13 +217,16 @@ sungbani() {
   FSUITES=apaath push_cache
   local PRE="${SB_IDS:-ytjapji_Rt1TyWzPykc,ytjaap_Rt1TyWzPykc,yttavprasad_Rt1TyWzPykc,ytrehras_Rt1TyWzPykc,ytaarti_Rt1TyWzPykc,ytsalokm9_Rt1TyWzPykc,ytsohila_Rt1TyWzPykc}"
   for b in r904 cand906b; do
-    VF_MIN_FREE_GB=3 ./gab run $P/$b --set main --tier full --jobs "$NP" --manifest "$BENCH" --folders 3-bani-sung-like-kirtan --ids "$PRE" ${SB_SPLIT:+--split $SB_SPLIT} > /home/user/gab/sb-score-$b.log 2>&1; echo "sungbani score $b exit $?"
-    grep -E "^\| \*\*|INCOMPLETE|Not run" /home/user/gab/sb-score-$b.log | cut -c1-260
-    local d; d=$(ls -td "$TOOLS"/../results/gab/*-run 2>/dev/null | head -1)
-    [ -n "$d" ] && mkdir -p "$OUTD/$b" && cp "$d"/scorecard.* "$OUTD/$b/" && cp /home/user/gab/sb-score-$b.log "$OUTD/$b/"
+    for sp in ${SB_SPLITS:-dev}; do
+      local SPA=""; [ "$sp" = test ] && SPA="--split test"
+      VF_MIN_FREE_GB=3 ./gab run $P/$b --set main --tier full --jobs "$NP" --manifest "$BENCH" --folders 3-bani-sung-like-kirtan --ids "$PRE" $SPA > /home/user/gab/sb-score-$b-$sp.log 2>&1; echo "sungbani score $b $sp exit $?"
+      grep -E "^\| \*\*|INCOMPLETE|Not run" /home/user/gab/sb-score-$b-$sp.log | cut -c1-260
+      local d; d=$(ls -td "$TOOLS"/../results/gab/*-run 2>/dev/null | head -1)
+      [ -n "$d" ] && mkdir -p "$OUTD/$b-$sp" && cp "$d"/scorecard.* "$OUTD/$b-$sp/" && cp /home/user/gab/sb-score-$b-$sp.log "$OUTD/$b-$sp/"
+    done
   done
   node "$REPO/research/cloud-gab/results-sync.js" push
-  node "$REPO/research/cloud-gab/results-sync.js" push --prefix sung-bani-data --dir "$OUTD" --overwrite
+  node "$REPO/research/cloud-gab/results-sync.js" push --prefix sung-bani-data/results --dir "$OUTD" --overwrite
   echo "sungbani done"
 }
 case "$JOB" in
