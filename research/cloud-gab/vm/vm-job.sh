@@ -284,7 +284,7 @@ case "$JOB" in
   score*) score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
   test*) test_split ;;
   x86-kirnew*) kirnew ;;
-  x86-both*) kirnew; x86 ;;
+  x86-both*) kirnew; unset VF_BENCHMARK; cd "$REPO"; x86 ;;
   x86*) x86 ;;
   lines*) lines ;;
   all*) fill_x86 & lines; wait ;;
