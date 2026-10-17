@@ -75,8 +75,8 @@ FSUITES="${FSUITES:-l3}"
 push_cache() { # the grown linux-x64 entries to Azure bench-cache/, the replays to bench-results/
   node -e '
     const {SUITES}=require("./vf-suites");const r=require("./remote-cache");const fs=require("fs");
-    const clips=[];for(const s of process.argv[1].split(","))for(const j of SUITES[s].jobs()){const p="/root/personal/live-darbar-venues/cache/5f9e41d867de-q16/"+j.id+"/provenance.json";let pl=null;try{pl=JSON.parse(fs.readFileSync(p)).platform}catch(_){}if(pl==="linux-x64")clips.push({id:j.id,wav:j.wav});}
-    r.push({root:"/root/personal/live-darbar-venues/cache",model:"5f9e41d867de",codec:"q16",clips,commit:"cloud-gab fill-x86",log:()=>{}}).then(x=>console.log("pushed to Azure bench-cache:",JSON.stringify(x)));' "$FSUITES"
+    const clips=[];for(const s of process.argv[1].split(","))for(const j of SUITES[s].jobs()){const p="/root/personal/live-darbar-venues/cache/5f9e41d867de-"+(process.env.VF_EMIS_CODEC||"q16")+"/"+j.id+"/provenance.json";let pl=null;try{pl=JSON.parse(fs.readFileSync(p)).platform}catch(_){}if(pl==="linux-x64")clips.push({id:j.id,wav:j.wav});}
+    r.push({root:"/root/personal/live-darbar-venues/cache",model:"5f9e41d867de",codec:process.env.VF_EMIS_CODEC||"q16",clips,commit:"cloud-gab fill-x86",log:()=>{}}).then(x=>console.log("pushed to Azure bench-cache:",JSON.stringify(x)));' "$FSUITES"
   node "$REPO/research/cloud-gab/results-sync.js" push
 }
 # Akhand Paath (owner's P0): give the 4-akhand-paath rows their runner locally (hf-akhand-paath/jobs.js, same edit as the
