@@ -13,7 +13,7 @@ for(const [a0,z0] of C.cuts){const st=quiet(a0[0],a0[1]),en=quiet(z0[0],z0[1]);c
   const lab=rows.filter(r=>r.verseId&&!r.header&&r.e>r.s&&!((r.e-r.s)<1&&(r.s<0.01||r.e>=dur-0.01)));
   fs.writeFileSync(dir+'/lines.csv',['verseId,start_s,end_s,confidence,source',...lab.map(r=>`${r.verseId},${r.s},${r.e},${(r.score/100).toFixed(2)},${C.source}`)].join('\n')+'\n');
   const pieces=[];for(const r of rows.filter(r=>r.piece==='shabad')){const l=pieces[pieces.length-1];if(l&&l.id===r.shabadId&&r.s-l.e<20)l.e=r.e;else pieces.push({id:r.shabadId,s:r.s,e:r.e});}
-  const sh=[];let t=0;for(const pc of pieces){if(pc.s-t>2)sh.push([C.unit,t,pc.s]);sh.push([pc.id,pc.s,pc.e]);t=pc.e;}if(dur-t>2)sh.push([C.unit,t,dur]);
+  const sh=[];let t=0;for(const pc of pieces){if(pc.s-t>2)sh.push([C.unit,t,pc.s]);sh.push([pc.id,pc.s,pc.e]);t=pc.e;}if(pieces.length&&dur-t<15&&sh.length){sh[sh.length-1][2]=dur;t=dur;}if(dur-t>2)sh.push([C.unit,t,dur]);
   fs.writeFileSync(dir+'/shabads.csv',['shabadId,start_s,end_s,source',...sh.map(([a,b,c])=>`${a},${r2(b)},${r2(c)},${C.source}`)].join('\n')+'\n');
   const rec={id,folder:C.folder,dir,start:st.t,end:en.t,dur,edge_db:[st.db,en.db],lines:lab.length,shabads:sh.length,how:lab.reduce((a,r)=>(a[r.how]=(a[r.how]||0)+1,a),{})};
   if(C.crop){ // contact sheet: less-sure rows + random rows, 3 frames each

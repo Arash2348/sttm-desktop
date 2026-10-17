@@ -2,21 +2,22 @@
 // hf-pr.js <stage dir> [--commit] — open the GAB dataset PR from a staged folder with a contribute-only token:
 // binaries (wav, png, csv>10MB) go to LFS storage first (lfs batch API: basic or multipart), then ONE commit with
 // create_pr=1 (text files inline, binaries as lfsFile pointers). pr.json = {title, description, changes_rows}; not
-// uploaded. Refuses if main's manifest moved (every main row must be in the staged manifest except changes_rows).
+// uploaded. --after-pr N: built on open PR N's manifest. Refuses if the base manifest moved (every main row must be in the staged manifest except changes_rows).
 const fs = require('fs'); const path = require('path'); const crypto = require('crypto');
 const REPO = 'khalisfoundation/GurbaniAutopilotBench'; const API = `https://huggingface.co/api/datasets/${REPO}`;
-const TOK = process.env.HF_TOKEN || fs.readFileSync(path.join(require('os').homedir(), '.vf-hf-token'), 'utf8').trim();
+const TOK = (process.env.HF_TOKEN || fs.readFileSync(path.join(require('os').homedir(), '.vf-hf-token-write'), 'utf8')).trim();
 const H = { Authorization: `Bearer ${TOK}` };
-const [ST] = process.argv.slice(2); const COMMIT = process.argv.includes('--commit');
+const [ST] = process.argv.slice(2); const COMMIT = process.argv.includes('--commit'); const AFTER = process.argv.includes('--after-pr') ? process.argv[process.argv.indexOf('--after-pr') + 1] : null;
 const pr = JSON.parse(fs.readFileSync(path.join(ST, 'pr.json')));
 const files = []; const walk = (d) => { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) walk(p); else if (path.relative(ST, p) !== 'pr.json') files.push(path.relative(ST, p)); } }; walk(ST);
 const isLfs = (f) => /\.(wav|png|mp3|flac)$/i.test(f) || fs.statSync(path.join(ST, f)).size > 5e6;
 (async () => {
   const sha = (await (await fetch(`${API}/revision/main`, { headers: H })).json()).sha;
-  const main = (await (await fetch(`https://huggingface.co/datasets/${REPO}/resolve/${sha}/manifest.csv`, { headers: H })).text()).split('\n');
+  const base = AFTER ? `refs%2Fpr%2F${AFTER}` : sha; // --after-pr N: the stage is built on that open PR's manifest (merge it first)
+  const main = (await (await fetch(`https://huggingface.co/datasets/${REPO}/resolve/${base}/manifest.csv`, { headers: H })).text()).split('\n');
   const staged = new Set(fs.readFileSync(path.join(ST, 'manifest.csv'), 'utf8').split('\n'));
   const missing = main.filter((l) => l.trim() && !staged.has(l));
-  if (missing.length !== (pr.changes_rows || 0)) throw new Error(`main manifest moved: ${missing.length} main rows not in the stage (expected ${pr.changes_rows || 0})`);
+  if (missing.length !== (pr.changes_rows || 0)) throw new Error(`base manifest moved: ${missing.length} main rows not in the stage (expected ${pr.changes_rows || 0})`);
   const lfs = files.filter(isLfs); const txt = files.filter((f) => !isLfs(f));
   console.log(`main @ ${sha.slice(0, 12)}: ${files.length} files (${lfs.length} LFS, ${txt.length} text)`);
   if (!COMMIT) { console.log('dry run (add --commit)'); return; }
