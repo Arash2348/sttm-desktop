@@ -210,9 +210,11 @@ const SWITCH_CAND_MIN_LINE_CHARS = 15;
 // (misses switches: recall 68->60%), so raising it is not safe. The 9s stress ceiling
 // (~35% on-correct) is latency-bound (react time ~4-5s vs 9s dwell), not tunable.
 const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a switch
-// End-of-Bani exit (switchPolicy.switchConfirmNeeded): on a Bani's last BANI_END_EXIT pangtis a decisive
-// win commits a switch at once. 0 = off (as 9.0.4).
+// End-of-Bani exit (switchPolicy.switchConfirmNeeded): on a sung Bani's last BANI_END_EXIT pangtis a decisive
+// win commits a switch at once. 0 = off (as 9.0.4). Sung Banis only (Aarti): a recited paath decodes densely,
+// so the normal confirm already follows it out, and at the end of Rehras the spoken Fateh would win at once.
 const BANI_END_EXIT = 0;
+const BANI_END_EXIT_BANIS = new Set([22]); // Aarti (AARTI_BANI, defined below)
 // Same-Gurbani lock (ported from cycle 11): the same text stored as two shabads (Aarti in
 // Sohila and in Dhanasari, a Rehras shabad and its SGGS original) searches as an exact
 // tie, and a tie never locks. 1 = while searching, treat such copies as one candidate.
@@ -3102,7 +3104,7 @@ const VoiceFollow = () => {
           if (!step.held) slot.lastScore = sCand; // eslint-disable-line no-param-reassign
           const needed = switchConfirmNeeded(
             {
-              isBani: baniIdOf(curId) != null,
+              isBani: BANI_END_EXIT_BANIS.has(Number(baniIdOf(curId))),
               cursor: curCursorRef.current,
               nLines: (curLinesNormRef.current || []).length,
               decisive: step.decisive,
