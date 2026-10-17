@@ -176,7 +176,21 @@ const KIRTAN_PROFILES = [
   { gateNear: true, armAt: 1, armBonus: 0.15 },
   { gateNear: true, armAt: 2, armBonus: 0.1 },
 ];
-const kirtanFollowOpts = () => ({ tailAdv: KIRTAN_TAIL_ADV, ...(KIRTAN_PROFILES[KIRTAN_FOLLOW] || {}) });
+// Akhand Paath fast readers (P0, held-back Akhand Paath 84.4% right pangti, 1.3 s behind): Shabad after Shabad is
+// followed by the line follower, and with pangtis of about 2-3 s its 4 s window holds two or three of them, so the
+// screen stays one pangti behind. AP_FAST picks a profile from AP_FAST_PROFILES (engine/follower.js fastPaceS ...):
+// while the reader's recent pangtis (measured across Shabads) are short, the follower moves on as soon as the next
+// pangti's opening letters are heard clearly. Kirtan pangtis are far slower and never turn it on. 0 = as 9.0.4.
+const AP_FAST = 0;
+const AP_FAST_PROFILES = [
+  {},
+  { fastPaceS: 4.0, fastN: 3, fastTail: 6, fastGuard: 0.75, fastMargin: 0.15 },
+];
+const kirtanFollowOpts = (paceHist) => ({
+  tailAdv: KIRTAN_TAIL_ADV,
+  ...(KIRTAN_PROFILES[KIRTAN_FOLLOW] || {}),
+  ...(AP_FAST ? { ...(AP_FAST_PROFILES[AP_FAST] || {}), paceHist } : {}),
+});
 const AP_REC_HOP_S = 0.5; // recognizer decode hop while in autopilot
 // Audio the engines have not consumed yet is a backlog: recognised text (and the screen)
 // is that far behind the room. On a computer that decodes slower than real time it
@@ -1366,8 +1380,12 @@ const VoiceFollow = () => {
   const poolStableRef = useRef({ bani: null, count: 0 }); // PAATH_POOL_STABLE counter
   const emptyStreakRef = useRef(0); // consecutive no-hit decodes (shortlist hold)
 
+  // AP_FAST: the reader's recent pangti durations, kept across Shabads (engine/follower.js paceHist)
+  const readPaceRef = useRef([]);
+
   const cleanup = useCallback(() => {
     sessionRef.current += 1;
+    readPaceRef.current = [];
     transcriptSeqRef.current += 1;
     transcriptAbortRef.current?.abort();
     transcriptAbortRef.current = null;
@@ -1768,7 +1786,10 @@ const VoiceFollow = () => {
             baniId: sundarGutkaBaniId,
             ...aartiFollowOpts(sundarGutkaBaniId),
           })
-        : await engine.createFollower(verses, { inputSr: sampleRate, ...kirtanFollowOpts() });
+        : await engine.createFollower(verses, {
+            inputSr: sampleRate,
+            ...kirtanFollowOpts(readPaceRef.current),
+          });
       if (session !== sessionRef.current) return;
       followerRef.current = follower;
     } catch (e) {
@@ -2184,7 +2205,7 @@ const VoiceFollow = () => {
                 })
               : await engine.createFollower(profile.verses, {
                   inputSr: sampleRateRef.current,
-                  ...kirtanFollowOpts(),
+                  ...kirtanFollowOpts(readPaceRef.current),
                 });
         } catch (e) {
           if (session !== sessionRef.current) return;

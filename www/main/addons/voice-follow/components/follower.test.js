@@ -85,3 +85,63 @@ test('armAt: once the last word of the pangti is heard, the next pangti wins as 
   assert.strictEqual(off[5], 0, 'without the pre-arm the window still says A');
   assert.strictEqual(on[4], 1, 'pre-armed: on B at the first window where B has begun');
 });
+
+// AP_FAST (fastPaceS): Akhand Paath fast readers. Four pangtis read one after another, each heard in 2 decodes (2 s).
+const C4 = [A, B, 'ਚੁਪੈ ਚੁਪ ਨ ਹੋਵਈ ਜੇ ਲਾਇ ਰਹਾ ਲਿਵ ਤਾਰ', 'ਭੁਖਿਆ ਭੁਖ ਨ ਉਤਰੀ ਜੇ ਬੰਨਾ ਪੁਰੀਆ ਭਾਰ'];
+const lines4 = C4.map((t, i) => ({ words: t.split(' '), verseId: 300 + i }));
+const n4 = C4.map((t) => norm(t));
+async function run4(script, opts) {
+  const f = new Follower(fakeInfer(script), sp, lines4, { inputSr: SR, ...opts });
+  const out = [];
+  for (let i = 0; i < script.length; i++) out.push(await f.push(new Float32Array(SR)));
+  return { lines: out.map((r) => (r ? r.lineIndex : null)), conf: out.map((r) => (r ? r.confidence : null)), f };
+}
+const FAST = { fastPaceS: 4, fastN: 3, fastTail: 6, fastGuard: 0.75, fastMargin: 0.15 };
+// the window just after the reader starts pangti 1: mostly pangti 0, pangti 1's first letters at the end
+const zeroThenOne = n4[0].slice(4) + n4[1].slice(0, 8);
+
+test('fast reader: with a quick pace the next pangti shows as soon as its opening letters are heard', async () => {
+  const script = [n4[0], n4[0], n4[0], n4[0], zeroThenOne];
+  const off = await run4(script, {});
+  const slow = await run4(script, { ...FAST, paceHist: [8, 9, 8] });
+  const fast = await run4(script, { ...FAST, paceHist: [2, 2.5, 2] });
+  assert.strictEqual(off.lines[4], 0, '9.0.4: the window still says pangti 0');
+  assert.strictEqual(slow.lines[4], 0, 'slow pace (kirtan): as 9.0.4');
+  assert.strictEqual(fast.lines[4], 1, 'fast pace: on pangti 1');
+  assert.ok(fast.conf[4] >= 0.75, 'confident enough for the screen to move');
+});
+
+test('fast reader: off by default, a shared pace history alone changes nothing', async () => {
+  const script = [n4[0], n4[0], n4[0], n4[0], zeroThenOne, n4[1], n4[1], n4[2], n4[2], n4[3]];
+  const base = await run4(script, {});
+  const histOnly = await run4(script, { paceHist: [2, 2, 2] });
+  assert.deepStrictEqual(histOnly.lines, base.lines);
+  assert.deepStrictEqual(histOnly.conf, base.conf);
+});
+
+test('fast reader: the pace is measured from the cursor steps and shared across followers', async () => {
+  const hist = [];
+  const script = [n4[0], n4[0], n4[0], n4[0], n4[1], n4[1], n4[2], n4[2], n4[3], n4[3]];
+  await run4(script, { ...FAST, paceHist: hist });
+  assert.ok(hist.length >= 2, `pangti durations noted: ${hist}`);
+  hist.forEach((s) => assert.ok(s > 1 && s <= 3, `about 2 s per pangti: ${s}`));
+  // a new Shabad's follower given the same history is fast from its first pangti
+  const next = await run4([n4[0], n4[0], n4[0], n4[0], zeroThenOne], { ...FAST, paceHist: hist.concat([2]) });
+  assert.strictEqual(next.lines[4], 1);
+});
+
+test('fast reader: a step back (a pangti said again) turns the fast hand-off off', async () => {
+  const hist = [2, 2, 2];
+  const f = new Follower(fakeInfer([]), sp, lines4, { inputSr: SR, ...FAST, paceHist: hist });
+  assert.ok(f._fast());
+  f.t = 10; f.moveT = 8; f._paced(2, 1);
+  f._paced(1, 0);
+  assert.strictEqual(f._fast(), false, 'two of the last three pangti steps were back');
+});
+
+test('fast reader: the opening letters must fit the next pangti clearly better than the current one', async () => {
+  const shared = 'ਭੀ ਸਚੁ'; // ends pangti 0 and sits inside pangti 1
+  const script = [n4[0], n4[0], n4[0], n4[0], n4[0].slice(10) + norm(shared)];
+  const fast = await run4(script, { ...FAST, fastTail: 6, paceHist: [2, 2, 2] });
+  assert.strictEqual(fast.lines[4], 0);
+});

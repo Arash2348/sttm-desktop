@@ -42,6 +42,15 @@ const DEFAULTS = {
   // advCost, and the move to it needs no margin: it wins as soon as its words start to outweigh the old ones.
   // armAt 0 = off.
   armAt: 0, armBonus: 0.15,
+  // Fast reader (Akhand Paath, AP_FAST): when the reader's recent pangtis are short, the 4 s window holds two or
+  // three pangtis and the screen stays one pangti behind (held-back Akhand Paath: 84.4% right pangti, 1.3 s behind;
+  // the fast readers' pangtis last about 2-3 s). The reader's pace = median of the last fastN pangti durations
+  // (seconds between the cursor's forward steps; paceHist may be an array shared by the app across Shabads, since
+  // an Akhand Paath Shabad is often only a few pangtis). While that pace is fastPaceS or quicker, the tail hand-off
+  // is on (fastTail letters, fastGuard, fastMargin) even if tailAdv is 0, and it is checked before the margin gate
+  // (two pangtis in one window score alike, which froze the cursor). Slow singing (kirtan pangtis of 6 s and more,
+  // sung again and again) never reaches the pace, so it follows exactly as before. fastPaceS 0 = off.
+  fastPaceS: 0, fastN: 3, fastTail: 6, fastGuard: 0.75, fastMargin: 0.15, paceHist: null,
 };
 
 function argmax(a) { let bi = 0, bv = -Infinity; for (let i = 0; i < a.length; i++) if (a[i] > bv) { bv = a[i]; bi = i; } return bi; }
@@ -84,19 +93,50 @@ class Follower {
     this.seek = this.seek.bind(this);
     this.tailLast = null;
     this.tailHits = 0;
+    // fast reader (fastPaceS): seconds of audio heard, when the cursor last stepped forward, recent pangti durations
+    this.t = 0;
+    this.moveT = null;
+    this.paceHist = Array.isArray(c.paceHist) ? c.paceHist : [];
+  }
+
+  // Is the reader fast? (median of the last fastN pangti durations at or below fastPaceS)
+  _fast() {
+    const c = this.c;
+    if (!(c.fastPaceS > 0)) return false;
+    const h = this.paceHist;
+    if (h.length < c.fastN) return false;
+    const r = h.slice(-c.fastN).sort((x, y) => x - y);
+    return r[Math.floor((r.length - 1) / 2)] <= c.fastPaceS;
+  }
+
+  // The cursor moved from `from` to `to`: note the pangti duration (fast reader pace).
+  _paced(from, to) {
+    if (!(this.c.fastPaceS > 0) || from === to) return;
+    const h = this.paceHist;
+    if (from === null || to === null) { this.moveT = null; return; } // a lock is not a pangti start: time from the next step
+    const d = to - from;
+    if (d >= 1 && d <= 3 && this.moveT !== null) {
+      const per = (this.t - this.moveT) / d;
+      for (let i = 0; i < d; i++) h.push(per);
+    } else if (d < 0) h.push(Infinity); // a step back (a pangti said again, or sung): not reading on
+    if (h.length > 16) h.splice(0, h.length - 16);
+    this.moveT = this.t;
   }
 
   // tailAdv: does the end of this transcript say the NEXT line has begun? -> that line's index, else null
-  _tailNext(hyp) {
+  _tailNext(hyp, fast = false) {
     const c = this.c;
-    if (this.cur === null || c.tailAdv <= 0 || this.cur + 1 >= this.linesNorm.length || hyp.length < c.tailAdv) return null;
+    const adv = fast && c.tailAdv <= 0 ? c.fastTail : c.tailAdv;
+    if (this.cur === null || adv <= 0 || this.cur + 1 >= this.linesNorm.length || hyp.length < adv) return null;
     const next = this.cur + 1;
-    const tail = hyp.slice(-c.tailAdv);
-    const head = this.linesNorm[next].slice(0, c.tailAdv + c.tailSlack);
-    const tNext = head.length >= c.tailAdv ? partialRatio(tail, head) / 100 : 0;
+    const tail = hyp.slice(-adv);
+    const head = this.linesNorm[next].slice(0, adv + c.tailSlack);
+    const tNext = head.length >= adv ? partialRatio(tail, head) / 100 : 0;
     const tCur = this.linesNorm[this.cur] ? partialRatio(tail, this.linesNorm[this.cur]) / 100 : 0;
-    this.tailDbg = { tNext, tCur }; // read by the bench's follower trace
-    if (tNext >= c.tailGuard && tNext - tCur >= c.tailMargin) {
+    this.tailDbg = { tNext, tCur, fast }; // read by the bench's follower trace
+    const guard = fast && c.tailAdv <= 0 ? c.fastGuard : c.tailGuard;
+    const margin = fast && c.tailAdv <= 0 ? c.fastMargin : c.tailMargin;
+    if (tNext >= guard && tNext - tCur >= margin) {
       this.tailHits = this.tailLast === next ? this.tailHits + 1 : 1;
       this.tailLast = next;
       return this.tailHits >= c.tailConfirm ? next : null;
@@ -122,6 +162,7 @@ class Follower {
     this.visited.add(line);
     this.wiLine = null;
     this.maxWi = -1;
+    this.moveT = null; // the pace restarts from the sevadaar's pangti
     return true;
   }
 
@@ -258,6 +299,7 @@ class Follower {
       if (merged.length > this.win) merged = merged.slice(merged.length - this.win);
       this.buf = merged;
       this.acc += res.length;
+      this.t += res.length / SR;
     }
     this.hop = Math.floor(pace.hopS('follower', c.hopS) * SR); // performance tier
     if ((this.acc < this.hop && !pace.onBeat(pcm)) || this.buf.length < SR) return null;
@@ -270,7 +312,10 @@ class Follower {
     const emis = this.linesNorm.map((ln) => (ln ? partialRatio(hyp, ln) / 100.0 : 0.0));
     let emax = -Infinity; for (const v of emis) if (v > emax) emax = v;
     if (emax < c.guard) return this._freeze('guard', emis);
-    if (c.marginGate > 0 && emis.length >= 2) {
+    const fast = this._fast();
+    let fastPre = null; // fast reader: the next pangti's opening heard -> move even when the margin gate would freeze
+    if (fast) { this.tailDbg = null; fastPre = this._tailNext(hyp, true); }
+    if (fastPre === null && c.marginGate > 0 && emis.length >= 2) {
       const sorted = [...emis].sort((a, b) => a - b);
       if (sorted[sorted.length - 1] - sorted[sorted.length - 2] < c.marginGate) {
         const near = (l) => this.cur !== null && ((l >= this.cur - c.backSpan && l <= this.cur + c.skipSpan) || this.isRahao[l] || this.visited.has(l));
@@ -300,8 +345,11 @@ class Follower {
 
     this.miss = 0;
     const top = this._viterbi(emis);
-    this.tailDbg = null;
-    const tailNext = this._tailNext(hyp);
+    const fastTail = fastPre !== null ? fastPre : null;
+    if (!fast) this.tailDbg = null;
+    const tailNext = fast ? fastTail : this._tailNext(hyp);
+    const tailConf = tailNext !== null && this.tailDbg ? this.tailDbg.tNext : 0;
+    const from = this.cur;
     if (c.onTrace && !this.tracedLines) { this.tracedLines = true; c.onTrace({ lines: this.linesNorm, verseIds: this.verseIds, nwords: this.nwords }); }
     if (c.onTrace) c.onTrace({ hyp, top, tail: this.tailDbg, maxWi: this.maxWi, wiLine: this.wiLine, cur: this.cur, emisTop: emis[top], emisCur: this.cur == null ? null : emis[this.cur], scoreTop: this.score[top], scoreCur: this.cur == null ? null : this.score[this.cur], dwell: this.dwell, challenger: this.challenger, tailNext, armed: this._armed() });
 
@@ -334,9 +382,12 @@ class Follower {
       }
     }
     this.visited.add(this.cur);
+    this._paced(from, this.cur);
 
     const cur = this.cur;
-    const conf = Math.max(0.0, Math.min(1.0, emis[cur]));
+    // a fast-reader hand-off: the new pangti is only beginning, so its whole-window score is still low; its
+    // opening letters' match is the confidence (the app moves the screen only on a confident frame)
+    const conf = Math.max(0.0, Math.min(1.0, fast && tailNext !== null && cur === tailNext ? Math.max(emis[cur], tailConf) : emis[cur]));
 
     let wi = this._wordIndexCtc(emis0, cur);
     if (wi < 0) {
