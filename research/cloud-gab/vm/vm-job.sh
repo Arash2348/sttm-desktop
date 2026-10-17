@@ -233,7 +233,7 @@ kirnew() {
   KN_BUILDS="${KN_BUILDS:-$(curl -sf -H Metadata-Flavor:Google http://metadata.google.internal/computeMetadata/v1/instance/attributes/cg-kn || true)}"
   local BENCH=/home/user/gab/kn-bench ST=/home/user/gab/kn-stage O=/home/user/gab/kn-out
   mkdir -p "$BENCH" "$O"
-  for sp in sung-bani-data/kirtan-gr-b1 sung-bani-data/kirtan-gr-b2 sung-bani-data/kirtan-raji-b3 sung-bani-data/kirtan-b23; do
+  for sp in sung-bani-data/kirtan-gr-b1 sung-bani-data/kirtan-gr-b2 sung-bani-data/kirtan-raji-b3 sung-bani-data/kirtan-b23 sung-bani-data/kirtan-daras; do
     node "$REPO/research/cloud-gab/results-sync.js" pull --prefix "$sp" --dir "$ST/$sp" | tail -1; cp -r "$ST/$sp/." "$BENCH/"; done
   export VF_BENCHMARK="$BENCH"
   cd "$TOOLS"
