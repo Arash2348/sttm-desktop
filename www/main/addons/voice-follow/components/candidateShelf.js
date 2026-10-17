@@ -29,7 +29,7 @@
 // Time is whatever `now` the caller passes (ms), so the shelf is deterministic in replay.
 
 const DEFAULTS = {
-  max: 5,
+  max: 6,
   holdMs: 8000, // on screen at least this long after its last fresh score
   fadeMs: 3000, // the last part of the hold is shown fading
   silenceMs: 15000, // no confident word for this long: the list empties

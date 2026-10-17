@@ -804,7 +804,9 @@ const EvidenceChips = ({ ev }) => {
       {ev.pangtis.map((p) => (
         <span
           key={p.key}
-          className={`vf2-chip ${p.clear ? 'is-clear' : 'is-weak'}`}
+          className={`vf2-chip ${p.clear ? 'is-clear' : ''}${!p.clear && !p.faint ? 'is-weak' : ''}${
+            p.faint ? 'is-faint' : ''
+          }`}
           title={p.line ? toAkhar(p.line) : ''}
         />
       ))}
@@ -4458,9 +4460,10 @@ const VoiceFollow = () => {
     .filter((b) => !(liveLead && b.shabadId === liveLead.shabadId))
     .map((b) => ({ ...b, line: nameLine(b) }))
     .filter((b) => !!b.line)
-    // The same Gurbani under another id (a Bani copy of a Shabad) is not a different Shabad.
-    .filter((b) => !(currentView && sameAsCurrent(b.line)))
-    .slice(0, 5);
+    // Not hidden for sharing a pangti with the Shabad on screen: a look-alike pangti is often
+    // exactly how the next Shabad first shows itself (copies under another id are already
+    // kept out by the judge).
+    .slice(0, 6);
   const leadLine = liveLead ? nameLine(liveLead) : '';
   // The change card's percentage: the live board's, else the shelf's held one.
   let leadPct = 0;

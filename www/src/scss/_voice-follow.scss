@@ -1353,6 +1353,10 @@ $vf2-yellow-bar: #f2c200;
   &.is-weak {
     background: linear-gradient(90deg, $vf2-orange 50%, transparent 50%);
   }
+  // matched only faintly so far: an outline, so the Shabad is seen early without claiming much
+  &.is-faint {
+    background: transparent;
+  }
 }
 .vf2-chips-more {
   font-size: 0.75em;

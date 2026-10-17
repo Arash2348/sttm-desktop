@@ -143,7 +143,7 @@ describe('candidateShelf', () => {
   });
 
   it('lists up to 5; a newcomer takes a fading card or one it clearly beats for 2 s', () => {
-    const s = createShelf();
+    const s = createShelf({ max: 5 });
     const five = (t) => [1, 2, 3, 4, 5].map((k) => c(10 + k, 0.1 + k * 0.01, t));
     let out = s.update({ now: 1000, items: five(1000), current: 1, heardAt: 1000 });
     assert.equal(out.length, 5);
@@ -188,7 +188,7 @@ describe('candidateShelf', () => {
   });
 
   it('a fading card gives its place to a newcomer at once', () => {
-    const s = createShelf();
+    const s = createShelf({ max: 5 });
     const five = [1, 2, 3, 4, 5].map((k) => c(10 + k, 0.2, 1000));
     s.update({ now: 1000, items: five, current: 1, heardAt: 1000 });
     const four = [2, 3, 4, 5].map((k) => c(10 + k, 0.2, 6500));

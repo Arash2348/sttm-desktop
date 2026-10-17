@@ -18,6 +18,7 @@ const DEFAULTS = {
   winMin: 0.65, // VoiceFollow.jsx SWITCH_ACOUSTIC_MIN
   winMargin: 0.15, // VoiceFollow.jsx SWITCH_ACOUSTIC_MARGIN
   weakMin: 0.5, // a weaker match still shows as a half chip
+  faintAdd: 0.3, // any other pangti the judge scored for it: listed at once (a preview), no chip
   clearAdd: 1, // a new pangti heard clearly (V6: 1)
   weakAdd: 0.4, // a new pangti heard weakly
   repeat: 0.3, // the same pangti again (V6 SHEV_REPEAT), scaled by strength
@@ -26,7 +27,8 @@ const DEFAULTS = {
   tauMs: 30000, // totals fade with this time constant (V6: 60 decodes ~ 30 s)
   threshold: 2.3, // the switch line on each bar (V6 SHEV_SWITCH) ...
   minDistinct: 2, // ... over at least this many distinct pangtis
-  floor: 0.25, // a pangti below this weight no longer counts; a Shabad below it leaves
+  floor: 0.25, // a pangti below this weight no longer counts as heard (no chip)
+  keep: 0.1, // a Shabad stays listed while its total is at least this (a faint one ~30 s)
   maxChips: 8,
 };
 
@@ -44,7 +46,7 @@ function createEvidence(params = {}) {
   function prune(now) {
     store.forEach((lines, sid) => {
       lines.forEach((e, k) => {
-        if (fade(e, now) < P.floor / 4) lines.delete(k);
+        if (fade(e, now) < P.keep / 2) lines.delete(k);
       });
       if (!lines.size) store.delete(sid);
     });
@@ -57,8 +59,9 @@ function createEvidence(params = {}) {
     cands.forEach((c) => {
       if (c.shabadId == null || c.shabadId === cur) return;
       const s = c.score || 0;
-      if (s < P.weakMin) return;
+      if (!(s > 0)) return;
       const clear = s >= P.winMin && s - sCur >= P.winMargin;
+      const weak = !clear && s >= P.weakMin;
       const key = c.verseId != null ? `v${c.verseId}` : `l${(c.line || '').trim()}`;
       if (key === 'l') return;
       let lines = store.get(c.shabadId);
@@ -67,15 +70,19 @@ function createEvidence(params = {}) {
         store.set(c.shabadId, lines);
       }
       const old = lines.get(key);
-      const strength = clear ? 1 : P.weakAdd / P.clearAdd;
+      let gain = P.faintAdd;
+      if (clear) gain = P.clearAdd;
+      else if (weak) gain = P.weakAdd;
+      const strength = gain / P.clearAdd;
       const base = old ? fade(old, now) : 0;
-      let plus = clear ? P.clearAdd : P.weakAdd;
+      let plus = gain;
       if (old) plus = P.repeat * strength;
       lines.set(key, {
         w: Math.min(P.maxPer, base + plus),
         at: now,
         line: c.line || (old && old.line) || '',
         clear: clear || !!(old && old.clear && fade(old, now) >= 0.5),
+        weak: weak || !!(old && old.weak),
         first: old ? old.first : (order += 1),
       });
       if (clear) heardFor.add(c.shabadId);
@@ -110,6 +117,7 @@ function createEvidence(params = {}) {
           key,
           line: e.line,
           clear: e.clear,
+          faint: !e.clear && !e.weak,
           w: Math.round(w * 100) / 100,
           first: e.first,
         });
@@ -134,7 +142,7 @@ function createEvidence(params = {}) {
     const out = [];
     store.forEach((_, id) => {
       const ev = of(id, now);
-      if (ev && ev.total >= P.floor && ev.distinct > 0) out.push({ shabadId: id, ev });
+      if (ev && ev.total >= P.keep) out.push({ shabadId: id, ev });
     });
     return out.sort((a, b) => b.ev.total - a.ev.total);
   }

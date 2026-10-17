@@ -37,7 +37,7 @@ describe('shabadEvidence', () => {
     e.add({ now: 0, cur: 1, sCur: 0.3, cands: [hit(7, 70, 0.8), hit(7, 71, 0.8)] });
     assert.equal(e.snapshot(10000).length, 1, 'still there after 10 s');
     assert.equal(e.snapshot(30000).length, 1, 'still there after 30 s');
-    assert.equal(e.snapshot(90000).length, 0, 'gone after 90 s');
+    assert.equal(e.snapshot(120000).length, 0, 'gone after 2 min');
   });
 
   it('ignores the Shabad on screen and drops one put on screen', () => {
