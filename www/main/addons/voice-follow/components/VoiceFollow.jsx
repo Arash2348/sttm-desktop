@@ -239,6 +239,21 @@ const KF_SHEV_FREEZE = 0;
 // last KF_FRAG_N pangti-sized pieces (>= KF_FRAG_LEN letters, whole words) of the window on their
 // own, so a half pangti counts for its pangti. A piece counts at KF_FRAG_W when it scores
 // >= KF_FRAG_SMIN with a margin >= KF_FRAG_MMIN over the next distinct Shabad. 0 = off.
+// Kirtan switches (owner's live test, Oct 16): while following, the pangtis of ANOTHER Shabad add
+// up the same way (KF_SHEV evidence, pauses always freeze the clock), and the screen switches to
+// it once it holds KF_SWITCH_DISTINCT different pangtis, a total >= KF_SWITCH_LOCK and
+// KF_SWITCH_LEAD times any other Shabad. Each heard line (>= KF_SWITCH_MINL letters) is searched
+// over all Gurbani; it counts only when it scores >= KF_SWITCH_SMIN with a margin >= KF_SWITCH_MMIN
+// over the next distinct Shabad (a pangti shared by several Shabads counts ~0). Additive: the
+// acoustic switch judge is unchanged. 0 = off.
+const KF_SWITCH = 0;
+const KF_SWITCH_MINL = 10;
+const KF_SWITCH_SMIN = 0.5;
+const KF_SWITCH_MMIN = 0.1;
+const KF_SWITCH_MFULL = 0.2;
+const KF_SWITCH_LOCK = 2.0;
+const KF_SWITCH_DISTINCT = 3;
+const KF_SWITCH_LEAD = 2;
 const KF_FRAG = 0;
 const KF_FRAG_N = 3;
 const KF_FRAG_LEN = 22;
@@ -263,7 +278,7 @@ export const kfShevStep = (store, hit, quiet, hopS) => {
   }
   if (!hit || hit.score < (hit.smin ?? KF_SHEV_SMIN) || hit.margin < (hit.mmin ?? KF_SHEV_MMIN))
     return null;
-  const w = (hit.w ?? 1) * Math.min(1, hit.margin / KF_SHEV_MFULL);
+  const w = (hit.w ?? 1) * Math.min(1, hit.margin / (hit.mfull ?? KF_SHEV_MFULL));
   let lines = store.get(hit.shabadId);
   if (!lines) {
     lines = new Map();
@@ -1000,6 +1015,7 @@ const VoiceFollow = () => {
   const [status, setStatus] = useState('idle'); // idle|connecting|listening|detecting|error|stopped
   const [autopilot] = useState(true); // hands-free: detect + follow + auto-switch, one press
   const vetoRef = useRef(null); // { id, left }: shabad a tap just left, and judged decodes remaining
+  const kfSwitchRef = useRef({ cur: null, session: null, store: new Map(), last: '' }); // KF_SWITCH
   const baniLengthRef = useRef('short');
   baniLengthRef.current = baniLength;
   // The user's own length (what they chose), even while Rehras has it raised (by this run,
@@ -2930,6 +2946,79 @@ const VoiceFollow = () => {
           }
         }
       } else contextEvidenceRef.current = null;
+      if (
+        KF_SWITCH > 0 &&
+        autopilotRef.current &&
+        phaseRef.current === 'following' &&
+        !lockingRef.current
+      ) {
+        const curId = currentShabadIdRef.current;
+        if (kfSwitchRef.current.cur !== curId || kfSwitchRef.current.session !== session)
+          kfSwitchRef.current = { cur: curId, session, store: new Map(), last: '' };
+        const ks = kfSwitchRef.current;
+        const kfHeard = vfNorm(text);
+        if (curId != null && baniIdOf(curId) == null) {
+          kfShevStep(ks.store, null, kfHeard.length < KF_SHEV_QUIET, AP_REC_HOP_S);
+          if (kfHeard.length >= KF_SWITCH_MINL && kfHeard !== ks.last) {
+            ks.last = kfHeard;
+            const ctl = new AbortController();
+            let found = await searchCanonicalText(text, 4, ctl.signal);
+            if (found && DUP_AWARE_LOCK) found = await distinctLeaders(found, 2);
+            const kfStale = () =>
+              session !== sessionRef.current ||
+              !recognizingRef.current ||
+              phaseRef.current !== 'following' ||
+              lockingRef.current ||
+              kfSwitchRef.current !== ks ||
+              currentShabadIdRef.current !== curId;
+            if (kfStale()) return;
+            const k0 = found?.[0];
+            const vetoed = vetoRef.current && vetoRef.current.id === k0?.shabadId;
+            const same = k0 && (k0.shabadId === curId || (await isSameGurbani(k0.shabadId, curId)));
+            if (kfStale()) return;
+            if (k0 && !same && !vetoed) {
+              const ev = kfShevStep(
+                ks.store,
+                {
+                  shabadId: k0.shabadId,
+                  verseId: k0.verseId,
+                  score: k0.score,
+                  margin: k0.score - (found[1]?.score || 0),
+                  smin: KF_SWITCH_SMIN,
+                  mmin: KF_SWITCH_MMIN,
+                  mfull: KF_SWITCH_MFULL,
+                },
+                true,
+                0,
+              );
+              if (
+                ev &&
+                ev.total >= KF_SWITCH_LOCK &&
+                ev.distinct >= KF_SWITCH_DISTINCT &&
+                ev.total >= KF_SWITCH_LEAD * ev.next
+              ) {
+                let profile;
+                try {
+                  profile = await loadShabadProfile(k0.shabadId);
+                } catch (_) {
+                  profile = null;
+                }
+                if (kfStale()) return;
+                const at = profile ? profile.verses.findIndex((v) => v.verseId === k0.verseId) : -1;
+                if (at >= 0) {
+                  if (SHADOW_BUILD) diag(`vf kirtan switch evidence -> ${k0.shabadId}`);
+                  autopilotLock({
+                    shabadId: k0.shabadId,
+                    verseId: k0.verseId,
+                    verse: profile.displayLines[at],
+                  });
+                  return;
+                }
+              }
+            }
+          }
+        }
+      }
       // Search uses ASCII-font first letters (the DB's FirstLetterStr encoding).
       // The recognizer's unverified text is never a display or canonical source.
       const fl = toAsciiFirstLetters(text);
