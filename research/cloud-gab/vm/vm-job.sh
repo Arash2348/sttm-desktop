@@ -68,6 +68,11 @@ mk kf6 c803b53 KIRTAN_FOLLOW=6
 # P0 Kirtan lag: shorter line-follower window (3.0 s, 2.5 s) on 9.0.4
 mk kf7 7e5a23b KIRTAN_FOLLOW=7
 mk kf8 7e5a23b KIRTAN_FOLLOW=8
+# x86 reference (owner, Oct 17): the 9.0.6 Aarti half alone, and the Bani-end exit (branch lev-1)
+mk aarti906 747b9b7 AARTI_FOLLOW=1
+mk lev1 e7583176 BANI_END_EXIT=1
+# ad-hoc builds from metadata cg-builds="name:commit[:CONST=v,CONST=v] ..." (no edit of this file needed)
+for spec in ${CG_BUILDS:-}; do IFS=: read -r bn bc bk <<< "$spec"; mk "$bn" "$bc" ${bk//,/ }; done
 # owner (Oct 16): the Akhand verdict first: verifier builds + probation, Akhand (l3) only; Renton later for the keepers
 FILL="${FILL:-v6-prob v6-base3 v6-verify5 v6-vk3l10 v6-vk3l20 v6-vk6l40 v6-ctc v6-prob-ctc r904 window-align}"
 FSUITES="${FSUITES:-l3}"
@@ -150,6 +155,73 @@ test_split() {
   node "$REPO/research/cloud-gab/results-sync.js" push
   echo "test done"
 }
+# x86 reference (owner, Oct 17 2026): every GAB recording (all tiers, practice + test, GAB manifest on HF main) gets x86
+# model output in the codec namespace q16-x86, for each build in FILL; then each build in SCORE is scored on every tier,
+# practice and test, from that namespace only. Mac (q16, darwin-arm64) entries are never read or written here.
+# Resumable: the local cache and saved replays survive the 6 h stop; rerunning the same job skips finished work.
+x86() {
+  export VF_EMIS_CODEC=q16-x86 VF_RECORD_JOBS="${VF_RECORD_JOBS:-10}" VF_REPLAY_MAX="${VF_REPLAY_MAX:-$(( NP - 2 ))}" VF_REPLAY_SLOTS=8
+  unset VF_SPLIT
+  local C=/root/personal/live-darbar-venues/cache BENCH=/home/user/gab/bench W=/home/user/gab/x86 t0=$(date +%s)
+  mkdir -p $W/cards
+  cd "$TOOLS"
+  # Akhand Paath audio + keys live in the benchmark folder (its runner reads them there), both splits
+  node -e 'const {parseCsv,canonRows}=require("./vf-manifest");const rows=canonRows(parseCsv(require("fs").readFileSync(process.argv[1],"utf8")));console.log(rows.filter(r=>(r.suite_jobs||"").startsWith("apaath:")).map(r=>r.content_folder+"/"+r.id).join(" "))' "$BENCH/manifest.csv" > $W/apaath.txt
+  for d in $(cat $W/apaath.txt); do mkdir -p "$BENCH/$d"; for f in audio.wav shabads.csv lines.csv meta.json; do
+    [ -s "$BENCH/$d/$f" ] || curl -sS -f -L -H "Authorization: Bearer $HF_TOKEN" -o "$BENCH/$d/$f" "https://huggingface.co/datasets/khalisfoundation/GurbaniAutopilotBench/resolve/main/$d/$f" 2>/dev/null || true; done; done
+  # every GAB recording with a runner and audio here (the first suite job of each manifest row, as gab run picks it)
+  node -e '
+    const fs=require("fs");const {parseCsv,canonRows}=require("./vf-manifest");const G=require("./gab-score");const {SUITES}=require("./vf-suites");
+    const rows=canonRows(parseCsv(fs.readFileSync(process.argv[1],"utf8")));const ex=G.loadSets().exclude||{};const memo={};const jobs=[];const miss=[];
+    for(const r of rows){if(ex[r.id])continue;const first=(r.suite_jobs||"").split(";").filter(Boolean)[0];if(!first)continue;const [s,c]=first.split(":");if(!SUITES[s])continue;
+      memo[s]=memo[s]||SUITES[s].jobs();const j=memo[s].find(x=>x.clip===c||x.id===c);if(!j||!fs.existsSync(j.wav)){miss.push(r.id);continue;}jobs.push({suite:s,clip:j.clip,id:j.id,wav:j.wav,dur:j.dur,split:r.split});}
+    fs.writeFileSync(process.argv[2],JSON.stringify(jobs));console.log(`x86: ${jobs.length} GAB recordings (${(jobs.reduce((a,j)=>a+j.dur,0)/3600).toFixed(1)} h), ${miss.length} without audio/runner here: ${miss.join(" ")}`);' "$BENCH/manifest.csv" $W/jobs.json
+  local SUITES_L ONLY_L
+  SUITES_L=$(node -e 'console.log([...new Set(require(process.argv[1]).map(j=>j.suite))].join(","))' $W/jobs.json)
+  ONLY_L=$(node -e 'console.log([...new Set(require(process.argv[1]).map(j=>j.clip))].join(","))' $W/jobs.json)
+  # seed the x86 namespace: this machine's own linux-x64 q16 entries (local copy), then whatever Azure q16-x86 holds
+  node -e '
+    const fs=require("fs"),path=require("path");const jobs=require(process.argv[1]);const C=process.argv[2];let n=0;
+    for(const j of jobs){const src=path.join(C,"5f9e41d867de-q16",j.id),dst=path.join(C,"5f9e41d867de-q16-x86",j.id);
+      if(fs.existsSync(path.join(dst,"index.jsonl")))continue;let p=null;try{p=JSON.parse(fs.readFileSync(path.join(src,"provenance.json"))).platform}catch(_){}
+      if(p!=="linux-x64"||!fs.existsSync(path.join(src,"index.jsonl")))continue;fs.cpSync(src,dst,{recursive:true});n++;}
+    console.log("x86: seeded",n,"entries from this machine'"'"'s linux-x64 q16 cache");' $W/jobs.json $C
+  node -e '
+    const r=require("./remote-cache");const jobs=require(process.argv[1]);
+    r.pull({root:"/root/personal/live-darbar-venues/cache",model:"5f9e41d867de",codec:"q16-x86",clips:jobs.map(j=>({id:j.id,wav:j.wav})),log:()=>{}}).then(x=>console.log("x86: pulled",x.pulled,"q16-x86 entries",(x.bytes/1e9).toFixed(1),"GB"));' $W/jobs.json
+  node "$REPO/research/cloud-gab/results-sync.js" pull
+  df -h / | tail -1
+  # record: each FILL build replays every recording; a recording that leaves the cache (no x86 output yet, or a
+  # behaviour that asks for new windows) is recorded with the model on this machine, then replayed again
+  for b in ${FILL:-$SCORE}; do
+    [ -f $W/filled-$b ] && { echo "x86 fill $b: done earlier"; continue; }
+    for round in 1 2 3 4; do
+      rm -f $W/fill-$b/replay.json
+      node vf-check.js --base $P/$b --cand $P/$b --suites "$SUITES_L" --only "$ONLY_L" --fill --no-pull --replay-only --jobs $(( NP - 2 )) --out $W/fill-$b > $W/fill-$b.log 2>&1; echo "x86 fill $b round $round exit $? ($(( ($(date +%s) - t0) / 60 )) min)"
+      grep -E "REFUSED|went past|replay-only:" $W/fill-$b.log | cut -c1-300
+      local left; left=$(node -e 'try{const r=require(process.argv[1]);console.log(r.missed.length+r.failed.length)}catch(_){console.log(-1)}' $W/fill-$b/replay.json)
+      echo "x86 fill $b: $left recordings still not replayed"
+      [ "$left" = 0 ] && { touch $W/filled-$b; break; }
+    done
+    rm -rf $W/fill-$b/base $W/fill-$b/.jobs
+  done
+  # share: the x86 entries (only those larger than Azure's copy) and the replays
+  node -e '
+    const r=require("./remote-cache");const jobs=require(process.argv[1]);
+    r.push({root:"/root/personal/live-darbar-venues/cache",model:"5f9e41d867de",codec:"q16-x86",clips:jobs.map(j=>({id:j.id,wav:j.wav})),commit:"cloud-gab x86 reference",log:()=>{}}).then(x=>console.log("x86: pushed to Azure bench-cache q16-x86:",x.pushed,"entries",(x.bytes/1e9).toFixed(1),"GB"));' $W/jobs.json
+  node "$REPO/research/cloud-gab/results-sync.js" push
+  # score: every tier, practice and test, x86 namespace only
+  for b in ${SCORE:-}; do
+    for sp in dev test; do for t in main akhand hard; do
+      VF_MIN_FREE_GB=3 ./gab run $P/$b --set $t --tier full --jobs $(( NP - 2 )) --manifest hf --split $sp --out $W/run-$b-$t-$sp > $W/score-$b-$t-$sp.log 2>&1; echo "x86 score $b $t $sp exit $?"
+      grep -E "^\| \*\*|INCOMPLETE|Not run" $W/score-$b-$t-$sp.log | cut -c1-240
+      mkdir -p $W/cards/$b; cp $W/run-$b-$t-$sp/scorecard.json $W/cards/$b/$t-$sp.json 2>/dev/null; cp $W/run-$b-$t-$sp/scorecard.md $W/cards/$b/$t-$sp.md 2>/dev/null
+    done; done
+  done
+  node "$REPO/research/cloud-gab/results-sync.js" push --prefix bench-results/x86-cards --dir $W/cards --overwrite
+  node "$REPO/research/cloud-gab/results-sync.js" push
+  echo "x86 done ($(( ($(date +%s) - t0) / 60 )) min)"
+}
 lines() {
   cd "$REPO/research/cloud-gab/lines"
   local J=$(( (NP - 4) / 2 )); [ $J -lt 2 ] && J=2
@@ -158,12 +230,16 @@ lines() {
   node "$REPO/research/cloud-gab/results-sync.js" push --prefix gab-lines --dir /home/user/gab/lines --skip '^(emis|work)/' --overwrite
   echo "lines done"
 }
+# the older jobs keep the first cache namespace (q16: linux-x64 entries on the clips this VM recorded first) for both
+# their fill and their score, so a job started before Oct 17 behaves as it did; x86* is the x86 reference for everything
+[[ "$JOB" == x86* ]] || export VF_EMIS_CODEC="${VF_EMIS_CODEC:-q16}"
 case "$JOB" in
   fill-x86*) fill_x86; [[ "$JOB" == *apaath* ]] && apaath; [ -n "${SCORE:-}" ] && score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
   apaath-test*) AP_SPLIT=test apaath; node "$REPO/research/cloud-gab/results-sync.js" push ;;
   apaath*) apaath ;;
   score*) score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
   test*) test_split ;;
+  x86*) x86 ;;
   lines*) lines ;;
   all*) fill_x86 & lines; wait ;;
   *) echo "unknown job $JOB"; exit 2 ;;

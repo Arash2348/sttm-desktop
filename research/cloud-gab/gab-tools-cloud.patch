@@ -1,5 +1,5 @@
 diff --git a/research/level2-dataset/tools/folder-names.js b/research/level2-dataset/tools/folder-names.js
-index 304c564..c1e220d 100644
+index 304c5647..c1e220d6 100644
 --- a/research/level2-dataset/tools/folder-names.js
 +++ b/research/level2-dataset/tools/folder-names.js
 @@ -4,7 +4,9 @@
@@ -14,7 +14,7 @@ index 304c564..c1e220d 100644
 +const TOP = ['1-kirtan-shabad', '2-bani-recited', '3-bani-sung-like-kirtan', '4-akhand-paath', '5-akhand-kirtan'];
  module.exports = { canonFolder, TOP, ALIASES };
 diff --git a/research/level2-dataset/tools/gab-add-sheet-rows.js b/research/level2-dataset/tools/gab-add-sheet-rows.js
-index 28e64ef..c9bd1ed 100644
+index 28e64efa..c9bd1edd 100644
 --- a/research/level2-dataset/tools/gab-add-sheet-rows.js
 +++ b/research/level2-dataset/tools/gab-add-sheet-rows.js
 @@ -7,7 +7,7 @@
@@ -37,7 +37,7 @@ index 28e64ef..c9bd1ed 100644
        split: G.split(r), session: `${G.venue}-${r.video_id}`, truth_provenance: G.provenance(k, r), suite_jobs: `${G.suite}:${id}`,
        cache: 'no', cache_id: job.id, lines_n: 0, lines_source: 'none', shabads_n: truthRows.length,
 diff --git a/research/level2-dataset/tools/gab-publish.js b/research/level2-dataset/tools/gab-publish.js
-index b2f3a47..68246bf 100644
+index b2f3a47b..68246bf8 100644
 --- a/research/level2-dataset/tools/gab-publish.js
 +++ b/research/level2-dataset/tools/gab-publish.js
 @@ -76,6 +76,9 @@ function tierRows(card) {
@@ -91,7 +91,7 @@ index b2f3a47..68246bf 100644
    fs.writeFileSync(path.join(S, 'push.py'), py);
    fs.writeFileSync(path.join(S, 'ops.json'), JSON.stringify(ops));
 diff --git a/research/level2-dataset/tools/gab-score.js b/research/level2-dataset/tools/gab-score.js
-index eb0129b..0db1030 100644
+index eb0129b4..0db10303 100644
 --- a/research/level2-dataset/tools/gab-score.js
 +++ b/research/level2-dataset/tools/gab-score.js
 @@ -47,7 +47,7 @@ function tierOf(row, sets = loadSets()) {
@@ -104,7 +104,7 @@ index eb0129b..0db1030 100644
  const r1 = (x) => (x == null || Number.isNaN(x) ? null : +x.toFixed(1));
  const r2 = (x) => (x == null || Number.isNaN(x) ? null : +x.toFixed(2));
 diff --git a/research/level2-dataset/tools/gab-space/gab-names.json b/research/level2-dataset/tools/gab-space/gab-names.json
-index c0da80c..f54ea76 100644
+index c0da80c0..f54ea76f 100644
 --- a/research/level2-dataset/tools/gab-space/gab-names.json
 +++ b/research/level2-dataset/tools/gab-space/gab-names.json
 @@ -104,6 +104,14 @@
@@ -125,10 +125,10 @@ index c0da80c..f54ea76 100644
 +}
 \ No newline at end of file
 diff --git a/research/level2-dataset/tools/gab.js b/research/level2-dataset/tools/gab.js
-index 6e57021..c2069b4 100644
+index 6e570213..76b88d5a 100644
 --- a/research/level2-dataset/tools/gab.js
 +++ b/research/level2-dataset/tools/gab.js
-@@ -38,20 +38,24 @@ const G = require('./gab-score');
+@@ -38,20 +38,28 @@ const G = require('./gab-score');
  
  const TOOLS = __dirname;
  const DS = path.join(TOOLS, '..');
@@ -138,8 +138,13 @@ index 6e57021..c2069b4 100644
  const { DEFAULT_ROOT, modelSha } = require('./emis-cache');
  const CACHE = path.resolve(process.env.VF_EMIS_CACHE || DEFAULT_ROOT);
  const MODEL = process.env.MODEL || '/Users/asingh02/AAI/models/karansea-shabad-ctc/model.int8.onnx';
- const CODEC = process.env.VF_EMIS_CODEC || 'q16';
+-const CODEC = process.env.VF_EMIS_CODEC || 'q16';
 -const MIN_FREE_GB = 15;
++// x86 is the reference (owner, Oct 17 2026): GAB scores from the x86 (linux-x64) model output of every recording
++// (codec namespace q16-x86, recorded on the GCP VM). VF_EMIS_CODEC=q16 = the older mixed Mac + x86 cache. Set in env so
++// vf-check and the runners it starts use the same namespace.
++if (!process.env.VF_EMIS_CODEC) process.env.VF_EMIS_CODEC = 'q16-x86';
++const CODEC = process.env.VF_EMIS_CODEC;
 +const MIN_FREE_GB = Number(process.env.VF_MIN_FREE_GB || 15);
  const HF_REPO = 'khalisfoundation/GurbaniAutopilotBench';
  const hfToken = () => process.env.HF_TOKEN || (fs.existsSync(path.join(os.homedir(), '.vf-hf-token')) ? fs.readFileSync(path.join(os.homedir(), '.vf-hf-token'), 'utf8').trim() : '');
@@ -158,7 +163,7 @@ index 6e57021..c2069b4 100644
  }
  // --manifest hf[:org/repo]: score against the dataset on Hugging Face (manifest + the selected clips' truth csv files,
  // cached per manifest hash under <cache>/gab-hf/<sha>/); default: the local copy ~/personal/vf-benchmark
-@@ -206,6 +210,9 @@ function freeBytes(dir) {
+@@ -206,6 +214,9 @@ function freeBytes(dir) {
  // Pull every entry that is missing locally (thorough: also partial ones) from the shared Azure bench-cache.
  // Returns the ids still missing in both places (= need the model).
  async function pullMissing(clips, { thorough = false, say = console.log } = {}) {
@@ -168,8 +173,16 @@ index 6e57021..c2069b4 100644
    const uniq = [...new Map(clips.map((c) => [c.id, { id: c.id, wav: c.wav }])).values()].filter((c) => fs.existsSync(c.wav));
    const todo = thorough ? uniq : uniq.filter((c) => !cachedLocally(c.id));
    if (!todo.length) return [];
+@@ -312,6 +323,7 @@ async function prepare(builds, label) {
+   const out = outDirFor(label);
+   console.log(`${G.GAB_VERSION} ${label}: ${G.tierTitle(sel.set)} (--set ${sel.set}) · manifest ${sel.man.sha} · tier ${sel.tier} · split ${sel.split}${arg('folders') ? ` · folders ${arg('folders')}` : ''} · ${sel.jobs.length} clips (${(sel.jobs.reduce((a, j) => a + j.dur, 0) / 3600).toFixed(2)} h of audio), ${sel.notRun.length} without a runner · load ${load()}`);
+   for (const b of builds) console.log(`  build ${b.root} @ ${b.commit}${b.dirty ? ' (uncommitted edits)' : ''}`);
++  console.log(`  model output: ${/-x86$/.test(CODEC) ? 'x86 reference' : 'NOT the x86 reference'} (codec ${CODEC})`);
+   const missingBoth = await pullMissing(sel.jobs);
+   if (missingBoth.length) console.log(`  ${missingBoth.length} clips are in neither the local nor the Azure cache (not run; record them with gab fill): ${missingBoth.join(' ')}`);
+   const jobs = sel.jobs.filter((j) => !missingBoth.includes(j.id));
 diff --git a/research/level2-dataset/tools/remote-cache.js b/research/level2-dataset/tools/remote-cache.js
-index bb2861c..1dda5f5 100644
+index bb2861c2..22ffef66 100644
 --- a/research/level2-dataset/tools/remote-cache.js
 +++ b/research/level2-dataset/tools/remote-cache.js
 @@ -15,12 +15,15 @@ const crypto = require('crypto');
@@ -190,22 +203,95 @@ index bb2861c..1dda5f5 100644
  }
  const redact = (s) => String(s).replace(/sig=[^&\s"']+/g, 'sig=REDACTED').replace(/\?[^\s"']*se=[^\s"']*/g, '?<sas>');
  const url = (key, q = '') => `${BASE}/${key.split('/').map(encodeURIComponent).join('/')}?${q ? `${q}&` : ''}${sas()}`;
-@@ -144,4 +147,4 @@ async function pull({ root, model, codec, clips, log = console.log }) {
+@@ -135,7 +138,9 @@ async function pull({ root, model, codec, clips, log = console.log }) {
+     try {
+       if (man == null) { const mb = await get(`${PREFIX}/manifest.json`); man = mb ? JSON.parse(mb.toString('utf8')) : { entries: {} }; }
+       const me = man.entries[`${model}/${codec}/${audioSha(c.wav)}`];
+-      if (me && me.platform) fs.writeFileSync(path.join(d, 'provenance.json'), `${JSON.stringify({ platform: me.platform, cpu: me.cpu || null, host: me.host || null, pulledFrom: 'azure bench-cache manifest' }, null, 1)}\n`);
++      // the x86 reference namespace (codec *-x86) holds linux-x64 output only, also when its manifest entry is missing
++      if (/-x86$/.test(codec) && !(me && me.platform)) fs.writeFileSync(path.join(d, 'provenance.json'), `${JSON.stringify({ platform: 'linux-x64', pulledFrom: 'azure bench-cache (x86 namespace)' }, null, 1)}\n`);
++      else if (me && me.platform) fs.writeFileSync(path.join(d, 'provenance.json'), `${JSON.stringify({ platform: me.platform, cpu: me.cpu || null, host: me.host || null, pulledFrom: 'azure bench-cache manifest' }, null, 1)}\n`);
+     } catch (_) { /* provenance is advisory on pull */ }
+     n += 1;
+     bytes += b.length + i.length;
+@@ -144,4 +149,4 @@ async function pull({ root, model, codec, clips, log = console.log }) {
    return { pulled: n, bytes };
  }
  
 -module.exports = { push, pull, list, audioSha, redact, PREFIX };
 +module.exports = { push, pull, list, audioSha, redact, fixTimes, PREFIX };
 diff --git a/research/level2-dataset/tools/vf-check.js b/research/level2-dataset/tools/vf-check.js
-index 0ef7cfb..c7fa5e2 100644
+index 0ef7cfb4..b88d77ab 100644
 --- a/research/level2-dataset/tools/vf-check.js
 +++ b/research/level2-dataset/tools/vf-check.js
-@@ -31,7 +31,7 @@ const { DEFAULT_ROOT, modelSha } = require('./emis-cache');
+@@ -31,7 +31,12 @@ const { DEFAULT_ROOT, modelSha } = require('./emis-cache');
  const LOCK = '/tmp/vf-bench.lock';
  const MODEL = process.env.MODEL || '/Users/asingh02/AAI/models/karansea-shabad-ctc/model.int8.onnx';
  const CODEC = process.env.VF_EMIS_CODEC || 'q16';
 -const MAIN_REPO = '/Users/asingh02/personal/sttm-desktop';
++// x86 reference (owner, Oct 17 2026): codec 'q16-x86' is the same q16 encoding in its own namespace that holds ONLY
++// linux-x64 (x86) model output for every GAB recording (the production reference: most PCs are Intel/Windows). Its
++// entries are x86 by construction, so an entry without a provenance stamp counts as linux-x64, and no other platform
++// may record into it.
++const X86_NS = /-x86$/.test(CODEC);
 +const MAIN_REPO = process.env.VF_MAIN_REPO || '/Users/asingh02/personal/sttm-desktop';
  const argv = process.argv.slice(2);
  const flag = (n) => argv.includes(`--${n}`);
  const arg = (n, d) => { const i = argv.indexOf(`--${n}`); return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
+@@ -42,6 +47,10 @@ if (arg('split')) process.env.VF_SPLIT = arg('split');
+ const DEFAULT_SUITES = Object.keys(SUITES).filter((s) => !SUITES[s].optIn);
+ const TIER = arg('tier', 'full'); // smoke: ~10 clips across all suites, after every edit; full: everything
+ const JOBS = Number(arg('jobs', Math.max(1, Math.floor(os.cpus().length / 2))));
++// VF_RECORD_JOBS (cloud VM): clips recorded side by side, each with 3 model threads (default 1, the Mac's polite way)
++const RECORD_JOBS = Math.max(1, Number(process.env.VF_RECORD_JOBS || 1));
++// VF_REPLAY_MAX (cloud VM): workers per replay plan (default 4)
++const REPLAY_MAX = Math.max(1, Number(process.env.VF_REPLAY_MAX || 4));
+ const sh = (cmd, args, opts = {}) => execFileSync(cmd, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...opts }).trim();
+ const sha1 = (s) => crypto.createHash('sha1').update(s).digest('hex');
+ const now = () => Date.now() / 1000;
+@@ -108,7 +117,7 @@ async function pool(planFile) {
+ const REPLAY_SLOTS = Number(process.env.VF_REPLAY_SLOTS || 3);
+ function runLocked(plan, file, { threads } = {}) {
+   const replayOnly = !threads;
+-  if (replayOnly) plan = { ...plan, jobs: Math.min(plan.jobs, 4) };
++  if (replayOnly) plan = { ...plan, jobs: Math.min(plan.jobs, REPLAY_MAX) };
+   fs.writeFileSync(file, JSON.stringify(plan, null, 1));
+   const envArgs = threads ? ['env', `VF_ORT_THREADS=${threads}`] : [];
+   const poolArgs = ['nice', '-n', '19', ...envArgs, process.execPath, __filename, '--pool', file];
+@@ -341,9 +350,10 @@ const entryDirOf = (id) => path.join(CACHE, `${modelSha(MODEL, CACHE).slice(0, 1
+ function entryPlatform(id) {
+   const d = entryDirOf(id);
+   try { return JSON.parse(fs.readFileSync(path.join(d, 'provenance.json'), 'utf8')).platform; } catch (_) { /* none */ }
+-  return fs.existsSync(path.join(d, 'index.jsonl')) ? 'darwin-arm64' : null;
++  return fs.existsSync(path.join(d, 'index.jsonl')) ? (X86_NS ? 'linux-x64' : 'darwin-arm64') : null;
+ }
+ function platformGuard(jobs, say = console.log) {
++  if (X86_NS && PLATFORM !== 'linux-x64') { if (jobs.length) say(`  REFUSED to record ${jobs.length} clip(s): codec ${CODEC} is the x86 reference and only linux-x64 records into it (this is ${PLATFORM})`); return []; }
+   const bad = jobs.filter((j) => { const p = entryPlatform(j.id); return p && p !== PLATFORM; });
+   if (bad.length) say(`  REFUSED to record ${bad.length} clip(s) whose cache entry was recorded on another platform (this is ${PLATFORM}; never mix): ${[...new Set(bad.map((j) => `${j.id} (${entryPlatform(j.id)})`))].join(' ')}`);
+   return jobs.filter((j) => !bad.includes(j));
+@@ -410,7 +420,7 @@ async function record(opts = {}) {
+       for (const [bi, batch] of batches.entries()) {
+         // --queue: take ordinary turns on the lock (still one clip per turn) instead of waiting for an empty queue
+         if (!flag('greedy') && !flag('queue')) await politeTurn();
+-        const st = await runLocked({ jobs: 1, tasks: batch, verbose: true }, path.join(outRoot, `record-${side}-${s}-${bi}.plan.json`), { threads: 3 });
++        const st = await runLocked({ jobs: RECORD_JOBS, tasks: batch, verbose: true }, path.join(outRoot, `record-${side}-${s}-${bi}.plan.json`), { threads: 3 });
+         all.wall += st.wall;
+         all.lockWait += st.lockWait;
+         Object.assign(all.status, st.status);
+@@ -521,8 +531,13 @@ async function check() {
+     say(`${missed.length} clip runs went past the cache (their behaviour diverged); recording them (model, under the lock) ...`);
+     const tf = now();
+     const bySide = (side) => platformGuard(missed.filter(([s]) => s === side).map(([, j]) => j), say);
+-    const rec = [...makeTasks(bySide('base'), 'base', base, outRoot, 'record', { perClip: true }), ...makeTasks(bySide('cand'), 'cand', cand, outRoot, 'record', { perClip: true })];
+-    await runLocked({ jobs: 1, tasks: rec, verbose: true }, path.join(outRoot, 'fill.plan.json'), { threads: 3 });
++    const recB = makeTasks(bySide('base'), 'base', base, outRoot, 'record', { perClip: true });
++    const recC = makeTasks(bySide('cand'), 'cand', cand, outRoot, 'record', { perClip: true });
++    // side by side (VF_RECORD_JOBS > 1): base first, then candidate, so two writers never share one clip's entry
++    if (RECORD_JOBS > 1) {
++      if (recB.length) await runLocked({ jobs: RECORD_JOBS, tasks: recB, verbose: true }, path.join(outRoot, 'fill.plan.json'), { threads: 3 });
++      if (recC.length) await runLocked({ jobs: RECORD_JOBS, tasks: recC, verbose: true }, path.join(outRoot, 'fill-cand.plan.json'), { threads: 3 });
++    } else await runLocked({ jobs: 1, tasks: [...recB, ...recC], verbose: true }, path.join(outRoot, 'fill.plan.json'), { threads: 3 });
+     stampProvenance([...bySide('base'), ...bySide('cand')]);
+     const again = [...makeTasks(bySide('base'), 'base', base, outRoot, 'replay'), ...makeTasks(bySide('cand'), 'cand', cand, outRoot, 'replay')];
+     const st2 = await runLocked({ jobs: JOBS, tasks: again }, path.join(outRoot, 'replay2.plan.json'));

@@ -30,6 +30,16 @@ if [ ! -d "$TOOLS_WT" ]; then
   git -C "$REPO" fetch -q origin gab-tools-handoff
   git -C "$REPO" worktree add -q --detach "$TOOLS_WT" origin/gab-tools-handoff
   git -C "$TOOLS_WT" apply "$REPO/research/cloud-gab/gab-tools-cloud.patch"
+  sha256sum "$REPO/research/cloud-gab/gab-tools-cloud.patch" | cut -c1-16 > "$TOOLS_WT/.cloud-patch"
+fi
+# a newer cloud patch (e.g. the x86 reference, Oct 17): put the tools back to the branch and apply it again
+# (tracked tool files only; results and caches are untouched)
+if [ "$(cat "$TOOLS_WT/.cloud-patch" 2>/dev/null)" != "$(sha256sum "$REPO/research/cloud-gab/gab-tools-cloud.patch" | cut -c1-16)" ]; then
+  say "re-applying the updated cloud patch to the GAB tools"
+  git -C "$REPO" fetch -q origin gab-tools-handoff || true
+  git -C "$TOOLS_WT" checkout -q -f --detach "$(git -C "$REPO" rev-parse FETCH_HEAD 2>/dev/null || echo HEAD)"
+  git -C "$TOOLS_WT" apply "$REPO/research/cloud-gab/gab-tools-cloud.patch"
+  sha256sum "$REPO/research/cloud-gab/gab-tools-cloud.patch" | cut -c1-16 > "$TOOLS_WT/.cloud-patch"
 fi
 ln -sfn "$REPO/node_modules" "$TOOLS_WT/node_modules"
 # the leaderboard page lives on the fork (research/cloud-gab/leaderboard); gab publish ships tools/gab-space/index.html,
