@@ -271,10 +271,17 @@ kfix() {
   node "$REPO/research/cloud-gab/results-sync.js" push --prefix sung-bani-data/results-kfix --dir "$OUTD" --overwrite
   echo "kfix done"
 }
+# kfetch: the download + OCR half of channel ingest for a few videos (owner: no downloads or OCR on the Mac)
+kfetch() {
+  cd "$REPO/research/cloud-gab/hf-sung-bani" && echo "${SB_PICKS:-}" | tr ',' '\n' > /home/user/gab/kfetch-picks.txt
+  CROPF="${SB_CROPF:-}" REDO=1 bash vm-fetch-ocr.sh /home/user/gab/kfetch /home/user/gab/kfetch-picks.txt "${SB_RAWPFX:-sung-bani-data/kfetch-raw}"; cat /home/user/gab/kfetch/blocked.txt
+  echo "kfetch done"
+}
 case "$JOB" in
   fill-x86*) fill_x86; [[ "$JOB" == *apaath* ]] && apaath; [ -n "${SCORE:-}" ] && score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
   sungbani*) sungbani ;;
   kfix*) kfix ;;
+  kfetch*) kfetch ;;
   apaath-test*) AP_SPLIT=test apaath; node "$REPO/research/cloud-gab/results-sync.js" push ;;
   apaath*) apaath ;;
   score*) score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
