@@ -280,6 +280,14 @@ const PC_SWITCH = {
 // 0 = off.
 const PC_SWITCH_REPEAT = 0;
 const PC_REPEAT = { times: 3, gapS: 15, minScore: 0.9, minMargin: 0.15 };
+// Pankti Cumulation (follower), owner's case "ਦਰਸ ਤੇਰੇ ਕੀ ਪਿਆਸ ਮਨਿ ਲਾਗੀ" (ytraji_HQk5QmYtZJA, Shabad 1512:
+// pangti lag p90 7.3 s on 9.0.4). PC_FOLLOW_KEEP = 1: a pause never releases the Shabad
+// follower (9.0.4 wiped its line evidence after ~3.5 s without words, 13 times on that clip, and
+// then needed 4 decodes to pick a line again). PC_FOLLOW_UNIQUE = gap: a half pangti that matches
+// one line clearly better than every other (by >= gap) moves the line after 1 decode, even back
+// to the rahao. Shabads only (kirtan, Akhand Paath); the paath follower is untouched. 0 = off.
+const PC_FOLLOW_KEEP = 0;
+const PC_FOLLOW_UNIQUE = 0;
 // Shared-pangti hold in the existing switch judge (owner's live test: a pangti shared by several
 // Shabads flipped the screen 6 times): a switch or return WIN counts only when the heard line,
 // searched over all Gurbani, puts that Shabad on top by >= PC_SHARED_HOLD_MARGIN; a shared line
@@ -2210,6 +2218,8 @@ const VoiceFollow = () => {
                 })
               : await engine.createFollower(profile.verses, {
                   inputSr: sampleRateRef.current,
+                  ...(PC_FOLLOW_KEEP > 0 ? { release: 0 } : {}),
+                  ...(PC_FOLLOW_UNIQUE > 0 ? { uniqueGap: PC_FOLLOW_UNIQUE } : {}),
                 });
         } catch (e) {
           if (session !== sessionRef.current) return;
