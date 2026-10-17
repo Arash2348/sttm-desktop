@@ -224,7 +224,7 @@ sungbani() {
     done
   done
   node "$REPO/research/cloud-gab/results-sync.js" push
-  node "$REPO/research/cloud-gab/results-sync.js" push --prefix sung-bani-data/results --dir "$OUTD" --overwrite
+  node "$REPO/research/cloud-gab/results-sync.js" push --prefix "sung-bani-data/results-${JOB:-sungbani}" --dir "$OUTD" --overwrite
   echo "sungbani done"
 }
 case "$JOB" in
