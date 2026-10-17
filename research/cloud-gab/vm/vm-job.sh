@@ -207,13 +207,14 @@ sungbani() {
   node vf-check.js --record --roots $P/r904 --suites apaath --only "$ONLY" --no-pull --jobs "${SB_JOBS:-$NP}" > /home/user/gab/sb-record.log 2>&1; echo "sungbani record r904 exit $?"
   grep -E "REFUSED|recorded|error|done:" /home/user/gab/sb-record.log | tail -5
   for round in 1 2 3 4 5; do
+    [[ " ${SB_BUILDS:-r904 cand906b} " == *" cand906b "* ]] || break
     node vf-check.js --base $P/r904 --cand $P/cand906b --suites apaath --only "$ONLY" --fill --no-pull --replay-only --jobs "${SB_JOBS:-$NP}" --out /home/user/gab/sb-fill > /home/user/gab/sb-fill.log 2>&1; echo "sungbani fill cand906b round $round exit $?"
     grep -E "REFUSED|recording|went past|replay-only|error" /home/user/gab/sb-fill.log | head -5
     grep -qE "replay-only: .* [1-9][0-9]* cache misses" /home/user/gab/sb-fill.log || break
   done
   FSUITES=apaath push_cache
   local PRE="${SB_IDS:-ytjapji_Rt1TyWzPykc,ytjaap_Rt1TyWzPykc,yttavprasad_Rt1TyWzPykc,ytrehras_Rt1TyWzPykc,ytaarti_Rt1TyWzPykc,ytsalokm9_Rt1TyWzPykc,ytsohila_Rt1TyWzPykc}"
-  for b in r904 cand906b; do
+  for b in ${SB_BUILDS:-r904 cand906b}; do
     for sp in ${SB_SPLITS:-dev}; do
       local SPA=""; [ "$sp" = test ] && SPA="--split test"
       VF_MIN_FREE_GB=3 ./gab run $P/$b --set main --tier full --jobs "${SB_JOBS:-$NP}" --manifest "$BENCH" --folders "${SB_FOLDERS:-3-bani-sung-like-kirtan}" --ids "$PRE" $SPA > /home/user/gab/sb-score-$b-$sp.log 2>&1; echo "sungbani score $b $sp exit $?"
