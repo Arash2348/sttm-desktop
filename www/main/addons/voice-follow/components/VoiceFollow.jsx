@@ -219,7 +219,7 @@ const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a swit
 // End-of-Bani exit (switchPolicy.switchConfirmNeeded): on a sung Bani's last BANI_END_EXIT pangtis a decisive
 // win commits a switch at once. 0 = off (as 9.0.4). Sung Banis only (Aarti): a recited paath decodes densely,
 // so the normal confirm already follows it out, and at the end of Rehras the spoken Fateh would win at once.
-const BANI_END_EXIT = 0;
+const BANI_END_EXIT = 2;
 const BANI_END_EXIT_BANIS = new Set([22]); // Aarti (AARTI_BANI, defined below)
 // Same-Gurbani lock (ported from cycle 11): the same text stored as two shabads (Aarti in
 // Sohila and in Dhanasari, a Rehras shabad and its SGGS original) searches as an exact
@@ -268,7 +268,7 @@ const AARTI_SHARED_BANIS = [21, 23]; // Rehras, Sohila
 // missing 19 points are pangtis shown 10 s late or never; aa02's trace shows a 45 s stall at a jump
 // back of ~180 lines on slow held notes (the follower released, and a fresh lock needs a 0.6 match).
 // AARTI_FOLLOW picks a profile from AARTI_PROFILES (engine/follower2.js options); 0 = as 9.0.4.
-const AARTI_FOLLOW = 0;
+const AARTI_FOLLOW = 1;
 const AARTI_PROFILES = [
   {},
   // sung, like Asa di Vaar, plus cheaper far jumps and re-locks
