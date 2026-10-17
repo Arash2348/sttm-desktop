@@ -1350,9 +1350,25 @@ $vf2-yellow-bar: #f2c200;
   }
 
   // Following: the current pangti about twice as large on a big panel.
+  // The card is a column: the pangti takes the free height, centred, so a taller card only
+  // adds air around it. With nothing else to show, the card grows to use the panel (eased,
+  // the text keeps its size); it eases back when a candidate appears.
   .vf2-now {
+    display: flex;
+    flex-direction: column;
     min-height: clamp(0px, 30cqh, 340px);
     padding: clamp(12px, 2.6cqh, 26px) clamp(14px, 2cqw, 28px);
+    transition:
+      min-height 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+      border-color 0.45s ease;
+    > .vf2-line {
+      flex: 1 0 auto;
+      display: flex;
+      align-items: center;
+    }
+  }
+  > .vf2-body.is-quiet .vf2-now {
+    min-height: clamp(0px, 56cqh, 640px);
   }
   &[data-vf-cards='rail'] .vf2-now {
     padding-left: clamp(18px, 2.4cqw, 32px);
@@ -1411,20 +1427,25 @@ $vf2-yellow-bar: #f2c200;
   }
   .vf2-shabad-row {
     gap: clamp(14px, 1.6cqw, 22px);
-    padding: clamp(9px, 1.8cqh, 16px) clamp(16px, 2cqw, 26px);
+    padding: clamp(7px, 1.3cqh, 14px) clamp(16px, 2cqw, 26px);
     .vf2-cand-line {
-      font-size: clamp(16px, #{'min(2.5cqw, 4.6cqh)'}, 28px);
+      font-size: clamp(16px, #{'min(2.2cqw, 3.9cqh)'}, 26px);
     }
     .vf2-cand-track {
       width: clamp(96px, 11cqw, 180px);
       height: clamp(5px, 1cqh, 8px);
     }
     .vf2-live-pct {
-      font-size: clamp(15px, #{'min(1.9cqw, 3.6cqh)'}, 22px);
+      font-size: clamp(15px, #{'min(1.8cqw, 3.3cqh)'}, 21px);
     }
     .vf2-switch {
-      font-size: clamp(14px, #{'min(1.5cqw, 3cqh)'}, 18px);
+      font-size: clamp(14px, #{'min(1.4cqw, 2.7cqh)'}, 17px);
       padding: 0.45em 1.15em;
     }
+  }
+
+  // What it hears, in the bottom bar
+  .vf-ap-heard .vf2-heard-text {
+    font-size: clamp(14px, #{'min(1.6cqw, 3cqh)'}, 20px);
   }
 }

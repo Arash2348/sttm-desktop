@@ -763,7 +763,10 @@ const LivePct = ({ value }) => {
     return () => cancelAnimationFrame(raf);
   }, [value]);
   return (
-    <span className={`vf2-live-pct ${pctLevel(value)}`} style={{ '--pt-h': pctHue(shown).toFixed(0) }}>
+    <span
+      className={`vf2-live-pct ${pctLevel(value)}`}
+      style={{ '--pt-h': pctHue(shown).toFixed(0) }}
+    >
       {fmtPct(shown)}
     </span>
   );
@@ -4417,6 +4420,25 @@ const VoiceFollow = () => {
   // not a change.
   const changing = !!(liveLead && leadLine && !sameAsCurrent(leadLine));
 
+  // The next pangti; on the last pangti, a quiet "End of Shabad" in its place.
+  let nextRow = <span className="vf2-next-line is-empty" />;
+  if (nextLine)
+    nextRow = (
+      <div className="vf2-next-line" title={i18n.t('VOICE_FOLLOW.NEXT')}>
+        <span className="vf2-next-mark" aria-hidden="true" />
+        <Gurmukhi text={nextLine} />
+      </div>
+    );
+  else if (atEnd)
+    nextRow = (
+      <div className="vf2-next-line is-end">
+        <span className="vf2-next-mark" aria-hidden="true" />
+        {i18n.t(
+          curBaniShabadsRef.current ? 'VOICE_FOLLOW.END_OF_BANI' : 'VOICE_FOLLOW.END_OF_SHABAD',
+        )}
+      </div>
+    );
+
   const heardStrip = (() => {
     // A rolling window: only the last few settled words, newest kept in view.
     const [settled, tentative] = heard ? heard.split('\u0001') : ['', ''];
@@ -4530,7 +4552,7 @@ const VoiceFollow = () => {
       )}
 
       {active && (
-        <div className="vf2-body">
+        <div className={`vf2-body${!changing && boardOthers.length === 0 ? ' is-quiet' : ''}`}>
           {dlBar}
 
           <section
@@ -4561,23 +4583,7 @@ const VoiceFollow = () => {
             {/* The next pangti (marked by a thin grey bar) and Stop share one row, so Stop
                 sits near the top of the panel without adding a line. */}
             <div className="vf2-next-row">
-              {nextLine ? (
-                <div className="vf2-next-line" title={i18n.t('VOICE_FOLLOW.NEXT')}>
-                  <span className="vf2-next-mark" aria-hidden="true" />
-                  <Gurmukhi text={nextLine} />
-                </div>
-              ) : atEnd ? (
-                <div className="vf2-next-line is-end">
-                  <span className="vf2-next-mark" aria-hidden="true" />
-                  {i18n.t(
-                    curBaniShabadsRef.current
-                      ? 'VOICE_FOLLOW.END_OF_BANI'
-                      : 'VOICE_FOLLOW.END_OF_SHABAD',
-                  )}
-                </div>
-              ) : (
-                <span className="vf2-next-line is-empty" />
-              )}
+              {nextRow}
               {stopButton}
             </div>
             {boardCur && <LiveBar value={boardCur.pct} />}
@@ -4644,7 +4650,9 @@ const VoiceFollow = () => {
                     type="button"
                     className={`vf2-switch${i === 0 ? ' is-primary' : ''}`}
                     onClick={() => pickCandidate({ ...c, pos: i })}
-                    title={i18n.t(currentView ? 'VOICE_FOLLOW.SWITCH_TIP' : 'VOICE_FOLLOW.OPEN_TIP')}
+                    title={i18n.t(
+                      currentView ? 'VOICE_FOLLOW.SWITCH_TIP' : 'VOICE_FOLLOW.OPEN_TIP',
+                    )}
                   >
                     {i18n.t(currentView ? 'VOICE_FOLLOW.SWITCH' : 'VOICE_FOLLOW.OPEN')}
                   </button>
