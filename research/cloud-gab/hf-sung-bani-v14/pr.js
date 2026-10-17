@@ -36,7 +36,7 @@ const get = async (u) => { const r = await fetch(u, H); if (!r.ok) throw new Err
   for (const c of changed) if (!done.has(c) && c !== 'manifest.csv') file(c, fs.readFileSync(path.join(D, c)));
   file('manifest.csv', localMan);
   if (README) file('README.md', fs.readFileSync(README));
-  const header = { key: 'header', value: { parentCommit: sha, summary: 'GAB v1.4: Sung Bani cleanup (talk, Asa di Vaar to Akhand Kirtan, one cut per performance, key fixes)', description: fs.readFileSync(path.join(__dirname, 'pr-description.md'), 'utf8') } };
+  const header = { key: 'header', value: { parentCommit: sha, summary: process.env.PR_TITLE || 'GAB v1.4: Sung Bani cleanup (talk, Asa di Vaar to Akhand Kirtan, one cut per performance, key fixes)', description: fs.readFileSync(process.env.PR_DESC || path.join(__dirname, 'pr-description.md'), 'utf8') } };
   const nd = [header, ...ops, ...del].map((x) => JSON.stringify(x)).join('\n');
   fs.writeFileSync(path.join(__dirname, 'commit.ndjson'), nd);
   console.log(`${ops.length} files written (${ops.filter((o) => o.key === 'lfsFile').length} audio re-pointed, no upload), ${del.length} old paths removed`);

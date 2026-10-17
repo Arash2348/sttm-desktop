@@ -1,0 +1,51 @@
+<title>Kirtan Start Listening Check</title>
+<style>
+/* single column of question cards, one clip each; copy bar at the end */
+:root{--bg:#f7f6f2;--fg:#1e1d1a;--mut:#67645c;--card:#ffffff;--line:#dedad0;--acc:#8a4f12;--acc-fg:#ffffff;--sel:#f3e6d5;
+--f-body:"Noto Sans",system-ui,sans-serif;--f-gur:"Noto Sans Gurmukhi","Raavi",sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171613;--fg:#ecebe6;--mut:#a29f96;--card:#211f1b;--line:#38352e;--acc:#e3a35e;--acc-fg:#1a1208;--sel:#3a2c1c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#171613;--fg:#ecebe6;--mut:#a29f96;--card:#211f1b;--line:#38352e;--acc:#e3a35e;--acc-fg:#1a1208;--sel:#3a2c1c;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.5 var(--f-body)}
+main{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:20px 60px}
+h1{font-size:1.45rem;margin:0 0 4px;text-wrap:balance}p.sub{color:var(--mut);margin:0 0 18px;max-width:62ch}
+h2{font-size:1rem;margin:26px 0 6px;color:var(--acc);text-wrap:balance}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0;display:grid;gap:6px}
+.q{font-weight:600}.meta{color:var(--mut);font-size:.88rem}.g{font-family:var(--f-gur);font-size:1.1rem}
+audio{width:100%}.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opts label{border:1px solid var(--line);border-radius:16px;padding:3px 10px;cursor:pointer;font-size:.92rem}
+.opts label:has(input:checked){background:var(--sel);border-color:var(--acc)}
+.opts input{margin-right:4px;accent-color:var(--acc)}
+textarea{width:100%;box-sizing:border-box;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:6px;font:inherit;padding:4px 6px}
+button{background:var(--acc);color:var(--acc-fg);border:0;border-radius:8px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer}
+button:focus-visible,textarea:focus-visible,.opts input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+#out{width:100%;margin-top:8px}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600&family=Noto+Sans+Gurmukhi:wght@400;600&display=swap">
+<main>
+<h1>Kirtan start listening check</h1>
+<p class="sub">8 clips of 10 s from the Renton darbar recordings in GAB, at the start of each Shabad (GAB v1.5 key fix). Each has one question. Pick an answer, add a note if you like, then press Copy my notes at the bottom.</p>
+<div id="list"></div>
+<p><button id="copy" type="button">Copy my notes</button> <span id="ok" class="meta"></span></p>
+<textarea id="out" rows="6" hidden readonly></textarea>
+<script>
+const S=[
+ {h:'Renton darbars: where does the next Shabad really start? (GAB v1.5 key fix)'},
+ {id:'rn14-013',m:'rn14, 0:13-0:23 (new key: gap until 0:20, Shabad from 0:20)',q:'Jaikara, then the Shabad starting near 0:20?',g:'ਅੰਮ੍ਰਿਤੁ ਪੀਵਹੁ ਸਦਾ ਚਿਰੁ ਜੀਵਹੁ ਹਰਿ ਸਿਮਰਤ ਅਨਦ ਅਨੰਤਾ ॥',o:['Yes','Shabad starts earlier','Shabad starts later','Not sure']},
+ {id:'rn52-012',m:'rn52, 0:12-0:22 (new key: talk until 0:20)',q:'Talk, then the Shabad starting near 0:20?',g:'ਮਿਲੁ ਮੇਰੇ ਬੀਠੁਲਾ ਲੈ ਬਾਹੜੀ ਵਲਾਇ ॥',o:['Yes','Shabad starts earlier','Shabad starts later','Not sure']},
+ {id:'rn77-021',m:'rn77, 0:21-0:31 (new key: talk until 0:28)',q:'Does the talk end and the Shabad start near 0:28?',g:'ਗਾਉ ਗਾਉ ਰੀ ਦੁਲਹਨੀ ਮੰਗਲਚਾਰਾ ॥',o:['Yes','Shabad starts earlier','Shabad starts later','Not sure']},
+ {id:'rn80-012',m:'rn80, 0:12-0:22 (new key: talk until 0:20)',q:'Talk, then the Shabad starting near 0:20?',g:'ਹਮ ਰੁਲਤੇ ਫਿਰਤੇ ਕੋਈ ਬਾਤ ਨ ਪੂਛਤਾ ਗੁਰ ਸਤਿਗੁਰ ਸੰਗਿ ਕੀਰੇ ਹਮ ਥਾਪੇ ॥',o:['Yes','Shabad starts earlier','Shabad starts later','Not sure']},
+ {id:'rn81-022',m:'rn81, 0:22-0:32 (new key: jaikaras until 0:30)',q:'Jaikaras, then the Shabad starting near 0:30?',g:'ਐਸੇ ਗੁਰ ਕਉ ਬਲਿ ਬਲਿ ਜਾਈਐ ਆਪਿ ਮੁਕਤੁ ਮੋਹਿ ਤਾਰੈ ॥',o:['Yes','Shabad starts earlier','Shabad starts later','Not sure']},
+ {id:'rn63-000',m:'rn63, 0:00-0:10 (new key: this Shabad from 0:00, not the one before)',q:'Is this Shabad already being sung?',g:'ਮਨ ਰੇ ਕਿਉ ਛੂਟਹਿ ਬਿਨੁ ਪਿਆਰ ॥',o:['Yes','No, still the previous Shabad','Not sure']},
+ {id:'rn16-020',m:'rn16, 0:20-0:30 (new key: this Shabad from 0:20, not the one before)',q:'Is this Shabad being sung here?',g:'ਬਿਰਹਾ ਬਿਰਹਾ ਆਖੀਐ ਬਿਰਹਾ ਤੂ ਸੁਲਤਾਨੁ ॥',o:['Yes','No, still the previous Shabad','Instruments only','Not sure']},
+ {id:'rn45-017',m:'rn45, 0:17-0:27, held back (new key: jaikaras and talk until 0:25)',q:'Talk, then the Shabad starting near 0:25?',g:'ਮਨ ਕਿਉ ਬੈਰਾਗੁ ਕਰਹਿਗਾ ਸਤਿਗੁਰੁ ਮੇਰਾ ਪੂਰਾ ॥',o:['Yes','Shabad starts earlier','Shabad starts later','Not sure']},
+];
+const L=document.getElementById('list');
+S.forEach((s,i)=>{ if(s.h){const h=document.createElement('h2');h.textContent=s.h;L.append(h);return;}
+ const d=document.createElement('div');d.className='card';
+ d.innerHTML=`<div class="q">${s.q}</div><div class="meta">${s.m}</div>${s.g?`<div class="g">${s.g}</div>`:''}<audio controls preload="none" src="${s.id}.mp3"></audio><div class="opts">${s.o.map(o=>`<label><input type="radio" name="${s.id}" id="r-${s.id}-${s.o.indexOf(o)}" value="${o}">${o}</label>`).join('')}</div><textarea id="n-${s.id}" rows="1" placeholder="Note (optional)" data-id="${s.id}"></textarea>`;
+ L.append(d);});
+document.getElementById('copy').onclick=async()=>{
+ const t=S.filter(s=>s.id).map(s=>{const a=document.querySelector(`input[name="${s.id}"]:checked`);const n=document.querySelector(`textarea[data-id="${s.id}"]`).value.trim();return `${s.id}: ${a?a.value:'-'}${n?' | '+n:''}`;}).join('\n');
+ const o=document.getElementById('out');o.value=t;try{await navigator.clipboard.writeText(t);document.getElementById('ok').textContent='Copied.';o.hidden=true;}catch(e){o.hidden=false;o.select();document.getElementById('ok').textContent='Select the text below and copy it.';} };
+</script>
+</main>
