@@ -225,6 +225,47 @@ x86() {
   node "$REPO/research/cloud-gab/results-sync.js" push
   echo "x86 done ($(( ($(date +%s) - t0) / 60 )) min)"
 }
+# Kirtan find (Oct 17): the new GurbaniRattan + rajikaurrr kirtan recordings (dataset PRs #14-#16, staged in Azure
+# sung-bani-data/, their model output in the q16 namespace): fill + score 9.0.4 and the KN_BUILDS on them, both splits;
+# scorecards and the 9.0.4 run (traces) to Azure bench-results/kirnew/<job>/
+kirnew() {
+  export VF_EMIS_CODEC=q16
+  KN_BUILDS="${KN_BUILDS:-$(curl -sf -H Metadata-Flavor:Google http://metadata.google.internal/computeMetadata/v1/instance/attributes/cg-kn || true)}"
+  local BENCH=/home/user/gab/kn-bench ST=/home/user/gab/kn-stage O=/home/user/gab/kn-out
+  mkdir -p "$BENCH" "$O"
+  for sp in sung-bani-data/kirtan-gr-b1 sung-bani-data/kirtan-gr-b2 sung-bani-data/kirtan-raji-b3 sung-bani-data/kirtan-b23; do
+    node "$REPO/research/cloud-gab/results-sync.js" pull --prefix "$sp" --dir "$ST/$sp" | tail -1; cp -r "$ST/$sp/." "$BENCH/"; done
+  export VF_BENCHMARK="$BENCH"
+  cd "$TOOLS"
+  local ONLY
+  ONLY=$(node -e 'const {parseCsv,canonRows}=require("./vf-manifest");const rows=canonRows(parseCsv(require("fs").readFileSync(process.argv[1],"utf8")));console.log(rows.filter(r=>/^yt(gr|raji)_/.test(r.id)&&r.content_folder==="1-kirtan-shabad").map(r=>r.id).join(","))' "$BENCH/manifest.csv")
+  echo "kirnew: $(echo "$ONLY" | tr ',' '\n' | wc -l) clips"
+  node -e '
+    const {SUITES}=require("./vf-suites");const r=require("./remote-cache");const ids=new Set(process.argv[1].split(","));
+    const clips=SUITES.apaath.jobs().filter(j=>ids.has(j.clip)||ids.has(j.id)).map(j=>({id:j.id,wav:j.wav}));
+    r.pull({root:"/root/personal/live-darbar-venues/cache",model:"5f9e41d867de",codec:"q16",clips,log:()=>{}}).then(x=>console.log("kirnew: pulled",x.pulled,"q16 entries for",clips.length,"clips"));' "$ONLY"
+  node "$REPO/research/cloud-gab/results-sync.js" pull | tail -1
+  for b in ${KN_BUILDS:-}; do
+    for round in 1 2 3 4; do
+      node vf-check.js --base $P/r904 --cand $P/$b --suites apaath --only "$ONLY" --fill --no-pull --replay-only --jobs $(( NP - 2 )) --out /home/user/gab/kn-fill-$b > /home/user/gab/kn-fill-$b.log 2>&1; echo "kirnew fill $b round $round exit $?"
+      grep -E "REFUSED|went past|replay-only:" /home/user/gab/kn-fill-$b.log | cut -c1-200
+      grep -qE "replay-only: .* [1-9][0-9]* cache misses" /home/user/gab/kn-fill-$b.log || break
+    done
+  done
+  for b in r904 ${KN_BUILDS:-}; do for sp in dev test; do
+    local SPA=""; [ $sp = test ] && SPA="--split test"
+    VF_MIN_FREE_GB=3 ./gab run $P/$b --set main --tier full --jobs $(( NP - 2 )) --manifest "$BENCH" --folders 1-kirtan-shabad --ids "$ONLY" $SPA --out "$O/run-$b-$sp" > /home/user/gab/kn-score-$b-$sp.log 2>&1; echo "kirnew score $b $sp exit $?"
+    grep -E "^\| \*\*Kirtan|INCOMPLETE|Not run" /home/user/gab/kn-score-$b-$sp.log | cut -c1-240
+    mkdir -p "$O/cards/$b"; cp "$O/run-$b-$sp/scorecard.json" "$O/cards/$b/$sp.json" 2>/dev/null
+  done; done
+  # the 9.0.4 traces for the miss diagnosis (text only)
+  mkdir -p "$O/trace-r904"; find "$O/run-r904-dev" "$O/run-r904-test" -name '*.events.jsonl' -exec cp {} "$O/trace-r904/" \; 2>/dev/null
+  find "$O/run-r904-dev" "$O/run-r904-test" -path '*apaath/*.json' -not -name '*.events*' -exec cp {} "$O/trace-r904/" \; 2>/dev/null
+  echo "kirnew: $(ls $O/trace-r904 | wc -l) trace files"
+  node "$REPO/research/cloud-gab/results-sync.js" push | tail -1
+  node "$REPO/research/cloud-gab/results-sync.js" push --prefix "bench-results/kirnew/$JOB" --dir "$O" --skip '^run-' --overwrite | tail -1
+  echo "kirnew done"
+}
 lines() {
   cd "$REPO/research/cloud-gab/lines"
   local J=$(( (NP - 4) / 2 )); [ $J -lt 2 ] && J=2
@@ -242,6 +283,8 @@ case "$JOB" in
   apaath*) apaath ;;
   score*) score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
   test*) test_split ;;
+  x86-kirnew*) kirnew ;;
+  x86-both*) kirnew; x86 ;;
   x86*) x86 ;;
   lines*) lines ;;
   all*) fill_x86 & lines; wait ;;
