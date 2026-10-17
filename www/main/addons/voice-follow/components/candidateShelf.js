@@ -25,7 +25,7 @@
 // Evidence cards (items with `ev`, Shabad-level evidence from shabadEvidence.js): a card stays
 // exactly as long as its Shabad's evidence does (the evidence itself fades over tens of
 // seconds), never on a fixed timer and never shown fading; the cards are ordered by evidence,
-// with EV_SWAP of hysteresis.
+// with evSwap of hysteresis.
 // Time is whatever `now` the caller passes (ms), so the shelf is deterministic in replay.
 
 const DEFAULTS = {
@@ -39,7 +39,7 @@ const DEFAULTS = {
   minShowMs: 4000, // a listed card is never replaced by a newcomer before this long
   halfLifeMs: 8000, // a card without new scores keeps its last %, halving over this long
   changeHoldMs: 2500, // the change card stays this long after the judge stops checking it
-  evSwap: 0.15, // evidence cards: one passes another only when ahead by more than this
+  evSwap: 0.25, // evidence cards: one passes another only when ahead by more than this
   evOvertake: 0.3, // full list: a newcomer must beat the weakest evidence card by this much
 };
 
