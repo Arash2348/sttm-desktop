@@ -38,7 +38,7 @@ cd sttm-desktop && echo "code $(git rev-parse --short HEAD)"
 FILL="$(get cg-fill || true)" FSUITES="$(get cg-suites || true)"; [ -n "$FILL" ] || unset FILL; [ -n "$FSUITES" ] || unset FSUITES; export FILL FSUITES
 SCORE="$(get cg-score || true)"; [ -n "$SCORE" ] || unset SCORE; export SCORE
 TEST_BUILDS="$(get cg-test || true)"; [ -n "$TEST_BUILDS" ] || unset TEST_BUILDS; export TEST_BUILDS
-for v in SB_REV:cg-sbrev SB_STAGE:cg-sbstage SB_IDRE:cg-sbidre SB_IDS:cg-sbids SB_SPLITS:cg-sbsplits SB_ALIGN:cg-sbalign SB_ALIGN_SPLIT:cg-sbalignsplit; do x="$(get ${v#*:} || true)"; if [ -n "$x" ]; then export "${v%%:*}=$x"; fi; done
+for v in SB_REV:cg-sbrev SB_STAGE:cg-sbstage SB_IDRE:cg-sbidre SB_IDS:cg-sbids SB_SPLITS:cg-sbsplits SB_ALIGN:cg-sbalign SB_ALIGN_SPLIT:cg-sbalignsplit SB_BUILDS:cg-sbbuilds; do x="$(get ${v#*:} || true)"; if [ -n "$x" ]; then export "${v%%:*}=$x"; fi; done
 bash research/cloud-gab/vm/vm-job.sh "$JOB" && echo "JOB DONE $JOB $(date -u +%FT%TZ)" || echo "JOB FAILED $JOB (exit $?) $(date -u +%FT%TZ)"
 echo "$JOB" > $DONE
 sync; sleep 5; poweroff

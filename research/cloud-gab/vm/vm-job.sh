@@ -68,6 +68,10 @@ mk kf6 c803b53 KIRTAN_FOLLOW=6
 # P0 Kirtan lag: shorter line-follower window (3.0 s, 2.5 s) on 9.0.4
 mk kf7 7e5a23b KIRTAN_FOLLOW=7
 mk kf8 7e5a23b KIRTAN_FOLLOW=8
+# Sung Bani keeper check (Oct 17): sb-final = 9.0.4 + AARTI_FOLLOW=1 + BANI_END_EXIT=2; exitonly = same without AARTI_FOLLOW
+mk sbfinal 3ad13962
+mk exitonly 3ad13962 AARTI_FOLLOW=0
+mk aarti906 747b9b7 AARTI_FOLLOW=1
 # owner (Oct 16): the Akhand verdict first: verifier builds + probation, Akhand (l3) only; Renton later for the keepers
 FILL="${FILL:-v6-prob v6-base3 v6-verify5 v6-vk3l10 v6-vk3l20 v6-vk6l40 v6-ctc v6-prob-ctc r904 window-align}"
 FSUITES="${FSUITES:-l3}"
@@ -206,14 +210,14 @@ sungbani() {
   node "$REPO/research/cloud-gab/results-sync.js" pull >/dev/null 2>&1
   node vf-check.js --record --roots $P/r904 --suites apaath --only "$ONLY" --no-pull --jobs "$NP" > /home/user/gab/sb-record.log 2>&1; echo "sungbani record r904 exit $?"
   grep -E "REFUSED|recorded|error|done:" /home/user/gab/sb-record.log | tail -5
-  for round in 1 2 3 4 5; do
-    node vf-check.js --base $P/r904 --cand $P/cand906b --suites apaath --only "$ONLY" --fill --no-pull --replay-only --jobs "$NP" --out /home/user/gab/sb-fill > /home/user/gab/sb-fill.log 2>&1; echo "sungbani fill cand906b round $round exit $?"
+  for cb in ${SB_BUILDS:-cand906b}; do for round in 1 2 3 4 5; do
+    node vf-check.js --base $P/r904 --cand $P/$cb --suites apaath --only "$ONLY" --fill --no-pull --replay-only --jobs "$NP" --out /home/user/gab/sb-fill > /home/user/gab/sb-fill.log 2>&1; echo "sungbani fill cand906b round $round exit $?"
     grep -E "REFUSED|recording|went past|replay-only|error" /home/user/gab/sb-fill.log | head -5
     grep -qE "replay-only: .* [1-9][0-9]* cache misses" /home/user/gab/sb-fill.log || break
-  done
+  done; done
   FSUITES=apaath push_cache
   local PRE="${SB_IDS:-ytjapji_Rt1TyWzPykc,ytjaap_Rt1TyWzPykc,yttavprasad_Rt1TyWzPykc,ytrehras_Rt1TyWzPykc,ytaarti_Rt1TyWzPykc,ytsalokm9_Rt1TyWzPykc,ytsohila_Rt1TyWzPykc}"
-  for b in r904 cand906b; do
+  for b in r904 ${SB_BUILDS:-cand906b}; do
     for sp in ${SB_SPLITS:-dev}; do
       local SPA=""; [ "$sp" = test ] && SPA="--split test"
       VF_MIN_FREE_GB=3 ./gab run $P/$b --set main --tier full --jobs "$NP" --manifest "$BENCH" --folders 3-bani-sung-like-kirtan --ids "$PRE" $SPA > /home/user/gab/sb-score-$b-$sp.log 2>&1; echo "sungbani score $b $sp exit $?"
