@@ -1,0 +1,20 @@
+{
+  "checkAt": "2026-10-17T03:00:00Z",
+  "eta": "Both jobs ~Fri 8:00 PM PT; each VM stops itself after its job",
+  "name": "GCP VM for recording model output",
+  "needs": "",
+  "next": "When the job reports: pull results, sweep VERIFY_LOCK x VERIFY_FLOOR offline from the dry traces (verifier-floor-sweep.js), score the chosen floor as a replay-only variant (minutes).",
+  "now": "VM 1: 2.5 s window on main + Akhand, then score and held-back test. VM 2: 3.0 s and 2.5 s windows on Akhand Paath, then score and test. The cloud login in this session has expired, so the next agent needs a fresh login to collect the results.",
+  "order": 6,
+  "plain": "The big 32-core Google Cloud computer that records new speech-model output. Needed for Akhand verdicts.",
+  "result": "Working: keys from Secret Manager, fill loop, 2 boots today (~$6)",
+  "resultNote": "",
+  "stage": "Recording (2 VMs)",
+  "state": "active",
+  "todo": "",
+  "todoRank": 1,
+  "todoTime": "2 min",
+  "todoWhy": "unblocks Akhand verdicts and model tests",
+  "updated": "2026-10-17T01:00:00Z",
+  "why": "The 32-core VM is the machine that recorded the Akhand cache, so new Akhand windows must be filled there."
+}

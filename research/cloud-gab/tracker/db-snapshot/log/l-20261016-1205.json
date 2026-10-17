@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T12:05:00Z",
+  "text": "Kirtan fix 2 profile 1 (margin gate only guards far jumps) on the same 104 recordings as 9.0.4: right pangti 87.4 vs 87.0 (+0.4), right Shabad, wrong time and lag identical, paath identical, Sung Bani +0.1; on Akhand right pangti 75.5 -> 77.3 and lag 1.62 -> 1.38 s with no wrong-Shabad cost. Passes the keep rule (Fremont not yet scored). 34 recordings up, 36 down, one from 13 to 92%: a small net gain, not the 1-3 s lag fix yet."
+}

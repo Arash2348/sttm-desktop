@@ -1,0 +1,20 @@
+{
+  "eta": "Waiting on owner",
+  "name": "Release train: 9.0.4 in the app, 9.0.6 candidate next",
+  "needs": "",
+  "next": "Owner decides: promote 9.0.6 (take the P1 gains, Kirtan test +5 s/h treated as a wash against -22 on practice) or hold it until Kirtan wrong time is no worse on both splits.",
+  "now": "Refined 9.0.6 candidate (9.0.4 + near-twin 0.03 + Aarti profile 1) vs 9.0.4. Practice: Kirtan right Shabad 91.6 -> 92.2, wrong 125 -> 103 s/h; Sung Bani pangti 76.3 -> 77.8; Akhand 78.1 -> 78.6 and wrong 385 -> 377; paath and Fremont same. Test split: Akhand wrong 235 -> 203 s/h; Sung Bani right Bani 75.0 -> 76.9; paath, Fremont same; Kirtan right Shabad and pangti same within 0.1, but Kirtan wrong 145 -> 150 s/h (27 s in 5.5 h, two Renton recordings). The refinement did not change those two; cause not found cheaply.",
+  "order": 6,
+  "plain": "The next app releases: 9.0.4, then 9.0.5 with Akhand Paath. One release at a time.",
+  "result": "9.0.4 merged",
+  "resultNote": " · scoring it on GAB now (~1 h)",
+  "stage": "Waiting on owner",
+  "state": "active",
+  "todo": "Decide on 9.0.6: promote to experimental (recommended) or hold until Kirtan wrong-Shabad time is no worse on both splits",
+  "todoRank": 1,
+  "todoTime": "1 min",
+  "todoWhy": "unblocks 9.0.5 Akhand Paath",
+  "trend": "up",
+  "updated": "2026-10-16T16:30:00Z",
+  "why": "Your rule: one release in flight at a time."
+}

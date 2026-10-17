@@ -1,0 +1,10 @@
+{
+  "name": "All versions at a glance (GAB v1.3, practice split unless marked test)",
+  "next": "The Hugging Face leaderboard only accepts complete runs: 9.0.5 and 9.0.6 still miss a few recordings whose speech-model windows only the Mac can record (8 and 19). Run the Mac fill (see the leaderboard card) and both rows publish.",
+  "now": "9.0.4 (in the app): Kirtan 92.6% right Shabad / 87.9% right pangti / 1.18 s behind / 111 s/h wrong; Paath 95.7 / 95.9 / 0.4 s; Sung Bani 84.2 / 82.2; Akhand Paath 97.7 / 96.0 / 0.33 s; Akhand Kirtan 78.2 / 76.0; Fremont 52.8 / 47.7. | 9.0.5 (fork only, gate fix): Kirtan 92.6 / 87.9 (+0.4 on the same recordings) but test split right pangti lower (Kirtan 87.5 -> 87.0, Akhand 83.8 -> 83.1, Fremont 65.5 -> 63.6): not for experimental. | 9.0.6 candidate (near-twin + Aarti profile 1): Kirtan right Shabad +0.6, wrong 125 -> 103 s/h, pangti same; Sung Bani 84.8 / 83.6; Akhand Kirtan 78.7 / 76.3; test split: Akhand wrong -14%, Sung Bani +1.9, Kirtan wrong +5 s/h; awaiting go-ahead. | Akhand stack 2 (verifier + window alignment): Akhand Kirtan 81.0 / 76.7, but everyday Kirtan wrong +17 s/h: only behind an Akhand mode.",
+  "order": 0,
+  "plain": "Every version and candidate on one card, so the numbers sit side by side.",
+  "stage": "Current",
+  "state": "active",
+  "updated": "2026-10-16T23:00:00Z"
+}

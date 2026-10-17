@@ -1,0 +1,13 @@
+{
+  "name": "9.0.3 baseline reproduced in the cloud",
+  "now": "Exact match to published v1.3 on main GAB (92.6%) and GAB-Akhand (78.2%).",
+  "order": 10,
+  "plain": "Checked that the cloud measures exactly what your Mac measures.",
+  "result": "Exact match",
+  "resultNote": " · 9.0.3: 92.6% main, 78.2% Akhand",
+  "stage": "Shipped",
+  "state": "done",
+  "todo": "",
+  "updated": "2026-10-15T23:20:00Z",
+  "why": "Proves the cloud measures exactly what the Mac does."
+}

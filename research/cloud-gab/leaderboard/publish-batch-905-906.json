@@ -1,0 +1,22 @@
+[
+ {
+  "main": "../results/gab/2026-10-16-11-32-45-run/scorecard.json",
+  "hard": "../results/gab/2026-10-16-08-58-27-run/scorecard.json",
+  "akhand": "../results/gab/2026-10-16-14-04-19-run/scorecard.json",
+  "name": "9.0.5 (gate fix)",
+  "status": "candidate",
+  "base": "28025260",
+  "note": "Kirtan follower gate fix. Practice: Kirtan right pangti +0.4, Akhand Kirtan +1.8. Held-back test split: right pangti slightly lower (Kirtan -0.5, Akhand -0.7, Fremont -1.9), so it is not going to experimental. Kirtan rows marked incomplete need speech-model windows only the Mac can record.",
+  "allowIncomplete": true
+ },
+ {
+  "main": "../results/gab/2026-10-16-16-15-55-run/scorecard.json",
+  "hard": "../results/gab/2026-10-16-16-16-29-run/scorecard.json",
+  "akhand": "../results/gab/2026-10-16-16-16-27-run/scorecard.json",
+  "name": "9.0.6 candidate (near-twin + Aarti profile 1)",
+  "status": "candidate",
+  "base": "28025260",
+  "note": "9.0.4 + near-twin Shabad hold + Aarti sung profile 1. Held-back test split vs 9.0.4: Akhand Kirtan wrong Shabad -14%, Sung Bani right Bani +1.9, paath and Fremont the same, Kirtan right Shabad and pangti the same, Kirtan wrong Shabad +5 s/h. Awaiting the owner's go-ahead. Kirtan rows marked incomplete need speech-model windows only the Mac can record.",
+  "allowIncomplete": true
+ }
+]

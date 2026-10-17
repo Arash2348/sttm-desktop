@@ -1,0 +1,14 @@
+{
+  "eta": "",
+  "name": "P1 Akhand Kirtan: why does the model hear smagam audio badly? (isolation test + diagnosis)",
+  "next": "Confirmed by ear: l3clip16 the ragi sings only Salok 71, so the app really was wrong. It switched to Salok 72, whose first pangti shares the same opening words, because a new Shabad is usually entered at its start. Build a 'near-twin' rule (logic, generalises to every Salok series and repeated pangtis): when two candidate Shabads both contain the heard words almost equally, wait for the words that tell them apart before switching. l3clip36 is simran and Salok in turns: mark simran stretches in the answer keys so the app is not scored wrong there (a GAB key change, applied to every version alike).",
+  "now": "Owner listened to the weak moments (Oct 16). Three different causes: (1) everyone singing together, drawn out, few clear words, vaja loud (l3clip34, 35, 36, 38): the model's hearing, which needs a better or fine-tuned model; (2) Waheguru simran / jaap mixed into stretches our answer key calls a Shabad (l3clip34, 36): the key may be marking the app wrong for simran; (3) l3clip16, ragi alone and clear: the app showed Salok 72 of Baba Farid Ji, whose first pangti is almost the same words as the last pangti of Salok 71 that the key expects. Either the ragi did move on to Salok 72 (the key is too coarse) or the app confused the two. Isolation helped some, but (1) is about many voices, not the instruments.",
+  "order": 6,
+  "plain": "Test whether the model hears the sung pangti better when the instruments (vaja, jori, chimta) are taken out of the audio. Helps the P1 Akhand Kirtan top-line (right Shabad and right pangti, goal 85%); could also help P2 Fremont. P0 tracks are never touched: if it works it would only switch on in an Akhand / smagam mode or while the app is struggling to find the Shabad.",
+  "result": "Three causes: many voices drawn out (model), simran inside Shabad keys (key), near-identical consecutive Saloks (key or logic)",
+  "stage": "Measured",
+  "state": "parked",
+  "trend": "flat",
+  "updated": "2026-10-16T10:30:00Z",
+  "why": "8 of the 23 Akhand recordings hold almost the whole gap to 85% and no logic change has moved them: the model hears too little there. We don't know yet whether the cause is the instruments or the many voices; this test answers it."
+}

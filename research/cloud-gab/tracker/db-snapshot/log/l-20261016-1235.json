@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T12:35:00Z",
+  "text": "Kirtan lag fix built (next-pangti pre-arm): once the last word(s) of the current pangti are heard, the next pangti is favoured and needs no margin to win. Profiles 4 (last word, bonus 0.15) and 5 (last two words, bonus 0.10) on top of the kept gate fix; 79 tests. Scoring on 9.0.4's windows next (helpers)."
+}

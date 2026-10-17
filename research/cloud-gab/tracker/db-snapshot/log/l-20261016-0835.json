@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T08:35:00Z",
+  "text": "Owner's rule: a release goes to experimental only when nothing degraded on any track, practice and held-back test split. 9.0.5 test-split check queued on VM 1 after its current job."
+}

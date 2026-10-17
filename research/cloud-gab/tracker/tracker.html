@@ -1,0 +1,212 @@
+<title>Voice Autopilot Initiatives</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap">
+<style>
+/* layout: one line per initiative (state, name, headline); tap a line for the detail. Your-turn list on top, finished work and the log folded at the bottom */
+:root {
+  --bg:#f3f4f1; --card:#ffffff; --ink:#1b1d1a; --muted:#646a62; --line:#dfe2db;
+  --active:#2a6f97; --you:#b5651d; --blocked:#b23a3a; --done:#3c7a4a; --parked:#8a8a80; --you-bg:#fbf0e5;
+  --font-title:"Source Serif 4", Georgia, serif; --font-ui:"Source Sans 3", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#161815; --card:#20231f; --ink:#e9ece6; --muted:#a2a99f; --line:#33372f; --active:#5aa3cf; --you:#e0904a; --blocked:#e06666; --done:#6cb37b; --parked:#9a9a92; --you-bg:#33281d; color-scheme:dark; } }
+:root[data-theme="dark"] { --bg:#161815; --card:#20231f; --ink:#e9ece6; --muted:#a2a99f; --line:#33372f; --active:#5aa3cf; --you:#e0904a; --blocked:#e06666; --done:#6cb37b; --parked:#9a9a92; --you-bg:#33281d; color-scheme:dark; }
+* { box-sizing:border-box; }
+body { background:var(--bg); color:var(--ink); font-family:var(--font-ui); font-size:16px; line-height:1.45; }
+.wrap { max-width:760px; margin:0 auto; padding-block:24px 48px; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); display:grid; gap:18px; }
+header { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:4px 12px; }
+h1 { font-family:var(--font-title); font-size:24px; margin:0; text-wrap:balance; }
+.sub { color:var(--muted); font-size:14px; font-variant-numeric:tabular-nums; }
+.turn { background:var(--you-bg); border:1px solid var(--you); border-radius:10px; padding:10px 14px; display:grid; gap:4px; }
+.turn h2 { color:var(--you); }
+.turn ol { margin:0; padding-left:20px; display:grid; gap:2px; font-size:15px; }
+.turn li span { color:var(--muted); }
+h2 { font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0; font-weight:700; }
+.list { background:var(--card); border:1px solid var(--line); border-radius:10px; }
+.list > details + details { border-top:1px solid var(--line); }
+summary { list-style:none; cursor:pointer; display:grid; grid-template-columns:10px minmax(0,1fr) auto; gap:4px 12px; align-items:baseline; padding:12px 14px; }
+summary::-webkit-details-marker { display:none; }
+summary:focus-visible { outline:2px solid var(--active); outline-offset:-2px; border-radius:10px; }
+summary:hover .name { text-decoration:underline; text-underline-offset:3px; }
+.dot { width:10px; height:10px; border-radius:50%; align-self:center; }
+.name { font-weight:700; min-width:0; }
+.head { grid-column:2 / 4; color:var(--muted); font-size:15px; min-width:0; overflow-wrap:anywhere; }
+.chip { font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; white-space:nowrap; }
+.chev { display:inline-block; margin-left:6px; color:var(--muted); transition:transform .15s; }
+details[open] .chev { transform:rotate(90deg); }
+.body { padding:0 14px 14px 36px; display:grid; gap:8px; font-size:15px; }
+.body p { margin:0; max-width:65ch; }
+.row { display:grid; grid-template-columns:110px minmax(0,1fr); gap:10px; }
+.k { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700; padding-top:3px; }
+.row .v { min-width:0; overflow-wrap:anywhere; }
+.row.you .v { color:var(--you); font-weight:600; }
+.fold > summary { grid-template-columns:minmax(0,1fr) auto; padding:10px 14px; }
+.fold > summary h2 { display:inline; }
+.log { display:grid; gap:4px; padding:0 14px 12px; font-size:14px; }
+.log div { display:grid; grid-template-columns:110px minmax(0,1fr); gap:10px; }
+.log time { color:var(--muted); font-variant-numeric:tabular-nums; }
+.empty { color:var(--muted); padding:16px 14px; }
+/* key objectives: the higher-level goals every initiative serves */
+.objs { display:grid; gap:8px; }
+.obj { background:var(--card); border:1px solid var(--line); border-top:3px solid var(--pc, var(--active)); border-radius:10px; padding:14px 16px; display:grid; gap:10px; }
+.oh { display:flex; align-items:baseline; gap:10px; }
+.pri { flex:none; font-size:12px; font-weight:700; letter-spacing:.06em; color:var(--on); background:var(--pc, var(--active)); border-radius:6px; padding:2px 7px; }
+.obj .t { font-family:var(--font-title); font-size:19px; font-weight:600; text-wrap:balance; }
+.ml { font-size:13px; font-weight:600; color:var(--muted); }
+.tag { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--done); border:1px solid var(--done); border-radius:4px; padding:0 5px; margin-left:4px; }
+.fill.ok { background:var(--done); }
+.ends { float:right; font-weight:400; font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums; }
+.trend { flex:none; font-size:12px; font-weight:700; color:var(--tc); border:1px solid var(--tc); border-radius:999px; padding:1px 8px; white-space:nowrap; }
+.trend.small { font-size:11px; padding:0 6px; }
+.steps { display:flex; flex-wrap:wrap; align-items:center; gap:4px 6px; font-size:13px; color:var(--muted); }
+.step.done { color:var(--done); font-weight:600; }
+.step.now { color:var(--active); font-weight:700; }
+.arrow { color:var(--line); }
+.eta-line { display:flex; flex-wrap:wrap; gap:4px 14px; font-size:14px; align-items:baseline; }
+.eta-line .k { display:inline; margin-right:4px; }
+.eta-line .tn { color:var(--muted); }
+.ieta { color:var(--active); font-weight:600; font-size:13px; white-space:nowrap; }
+/* WHEN to look back: the clock time of each coming result, big and on top */
+.when { display:grid; gap:8px; }
+.when ol { list-style:none; margin:0; padding:0; display:grid; gap:6px; }
+.when li { display:grid; grid-template-columns:minmax(150px,auto) 1fr; gap:2px 14px; align-items:baseline; padding:10px 12px; border:1px solid var(--line); border-left:4px solid var(--pc, var(--active)); border-radius:8px; background:var(--panel, transparent); }
+.when .clock { font-size:20px; font-weight:800; white-space:nowrap; }
+.when .rel { font-size:13px; font-weight:600; color:var(--active); }
+.when .due .rel { color:var(--you); }
+.when .what { font-size:15px; }
+.when .tl { font-size:12px; font-weight:700; color:var(--pc, var(--muted)); }
+.lb { display:grid; gap:2px; font-size:13px; }
+.lb div { display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; }
+.lb b { white-space:nowrap; }
+.lb .r { color:var(--active); font-weight:600; white-space:nowrap; }
+.lb .due .r { color:var(--you); }
+.npill { display:inline-flex; gap:6px; align-items:baseline; padding:4px 10px; border-radius:999px; font-size:15px; font-weight:700; color:var(--active); background:color-mix(in srgb, var(--active) 14%, transparent); white-space:nowrap; }
+.npill.due { color:var(--you); background:color-mix(in srgb, var(--you) 16%, transparent); }
+.npill small { font-weight:600; font-size:12px; opacity:.85; }
+@media (max-width:520px) { .when li { grid-template-columns:1fr; } }
+.obj .p { color:var(--muted); font-size:15px; max-width:65ch; }
+.meter { display:grid; gap:4px; }
+.track { position:relative; height:10px; border-radius:5px; background:var(--line); }
+.fill { position:absolute; inset:0 auto 0 0; border-radius:5px; background:var(--active); }
+.goal { position:absolute; top:-4px; bottom:-4px; width:2px; background:var(--done); }
+.scale { display:flex; justify-content:space-between; font-size:13px; color:var(--muted); font-variant-numeric:tabular-nums; }
+.scale b { color:var(--ink); }
+.od > summary.os { display:inline-flex; gap:4px; padding:0; grid-template-columns:none; font-size:13px; font-weight:700; color:var(--muted); letter-spacing:.04em; text-transform:uppercase; }
+.od .ob { display:grid; gap:8px; padding-top:8px; font-size:15px; }
+@media (max-width:520px) { .row, .log div { grid-template-columns:1fr; gap:0; } .body { padding-left:14px; } }
+@media (prefers-reduced-motion: reduce) { .chev { transition:none; } }
+</style>
+<div class="wrap">
+  <header>
+    <h1>Voice Autopilot initiatives</h1>
+    <span class="sub" id="sub">Loading…</span>
+  </header>
+  <section class="turn" id="turn" hidden></section>
+  <section class="objs" id="objs" hidden></section>
+  <section style="display:grid;gap:8px">
+    <h2>Open</h2>
+    <div class="list" id="open"><div class="empty">Each initiative shows here as one line. Tap a line for the detail.</div></div>
+  </section>
+  <div class="list"><details class="fold" id="fold-closed"><summary><span><h2>Done and parked</h2></span><span class="sub" id="closedN"></span></summary><div id="closed"></div></details></div>
+  <div class="list"><details class="fold" id="fold-log"><summary><span><h2>Recent changes</h2></span><span class="chev">›</span></summary><div class="log" id="log"><div><time></time><span>No changes logged yet.</span></div></div></details></div>
+</div>
+<script>
+const STATE = {
+  you: ['Your turn', 'var(--you)', 0], blocked: ['Blocked', 'var(--blocked)', 1], active: ['In progress', 'var(--active)', 2],
+  done: ['Done', 'var(--done)', 3], parked: ['Parked', 'var(--parked)', 4],
+};
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const when = (iso) => { if (!iso) return ''; const d = new Date(iso); return isNaN(d) ? '' : d.toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }); };
+const ask = (x) => x.todo || x.needs || '';
+let opened = new Set();
+try { opened = new Set(JSON.parse(localStorage.getItem('open') || '[]')); } catch (e) {}
+function remember(id, on) { on ? opened.add(id) : opened.delete(id); try { localStorage.setItem('open', JSON.stringify([...opened])); } catch (e) {} }
+const row = (k, v, cls = '') => (v ? `<div class="row ${cls}"><span class="k">${k}</span><span class="v">${esc(v)}</span></div>` : '');
+function item(x) {
+  const [label, c] = STATE[x.state] || STATE.active;
+  const head = x.result ? x.result : (x.plain || x.why || '');
+  return `<details data-id="${esc(x.id)}" ${opened.has(x.id) ? 'open' : ''}>
+    <summary><span class="dot" style="background:${c}"></span><span class="name">${esc(x.name)}</span>
+      <span class="chip" style="color:${c}">${label}<span class="chev">›</span></span>
+      <span class="head">${esc(head)}${x.checkAt && !['done', 'parked'].includes(x.state) ? ` ${itemPill(x)}` : x.eta && !['done', 'parked'].includes(x.state) ? ` <span class="ieta">ETA ${esc(x.eta)}</span>` : ''}${x.trend && TREND[x.trend] ? ` <span class="trend small" style="--tc:${TREND[x.trend][1]}">${TREND[x.trend][0]}</span>` : ''}</span></summary>
+    <div class="body">
+      ${x.plain ? `<p>${esc(x.plain)}</p>` : ''}
+      ${row('Where it is', x.now)}${row('Next', x.next)}${row('Needs you', ask(x), 'you')}${row('When', x.checkAt ? `${ptTime(x.checkAt)} (${rel(x.checkAt)})${x.eta ? ` · ${x.eta}` : ''}` : x.eta)}${row('Why', x.plain ? x.why : '')}
+      ${row('Updated', when(x.updated))}
+    </div></details>`;
+}
+let OBJS = [];
+let ITEMS = [];
+// WHEN: clock time in Pacific time (the owner's), plus how long until then
+const PT = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+const ptTime = (iso) => `${PT.format(new Date(iso))} PT`;
+function rel(iso) {
+  const m = Math.round((new Date(iso) - Date.now()) / 60000);
+  if (m <= 0) return m > -24 * 60 ? 'due now: look' : 'due';
+  if (m < 60) return `in ${m} min`;
+  const h = Math.floor(m / 60), r = m % 60;
+  return h < 48 ? `in ${h} h${r ? ` ${r} min` : ''}` : `in ${Math.round(h / 24)} days`;
+}
+const isDue = (iso) => new Date(iso) <= Date.now();
+const nextPill = (checks) => {
+  const c = (checks || []).filter((x) => x && x.at).sort((a, b) => String(a.at).localeCompare(String(b.at)));
+  const n = c.find((x) => !isDue(x.at)) || c[c.length - 1];
+  return n ? `<span class="npill${isDue(n.at) ? ' due' : ''}">⏰ ${esc(ptTime(n.at))} <small>${esc(rel(n.at))}</small></span>` : '';
+};
+const lookBack = (checks) => {
+  const c = (checks || []).filter((x) => x && x.at).sort((a, b) => String(a.at).localeCompare(String(b.at)));
+  return c.length ? `<div class="lb">${c.map((x) => `<div class="${isDue(x.at) ? 'due' : ''}"><b>⏰ ${esc(ptTime(x.at))}</b><span class="r">${esc(rel(x.at))}</span><span>${esc(x.what || '')}</span></div>`).join('')}</div>` : '';
+};
+setInterval(() => { renderObjs(); if (ITEMS.length) document.querySelectorAll('[data-pill]').forEach((e) => { const x = ITEMS.find((i) => i.id === e.dataset.pill); if (x) e.outerHTML = itemPill(x); }); }, 60000);
+const itemPill = (x) => (x.checkAt && !['done', 'parked'].includes(x.state) ? `<span data-pill="${esc(x.id)}">${nextPill([{ at: x.checkAt }])}</span>` : '');
+const PRI = { P0: 'var(--blocked)', P1: 'var(--you)', P2: 'var(--parked)' };
+const TREND = { up: ['▲ trending up', 'var(--done)'], flat: ['— holding', 'var(--parked)'], down: ['▼ trending down', 'var(--blocked)'], hard: ['◆ hard: needs a new approach', 'var(--you)'], none: ['no target', 'var(--parked)'] };
+const trendChip = (t) => (t && TREND[t] ? `<span class="trend" style="--tc:${TREND[t][1]}">${TREND[t][0]}</span>` : '');
+// one bar per metric: from = the worst end of the scale, to = the best end (so a lower-is-better metric just swaps them)
+function meter(m) {
+  const pos = (v) => Math.max(0, Math.min(100, ((v - m.from) / (m.to - m.from)) * 100));
+  const u = m.unit || ''; const has = m.current != null; const hold = m.mode === 'hold';
+  const goalWord = hold ? (m.lower ? 'keep ≤' : 'keep ≥') : 'target';
+  return `<div class="meter"><div class="ml">${esc(m.label)}${hold ? ' <span class="tag">hold</span>' : ''}<span class="ends">${esc(m.from)}${u} – ${esc(m.to)}${u}</span></div>
+    <div class="track">${has ? `<div class="fill${hold ? ' ok' : ''}" style="width:${pos(m.current)}%"></div>` : ''}${m.target != null ? `<div class="goal" style="left:calc(${pos(m.target)}% - 1px)" title="${goalWord} ${esc(m.target)}${u}"></div>` : ''}</div>
+    <div class="scale"><span>${m.start != null ? `start ${esc(m.start)}${u}` : ''}</span><span>${has ? `now <b>${esc(m.current)}${u}</b>` : '<b>not measured yet</b>'}</span><span>${m.target != null ? `${goalWord} ${esc(m.target)}${u}` : ''}</span></div></div>`;
+}
+function renderObjs() {
+  const el = document.getElementById('objs');
+  el.hidden = !OBJS.length;
+  el.innerHTML = `<h2>Key objectives</h2>${[...OBJS].sort((a, b) => (a.order || 99) - (b.order || 99)).map((o) => `<div class="obj" style="--pc:${PRI[o.priority] || 'var(--active)'}">
+      <div class="oh"><span class="pri">${esc(o.priority || '')}</span><span class="t">${esc(o.name)}</span>${trendChip(o.trend)}${nextPill(o.checks)}</div>
+      ${o.plain ? `<div class="p">${esc(o.plain)}</div>` : ''}
+      ${(o.metrics || []).map(meter).join('')}
+      ${o.steps && o.steps.length ? `<div class="steps">${o.steps.map((st) => `<span class="step ${st.done ? 'done' : st.now ? 'now' : ''}">${st.done ? '✓ ' : st.now ? '● ' : '○ '}${esc(st.name)}</span>`).join('<span class="arrow">›</span>')}</div>` : ''}
+      <div class="eta-line">${o.eta ? `<span class="k">ETA</span> ${esc(o.eta)}` : ''}${o.trendNote ? `<span class="tn">${esc(o.trendNote)}</span>` : ''}</div>
+      ${lookBack(o.checks)}
+      ${o.now || o.next || o.guard ? `<details class="od" data-id="obj-${esc(o.id)}" ${opened.has(`obj-${o.id}`) ? 'open' : ''}><summary class="os">Details<span class="chev">›</span></summary><div class="ob">${row('Where it is', o.now)}${row('Next', o.next)}${row('Guardrail', o.guard)}</div></details>` : ''}</div>`).join('')}`;
+  el.querySelectorAll('details[data-id]').forEach((d) => d.addEventListener('toggle', () => remember(d.dataset.id, d.open)));
+}
+function render(items, log) {
+  ITEMS = items;
+  const latest = items.map((x) => x.updated).filter(Boolean).sort().pop();
+  const open = items.filter((x) => !['done', 'parked'].includes(x.state))
+    .sort((a, b) => (STATE[a.state]?.[2] ?? 9) - (STATE[b.state]?.[2] ?? 9) || (a.order || 99) - (b.order || 99));
+  const closed = items.filter((x) => ['done', 'parked'].includes(x.state)).sort((a, b) => (a.order || 99) - (b.order || 99));
+  document.getElementById('sub').textContent = `${open.length} open · updated ${when(latest) || '—'}`;
+  const todos = items.filter((x) => ask(x) && !['done', 'parked'].includes(x.state)).sort((a, b) => (a.todoRank || 99) - (b.todoRank || 99));
+  const turn = document.getElementById('turn');
+  turn.hidden = !todos.length;
+  turn.innerHTML = `<h2>Your turn</h2><ol>${todos.map((x) => `<li>${esc(ask(x))}${x.todoTime ? ` <span>· ${esc(x.todoTime)}</span>` : ''}</li>`).join('')}</ol>`;
+  document.getElementById('open').innerHTML = open.map(item).join('') || '<div class="empty">Nothing open.</div>';
+  document.getElementById('closed').innerHTML = closed.length ? `<div style="border-top:1px solid var(--line)">${closed.map(item).join('')}</div>` : '';
+  document.getElementById('closedN').textContent = `${closed.length} ›`;
+  document.querySelectorAll('details[data-id]').forEach((d) => d.addEventListener('toggle', () => remember(d.dataset.id, d.open)));
+  const L = [...log].sort((a, b) => String(b.at).localeCompare(String(a.at))).slice(0, 25);
+  if (L.length) document.getElementById('log').innerHTML = L.map((e) => `<div><time>${esc(when(e.at))}</time><span>${esc(e.text)}</span></div>`).join('');
+}
+(async () => {
+  const db = await claude.use('db');
+  if (!db) { document.getElementById('sub').textContent = 'Open this page signed in to see the list.'; return; }
+  let items = [], log = [];
+  db.collection('initiatives').onSnapshot((s) => { items = s.docs.map((d) => ({ id: d.id, ...d.data() })); render(items, log); });
+  db.collection('log').onSnapshot((s) => { log = s.docs.map((d) => d.data()); render(items, log); });
+  db.collection('objectives').onSnapshot((s) => { OBJS = s.docs.map((d) => ({ id: d.id, ...d.data() })); renderObjs(); });
+})();
+</script>

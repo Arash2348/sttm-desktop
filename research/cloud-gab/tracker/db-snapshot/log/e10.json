@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-15T22:50:00Z",
+  "text": "Leaderboard re-score: first try hit Hugging Face rate limits (9 sessions at once). Fixed with automatic retry; helpers restarted a minute apart."
+}

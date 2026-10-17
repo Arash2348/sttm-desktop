@@ -1,0 +1,19 @@
+{
+  "eta": "30-60 min after the fill",
+  "name": "Merged: Akhand Kirtan round 1",
+  "needs": "",
+  "next": "Fill the missing model output for Akhand + Renton clips on the GCP VM, then score in seconds.",
+  "now": "V6: main GAB PASS, Akhand 78.2 -> 78.8%, Fremont +8 s/h wrong Shabad. Solid-win guard: dropped (Fremont much worse). V6 + probation: Fremont 52.8 -> 58.4% right Shabad, find time halved, same +8 s/h; Akhand not measured. Local scoring: not measured.",
+  "order": 2,
+  "plain": "Now part of \"Akhand Kirtan accuracy\".",
+  "result": "Merged into Akhand Kirtan accuracy",
+  "resultNote": " · V6 + probation: Fremont 52.8% to 58.4%, but +8 s per hour of wrong Shabad",
+  "stage": "Measured",
+  "state": "parked",
+  "todo": "",
+  "todoRank": 3,
+  "todoTime": "1 min",
+  "todoWhy": "it is much better there otherwise",
+  "updated": "2026-10-16T00:30:00Z",
+  "why": "The four logic changes from the previous session, each tested on its own against 9.0.3."
+}

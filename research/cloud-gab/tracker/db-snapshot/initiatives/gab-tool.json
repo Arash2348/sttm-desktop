@@ -1,0 +1,14 @@
+{
+  "eta": "Remaining gap closes with the Mac fill",
+  "name": "GAB: a complete, fast, easy benchmark",
+  "next": "VM: fixed-grid re-record of all GAB (window alignment), then keep the cache exhaustive whenever the VM is up.",
+  "now": "Done: one-command cloud setup, shared replays, pangti keys everywhere, Akhand folder, leaderboard v1.3 (+ Big picture table PR). Gap: 13 main and 7 Fremont recordings exist only on your Mac; new behaviour needs one-off recording.",
+  "order": 8,
+  "plain": "Any change scores on every GAB tier in minutes from the cache, from any cloud session, with good data and a clear page.",
+  "result": "Full compare in seconds to minutes; gaps: Mac-only recordings",
+  "stage": "Built",
+  "state": "active",
+  "trend": "up",
+  "updated": "2026-10-16T03:00:00Z",
+  "why": "Enabler for every objective."
+}

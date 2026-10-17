@@ -1,0 +1,40 @@
+{
+  "eta": "Done: hold. Re-checked with every release (next: 9.0.6 decision)",
+  "guard": "Any change that lowers right Bani or right pangti, or slows the lag, on paath is dropped.",
+  "metrics": [
+    {
+      "current": 95.7,
+      "from": 50,
+      "label": "Right Bani",
+      "mode": "hold",
+      "target": 95.7,
+      "to": 100,
+      "unit": "%"
+    },
+    {
+      "current": 95.9,
+      "from": 50,
+      "label": "Right pangti",
+      "mode": "hold",
+      "target": 95.9,
+      "to": 100,
+      "unit": "%"
+    },
+    {
+      "current": 0.4,
+      "from": 2,
+      "label": "Behind the reader (typical)",
+      "lower": true,
+      "mode": "hold",
+      "target": 0.4,
+      "to": 0.2,
+      "unit": " s"
+    }
+  ],
+  "name": "Paath: hold, never regress",
+  "order": 2,
+  "plain": "Bani recited is good enough for now. Every change must keep these numbers.",
+  "priority": "P0",
+  "trend": "flat",
+  "trendNote": "Holding; every experiment is checked against it"
+}

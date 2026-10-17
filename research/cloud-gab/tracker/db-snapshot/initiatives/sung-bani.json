@@ -1,0 +1,14 @@
+{
+  "eta": "+1.1 right pangti rides in 9.0.6. Next lever (late or never-shown pangtis on long Renton Aarti) not yet dated",
+  "name": "P1 Bani sung like kirtan (Aarti): to 90%",
+  "next": "Into the 9.0.6 candidate (9.0.5 + AARTI_FOLLOW=1), scored as one build on practice and test split before it goes anywhere. Then the next Aarti lever: the 10 s late / never-shown pangtis on the long Renton Aarti recordings.",
+  "now": "Scored on 9.0.4's windows, all tracks: profile 1 = Sung Bani right pangti 82.2 -> 83.3%, right Shabad 84.2 = 84.2, wrong Bani 49.5 = 49.5 s/h, behind worst-10% 2.5 -> 2.36 s; Kirtan, paath and Akhand identical. Profile 2 = pangti 84.2% but wrong Bani 49.5 -> 61.1 s/h and Kirtan wrong +4 s/h: out.",
+  "order": 3,
+  "plain": "Find why Aarti scores 82% and fix it, without touching paath or Kirtan.",
+  "result": "Aarti profile 1 is a keeper on 9.0.4: Sung Bani right pangti 82.2 -> 83.3%, nothing else moved",
+  "stage": "In 9.0.6 candidate",
+  "state": "active",
+  "trend": "up",
+  "updated": "2026-10-16T11:30:00Z",
+  "why": "P1 objective."
+}

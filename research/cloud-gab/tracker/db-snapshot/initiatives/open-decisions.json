@@ -1,0 +1,16 @@
+{
+  "name": "Older open decisions",
+  "needs": "",
+  "now": "Silent-mic notice: covered by the volume label in 9.0.3 (No sound after 8 s), closed. Start-Autopilot hint: backlog, not tied to an objective. Surinder test: will run on the VM (see Test the app on another speech model). Labelling ~25: obsolete, the pangti keys cover all of GAB.",
+  "order": 11,
+  "plain": "Three older questions only you can answer.",
+  "result": "Settled (you said don't ask: decided)",
+  "stage": "Shipped",
+  "state": "done",
+  "todo": "",
+  "todoRank": 6,
+  "todoTime": "10 min",
+  "todoWhy": "carried over from before",
+  "updated": "2026-10-16T02:40:00Z",
+  "why": "Carried over from before this session."
+}

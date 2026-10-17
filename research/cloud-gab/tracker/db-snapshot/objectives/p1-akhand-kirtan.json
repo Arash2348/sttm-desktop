@@ -1,0 +1,65 @@
+{
+  "checks": [
+    {
+      "at": "2026-10-17T03:00:00Z",
+      "what": "Rides with the 9.0.6 decision; no new run scheduled"
+    }
+  ],
+  "eta": "Logic levers about used up (~82% ceiling). Next: owner call on an Akhand mode for the verifier (+2.2). 85% needs a model fine-tune on smagam audio, waiting on GPU quota (weeks)",
+  "guard": "Owner's rule (Oct 16): never trade other tracks for this one. Everything rises together; on any trade-off P0 (Kirtan, Paath, Akhand Paath) beats P1 beats P2, and normal Kirtan above all. A change ships only if main GAB and the other P1 hold.",
+  "metrics": [
+    {
+      "current": 78.7,
+      "from": 50,
+      "label": "Right Shabad (9.0.6 candidate; 9.0.4: 78.2; with the verifier behind an Akhand mode: 81.0)",
+      "start": 78.2,
+      "target": 85,
+      "to": 100,
+      "unit": "%"
+    },
+    {
+      "current": 76.3,
+      "from": 50,
+      "label": "Right pangti (9.0.6 candidate; 9.0.4: 76.0)",
+      "start": 76,
+      "target": 85,
+      "to": 100,
+      "unit": "%"
+    }
+  ],
+  "name": "Akhand Kirtan: 85% right Shabad and right pangti",
+  "next": "Finish the verifier floor (VM fill v10 running) and ship what passes the guardrails. Then the barrier is the model: see 'what breaks 85%' in the owner summary (vocal/sangat separation front-end test, fine-tuning on smagam audio, a stronger finder model).",
+  "now": "9.0.6 candidate: 78.7% right Shabad, 76.3% right pangti, wrong Shabad down (practice 385 -> 377 s/h, test split 235 -> 203). The verifier would add about +2.2 (81.0%) but only behind an Akhand mode (it adds wrong Shabad in everyday Kirtan). The rest is model-limited: 8 weak recordings with many voices singing drawn out; Surinder's model and voice isolation did not fix it; a fine-tune on smagam audio is the real lever.",
+  "order": 5,
+  "plain": "Smagam kirtan with many singers and the sangat singing along.",
+  "priority": "P1",
+  "short": "Akhand Kirtan",
+  "steps": [
+    {
+      "done": true,
+      "name": "Round 1 measured"
+    },
+    {
+      "done": true,
+      "name": "Verifier built + settings swept"
+    },
+    {
+      "done": true,
+      "name": "Keep rule applied (probation out)"
+    },
+    {
+      "done": true,
+      "name": "Stack recorded + scored: 81.0%"
+    },
+    {
+      "name": "Guardrails on main/Fremont",
+      "now": true
+    },
+    {
+      "name": "Shipped"
+    }
+  ],
+  "trend": "hard",
+  "trendNote": "Model-limited: logic changes can reach ~82%; 85% needs a better hearing model",
+  "updated": "2026-10-17T01:00:00Z"
+}

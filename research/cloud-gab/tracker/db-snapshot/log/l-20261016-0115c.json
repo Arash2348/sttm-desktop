@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T01:15:02Z",
+  "text": "Azure now refuses every key, including the old working one (master key likely rotated). Leaderboard publish, VM and helpers wait on a fresh key."
+}

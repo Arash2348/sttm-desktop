@@ -1,0 +1,17 @@
+{
+  "checks": [
+    {
+      "at": "2026-10-16T17:00:00Z",
+      "what": "Surinder's model on the Fremont hall recordings"
+    }
+  ],
+  "eta": "No goal; checked with every change (Surinder's model as confirmer gave no clear gain, parked)",
+  "guard": "Only a big regression blocks a change.",
+  "name": "Fremont hall, laptop mic: no goal",
+  "now": "9.0.4: 52.8% right Shabad, 47.7% right pangti.",
+  "order": 6,
+  "plain": "Sangat will sit closer with a mixer mic, so this case matters less; Fremont mainly trains another speech model. Nice to keep improving, never a target.",
+  "priority": "P2",
+  "short": "Fremont",
+  "trend": "none"
+}

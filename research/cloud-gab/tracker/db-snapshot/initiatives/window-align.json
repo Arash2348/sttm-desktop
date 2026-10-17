@@ -1,0 +1,16 @@
+{
+  "eta": "Starts in ~5 h (second VM boot), ~2-3 h, ~$5",
+  "name": "Window alignment (vf-window-align)",
+  "needs": "",
+  "next": "Fixed-grid re-record of the x86 tiers on the VM when it is free.",
+  "now": "On all 23 Akhand recordings window alignment changes no number: it is pure plumbing. Safe to keep as the fixed grid for an exhaustive cache.",
+  "order": 7,
+  "plain": "Puts every listener on one fixed timing grid, so small app changes stop creating audio the model has never heard. That makes future tests score in minutes instead of coming back INCOMPLETE. Plumbing: not expected to change accuracy.",
+  "result": "Measured on Akhand: identical to 9.0.4 (78.2%), as designed",
+  "resultNote": " · needs the Google Cloud computer",
+  "stage": "Measured",
+  "state": "done",
+  "todo": "",
+  "updated": "2026-10-16T05:30:00Z",
+  "why": "Candidate change queued for measurement against 9.0.3."
+}

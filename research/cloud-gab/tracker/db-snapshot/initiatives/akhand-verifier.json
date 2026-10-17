@@ -1,0 +1,19 @@
+{
+  "eta": "Waiting on your call: an Akhand Kirtan mode (+2.2 right Shabad)",
+  "name": "P1 Akhand Kirtan accuracy (V6 + Shabad verifier)",
+  "needs": "",
+  "next": "Owner decision: the verifier is worth +2.2 on Akhand Kirtan but costs wrong Shabad in everyday Kirtan, so it can only ship behind an 'Akhand Kirtan / smagam' setting the sevadar turns on. Otherwise park it.",
+  "now": "Stack 2 (window alignment + local scoring + verifier) on Akhand: right Shabad 81.0% and wrong Shabad 369 s/h, both better than 9.0.4 (78.2%, 398 s/h). Window alignment alone (stack2-wa): 78.8% and 364 s/h. But on main Kirtan (72 recordings it could replay) the verifier still adds wrong Shabad: 179 vs 162 s/h. The new floor does not fix that: across 860 dry-run checks, at the verifier's setting 58 right / 33 wrong fires with no floor, 42 / 15 at the tightest useful floor; it still fires wrong about 1 time in 4.",
+  "order": 4,
+  "plain": "One goal: the right Shabad on screen during Akhand Kirtan. Round 1's kept change (V6) is the base; the Shabad verifier is built on top of it.",
+  "result": "Verifier: +2.2 on Akhand, but unsafe for everyday Kirtan even with the floor; only viable behind an Akhand setting",
+  "resultNote": "",
+  "stage": "Built",
+  "state": "active",
+  "todo": "Decide: add an 'Akhand Kirtan / smagam' setting that turns the Shabad verifier on?",
+  "todoRank": 1,
+  "todoTime": "1 min",
+  "trend": "hard",
+  "updated": "2026-10-16T12:00:00Z",
+  "why": "Top priority. Align the search's candidate Shabads over the last 30 s and pick the best fit; the model confirms a known Shabad far better than it finds one."
+}

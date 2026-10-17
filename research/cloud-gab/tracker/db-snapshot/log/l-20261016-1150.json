@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T11:50:00Z",
+  "text": "Verifier keeper (top 6 / bar 40) main check on the 72 Kirtan recordings it could replay: right pangti and lag equal to 9.0.4, but wrong Shabad +22.8 s/h, all from two recordings (rn75: the verifier confirms a wrong Shabad for most of the recording, right Shabad -33 points; rn05: finds the Shabad 9.0.4 never found, +45, with wrong time on the way). Fails the keep rule as is; the stack carries the same verifier. Looking at rn75 before deciding a stricter bar."
+}

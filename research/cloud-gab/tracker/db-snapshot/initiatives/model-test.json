@@ -1,0 +1,16 @@
+{
+  "eta": "",
+  "name": "P1 Akhand Kirtan (and P2 Fremont): Surinder's speech model as the Shabad confirmer",
+  "needs": "",
+  "next": "Not worth building into the app now (a 120 MB extra model for a gain this small and uncertain). Re-run this comparison on the larger set of verifier checks from the stack2 dry-run traces when VM 1 shares them (no new model runs), and again when Surinder's training finishes (his card says in progress). The barrier-breaker remains a fine-tune on smagam audio.",
+  "now": "Step 1 done (32 Akhand recordings, the app's own 80 verifier checks). Surinder's model puts the sung Shabad on top more often (75% vs 68%), but it is also more often confidently wrong: a lock at the verifier's setting would have made 3 right and 2 wrong first locks vs 1 right and 1 wrong with the app's model. How well it hears the Shabad it is told about is about the same (median gap 6.7 vs 6.4 nats/s; on the 8 weak recordings 6.3 vs 6.6). Small sample: 80 checks.",
+  "order": 9,
+  "plain": "Try the app with a different speech model. Hearing is the main reason Akhand Kirtan is hard.",
+  "result": "As the confirmer: sung Shabad fits best 75% vs 68%, but more confident wrong leads; no clear win yet",
+  "stage": "Measured",
+  "state": "parked",
+  "todo": "",
+  "trend": "flat",
+  "updated": "2026-10-16T11:35:00Z",
+  "why": "Hearing is the Akhand bottleneck. Surinder's model hears Fremont better (55% vs 45% of pangtis clear), Akhand about the same; Sukhpal's looked best on Akhand earlier."
+}

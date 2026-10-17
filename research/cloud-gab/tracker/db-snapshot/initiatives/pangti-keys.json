@@ -1,0 +1,19 @@
+{
+  "eta": "~10-15 min",
+  "name": "Pangti-level answer keys for all of GAB",
+  "needs": "",
+  "next": "Optional: review the open pangtis set by set (Akhand first) to make them human-checked.",
+  "now": "Merged into GAB (Arash): 269 recordings, 5,687 pangti starts marked 'aligned, 2 models, audited', plus the 20/20 spot check.",
+  "order": 4,
+  "plain": "Pangti-by-pangti answer keys for every GAB recording, so GAB can score \"right pangti\", not just \"right Shabad\".",
+  "result": "Pangti answers on every GAB recording",
+  "resultNote": "",
+  "stage": "Measured",
+  "state": "done",
+  "todo": "",
+  "todoRank": 1,
+  "todoTime": "1 min",
+  "todoWhy": "its safety check needs your OK, not mine",
+  "updated": "2026-10-15T23:45:00Z",
+  "why": "Lets GAB measure \"right pangti\", not only \"right Shabad\", on every set (only Fremont had it)."
+}

@@ -1,0 +1,15 @@
+{
+  "name": "GAB: Akhand Kirtan in its own folder (5-akhand-kirtan)",
+  "next": "",
+  "now": "PR #3 merged; the 32 Akhand Kirtan recordings live in 5-akhand-kirtan.",
+  "order": 4,
+  "plain": "Akhand Kirtan smagams move out of 1-kirtan-shabad into their own GAB folder, since they are a different level of data.",
+  "result": "Merged: GAB now has a 5-akhand-kirtan folder",
+  "stage": "Shipped",
+  "state": "done",
+  "todo": "",
+  "todoRank": 1,
+  "todoTime": "1 min",
+  "updated": "2026-10-16T01:20:00Z",
+  "why": "Your call (Oct 16)."
+}

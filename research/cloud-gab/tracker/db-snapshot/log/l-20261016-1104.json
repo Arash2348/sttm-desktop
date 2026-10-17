@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T11:04:00Z",
+  "text": "Aarti profiles 1 and 2 on 9.0.4 relaunched as two fresh helpers (the first pair was blocked before running; this container lacks disk for the main-tier windows). Kirtan fix 2 (kf1-kf3) helpers still replaying."
+}

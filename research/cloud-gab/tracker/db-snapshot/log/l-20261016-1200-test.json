@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T12:00:00Z",
+  "text": "Test split: 9.0.5's right-pangti gain did not carry over (Kirtan -0.5, Akhand -0.7, Fremont -1.9; lag better), so 9.0.5 stays off experimental. Verifier: +2.2 on Akhand but still adds wrong Shabad on everyday Kirtan even with the floor; needs an owner decision on an Akhand setting."
+}

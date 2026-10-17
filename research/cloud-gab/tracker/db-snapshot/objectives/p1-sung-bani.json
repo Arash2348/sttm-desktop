@@ -1,0 +1,61 @@
+{
+  "checks": [
+    {
+      "at": "2026-10-16T17:30:00Z",
+      "what": "9.0.6 candidate (Aarti profile 1 + near-twin) on practice and test split"
+    }
+  ],
+  "eta": "+1.1 kept for 9.0.6; next lever (late pangtis on long Aarti) not yet dated",
+  "guard": "Paath and Kirtan numbers must hold.",
+  "metrics": [
+    {
+      "current": 84.8,
+      "from": 50,
+      "label": "Right Shabad / Bani (9.0.6 candidate; 9.0.4 in the app: 84.2)",
+      "start": 84.2,
+      "target": 90,
+      "to": 100,
+      "unit": "%"
+    },
+    {
+      "current": 83.6,
+      "from": 50,
+      "label": "Right pangti (9.0.6 candidate; 9.0.4: 82.2)",
+      "start": 82.2,
+      "target": 90,
+      "to": 100,
+      "unit": "%"
+    }
+  ],
+  "name": "Bani sung like kirtan: 90% right Shabad and right pangti",
+  "next": "Fix for the stalls in the position follower (recover when no forward move for several seconds of singing), then the cadence on fast pangtis.",
+  "now": "9.0.6 candidate (Aarti profile 1 + near-twin hold): practice 84.8% right Bani / 83.6% right pangti (9.0.4: 84.2 / 82.2); held-back test split right Bani 75.0 -> 76.9%. Remaining gap: pangtis on the long Renton Aarti recordings that appear 10 s late or never (follower logic, not yet tried).",
+  "order": 4,
+  "plain": "Aarti, Rehras and other Bani sung like kirtan. Aarti is the weak set and drags the behaviour down.",
+  "priority": "P1",
+  "short": "Sung Bani",
+  "steps": [
+    {
+      "done": true,
+      "name": "Diagnosed"
+    },
+    {
+      "done": true,
+      "name": "Stall cause traced"
+    },
+    {
+      "done": true,
+      "name": "Fix 1 built (sung profile)"
+    },
+    {
+      "name": "Scored on 9.0.4",
+      "now": true
+    },
+    {
+      "name": "Shipped"
+    }
+  ],
+  "trend": "up",
+  "trendNote": "Aarti profile 1: +1.1 right pangti with nothing else moving",
+  "updated": "2026-10-16T23:00:00Z"
+}

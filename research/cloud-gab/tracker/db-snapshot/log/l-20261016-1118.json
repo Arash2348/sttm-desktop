@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T11:18:00Z",
+  "text": "Kirtan fix 2 profile 2 (kf2) back from its helper: main right pangti 87.2% vs 87.9% on 107 of 109 recordings (the fix moves lock moments on 5 recordings, so they lack windows); behind 1.18 s and wrong 111 s/h unchanged; Akhand unchanged (78.2). Same-set comparison against 9.0.4 running locally before a verdict. kf1, kf3 still replaying."
+}

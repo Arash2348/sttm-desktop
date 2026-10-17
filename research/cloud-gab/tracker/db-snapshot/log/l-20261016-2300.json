@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T23:00:00Z",
+  "text": "Tracker refreshed: bars show the 9.0.6 candidate against 9.0.4; new 'All versions at a glance' card. Leaderboard rows for 9.0.5 and 9.0.6 blocked: the publish tool refuses incomplete runs (Mac-only windows missing)."
+}

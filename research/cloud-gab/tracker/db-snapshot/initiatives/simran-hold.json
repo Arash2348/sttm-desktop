@@ -1,0 +1,14 @@
+{
+  "eta": "",
+  "name": "P1 Akhand Kirtan (and P0 Kirtan): hold the pangti during Waheguru simran",
+  "next": "Parked. Detecting smagam simran needs a sound-based signal (the model's own output collapsing to one or two repeated letters for many seconds), which is riskier; revisit with the model work.",
+  "now": "Scored: identical to 9.0.5 on every track. Reason found in the replay: during the simran in l3clip36 the model decodes things like 'ਸ ਸ ਸ', 'ਸੰ ਸੰ ਸੰ', never ਵਾਹਿਗੁਰੂ, so a text-based simran detector never fires on many-voice simran. It does see the Name in clearer simran (Renton), where it changed nothing either.",
+  "order": 8,
+  "plain": "When the sangat chants Waheguru simran in the middle of a Shabad (10 seconds to 10 minutes, common in Akhand Kirtan), the screen holds its pangti and the app neither searches nor switches on the Name alone; the singing that follows decides (same pangti, another pangti, or a new Shabad). Helps P1 Akhand Kirtan and P0 Kirtan; guarded so nothing else drops.",
+  "result": "No effect: in smagam simran the model does not hear the Name as text",
+  "stage": "Measured",
+  "state": "parked",
+  "trend": "flat",
+  "updated": "2026-10-16T14:10:00Z",
+  "why": "Owner's idea (Oct 16), confirmed in his listening check: l3clip34 and l3clip36 have simran inside the Shabad. During simran the decoded text is the Name, which appears in many Shabads, so the app can wander or lock on the wrong one."
+}

@@ -1,0 +1,19 @@
+{
+  "eta": "Complete rows ~10 min after you say 'Mac fill done'",
+  "name": "GAB leaderboard: every version, complete",
+  "needs": "",
+  "next": "After 'Mac fill done': republish 9.0.5 and 9.0.6 complete.",
+  "now": "Space PRs #8-#10 merged: all versions on the board with the current page; 9.0.5 and 9.0.6 show numbers with an asterisk where a few recordings could not be scored in the cloud. To make every cell exact: the owner runs research/cloud-gab/mac-fill.sh on the Mac (prompt given), and a VM fills 9.0.6's Akhand Paath cell.",
+  "order": 7,
+  "plain": "The public GAB leaderboard page, still on the older v1.2 numbers and missing the Akhand Kirtan column.",
+  "result": "Live: Sung Bani name + compact Big picture (PR #7)",
+  "resultNote": " · then published with your new token",
+  "stage": "Live (partial rows)",
+  "state": "active",
+  "todo": "Run the Mac fill prompt in Claude Code on the Mac (~1 h unattended), then say 'Mac fill done'",
+  "todoRank": 1,
+  "todoTime": "~1 h unattended",
+  "trend": "up",
+  "updated": "2026-10-17T00:20:00Z",
+  "why": "The Space still shows GAB v1.2 with no Akhand Kirtan column."
+}

@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T07:05:00Z",
+  "text": "Branch exp-on-904 (9.0.4 + tail hand-off + Aarti profiles, both off by default; tests 76/76). Five helpers scoring base, tail 12/16 (main + Akhand) and Aarti profiles 1/2 against 9.0.4's own windows."
+}

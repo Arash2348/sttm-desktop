@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T11:58:00Z",
+  "text": "Why the verifier fails rn75: at 30-34 s the heard text is chant/noise (no real words), the search's candidates are weak ties, and one pool Shabad out-fits the others by 40 nats on that nonsense, so it is confirmed. The lead has no absolute floor. Fix: fire only when the best Shabad explains the audio nearly as well as an unconstrained decode (per-second gap floor); sweep the floor offline on the Akhand debug recordings, then one VM fill. Akhand bar set back to the ctc keeper (79.7%) until the verifier is safe on main."
+}

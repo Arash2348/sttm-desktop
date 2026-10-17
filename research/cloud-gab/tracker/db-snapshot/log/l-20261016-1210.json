@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T12:10:00Z",
+  "text": "Stack (ctc + verifier) main check on the same 98 Kirtan recordings as 9.0.4: right pangti and right Shabad equal, wrong Shabad 141 vs 124 s/h (+17), from the same four recordings as the verifier alone (rn75, rn05, rn09, rn67). Fails the keep rule as configured; the ctc keeper alone passes. Building the verifier floor (best Shabad must explain the audio nearly as well as an unconstrained decode) on top of window alignment, so every later variant replays from one VM fill."
+}

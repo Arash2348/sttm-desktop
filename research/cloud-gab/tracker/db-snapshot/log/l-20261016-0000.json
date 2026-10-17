@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T00:00:00Z",
+  "text": "9.0.4 confirmed merged (PR #2245, 8aae768). A helper is scoring it on main, Fremont (hard) and Akhand; it becomes the new baseline."
+}

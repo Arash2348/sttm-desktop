@@ -1,0 +1,14 @@
+{
+  "eta": "Done: in the 9.0.6 candidate, waiting on your 9.0.6 call",
+  "name": "P1 Akhand Kirtan (and P0 Kirtan): near-twin Shabads, Saloks that share words",
+  "next": "9.0.6 candidate = 9.0.4 + near-twin 0.03 + Aarti profile 1, without 9.0.5's gate fix (which did not hold on test). Recording + scoring + test split on VM 2 now.",
+  "now": "Held-back test split, near-twin 0.03 vs 9.0.5: Akhand Kirtan wrong Shabad 243 -> 209 s/h (right Shabad 88.8 -> 88.9, pangti 83.1 -> 83.2); Sung Bani right Bani 74.8 -> 76.8%; everyday Kirtan no gain (right Shabad 90.2 -> 90.1, wrong 151 -> 153 s/h, both within noise); paath and Fremont the same. So it generalises for Akhand Kirtan and Sung Bani, not for everyday Kirtan.",
+  "order": 5,
+  "plain": "When two Shabads share almost the same words (consecutive Saloks of Bhagat Kabir Ji and Baba Farid Ji often do), the app can jump to the wrong one. Helps the P1 Akhand Kirtan top-line and possibly P0 Kirtan; guarded so nothing else drops.",
+  "result": "Generalises: Akhand Kirtan wrong Shabad -14% and Sung Bani +2.0 on the test split; no Kirtan gain",
+  "stage": "In 9.0.6 candidate",
+  "state": "active",
+  "trend": "up",
+  "updated": "2026-10-16T14:30:00Z",
+  "why": "Owner's ear check: in l3clip16 the ragi sang only Salok 71 (heard 'ਕਪਿ ਉਤਾਰਿ'), but the app showed Salok 72, whose opening words match Salok 71's second pangti. 72% of that recording was on the wrong Salok."
+}

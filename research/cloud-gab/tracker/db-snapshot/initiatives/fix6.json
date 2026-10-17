@@ -1,0 +1,13 @@
+{
+  "eta": "Only if it shows up again",
+  "name": "Backlog: Fix 6, follow the next Shabad after a ceremony",
+  "next": "Pick up if the problem shows up again; build it as an on/off constant and run the GAB checklist.",
+  "now": "Decided, not built. Written into HANDOFF-STATUS.md so any future session finds it.",
+  "order": 12,
+  "plain": "After Ardas, Hukamnama or Anand Sahib, the app should hand off cleanly to whatever is sung next instead of pausing.",
+  "stage": "Idea",
+  "state": "parked",
+  "todo": "",
+  "updated": "2026-10-16T00:10:00Z",
+  "why": "Your call (Oct 16): do it only if no other GAB metric gets worse. Akhand Kirtan comes first."
+}

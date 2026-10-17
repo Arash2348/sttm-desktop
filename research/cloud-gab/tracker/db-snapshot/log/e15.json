@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-15T23:15:00Z",
+  "text": "Upload session caught a CSV bug before sending anything; fixed, verified (only 269 rows, 2 columns change), upload retried."
+}

@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T12:25:00Z",
+  "text": "Kirtan fix 2 profile 1 on Fremont (laptop mic): right Shabad 52.8 (same), wrong 351 s/h (same), lag 2.22 s (same, worst-10% 20.2 -> 17.9 s), right pangti 47.7 -> 46.1 on the 11 human-keyed recordings: no big regression. Keeper confirmed on all three tiers; goes into the next release."
+}

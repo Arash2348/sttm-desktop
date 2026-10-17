@@ -1,0 +1,13 @@
+{
+  "name": "Cloud benchmark infrastructure",
+  "now": "setup.sh (one command), shared replay results in Azure (full main-GAB compare in 44 s), helper sessions, results-sync, review app, line tools. All on branch claude/sweet-brahmagupta-x0uez6.",
+  "order": 9,
+  "plain": "Tools so any cloud session can benchmark in minutes instead of hours.",
+  "result": "Full GAB comparison in 44 seconds",
+  "resultNote": " (was ~30 minutes)",
+  "stage": "Shipped",
+  "state": "done",
+  "todo": "",
+  "updated": "2026-10-15T23:20:00Z",
+  "why": "Make every future test fast in any cloud session."
+}

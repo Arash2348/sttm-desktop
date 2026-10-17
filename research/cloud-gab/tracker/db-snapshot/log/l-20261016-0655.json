@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T06:55:00Z",
+  "text": "Tail hand-off and Aarti profile ported onto 9.0.4's own code (branch exp-on-904) so every recording scores from the cache; re-dispatching."
+}

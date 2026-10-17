@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T04:00:00Z",
+  "text": "Akhand Paath: cause found (no runner named; keyed recordings all test); PR opening, VM stage added. Kirtan pangti diagnosis started. Found why shared replays were not reused here (a local tools edit changed the key); fixed."
+}

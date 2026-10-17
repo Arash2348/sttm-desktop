@@ -1,0 +1,4 @@
+{
+  "at": "2026-10-16T08:15:00Z",
+  "text": "Kirtan lag fix, profile 4 (pre-arm after the last word, bonus 0.15): typical lag 1.18 -> 1.12 s, right Shabad 92.8 (+0.2), but right pangti 87.9 -> 85.5: it moves to the next pangti too early while the current one is repeated. Out. Profile 5 (milder: last two words, bonus 0.10) still scoring."
+}
