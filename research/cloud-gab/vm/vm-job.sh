@@ -68,6 +68,9 @@ mk kf6 c803b53 KIRTAN_FOLLOW=6
 # P0 Kirtan lag: shorter line-follower window (3.0 s, 2.5 s) on 9.0.4
 mk kf7 7e5a23b KIRTAN_FOLLOW=7
 mk kf8 7e5a23b KIRTAN_FOLLOW=8
+# Sung Bani keeper check (lev, Oct 17): sb-final = 9.0.4 + AARTI_FOLLOW=1 + BANI_END_EXIT=2; exitonly = without AARTI_FOLLOW
+mk sbfinal 3ad13962
+mk exitonly 3ad13962 AARTI_FOLLOW=0
 # owner (Oct 16): the Akhand verdict first: verifier builds + probation, Akhand (l3) only; Renton later for the keepers
 FILL="${FILL:-v6-prob v6-base3 v6-verify5 v6-vk3l10 v6-vk3l20 v6-vk6l40 v6-ctc v6-prob-ctc r904 window-align}"
 FSUITES="${FSUITES:-l3}"
@@ -277,9 +280,33 @@ kfetch() {
   CROPF="${SB_CROPF:-}" REDO=1 bash vm-fetch-ocr.sh /home/user/gab/kfetch /home/user/gab/kfetch-picks.txt "${SB_RAWPFX:-sung-bani-data/kfetch-raw}"; cat /home/user/gab/kfetch/blocked.txt
   echo "kfetch done"
 }
+# lev (Oct 17): score LEV_BUILDS on every GAB tier and both splits, x86 reference (q16-x86), from the staged manifest
+# SB_STAGE (v1.4 + the new Sung Bani clips): gab fill records any recording x86 has not seen yet, gab run --fill records
+# the windows each build asks for; scorecards to Azure sung-bani-data/lev-results/<build>-<tier>-<split>/.
+lev() {
+  local BENCH=/home/user/gab/lev-bench OUTD=/home/user/gab/lev-out; mkdir -p "$BENCH" "$OUTD"
+  for sp in ${SB_STAGE//,/ }; do node "$REPO/research/cloud-gab/results-sync.js" pull --prefix "$sp" --dir "/home/user/gab/stage/$sp" >/dev/null; done
+  cp -r "/home/user/gab/stage/${SB_STAGE##*,}/." "$BENCH/"
+  export VF_BENCHMARK="$BENCH" VF_EMIS_CODEC=q16-x86
+  cd "$TOOLS"
+  node "$REPO/research/cloud-gab/results-sync.js" pull >/dev/null 2>&1
+  for sp in dev test; do local SPA=""; [ $sp = test ] && SPA="--split test"
+    VF_MIN_FREE_GB=3 ./gab fill --root $P/r904 --manifest "$BENCH" $SPA > /home/user/gab/lev-fill-$sp.log 2>&1; echo "lev gab fill $sp exit $?"; tail -3 /home/user/gab/lev-fill-$sp.log | cut -c1-240; done
+  for b in ${LEV_BUILDS:-r904 exitonly sbfinal}; do for t in main akhand hard; do for sp in dev test; do
+    local SPA=""; [ $sp = test ] && SPA="--split test"
+    VF_MIN_FREE_GB=3 ./gab run $P/$b --set $t --tier full --jobs "$NP" --manifest "$BENCH" $SPA --fill > /home/user/gab/lev-$b-$t-$sp.log 2>&1; echo "lev $b $t $sp exit $?"
+    grep -E "INCOMPLETE|Not run|model output" /home/user/gab/lev-$b-$t-$sp.log | cut -c1-200
+    local d; d=$(ls -td "$TOOLS"/../results/gab/*-run 2>/dev/null | head -1)
+    [ -n "$d" ] && mkdir -p "$OUTD/$b-$t-$sp" && cp "$d"/scorecard.* "$OUTD/$b-$t-$sp/"
+  done; done; done
+  FSUITES=$(node -e 'console.log(Object.keys(require("./vf-suites").SUITES).join(","))') push_cache
+  node "$REPO/research/cloud-gab/results-sync.js" push --prefix sung-bani-data/lev-results --dir "$OUTD" --overwrite
+  echo "lev done"
+}
 case "$JOB" in
   fill-x86*) fill_x86; [[ "$JOB" == *apaath* ]] && apaath; [ -n "${SCORE:-}" ] && score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
   sungbani*) sungbani ;;
+  lev*) lev ;;
   kfix*) kfix ;;
   kfetch*) kfetch ;;
   apaath-test*) AP_SPLIT=test apaath; node "$REPO/research/cloud-gab/results-sync.js" push ;;
