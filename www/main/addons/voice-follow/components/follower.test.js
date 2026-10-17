@@ -145,3 +145,13 @@ test('fast reader: the opening letters must fit the next pangti clearly better t
   const fast = await run4(script, { ...FAST, fastTail: 6, paceHist: [2, 2, 2] });
   assert.strictEqual(fast.lines[4], 0);
 });
+
+test('fast reader: fastConfirm and fastEndWords hold the hand-off until it is sure', async () => {
+  const script = [n4[0], n4[0], n4[0], n4[0], zeroThenOne, zeroThenOne];
+  const two = await run4(script, { ...FAST, fastConfirm: 2, paceHist: [2, 2, 2] });
+  assert.deepStrictEqual(two.lines.slice(4), [0, 1], 'two decodes in a row');
+  // pangti 0's last words never heard (only its first half, then pangti 1's opening): no hand-off
+  const early = n4[0].slice(0, 14) + n4[1].slice(0, 8);
+  const end = await run4([n4[0].slice(0, 14), n4[0].slice(0, 14), n4[0].slice(0, 14), n4[0].slice(0, 14), early], { ...FAST, fastEndWords: 2, paceHist: [2, 2, 2] });
+  assert.strictEqual(end.lines[4], 0);
+});

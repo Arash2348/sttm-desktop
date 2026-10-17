@@ -50,7 +50,9 @@ const DEFAULTS = {
   // is on (fastTail letters, fastGuard, fastMargin) even if tailAdv is 0, and it is checked before the margin gate
   // (two pangtis in one window score alike, which froze the cursor). Slow singing (kirtan pangtis of 6 s and more,
   // sung again and again) never reaches the pace, so it follows exactly as before. fastPaceS 0 = off.
-  fastPaceS: 0, fastN: 3, fastTail: 6, fastGuard: 0.75, fastMargin: 0.15, paceHist: null,
+  // fastConfirm: decodes in a row the opening must be heard; fastEndWords > 0: only once the last fastEndWords words
+  // of the current pangti have been heard (a reader says the pangti to its end before the next one).
+  fastPaceS: 0, fastN: 3, fastTail: 6, fastGuard: 0.75, fastMargin: 0.15, fastConfirm: 1, fastEndWords: 0, paceHist: null,
 };
 
 function argmax(a) { let bi = 0, bv = -Infinity; for (let i = 0; i < a.length; i++) if (a[i] > bv) { bv = a[i]; bi = i; } return bi; }
@@ -136,10 +138,12 @@ class Follower {
     this.tailDbg = { tNext, tCur, fast }; // read by the bench's follower trace
     const guard = fast && c.tailAdv <= 0 ? c.fastGuard : c.tailGuard;
     const margin = fast && c.tailAdv <= 0 ? c.fastMargin : c.tailMargin;
-    if (tNext >= guard && tNext - tCur >= margin) {
+    const atEnd = !(fast && c.tailAdv <= 0 && c.fastEndWords > 0) ||
+      (this.wiLine === this.cur && this.maxWi >= (this.nwords[this.cur] || 0) - c.fastEndWords);
+    if (tNext >= guard && tNext - tCur >= margin && atEnd) {
       this.tailHits = this.tailLast === next ? this.tailHits + 1 : 1;
       this.tailLast = next;
-      return this.tailHits >= c.tailConfirm ? next : null;
+      return this.tailHits >= (fast && c.tailAdv <= 0 ? c.fastConfirm : c.tailConfirm) ? next : null;
     }
     this.tailHits = 0; this.tailLast = null;
     return null;

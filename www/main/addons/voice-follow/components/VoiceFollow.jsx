@@ -188,6 +188,9 @@ const AP_FAST_PROFILES = [
   // 2, 3: any steady reading (pangtis of 7 s or less, no step back); held-back lag is ~1.5-2 s on readers of 4-5.5 s
   { fastPaceS: 7.0, fastN: 3, fastTail: 6, fastGuard: 0.75, fastMargin: 0.15 },
   { fastPaceS: 7.0, fastN: 3, fastTail: 8, fastGuard: 0.7, fastMargin: 0.1 },
+  // 4, 5: profile 3, guarded against a sung pangti's early flicker (held-back Aarti rt11: one 0.5 s step ahead and back)
+  { fastPaceS: 7.0, fastN: 3, fastTail: 8, fastGuard: 0.7, fastMargin: 0.1, fastEndWords: 2 },
+  { fastPaceS: 7.0, fastN: 3, fastTail: 8, fastGuard: 0.7, fastMargin: 0.1, fastConfirm: 2 },
 ];
 const kirtanFollowOpts = (paceHist) => ({
   tailAdv: KIRTAN_TAIL_ADV,
