@@ -161,17 +161,16 @@ lines() {
 # P0 Sung Bani (owner, Oct 17): the owner's all-Banis-sung Nitnem video (Rt1TyWzPykc) cut into 5-10 min clips
 # (hf-sung-bani/). Fetches the clips from the dataset revision SB_REV (the open PR, refs/pr/N, until merged), records
 # their model output on 9.0.4 (r904) on THIS machine (x86), fills what the 9.0.6 candidate (cand906b) asks for,
-# pushes the cache, scores both builds on just these clips, and shares the scorecards (Azure sung-bani-data/).
+# pushes the cache, scores both builds on just these clips (SB_STAGE: the staged PR files from Azure instead of HF), and shares the scorecards (Azure sung-bani-data/).
 sungbani() {
   local BENCH=/home/user/gab/sb-bench REV="${SB_REV:-main}" OUTD=/home/user/gab/sb-out
   mkdir -p "$BENCH" "$OUTD"
   export SB_IDRE
   local R="https://huggingface.co/datasets/khalisfoundation/GurbaniAutopilotBench/resolve/${REV//\//%2F}"
   if [ -n "${SB_STAGE:-}" ]; then
-    # the staged PR files (clips + manifest) from Azure; this VM's token opens the dataset PR (the Mac token cannot)
+    # the staged PR files (clips + manifest) from Azure
     for sp in ${SB_STAGE//,/ }; do node "$REPO/research/cloud-gab/results-sync.js" pull --prefix "$sp" --dir "/home/user/gab/stage/$sp"; done
-    [ -x /opt/hfvenv/bin/python ] || { python3 -m venv /opt/hfvenv >/dev/null 2>&1 || { apt-get install -y -qq python3-venv >/dev/null 2>&1; python3 -m venv /opt/hfvenv; }; /opt/hfvenv/bin/pip install -q huggingface_hub >/dev/null 2>&1; }
-    for sp in ${SB_STAGE//,/ }; do /opt/hfvenv/bin/python "$REPO/research/cloud-gab/hf-sung-bani/open-pr.py" "/home/user/gab/stage/$sp" 2>&1 | tail -2 | tee -a "$OUTD/pr.txt"; done
+    # (the dataset PR is opened from the Mac with hf-pr.js by a token that may open PRs; this job only scores)
     local LAST; LAST=${SB_STAGE##*,}
     cp -r "/home/user/gab/stage/$LAST/." "$BENCH/"
   else
