@@ -1,6 +1,11 @@
 #!/bin/bash
 # channel-ingest.sh — one command per YouTube kirtan channel with on-screen Gurbani slides -> GAB clips ready to verify.
 #   bash channel-ingest.sh <work dir> <channel url> <prefix> [picks.txt]
+#   Owner (Oct 17): downloads and OCR run on the VM, not the Mac: vm-fetch-ocr.sh <work> <picks> <azure prefix> on the VM
+#   (CROP/CROPF/THR env for other slide layouts; yellow-on-blue English slides: KMATCH_MODE=en and the yellow-isolation
+#   CROPF used for rajikaurrr), then results-sync.js pull on the Mac and run steps 3-4 below on the pulled dirs.
+#   Model output: vm-side-job.sh on a shared VM (own /tmp = own bench lock, ~12 cores) or the sungbani VM job; score
+#   with vm-kscore.sh (VF_EMIS_CODEC=q16: the namespace these x86 recordings are in).
 #   1. lists the channel (flat, polite); without picks.txt it writes <work>/channel.tsv and stops so you can choose
 #   2. per picked video: duplicate check against the GAB manifest (HF main), audio (16 kHz mono) + 360p video,
 #      sign-in-blocked videos are skipped and listed in <work>/blocked.txt (never cookies, never a bypass)
