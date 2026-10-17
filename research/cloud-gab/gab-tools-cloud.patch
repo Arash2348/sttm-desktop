@@ -221,7 +221,7 @@ index bb2861c2..22ffef66 100644
 -module.exports = { push, pull, list, audioSha, redact, PREFIX };
 +module.exports = { push, pull, list, audioSha, redact, fixTimes, PREFIX };
 diff --git a/research/level2-dataset/tools/vf-check.js b/research/level2-dataset/tools/vf-check.js
-index 0ef7cfb4..b88d77ab 100644
+index 0ef7cfb4..2b9d8bcc 100644
 --- a/research/level2-dataset/tools/vf-check.js
 +++ b/research/level2-dataset/tools/vf-check.js
 @@ -31,7 +31,12 @@ const { DEFAULT_ROOT, modelSha } = require('./emis-cache');
@@ -249,7 +249,28 @@ index 0ef7cfb4..b88d77ab 100644
  const sh = (cmd, args, opts = {}) => execFileSync(cmd, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...opts }).trim();
  const sha1 = (s) => crypto.createHash('sha1').update(s).digest('hex');
  const now = () => Date.now() / 1000;
-@@ -108,7 +117,7 @@ async function pool(planFile) {
+@@ -97,7 +106,19 @@ async function pool(planFile) {
+       resolve();
+     });
+   });
+-  const worker = async () => { while (queue.length) await runOne(queue.shift()); };
++  // never two processes on one clip at once (the same recording can sit in two suites, e.g. kh01-kh05 in fremont and
++  // jaspal): two writers on one cache entry would interleave its records
++  const busy = new Set();
++  const ids = (t) => t.jobs.map((j) => j.id);
++  const worker = async () => {
++    while (queue.length) {
++      const i = queue.findIndex((t) => !ids(t).some((id) => busy.has(id)));
++      if (i < 0) { await new Promise((ok) => setTimeout(ok, 2000)); continue; }
++      const task = queue.splice(i, 1)[0];
++      ids(task).forEach((id) => busy.add(id));
++      try { await runOne(task); } finally { ids(task).forEach((id) => busy.delete(id)); }
++    }
++  };
+   await Promise.all(Array.from({ length: Math.max(1, Math.min(plan.jobs, queue.length)) }, worker));
+   fs.writeFileSync(`${planFile}.status.json`, JSON.stringify({ wall: +(now() - t0).toFixed(1), status }, null, 1));
+ }
+@@ -108,7 +129,7 @@ async function pool(planFile) {
  const REPLAY_SLOTS = Number(process.env.VF_REPLAY_SLOTS || 3);
  function runLocked(plan, file, { threads } = {}) {
    const replayOnly = !threads;
@@ -258,7 +279,7 @@ index 0ef7cfb4..b88d77ab 100644
    fs.writeFileSync(file, JSON.stringify(plan, null, 1));
    const envArgs = threads ? ['env', `VF_ORT_THREADS=${threads}`] : [];
    const poolArgs = ['nice', '-n', '19', ...envArgs, process.execPath, __filename, '--pool', file];
-@@ -341,9 +350,10 @@ const entryDirOf = (id) => path.join(CACHE, `${modelSha(MODEL, CACHE).slice(0, 1
+@@ -341,9 +362,10 @@ const entryDirOf = (id) => path.join(CACHE, `${modelSha(MODEL, CACHE).slice(0, 1
  function entryPlatform(id) {
    const d = entryDirOf(id);
    try { return JSON.parse(fs.readFileSync(path.join(d, 'provenance.json'), 'utf8')).platform; } catch (_) { /* none */ }
@@ -270,7 +291,7 @@ index 0ef7cfb4..b88d77ab 100644
    const bad = jobs.filter((j) => { const p = entryPlatform(j.id); return p && p !== PLATFORM; });
    if (bad.length) say(`  REFUSED to record ${bad.length} clip(s) whose cache entry was recorded on another platform (this is ${PLATFORM}; never mix): ${[...new Set(bad.map((j) => `${j.id} (${entryPlatform(j.id)})`))].join(' ')}`);
    return jobs.filter((j) => !bad.includes(j));
-@@ -410,7 +420,7 @@ async function record(opts = {}) {
+@@ -410,7 +432,7 @@ async function record(opts = {}) {
        for (const [bi, batch] of batches.entries()) {
          // --queue: take ordinary turns on the lock (still one clip per turn) instead of waiting for an empty queue
          if (!flag('greedy') && !flag('queue')) await politeTurn();
@@ -279,7 +300,7 @@ index 0ef7cfb4..b88d77ab 100644
          all.wall += st.wall;
          all.lockWait += st.lockWait;
          Object.assign(all.status, st.status);
-@@ -521,8 +531,13 @@ async function check() {
+@@ -521,8 +543,13 @@ async function check() {
      say(`${missed.length} clip runs went past the cache (their behaviour diverged); recording them (model, under the lock) ...`);
      const tf = now();
      const bySide = (side) => platformGuard(missed.filter(([s]) => s === side).map(([, j]) => j), say);

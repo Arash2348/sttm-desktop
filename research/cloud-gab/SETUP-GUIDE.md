@@ -72,6 +72,38 @@ This file explains the machinery: the tracker, GAB, the caches, the VMs, the lea
 - A new build that changes what the model is asked (window length, alignment) needs new windows: that is a VM `--fill` job (or the Mac).
 - Disk is a few GB: delete worktrees and caches you no longer need; everything big is in Azure.
 
+## 3b. x86 is the reference (Oct 17)
+
+Owner's decision (Oct 17 2026): x86 (linux-x64) is the reference platform for GAB, as it is for production (most PCs are
+Intel/Windows). Every GAB recording, all tiers and both splits, has x86 speech-model output, so any build can be scored
+in the cloud and no recording is Mac-only.
+
+- **Where:** a separate cache namespace, codec `q16-x86` (same q16 encoding): Azure `bench-cache/5f9e41d867de/q16-x86/`,
+  local `<cache>/5f9e41d867de-q16-x86/<clip>/`. It holds linux-x64 output only (entries without a stamp count as x86;
+  any other platform is refused when recording into it). The old namespace `q16` (Mac entries + the first x86 entries)
+  is kept as it was and never touched. Replays are keyed by codec too, so x86 and older replays never mix.
+- **Default:** `gab` scores from `q16-x86` unless `VF_EMIS_CODEC` is set (the cloud patch sets it; the line
+  "model output: x86 reference" in every run confirms it). `VF_EMIS_CODEC=q16` gives the older mixed Mac + x86 numbers.
+  The older VM jobs (`fill-x86*`, `score*`, `test*`, `apaath*`) stay on `q16`, so a job started before Oct 17 behaves as it did.
+- **All leaderboard numbers come from x86** from the Oct 17 re-score on (9.0.4, 9.0.6 candidate, 9.0.4 + Aarti 1,
+  Bani end exit; every tier, practice + test). Compare a build only with x86 numbers.
+- **Score build X on all tiers on the VM** (records any x86 output X needs, then scores main, akhand and hard, practice
+  and test; scorecards go to Azure `bench-results/x86-cards/<build>/<tier>-<dev|test>.json`, replays to `bench-results/replays`):
+  ```
+  gcloud compute instances add-metadata vf-record --zone us-east1-b \
+    --metadata '^;^cg-job=x86-X-1;cg-builds=X:<commit>:CONST=v,CONST2=v;cg-fill=X;cg-score=X;cg-branch=claude/sweet-brahmagupta-x0uez6' \
+    --metadata-from-file startup-script=research/cloud-gab/vm/vm-startup.sh
+  gcloud compute instances start vf-record --zone us-east1-b
+  ```
+  `cg-builds` is optional (or add `mk X <commit> CONST=v` to vm-job.sh); several builds: space-separated in cg-fill /
+  cg-score. Job names must start with `x86`. Resumable: if the 6 h stop cuts it, start the VM again with the same metadata
+  (finished builds are skipped; saved replays are reused). Pull scorecards with
+  `node research/cloud-gab/results-sync.js pull --prefix bench-results/x86-cards --dir <dir>`.
+- **Re-score from shared replays** anywhere (container or Mac with the cloud patch): `node research/cloud-gab/results-sync.js pull`,
+  then `VF_NO_EMIS_PULL=1 ./gab run <build> --set main|akhand|hard --tier full --manifest hf [--split test]` (no model, seconds).
+- **Recording speed on the VM:** `VF_RECORD_JOBS` (default 10 there) recordings side by side, 3 model threads each;
+  `VF_REPLAY_MAX` widens replays past 4 workers. Both default to the old behaviour (1 and 4) on the Mac.
+
 ## 4. The two VMs (Google Cloud, us-east1-b)
 
 - `vf-record` and `vf-record-2`, 32 cores each (CPU quota 64; GPU quota 0). Each boot stops itself after 6 h. Budget $300 cap, $150 kill-switch.
