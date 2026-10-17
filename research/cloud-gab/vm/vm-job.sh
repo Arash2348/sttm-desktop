@@ -191,6 +191,9 @@ x86() {
     r.pull({root:"/root/personal/live-darbar-venues/cache",model:"5f9e41d867de",codec:"q16-x86",clips:jobs.map(j=>({id:j.id,wav:j.wav})),log:()=>{}}).then(x=>console.log("x86: pulled",x.pulled,"q16-x86 entries",(x.bytes/1e9).toFixed(1),"GB"));' $W/jobs.json
   node "$REPO/research/cloud-gab/results-sync.js" pull
   df -h / | tail -1
+  # once (Oct 17): kh04 was recorded by two processes at once in the first x86 run (fremont + jaspal) before the tools
+  # serialised that; its x86 entry was never shared, drop it here so it is recorded again cleanly
+  [ -f $W/kh04-reset ] || { rm -rf "$C/5f9e41d867de-q16-x86/kh04_sttm_desktop_2026_10_08T03_51_10_447Z"; touch $W/kh04-reset; echo "x86: kh04 entry reset"; }
   # record: each FILL build replays every recording; a recording that leaves the cache (no x86 output yet, or a
   # behaviour that asks for new windows) is recorded with the model on this machine, then replayed again
   for b in ${FILL:-$SCORE}; do
