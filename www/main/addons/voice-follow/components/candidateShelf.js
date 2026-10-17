@@ -40,7 +40,7 @@ const DEFAULTS = {
   halfLifeMs: 8000, // a card without new scores keeps its last %, halving over this long
   changeHoldMs: 2500, // the change card stays this long after the judge stops checking it
   evSwap: 0.25, // evidence cards: one passes another only when ahead by more than this
-  evOvertake: 0.3, // full list: a newcomer must beat the weakest evidence card by this much
+  evOvertake: 0.1, // full list: a newcomer with this much more evidence than the weakest card takes its place
   changeKeepFill: 0.6, // "Changing to" stays while the Shabad's evidence is this far to the line
 };
 
@@ -188,10 +188,13 @@ function createShelf(params = {}) {
         rank(x) < rank(w) || (rank(x) === rank(w) && val(x) < val(w)) ? x : w,
       );
       let take = fadingNow(weakest);
-      const margin = evMode(id, weakest) ? P.evOvertake : P.overtake;
+      const ev = evMode(id, weakest);
+      const margin = ev ? P.evOvertake : P.overtake;
       if (!take && val(id) > val(weakest) + margin) {
         if (!waitSince.has(id)) waitSince.set(id, now);
-        take = now - waitSince.get(id) >= P.overtakeMs;
+        // Evidence cards: a Shabad with more evidence takes the place at once (the sooner the
+        // next Shabad is seen, the better); the % cards wait to be clearly ahead for a while.
+        take = ev || now - waitSince.get(id) >= P.overtakeMs;
       } else if (!take) waitSince.delete(id);
       if (take) {
         order = order.filter((x) => x !== weakest);
