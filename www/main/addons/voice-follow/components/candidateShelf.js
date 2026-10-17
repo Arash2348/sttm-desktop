@@ -21,6 +21,11 @@
 //  - everything clears after SILENCE_MS without a confidently heard word.
 // Each card also carries `prog`: how close it is to being chosen (liveBoard.js), held and
 // decaying like its %, so its bar grows as the Shabad builds toward a switch.
+//
+// Evidence cards (items with `ev`, Shabad-level evidence from shabadEvidence.js): a card stays
+// exactly as long as its Shabad's evidence does (the evidence itself fades over tens of
+// seconds), never on a fixed timer and never shown fading; the cards are ordered by evidence,
+// with EV_SWAP of hysteresis.
 // Time is whatever `now` the caller passes (ms), so the shelf is deterministic in replay.
 
 const DEFAULTS = {
@@ -34,6 +39,8 @@ const DEFAULTS = {
   minShowMs: 4000, // a listed card is never replaced by a newcomer before this long
   halfLifeMs: 8000, // a card without new scores keeps its last %, halving over this long
   changeHoldMs: 2500, // the change card stays this long after the judge stops checking it
+  evSwap: 0.15, // evidence cards: one passes another only when ahead by more than this
+  evOvertake: 0.3, // full list: a newcomer must beat the weakest evidence card by this much
 };
 
 function createShelf(params = {}) {
@@ -69,13 +76,18 @@ function createShelf(params = {}) {
     if (!t) {
       tracks.set(it.shabadId, {
         item: it,
-        lastAt: at,
+        ev: it.ev || null,
+        lastAt: it.ev ? now : at,
         lastPct: it.pct || 0,
         lastProg: it.prog != null ? it.prog : 0,
       });
       return;
     }
     t.item = { ...t.item, ...it };
+    if (it.ev) {
+      t.lastAt = now; // evidence cards live as long as the evidence
+      t.ev = it.ev;
+    }
     if (at > t.lastAt || (at === t.lastAt && it.pct > t.lastPct)) {
       t.lastAt = at;
       if (it.pct != null) t.lastPct = it.pct;
@@ -117,13 +129,15 @@ function createShelf(params = {}) {
     } else if (change && now - change.lastAt > P.changeHoldMs) change = null;
     const changeId = change ? change.id : null;
 
+    const present = new Map(items.map((it) => [it.shabadId, it]));
     [...tracks.keys()].forEach((id) => {
       const t = tracks.get(id);
-      if (id !== changeId && ageOf(t, now) > P.holdMs) drop(id);
+      if (id === changeId) return;
+      // An evidence card goes when its evidence has faded out (it is no longer offered).
+      if (t.ev ? !present.has(id) : ageOf(t, now) > P.holdMs) drop(id);
     });
     // Shown %: the board's own while it is still scoring the card; afterwards its last
     // score, decaying slowly (never a sudden drop to nothing). Same for the progress.
-    const present = new Map(items.map((it) => [it.shabadId, it]));
     tracks.forEach((t, id) => {
       const live = present.get(id);
       // eslint-disable-next-line no-param-reassign
@@ -134,10 +148,16 @@ function createShelf(params = {}) {
 
     // Listed: tracked, not on screen, not in the change card, not hidden.
     const listable = (id) => tracks.has(id) && id !== changeId && !hidden.has(id);
+    // Rank: evidence total for evidence cards, else the %.
+    const val = (id) => {
+      const t = tracks.get(id);
+      return t.ev ? t.ev.total : t.pct;
+    };
+    const evMode = (a, b) => !!(tracks.get(a).ev && tracks.get(b).ev);
     order = order.filter(listable);
     const fresh = [...tracks.keys()]
       .filter((id) => listable(id) && !order.includes(id))
-      .sort((a, b) => tracks.get(b).pct - tracks.get(a).pct);
+      .sort((a, b) => val(b) - val(a));
     const list = (id) => {
       order.push(id);
       shownAt.set(id, now);
@@ -155,13 +175,14 @@ function createShelf(params = {}) {
         waitSince.delete(id);
         return;
       }
-      const rank = (x) => (isFading(tracks.get(x), now) ? -1 : 0);
+      const fadingNow = (x) => !tracks.get(x).ev && isFading(tracks.get(x), now);
+      const rank = (x) => (fadingNow(x) ? -1 : 0);
       const weakest = open.reduce((w, x) =>
-        rank(x) < rank(w) || (rank(x) === rank(w) && tracks.get(x).pct < tracks.get(w).pct) ? x : w,
+        rank(x) < rank(w) || (rank(x) === rank(w) && val(x) < val(w)) ? x : w,
       );
-      const w = tracks.get(weakest);
-      let take = isFading(w, now);
-      if (!take && tracks.get(id).pct > w.pct + P.overtake) {
+      let take = fadingNow(weakest);
+      const margin = evMode(id, weakest) ? P.evOvertake : P.overtake;
+      if (!take && val(id) > val(weakest) + margin) {
         if (!waitSince.has(id)) waitSince.set(id, now);
         take = now - waitSince.get(id) >= P.overtakeMs;
       } else if (!take) waitSince.delete(id);
@@ -177,7 +198,8 @@ function createShelf(params = {}) {
     for (let pass = 0; pass < order.length; pass += 1) {
       let moved = false;
       for (let i = 1; i < order.length; i += 1) {
-        if (tracks.get(order[i]).pct > tracks.get(order[i - 1]).pct + P.swap) {
+        const margin = evMode(order[i], order[i - 1]) ? P.evSwap : P.swap;
+        if (val(order[i]) > val(order[i - 1]) + margin) {
           [order[i - 1], order[i]] = [order[i], order[i - 1]];
           moved = true;
         }
@@ -192,8 +214,9 @@ function createShelf(params = {}) {
         shabadId: id,
         pct: t.pct,
         prog: t.prog,
+        ...(t.ev ? { ev: t.ev } : {}),
         role: 'candidate',
-        fading: isFading(t, now),
+        fading: t.ev ? false : isFading(t, now),
       };
     });
   }

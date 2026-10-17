@@ -1319,6 +1319,90 @@ $vf2-yellow-bar: #f2c200;
   }
 }
 
+// Shabad-level evidence on a card: the pangtis heard from that Shabad as chips (filled = heard
+// clearly, half = weakly), and one bar toward the switch with a tick at the switch line.
+.vf2-row-main,
+.vf2-change-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: 0.35em;
+}
+.vf2-change-main {
+  margin-top: 0.3em;
+}
+.vf2-chips {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45em;
+  font-size: 1em;
+  line-height: 1;
+}
+.vf2-chip {
+  flex: none;
+  width: 0.62em;
+  height: 0.62em;
+  border-radius: 50%;
+  border: 2px solid $vf2-orange;
+  animation: vf2-chip-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  &.is-clear {
+    background: $vf2-orange;
+  }
+  &.is-weak {
+    background: linear-gradient(90deg, $vf2-orange 50%, transparent 50%);
+  }
+}
+.vf2-chips-more {
+  font-size: 0.75em;
+  font-weight: 700;
+  color: var(--vf-muted);
+}
+@keyframes vf2-chip-in {
+  from {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.vf2-ev-bar {
+  position: relative;
+  flex: none;
+  width: 140px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--vf-line);
+  overflow: visible;
+  .vf2-ev-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 4px;
+    background: rgba(243, 156, 29, 0.7);
+    transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  &.is-over .vf2-ev-fill {
+    background: $vf2-orange;
+  }
+  .vf2-ev-tick {
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    width: 2px;
+    margin-left: -1px;
+    border-radius: 1px;
+    background: var(--vf-muted);
+  }
+}
+.vf2-shabad-row.has-ev {
+  transition: none;
+}
+
 // ---------------------------------------------------------------------------
 // Scale with the panel (2026-10). The Autopilot tab is often a large part of the screen and
 // the cards used only its top third: every size below follows the panel's width and height
@@ -1447,5 +1531,14 @@ $vf2-yellow-bar: #f2c200;
   // What it hears, in the bottom bar
   .vf-ap-heard .vf2-heard-text {
     font-size: clamp(14px, #{'min(1.6cqw, 3cqh)'}, 20px);
+  }
+
+  .vf2-shabad-row .vf2-chips,
+  .vf2-change .vf2-chips {
+    font-size: clamp(12px, #{'min(1.4cqw, 2.6cqh)'}, 17px);
+  }
+  .vf2-shabad-row .vf2-ev-bar {
+    width: clamp(110px, 13cqw, 220px);
+    height: clamp(7px, 1.3cqh, 11px);
   }
 }

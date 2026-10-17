@@ -201,4 +201,23 @@ describe('candidateShelf', () => {
     assert.ok(ids(out).includes(98));
     assert.ok(!ids(out).includes(11));
   });
+
+  it('evidence cards: ordered by evidence, stay while it lasts, never shown fading', () => {
+    const s = createShelf();
+    const e = (id, total) => ({
+      shabadId: id,
+      pct: 0.01,
+      line: `l${id}`,
+      ev: { total, fill: total / 2.3 },
+    });
+    let out = s.update({ now: 1000, items: [e(7, 0.5), e(8, 1.2)], current: 1, heardAt: 1000 });
+    assert.deepEqual(ids(out), [8, 7]);
+    // 30 s later, still offered (the evidence is fading slowly): still listed, not fading
+    out = s.update({ now: 31000, items: [e(7, 0.3), e(8, 0.4)], current: 1, heardAt: 31000 });
+    assert.deepEqual(ids(out), [8, 7], 'within the 0.15 hysteresis: keeps its place');
+    assert.equal(out[0].fading, false);
+    // its evidence is gone: it leaves
+    out = s.update({ now: 32000, items: [e(8, 0.4)], current: 1, heardAt: 32000 });
+    assert.deepEqual(ids(out), [8]);
+  });
 });

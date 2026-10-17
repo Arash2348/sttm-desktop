@@ -794,6 +794,38 @@ const LiveBar = ({ value }) => {
 };
 LiveBar.propTypes = { value: PropTypes.number.isRequired };
 
+// Shabad-level evidence on a card: one chip per distinct pangti heard from that Shabad, in the
+// order they were heard (filled = heard clearly, half = heard weakly; the pangti on hover).
+const EvidenceChips = ({ ev }) => {
+  if (!ev || !ev.pangtis || !ev.pangtis.length) return null;
+  return (
+    <span className="vf2-chips" aria-label={`${ev.distinct} pangtis heard`}>
+      {ev.more > 0 && <span className="vf2-chips-more">+{ev.more}</span>}
+      {ev.pangtis.map((p) => (
+        <span
+          key={p.key}
+          className={`vf2-chip ${p.clear ? 'is-clear' : 'is-weak'}`}
+          title={p.line ? toAkhar(p.line) : ''}
+        />
+      ))}
+    </span>
+  );
+};
+EvidenceChips.propTypes = { ev: PropTypes.shape({}) };
+// One bar per Shabad: its evidence toward a switch, with a tick at the switch line (at 80% of
+// the bar, so a Shabad past the line is still seen growing). Eases to each new value.
+const EV_TICK = 0.8;
+const EvidenceBar = ({ fill, title }) => {
+  const w = Math.min(1, Math.max(0, fill) * EV_TICK) * 100;
+  return (
+    <span className={`vf2-ev-bar${fill >= 1 ? ' is-over' : ''}`} title={title}>
+      <span className="vf2-ev-fill" style={{ width: `${Math.round(w * 10) / 10}%` }} />
+      <span className="vf2-ev-tick" style={{ left: `${EV_TICK * 100}%` }} />
+    </span>
+  );
+};
+EvidenceBar.propTypes = { fill: PropTypes.number.isRequired, title: PropTypes.string };
+
 // Cards glide to their new places instead of jumping (FLIP): after each render, every element
 // with data-flip-id that moved starts at its old place and eases to the new one in ~0.3 s.
 // A Shabad leaving the list for the "Changing to" card glides up into it the same way (the
@@ -1161,16 +1193,33 @@ const VoiceFollow = () => {
         line: leadItem.line || (onBoard && cardLine(onBoard)) || '',
         pct: onBoard ? onBoard.pct : leadItem.score || 0,
         prog: switchProgress(leadItem),
+        ev: boardRef.current.evidenceOf(leadItem.shabadId, now),
       };
     }
-    const items = snap.filter(
-      (b) =>
-        b.role !== 'current' &&
-        b.shabadId !== cur &&
-        !(cur != null && bani && bani.has(b.shabadId)) &&
-        (cur == null || b.pct >= 0.01) &&
-        !!cardLine(b),
-    );
+    // While following, the list is the Shabad-level evidence (shabadEvidence.js): every Shabad
+    // with pangtis heard, named by its strongest pangti, for as long as its evidence lasts.
+    // While searching, the lock progress as before.
+    const pctOf = (id) => {
+      const b = snap.find((x) => x.shabadId === id);
+      return b ? b.pct : 0;
+    };
+    const items =
+      cur != null
+        ? boardRef.current
+            .evidenceSnapshot(now)
+            .filter((e) => e.shabadId !== cur && !(bani && bani.has(e.shabadId)))
+            .map((e) => {
+              const best = e.ev.pangtis.reduce((m, x) => (!m || x.w > m.w ? x : m), null);
+              return {
+                ...e,
+                line: (best && best.line) || cardLine(e),
+                pct: pctOf(e.shabadId),
+                prog: Math.max(e.ev.fill, 0),
+                at: now,
+              };
+            })
+            .filter((e) => !!e.line)
+        : snap.filter((b) => b.role !== 'current' && !!cardLine(b));
     const listed = shelfRef.current.update({
       now,
       items,
@@ -1181,7 +1230,12 @@ const VoiceFollow = () => {
     });
     setShelf(listed);
     const held = shelfRef.current.changeCard(now);
-    if (held && lead && held.shabadId === lead.shabadId) held.prog = lead.prog;
+    if (held) {
+      // The change card's rail: the further of the evidence and the judge's own count.
+      held.ev = boardRef.current.evidenceOf(held.shabadId, now) || held.ev || null;
+      const judge = lead && held.shabadId === lead.shabadId ? lead.prog : held.prog || 0;
+      held.prog = Math.max(judge, held.ev ? Math.min(1, held.ev.fill) : 0);
+    }
     setChangeCard(held);
     // Session log (shadow sessions): the cards as listed, about once a second and only when
     // they changed, so how long a candidate stayed readable can be measured.
@@ -4555,8 +4609,10 @@ const VoiceFollow = () => {
         <div className={`vf2-body${!changing && boardOthers.length === 0 ? ' is-quiet' : ''}`}>
           {dlBar}
 
+          <FlipScope className="vf2-flip">
           <section
             key={beat}
+            data-flip-id={currentView ? currentView.id : 'finding'}
             className={`vf2-now${currentView ? ' is-following' : ' is-searching'}${
               boardCur ? ` lvl-${pctLevel(boardCur.pct)}` : ''
             }${beat ? ' is-beat' : ''}`}
@@ -4589,7 +4645,6 @@ const VoiceFollow = () => {
             {boardCur && <LiveBar value={boardCur.pct} />}
           </section>
 
-          <FlipScope className="vf2-flip">
             {changing && (
               <section
                 className={`vf2-change is-changing${
@@ -4614,8 +4669,11 @@ const VoiceFollow = () => {
                   {changeLabel}
                   <LivePct value={leadPct} />
                 </div>
-                <div className="vf2-cand-line">
-                  <MarkedLine line={leadLine} keys={heardKeys} />
+                <div className="vf2-change-main">
+                  <span className="vf2-cand-line">
+                    <MarkedLine line={leadLine} keys={heardKeys} />
+                  </span>
+                  <EvidenceChips ev={liveLead.ev} />
                 </div>
               </section>
             )}
@@ -4634,25 +4692,32 @@ const VoiceFollow = () => {
               )}
               {boardOthers.map((c, i) => (
                 <div
-                  className={`vf2-shabad-row${c.fading ? ' is-fading' : ''}`}
+                  className={`vf2-shabad-row${c.fading ? ' is-fading' : ''}${
+                    c.ev ? ' has-ev' : ''
+                  }`}
                   key={c.shabadId}
                   data-flip-id={c.shabadId}
                 >
-                  <span className="vf2-cand-line">
-                    <MarkedLine line={c.line} keys={heardKeys} />
+                  <span className="vf2-row-main">
+                    <span className="vf2-cand-line">
+                      <MarkedLine line={c.line} keys={heardKeys} />
+                    </span>
+                    <EvidenceChips ev={c.ev} />
                   </span>
-                  {/* The bar: how close this Shabad is to being chosen; the %: how sure. */}
-                  <span className="vf2-prog" title={i18n.t('VOICE_FOLLOW.PROGRESS_TIP')}>
-                    <LiveBar value={c.prog != null ? c.prog : c.pct} />
-                  </span>
-                  <LivePct value={c.pct} />
+                  {/* The bar: the Shabad's evidence toward a switch (tick = the switch line). */}
+                  {c.ev ? (
+                    <EvidenceBar fill={c.ev.fill} title={i18n.t('VOICE_FOLLOW.PROGRESS_TIP')} />
+                  ) : (
+                    <span className="vf2-prog" title={i18n.t('VOICE_FOLLOW.PROGRESS_TIP')}>
+                      <LiveBar value={c.prog != null ? c.prog : c.pct} />
+                    </span>
+                  )}
+                  {!c.ev && <LivePct value={c.pct} />}
                   <button
                     type="button"
                     className={`vf2-switch${i === 0 ? ' is-primary' : ''}`}
                     onClick={() => pickCandidate({ ...c, pos: i })}
-                    title={i18n.t(
-                      currentView ? 'VOICE_FOLLOW.SWITCH_TIP' : 'VOICE_FOLLOW.OPEN_TIP',
-                    )}
+                    title={i18n.t(currentView ? 'VOICE_FOLLOW.SWITCH_TIP' : 'VOICE_FOLLOW.OPEN_TIP')}
                   >
                     {i18n.t(currentView ? 'VOICE_FOLLOW.SWITCH' : 'VOICE_FOLLOW.OPEN')}
                   </button>

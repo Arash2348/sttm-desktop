@@ -10,6 +10,8 @@
 // first-letter votes are the evidence, with a fitted mass for "not found yet".
 
 // Fitted in research/ui-calib/fit_posterior2.py and fit_search.py (see posterior.json).
+const { createEvidence } = require('./shabadEvidence');
+
 const DEFAULTS = {
   beta: 12, // evidence per unit of match score per decode
   lam: 0.65, // per-decode decay (~0.5 s decodes: evidence half-life under a second)
@@ -55,6 +57,8 @@ function createBoard(params = {}) {
   const seen = new Map(); // shabadId -> last time scored (ms)
   const meta = new Map(); // shabadId -> { line, verseId, verse }
   const judged = new Map(); // shabadId -> progress toward a switch (last decode it was scored)
+  // Shabad-level evidence: the pangtis heard per possible new Shabad (shabadEvidence.js).
+  const evidence = createEvidence(params.evidence || {});
   let lastAt = 0;
   let current = null;
   let items = []; // [{ shabadId, pct, role }] newest computation
@@ -82,6 +86,8 @@ function createBoard(params = {}) {
       progressItems = [];
     }
     decay(now);
+    evidence.drop(cur);
+    evidence.add({ now, cur, sCur, cands });
     E.set(cur, (E.get(cur) || 0) + P.beta * sCur);
     seen.set(cur, now);
     cands.forEach((c) => {
@@ -165,6 +171,7 @@ function createBoard(params = {}) {
     E.clear();
     seen.clear();
     judged.clear();
+    evidence.reset();
     items = [];
     current = null;
     lastAt = 0;
@@ -177,7 +184,29 @@ function createBoard(params = {}) {
       .sort((a, b) => (b.role === 'current') - (a.role === 'current') || b.pct - a.pct);
   }
 
-  return { follow, hold, search, progress, known, reset, snapshot, remember, params: P };
+  // Possible new Shabads by Shabad-level evidence (following only), with their pangti names.
+  function evidenceSnapshot(now) {
+    if (phase !== 'following') return [];
+    return evidence
+      .snapshot(now)
+      .filter((e) => e.shabadId !== current)
+      .map((e) => ({ ...e, ...(meta.get(e.shabadId) || {}) }));
+  }
+  const evidenceOf = (id, now) => evidence.of(id, now);
+
+  return {
+    follow,
+    hold,
+    search,
+    progress,
+    known,
+    reset,
+    snapshot,
+    remember,
+    evidenceSnapshot,
+    evidenceOf,
+    params: P,
+  };
 }
 
 // Rolling transcript: each decode returns the text of the last ~10 s of audio, so successive
