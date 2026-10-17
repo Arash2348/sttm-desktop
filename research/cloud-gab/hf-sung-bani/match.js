@@ -22,18 +22,18 @@ for(const ch of CH){
   const txt=(c)=>vn.slice(c[1],c[1]+c[2]).join('');
   for(const r of rs){const c=r.cands[0]; r.anchor=false; if(!c)continue; const alt=r.cands.find(x=>txt(x)!==txt(c)); r.margin=alt?c[0]-alt[0]:99; r.anchor=c[0]>=80&&r.margin>=6;}
   // order fill between anchors (a Bani may be sung in another piece order: anchors are not forced into one order)
-  let lastK=0;
+  let lastK=0; const recent=[];
   rs.forEach((r,i)=>{ let pick=null,how='none';
     if(r.anchor){pick=r.cands[0];how='ocr';
       // the same words close several Pauris / Saloks (Japji 28-31, Salok M9 14/15): among candidates with the same
       // text, take the first at or after the previous pangti's position in the Bani
-      const same=r.cands.filter(x=>txt(x)===txt(pick)&&x[0]>=pick[0]-0.01); if(same.length>1){const after=same.filter(x=>x[1]>=lastK).sort((a,b)=>a[1]-b[1]); pick=after[0]||pick;}}
+      const same=r.cands.filter(x=>txt(x)===txt(pick)&&x[0]>=pick[0]-0.01); if(same.length>1){const rec4=recent.slice(-2).find(q=>same.some(x=>x[1]===q[1]&&x[2]===q[2])); const after=same.filter(x=>x[1]>=lastK).sort((a,b)=>a[1]-b[1]); pick=(after[0]&&after[0][1]<=lastK+1)?after[0]:rec4?same.find(x=>x[1]===rec4[1]&&x[2]===rec4[2]):(after[0]||pick);}}
     else if(r.cands.length){ let p=null,n=null; for(let j=i-1;j>=0;j--)if(rs[j].anchor){p=rs[j].cands[0];break;} for(let j=i+1;j<rs.length;j++)if(rs[j].anchor){n=rs[j].cands[0];break;}
       const lo=p?p[1]:0, hi=n?n[1]+n[2]:vs.length;
       if(lo<=hi){const c=r.cands.find(x=>x[1]>=lo&&x[1]+x[2]<=hi&&x[0]>=60); if(c){pick=c;how='order';}} }
     if(!pick&&r.o&&r.o.length>=12){let b=null;for(let k=0;k<vs.length;k++){const n=vn[k];if(n.length<=r.o.length*1.15)continue;for(const part of [n.slice(0,r.o.length),n.slice(n.length-r.o.length)]){const sc=lev(r.o,part);if(!b||sc>b[0])b=[sc,k];}}
       if(b&&b[0]>=85){pick=[b[0],b[1],1];how='part';}}
-    if(pick&&(how==='ocr'||how==='order'))lastK=pick[1];
+    if(pick&&(how==='ocr'||how==='order')){lastK=pick[1];recent.push(pick);}
     const rec={i:r.i,t0:r.t0,t1:r.t1,bani:ch.bani,chapter:ch.name,hdr:r.hdr,ocr:r.ocr,how,score:pick?+pick[0].toFixed(1):null,margin:r.margin??null};
     if(pick) rec.verses=vs.slice(pick[1],pick[1]+pick[2]).map(v=>({verseId:v.verseId,customId:v.customId,header:v.header,shabadId:v.shabadId,tr:v.tr}));
     else if(r.o&&r.o.length>=12){const g=globalBest(r.o); if(g&&g.s>=80){rec.how='db-shabad';rec.score=+g.s.toFixed(1);rec.verses=ALL.slice(g.k,g.k+g.w).map(v=>({verseId:v.id,shabadId:v.sh,header:0,tr:v.tr}));}}

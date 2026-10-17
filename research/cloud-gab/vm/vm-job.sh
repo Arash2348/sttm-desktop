@@ -165,11 +165,21 @@ lines() {
 sungbani() {
   local BENCH=/home/user/gab/sb-bench REV="${SB_REV:-main}" OUTD=/home/user/gab/sb-out
   mkdir -p "$BENCH" "$OUTD"
+  export SB_IDRE
   local R="https://huggingface.co/datasets/khalisfoundation/GurbaniAutopilotBench/resolve/${REV//\//%2F}"
-  curl -sS -f -L -H "Authorization: Bearer $HF_TOKEN" -o "$BENCH/manifest.csv" "$R/manifest.csv" || { echo "sungbani: no manifest at $REV"; return 1; }
+  if [ -n "${SB_STAGE:-}" ]; then
+    # the staged PR files (clips + manifest) from Azure; this VM's token opens the dataset PR (the Mac token cannot)
+    for sp in ${SB_STAGE//,/ }; do node "$REPO/research/cloud-gab/results-sync.js" pull --prefix "$sp" --dir "/home/user/gab/stage/$sp"; done
+    [ -x /opt/hfvenv/bin/python ] || { python3 -m venv /opt/hfvenv >/dev/null 2>&1 || { apt-get install -y -qq python3-venv >/dev/null 2>&1; python3 -m venv /opt/hfvenv; }; /opt/hfvenv/bin/pip install -q huggingface_hub >/dev/null 2>&1; }
+    for sp in ${SB_STAGE//,/ }; do /opt/hfvenv/bin/python "$REPO/research/cloud-gab/hf-sung-bani/open-pr.py" "/home/user/gab/stage/$sp" 2>&1 | tail -2 | tee -a "$OUTD/pr.txt"; done
+    local LAST; LAST=${SB_STAGE##*,}
+    cp -r "/home/user/gab/stage/$LAST/." "$BENCH/"
+  else
+    curl -sS -f -L -H "Authorization: Bearer $HF_TOKEN" -o "$BENCH/manifest.csv" "$R/manifest.csv" || { echo "sungbani: no manifest at $REV"; return 1; }
+  fi
   export VF_BENCHMARK="$BENCH"
   local IDS
-  IDS=$(cd "$TOOLS" && node -e 'const {parseCsv,canonRows}=require("./vf-manifest");const rows=canonRows(parseCsv(require("fs").readFileSync(process.argv[1],"utf8")));console.log(rows.filter(r=>/^yt[a-z0-9]+_Rt1TyWzPykc_/.test(r.id)&&/apaath:/.test(r.suite_jobs||"")).map(r=>r.id+"@"+r.content_folder).join(","))' "$BENCH/manifest.csv")
+  IDS=$(cd "$TOOLS" && node -e 'const {parseCsv,canonRows}=require("./vf-manifest");const rows=canonRows(parseCsv(require("fs").readFileSync(process.argv[1],"utf8")));console.log(rows.filter(r=>new RegExp(process.env.SB_IDRE||"^yt[a-z0-9]+_Rt1TyWzPykc_").test(r.id)&&/apaath:/.test(r.suite_jobs||"")).map(r=>r.id+"@"+r.content_folder).join(","))' "$BENCH/manifest.csv")
   local ONLY=""
   for x in ${IDS//,/ }; do
     local id=${x%@*} f=${x#*@}; ONLY="$ONLY,$id"
@@ -189,7 +199,7 @@ sungbani() {
     grep -qE "replay-only: .* [1-9][0-9]* cache misses" /home/user/gab/sb-fill.log || break
   done
   FSUITES=apaath push_cache
-  local PRE="ytjapji_Rt1TyWzPykc,ytjaap_Rt1TyWzPykc,yttavprasad_Rt1TyWzPykc,ytrehras_Rt1TyWzPykc,ytaarti_Rt1TyWzPykc,ytsalokm9_Rt1TyWzPykc,ytsohila_Rt1TyWzPykc"
+  local PRE="${SB_IDS:-ytjapji_Rt1TyWzPykc,ytjaap_Rt1TyWzPykc,yttavprasad_Rt1TyWzPykc,ytrehras_Rt1TyWzPykc,ytaarti_Rt1TyWzPykc,ytsalokm9_Rt1TyWzPykc,ytsohila_Rt1TyWzPykc}"
   for b in r904 cand906b; do
     VF_MIN_FREE_GB=3 ./gab run $P/$b --set main --tier full --jobs "$NP" --manifest "$BENCH" --folders 3-bani-sung-like-kirtan --ids "$PRE" > /home/user/gab/sb-score-$b.log 2>&1; echo "sungbani score $b exit $?"
     grep -E "^\| \*\*|INCOMPLETE|Not run" /home/user/gab/sb-score-$b.log | cut -c1-260

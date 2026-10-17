@@ -3,9 +3,9 @@ const fs=require('fs'),path=require('path'),{execFileSync}=require('child_proces
 const V=process.env.HOME+'/personal/sb-video/',OUT=V+'out/';const FF='/Users/asingh02/.local/bin/ffmpeg';
 const plan=JSON.parse(fs.readFileSync(V+'plan.json')),tl=JSON.parse(fs.readFileSync(V+'timeline.json')),runs=JSON.parse(fs.readFileSync(V+'runs.json'));
 const matched=JSON.parse(fs.readFileSync(V+'matched.json'));
-const META={japji:{folder:'japji',pre:'ytjapji',bani:'Japji Sahib',id:2,singer:'Bhai Jagjit Singh Ji (Australia)'},jaap:{folder:'jaap',pre:'ytjaap',bani:'Jaap Sahib',id:4,singer:'Bhai Puran Prem Singh Ji'},
- 'tav-prasad-savaiye':{folder:'tav-prasad-savaiye',pre:'yttavprasad',bani:'Tav Prasad Savaiye',id:6,singer:'Bhai Parminder Singh (Australia)'},rehras:{folder:'rehras-sung',pre:'ytrehras',bani:'Rehras Sahib',id:21,singer:'Bhai Gurbir Singh Ji'},
- aarti:{folder:'aarti',pre:'ytaarti',bani:'Aarti',id:22,singer:'Raagi Bhai Bakshish Singh Ji (Patiala)'},'salok-m9':{folder:'salok-m9',pre:'ytsalokm9',bani:'Salok Mahalla 9',id:30,singer:'Raagi Bhai Amrik Singh Zakhmi Ji'},sohila:{folder:'sohila',pre:'ytsohila',bani:'Kirtan Sohila',id:23,singer:'Bhai Parminder Singh (Australia)'}};
+const META={japji:{folder:'japji-sung',pre:'ytjapji',bani:'Japji Sahib',id:2,singer:'Bhai Jagjit Singh Ji (Australia)'},jaap:{folder:'jaap-sung',pre:'ytjaap',bani:'Jaap Sahib',id:4,singer:'Bhai Puran Prem Singh Ji'},
+ 'tav-prasad-savaiye':{folder:'tav-prasad-savaiye-sung',pre:'yttavprasad',bani:'Tav Prasad Savaiye',id:6,singer:'Bhai Parminder Singh (Australia)'},rehras:{folder:'rehras-sung',pre:'ytrehras',bani:'Rehras Sahib',id:21,singer:'Bhai Gurbir Singh Ji'},
+ aarti:{folder:'aarti',pre:'ytaarti',bani:'Aarti',id:22,singer:'Raagi Bhai Bakshish Singh Ji (Patiala)'},'salok-m9':{folder:'saloks-sung',pre:'ytsalokm9',bani:'Salok Mahalla 9',id:30,singer:'Raagi Bhai Amrik Singh Zakhmi Ji'},sohila:{folder:'sohila-sung',pre:'ytsohila',bani:'Kirtan Sohila',id:23,singer:'Bhai Parminder Singh (Australia)'}};
 const r2=(x)=>+x.toFixed(2);const clips=[];
 for(const p of plan){const m=META[p.chapter];const id=`${m.pre}_Rt1TyWzPykc_${Math.round(p.start)}-${Math.round(p.end)}`;const folder=`3-bani-sung-like-kirtan/${m.folder}`;const dir=path.join(OUT,folder,id);fs.mkdirSync(dir,{recursive:true});
   if(!fs.existsSync(dir+'/audio.wav'))execFileSync('nice',['-n','19',FF,'-nostdin','-loglevel','error','-ss',String(p.start),'-t',String(r2(p.end-p.start)),'-i',V+'full16k.wav','-ac','1','-ar','16000','-c:a','pcm_s16le','-y',dir+'/audio.wav']);
