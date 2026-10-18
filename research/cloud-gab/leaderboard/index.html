@@ -21,6 +21,9 @@ body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.4 syste
 .page { max-width: 1140px; margin: 0 auto; padding: 18px 16px; }
 h1 { font-size: 22px; margin: 0 0 4px; }
 .sub { color: var(--muted); font-size: 13px; margin: 0 0 16px; }
+.gabv { font-size: 13px; margin: -4px 0 8px; }
+.gabtag, .oldtag { display: inline-block; font-size: 11px; padding: 0 6px; margin-left: 6px; border-radius: 8px; border: 1px solid var(--muted); color: var(--muted); white-space: nowrap; }
+.oldtag { opacity: .75; border-style: dashed; }
 .box { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; }
 /* the version names get real room, and the timeline column keeps its width, so its line and dots never cross the names */
 td.nm, thead th.vh { min-width: 200px; }
@@ -138,6 +141,7 @@ select { font: inherit; font-size: 13px; color: var(--ink); background: var(--pa
 <body>
 <div class="page">
   <h1>GAB: Gurbani Autopilot Bench</h1>
+  <p class="gabv"><b>GAB v1.5</b> · speech-model output from <b>x86</b> (Intel / AMD PCs, linux-x64), the reference platform · rows marked <span class="oldtag">GAB v1.3</span> were scored on the earlier, smaller set and are not compared with v1.5 rows</p>
   <p class="sub">Each cell: <b>right Shabad</b> (the right Shabad or Bani on screen) and, below it, <b>right pangti</b> (the very pangti being sung or read) · ≈ pangti keys from two-model alignment, spot-checked by a person; otherwise keyed by a person · ▲▼ change vs the version before, shown only beyond noise · tap a version for what went into it</p>
   <div class="box big"><div class="bigbar"><span>Big picture</span><select id="bigsel" aria-label="version shown in the big picture"></select><span class="note">one version across every situation · hours of recordings behind each number · worst 10% = the slowest tenth</span></div><table id="big"></table></div>
   <p class="tools"><b>Every version</b> · right Shabad % per version, oldest at the bottom · <sup class="ps">*</sup> scored on the recordings that replayed; a few more need speech-model output not recorded yet (hover for how many)</p>
@@ -257,7 +261,8 @@ const verOf = (res) => (res.vf_feature_version && kindOf(res) === 'release' ? re
 function nameCell(g, isNow) {
   const res = g.rep; const idea = kindOf(res) === 'experiment';
   const nm = idea ? `Idea: ${esc(String(res.label || res.name).split(' · ')[0])}` : `<span class="sysn">${esc(SYSTEM.latin)} </span>${esc(g.ver)}`;
-  return `<td class="nm"><span class="car">▶</span>${nm}${isNow ? '<span class="pill">in the app now</span>' : ''}</td>`;
+  const tag = res.older_gab ? `<span class="oldtag" title="scored on an earlier GAB version; not compared with GAB v1.5 rows">${esc(res.gab || 'older GAB')}</span>` : `<span class="gabtag" title="scored on ${esc(res.gab || '')} with x86 speech-model output">${esc(res.gab || '')}${res.platform ? ` · ${esc(res.platform)}` : ''}</span>`;
+  return `<td class="nm"><span class="car">▶</span>${nm}${isNow ? '<span class="pill">in the app now</span>' : ''}${tag}</td>`;
 }
 // what went into a version: one line per build, with its chips and any change beyond noise vs the build before it
 function itemsHtml(g) {
@@ -347,6 +352,8 @@ function render() {
     if (b) { PREV.set(x, b); PREV_BUILD.set(x, b); }
     return { ver: null, builds: [x], rep: x };
   });
+  // never show a change between rows of different GAB versions
+  for (const M of [PREV, PREV_BUILD]) for (const [k, v] of [...M]) if (!!k.older_gab !== !!v.older_gab) M.delete(k);
   const nowG = [...groups].reverse().find((g) => kindOf(g.rep) === 'release');
   const rows = [...ideas, ...groups.reverse()];
   const list = rows.map((g) => g.rep);

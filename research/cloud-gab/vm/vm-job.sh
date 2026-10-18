@@ -196,7 +196,10 @@ x86() {
   [ -f $W/kh04-reset ] || { rm -rf "$C/5f9e41d867de-q16-x86/kh04_sttm_desktop_2026_10_08T03_51_10_447Z"; touch $W/kh04-reset; echo "x86: kh04 entry reset"; }
   # record: each FILL build replays every recording; a recording that leaves the cache (no x86 output yet, or a
   # behaviour that asks for new windows) is recorded with the model on this machine, then replayed again
-  for b in ${FILL:-$SCORE}; do
+  # cg-nofill=1 (Oct 18): replay-only, never run the model; a recording without x86 output stays "not run" in the scorecard
+  local NOFILL; NOFILL=$(curl -sf -H Metadata-Flavor:Google http://metadata.google.internal/computeMetadata/v1/instance/attributes/cg-nofill || true)
+  [ -n "$NOFILL" ] && echo "x86: replay-only (no model runs)"
+  for b in $([ -n "$NOFILL" ] || echo ${FILL:-$SCORE}); do
     [ -f $W/filled-$b ] && { echo "x86 fill $b: done earlier"; continue; }
     for round in 1 2 3 4; do
       rm -f $W/fill-$b/replay.json
