@@ -66,6 +66,7 @@ const {
 const { screenTakenByCeremony } = require('./autopilotScreen');
 // Respecting the sevadaar's line moves (tag / adopt / hold), unit-tested in lineRespect.test.js.
 const { createLineRespect, lineOfVerse } = require('./lineRespect');
+const { elapse: pcElapse, addHit: pcAddHit } = require('./panktiCumulation');
 
 // maxLineScore lives in ./switchPolicy (same implementation, unit-tested there)
 // so the benchmarked length-penalty math is shared, not duplicated.
@@ -213,6 +214,86 @@ const SWITCH_CONFIRM = 3; // consecutive winning decodes needed to commit a swit
 // Sohila and in Dhanasari, a Rehras shabad and its SGGS original) searches as an exact
 // tie, and a tie never locks. 1 = while searching, treat such copies as one candidate.
 const DUP_AWARE_LOCK = 1;
+// Pankti Cumulation (panktiCumulation.js): pangtis add up per Shabad, pauses don't reset. A
+// Shabad is a set of pangtis, so each pangti heard ADDS to its Shabad's confidence instead of the
+// search starting over on every pangti: different pangtis count much more than one pangti twice,
+// a neighbouring pangti gets a bonus, a pangti shared by several Shabads counts about nothing, and
+// alaap, held vowels, tabla and silence freeze the evidence clock instead of erasing it.
+//
+// Pankti Cumulation (first find): while searching, the unique full-text leader of each decode is
+// the heard pangti; a Shabad locks once it holds PC_FIND.distinct different pangtis, a total of
+// PC_FIND.lock and PC_FIND.lead times any other Shabad, while it is this decode's top line.
+// Additive: the other search routes are unchanged. 0 = off.
+const PANKTI_CUMULATION_FIND = 0;
+const PC_FIND = {
+  minScore: 0.35,
+  minMargin: 0.05,
+  marginFull: 0.15,
+  repeat: 0.15,
+  neighbour: 0.35,
+  tauS: 90,
+  lock: 1.4,
+  distinct: 2,
+  lead: 1.5,
+  cap: 1.5,
+};
+const PC_QUIET_LETTERS = 8; // a decode with fewer letters heard is a pause (alaap, tabla, silence)
+// 1 = first find: quiet decodes freeze the clock (always on for the switch); 0 = always fade.
+const PC_FIND_FREEZE = 0;
+// 1 = first find never locks a Shabad of Rehras, Sohila, Japji or Aarti: those are read as paath
+// and the paath rules open the whole Bani (held-back Rehras: the first find showed its first
+// Shabad early and 3 s scored wrong). 0 = off.
+const PC_FIND_PAATH_SKIP = 0;
+// Half pangtis (owner: ragis sing the latter half of a pangti, then its opening): also search the
+// last PC_FRAG_PIECES pangti-sized pieces (>= PC_FRAG_LETTERS letters, whole words only) of the
+// window on their own, so a half pangti counts for its pangti, at weight PC_FRAG.w when it scores
+// >= PC_FRAG.minScore with a margin >= PC_FRAG.minMargin. 0 = off.
+const PC_FIND_FRAG = 0;
+const PC_FRAG_PIECES = 3;
+const PC_FRAG_LETTERS = 22;
+const PC_FRAG = { minScore: 0.6, minMargin: 0.1, w: 0.7 };
+// Pankti Cumulation (switch): while following, the pangtis of ANOTHER Shabad add up the same way
+// (pauses always freeze the clock) and the screen switches once that Shabad holds
+// PC_SWITCH.distinct different pangtis, a total of PC_SWITCH.lock and PC_SWITCH.lead times any
+// other Shabad (owner's live test, Oct 16: Shabad 2621 shown 77 s sooner, 0 wrong switches).
+// Each heard line (>= PC_SWITCH_MIN_LETTERS letters) is searched over all Gurbani. Additive: the
+// acoustic switch judge is unchanged. Never while a Bani is followed. 0 = off.
+const PANKTI_CUMULATION_SWITCH = 0;
+const PC_SWITCH_MIN_LETTERS = 10;
+const PC_SWITCH = {
+  minScore: 0.5,
+  minMargin: 0.1,
+  marginFull: 0.2,
+  repeat: 0.15,
+  neighbour: 0.35,
+  tauS: 90,
+  lock: 2.0,
+  distinct: 3,
+  lead: 2,
+  cap: 1.5,
+};
+// Repeated pangti (owner's case: "ਦਰਸ ਤੇਰੇ ਕੀ ਪਿਆਸ ਮਨਿ ਲਾਗੀ", Shabad 1512, one pangti sung again and
+// again between long pauses): Pankti Cumulation (switch) also switches when ONE pangti of another
+// Shabad is heard on PC_REPEAT.times separate occasions (at least PC_REPEAT.gapS apart), each
+// scoring >= PC_REPEAT.minScore with a margin >= PC_REPEAT.minMargin over every other Shabad.
+// 2 times showed 1512 60 s sooner on the owner's test but made 2 wrong switches; 3 made none.
+// 0 = off.
+const PC_SWITCH_REPEAT = 0;
+const PC_REPEAT = { times: 3, gapS: 15, minScore: 0.9, minMargin: 0.15 };
+// Pankti Cumulation (follower), owner's case "ਦਰਸ ਤੇਰੇ ਕੀ ਪਿਆਸ ਮਨਿ ਲਾਗੀ" (ytraji_HQk5QmYtZJA, Shabad 1512:
+// pangti lag p90 7.3 s on 9.0.4). PC_FOLLOW_KEEP = 1: a pause never releases the Shabad
+// follower (9.0.4 wiped its line evidence after ~3.5 s without words, 13 times on that clip, and
+// then needed 4 decodes to pick a line again). PC_FOLLOW_UNIQUE = gap: a half pangti that matches
+// one line clearly better than every other (by >= gap) moves the line after 1 decode, even back
+// to the rahao. Shabads only (kirtan, Akhand Paath); the paath follower is untouched. 0 = off.
+const PC_FOLLOW_KEEP = 0;
+const PC_FOLLOW_UNIQUE = 0;
+// Shared-pangti hold in the existing switch judge (owner's live test: a pangti shared by several
+// Shabads flipped the screen 6 times): a switch or return WIN counts only when the heard line,
+// searched over all Gurbani, puts that Shabad on top by >= PC_SHARED_HOLD_MARGIN; a shared line
+// holds the count (no win, no loss). 0 = off.
+const PANKTI_SHARED_HOLD = 0;
+const PC_SHARED_HOLD_MARGIN = 0.05;
 // Mool Mantar home (ported from cycle 12): the Mool Mantar begins dozens of shabads, so
 // it ties exactly and never locks, leaving nothing on screen. After this many distinct
 // heard fragments that tie between Japji's Mool Mantar and other shabads, show Japji's
@@ -1029,6 +1110,7 @@ const VoiceFollow = () => {
   const [status, setStatus] = useState('idle'); // idle|connecting|listening|detecting|error|stopped
   const [autopilot] = useState(true); // hands-free: detect + follow + auto-switch, one press
   const vetoRef = useRef(null); // { id, left }: shabad a tap just left, and judged decodes remaining
+  const kfSwitchRef = useRef({ cur: null, session: null, store: new Map(), last: '' }); // PANKTI_CUMULATION_SWITCH
   const baniLengthRef = useRef('short');
   baniLengthRef.current = baniLength;
   // The user's own length (what they chose), even while Rehras has it raised (by this run,
@@ -2282,6 +2364,8 @@ const VoiceFollow = () => {
                 })
               : await engine.createFollower(profile.verses, {
                   inputSr: sampleRateRef.current,
+                  ...(PC_FOLLOW_KEEP > 0 ? { release: 0 } : {}),
+                  ...(PC_FOLLOW_UNIQUE > 0 ? { uniqueGap: PC_FOLLOW_UNIQUE } : {}),
                 });
         } catch (e) {
           if (session !== sessionRef.current) return;
@@ -2617,6 +2701,14 @@ const VoiceFollow = () => {
         const { step } = memory;
         memory.entries = memory.entries.filter((e) => step - e.step <= 24);
         const hyp = vfNorm(text);
+        // Pankti Cumulation clock: sung decodes fade the evidence, quiet ones (alaap, tabla) may freeze it
+        if (PANKTI_CUMULATION_FIND > 0 && memory.kf)
+          pcElapse(
+            memory.kf,
+            AP_REC_HOP_S,
+            PC_FIND_FREEZE > 0 && hyp.length < PC_QUIET_LETTERS,
+            PC_FIND,
+          );
         if (hyp.length >= 8) {
           const acousticRecognizer = recognizerRef.current;
           const acousticPcm = acousticRecognizer?.buf;
@@ -2801,6 +2893,82 @@ const VoiceFollow = () => {
                 return;
             }
           }
+          if (PANKTI_CUMULATION_FIND > 0 && top && hyp !== memory.kfHyp) {
+            memory.kfHyp = hyp;
+            if (!memory.kf) memory.kf = new Map();
+            const ev = pcAddHit(
+              memory.kf,
+              { shabadId: top.shabadId, verseId: top.verseId, score: top.score, margin },
+              PC_FIND,
+            );
+            let lockId = ev && ev.ready ? top.shabadId : null;
+            let lockVerse = top.verseId;
+            if (PC_FIND_FRAG > 0 && lockId == null) {
+              const words = String(text || '')
+                .trim()
+                .split(/\s+/);
+              const pieces = [];
+              let cur = [];
+              for (let i = words.length - 1; i >= 0 && pieces.length < PC_FRAG_PIECES; i -= 1) {
+                cur.unshift(words[i]); // whole words only
+                if (vfNorm(cur.join(' ')).length >= PC_FRAG_LETTERS) {
+                  pieces.push(cur.join(' '));
+                  cur = [];
+                }
+              }
+              for (let i = 0; i < pieces.length && lockId == null; i += 1) {
+                // eslint-disable-next-line no-await-in-loop
+                let fl = await searchCanonicalText(pieces[i], 3 + DUP_AWARE_LOCK, request.signal);
+                // eslint-disable-next-line no-await-in-loop
+                if (DUP_AWARE_LOCK && fl) fl = await distinctLeaders(fl, 2);
+                if (stale()) return;
+                const f0 = fl?.[0];
+                const fe =
+                  f0 &&
+                  pcAddHit(
+                    memory.kf,
+                    {
+                      shabadId: f0.shabadId,
+                      verseId: f0.verseId,
+                      score: f0.score,
+                      margin: f0.score - (fl[1]?.score || 0),
+                      w: PC_FRAG.w,
+                    },
+                    { ...PC_FIND, minScore: PC_FRAG.minScore, minMargin: PC_FRAG.minMargin },
+                  );
+                if (fe && fe.ready) {
+                  lockId = f0.shabadId;
+                  lockVerse = f0.verseId;
+                }
+              }
+            }
+            if (
+              lockId != null &&
+              PC_FIND_PAATH_SKIP > 0 &&
+              poolIndex &&
+              (poolIndex.byShabad.get(lockId) || []).some((x) => PAATH_READ_BANIS.includes(x.bani))
+            )
+              lockId = null;
+            if (lockId != null) {
+              let profile;
+              try {
+                profile = await loadShabadProfile(lockId);
+              } catch (_) {
+                return;
+              }
+              if (stale()) return;
+              const at = profile.verses.findIndex((v) => v.verseId === lockVerse);
+              if (at >= 0) {
+                memory.kf = null;
+                autopilotLock({
+                  shabadId: lockId,
+                  verseId: lockVerse,
+                  verse: profile.displayLines[at],
+                });
+                return;
+              }
+            }
+          }
           if (top) {
             if (!memory.entries.some((e) => e.hyp === hyp)) {
               memory.entries.push({
@@ -2919,6 +3087,85 @@ const VoiceFollow = () => {
           }
         }
       } else contextEvidenceRef.current = null;
+      if (
+        PANKTI_CUMULATION_SWITCH > 0 &&
+        autopilotRef.current &&
+        phaseRef.current === 'following' &&
+        !lockingRef.current
+      ) {
+        const curId = currentShabadIdRef.current;
+        if (kfSwitchRef.current.cur !== curId || kfSwitchRef.current.session !== session)
+          kfSwitchRef.current = { cur: curId, session, store: new Map(), last: '', rep: new Map() };
+        const ks = kfSwitchRef.current;
+        const kfHeard = vfNorm(text);
+        if (curId != null && baniIdOf(curId) == null) {
+          pcElapse(ks.store, AP_REC_HOP_S, kfHeard.length < PC_QUIET_LETTERS, PC_SWITCH);
+          if (kfHeard.length >= PC_SWITCH_MIN_LETTERS && kfHeard !== ks.last) {
+            ks.last = kfHeard;
+            const ctl = new AbortController();
+            let found = await searchCanonicalText(text, 4, ctl.signal);
+            if (found && DUP_AWARE_LOCK) found = await distinctLeaders(found, 2);
+            const kfStale = () =>
+              session !== sessionRef.current ||
+              !recognizingRef.current ||
+              phaseRef.current !== 'following' ||
+              lockingRef.current ||
+              kfSwitchRef.current !== ks ||
+              currentShabadIdRef.current !== curId;
+            if (kfStale()) return;
+            const k0 = found?.[0];
+            const vetoed = vetoRef.current && vetoRef.current.id === k0?.shabadId;
+            const same = k0 && (k0.shabadId === curId || (await isSameGurbani(k0.shabadId, curId)));
+            if (kfStale()) return;
+            if (k0 && !same && !vetoed) {
+              const ev = pcAddHit(
+                ks.store,
+                {
+                  shabadId: k0.shabadId,
+                  verseId: k0.verseId,
+                  score: k0.score,
+                  margin: k0.score - (found[1]?.score || 0),
+                },
+                PC_SWITCH,
+              );
+              let repeated = false;
+              const kfMargin = k0.score - (found[1]?.score || 0);
+              if (
+                PC_SWITCH_REPEAT > 0 &&
+                k0.score >= PC_REPEAT.minScore &&
+                kfMargin >= PC_REPEAT.minMargin
+              ) {
+                const key = `${k0.shabadId}:${k0.verseId}`;
+                const now = Date.now() / 1000;
+                const r = ks.rep.get(key) || { n: 0, last: -Infinity };
+                if (now - r.last >= PC_REPEAT.gapS) r.n += 1;
+                r.last = now;
+                ks.rep.set(key, r);
+                repeated = r.n >= PC_REPEAT.times;
+              }
+              if ((ev && ev.ready) || repeated) {
+                let profile;
+                try {
+                  profile = await loadShabadProfile(k0.shabadId);
+                } catch (_) {
+                  profile = null;
+                }
+                if (kfStale()) return;
+                const at = profile ? profile.verses.findIndex((v) => v.verseId === k0.verseId) : -1;
+                if (at >= 0) {
+                  if (SHADOW_BUILD) diag(`vf pankti cumulation switch -> ${k0.shabadId}`);
+                  autopilotLock({
+                    shabadId: k0.shabadId,
+                    verseId: k0.verseId,
+                    verse: profile.displayLines[at],
+                  });
+                  return;
+                }
+              }
+            }
+          }
+        }
+      }
       // Search uses ASCII-font first letters (the DB's FirstLetterStr encoding).
       // The recognizer's unverified text is never a display or canonical source.
       const fl = toAsciiFirstLetters(text);
@@ -3226,6 +3473,16 @@ const VoiceFollow = () => {
           hypLen: hypFull.length,
           hypMin: SWITCH_HYP_MIN,
         };
+        let kfFlipTop = null; // PANKTI_SHARED_HOLD: { id, margin } of the heard line over all Gurbani
+        if (PANKTI_SHARED_HOLD > 0) {
+          const ctl = new AbortController();
+          let fl0 = await searchCanonicalText(text, 4, ctl.signal);
+          if (fl0 && DUP_AWARE_LOCK) fl0 = await distinctLeaders(fl0, 2);
+          if (!isCurrentTranscript() || lockingRef.current) return;
+          kfFlipTop = fl0?.[0]
+            ? { id: fl0[0].shabadId, margin: fl0[0].score - (fl0[1]?.score || 0) }
+            : { id: null, margin: 0 };
+        }
         const stepSlot = (slot, sCand) => {
           // Suppress confirmation only for identities in the tied leader set.
           const vetoed =
@@ -3239,6 +3496,17 @@ const VoiceFollow = () => {
             return false;
           }
           const step = nextSwitchWins(slot.wins, sCand, sCurFull, acousticCfg);
+          if (
+            kfFlipTop &&
+            step.wins > slot.wins &&
+            !(
+              (kfFlipTop.id === slot.shabadId || knownSame(kfFlipTop.id, slot.shabadId)) &&
+              kfFlipTop.margin >= PC_SHARED_HOLD_MARGIN
+            )
+          ) {
+            slot.lastScore = sCand; // eslint-disable-line no-param-reassign
+            return slot.wins >= SWITCH_CONFIRM; // a shared line: hold the count
+          }
           slot.wins = step.wins; // eslint-disable-line no-param-reassign
           // Held decodes judged nothing — keep showing the last judged score.
           if (!step.held) slot.lastScore = sCand; // eslint-disable-line no-param-reassign
@@ -3419,7 +3687,15 @@ const VoiceFollow = () => {
               const m = bestLineMatch(hypFull, prev.profile.linesNorm, SWITCH_CAND_MIN_LINE_CHARS);
               if (m.index >= 0) {
                 const step = nextSwitchWins(rs.wins, m.s, sCurFull, acousticCfg);
-                rs.wins = step.wins;
+                const kfShared =
+                  kfFlipTop &&
+                  baniIdOf(prev.id) == null &&
+                  step.wins > rs.wins &&
+                  !(
+                    (kfFlipTop.id === prev.id || knownSame(kfFlipTop.id, prev.id)) &&
+                    kfFlipTop.margin >= PC_SHARED_HOLD_MARGIN
+                  );
+                if (!kfShared) rs.wins = step.wins;
                 if (!step.held) {
                   rs.lastScore = m.s;
                   rs.index = m.index;

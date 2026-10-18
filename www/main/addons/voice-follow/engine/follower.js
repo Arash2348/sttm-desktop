@@ -19,6 +19,11 @@ const DEFAULTS = {
   // A fragment shorter than this (normalized chars) cannot move the cursor anywhere
   // but the next line: one common word is not evidence of a jump. 0 disables.
   minHypJump: 8,
+  // Pankti Cumulation (follower): a pangti that the heard words match clearly better than every
+  // other line of the Shabad (partial-ratio gap >= uniqueGap, match >= uniqueMin) moves the line
+  // after uniqueDwell decodes even across a jump (a half pangti of the rahao sung after a pause).
+  // 0 = off (the jump keeps needing `dwell` decodes).
+  uniqueGap: 0, uniqueMin: 0.8, uniqueDwell: 1,
   // Decodes a 2..skipSpan-line skip must persist (default: same as dwellAdv).
   dwellSkip: null,
 };
@@ -257,6 +262,11 @@ class Follower {
       else if (d >= 2 && d <= c.skipSpan) need = c.dwellSkip == null ? c.dwellAdv : c.dwellSkip;
       else if (d >= -c.backSpan && d <= -1) need = c.dwellBack;
       else need = c.dwell;
+      if (c.uniqueGap > 0 && emis[top] >= c.uniqueMin) {
+        let second = 0;
+        for (let l = 0; l < emis.length; l++) if (l !== top && emis[l] > second) second = emis[l];
+        if (emis[top] - second >= c.uniqueGap) need = Math.min(need, c.uniqueDwell);
+      }
       const evid = d === 1 || ((c.jumpEmisGap <= 0 || emis[top] - emis[this.cur] >= c.jumpEmisGap) && hyp.length >= c.minHypJump);
       if (evid && this.dwell >= need && this.score[top] >= this.score[this.cur] + c.margin) {
         this.cur = top; this.challenger = null; this.dwell = 0;
