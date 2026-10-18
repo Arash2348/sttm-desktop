@@ -295,7 +295,7 @@ quick() {
     r.pull({root:"/root/personal/live-darbar-venues/cache",model:"5f9e41d867de",codec:"q16-x86",clips:jobs.map(j=>({id:j.id,wav:j.wav})),log:()=>{}}).then(x=>console.log("q: pulled",x.pulled,"q16-x86 entries"));' $W/jobs.json
   node "$REPO/research/cloud-gab/results-sync.js" pull | tail -1
   for b in ${SCORE:-}; do
-    node vf-check.js --base $P/$b --cand $P/$b --suites "$SUITES_L" --only "$ONLY_L" --no-pull --replay-only --jobs $(( NP - 2 )) --out $W/fill-$b > $W/fill-$b.log 2>&1; echo "q replay $b exit $? ($(( ($(date +%s) - t0) / 60 )) min)"
+    node vf-check.js --base $P/$b --cand $P/$b --suites "$SUITES_L" --only "$ONLY_L" --fill --no-pull --replay-only --jobs $(( NP - 2 )) --out $W/fill-$b > $W/fill-$b.log 2>&1; echo "q replay $b exit $? ($(( ($(date +%s) - t0) / 60 )) min)"
     grep -E "REFUSED|went past|replay-only:" $W/fill-$b.log | cut -c1-300
     for sp in dev test; do for t in main akhand hard; do
       VF_MIN_FREE_GB=3 ./gab run $P/$b --set $t --tier full --jobs $(( NP - 2 )) --manifest hf --split $sp --ids "$IDS_L" --out $W/run-$b-$t-$sp > $W/score-$b-$t-$sp.log 2>&1; echo "q score $b $t $sp exit $?"
