@@ -185,6 +185,16 @@ class Follower {
     return argmax(nw);
   }
 
+  // Pankti Cumulation (follower): the heard words match line `top` clearly better than every other
+  // line of the Shabad (uniqueGap > 0 turns it on).
+  _unique(emis, top) {
+    const c = this.c;
+    if (!(c.uniqueGap > 0) || emis[top] < c.uniqueMin) return false;
+    let second = 0;
+    for (let l = 0; l < emis.length; l++) if (l !== top && emis[l] > second) second = emis[l];
+    return emis[top] - second >= c.uniqueGap;
+  }
+
   _freeze() {
     this.miss += 1;
     this.initCand = null; this.initCount = 0;
@@ -249,7 +259,7 @@ class Follower {
     if (this.cur === null) {
       if (top === this.initCand) this.initCount += 1;
       else { this.initCand = top; this.initCount = 1; }
-      if (this.initCount >= c.initConfirm) { this.cur = top; this.initCand = null; this.initCount = 0; }
+      if (this.initCount >= (this._unique(emis, top) ? Math.min(c.initConfirm, c.uniqueDwell) : c.initConfirm)) { this.cur = top; this.initCand = null; this.initCount = 0; }
       else return null;
     } else if (top === this.cur) {
       this.challenger = null; this.dwell = 0;
@@ -262,13 +272,11 @@ class Follower {
       else if (d >= 2 && d <= c.skipSpan) need = c.dwellSkip == null ? c.dwellAdv : c.dwellSkip;
       else if (d >= -c.backSpan && d <= -1) need = c.dwellBack;
       else need = c.dwell;
-      if (c.uniqueGap > 0 && emis[top] >= c.uniqueMin) {
-        let second = 0;
-        for (let l = 0; l < emis.length; l++) if (l !== top && emis[l] > second) second = emis[l];
-        if (emis[top] - second >= c.uniqueGap) need = Math.min(need, c.uniqueDwell);
-      }
+      const uniq = this._unique(emis, top);
+      if (uniq) need = Math.min(need, c.uniqueDwell);
       const evid = d === 1 || ((c.jumpEmisGap <= 0 || emis[top] - emis[this.cur] >= c.jumpEmisGap) && hyp.length >= c.minHypJump);
-      if (evid && this.dwell >= need && this.score[top] >= this.score[this.cur] + c.margin) {
+      // a unique half pangti is enough evidence by itself: the line prior (jump cost) does not hold it back
+      if (evid && this.dwell >= need && (uniq || this.score[top] >= this.score[this.cur] + c.margin)) {
         this.cur = top; this.challenger = null; this.dwell = 0;
       }
     }
