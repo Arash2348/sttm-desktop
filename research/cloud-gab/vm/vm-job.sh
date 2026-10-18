@@ -275,7 +275,10 @@ sess() {
   export VF_EMIS_CODEC=q16-x86 VF_RECORD_JOBS="${VF_RECORD_JOBS:-10}" VF_REPLAY_MAX="${VF_REPLAY_MAX:-$(( NP - 2 ))}"
   local BENCH=/home/user/gab/sess-bench O=/home/user/gab/sess-out
   mkdir -p "$BENCH" "$O"
-  node "$REPO/research/cloud-gab/results-sync.js" pull --prefix sung-bani-data/owner-live-20261017 --dir "$BENCH" | tail -1
+  # which staged owner session: metadata cg-sess-prefix (default: the Oct 17 session)
+  local SP="${SESS_PREFIX:-$(curl -sf -H Metadata-Flavor:Google http://metadata.google.internal/computeMetadata/v1/instance/attributes/cg-sess-prefix || true)}"
+  SP="${SP:-owner-live-20261017}"
+  node "$REPO/research/cloud-gab/results-sync.js" pull --prefix "sung-bani-data/$SP" --dir "$BENCH" | tail -1
   export VF_BENCHMARK="$BENCH"
   cd "$TOOLS"
   local ONLY
