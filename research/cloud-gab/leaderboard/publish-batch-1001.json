@@ -1,0 +1,23 @@
+[
+ {
+  "main": "research/cloud-gab/leaderboard/cards-v15/r904/main-dev.json",
+  "hard": "research/cloud-gab/leaderboard/cards-v15/r904/hard-dev.json",
+  "akhand": "research/cloud-gab/leaderboard/cards-v15/r904/akhand-dev.json",
+  "name": "9.0.4",
+  "status": "merged",
+  "order": 8.5,
+  "platform": "x86",
+  "note": "Re-scored on GAB v1.5 (dataset PRs through #19) with x86 speech-model output."
+ },
+ {
+  "main": "research/cloud-gab/leaderboard/cards-v15/v1001/main-dev.json",
+  "hard": "research/cloud-gab/leaderboard/cards-v15/v1001/hard-dev.json",
+  "akhand": "research/cloud-gab/leaderboard/cards-v15/v1001/akhand-dev.json",
+  "name": "10.0.1 \u2014 Pankti Cumulation",
+  "status": "candidate",
+  "base": "28025260",
+  "order": 9,
+  "platform": "x86",
+  "note": "9.0.4 + Pankti Cumulation switch + end-of-Aarti exit + new panel. Practice and held-back vs 9.0.4: nothing worse on any track; Sung Bani right Bani 91.7 -> 92.2 (Aarti 85.7 -> 86.8), wrong Shabad lower in Kirtan and Sung Bani."
+ }
+]
