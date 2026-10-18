@@ -253,7 +253,13 @@ class Follower {
     }
 
     this.miss = 0;
-    const top = this._viterbi(emis);
+    let top = this._viterbi(emis);
+    if (this.c.uniqueGap > 0) {
+      // a half pangti heard clearly for one line wins over the line prior (Pankti Cumulation)
+      let eTop = 0;
+      for (let l = 1; l < emis.length; l++) if (emis[l] > emis[eTop]) eTop = l;
+      if (eTop !== top && this._unique(emis, eTop)) top = eTop;
+    }
     if (c.onTrace) c.onTrace({ hyp, top, cur: this.cur, emisTop: emis[top], emisCur: this.cur == null ? null : emis[this.cur], scoreTop: this.score[top], scoreCur: this.cur == null ? null : this.score[this.cur], dwell: this.dwell, challenger: this.challenger });
 
     if (this.cur === null) {
