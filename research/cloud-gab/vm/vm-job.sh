@@ -266,6 +266,38 @@ kirnew() {
   node "$REPO/research/cloud-gab/results-sync.js" push --prefix "bench-results/kirnew/$JOB" --dir "$O" --skip '^run-' --overwrite | tail -1
   echo "kirnew done"
 }
+# Owner live session (Oct 17, 2026-10-17T03-12-41-944Z) offline: the session cut into 30-min pieces with the live
+# screen as truth (staged in Azure sung-bani-data/owner-live-20261017, not in GAB); x86 output (q16-x86); r904 + SESS_BUILDS
+sess() {
+  export VF_EMIS_CODEC=q16-x86 VF_RECORD_JOBS="${VF_RECORD_JOBS:-10}" VF_REPLAY_MAX="${VF_REPLAY_MAX:-$(( NP - 2 ))}"
+  local BENCH=/home/user/gab/sess-bench O=/home/user/gab/sess-out
+  mkdir -p "$BENCH" "$O"
+  node "$REPO/research/cloud-gab/results-sync.js" pull --prefix sung-bani-data/owner-live-20261017 --dir "$BENCH" | tail -1
+  export VF_BENCHMARK="$BENCH"
+  cd "$TOOLS"
+  local ONLY
+  ONLY=$(node -e 'const {parseCsv,canonRows}=require("./vf-manifest");const rows=canonRows(parseCsv(require("fs").readFileSync(process.argv[1],"utf8")));console.log(rows.filter(r=>/^owner_live_/.test(r.id)).map(r=>r.id).join(","))' "$BENCH/manifest.csv")
+  echo "sess: $ONLY"
+  node "$REPO/research/cloud-gab/results-sync.js" pull | tail -1
+  for b in r904 ${SESS_BUILDS:-}; do
+    for round in 1 2 3 4; do
+      node vf-check.js --base $P/$b --cand $P/$b --suites apaath --only "$ONLY" --fill --no-pull --replay-only --jobs $(( NP - 2 )) --out /home/user/gab/sess-fill-$b > /home/user/gab/sess-fill-$b.log 2>&1; echo "sess fill $b round $round exit $?"
+      grep -E "REFUSED|went past|replay-only:" /home/user/gab/sess-fill-$b.log | cut -c1-200
+      grep -qE "replay-only: .* [1-9][0-9]* cache misses" /home/user/gab/sess-fill-$b.log || break
+    done
+    VF_MIN_FREE_GB=3 ./gab run $P/$b --set main --tier full --jobs $(( NP - 2 )) --manifest "$BENCH" --folders 1-kirtan-shabad --ids "$ONLY" --out "$O/run-$b" > /home/user/gab/sess-score-$b.log 2>&1; echo "sess score $b exit $?"
+    grep -E "^\| \*\*Kirtan|INCOMPLETE|Not run" /home/user/gab/sess-score-$b.log | cut -c1-240
+    mkdir -p "$O/cards/$b"; cp "$O/run-$b/scorecard.json" "$O/cards/$b/dev.json" 2>/dev/null
+    mkdir -p "$O/trace-$b"; find "$O/run-$b" -name '*.events.jsonl' -exec cp {} "$O/trace-$b/" \; 2>/dev/null
+  done
+  node -e '
+    const r=require("./remote-cache");const {SUITES}=require("./vf-suites");const ids=new Set(process.argv[1].split(","));
+    const clips=SUITES.apaath.jobs().filter(j=>ids.has(j.clip)||ids.has(j.id)).map(j=>({id:j.id,wav:j.wav}));
+    r.push({root:"/root/personal/live-darbar-venues/cache",model:"5f9e41d867de",codec:"q16-x86",clips,commit:"cloud-gab owner session",log:()=>{}}).then(x=>console.log("sess: pushed",x.pushed,"q16-x86 entries"));' "$ONLY"
+  node "$REPO/research/cloud-gab/results-sync.js" push | tail -1
+  node "$REPO/research/cloud-gab/results-sync.js" push --prefix "bench-results/r907-sess/$JOB" --dir "$O" --skip '^run-' --overwrite | tail -1
+  echo "sess done"
+}
 lines() {
   cd "$REPO/research/cloud-gab/lines"
   local J=$(( (NP - 4) / 2 )); [ $J -lt 2 ] && J=2
@@ -283,6 +315,7 @@ case "$JOB" in
   apaath*) apaath ;;
   score*) score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
   test*) test_split ;;
+  x86-sess*) SESS_BUILDS="${SESS_BUILDS:-$(curl -sf -H Metadata-Flavor:Google http://metadata.google.internal/computeMetadata/v1/instance/attributes/cg-sess || true)}" sess ;;
   x86-kirnew*) kirnew ;;
   x86-both*) kirnew; unset VF_BENCHMARK; cd "$REPO"; x86 ;;
   x86*) x86 ;;
