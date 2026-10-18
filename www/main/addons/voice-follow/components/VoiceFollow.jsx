@@ -230,7 +230,7 @@ const DUP_AWARE_LOCK = 1;
 // the heard pangti; a Shabad locks once it holds PC_FIND.distinct different pangtis, a total of
 // PC_FIND.lock and PC_FIND.lead times any other Shabad, while it is this decode's top line.
 // Additive: the other search routes are unchanged. 0 = off.
-const PANKTI_CUMULATION_FIND = 0;
+const PANKTI_CUMULATION_FIND = 1;
 const PC_FIND = {
   minScore: 0.35,
   minMargin: 0.05,
@@ -249,7 +249,7 @@ const PC_FIND_FREEZE = 0;
 // 1 = first find never locks a Shabad of Rehras, Sohila, Japji or Aarti: those are read as paath
 // and the paath rules open the whole Bani (held-back Rehras: the first find showed its first
 // Shabad early and 3 s scored wrong). 0 = off.
-const PC_FIND_PAATH_SKIP = 0;
+const PC_FIND_PAATH_SKIP = 1;
 // Half pangtis (owner: ragis sing the latter half of a pangti, then its opening): also search the
 // last PC_FRAG_PIECES pangti-sized pieces (>= PC_FRAG_LETTERS letters, whole words only) of the
 // window on their own, so a half pangti counts for its pangti, at weight PC_FRAG.w when it scores
@@ -264,7 +264,7 @@ const PC_FRAG = { minScore: 0.6, minMargin: 0.1, w: 0.7 };
 // other Shabad (owner's live test, Oct 16: Shabad 2621 shown 77 s sooner, 0 wrong switches).
 // Each heard line (>= PC_SWITCH_MIN_LETTERS letters) is searched over all Gurbani. Additive: the
 // acoustic switch judge is unchanged. Never while a Bani is followed. 0 = off.
-const PANKTI_CUMULATION_SWITCH = 0;
+const PANKTI_CUMULATION_SWITCH = 1;
 const PC_SWITCH_MIN_LETTERS = 10;
 const PC_SWITCH = {
   minScore: 0.5,
@@ -292,8 +292,8 @@ const PC_REPEAT = { times: 3, gapS: 15, minScore: 0.9, minMargin: 0.15 };
 // then needed 4 decodes to pick a line again). PC_FOLLOW_UNIQUE = gap: a half pangti that matches
 // one line clearly better than every other (by >= gap) moves the line after 1 decode, even back
 // to the rahao. Shabads only (kirtan, Akhand Paath); the paath follower is untouched. 0 = off.
-const PC_FOLLOW_KEEP = 0;
-const PC_FOLLOW_UNIQUE = 0;
+const PC_FOLLOW_KEEP = 1;
+const PC_FOLLOW_UNIQUE = 0.25;
 // Shared-pangti hold in the existing switch judge (owner's live test: a pangti shared by several
 // Shabads flipped the screen 6 times): a switch or return WIN counts only when the heard line,
 // searched over all Gurbani, puts that Shabad on top by >= PC_SHARED_HOLD_MARGIN; a shared line
@@ -4905,40 +4905,40 @@ const VoiceFollow = () => {
           {dlBar}
 
           <FlipScope className="vf2-flip">
-          <section
-            key={beat}
-            data-flip-id={currentView ? currentView.id : 'finding'}
-            className={`vf2-now${currentView ? ' is-following' : ' is-searching'}${
-              boardCur ? ` lvl-${pctLevel(boardCur.pct)}` : ''
-            }${beat ? ' is-beat' : ''}`}
-            style={boardCur ? pctVars(boardCur.pct) : undefined}
-          >
-            <div className="vf2-label" aria-live="polite">
-              <span className={`vf2-dot ${currentView ? 'is-on' : 'is-seeking'}`} />
-              <span className="vf2-label-text">{currentView ? currentLabel : 'Finding'}</span>
-              {boardCur && <LivePct value={boardCur.pct} />}
-            </div>
-            <div
-              className={`vf2-line${lineExpanded ? ' is-expanded' : ''}`}
-              key={liveLine || 'none'}
-              role="button"
-              tabIndex={0}
-              title={lineExpanded ? 'Click to show on one line' : 'Click to show the full line'}
-              onClick={() => setLineExpanded((v) => !v)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') setLineExpanded((v) => !v);
-              }}
+            <section
+              key={beat}
+              data-flip-id={currentView ? currentView.id : 'finding'}
+              className={`vf2-now${currentView ? ' is-following' : ' is-searching'}${
+                boardCur ? ` lvl-${pctLevel(boardCur.pct)}` : ''
+              }${beat ? ' is-beat' : ''}`}
+              style={boardCur ? pctVars(boardCur.pct) : undefined}
             >
-              {liveLine ? <Gurmukhi text={liveLine} /> : i18n.t('VOICE_FOLLOW.LISTENING')}
-            </div>
-            {/* The next pangti (marked by a thin grey bar) and Stop share one row, so Stop
+              <div className="vf2-label" aria-live="polite">
+                <span className={`vf2-dot ${currentView ? 'is-on' : 'is-seeking'}`} />
+                <span className="vf2-label-text">{currentView ? currentLabel : 'Finding'}</span>
+                {boardCur && <LivePct value={boardCur.pct} />}
+              </div>
+              <div
+                className={`vf2-line${lineExpanded ? ' is-expanded' : ''}`}
+                key={liveLine || 'none'}
+                role="button"
+                tabIndex={0}
+                title={lineExpanded ? 'Click to show on one line' : 'Click to show the full line'}
+                onClick={() => setLineExpanded((v) => !v)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') setLineExpanded((v) => !v);
+                }}
+              >
+                {liveLine ? <Gurmukhi text={liveLine} /> : i18n.t('VOICE_FOLLOW.LISTENING')}
+              </div>
+              {/* The next pangti (marked by a thin grey bar) and Stop share one row, so Stop
                 sits near the top of the panel without adding a line. */}
-            <div className="vf2-next-row">
-              {nextRow}
-              {stopButton}
-            </div>
-            {boardCur && <LiveBar value={boardCur.pct} />}
-          </section>
+              <div className="vf2-next-row">
+                {nextRow}
+                {stopButton}
+              </div>
+              {boardCur && <LiveBar value={boardCur.pct} />}
+            </section>
 
             {changing && (
               <section
@@ -5012,7 +5012,9 @@ const VoiceFollow = () => {
                     type="button"
                     className={`vf2-switch${i === 0 ? ' is-primary' : ''}`}
                     onClick={() => pickCandidate({ ...c, pos: i })}
-                    title={i18n.t(currentView ? 'VOICE_FOLLOW.SWITCH_TIP' : 'VOICE_FOLLOW.OPEN_TIP')}
+                    title={i18n.t(
+                      currentView ? 'VOICE_FOLLOW.SWITCH_TIP' : 'VOICE_FOLLOW.OPEN_TIP',
+                    )}
                   >
                     {i18n.t(currentView ? 'VOICE_FOLLOW.SWITCH' : 'VOICE_FOLLOW.OPEN')}
                   </button>

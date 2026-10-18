@@ -10,6 +10,7 @@ const {
   bestLineMatch,
   orderFreeLineScore,
   sameGurbani,
+  switchConfirmNeeded,
 } = require('./switchPolicy');
 // Shipped tuning, read from VoiceFollow.jsx so tests track the app's config.
 const { CFG, CONFIRM, HOLD } = require('./switchPolicy.config');
@@ -287,7 +288,6 @@ describe('sameGurbani', () => {
 });
 
 describe('switchConfirmNeeded (BANI_END_EXIT)', () => {
-  const { switchConfirmNeeded } = require('./switchPolicy');
   const base = { isBani: true, cursor: 229, nLines: 230, decisive: true };
   it('is off at 0: the confirm count is unchanged', () => {
     assert.equal(switchConfirmNeeded(base, 0, 3), 3);

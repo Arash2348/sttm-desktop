@@ -23,7 +23,9 @@ const DEFAULTS = {
   // other line of the Shabad (partial-ratio gap >= uniqueGap, match >= uniqueMin) moves the line
   // after uniqueDwell decodes even across a jump (a half pangti of the rahao sung after a pause).
   // 0 = off (the jump keeps needing `dwell` decodes).
-  uniqueGap: 0, uniqueMin: 0.8, uniqueDwell: 1,
+  uniqueGap: 0,
+  uniqueMin: 0.8,
+  uniqueDwell: 1,
   // Decodes a 2..skipSpan-line skip must persist (default: same as dwellAdv).
   dwellSkip: null,
 };
