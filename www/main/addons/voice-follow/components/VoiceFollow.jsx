@@ -230,7 +230,7 @@ const DUP_AWARE_LOCK = 1;
 // the heard pangti; a Shabad locks once it holds PC_FIND.distinct different pangtis, a total of
 // PC_FIND.lock and PC_FIND.lead times any other Shabad, while it is this decode's top line.
 // Additive: the other search routes are unchanged. 0 = off.
-const PANKTI_CUMULATION_FIND = 1;
+const PANKTI_CUMULATION_FIND = 0;
 const PC_FIND = {
   minScore: 0.35,
   minMargin: 0.05,
@@ -249,7 +249,7 @@ const PC_FIND_FREEZE = 0;
 // 1 = first find never locks a Shabad of Rehras, Sohila, Japji or Aarti: those are read as paath
 // and the paath rules open the whole Bani (held-back Rehras: the first find showed its first
 // Shabad early and 3 s scored wrong). 0 = off.
-const PC_FIND_PAATH_SKIP = 1;
+const PC_FIND_PAATH_SKIP = 0;
 // Half pangtis (owner: ragis sing the latter half of a pangti, then its opening): also search the
 // last PC_FRAG_PIECES pangti-sized pieces (>= PC_FRAG_LETTERS letters, whole words only) of the
 // window on their own, so a half pangti counts for its pangti, at weight PC_FRAG.w when it scores
@@ -292,8 +292,8 @@ const PC_REPEAT = { times: 3, gapS: 15, minScore: 0.9, minMargin: 0.15 };
 // then needed 4 decodes to pick a line again). PC_FOLLOW_UNIQUE = gap: a half pangti that matches
 // one line clearly better than every other (by >= gap) moves the line after 1 decode, even back
 // to the rahao. Shabads only (kirtan, Akhand Paath); the paath follower is untouched. 0 = off.
-const PC_FOLLOW_KEEP = 1;
-const PC_FOLLOW_UNIQUE = 0.25;
+const PC_FOLLOW_KEEP = 0;
+const PC_FOLLOW_UNIQUE = 0;
 // Shared-pangti hold in the existing switch judge (owner's live test: a pangti shared by several
 // Shabads flipped the screen 6 times): a switch or return WIN counts only when the heard line,
 // searched over all Gurbani, puts that Shabad on top by >= PC_SHARED_HOLD_MARGIN; a shared line
