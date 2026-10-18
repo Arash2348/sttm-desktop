@@ -334,6 +334,7 @@ const PC_FRAGMENT_RETURN = 0; // the Shabad just left confirms on 2 pangtis (lik
 const PC_FRAGMENT_COOLDOWN_S = 0; // no fragment confirm / judge assist this soon after a Shabad change
 const PC_FRAGMENT_ASSIST_MIN_LETTERS = 0; // judge assist only from a hit piece this long
 const PC_FRAGMENT_MIN_LETTERS_CONFIRM = 0; // the piece that completes a confirm must be this long
+const PC_FRAGMENT_ASSIST_HELD_S = 0; // judge assist only while the Shabad on screen is younger than this
 // Bench trace hook: the replay harness defines __recordSwitch; the app never does.
 const benchTrace = (x) => {
   // eslint-disable-next-line no-undef
@@ -3822,6 +3823,12 @@ const VoiceFollow = () => {
             assisted &&
             PC_FRAGMENT_ASSIST_MIN_LETTERS > 0 &&
             (fragHit.len || 0) < PC_FRAGMENT_ASSIST_MIN_LETTERS
+          )
+            assisted = false;
+          if (
+            assisted &&
+            PC_FRAGMENT_ASSIST_HELD_S > 0 &&
+            Date.now() - fragRef.current.since > PC_FRAGMENT_ASSIST_HELD_S * 1000
           )
             assisted = false;
           if (
