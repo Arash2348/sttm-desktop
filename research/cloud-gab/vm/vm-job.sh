@@ -269,6 +269,53 @@ kirnew() {
   node "$REPO/research/cloud-gab/results-sync.js" push --prefix "bench-results/kirnew/$JOB" --dir "$O" --skip '^run-' --overwrite | tail -1
   echo "kirnew done"
 }
+# x86-q* (Oct 18, 10.0.5 gate work): replay-only on a SUBSET of GAB recordings (metadata cg-qre = regex over manifest row
+# ids), score that subset on each tier/split it touches (gab run --ids), then the owner live sessions (metadata
+# cg-sess-prefixes, space-separated staged prefixes). Builds = cg-score. Cards + traces -> bench-results/x86-q/<job>/.
+quick() {
+  export VF_EMIS_CODEC=q16-x86 VF_REPLAY_MAX="${VF_REPLAY_MAX:-$(( NP - 2 ))}" VF_REPLAY_SLOTS=8
+  unset VF_SPLIT
+  local BENCH=/home/user/gab/bench W=/home/user/gab/q t0=$(date +%s)
+  local QRE; QRE=$(curl -sf -H Metadata-Flavor:Google http://metadata.google.internal/computeMetadata/v1/instance/attributes/cg-qre || true)
+  rm -rf $W; mkdir -p $W/cards
+  cd "$TOOLS"
+  node -e '
+    const fs=require("fs");const {parseCsv,canonRows}=require("./vf-manifest");const G=require("./gab-score");const {SUITES}=require("./vf-suites");
+    const re=new RegExp(process.argv[3]||"^kh");
+    const rows=canonRows(parseCsv(fs.readFileSync(process.argv[1],"utf8")));const ex=G.loadSets().exclude||{};const memo={};const jobs=[];const miss=[];
+    for(const r of rows){if(ex[r.id]||!re.test(r.id))continue;const first=(r.suite_jobs||"").split(";").filter(Boolean)[0];if(!first)continue;const [s,c]=first.split(":");if(!SUITES[s])continue;
+      memo[s]=memo[s]||SUITES[s].jobs();const j=memo[s].find(x=>x.clip===c||x.id===c);if(!j||!fs.existsSync(j.wav)){miss.push(r.id);continue;}jobs.push({rid:r.id,suite:s,clip:j.clip,id:j.id,wav:j.wav,dur:j.dur,split:r.split});}
+    fs.writeFileSync(process.argv[2],JSON.stringify(jobs));console.log(`q: ${jobs.length} GAB recordings (${(jobs.reduce((a,j)=>a+j.dur,0)/3600).toFixed(1)} h), missing: ${miss.join(" ")}`);' "$BENCH/manifest.csv" $W/jobs.json "$QRE"
+  local SUITES_L ONLY_L IDS_L
+  SUITES_L=$(node -e 'console.log([...new Set(require(process.argv[1]).map(j=>j.suite))].join(","))' $W/jobs.json)
+  ONLY_L=$(node -e 'console.log([...new Set(require(process.argv[1]).map(j=>j.clip))].join(","))' $W/jobs.json)
+  IDS_L=$(node -e 'console.log([...new Set(require(process.argv[1]).map(j=>j.rid))].join(","))' $W/jobs.json)
+  node -e '
+    const r=require("./remote-cache");const jobs=require(process.argv[1]);
+    r.pull({root:"/root/personal/live-darbar-venues/cache",model:"5f9e41d867de",codec:"q16-x86",clips:jobs.map(j=>({id:j.id,wav:j.wav})),log:()=>{}}).then(x=>console.log("q: pulled",x.pulled,"q16-x86 entries"));' $W/jobs.json
+  node "$REPO/research/cloud-gab/results-sync.js" pull | tail -1
+  for b in ${SCORE:-}; do
+    node vf-check.js --base $P/$b --cand $P/$b --suites "$SUITES_L" --only "$ONLY_L" --no-pull --replay-only --jobs $(( NP - 2 )) --out $W/fill-$b > $W/fill-$b.log 2>&1; echo "q replay $b exit $? ($(( ($(date +%s) - t0) / 60 )) min)"
+    grep -E "REFUSED|went past|replay-only:" $W/fill-$b.log | cut -c1-300
+    for sp in dev test; do for t in main akhand hard; do
+      VF_MIN_FREE_GB=3 ./gab run $P/$b --set $t --tier full --jobs $(( NP - 2 )) --manifest hf --split $sp --ids "$IDS_L" --out $W/run-$b-$t-$sp > $W/score-$b-$t-$sp.log 2>&1; echo "q score $b $t $sp exit $?"
+      grep -E "^\| \*\*|INCOMPLETE" $W/score-$b-$t-$sp.log | cut -c1-200
+      mkdir -p $W/cards/$b; cp $W/run-$b-$t-$sp/scorecard.json $W/cards/$b/$t-$sp.json 2>/dev/null
+    done; done
+    mkdir -p $W/cards/trace-$b; find $W/fill-$b $W/run-$b-* -name '*.events.jsonl' -exec cp {} $W/cards/trace-$b/ \; 2>/dev/null
+  done
+  node "$REPO/research/cloud-gab/results-sync.js" push | tail -1
+  node "$REPO/research/cloud-gab/results-sync.js" push --prefix "bench-results/x86-q/$JOB" --dir $W/cards --overwrite | tail -1
+  echo "q gab subset done ($(( ($(date +%s) - t0) / 60 )) min)"
+  local SPS; SPS=$(curl -sf -H Metadata-Flavor:Google http://metadata.google.internal/computeMetadata/v1/instance/attributes/cg-sess-prefixes || true)
+  local JOB0=$JOB
+  for sp in $SPS; do
+    rm -rf /home/user/gab/sess-out /home/user/gab/sess-bench
+    ( SESS_PREFIX=$sp SESS_BUILDS="${SCORE:-}" JOB="x86-q-sess/$JOB0/$sp" SESS_PULL=1 sess )
+    cd "$TOOLS"
+  done
+  echo "q done ($(( ($(date +%s) - t0) / 60 )) min)"
+}
 # Owner live session (Oct 17, 2026-10-17T03-12-41-944Z) offline: the session cut into 30-min pieces with the live
 # screen as truth (staged in Azure sung-bani-data/owner-live-20261017, not in GAB); x86 output (q16-x86); r904 + SESS_BUILDS
 sess() {
@@ -284,6 +331,10 @@ sess() {
   local ONLY
   ONLY=$(node -e 'const {parseCsv,canonRows}=require("./vf-manifest");const rows=canonRows(parseCsv(require("fs").readFileSync(process.argv[1],"utf8")));console.log(rows.filter(r=>/^owner_live_/.test(r.id)).map(r=>r.id).join(","))' "$BENCH/manifest.csv")
   echo "sess: $ONLY"
+  [ -n "${SESS_PULL:-}" ] && node -e '
+    const {SUITES}=require("./vf-suites");const r=require("./remote-cache");const ids=new Set(process.argv[1].split(","));
+    const clips=SUITES.apaath.jobs().filter(j=>ids.has(j.clip)||ids.has(j.id)).map(j=>({id:j.id,wav:j.wav}));
+    r.pull({root:"/root/personal/live-darbar-venues/cache",model:"5f9e41d867de",codec:"q16-x86",clips,log:()=>{}}).then(x=>console.log("sess: pulled",x.pulled,"q16-x86 entries for",clips.length,"clips"));' "$ONLY"
   node "$REPO/research/cloud-gab/results-sync.js" pull | tail -1
   for b in r904 ${SESS_BUILDS:-}; do
     for round in 1 2 3 4; do
@@ -322,6 +373,7 @@ case "$JOB" in
   score*) score_builds; [ -n "${TEST_BUILDS:-}" ] && test_split ;;
   test*) test_split ;;
   x86-sess*) SESS_BUILDS="${SESS_BUILDS:-$(curl -sf -H Metadata-Flavor:Google http://metadata.google.internal/computeMetadata/v1/instance/attributes/cg-sess || true)}" sess ;;
+  x86-q*) quick ;;
   x86-kirnew*) kirnew ;;
   x86-both*) kirnew; unset VF_BENCHMARK; cd "$REPO"; x86 ;;
   x86*) x86 ;;
