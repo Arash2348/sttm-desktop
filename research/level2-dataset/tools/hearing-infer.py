@@ -8,10 +8,13 @@ author recommends it). Output: results/hearing/transcripts/<model>/<clip>.jsonl,
 
 Adapters (--model):
   karanbir-int8 / karanbir-fp32   ONNX as published (front-end in the graph): the model card's own script
+  jaspal-int8                     Jaspal's sggs-asr-v0 dynamic-int8 ONNX (same interface; blank 0, bpe.model)
   surinder-ctc / surinder-rnnt    NeMo checkpoint (.nemo) from the author's HF repo, NeMo preprocessor
   sukhpal-ctc  / sukhpal-rnnt     same, for sukhpalsingh/baniguru_v1
   onnx:<path>                     any Karanbir-style ONNX (inputs audio, audio_len -> log_probs, out_len); needs --vocab
   nemo:<path.nemo>[:ctc|rnnt]     any AI4Bharat IndicConformer-style hybrid .nemo (multisoftmax; pa slice decoded)
+  icefall:<dir>                   icefall Zipformer2 state dict (<dir>/model.pt + bpe.model), e.g. Jaspal's sggs-asr-v0;
+                                  greedy CTC on the ctc_output head; runs in ~/AAI/nemo-venv (torch + lhotse)
 The ONNX adapters run in a venv with onnxruntime + sentencepiece (~/AAI/voice-venv); the NeMo ones in a venv with
 nemo_toolkit[asr] (~/AAI/nemo-venv). hearing.sh picks the venv.
 
@@ -25,9 +28,9 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DS = os.path.dirname(HERE)
-OUT = os.path.join(DS, 'results', 'hearing', 'transcripts')
+OUT = os.environ.get('HEARING_OUT') or os.path.join(DS, 'results', 'hearing', 'transcripts')  # HEARING_OUT: write elsewhere (side samples)
 MODELS = os.path.expanduser('~/AAI/models')
-WIN, HOP, SR = 4.0, 1.0, 16000
+WIN, HOP, SR = float(os.environ.get('HEARING_WIN', 4.0)), float(os.environ.get('HEARING_HOP', 1.0)), 16000  # env overrides for window sweeps
 
 KNOWN = {
     'karanbir-int8': ('onnx', f'{MODELS}/karansea-shabad-ctc/model.int8.onnx'),
@@ -36,6 +39,8 @@ KNOWN = {
     'surinder-rnnt': ('nemo', f'{MODELS}/surinder-kirtan/indicconformer-pa-v3-kirtan.nemo', 'rnnt'),
     'sukhpal-ctc': ('nemo', f'{MODELS}/sukhpal-baniguru-v1/baniguru_offline_v1.nemo', 'ctc'),
     'sukhpal-rnnt': ('nemo', f'{MODELS}/sukhpal-baniguru-v1/baniguru_offline_v1.nemo', 'rnnt'),
+    # Jaspal's dynamic-int8 ONNX export of sggs-asr-v0 (fbank + per-utterance norm in the graph; blank 0; bpe.model vocab 1000)
+    'jaspal-int8': ('onnx', f'{MODELS}/jaspal-sggs-v0-onnx/sggs-asr-v0.int8.onnx', f'{MODELS}/jaspal-sggs-v0/bpe.model', 0),
 }
 KARANBIR_SPM = f'{MODELS}/karansea-shabad-ctc/tokenizer.model'
 
@@ -70,8 +75,9 @@ def windows(clip):
 class OnnxCTC:
     """The model card's script: audio [1,T] float32 + audio_len -> log_probs; greedy CTC; sentencepiece decode."""
 
-    def __init__(self, path, spm_path=KARANBIR_SPM, threads=4):
+    def __init__(self, path, spm_path=KARANBIR_SPM, threads=4, blank=256):
         import onnxruntime as ort
+        self.blank = blank
         import sentencepiece as spm
         o = ort.SessionOptions()
         o.intra_op_num_threads = threads
@@ -80,7 +86,7 @@ class OnnxCTC:
         self.sp = spm.SentencePieceProcessor()
         self.sp.Load(spm_path)
         self.meta = {'format': f'ONNX {os.path.basename(path)} (as published)', 'front_end': 'in the ONNX graph (author export)',
-                     'decoder': 'greedy CTC, blank 256, sentencepiece decode (model card script)', 'file': path}
+                     'decoder': f'greedy CTC, blank {blank}, sentencepiece decode (model card script)', 'file': path}
 
     def batch(self, wavs):
         out = []
@@ -89,7 +95,7 @@ class OnnxCTC:
             ids = lp[0, :int(n[0])].argmax(-1).tolist()
             col, prev = [], -1
             for i in ids:
-                if i != prev and i != 256:
+                if i != prev and i != self.blank:
                     col.append(int(i))
                 prev = i
             out.append(self.sp.decode(col))
@@ -198,6 +204,102 @@ class NemoHybrid:
         return self.sp.decode(hyp)
 
 
+# ---------------------------------------------------------------- icefall Zipformer (Jaspal sggs-asr-v0) -----
+class IcefallZipformerCTC:
+    """icefall Zipformer2 state dict (model.pt) + SentencePiece bpe.model; greedy CTC on the auxiliary ctc_output head.
+    The network is rebuilt from icefall's zipformer recipe (egs/librispeech/ASR/zipformer at the author's commit, files
+    in ~/AAI/icefall-zipformer) with the architecture read off the state-dict shapes; k2 is stubbed (only the Swoosh
+    activations' forward is needed at inference). Front-end: 80-dim Lhotse fbank (kaldi-compatible, 25/10 ms) with
+    per-utterance per-dim mean/std normalisation (the model card's recipe)."""
+
+    def __init__(self, d, threads=4, norm='dim'):
+        import re, torch, sentencepiece as spm
+        sys.path.insert(0, os.path.expanduser('~/AAI/icefall-zipformer'))
+        from zipformer import Zipformer2
+        from subsampling import Conv2dSubsampling
+        from lhotse import Fbank, FbankConfig
+        torch.set_num_threads(threads)
+        self.torch = torch
+        self.path = os.path.join(d, 'model.pt')
+        sd = torch.load(self.path, map_location='cpu', weights_only=True)
+        # architecture from shapes
+        nst = 1 + max(int(m.group(1)) for k in sd for m in [re.match(r'encoder\.encoders\.(\d+)\.', k)] if m)
+        def L(i): return f'encoder.encoders.{i}.' + ('' if i == 0 else 'encoder.') + 'layers.'
+        layers = [1 + max(int(re.match(re.escape(L(i)) + r'(\d+)\.', k).group(1)) for k in sd if k.startswith(L(i))) for i in range(nst)]
+        dim = [sd[L(i) + '0.feed_forward1.in_proj.weight'].shape[1] for i in range(nst)]
+        ff = [sd[L(i) + '0.feed_forward2.in_proj.weight'].shape[0] for i in range(nst)]  # ff1 = 3/4, ff2 = 1x, ff3 = 5/4 of feedforward_dim
+        ker = [sd[L(i) + '0.conv_module1.depthwise_conv.weight'].shape[2] for i in range(nst)]
+        pos_dim = sd[L(0) + '0.self_attn_weights.linear_pos.weight'].shape[1]
+        vhd = 12
+        heads = [sd[L(i) + '0.self_attn1.in_proj.weight'].shape[0] // vhd for i in range(nst)]
+        qhd = 32; phd = 4
+        for i in range(nst):
+            assert sd[L(i) + '0.self_attn_weights.in_proj.weight'].shape[0] == heads[i] * (2 * qhd + phd), i
+        ds = [1] + [sd[f'encoder.encoders.{i}.downsample.bias'].shape[0] for i in range(1, nst)]
+        feat = sd['encoder_embed.conv.0.weight'].shape[1]  # 1 channel; feature dim fixed by out.weight below
+        emb_out = sd['encoder_embed.out.weight'].shape[1]  # 128 * ((feat_dim - 7) // 2 ... ) -> solve feat_dim
+        feat_dim = next(f for f in (80, *range(40, 200)) if 128 * (((f - 1) // 2 - 1) // 2) == emb_out)  # 80 preferred (79 and 80 give the same shape)
+        vocab, enc_out = sd['ctc_output.1.weight'].shape
+        unmasked = [min(x, 256) for x in dim]
+        self.arch = dict(num_encoder_layers=layers, encoder_dim=dim, feedforward_dim=ff, cnn_module_kernel=ker, num_heads=heads,
+                         downsampling_factor=ds, query_head_dim=qhd, pos_head_dim=phd, value_head_dim=vhd, pos_dim=pos_dim,
+                         feature_dim=feat_dim, vocab=vocab, encoder_unmasked_dim=unmasked)
+        self.embed = Conv2dSubsampling(in_channels=feat_dim, out_channels=dim[0], dropout=0.0)
+        self.enc = Zipformer2(output_downsampling_factor=2, downsampling_factor=tuple(ds), num_encoder_layers=tuple(layers),
+                              encoder_dim=tuple(dim), encoder_unmasked_dim=tuple(unmasked), query_head_dim=(qhd,) * nst,
+                              pos_head_dim=(phd,) * nst, value_head_dim=(vhd,) * nst, pos_dim=pos_dim, num_heads=tuple(heads),
+                              feedforward_dim=tuple(ff), cnn_module_kernel=tuple(ker), dropout=0.0, warmup_batches=4000.0, causal=False)
+        self.ctc = torch.nn.Linear(enc_out, vocab)
+        assert enc_out == max(dim), (enc_out, dim)
+        r1 = self.embed.load_state_dict({k[len('encoder_embed.'):]: v for k, v in sd.items() if k.startswith('encoder_embed.')}, strict=True)
+        r2 = self.enc.load_state_dict({k[len('encoder.'):]: v for k, v in sd.items() if k.startswith('encoder.')}, strict=True)
+        self.ctc.load_state_dict({'weight': sd['ctc_output.1.weight'], 'bias': sd['ctc_output.1.bias']}, strict=True)
+        used = sum(1 for k in sd if k.startswith(('encoder_embed.', 'encoder.', 'ctc_output.')))
+        unused = sorted({k.split('.')[0] for k in sd if not k.startswith(('encoder_embed.', 'encoder.', 'ctc_output.'))})
+        for m in (self.embed, self.enc, self.ctc):
+            m.eval()
+        self.fbank = Fbank(FbankConfig(num_mel_bins=feat_dim, sampling_rate=SR))
+        self.norm = norm
+        self.sp = spm.SentencePieceProcessor()
+        self.sp.Load(os.path.join(d, 'bpe.model'))
+        assert self.sp.get_piece_size() == vocab, (self.sp.get_piece_size(), vocab)
+        self.meta = {'format': f'icefall Zipformer2 state dict model.pt (fp32 PyTorch, torch.load weights_only=True); recipe files from k2-fsa/icefall 6fd6743; k2 stubbed (Swoosh forward only)',
+                     'front_end': f'Lhotse Fbank {feat_dim} mel (kaldi-compatible, 25/10 ms, dither 0), per-utterance {"per-dim" if norm == "dim" else "global"} mean/std normalisation (model card)',
+                     'decoder': 'greedy CTC on the auxiliary ctc_output head (log-softmax argmax), blank 0, sentencepiece decode',
+                     'file': self.path, 'arch': self.arch, 'loaded_tensors': used, 'unused_heads': unused}
+
+    def batch(self, wavs):
+        torch = self.torch
+        with torch.inference_mode():
+            feats = []
+            for w in wavs:
+                f = torch.as_tensor(self.fbank.extract(torch.from_numpy(np.ascontiguousarray(w)), SR))
+                if self.norm == 'dim':
+                    f = (f - f.mean(0, keepdim=True)) / (f.std(0, keepdim=True) + 1e-5)
+                else:
+                    f = (f - f.mean()) / (f.std() + 1e-5)
+                feats.append(f)
+            T = max(f.shape[0] for f in feats)
+            x = torch.zeros(len(feats), T, feats[0].shape[1])
+            for i, f in enumerate(feats):
+                x[i, :f.shape[0]] = f
+            xl = torch.tensor([f.shape[0] for f in feats], dtype=torch.long)
+            x, xl = self.embed(x, xl)
+            mask = torch.arange(x.shape[1])[None, :] >= xl[:, None]
+            e, el = self.enc(x.permute(1, 0, 2), xl, mask)
+            lp = self.ctc(e.permute(1, 0, 2))  # argmax == log-softmax argmax
+            out = []
+            for b in range(len(wavs)):
+                ids = lp[b, :int(el[b])].argmax(-1).tolist()
+                col, prev = [], -1
+                for i in ids:
+                    if i != prev and i != 0:
+                        col.append(int(i))
+                    prev = i
+                out.append(self.sp.decode(col))
+            return out
+
+
 def load(model):
     if model in KNOWN:
         spec = KNOWN[model]
@@ -206,10 +308,16 @@ def load(model):
     elif model.startswith('nemo:'):
         p = model[5:].split(':')
         spec = ('nemo', p[0], p[1] if len(p) > 1 else 'ctc')
+    elif model.startswith('icefall:'):
+        spec = ('icefall', model[8:])
     else:
         raise SystemExit(f'unknown model {model}')
+    if spec[0] == 'icefall':
+        return IcefallZipformerCTC(os.path.expanduser(spec[1]), threads=int(os.environ.get('HEARING_THREADS', 4)), norm=os.environ.get('HEARING_NORM', 'dim')), os.path.join(os.path.expanduser(spec[1]), 'model.pt')
     if spec[0] == 'onnx':
-        return OnnxCTC(spec[1], spm_path=os.environ.get('HEARING_SPM', KARANBIR_SPM), threads=int(os.environ.get('HEARING_THREADS', 4))), spec[1]
+        spm_path = spec[2] if len(spec) > 2 else os.environ.get('HEARING_SPM', KARANBIR_SPM)
+        blank = spec[3] if len(spec) > 3 else int(os.environ.get('HEARING_BLANK', 256))
+        return OnnxCTC(spec[1], spm_path=spm_path, threads=int(os.environ.get('HEARING_THREADS', 4)), blank=blank), spec[1]
     return NemoHybrid(spec[1], spec[2], lang=os.environ.get('HEARING_LANG', 'pa'), threads=int(os.environ.get('HEARING_THREADS', 4))), spec[1]
 
 
