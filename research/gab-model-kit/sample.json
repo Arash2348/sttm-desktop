@@ -1,0 +1,16 @@
+{
+ "_doc": "GAB model kit sample: audio segments [start, end] (clip seconds) of public GurbaniAutopilotBench clips, grouped by tier. --clips N uses the first N segments of each tier (the order puts different venues/readers first).",
+ "dataset": "khalisfoundation/GurbaniAutopilotBench",
+ "tiers": {
+  "paath_hall": {"label": "Paath, hall mic (Renton Rehras / Sohila, live Jaap)", "segments": [
+   ["rt11_sohila", 0, 300], ["rt11_rehras", 0, 300], ["rt11_rehras", 700, 1000], ["rt11_rehras", 1400, 1700], ["pt33", 0, 70.01], ["pt31", 0, 70.01]]},
+  "paath_studio": {"label": "Paath, studio (Sukhmani Sahib, Nitnem readers)", "segments": [
+   ["ytsukhmani_WV_66CLSQSU_full", 600, 900], ["pt54", 0, 55.01], ["ytsukhmani_WV_66CLSQSU_full", 2400, 2700], ["ytsukhmani_WV_66CLSQSU_full", 4200, 4500], ["pt19", 0, 70.01], ["pt28", 0, 70.01], ["pt57", 0, 55.01]]},
+  "kirtan": {"label": "Kirtan, mixer feed (Renton, main GAB)", "segments": [
+   ["clip05", 0, 105], ["clip06", 0, 300], ["clip01", 0, 252.01], ["clip12", 0, 300], ["clip17", 0, 300], ["clip33", 0, 300], ["clip03", 0, 300]]},
+  "hard": {"label": "GAB-Hard (Fremont hall, laptop mic)", "segments": [
+   ["kh20_sttm_desktop_2026_10_11T20_15_43_327Z", 0, 300], ["kh19_sttm_desktop_2026_10_11T20_08_08_535Z", 0, 300], ["kh11_sttm_desktop_2026_10_11T02_40_20_422Z", 0, 300], ["kh27_sttm_desktop_2026_10_13T02_48_34_427Z", 300, 600], ["kh12_sttm_desktop_2026_10_11T02_50_05_783Z", 0, 300], ["kh13_sttm_desktop_2026_10_11T03_07_57_411Z", 0, 300], ["kh15_sttm_desktop_2026_10_11T13_45_00_522Z", 0, 300]]},
+  "akhand": {"label": "Akhand Kirtan (AKJ Toronto 2022, Manchester 2024)", "segments": [
+   ["l3clip26", 0, 300], ["l3clip05", 0, 300], ["l3clip12", 0, 300], ["l3clip19", 0, 300], ["l3clip32", 0, 300], ["l3clip01", 0, 300], ["l3clip14", 0, 300]]}
+ }
+}
