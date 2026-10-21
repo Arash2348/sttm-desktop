@@ -191,6 +191,15 @@ function note(obj) {
   writeLine('events.jsonl', { t: now(), ...obj });
 }
 
+// Add fields to the live session's session.json (e.g. why the hidden run is off), so the
+// fact is visible in Azure without reading the events.
+function patchSession(fields) {
+  if (!S) return;
+  const file = path.join(S.dir, 'session.json');
+  const cur = JSON.parse(fs.readFileSync(file, 'utf8'));
+  fs.writeFileSync(file, JSON.stringify({ ...cur, ...fields }, null, 1));
+}
+
 // The sevadaar started (true) or stopped (false) Voice-Follow from the panel.
 function setVisible(on) {
   if (!S || !!S.visible === !!on) return;
@@ -222,6 +231,7 @@ module.exports = {
   setPaused: guard('bus.setPaused', setPaused),
   setVisible: guard('bus.setVisible', setVisible),
   note: guard('bus.note', note),
+  patchSession: guard('bus.patchSession', patchSession),
   active,
   lastHeardAt,
   lastSoundAt,

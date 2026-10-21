@@ -112,6 +112,10 @@ const livePassMs = () => (state.recent.length >= 3 ? median(state.recent) : stat
 const fits = (tier, passMs, max = LOAD_MAX) =>
   passMs != null && (tier.passesPerS * passMs) / 1000 <= max;
 
+// Can this computer keep up with the fast tier (the hidden run's schedule: 6 passes / s)?
+// False = it would merge audio constantly; the prod collector keeps the hidden run off then.
+const keepsUp = (passMs) => fits(TIERS[0], passMs);
+
 function describe() {
   return {
     tier: TIERS[state.tier].name, // the tier this computer runs a read Bani at
@@ -264,6 +268,7 @@ function onStep(fn) {
 module.exports = {
   TIERS,
   LOAD_MAX,
+  keepsUp,
   current,
   describe,
   notePass,

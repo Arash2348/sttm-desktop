@@ -4002,6 +4002,32 @@ const VoiceFollow = () => {
         st.paused = false;
         shadowBus.setPaused(false);
       }
+      // Slow-PC guard (prod collector): the engine's self-test says how long a model pass
+      // takes; a computer that cannot keep up with the fast tier would merge audio all the
+      // time, so the hidden run stays off for this app run (the labels still record). The
+      // self-test runs as the model loads, so the first hidden run may be the one that
+      // measures it and is then stopped.
+      const pass = engine.pace ? engine.pace.describe().selfTestMs : null;
+      if (!st.tooSlow && pass != null && !engine.pace.keepsUp(pass)) {
+        st.tooSlow = `machine too slow (${pass} ms per pass), hidden run off`;
+        st.tooSlowMs = pass;
+        diag(`collector: ${st.tooSlow}`);
+        if (st.running) {
+          shadowBus.system({ bani: null, shabadId: null, verseId: null, slide: null });
+          stop();
+          st.running = false;
+        }
+      }
+      if (st.tooSlow) {
+        // Every session this app run records why its hidden run is off (events + session.json).
+        const dir = shadowBus.sessionDir();
+        if (dir && st.tooSlowNoted !== dir) {
+          st.tooSlowNoted = dir;
+          shadowBus.note({ type: 'hidden_run_off', reason: 'too_slow', passMs: st.tooSlowMs });
+          shadowBus.patchSession({ hiddenRun: st.tooSlow });
+        }
+        return;
+      }
       // Voice-Follow stopped itself (its mic ended, an error): start it again.
       if (st.running && !autopilotRef.current) st.running = false;
       // Record whether hidden Voice-Follow is actually listening (model and mic up), so
