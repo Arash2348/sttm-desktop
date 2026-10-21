@@ -205,7 +205,7 @@ const ShadowCollector = () => {
   const discardRef = useRef(false); // the session turned out to be noise: delete, do not upload
   const lastDiscardRef = useRef(0); // when the last noise session was thrown away
 
-  // Sharing is opt-in: nothing runs until a level is chosen and the notice has been seen.
+  // Sharing is on by default (labels only); nothing runs until the first-launch card has been seen.
   const noticeSeen = Number(shadowNotice) >= NOTICE_VERSION;
   const enabled = SHADOW_BUILD && level !== 'off' && noticeSeen;
 
@@ -611,7 +611,7 @@ const ShadowCollector = () => {
           <i className="fa fa-microphone" />
         </div>
         <h2 id="shadow-consent-title">
-          {audioOn ? 'Voice Autopilot will record audio' : 'Voice Autopilot will share labels'}
+          {audioOn ? 'Help improve Voice Autopilot: audio' : 'Help improve Voice Autopilot'}
         </h2>
         <ShortNotice audio={audioOn} />
         <p className="shadow-consent-more">
@@ -652,6 +652,30 @@ const ShadowCollector = () => {
           >
             Do not share
           </button>
+          {!audioOn && (
+            <button
+              type="button"
+              className="shadow-consent-audio"
+              disabled={!registered && !gurdwara.trim()}
+              onClick={() => {
+                if (!registered) {
+                  setShadowTester(
+                    packTester({
+                      name: name.trim(),
+                      gurdwara: gurdwara.trim(),
+                      id:
+                        tester.id ||
+                        `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
+                    }),
+                  );
+                }
+                setCollectorLevel('audio');
+                setShadowNotice(NOTICE_VERSION);
+              }}
+            >
+              Also share audio
+            </button>
+          )}
           <button
             type="button"
             className="shadow-consent-yes"
@@ -671,7 +695,7 @@ const ShadowCollector = () => {
               setShadowNotice(NOTICE_VERSION);
             }}
           >
-            OK
+            {audioOn ? 'OK' : 'Share labels'}
           </button>
         </div>
       </div>

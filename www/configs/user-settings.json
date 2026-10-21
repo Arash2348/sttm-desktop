@@ -349,7 +349,7 @@
         "labels": "COLLECTOR_LABELS",
         "audio": "COLLECTOR_AUDIO"
       },
-      "initialValue": "off",
+      "initialValue": "labels",
       "notes": "COLLECTOR_LEVEL_MSG"
     },
     "install-id": {
