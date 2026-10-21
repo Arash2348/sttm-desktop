@@ -12,6 +12,7 @@ const {
   SHADOW_KEEP_BYTES,
   SHADOW_MIN_FREE_START_BYTES,
   SHADOW_MIN_FREE_RUN_BYTES,
+  SHADOW_STORE_CAP_BYTES,
 } = require('./config');
 
 const readJson = (f, d) => {
@@ -68,10 +69,40 @@ function dropAudio(dir) {
   );
 }
 
+// Prod collector disk cap: the session store (everything under root) stays under `cap`.
+// Over it, whole sessions that are already uploaded go, oldest first; the live session and
+// anything not yet uploaded are never touched. Returns the ids deleted.
+function capStore(root, live, log = () => {}, cap = SHADOW_STORE_CAP_BYTES) {
+  if (!root || !fs.existsSync(root)) return [];
+  let total = sizeOf(root);
+  if (total <= cap) return [];
+  const gone = [];
+  fs.readdirSync(root)
+    .map((id) => path.join(root, id))
+    .filter((d) => d !== live && fs.statSync(d).isDirectory())
+    .sort() // session ids are timestamps: oldest first
+    .forEach((d) => {
+      if (total <= cap || !onAzure(d)) return;
+      const before = sizeOf(d);
+      try {
+        fs.rmSync(d, { recursive: true, force: true });
+        total -= before;
+        gone.push(path.basename(d));
+        log(
+          `storage: over ${Math.round(cap / 1e9)} GB, removed uploaded session ${path.basename(d)}`,
+        );
+      } catch (_) {
+        /* ignore */
+      }
+    });
+  return gone;
+}
+
 // Run every upload tick. `live` is the session being recorded (never touched); `hfOn` says
 // whether a Hugging Face key is set (without one, audio waits for it, within the budget).
 function sweep(root, live, hfOn, log = () => {}) {
   if (!root || !fs.existsSync(root)) return;
+  capStore(root, live, log);
   const sessions = fs
     .readdirSync(root)
     .map((id) => path.join(root, id))
@@ -100,4 +131,4 @@ function sweep(root, live, hfOn, log = () => {}) {
     });
 }
 
-module.exports = { sweep, canStart, mustStop, freeBytes, onAzure };
+module.exports = { sweep, capStore, canStart, mustStop, freeBytes, onAzure };

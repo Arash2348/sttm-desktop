@@ -19,6 +19,7 @@ const listener = require('./listener');
 const pcm = require('./pcm');
 const storage = require('./storage');
 const presenting = require('./presenting');
+const remoteConfig = require('./remote');
 const { logDir } = require('../engine/session-log');
 const { guard } = require('./diag');
 
@@ -218,9 +219,17 @@ const ShadowCollector = () => {
   const discardRef = useRef(false); // the session turned out to be noise: delete, do not upload
   const lastDiscardRef = useRef(0); // when the last noise session was thrown away
 
+  // Remote kill-switch (remote.js): fetched at launch and hourly while sharing is on; an
+  // explicit {"enabled": false} keeps the collector idle until it says otherwise.
+  const [remoteOn, setRemoteOn] = useState(remoteConfig.enabled());
+  useEffect(() => {
+    if (!SHADOW_BUILD || level === 'off') return undefined;
+    remoteConfig.start({ onChange: setRemoteOn, log: diag });
+    return () => remoteConfig.stop();
+  }, [level]);
   // Sharing is on by default (labels only); nothing runs until the first-launch card has been seen.
   const noticeSeen = Number(shadowNotice) >= NOTICE_VERSION;
-  const enabled = SHADOW_BUILD && level !== 'off' && noticeSeen;
+  const enabled = SHADOW_BUILD && level !== 'off' && noticeSeen && remoteOn;
 
   // Presenting-only gate (presenting.js): a display is driven (viewer window open, asked of
   // the main process every 15 s, or single-display mode) AND the screen changed in the last

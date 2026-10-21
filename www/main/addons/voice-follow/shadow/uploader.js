@@ -60,6 +60,16 @@ const readJson = (f, d) => {
 // Uploads are off in a build that never had the SAS injected (a plain dev build).
 const uploadsOn = () => Boolean(UPLOAD_URL && UPLOAD_SAS && !UPLOAD_SAS.startsWith('__'));
 
+// Metered connection (a phone hotspot, data saver): uploads wait. Chromium's
+// navigator.connection reports type 'cellular' and the data-saver flag; where the OS or
+// browser has no such report (connection undefined) the check is skipped and uploads go.
+const meteredFrom = (conn) =>
+  !!conn && (conn.type === 'cellular' || conn.saveData === true || conn.metered === true);
+const metered = () =>
+  typeof navigator !== 'undefined' && navigator && meteredFrom(navigator.connection);
+
+// TODO(prod): replace `${UPLOAD_URL}/${key}?${UPLOAD_SAS}` with a short-lived PUT URL from
+// the signed-URL endpoint (one request per file; the SAS leaves the build).
 async function putFile(dir, file) {
   const full = path.join(dir, file);
   if (!fs.existsSync(full) || !uploadsOn()) return false;
@@ -134,8 +144,16 @@ function scanPending() {
   });
 }
 
+let meteredLoggedAt = 0;
 async function drain() {
   if (busy || stopped) return;
+  if (metered()) {
+    if (Date.now() - meteredLoggedAt > 60 * 60 * 1000) {
+      meteredLoggedAt = Date.now();
+      log('uploader: metered connection, uploads wait');
+    }
+    return;
+  }
   busy = true;
   try {
     const bus = require('./bus'); // eslint-disable-line global-require
@@ -223,4 +241,5 @@ module.exports = {
   enqueueSession: guard('uploader.enqueueSession', enqueueSession),
   flush: guard('uploader.flush', flush),
   setAudio: guard('uploader.setAudio', setAudio),
+  meteredFrom,
 };

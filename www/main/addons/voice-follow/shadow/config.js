@@ -49,6 +49,9 @@ const SHADOW_DISCARD_COOLDOWN_MS = testMs('VF_TEST_DISCARD_COOLDOWN_MS', 5 * 60 
 const SHADOW_KEEP_BYTES = 8e9; // local recordings kept for a missing HF key, at most
 const SHADOW_MIN_FREE_START_BYTES = 3e9; // no new session below this much free disk
 const SHADOW_MIN_FREE_RUN_BYTES = 1.5e9; // a running session stops below this
+// Prod collector: the whole session store stays under this; over it, the oldest sessions
+// that are already uploaded are deleted whole (storage.js capStore).
+const SHADOW_STORE_CAP_BYTES = 2e9;
 // Shadow scoring pauses while the computer is this busy (1-minute load per core) and
 // resumes below SHADOW_CPU_RESUME, so a Gurdwara laptop never slows down for it.
 const SHADOW_CPU_PAUSE = 0.9;
@@ -58,7 +61,14 @@ const SHADOW_CPU_RESUME = 0.6;
 // packaging/inject-upload-sas.js replaces the placeholder in the compiled copy of this file
 // from the VF_UPLOAD_SAS environment variable (CI sets it from a repository secret).
 const UPLOAD_URL = 'https://banidb.blob.core.windows.net/voice-follow-training-data';
+// TODO(prod): UPLOAD_SAS goes away. The prod collector will ask a signed-URL endpoint for a
+// short-lived PUT URL per file (uploader.putFile is the one place that builds the URL).
 const UPLOAD_SAS = '__VF_UPLOAD_SAS__';
+// Remote kill-switch (remote.js): a tiny JSON fetched at launch and hourly; {"enabled": false}
+// keeps the collector idle everywhere without a release. Placeholder path on the same
+// container until the real config location exists.
+const COLLECTOR_CONFIG_URL = `${UPLOAD_URL}/collector/config.json`;
+const COLLECTOR_CONFIG_EVERY_MS = 60 * 60 * 1000;
 // A second copy of every session goes to Hugging Face in the team's recording layout
 // (hf.js). The write token is entered on the first-launch card (kept in the app's settings)
 // or, if Khalis chooses, injected at build time like the SAS (VF_HF_TOKEN).
@@ -94,6 +104,9 @@ module.exports = {
   SHADOW_KEEP_BYTES,
   SHADOW_MIN_FREE_START_BYTES,
   SHADOW_MIN_FREE_RUN_BYTES,
+  SHADOW_STORE_CAP_BYTES,
+  COLLECTOR_CONFIG_URL,
+  COLLECTOR_CONFIG_EVERY_MS,
   SHADOW_CPU_PAUSE,
   SHADOW_CPU_RESUME,
   UPLOAD_URL,
