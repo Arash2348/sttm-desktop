@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { SHADOW_BUILD, SHADOW_SEGMENT_MS, SHADOW_DISCARD_COOLDOWN_MS } from './config';
 import { ShortNotice } from './RecordingNotice';
+import { i18n } from '../../../common/i18n';
 
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const remote = require('@electron/remote');
+const { ipcRenderer } = require('electron');
 const bus = require('./bus');
 const uploader = require('./uploader');
 const hf = require('./hf');
@@ -15,6 +17,7 @@ const service = require('./service');
 const listener = require('./listener');
 const pcm = require('./pcm');
 const storage = require('./storage');
+const presenting = require('./presenting');
 const { logDir } = require('../engine/session-log');
 
 // One folder per app session under <userData>/voice-follow/shadow/<id>/:
@@ -169,8 +172,15 @@ const NOTICE_VERSION = 1;
 
 const ShadowCollector = () => {
   const nav = useStoreState((state) => state.navigator);
-  const { shadowRecording, shadowTester, shadowNotice, hfToken, collectorLevel, installId } =
-    useStoreState((state) => state.userSettings);
+  const {
+    shadowRecording,
+    shadowTester,
+    shadowNotice,
+    hfToken,
+    collectorLevel,
+    installId,
+    currentWorkspace,
+  } = useStoreState((state) => state.userSettings);
   const { setShadowRecording, setShadowTester, setShadowNotice, setCollectorLevel, setInstallId } =
     useStoreActions((actions) => actions.userSettings);
   // Settings > Other Options > Help improve Voice Autopilot: off | labels | audio.
@@ -198,7 +208,8 @@ const ShadowCollector = () => {
   // A session runs only while the sevadaar is working (see service.js).
   const [active, setActive] = useState(false);
   const startReasonRef = useRef('');
-  const lastChangeRef = useRef(Date.now());
+  // When the sevadaar last changed what is on screen (null: not since the app opened).
+  const lastChangeRef = useRef(null);
   const [restarts, setRestarts] = useState(0);
   const startingRef = useRef(false); // waiting for the microphone (e.g. the permission prompt)
   const preRollRef = useRef(null); // audio from before the session, handed over by the listener
@@ -208,6 +219,54 @@ const ShadowCollector = () => {
   // Sharing is on by default (labels only); nothing runs until the first-launch card has been seen.
   const noticeSeen = Number(shadowNotice) >= NOTICE_VERSION;
   const enabled = SHADOW_BUILD && level !== 'off' && noticeSeen;
+
+  // Presenting-only gate (presenting.js): a display is driven (viewer window open, asked of
+  // the main process every 15 s, or single-display mode) AND the screen changed in the last
+  // 10 min. Only then may a session (and with it the hidden run) start; the listener is off
+  // otherwise. `presentingOn` re-evaluates the listener effect; presentingNow() is the live
+  // answer for a start that is about to happen.
+  const singleDisplay = currentWorkspace === i18n.t('WORKSPACES.SINGLE_DISPLAY');
+  const displayRef = useRef({ viewerOpen: false, singleDisplay });
+  displayRef.current.singleDisplay = singleDisplay;
+  const presentingNow = () =>
+    presenting.isPresenting({ ...displayRef.current, lastChangeAt: lastChangeRef.current });
+  const [presentingOn, setPresentingOn] = useState(false);
+  const presentingOffSinceRef = useRef(null); // when the gate went off during a session
+  const idleLogAtRef = useRef(0);
+  // A start the gate blocked: one diag line an hour at most.
+  const blockedByGate = (what) => {
+    if (presentingNow()) return false;
+    if (Date.now() - idleLogAtRef.current >= 60 * 60 * 1000) {
+      idleLogAtRef.current = Date.now();
+      const d = displayRef.current;
+      diag(
+        `idle: not presenting (${what}; viewer ${d.viewerOpen ? 'open' : 'closed'}, ` +
+          `single-display ${d.singleDisplay ? 'on' : 'off'}, last change ` +
+          `${lastChangeRef.current ? `${Math.round((Date.now() - lastChangeRef.current) / 60000)} min ago` : 'none'})`,
+      );
+    }
+    return true;
+  };
+  useEffect(() => {
+    if (!enabled) return undefined;
+    let live = true;
+    const poll = async () => {
+      try {
+        const r = await ipcRenderer.invoke('voice-follow:presenting');
+        if (live) displayRef.current.viewerOpen = !!(r && r.viewerOpen);
+      } catch (_) {
+        /* main process not answering: keep the last answer */
+      }
+      if (live) setPresentingOn(presentingNow());
+    };
+    poll();
+    const timer = setInterval(poll, 15000);
+    return () => {
+      live = false;
+      clearInterval(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, singleDisplay]);
 
   // The uploader runs from the moment a registered tester opens the app, so a session left
   // on disk by a crash or a killed app reaches S3 even if the sevadaar never records again.
@@ -238,6 +297,7 @@ const ShadowCollector = () => {
   // along as the session's opening audio.
   const beginNow = (reason) => {
     if (!enabled || active) return;
+    if (blockedByGate(reason)) return;
     if (!storage.canStart(shadowRoot())) {
       diag('storage: disk nearly full, not starting a recording');
       return;
@@ -248,7 +308,7 @@ const ShadowCollector = () => {
     }
     preRollRef.current = listener.takePreRoll();
     startReasonRef.current = reason;
-    lastChangeRef.current = Date.now();
+    presentingOffSinceRef.current = null;
     setActive(true);
   };
   const beginNowRef = useRef(beginNow);
@@ -256,9 +316,9 @@ const ShadowCollector = () => {
 
   // With no session running, the listener watches the room so unattended kirtan is collected.
   useEffect(() => {
-    if (!enabled || active) {
+    if (!enabled || active || !presentingOn) {
       listener.stop();
-      if (!enabled) setShadowMicState('off');
+      if (!active) setShadowMicState('off');
       return undefined;
     }
     let live = true;
@@ -275,7 +335,7 @@ const ShadowCollector = () => {
       live = false;
       listener.stop();
     };
-  }, [enabled, active, setShadowMicState]);
+  }, [enabled, active, presentingOn, setShadowMicState]);
 
   // Pressing Start in Voice-Follow begins a session at once, so its search is recorded too.
   useEffect(() => {
@@ -341,6 +401,7 @@ const ShadowCollector = () => {
               platform: process.platform,
               microphone: stream.getAudioTracks()[0]?.label || '',
               startedBy: startReasonRef.current,
+              presenting: { ...displayRef.current },
               preRollSeconds: pre ? Math.round(pre.seconds * 10) / 10 : 0,
             },
             null,
@@ -525,6 +586,18 @@ const ShadowCollector = () => {
         setActive(false);
         return;
       }
+      // Presenting stopped (viewer closed, or no screen change) for 10 min: end the session
+      // the same way as the quiet stop, so it uploads as usual.
+      presentingOffSinceRef.current = presenting.trackOff(
+        presentingNow(),
+        presentingOffSinceRef.current,
+      );
+      const gateReason = presenting.stopReason(presentingOffSinceRef.current);
+      if (gateReason) {
+        bus.note({ type: 'session_stop', reason: gateReason });
+        setActive(false);
+        return;
+      }
       const reason = service.stopReason({
         now: Date.now(),
         startedAt: s ? s.startedAt : Date.now(),
@@ -583,15 +656,22 @@ const ShadowCollector = () => {
     const prev = prevKeyRef.current;
     prevKeyRef.current = key;
     if (sessionRef.current) bus.human(label);
-    if (enabled && !active && service.shouldStart(prev, key) && storage.canStart(shadowRoot())) {
+    const changed = prev != null && key !== prev;
+    if (changed) lastChangeRef.current = Date.now();
+    if (enabled && !active && changed) setPresentingOn(presentingNow());
+    if (
+      enabled &&
+      !active &&
+      service.shouldStart(prev, key) &&
+      !blockedByGate('screen change') &&
+      storage.canStart(shadowRoot())
+    ) {
       let what = 'cleared';
       if (bus.contentKey(label)) what = bus.contentKey(label);
       else if (label.slide) what = 'slide';
       startReasonRef.current = `screen: ${what}`;
-      lastChangeRef.current = Date.now();
+      presentingOffSinceRef.current = null;
       setActive(true);
-    } else if (prev != null && key !== prev) {
-      lastChangeRef.current = Date.now();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
@@ -616,8 +696,6 @@ const ShadowCollector = () => {
         <ShortNotice audio={audioOn} />
         <p className="shadow-consent-more">
           Click the label at the top of STTM any time for the full details.
-          {/* TODO(prod): presenting-only gate, score.js Bani reset and fault wrapping of every
-              entry point are still to do (see vf-prod-collector notes). */}
         </p>
         {!registered && (
           <>

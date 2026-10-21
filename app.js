@@ -1700,6 +1700,12 @@ ipcMain.on('set-user-setting', (event, settingChanger) => {
   mainWindow.webContents.send('set-user-setting', settingChanger);
 });
 
+// Voice Autopilot prod collector: is a viewer window up (this STTM is presenting)? The
+// collector only records while presenting (shadow/presenting.js).
+ipcMain.handle('voice-follow:presenting', () => ({
+  viewerOpen: !!(viewerWindow && !viewerWindow.isDestroyed() && viewerWindow.isVisible()),
+}));
+
 // Voice-Follow's start screen: the system microphone permission, read without asking.
 // 'denied'/'restricted' show the "Microphone access needed" screen; 'unknown' where the
 // system has no such setting (Linux).
