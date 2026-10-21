@@ -172,7 +172,17 @@ function perSecond(evs, length, merge) {
       const { t, ...e } = sorted[j];
       if (merge) {
         cur = { ...cur, ...e };
-        if (e.shabadId != null) cur.slide = null;
+        // A new Shabad (or Bani) on screen replaces the other kind and takes any slide
+        // down, exactly as bus.system() keeps its live label: otherwise a Bani once shown
+        // would keep scoring every later Shabad as that Bani.
+        if (e.shabadId != null) {
+          cur.slide = null;
+          cur.bani = null;
+        }
+        if (e.bani != null) {
+          cur.slide = null;
+          cur.shabadId = null;
+        }
       } else cur = e;
       j += 1;
     }
@@ -618,7 +628,7 @@ function scoreDir(dir, fixes = []) {
   };
 }
 
-module.exports = { C, contentKey, scoreTimelines, scoreDir, summarize, visibleUse };
+module.exports = { C, contentKey, perSecond, scoreTimelines, scoreDir, summarize, visibleUse };
 
 if (require.main === module) {
   // node score.js <session dir> [fixes.json]
