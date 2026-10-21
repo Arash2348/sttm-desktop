@@ -647,7 +647,8 @@ $vf2-yellow-bar: #f2c200;
 .workspace-bar:has(.shadow-rec-pop) {
   z-index: 1000;
 }
-.workspace-bar .shadow-rec .shadow-rec-pop {
+.workspace-bar .shadow-rec .shadow-rec-pop,
+.search-footer .shadow-share .shadow-rec-pop {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
@@ -677,7 +678,8 @@ $vf2-yellow-bar: #f2c200;
     cursor: pointer;
   }
 }
-.workspace-bar .shadow-rec .shadow-rec-actions {
+.workspace-bar .shadow-rec .shadow-rec-actions,
+.search-footer .shadow-share .shadow-rec-actions {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
@@ -1384,4 +1386,53 @@ $vf2-yellow-bar: #f2c200;
 .dark-theme .search-pane-tab .vf-intro-later {
   background: #444;
   color: #ddd;
+}
+
+// Prod collector: the quiet "Sharing" indicator in the search footer, after the source names.
+// A dot and one word; grey while idle, Kesari while a session is being shared.
+.search-footer .shadow-share {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  z-index: 20;
+  .shadow-share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 6px;
+    border: 0;
+    border-radius: 10px;
+    background: none;
+    color: #8a8a8a;
+    font-size: 12px;
+    line-height: 16px;
+    cursor: pointer;
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+  }
+  .shadow-share-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #b5b5b5;
+  }
+  &.is-sharing {
+    .shadow-share-btn {
+      color: #e8702a;
+      font-weight: 600;
+    }
+    .shadow-share-dot {
+      background: #e8702a;
+      box-shadow: 0 0 0 3px rgba(232, 112, 42, 0.18);
+    }
+  }
+  // The popover opens upwards from the footer, which sits at the bottom of the search pane.
+  .shadow-rec-pop {
+    top: auto;
+    bottom: calc(100% + 8px);
+    left: 0;
+    right: auto;
+  }
 }

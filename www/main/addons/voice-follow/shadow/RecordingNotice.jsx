@@ -57,17 +57,8 @@ export const ShortNotice = ({ audio = true }) => (
   </div>
 );
 
-// The chip at the left of the workspace bar (controller window only, never the viewer):
-// "Recording audio" while a session records, "Mic on" while only the listener is open.
-// Clicking it shows the notice and the way to turn it off.
-const RecordingChipInner = ({ onOpenSettings }) => {
-  const micState = useStoreState((state) => state.app.shadowMicState);
-  const audio = useStoreState((state) => state.userSettings.collectorLevel) === 'audio';
-  const { setCollectorLevel } = useStoreActions((actions) => actions.userSettings);
-  const [open, setOpen] = useState(false);
-  const [more, setMore] = useState(false);
-  const ref = useRef(null);
-
+// Closes a popover on a click outside it or Escape.
+const useCloseOnOutside = (open, setOpen, ref) => {
   useEffect(() => {
     if (!open) return undefined;
     const onDown = (e) => {
@@ -82,7 +73,80 @@ const RecordingChipInner = ({ onOpenSettings }) => {
       document.removeEventListener('mousedown', onDown);
       document.removeEventListener('keydown', onKey);
     };
-  }, [open]);
+  }, [open, setOpen, ref]);
+};
+
+// Settings > Other Options > Help improve Voice Autopilot, scrolled into view.
+const useOpenSharingSetting = () => {
+  const { setOverlayScreen } = useStoreActions((actions) => actions.app);
+  return () => {
+    setOverlayScreen('settings');
+    setTimeout(() => {
+      const el = document.getElementById('collector-level');
+      if (el) el.scrollIntoView({ block: 'center' });
+    }, 300);
+  };
+};
+
+// The popover: the notice, the way to turn sharing off. One for the top-bar chip (tester
+// build) and the footer indicator (prod collector), so they can never drift apart.
+const SharingPopover = ({ title, audio, onClose }) => {
+  const [more, setMore] = useState(false);
+  const { setCollectorLevel } = useStoreActions((actions) => actions.userSettings);
+  const openSetting = useOpenSharingSetting();
+  return (
+    <div className="shadow-rec-pop" role="dialog" aria-label="Voice Autopilot sharing">
+      <h4>{title}</h4>
+      <ShortNotice audio={audio} />
+      <button
+        type="button"
+        className="shadow-rec-more"
+        aria-expanded={more}
+        onClick={() => setMore(!more)}
+      >
+        {more ? 'Hide details' : 'More details'}
+      </button>
+      {more && <NoticeText audio={audio} />}
+      <div className="shadow-rec-actions">
+        <button
+          type="button"
+          className="shadow-rec-link"
+          onClick={() => {
+            onClose();
+            openSetting();
+          }}
+        >
+          Open Settings
+        </button>
+        <button
+          type="button"
+          className="shadow-rec-off"
+          onClick={() => {
+            onClose();
+            setCollectorLevel('off');
+          }}
+        >
+          Stop sharing
+        </button>
+      </div>
+    </div>
+  );
+};
+SharingPopover.propTypes = {
+  title: PropTypes.string.isRequired,
+  audio: PropTypes.bool,
+  onClose: PropTypes.func.isRequired,
+};
+
+// Tester build: the chip at the right of the workspace bar (controller window only, never the
+// viewer): "Recording Audio" / "Sharing labels" while a session records, "Mic On" while only
+// the listener is open. Clicking it shows the notice and the way to turn it off.
+const RecordingChipInner = () => {
+  const micState = useStoreState((state) => state.app.shadowMicState);
+  const audio = useStoreState((state) => state.userSettings.collectorLevel) === 'audio';
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  useCloseOnOutside(open, setOpen, ref);
 
   if (micState !== 'recording' && micState !== 'listening') return null;
   const recording = micState === 'recording';
@@ -102,54 +166,58 @@ const RecordingChipInner = ({ onOpenSettings }) => {
         {chipText}
       </button>
       {open && (
-        <div className="shadow-rec-pop" role="dialog" aria-label="Voice Autopilot recording">
-          <h4>{recording ? chipText : 'Mic On, waiting for a program'}</h4>
-          <ShortNotice audio={audio} />
-          <button
-            type="button"
-            className="shadow-rec-more"
-            aria-expanded={more}
-            onClick={() => setMore(!more)}
-          >
-            {more ? 'Hide details' : 'More details'}
-          </button>
-          {more && <NoticeText audio={audio} />}
-          <div className="shadow-rec-actions">
-            <button
-              type="button"
-              className="shadow-rec-link"
-              onClick={() => {
-                setOpen(false);
-                onOpenSettings();
-              }}
-            >
-              Open Settings
-            </button>
-            <button
-              type="button"
-              className="shadow-rec-off"
-              onClick={() => {
-                setOpen(false);
-                setCollectorLevel('off');
-              }}
-            >
-              Stop sharing
-            </button>
-          </div>
-        </div>
+        <SharingPopover
+          title={recording ? chipText : 'Mic On, waiting for a program'}
+          audio={audio}
+          onClose={() => setOpen(false)}
+        />
       )}
     </div>
   );
 };
 
 // A render fault in the chip unmounts the chip, never the workspace bar.
-export const RecordingChip = (props) => (
+export const RecordingChip = () => (
   <CollectorBoundary name="RecordingChip">
-    <RecordingChipInner {...props} />
+    <RecordingChipInner />
   </CollectorBoundary>
 );
-RecordingChipInner.propTypes = {
-  onOpenSettings: PropTypes.func.isRequired,
+
+// Prod collector: a quiet indicator in the search footer next to the source names: a dot
+// and the word "Sharing", grey while idle (sharing on, no session), Kesari while a session
+// is being shared. Hidden when sharing is off. Same popover as the chip.
+const SharingIndicatorInner = () => {
+  const micState = useStoreState((state) => state.app.shadowMicState);
+  const level = useStoreState((state) => state.userSettings.collectorLevel);
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  useCloseOnOutside(open, setOpen, ref);
+  if (level !== 'labels' && level !== 'audio') return null;
+  const sharing = micState === 'recording';
+  const audio = level === 'audio';
+  let title = 'Sharing is on, waiting for a program';
+  if (sharing) title = audio ? 'Sharing audio and labels' : 'Sharing labels';
+  return (
+    <div className={`shadow-share ${sharing ? 'is-sharing' : 'is-idle'}`} ref={ref}>
+      <button
+        type="button"
+        className="shadow-share-btn"
+        title={`${title}. Click for details and to turn it off.`}
+        aria-expanded={open}
+        onClick={() => setOpen(!open)}
+      >
+        <span className="shadow-share-dot" />
+        Sharing
+      </button>
+      {open && <SharingPopover title={title} audio={audio} onClose={() => setOpen(false)} />}
+    </div>
+  );
 };
+export const SharingIndicator = () => (
+  <CollectorBoundary name="SharingIndicator">
+    <SharingIndicatorInner />
+  </CollectorBoundary>
+);
+
 NoticeText.propTypes = { audio: PropTypes.bool };
 ShortNotice.propTypes = { audio: PropTypes.bool };

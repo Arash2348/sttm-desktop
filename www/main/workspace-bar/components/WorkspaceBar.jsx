@@ -4,6 +4,7 @@ import { updateViewerScale } from '../../viewer/utils';
 import ExperimentalBadge from '../../common/sttm-ui/experimental-badge';
 import { i18n } from '../../common/i18n';
 import { RecordingChip } from '../../addons/voice-follow/shadow/RecordingNotice';
+import { PROD_COLLECTOR } from '../../addons/voice-follow/shadow/config';
 
 const remote = require('@electron/remote');
 
@@ -15,16 +16,6 @@ const WorkspaceBar = () => {
   const { currentWorkspace } = useStoreState((state) => state.userSettings);
   const { minimizedBySingleDisplay } = useStoreState((state) => state.navigator);
   const { setCurrentWorkspace } = useStoreActions((state) => state.userSettings);
-  const { setOverlayScreen } = useStoreActions((actions) => actions.app);
-
-  // The recording chip's link: open Settings at Other Options (Voice Autopilot recording).
-  const openRecordingSetting = () => {
-    setOverlayScreen('settings');
-    setTimeout(() => {
-      const el = document.getElementById('collector-level');
-      if (el) el.scrollIntoView({ block: 'center' });
-    }, 300);
-  };
 
   const presenterIdentifier = i18n.t('WORKSPACES.PRESENTER');
   const singleDisplayIdentifier = i18n.t('WORKSPACES.SINGLE_DISPLAY');
@@ -65,9 +56,10 @@ const WorkspaceBar = () => {
           <span className="workspace-name"> {workspace} </span>
         </div>
       ))}
-      {/* Right end of the bar: recording chip, then the Experimental badge, side by side */}
+      {/* Right end of the bar: recording chip (tester build only; the prod collector shows a
+          quiet "Sharing" indicator in the search footer instead), then the Experimental badge */}
       <div className="workspace-bar-right">
-        <RecordingChip onOpenSettings={openRecordingSetting} />
+        {!PROD_COLLECTOR && <RecordingChip />}
         <ExperimentalBadge className="workspace-experimental-badge" />
       </div>
     </div>
