@@ -10,7 +10,7 @@ const remote = require('@electron/remote');
 const bus = require('./bus');
 const uploader = require('./uploader');
 const hf = require('./hf');
-const { HF_TOKEN, VF_FEATURE_VERSION, VF_BUILD_COMMIT } = require('./config');
+const { HF_TOKEN, VF_FEATURE_VERSION, VF_BUILD_COMMIT, COLLECTOR_VERSION } = require('./config');
 const service = require('./service');
 const listener = require('./listener');
 const pcm = require('./pcm');
@@ -131,49 +131,25 @@ const labelOf = (nav) => ({
 
 // The registration is a user setting, and settings become body class names at startup,
 // so it is stored URL-encoded (no spaces). Older installs stored plain JSON.
-// Where this laptop is, for the team to tell the Gurdwara from the data when the name was
-// left blank: computer name, user, OS, time zone, locale, and the public IP (city level),
-// looked up once per run.
-const machineName = () => {
+// What identifies the computer in a session: a random install id (made once, kept in the
+// app's settings), the processor, OS, time zone and locale. No computer name, login name or
+// internet address (prod collector: identity trimmed).
+const newInstallId = () => {
   try {
-    return os.hostname().replace(/\.local$/i, '') || 'laptop';
+    return crypto.randomUUID();
   } catch (_) {
-    return 'laptop';
+    return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
   }
 };
-const publicIpRef = { value: null, asked: false };
-const lookupPublicIp = () => {
-  if (publicIpRef.asked) return;
-  publicIpRef.asked = true;
-  const ctl = new AbortController();
-  const timer = setTimeout(() => ctl.abort(), 4000);
-  fetch('https://api.ipify.org?format=json', { signal: ctl.signal })
-    .then((r) => r.json())
-    .then((j) => {
-      publicIpRef.value = (j && j.ip) || null;
-    })
-    .catch(() => {})
-    .finally(() => clearTimeout(timer));
-};
-const machineFacts = () => {
-  let user = '';
-  try {
-    user = os.userInfo().username;
-  } catch (_) {
-    user = '';
-  }
-  return {
-    host: machineName(),
-    user,
-    os: `${process.platform} ${os.release()}`,
-    cpus: os.cpus().length,
-    cpuModel: (os.cpus()[0] || {}).model || '',
-    cpuMhz: (os.cpus()[0] || {}).speed || 0,
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
-    locale: navigator.language || '',
-    publicIp: publicIpRef.value,
-  };
-};
+const machineFacts = (installId) => ({
+  installId: installId || '',
+  os: `${process.platform} ${os.release()}`,
+  cpus: os.cpus().length,
+  cpuModel: (os.cpus()[0] || {}).model || '',
+  cpuMhz: (os.cpus()[0] || {}).speed || 0,
+  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+  locale: navigator.language || '',
+});
 
 const readTester = (raw) => {
   if (!raw) return {};
@@ -193,12 +169,23 @@ const NOTICE_VERSION = 1;
 
 const ShadowCollector = () => {
   const nav = useStoreState((state) => state.navigator);
-  const { shadowRecording, shadowTester, shadowNotice, hfToken } = useStoreState(
-    (state) => state.userSettings,
-  );
-  const { setShadowRecording, setShadowTester, setShadowNotice } = useStoreActions(
-    (actions) => actions.userSettings,
-  );
+  const { shadowRecording, shadowTester, shadowNotice, hfToken, collectorLevel, installId } =
+    useStoreState((state) => state.userSettings);
+  const { setShadowRecording, setShadowTester, setShadowNotice, setCollectorLevel, setInstallId } =
+    useStoreActions((actions) => actions.userSettings);
+  // Settings > Other Options > Help improve Voice Autopilot: off | labels | audio.
+  const level = collectorLevel === 'labels' || collectorLevel === 'audio' ? collectorLevel : 'off';
+  const audioOn = level === 'audio';
+  // The older on/off flag (app.js quit-time flush, older code paths) mirrors the level.
+  useEffect(() => {
+    if (!!shadowRecording !== (level !== 'off')) setShadowRecording(level !== 'off');
+  }, [level, shadowRecording, setShadowRecording]);
+  useEffect(() => {
+    if (!installId) setInstallId(newInstallId());
+  }, [installId, setInstallId]);
+  useEffect(() => {
+    uploader.setAudio(audioOn);
+  }, [audioOn]);
   // For the "Recording audio" chip in the workspace bar (RecordingNotice.jsx).
   const { setShadowMicState } = useStoreActions((actions) => actions.app);
   // The Hugging Face write token: baked in at build (VF_HF_TOKEN), or a saved setting.
@@ -218,10 +205,9 @@ const ShadowCollector = () => {
   const discardRef = useRef(false); // the session turned out to be noise: delete, do not upload
   const lastDiscardRef = useRef(0); // when the last noise session was thrown away
 
-  const enabled = SHADOW_BUILD && !!tester.name && shadowRecording !== false;
-  useEffect(() => {
-    if (enabled) lookupPublicIp();
-  }, [enabled]);
+  // Sharing is opt-in: nothing runs until a level is chosen and the notice has been seen.
+  const noticeSeen = Number(shadowNotice) >= NOTICE_VERSION;
+  const enabled = SHADOW_BUILD && level !== 'off' && noticeSeen;
 
   // The uploader runs from the moment a registered tester opens the app, so a session left
   // on disk by a crash or a killed app reaches S3 even if the sevadaar never records again.
@@ -323,7 +309,7 @@ const ShadowCollector = () => {
         const id = new Date(t0).toISOString().replace(/[:.]/g, '-');
         const dir = path.join(shadowRoot(), id);
         fs.mkdirSync(dir, { recursive: true });
-        if (pre) {
+        if (pre && audioOn) {
           try {
             fs.writeFileSync(path.join(dir, 'audio-pre.wav'), listener.wavBytes(pre));
           } catch (_) {
@@ -341,7 +327,10 @@ const ShadowCollector = () => {
             {
               id,
               tester: readTester(shadowTester),
-              machine: machineFacts(),
+              machine: machineFacts(installId),
+              installId: installId || '',
+              collector: COLLECTOR_VERSION,
+              sharing: level,
               startedAt: new Date(t0).toISOString(),
               app: remote.app.getVersion(),
               build: `vf-${VF_FEATURE_VERSION}`,
@@ -360,7 +349,8 @@ const ShadowCollector = () => {
         );
         bus.begin(dir, t0);
         bus.note({ type: 'session_start', reason: startReasonRef.current });
-        if (pre) bus.note({ type: 'pre_roll', file: 'audio-pre.wav', seconds: pre.seconds });
+        if (pre && audioOn)
+          bus.note({ type: 'pre_roll', file: 'audio-pre.wav', seconds: pre.seconds });
         bus.human(labelOf(nav));
         const event = (obj) => {
           try {
@@ -390,6 +380,12 @@ const ShadowCollector = () => {
         // eslint-disable-next-line no-use-before-define
         const onEnded = () => rotate();
         const startSegment = () => {
+          // Labels only: the microphone stays open for the loudness meter and the hidden
+          // run, but nothing is written to disk.
+          if (!audioOn) {
+            s.stream.getAudioTracks().forEach((t) => t.addEventListener('ended', onEnded));
+            return;
+          }
           const n = s.seg;
           s.seg += 1; // a failed start never reuses a file name
           const file = path.join(dir, `audio-${String(n).padStart(3, '0')}.wav`);
@@ -604,9 +600,9 @@ const ShadowCollector = () => {
   // a real choice. Registering (name, Gurdwara) is how sessions are grouped, so OK needs a
   // name; "Turn off recording" needs nothing. If recording is later turned back on without
   // a registration, the card comes back to ask for the name.
-  const registered = !!tester.name;
-  const noticeSeen = Number(shadowNotice) >= NOTICE_VERSION;
-  if (!SHADOW_BUILD || shadowRecording === false || (registered && noticeSeen)) return null;
+  // Prod collector: the name is optional; the Gurdwara is how sessions are grouped.
+  const registered = !!tester.id;
+  if (!SHADOW_BUILD || level === 'off' || (registered && noticeSeen)) return null;
 
   return (
     <div className="shadow-consent">
@@ -614,16 +610,19 @@ const ShadowCollector = () => {
         <div className="shadow-consent-icon" aria-hidden="true">
           <i className="fa fa-microphone" />
         </div>
-        <h2 id="shadow-consent-title">Voice Autopilot records audio</h2>
-        <ShortNotice />
+        <h2 id="shadow-consent-title">
+          {audioOn ? 'Voice Autopilot will record audio' : 'Voice Autopilot will share labels'}
+        </h2>
+        <ShortNotice audio={audioOn} />
         <p className="shadow-consent-more">
-          Click the &quot;Recording audio&quot; label at the top of STTM any time for the full
-          details.
+          Click the label at the top of STTM any time for the full details.
+          {/* TODO(prod): presenting-only gate, score.js Bani reset and fault wrapping of every
+              entry point are still to do (see vf-prod-collector notes). */}
         </p>
         {!registered && (
           <>
             <label htmlFor="shadow-name">
-              Your name
+              Your name (optional)
               <input
                 id="shadow-name"
                 className="disable-kb-shortcuts"
@@ -632,7 +631,7 @@ const ShadowCollector = () => {
               />
             </label>
             <label htmlFor="shadow-gurdwara">
-              Gurdwara (optional)
+              Gurdwara
               <input
                 id="shadow-gurdwara"
                 className="disable-kb-shortcuts"
@@ -648,28 +647,28 @@ const ShadowCollector = () => {
             className="shadow-consent-off"
             onClick={() => {
               setShadowNotice(NOTICE_VERSION);
-              setShadowRecording(false);
+              setCollectorLevel('off');
             }}
           >
-            Turn off recording
+            Do not share
           </button>
           <button
             type="button"
             className="shadow-consent-yes"
-            disabled={!registered && !name.trim()}
+            disabled={!registered && !gurdwara.trim()}
             onClick={() => {
               if (!registered) {
                 setShadowTester(
                   packTester({
                     name: name.trim(),
-                    // Blank Gurdwara: the computer name stands in, so sessions still group.
-                    gurdwara: gurdwara.trim() || machineName(),
-                    id: `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
+                    gurdwara: gurdwara.trim(),
+                    id:
+                      tester.id ||
+                      `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
                   }),
                 );
               }
               setShadowNotice(NOTICE_VERSION);
-              setShadowRecording(true);
             }}
           >
             OK

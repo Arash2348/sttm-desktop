@@ -75,7 +75,7 @@
     "other-options": {
       "title": "OTHER_OPTIONS",
       "type": "switch",
-      "settings": ["limit-change-log", "statistics", "voice-follow-enabled", "improve-voice-follow", "shadow-recording"]
+      "settings": ["limit-change-log", "statistics", "voice-follow-enabled", "improve-voice-follow", "collector-level"]
     }
   },
   "settings": {
@@ -331,14 +331,31 @@
     "voice-follow-enabled": {
       "title": "VOICE_FOLLOW_ENABLED",
       "dontApplyClass": true,
-      "initialValue": true,
+      "initialValue": false,
       "notes": "VOICE_FOLLOW_ENABLED_MSG"
     },
     "shadow-recording": {
       "title": "SHADOW_RECORDING",
       "dontApplyClass": true,
-      "initialValue": true,
+      "initialValue": false,
       "notes": "SHADOW_RECORDING_MSG"
+    },
+    "collector-level": {
+      "title": "COLLECTOR_LEVEL",
+      "type": "dropdown",
+      "dontApplyClass": true,
+      "options": {
+        "off": "COLLECTOR_OFF",
+        "labels": "COLLECTOR_LABELS",
+        "audio": "COLLECTOR_AUDIO"
+      },
+      "initialValue": "off",
+      "notes": "COLLECTOR_LEVEL_MSG"
+    },
+    "install-id": {
+      "title": "INSTALL_ID",
+      "dontApplyClass": true,
+      "initialValue": ""
     },
     "shadow-notice": {
       "title": "SHADOW_NOTICE",

@@ -4,6 +4,12 @@
 // Voice-Follow would have shown is scored against it live (bus.js), and the audio and
 // both timelines upload to the team's private bucket (uploader.js).
 const SHADOW_BUILD = true;
+// Prod data collector prototype (vf-prod-collector): the Voice Autopilot tab and its
+// first-launch callout stay hidden unless Settings > Voice Autopilot is turned on; the hidden
+// run and self-score carry on as in the tester build. Sharing is opt-in (collector-level).
+const PROD_COLLECTOR = true;
+const COLLECTOR_VERSION = 'proto-1';
+// TODO(prod): replace the baked container SAS with a signed-URL endpoint before this ships.
 // Opus in WebM at this bit rate is ~14 MB per hour and plenty for speech recognition.
 const SHADOW_AUDIO_BPS = 32000;
 // MediaRecorder hands over audio this often (ms); each piece is appended at once, so a
@@ -67,6 +73,8 @@ const VF_BUILD_COMMIT = '__VF_BUILD_COMMIT__';
 
 module.exports = {
   SHADOW_BUILD,
+  PROD_COLLECTOR,
+  COLLECTOR_VERSION,
   VF_FEATURE_VERSION,
   VF_BUILD_COMMIT,
   SHADOW_AUDIO_BPS,

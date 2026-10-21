@@ -41,6 +41,12 @@ const queue = []; // [{ dir, file }]
 // Recording was turned off (Settings): nothing more is sent until start() again. A file
 // already being sent finishes; nothing else is queued or sent, even at quit.
 let stopped = false;
+// "Labels only" (Settings): audio files are neither queued nor sent, even ones left on disk.
+let audioOn = true;
+const isAudioFile = (file) => /^audio-(pre|\d+)\.(wav|webm)$/.test(file);
+const setAudio = (on) => {
+  audioOn = !!on;
+};
 
 const readJson = (f, d) => {
   try {
@@ -92,6 +98,7 @@ async function putFile(dir, file) {
 
 function enqueue(dir, file) {
   if (stopped) return;
+  if (!audioOn && isAudioFile(file)) return;
   if (!queue.some((q) => q.dir === dir && q.file === file)) queue.push({ dir, file });
 }
 
@@ -204,4 +211,4 @@ function stop() {
   queue.length = 0;
 }
 
-module.exports = { start, stop, enqueue, enqueueSession, flush };
+module.exports = { start, stop, enqueue, enqueueSession, flush, setAudio };

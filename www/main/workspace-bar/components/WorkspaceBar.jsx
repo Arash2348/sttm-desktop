@@ -21,7 +21,7 @@ const WorkspaceBar = () => {
   const openRecordingSetting = () => {
     setOverlayScreen('settings');
     setTimeout(() => {
-      const el = document.getElementById('shadow-recording');
+      const el = document.getElementById('collector-level');
       if (el) el.scrollIntoView({ block: 'center' });
     }, 300);
   };

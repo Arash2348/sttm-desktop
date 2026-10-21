@@ -6,29 +6,32 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 // whenever the sevadaar clicks the "Recording audio" chip in the workspace bar. One text
 // for both, so they can never drift apart. Keep it true to ShadowCollector.jsx (what is
 // saved: session.json, machineFacts) and uploader.js / hf.js (what turning it off stops).
-export const SETTING_PATH = 'Settings › Other Options › Voice Autopilot recording';
+export const SETTING_PATH = 'Settings › Other Options › Help improve Voice Autopilot';
 
-export const NoticeText = () => (
+export const NoticeText = ({ audio = true }) => (
   <div className="shadow-notice-text">
-    <p>To make Voice Autopilot better, this test version of STTM records:</p>
+    <p>To make Voice Autopilot better, STTM shares with Khalis Foundation:</p>
     <ul>
-      <li>
-        sound from the microphone while a program is going on (from when there is kirtan in the room
-        or you change what is on screen), <b>even when Voice Autopilot is not in use</b>
-      </li>
+      {audio && (
+        <li>
+          sound from the microphone while a program is going on (from when there is kirtan in the
+          room or you change what is on screen), <b>even when Voice Autopilot is not in use</b>
+        </li>
+      )}
       <li>what is shown on screen (which Shabad or Bani, and which pangti)</li>
       <li>what Voice Autopilot heard, and what it would have shown</li>
     </ul>
     <p>
-      It also saves the name and Gurdwara you enter, the computer&apos;s name and login name, its
-      operating system, processor, time zone and language, the internet address (which gives an
-      approximate location), the microphone&apos;s name, and a log of app errors.
+      It also saves the Gurdwara (and name, if you enter one), a random id for this install, the
+      computer&apos;s operating system, processor, time zone and language, the microphone&apos;s
+      name, and a log of app errors. No computer name, login name or internet address.
     </p>
     <p>
       While STTM is open, the microphone stays on to notice when a program starts; the last 2
-      minutes are kept in memory and saved only if a recording starts.
+      minutes are kept in memory
+      {audio ? ' and saved only if a recording starts' : ' and never saved'}.
     </p>
-    <p>Recordings are sent during the program to Khalis Foundation&apos;s secure storage.</p>
+    <p>Sessions are sent during the program to Khalis Foundation&apos;s secure storage.</p>
     <p>
       To turn it off: <b>{SETTING_PATH}</b>. Turning it off stops recording and sending at once
       (anything already being sent finishes). Anything recorded but not yet sent stays on this
@@ -38,13 +41,13 @@ export const NoticeText = () => (
 );
 
 // The short version for the first-launch card; the chip's popover keeps the full text.
-export const ShortNotice = () => (
+export const ShortNotice = ({ audio = true }) => (
   <div className="shadow-notice-text">
-    <p>This test build records to make Voice Autopilot better:</p>
+    <p>To make Voice Autopilot better, STTM shares:</p>
     <ul>
-      <li>the microphone during a program, even with Voice Autopilot off</li>
-      <li>what is on screen and what Voice Autopilot heard</li>
-      <li>your name, Gurdwara, computer details and approximate location</li>
+      {audio && <li>the microphone during a program, even with Voice Autopilot off</li>}
+      <li>what is on screen (Shabad or Bani, pangti) and what Voice Autopilot heard</li>
+      <li>your Gurdwara, a random install id and basic computer details (no name or address)</li>
     </ul>
     <p>Sent to Khalis Foundation&apos;s secure storage.</p>
     <p>
@@ -58,7 +61,8 @@ export const ShortNotice = () => (
 // Clicking it shows the notice and the way to turn it off.
 export const RecordingChip = ({ onOpenSettings }) => {
   const micState = useStoreState((state) => state.app.shadowMicState);
-  const { setShadowRecording } = useStoreActions((actions) => actions.userSettings);
+  const audio = useStoreState((state) => state.userSettings.collectorLevel) === 'audio';
+  const { setCollectorLevel } = useStoreActions((actions) => actions.userSettings);
   const [open, setOpen] = useState(false);
   const [more, setMore] = useState(false);
   const ref = useRef(null);
@@ -81,6 +85,8 @@ export const RecordingChip = ({ onOpenSettings }) => {
 
   if (micState !== 'recording' && micState !== 'listening') return null;
   const recording = micState === 'recording';
+  let chipText = 'Mic On';
+  if (recording) chipText = audio ? 'Recording Audio' : 'Sharing labels';
 
   return (
     <div className="shadow-rec" ref={ref}>
@@ -92,12 +98,12 @@ export const RecordingChip = ({ onOpenSettings }) => {
         onClick={() => setOpen(!open)}
       >
         <span className="shadow-rec-dot" />
-        {recording ? 'Recording Audio' : 'Mic On'}
+        {chipText}
       </button>
       {open && (
         <div className="shadow-rec-pop" role="dialog" aria-label="Voice Autopilot recording">
-          <h4>{recording ? 'Recording Audio' : 'Mic On, waiting for a program'}</h4>
-          <ShortNotice />
+          <h4>{recording ? chipText : 'Mic On, waiting for a program'}</h4>
+          <ShortNotice audio={audio} />
           <button
             type="button"
             className="shadow-rec-more"
@@ -106,7 +112,7 @@ export const RecordingChip = ({ onOpenSettings }) => {
           >
             {more ? 'Hide details' : 'More details'}
           </button>
-          {more && <NoticeText />}
+          {more && <NoticeText audio={audio} />}
           <div className="shadow-rec-actions">
             <button
               type="button"
@@ -123,10 +129,10 @@ export const RecordingChip = ({ onOpenSettings }) => {
               className="shadow-rec-off"
               onClick={() => {
                 setOpen(false);
-                setShadowRecording(false);
+                setCollectorLevel('off');
               }}
             >
-              Turn off recording
+              Stop sharing
             </button>
           </div>
         </div>
@@ -138,3 +144,5 @@ export const RecordingChip = ({ onOpenSettings }) => {
 RecordingChip.propTypes = {
   onOpenSettings: PropTypes.func.isRequired,
 };
+NoticeText.propTypes = { audio: PropTypes.bool };
+ShortNotice.propTypes = { audio: PropTypes.bool };

@@ -10,7 +10,7 @@ import { setAutopilotSlot } from '../../../addons/voice-follow/components/autopi
 import AudioCaptureIcon from '../../../addons/voice-follow/components/AudioCaptureIcon';
 import AutopilotIntro from '../../../addons/voice-follow/components/AutopilotIntro';
 
-const { SHADOW_BUILD } = require('../../../addons/voice-follow/shadow/config');
+const { SHADOW_BUILD, PROD_COLLECTOR } = require('../../../addons/voice-follow/shadow/config');
 
 // Autopilot tab: Voice-Follow renders its live view into this slot (see autopilotSlot.js).
 const AutopilotContent = () => <div className="vf-autopilot-slot" ref={setAutopilotSlot} />;
@@ -32,7 +32,10 @@ const SearchPane = ({ className }) => {
   const { voiceFollowEnabled } = useStoreState((state) => state.userSettings);
   // Voice-Follow can be switched off in Settings; in tester builds it still follows in the
   // shadow (addons/voice-follow/shadow) whether or not the tab is shown.
-  const showAutopilot = voiceFollowEnabled !== false || !SHADOW_BUILD;
+  // The prod collector build hides the tab unless Settings > Voice Autopilot is turned on.
+  const showAutopilot = PROD_COLLECTOR
+    ? voiceFollowEnabled === true
+    : voiceFollowEnabled !== false || !SHADOW_BUILD;
   const isAutopilot = showAutopilot && autopilotEnabled;
   const [tabSeen, setTabSeen] = useState(readTabSeen);
   useEffect(() => {
@@ -81,7 +84,9 @@ const SearchPane = ({ className }) => {
             <span className="vf-tab-label">Voice Autopilot</span>
             {isNew && <span className="vf-tab-chip">New</span>}
             {autopilotLive && <span className="search-pane-tab-live" title="Listening" />}
-            {!isAutopilot && <AutopilotIntro onStart={() => setAutopilotEnabled(true)} />}
+            {!isAutopilot && !PROD_COLLECTOR && (
+              <AutopilotIntro onStart={() => setAutopilotEnabled(true)} />
+            )}
           </a>
         </div>
       )}
