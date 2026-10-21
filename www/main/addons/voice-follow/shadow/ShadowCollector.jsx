@@ -650,32 +650,8 @@ const ShadowCollector = () => {
               setCollectorLevel('off');
             }}
           >
-            Do not share
+            Turn off sharing
           </button>
-          {!audioOn && (
-            <button
-              type="button"
-              className="shadow-consent-audio"
-              disabled={!registered && !gurdwara.trim()}
-              onClick={() => {
-                if (!registered) {
-                  setShadowTester(
-                    packTester({
-                      name: name.trim(),
-                      gurdwara: gurdwara.trim(),
-                      id:
-                        tester.id ||
-                        `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
-                    }),
-                  );
-                }
-                setCollectorLevel('audio');
-                setShadowNotice(NOTICE_VERSION);
-              }}
-            >
-              Also share audio
-            </button>
-          )}
           <button
             type="button"
             className="shadow-consent-yes"
@@ -695,7 +671,7 @@ const ShadowCollector = () => {
               setShadowNotice(NOTICE_VERSION);
             }}
           >
-            {audioOn ? 'OK' : 'Share labels'}
+            OK
           </button>
         </div>
       </div>
