@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const { UPLOAD_URL, UPLOAD_SAS } = require('./config');
+const { guard } = require('./diag');
 
 // The renderer has fetch; the main process (quit-time flush) may not.
 // eslint-disable-next-line global-require
@@ -184,10 +185,13 @@ function start(shadowRoot, tester, opts = {}) {
   if (timer) return;
   scanPending();
   drain();
-  timer = setInterval(() => {
-    scanPending();
-    drain();
-  }, TICK_MS);
+  timer = setInterval(
+    guard('uploader.tick', () => {
+      scanPending();
+      drain();
+    }),
+    TICK_MS,
+  );
 }
 
 // The app is quitting (main process): upload whatever is still pending, for at most ms,
@@ -211,4 +215,12 @@ function stop() {
   queue.length = 0;
 }
 
-module.exports = { start, stop, enqueue, enqueueSession, flush, setAudio };
+// Every entry point is guarded (diag.js): a fault is logged, never thrown at the caller.
+module.exports = {
+  start: guard('uploader.start', start),
+  stop: guard('uploader.stop', stop),
+  enqueue: guard('uploader.enqueue', enqueue),
+  enqueueSession: guard('uploader.enqueueSession', enqueueSession),
+  flush: guard('uploader.flush', flush),
+  setAudio: guard('uploader.setAudio', setAudio),
+};

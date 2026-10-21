@@ -12,6 +12,7 @@
 //           for a busy computer, and that ran past the gate is kept: better extra data.)
 // Each start is a new session folder, uploaded as soon as it stops.
 const { SHADOW_QUIET_STOP_MS, SHADOW_CHANGE_GRACE_MS, SHADOW_EMPTY_GATE_MS } = require('./config');
+const { guard } = require('./diag');
 
 // Should a session that is ending be thrown away rather than uploaded?
 function discardOnStop({ now, startedAt, startedBy, lastHeardAt, vfUpAt }) {
@@ -39,4 +40,9 @@ function stopReason({ now, startedAt, startedBy, lastChangeAt, lastHeardAt, last
   return 'quiet';
 }
 
-module.exports = { shouldStart, stopReason, discardOnStop };
+// Guarded (diag.js): a fault means "no start", "keep going", "keep the session".
+module.exports = {
+  shouldStart: guard('service.shouldStart', shouldStart, false),
+  stopReason: guard('service.stopReason', stopReason, null),
+  discardOnStop: guard('service.discardOnStop', discardOnStop, false),
+};

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useStoreState, useStoreActions } from 'easy-peasy';
+import CollectorBoundary from './Boundary';
 
 // What the tester build records, said once on first launch (ShadowCollector.jsx) and again
 // whenever the sevadaar clicks the "Recording audio" chip in the workspace bar. One text
@@ -59,7 +60,7 @@ export const ShortNotice = ({ audio = true }) => (
 // The chip at the left of the workspace bar (controller window only, never the viewer):
 // "Recording audio" while a session records, "Mic on" while only the listener is open.
 // Clicking it shows the notice and the way to turn it off.
-export const RecordingChip = ({ onOpenSettings }) => {
+const RecordingChipInner = ({ onOpenSettings }) => {
   const micState = useStoreState((state) => state.app.shadowMicState);
   const audio = useStoreState((state) => state.userSettings.collectorLevel) === 'audio';
   const { setCollectorLevel } = useStoreActions((actions) => actions.userSettings);
@@ -141,7 +142,13 @@ export const RecordingChip = ({ onOpenSettings }) => {
   );
 };
 
-RecordingChip.propTypes = {
+// A render fault in the chip unmounts the chip, never the workspace bar.
+export const RecordingChip = (props) => (
+  <CollectorBoundary name="RecordingChip">
+    <RecordingChipInner {...props} />
+  </CollectorBoundary>
+);
+RecordingChipInner.propTypes = {
   onOpenSettings: PropTypes.func.isRequired,
 };
 NoticeText.propTypes = { audio: PropTypes.bool };

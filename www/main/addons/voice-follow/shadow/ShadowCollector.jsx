@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { SHADOW_BUILD, SHADOW_SEGMENT_MS, SHADOW_DISCARD_COOLDOWN_MS } from './config';
 import { ShortNotice } from './RecordingNotice';
+import CollectorBoundary from './Boundary';
 import { i18n } from '../../../common/i18n';
 
 const fs = require('fs');
@@ -19,6 +20,7 @@ const pcm = require('./pcm');
 const storage = require('./storage');
 const presenting = require('./presenting');
 const { logDir } = require('../engine/session-log');
+const { guard } = require('./diag');
 
 // One folder per app session under <userData>/voice-follow/shadow/<id>/:
 //   audio-000.wav ...  - what the microphone heard (16 kHz mono WAV), one per SHADOW_SEGMENT_MS
@@ -295,7 +297,7 @@ const ShadowCollector = () => {
   // Begin a session now (not from a screen change): the room started sounding, or the
   // sevadaar pressed Start in Voice-Follow. Whatever the listener heard just before comes
   // along as the session's opening audio.
-  const beginNow = (reason) => {
+  const beginNow = guard('collector.beginNow', (reason) => {
     if (!enabled || active) return;
     if (blockedByGate(reason)) return;
     if (!storage.canStart(shadowRoot())) {
@@ -310,7 +312,7 @@ const ShadowCollector = () => {
     startReasonRef.current = reason;
     presentingOffSinceRef.current = null;
     setActive(true);
-  };
+  });
   const beginNowRef = useRef(beginNow);
   beginNowRef.current = beginNow;
 
@@ -339,7 +341,7 @@ const ShadowCollector = () => {
 
   // Pressing Start in Voice-Follow begins a session at once, so its search is recorded too.
   useEffect(() => {
-    const onStart = () => beginNowRef.current('voice-follow start');
+    const onStart = guard('collector.onStart', () => beginNowRef.current('voice-follow start'));
     window.addEventListener('vf-shadow-start', onStart);
     return () => window.removeEventListener('vf-shadow-start', onStart);
   }, []);
@@ -350,7 +352,7 @@ const ShadowCollector = () => {
     let segTimer = null;
     let meterTimer = null;
     let meterCtx = null;
-    const start = async () => {
+    const start = guard('collector.start', async () => {
       startingRef.current = true;
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -505,12 +507,15 @@ const ShadowCollector = () => {
         startSegment();
         // A new file every SHADOW_SEGMENT_MS; also check every 20 s that the mic is alive.
         let lastRotate = Date.now();
-        segTimer = setInterval(() => {
-          if (Date.now() - lastRotate >= SHADOW_SEGMENT_MS || !live()) {
-            lastRotate = Date.now();
-            rotate();
-          }
-        }, 20000);
+        segTimer = setInterval(
+          guard('collector.segment', () => {
+            if (Date.now() - lastRotate >= SHADOW_SEGMENT_MS || !live()) {
+              lastRotate = Date.now();
+              rotate();
+            }
+          }),
+          20000,
+        );
       } catch (e) {
         startingRef.current = false;
         setShadowMicState('off');
@@ -524,11 +529,11 @@ const ShadowCollector = () => {
           /* ignore */
         }
       }
-    };
+    });
     start();
     // quitting: the main process uploads what is left (app.js will-quit), so the dying
     // page must not race it over uploaded.json.
-    const stop = (quitting) => {
+    const stop = guard('collector.stop', (quitting) => {
       stopped = true;
       clearInterval(segTimer);
       clearInterval(meterTimer);
@@ -564,7 +569,7 @@ const ShadowCollector = () => {
         return;
       }
       if (quitting !== true) uploader.enqueueSession(s.dir);
-    };
+    });
     const onUnload = () => stop(true);
     window.addEventListener('beforeunload', onUnload);
     uploader.start(shadowRoot(), readTester(shadowTester));
@@ -579,51 +584,54 @@ const ShadowCollector = () => {
   // Stop when the sevadaar has been idle long enough (service.js decides).
   useEffect(() => {
     if (!recording) return undefined;
-    const timer = setInterval(() => {
-      const s = sessionRef.current;
-      if (storage.mustStop(shadowRoot())) {
-        bus.note({ type: 'session_stop', reason: 'disk_low' });
-        setActive(false);
-        return;
-      }
-      // Presenting stopped (viewer closed, or no screen change) for 10 min: end the session
-      // the same way as the quiet stop, so it uploads as usual.
-      presentingOffSinceRef.current = presenting.trackOff(
-        presentingNow(),
-        presentingOffSinceRef.current,
-      );
-      const gateReason = presenting.stopReason(presentingOffSinceRef.current);
-      if (gateReason) {
-        bus.note({ type: 'session_stop', reason: gateReason });
-        setActive(false);
-        return;
-      }
-      const reason = service.stopReason({
-        now: Date.now(),
-        startedAt: s ? s.startedAt : Date.now(),
-        startedBy: startReasonRef.current,
-        lastChangeAt: lastChangeRef.current,
-        lastHeardAt: bus.lastHeardAt(),
-        lastSoundAt: bus.lastSoundAt(),
-        vfUpAt: bus.vfUpAt(),
-      });
-      if (!reason) return;
-      bus.note({ type: 'session_stop', reason });
-      if (
-        reason === 'no_words' ||
-        service.discardOnStop({
+    const timer = setInterval(
+      guard('collector.stopCheck', () => {
+        const s = sessionRef.current;
+        if (storage.mustStop(shadowRoot())) {
+          bus.note({ type: 'session_stop', reason: 'disk_low' });
+          setActive(false);
+          return;
+        }
+        // Presenting stopped (viewer closed, or no screen change) for 10 min: end the session
+        // the same way as the quiet stop, so it uploads as usual.
+        presentingOffSinceRef.current = presenting.trackOff(
+          presentingNow(),
+          presentingOffSinceRef.current,
+        );
+        const gateReason = presenting.stopReason(presentingOffSinceRef.current);
+        if (gateReason) {
+          bus.note({ type: 'session_stop', reason: gateReason });
+          setActive(false);
+          return;
+        }
+        const reason = service.stopReason({
           now: Date.now(),
           startedAt: s ? s.startedAt : Date.now(),
           startedBy: startReasonRef.current,
+          lastChangeAt: lastChangeRef.current,
           lastHeardAt: bus.lastHeardAt(),
+          lastSoundAt: bus.lastSoundAt(),
           vfUpAt: bus.vfUpAt(),
-        })
-      ) {
-        discardRef.current = true;
-        lastDiscardRef.current = Date.now();
-      }
-      setActive(false);
-    }, 20000);
+        });
+        if (!reason) return;
+        bus.note({ type: 'session_stop', reason });
+        if (
+          reason === 'no_words' ||
+          service.discardOnStop({
+            now: Date.now(),
+            startedAt: s ? s.startedAt : Date.now(),
+            startedBy: startReasonRef.current,
+            lastHeardAt: bus.lastHeardAt(),
+            vfUpAt: bus.vfUpAt(),
+          })
+        ) {
+          discardRef.current = true;
+          lastDiscardRef.current = Date.now();
+        }
+        setActive(false);
+      }),
+      20000,
+    );
     return () => clearInterval(timer);
   }, [recording]);
 
@@ -631,19 +639,22 @@ const ShadowCollector = () => {
   // it and start again.
   useEffect(() => {
     if (!recording) return undefined;
-    const timer = setInterval(() => {
-      if (sessionRef.current || startingRef.current) return;
-      try {
-        fs.mkdirSync(shadowRoot(), { recursive: true });
-        fs.appendFileSync(
-          path.join(shadowRoot(), 'errors.log'),
-          `${new Date().toISOString()} recording was not running; restarted\n`,
-        );
-      } catch (_) {
-        /* ignore */
-      }
-      setRestarts((n) => n + 1);
-    }, 60000);
+    const timer = setInterval(
+      guard('collector.watchdog', () => {
+        if (sessionRef.current || startingRef.current) return;
+        try {
+          fs.mkdirSync(shadowRoot(), { recursive: true });
+          fs.appendFileSync(
+            path.join(shadowRoot(), 'errors.log'),
+            `${new Date().toISOString()} recording was not running; restarted\n`,
+          );
+        } catch (_) {
+          /* ignore */
+        }
+        setRestarts((n) => n + 1);
+      }),
+      60000,
+    );
     return () => clearInterval(timer);
   }, [recording]);
 
@@ -652,29 +663,32 @@ const ShadowCollector = () => {
   const label = labelOf(nav);
   const key = JSON.stringify(label);
   const prevKeyRef = useRef(null);
-  useEffect(() => {
-    const prev = prevKeyRef.current;
-    prevKeyRef.current = key;
-    if (sessionRef.current) bus.human(label);
-    const changed = prev != null && key !== prev;
-    if (changed) lastChangeRef.current = Date.now();
-    if (enabled && !active && changed) setPresentingOn(presentingNow());
-    if (
-      enabled &&
-      !active &&
-      service.shouldStart(prev, key) &&
-      !blockedByGate('screen change') &&
-      storage.canStart(shadowRoot())
-    ) {
-      let what = 'cleared';
-      if (bus.contentKey(label)) what = bus.contentKey(label);
-      else if (label.slide) what = 'slide';
-      startReasonRef.current = `screen: ${what}`;
-      presentingOffSinceRef.current = null;
-      setActive(true);
-    }
+  useEffect(
+    guard('collector.screenChange', () => {
+      const prev = prevKeyRef.current;
+      prevKeyRef.current = key;
+      if (sessionRef.current) bus.human(label);
+      const changed = prev != null && key !== prev;
+      if (changed) lastChangeRef.current = Date.now();
+      if (enabled && !active && changed) setPresentingOn(presentingNow());
+      if (
+        enabled &&
+        !active &&
+        service.shouldStart(prev, key) &&
+        !blockedByGate('screen change') &&
+        storage.canStart(shadowRoot())
+      ) {
+        let what = 'cleared';
+        if (bus.contentKey(label)) what = bus.contentKey(label);
+        else if (label.slide) what = 'slide';
+        startReasonRef.current = `screen: ${what}`;
+        presentingOffSinceRef.current = null;
+        setActive(true);
+      }
+    }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key]);
+    [key],
+  );
 
   // First launch (and once more whenever NOTICE_VERSION is bumped): what is recorded, and
   // a real choice. Registering (name, Gurdwara) is how sessions are grouped, so OK needs a
@@ -757,4 +771,11 @@ const ShadowCollector = () => {
   );
 };
 
-export default ShadowCollector;
+// Fault wrapping: a render error in the collector unmounts it (logged), never STTM.
+const GuardedShadowCollector = () => (
+  <CollectorBoundary name="ShadowCollector">
+    <ShadowCollector />
+  </CollectorBoundary>
+);
+
+export default GuardedShadowCollector;

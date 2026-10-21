@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const { SHADOW_SOUND_LEVEL } = require('./config');
 const { contentKey, scoreDir, C } = require('./score');
+const { guard } = require('./diag');
 
 const SAVE_S = 30;
 // One screen change by the app is several store actions, and the screen label is read after
@@ -88,7 +89,7 @@ function begin(dir, t0) {
     vfUpAt: null,
     recentLevel: 0,
     act: { sec: 0, level: 0, letters: 0, text: '' },
-    timer: setInterval(tick, 1000),
+    timer: setInterval(guard('bus.tick', tick), 1000),
   };
 }
 
@@ -210,16 +211,17 @@ const lastSoundAt = () => (S ? S.lastSoundAt || null : null);
 const vfUpAt = () => (S ? S.vfUpAt || null : null);
 const sessionDir = () => (S ? S.dir : null);
 
+// Every entry point is guarded (diag.js): a fault is logged, never thrown at the caller.
 module.exports = {
-  begin,
-  end,
-  human,
-  system,
-  level,
-  heard,
-  setPaused,
-  setVisible,
-  note,
+  begin: guard('bus.begin', begin),
+  end: guard('bus.end', end),
+  human: guard('bus.human', human),
+  system: guard('bus.system', system),
+  level: guard('bus.level', level),
+  heard: guard('bus.heard', heard),
+  setPaused: guard('bus.setPaused', setPaused),
+  setVisible: guard('bus.setVisible', setVisible),
+  note: guard('bus.note', note),
   active,
   lastHeardAt,
   lastSoundAt,

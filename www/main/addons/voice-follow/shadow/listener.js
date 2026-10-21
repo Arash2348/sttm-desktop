@@ -10,6 +10,7 @@ const {
   SHADOW_SOUND_SHARE,
   SHADOW_PRE_ROLL_S,
 } = require('./config');
+const { guard } = require('./diag');
 
 const RATE = 16000;
 const TICK_MS = 500; // one loudness reading per half second
@@ -87,7 +88,7 @@ async function start(onSound) {
     onSound,
   };
   const step = ctx.sampleRate / RATE;
-  node.onaudioprocess = (e) => {
+  node.onaudioprocess = guard('listener.audio', (e) => {
     const x = e.inputBuffer.getChannelData(0);
     for (let i = 0; i < x.length; i += 1) {
       s.sumSq += x[i] * x[i];
@@ -104,26 +105,29 @@ async function start(onSound) {
       }
     }
     s.acc -= x.length;
-  };
+  });
   src.connect(node);
   node.connect(ctx.destination); // a ScriptProcessor only runs while connected; output is silent
-  s.timer = setInterval(() => {
-    const rms = s.n ? Math.sqrt(s.sumSq / s.n) : 0;
-    s.sumSq = 0;
-    s.n = 0;
-    const now = Date.now();
-    s.ticks.push([now, rms >= SHADOW_SOUND_LEVEL]);
-    s.ticks = s.ticks.filter(([t]) => now - t <= SHADOW_SOUND_WINDOW_MS);
-    const span = now - s.ticks[0][0];
-    const loud = s.ticks.filter(([, l]) => l).length;
-    if (
-      span >= SHADOW_SOUND_WINDOW_MS - TICK_MS * 2 &&
-      loud >= s.ticks.length * SHADOW_SOUND_SHARE
-    ) {
-      s.ticks = [];
-      if (s.onSound) s.onSound();
-    }
-  }, TICK_MS);
+  s.timer = setInterval(
+    guard('listener.tick', () => {
+      const rms = s.n ? Math.sqrt(s.sumSq / s.n) : 0;
+      s.sumSq = 0;
+      s.n = 0;
+      const now = Date.now();
+      s.ticks.push([now, rms >= SHADOW_SOUND_LEVEL]);
+      s.ticks = s.ticks.filter(([t]) => now - t <= SHADOW_SOUND_WINDOW_MS);
+      const span = now - s.ticks[0][0];
+      const loud = s.ticks.filter(([, l]) => l).length;
+      if (
+        span >= SHADOW_SOUND_WINDOW_MS - TICK_MS * 2 &&
+        loud >= s.ticks.length * SHADOW_SOUND_SHARE
+      ) {
+        s.ticks = [];
+        if (s.onSound) s.onSound();
+      }
+    }),
+    TICK_MS,
+  );
   st = s;
 }
 
@@ -149,4 +153,12 @@ function wavBytes({ pcm, rate }) {
   return b;
 }
 
-module.exports = { start, stop, takePreRoll, running, wavBytes };
+// Every entry point is guarded (diag.js): a fault is logged, never thrown at the caller
+// (start() rejects only through guard: the collector sees it resolve with nothing running).
+module.exports = {
+  start: guard('listener.start', start),
+  stop: guard('listener.stop', stop),
+  takePreRoll: guard('listener.takePreRoll', takePreRoll, null),
+  running,
+  wavBytes,
+};
