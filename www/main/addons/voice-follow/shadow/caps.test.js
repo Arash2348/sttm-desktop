@@ -62,10 +62,10 @@ describe('uploader.meteredFrom', () => {
 
 describe('remote.enabledFrom', () => {
   it('only an explicit enabled:false turns the collector off', () => {
-    assert.equal(enabledFrom({ enabled: false }), false);
-    assert.equal(enabledFrom({ enabled: true }), true);
-    assert.equal(enabledFrom({}), true);
-    assert.equal(enabledFrom(null), true);
-    assert.equal(enabledFrom('junk'), true);
+    assert.equal(enabledFrom({ enabled: false }, 'id', false), false);
+    assert.equal(enabledFrom({ enabled: true }, 'id', false), true);
+    assert.equal(enabledFrom({}, 'id', false), true);
+    assert.equal(enabledFrom(null, 'id', false), true);
+    assert.equal(enabledFrom('junk', 'id', false), true);
   });
 });

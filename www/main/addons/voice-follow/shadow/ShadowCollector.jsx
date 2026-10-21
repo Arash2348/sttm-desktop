@@ -219,14 +219,14 @@ const ShadowCollector = () => {
   const discardRef = useRef(false); // the session turned out to be noise: delete, do not upload
   const lastDiscardRef = useRef(0); // when the last noise session was thrown away
 
-  // Remote kill-switch (remote.js): fetched at launch and hourly while sharing is on; an
-  // explicit {"enabled": false} keeps the collector idle until it says otherwise.
+  // Remote switch (remote.js): fetched at launch and hourly while sharing is on. Prod build:
+  // off until the server turns it on for this install (allow list or percent rollout).
   const [remoteOn, setRemoteOn] = useState(remoteConfig.enabled());
   useEffect(() => {
     if (!SHADOW_BUILD || level === 'off') return undefined;
-    remoteConfig.start({ onChange: setRemoteOn, log: diag });
+    remoteConfig.start({ onChange: setRemoteOn, log: diag, installId });
     return () => remoteConfig.stop();
-  }, [level]);
+  }, [level, installId]);
   // Sharing is on by default (labels only); nothing runs until the first-launch card has been seen.
   const noticeSeen = Number(shadowNotice) >= NOTICE_VERSION;
   const enabled = SHADOW_BUILD && level !== 'off' && noticeSeen && remoteOn;

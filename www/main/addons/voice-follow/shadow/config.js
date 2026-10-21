@@ -74,6 +74,8 @@ const UPLOAD_SAS = '__VF_UPLOAD_SAS__';
 // container until the real config location exists.
 const COLLECTOR_CONFIG_URL = `${UPLOAD_URL}/collector/config.json`;
 const COLLECTOR_CONFIG_EVERY_MS = 60 * 60 * 1000;
+// A cached server answer is trusted this long when the server cannot be reached (prod build).
+const COLLECTOR_CONFIG_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 // A second copy of every session goes to Hugging Face in the team's recording layout
 // (hf.js). The write token is entered on the first-launch card (kept in the app's settings)
 // or, if Khalis chooses, injected at build time like the SAS (VF_HF_TOKEN).
@@ -112,6 +114,7 @@ module.exports = {
   SHADOW_STORE_CAP_BYTES,
   COLLECTOR_CONFIG_URL,
   COLLECTOR_CONFIG_EVERY_MS,
+  COLLECTOR_CONFIG_MAX_AGE_MS,
   SHADOW_CPU_PAUSE,
   SHADOW_CPU_RESUME,
   UPLOAD_URL,
