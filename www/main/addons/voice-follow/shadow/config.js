@@ -37,8 +37,13 @@ const SHADOW_SOUND_SHARE = 0.75;
 const SHADOW_PRE_ROLL_S = 120;
 // A session ends once the room has been quiet (no sound and no words) this long and the
 // screen has not changed for SHADOW_CHANGE_GRACE_MS. While kirtan plays it never ends.
-const SHADOW_QUIET_STOP_MS = testMs('VF_TEST_QUIET_STOP_MS', 5 * 60 * 1000);
-const SHADOW_CHANGE_GRACE_MS = testMs('VF_TEST_CHANGE_GRACE_MS', 2 * 60 * 1000);
+// Prod collector: 30 min with neither room voice nor a screen change (an Akhand Kirtan
+// Shabad sits on one pangti for 20+ min; the pangti alone must never end a session).
+const SHADOW_QUIET_STOP_MS = testMs('VF_TEST_QUIET_STOP_MS', (PROD_COLLECTOR ? 30 : 5) * 60 * 1000);
+const SHADOW_CHANGE_GRACE_MS = testMs(
+  'VF_TEST_CHANGE_GRACE_MS',
+  (PROD_COLLECTOR ? 30 : 2) * 60 * 1000,
+);
 // A session the room started (no sevadaar) where Voice-Follow was listening this long and
 // recognised no words at all is noise, not kirtan: it is discarded, not uploaded.
 const SHADOW_EMPTY_GATE_MS = testMs('VF_TEST_EMPTY_GATE_MS', 3 * 60 * 1000);

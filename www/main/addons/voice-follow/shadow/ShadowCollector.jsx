@@ -601,10 +601,11 @@ const ShadowCollector = () => {
           setActive(false);
           return;
         }
-        // Presenting stopped (viewer closed, or no screen change) for 10 min: end the session
-        // the same way as the quiet stop, so it uploads as usual.
+        // The display went away (viewer closed / single display off) for 10 min straight:
+        // end the session the same way as the quiet stop, so it uploads as usual. A long
+        // Shabad on one pangti never ends it: change recency only gates starting.
         presentingOffSinceRef.current = presenting.trackOff(
-          presentingNow(),
+          presenting.displayOn(displayRef.current),
           presentingOffSinceRef.current,
         );
         const gateReason = presenting.stopReason(presentingOffSinceRef.current);
