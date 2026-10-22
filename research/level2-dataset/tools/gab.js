@@ -38,20 +38,28 @@ const G = require('./gab-score');
 
 const TOOLS = __dirname;
 const DS = path.join(TOOLS, '..');
-const MAIN_REPO = '/Users/asingh02/personal/sttm-desktop';
+const MAIN_REPO = process.env.VF_MAIN_REPO || '/Users/asingh02/personal/sttm-desktop';
 let BENCH = process.env.VF_BENCHMARK || path.join(os.homedir(), 'personal/vf-benchmark');
 const { DEFAULT_ROOT, modelSha } = require('./emis-cache');
 const CACHE = path.resolve(process.env.VF_EMIS_CACHE || DEFAULT_ROOT);
 const MODEL = process.env.MODEL || '/Users/asingh02/AAI/models/karansea-shabad-ctc/model.int8.onnx';
-const CODEC = process.env.VF_EMIS_CODEC || 'q16';
-const MIN_FREE_GB = 15;
+// x86 is the reference (owner, Oct 17 2026): GAB scores from the x86 (linux-x64) model output of every recording
+// (codec namespace q16-x86, recorded on the GCP VM). VF_EMIS_CODEC=q16 = the older mixed Mac + x86 cache. Set in env so
+// vf-check and the runners it starts use the same namespace.
+if (!process.env.VF_EMIS_CODEC) process.env.VF_EMIS_CODEC = 'q16-x86';
+const CODEC = process.env.VF_EMIS_CODEC;
+const MIN_FREE_GB = Number(process.env.VF_MIN_FREE_GB || 15);
 const HF_REPO = 'khalisfoundation/GurbaniAutopilotBench';
 const hfToken = () => process.env.HF_TOKEN || (fs.existsSync(path.join(os.homedir(), '.vf-hf-token')) ? fs.readFileSync(path.join(os.homedir(), '.vf-hf-token'), 'utf8').trim() : '');
 async function hfGet(repo, file) {
   const t = hfToken();
-  const r = await fetch(`https://huggingface.co/datasets/${repo}/resolve/main/${file.split('/').map(encodeURIComponent).join('/')}`, { headers: t ? { Authorization: `Bearer ${t}` } : {} });
-  if (!r.ok) throw new Error(`HF ${r.status} for ${file}`);
-  return r.text();
+  // Hugging Face rate-limits bursts (HTTP 429, e.g. several cloud sessions at once): wait and retry, up to ~8 min
+  for (let k = 0; ; k++) {
+    const r = await fetch(`https://huggingface.co/datasets/${repo}/resolve/main/${file.split('/').map(encodeURIComponent).join('/')}`, { headers: t ? { Authorization: `Bearer ${t}` } : {} });
+    if (r.ok) return r.text();
+    if ((r.status === 429 || r.status >= 500) && k < 8) { await new Promise((ok) => setTimeout(ok, Math.min(120, 5 * 2 ** k) * 1000 * (0.75 + Math.random() / 2))); continue; }
+    throw new Error(`HF ${r.status} for ${file}`);
+  }
 }
 // --manifest hf[:org/repo]: score against the dataset on Hugging Face (manifest + the selected clips' truth csv files,
 // cached per manifest hash under <cache>/gab-hf/<sha>/); default: the local copy ~/personal/vf-benchmark
@@ -206,6 +214,9 @@ function freeBytes(dir) {
 // Pull every entry that is missing locally (thorough: also partial ones) from the shared Azure bench-cache.
 // Returns the ids still missing in both places (= need the model).
 async function pullMissing(clips, { thorough = false, say = console.log } = {}) {
+  // VF_NO_EMIS_PULL=1 (cloud-gab): the builds' replays come from the shared results cache (results-sync.js pull), so
+  // the model output is not fetched; a build that does need a replay then reports a cache miss = INCOMPLETE, never PASS
+  if (process.env.VF_NO_EMIS_PULL === '1') return [];
   const uniq = [...new Map(clips.map((c) => [c.id, { id: c.id, wav: c.wav }])).values()].filter((c) => fs.existsSync(c.wav));
   const todo = thorough ? uniq : uniq.filter((c) => !cachedLocally(c.id));
   if (!todo.length) return [];
@@ -312,6 +323,7 @@ async function prepare(builds, label) {
   const out = outDirFor(label);
   console.log(`${G.GAB_VERSION} ${label}: ${G.tierTitle(sel.set)} (--set ${sel.set}) · manifest ${sel.man.sha} · tier ${sel.tier} · split ${sel.split}${arg('folders') ? ` · folders ${arg('folders')}` : ''} · ${sel.jobs.length} clips (${(sel.jobs.reduce((a, j) => a + j.dur, 0) / 3600).toFixed(2)} h of audio), ${sel.notRun.length} without a runner · load ${load()}`);
   for (const b of builds) console.log(`  build ${b.root} @ ${b.commit}${b.dirty ? ' (uncommitted edits)' : ''}`);
+  console.log(`  model output: ${/-x86$/.test(CODEC) ? 'x86 reference' : 'NOT the x86 reference'} (codec ${CODEC})`);
   const missingBoth = await pullMissing(sel.jobs);
   if (missingBoth.length) console.log(`  ${missingBoth.length} clips are in neither the local nor the Azure cache (not run; record them with gab fill): ${missingBoth.join(' ')}`);
   const jobs = sel.jobs.filter((j) => !missingBoth.includes(j.id));

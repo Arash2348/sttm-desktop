@@ -76,6 +76,9 @@ function tierRows(card) {
     if (r.mic) o.mic = Object.fromEntries(Object.entries(r.mic).map(([cls, m]) => [cls, m]));
     const scope = r.level === 'set' ? (G.loadSets().sets.find((x) => x.key === r.key) || {}).folder : r.key;
     const miss = scope ? cacheMiss.filter((n) => n.folder === scope || n.folder.startsWith(`${scope}/`)) : [];
+    // VF_PARTIAL=1 (owner, Oct 16): keep the numbers from the recordings that did replay, marked partial (the page shows
+    // them with an asterisk); the missing recordings need speech-model output only the machine that first recorded them can add
+    if (miss.length && process.env.VF_PARTIAL === '1') return { ...o, partial: miss.length, note: `partial: scored on ${o.clips} recordings; ${miss.length} more need speech-model output not recorded yet` };
     if (miss.length) return { key: r.key, level: r.level, title: r.title, clips: 0, incomplete: miss.length, note: `incomplete: ${miss.length} clips need speech-model windows that are not in the cache yet (gab fill), so this build has no comparable number here` };
     return o;
   });
@@ -87,12 +90,12 @@ function checkCard(card, want, allowDirty) {
   if (/^test/.test(card.split) || /test/.test(card.split.split(' ')[0])) throw new Error('test-split numbers are never published (GAB.md, split rule)');
   if (card.build.dirty && !allowDirty) throw new Error('the build had uncommitted edits; commit them and re-run gab (or pass --allow-dirty)');
 }
-function resultOf(card, hardCard, { name, status, note, order, base }, akhandCard = null) {
+function resultOf(card, hardCard, { name, status, note, order, base, platform }, akhandCard = null) {
   if (hardCard && hardCard.build.commit !== card.build.commit) throw new Error(`main and hard scorecards are different builds (${card.build.commit} vs ${hardCard.build.commit})`);
   if (akhandCard && akhandCard.build.commit !== card.build.commit) throw new Error(`main and akhand scorecards are different builds (${card.build.commit} vs ${akhandCard.build.commit})`);
   const tierPart = (c, set) => (c ? { set, set_title: c.setTitle || G.tierTitle(set), manifest: c.manifest.sha, split: c.split.split(' ')[0], tier: c.tier, not_run: notRunOf(c), rows: tierRows(c) } : null);
   return {
-    gab: card.gab, name, status, note: note || null, order: order ?? null, base: base || null,
+    gab: card.gab, platform: platform || null, name, status, note: note || null, order: order ?? null, base: base || null,
     commit: card.build.commit, vf_feature_version: card.build.featureVersion || null, subject: card.build.subject || null,
     split: card.split.split(' ')[0], tier: card.tier, date: card.createdAt.slice(0, 10), manifest: card.manifest.sha,
     set: 'main', set_title: card.setTitle || G.tierTitle('main'),
@@ -109,7 +112,7 @@ function resultOf(card, hardCard, { name, status, note, order, base }, akhandCar
 // one tier of a result as a scorecard for G.compare (main: res.rows; hard: res.hard.rows)
 const part = (res, set) => (set === 'main' ? res : res[set]);
 const asCard = (res, set = 'main') => ({ set, build: { name: res.name, commit: res.commit }, manifest: { sha: part(res, set).manifest }, tier: part(res, set).tier, split: part(res, set).split, rows: part(res, set).rows });
-const TITLE = { '1-kirtan-shabad': 'Kirtan', '2-bani-recited': 'Bani recited', '3-bani-sung-like-kirtan': 'Bani sung', '4-akhand-paath': 'Akhand Paath' };
+const TITLE = { '1-kirtan-shabad': 'Kirtan', '2-bani-recited': 'Bani recited', '3-bani-sung-like-kirtan': 'Bani sung', '4-akhand-paath': 'Akhand Paath', '5-akhand-kirtan': 'Akhand Kirtan' };
 function verdicts(all) {
   for (const set of ['main', 'hard', 'akhand']) verdictsFor(all.filter((r) => part(r, set)), set);
   return all;
@@ -159,7 +162,7 @@ function section(entries) {
     { t: 'Bani sung: right Bani', v: (e) => get(e.rows, '3-bani-sung-like-kirtan', 'right_shabad_pct'), u: '%', dir: 1 },
     { t: 'Bani sung: wrong Bani (s per hour)', v: (e) => get(e.rows, '3-bani-sung-like-kirtan', 'wrong_s_per_h'), u: '', dir: -1 },
     { t: 'GAB-Hard kirtan: right Shabad', v: (e) => (e.hard ? get(e.hard.rows, '1-kirtan-shabad', 'right_shabad_pct') : null), u: '%', dir: 1 },
-    { t: 'Akhand Kirtan: right Shabad', v: (e) => (e.akhand ? get(e.akhand.rows, '1-kirtan-shabad', 'right_shabad_pct') : null), u: '%', dir: 1 },
+    { t: 'Akhand Kirtan: right Shabad', v: (e) => (e.akhand ? (get(e.akhand.rows, '5-akhand-kirtan', 'right_shabad_pct') ?? get(e.akhand.rows, '1-kirtan-shabad', 'right_shabad_pct')) : null), u: '%', dir: 1 },
   ];
   const rel = entries.filter((e) => kindOf(e) !== 'experiment');
   const exp = entries.filter((e) => kindOf(e) === 'experiment');
@@ -193,7 +196,7 @@ function section(entries) {
     '🟢 best · 🟡 in between · 🔴 worst, compared with the other versions in the same column. Higher % is better; fewer wrong-Shabad seconds is better.', '',
     '### Versions', '', head, sep, ...relRows, '',
     ...(expRows.length ? ['### Ideas being tested (not in the app)', '', 'Each idea is compared with the version it was built from: 🟢 better, 🔴 worse, ➖ same.', '', head, sep, ...expRows, ''] : []),
-    'Main GAB is everyday Gurdwara audio (livestream and mixer feeds, studio paath). GAB-Hard is the Fremont hall laptop-mic recordings, tracked apart. GAB-Akhand Kirtan is smagam kirtan (many singers, the sangat singing along, many instruments), tracked apart. Kirtan pangti numbers are not shown yet: main kirtan has no line-by-line answers.', '',
+    'Main GAB is everyday Gurdwara audio (livestream and mixer feeds, studio paath). GAB-Hard is the Fremont hall laptop-mic recordings, tracked apart. GAB-Akhand Kirtan is smagam kirtan (many singers, the sangat singing along, many instruments), tracked apart. Pangti numbers (right pangti %) are shown under each Shabad number on the leaderboard; outside GAB-Hard they rest on audited two-model aligned keys (a person confirmed 20 of 20 random ones).', '',
     '<details><summary>Exact code tested (commit ids)</summary>', '', ...commits, '', '</details>', '', END].join('\n');
 }
 
@@ -204,8 +207,10 @@ from huggingface_hub import HfApi, CommitOperationAdd, CommitOperationDelete
 api = HfApi(token=os.environ['HF_TOKEN'])
 repo, typ, msg, s = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
 ops = [CommitOperationAdd(dst, os.path.join(s, src)) if src else CommitOperationDelete(dst) for dst, src in json.load(open(os.path.join(s, 'ops.json')))]
-r = api.create_commit(repo_id=repo, repo_type=typ, operations=ops, commit_message=msg)
-print('committed', len(ops), 'files to', repo, r.oid)
+# VF_HF_CREATE_PR=1: a token that may only open pull requests publishes as one PR per repo (a maintainer merges it)
+pr = os.environ.get('VF_HF_CREATE_PR') == '1'
+r = api.create_commit(repo_id=repo, repo_type=typ, operations=ops, commit_message=msg, create_pr=pr)
+print('opened PR' if pr else 'committed', len(ops), 'files to', repo, r.pr_url if pr else r.oid)
 `;
   fs.writeFileSync(path.join(S, 'push.py'), py);
   fs.writeFileSync(path.join(S, 'ops.json'), JSON.stringify(ops));
@@ -248,7 +253,7 @@ async function main(args) {
       if (akhandCard) checkCard(akhandCard, 'akhand', allowDirty);
       const status = (o.status || 'merged') === 'merged' ? 'merged' : 'candidate, not merged';
       if (status !== 'merged' && !o.base) throw new Error(`${o.name}: a candidate needs --base <commit of the build it was made from> (its "vs base" verdict)`);
-      const res = resultOf(card, hardCard, { name: o.name.replace(/\|/g, '/'), status, note: o.note, order: o.order != null ? Number(o.order) : null, base: o.base }, akhandCard);
+      const res = resultOf(card, hardCard, { name: o.name.replace(/\|/g, '/'), status, note: o.note, order: o.order != null ? Number(o.order) : null, base: o.base, platform: o.platform }, akhandCard);
       pub.push({ res, slug: slugOf(o.name, card.build.commit), card, hardCard, akhandCard, files: o });
     };
     if (opt('batch')) for (const o of JSON.parse(fs.readFileSync(opt('batch'), 'utf8'))) addOne(o);
@@ -273,10 +278,15 @@ async function main(args) {
     for (const e of index.results) {
       const p = pub.find((x) => x.slug === e.slug);
       const res = p ? p.res : JSON.parse(await hfText('space', SPACE, `results/${e.file}`));
-      if (res.gab !== G.GAB_VERSION || !res.hard) throw new Error(`results/${e.file} is ${res.gab}${res.hard ? '' : ' without GAB-Hard'}: re-score every build and publish them together with --batch`);
+      // VF_KEEP_OLDER_GAB=1 (Oct 18 2026): a kept row of an earlier GAB version stays on the board marked as such
+      // (its own numbers, never compared with this version's rows); otherwise refused as before
+      if (res.gab !== G.GAB_VERSION || !res.hard) {
+        if (!process.env.VF_KEEP_OLDER_GAB || !res.hard) throw new Error(`results/${e.file} is ${res.gab}${res.hard ? '' : ' without GAB-Hard'}: re-score every build and publish them together with --batch`);
+        res.older_gab = true;
+      } else delete res.older_gab;
       all.push(res);
     }
-    verdicts(all);
+    verdicts(all.filter((r) => !r.older_gab));
     const names = loadNames();
     for (const res of all) Object.assign(res, nameOf(res, names));
     index.results.forEach((e, i) => { fs.writeFileSync(path.join(S, `result-${i}.json`), JSON.stringify(all[i], null, 1)); spaceOps.push([`results/${e.file}`, `result-${i}.json`]); });

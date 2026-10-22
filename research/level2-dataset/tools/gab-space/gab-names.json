@@ -104,6 +104,27 @@
     "New behaviour",
     "Speed"
    ]
+  },
+  "1271040c": {
+   "label": "9.0.5 · gate fix (fork only, did not hold on the test split)",
+   "kind": "experiment"
+  },
+  "32282957": {
+   "label": "9.0.6 · near-twin hold + Aarti profile 1 (candidate)",
+   "kind": "experiment"
+  },
+  "8aa3fa06": {
+   "label": "9.0.6 · near-twin hold + Aarti profile 1 (candidate)",
+   "kind": "experiment"
+  },
+  "219a4f1f": {
+   "label": "10.0.1 — Pankti Cumulation",
+   "kind": "experiment",
+   "why": "each pangti heard adds to its Shabad while following, so a new Shabad is shown sooner; Aarti ends cleanly",
+   "type": [
+    "Accuracy",
+    "Speed"
+   ]
   }
  }
 }

@@ -33,7 +33,8 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const GAB_VERSION = 'GAB v1.3';
+// GAB v1.5 (Oct 18 2026): dataset PRs through #19 (new Sung Bani + kirtan recordings, Renton keys); x86 model output
+const GAB_VERSION = 'GAB v1.5';
 // ---------------------------------------------------------------- tiers -------------
 // gab-sets.json `tiers`: { main: { excludeTiers: ['hard', 'akhand'] }, hard: { gurdwara: '<regex>' }, akhand: { gurdwara: '<regex>', notes: '<tag regex>' } }
 function tierOf(row, sets = loadSets()) {
@@ -47,7 +48,7 @@ function tierOf(row, sets = loadSets()) {
 const inTier = (row, tier, sets) => tier === 'all' || tierOf(row, sets) === tier;
 const tierTitle = (tier, sets = loadSets()) => ((sets.tiers || {})[tier] || {}).title || tier;
 const { TOP, canonFolder } = require('./folder-names');
-const TOP_TITLE = { '1-kirtan-shabad': 'Kirtan of a Shabad', '2-bani-recited': 'Bani recited (paath)', '3-bani-sung-like-kirtan': 'Bani sung like kirtan', '4-akhand-paath': 'Akhand Paath (Ang after Ang)' };
+const TOP_TITLE = { '1-kirtan-shabad': 'Kirtan of a Shabad', '2-bani-recited': 'Bani recited (paath)', '3-bani-sung-like-kirtan': 'Bani sung like kirtan', '4-akhand-paath': 'Akhand Paath (Ang after Ang)', '5-akhand-kirtan': 'Akhand Kirtan (smagam, many singers)' };
 const THIN = 3;
 const r1 = (x) => (x == null || Number.isNaN(x) ? null : +x.toFixed(1));
 const r2 = (x) => (x == null || Number.isNaN(x) ? null : +x.toFixed(2));

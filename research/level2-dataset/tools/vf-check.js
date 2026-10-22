@@ -31,7 +31,12 @@ const { DEFAULT_ROOT, modelSha } = require('./emis-cache');
 const LOCK = '/tmp/vf-bench.lock';
 const MODEL = process.env.MODEL || '/Users/asingh02/AAI/models/karansea-shabad-ctc/model.int8.onnx';
 const CODEC = process.env.VF_EMIS_CODEC || 'q16';
-const MAIN_REPO = '/Users/asingh02/personal/sttm-desktop';
+// x86 reference (owner, Oct 17 2026): codec 'q16-x86' is the same q16 encoding in its own namespace that holds ONLY
+// linux-x64 (x86) model output for every GAB recording (the production reference: most PCs are Intel/Windows). Its
+// entries are x86 by construction, so an entry without a provenance stamp counts as linux-x64, and no other platform
+// may record into it.
+const X86_NS = /-x86$/.test(CODEC);
+const MAIN_REPO = process.env.VF_MAIN_REPO || '/Users/asingh02/personal/sttm-desktop';
 const argv = process.argv.slice(2);
 const flag = (n) => argv.includes(`--${n}`);
 const arg = (n, d) => { const i = argv.indexOf(`--${n}`); return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
@@ -42,6 +47,10 @@ if (arg('split')) process.env.VF_SPLIT = arg('split');
 const DEFAULT_SUITES = Object.keys(SUITES).filter((s) => !SUITES[s].optIn);
 const TIER = arg('tier', 'full'); // smoke: ~10 clips across all suites, after every edit; full: everything
 const JOBS = Number(arg('jobs', Math.max(1, Math.floor(os.cpus().length / 2))));
+// VF_RECORD_JOBS (cloud VM): clips recorded side by side, each with 3 model threads (default 1, the Mac's polite way)
+const RECORD_JOBS = Math.max(1, Number(process.env.VF_RECORD_JOBS || 1));
+// VF_REPLAY_MAX (cloud VM): workers per replay plan (default 4)
+const REPLAY_MAX = Math.max(1, Number(process.env.VF_REPLAY_MAX || 4));
 const sh = (cmd, args, opts = {}) => execFileSync(cmd, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...opts }).trim();
 const sha1 = (s) => crypto.createHash('sha1').update(s).digest('hex');
 const now = () => Date.now() / 1000;
@@ -97,7 +106,19 @@ async function pool(planFile) {
       resolve();
     });
   });
-  const worker = async () => { while (queue.length) await runOne(queue.shift()); };
+  // never two processes on one clip at once (the same recording can sit in two suites, e.g. kh01-kh05 in fremont and
+  // jaspal): two writers on one cache entry would interleave its records
+  const busy = new Set();
+  const ids = (t) => t.jobs.map((j) => j.id);
+  const worker = async () => {
+    while (queue.length) {
+      const i = queue.findIndex((t) => !ids(t).some((id) => busy.has(id)));
+      if (i < 0) { await new Promise((ok) => setTimeout(ok, 2000)); continue; }
+      const task = queue.splice(i, 1)[0];
+      ids(task).forEach((id) => busy.add(id));
+      try { await runOne(task); } finally { ids(task).forEach((id) => busy.delete(id)); }
+    }
+  };
   await Promise.all(Array.from({ length: Math.max(1, Math.min(plan.jobs, queue.length)) }, worker));
   fs.writeFileSync(`${planFile}.status.json`, JSON.stringify({ wall: +(now() - t0).toFixed(1), status }, null, 1));
 }
@@ -108,7 +129,7 @@ async function pool(planFile) {
 const REPLAY_SLOTS = Number(process.env.VF_REPLAY_SLOTS || 3);
 function runLocked(plan, file, { threads } = {}) {
   const replayOnly = !threads;
-  if (replayOnly) plan = { ...plan, jobs: Math.min(plan.jobs, 4) };
+  if (replayOnly) plan = { ...plan, jobs: Math.min(plan.jobs, REPLAY_MAX) };
   fs.writeFileSync(file, JSON.stringify(plan, null, 1));
   const envArgs = threads ? ['env', `VF_ORT_THREADS=${threads}`] : [];
   const poolArgs = ['nice', '-n', '19', ...envArgs, process.execPath, __filename, '--pool', file];
@@ -341,9 +362,10 @@ const entryDirOf = (id) => path.join(CACHE, `${modelSha(MODEL, CACHE).slice(0, 1
 function entryPlatform(id) {
   const d = entryDirOf(id);
   try { return JSON.parse(fs.readFileSync(path.join(d, 'provenance.json'), 'utf8')).platform; } catch (_) { /* none */ }
-  return fs.existsSync(path.join(d, 'index.jsonl')) ? 'darwin-arm64' : null;
+  return fs.existsSync(path.join(d, 'index.jsonl')) ? (X86_NS ? 'linux-x64' : 'darwin-arm64') : null;
 }
 function platformGuard(jobs, say = console.log) {
+  if (X86_NS && PLATFORM !== 'linux-x64') { if (jobs.length) say(`  REFUSED to record ${jobs.length} clip(s): codec ${CODEC} is the x86 reference and only linux-x64 records into it (this is ${PLATFORM})`); return []; }
   const bad = jobs.filter((j) => { const p = entryPlatform(j.id); return p && p !== PLATFORM; });
   if (bad.length) say(`  REFUSED to record ${bad.length} clip(s) whose cache entry was recorded on another platform (this is ${PLATFORM}; never mix): ${[...new Set(bad.map((j) => `${j.id} (${entryPlatform(j.id)})`))].join(' ')}`);
   return jobs.filter((j) => !bad.includes(j));
@@ -410,7 +432,7 @@ async function record(opts = {}) {
       for (const [bi, batch] of batches.entries()) {
         // --queue: take ordinary turns on the lock (still one clip per turn) instead of waiting for an empty queue
         if (!flag('greedy') && !flag('queue')) await politeTurn();
-        const st = await runLocked({ jobs: 1, tasks: batch, verbose: true }, path.join(outRoot, `record-${side}-${s}-${bi}.plan.json`), { threads: 3 });
+        const st = await runLocked({ jobs: RECORD_JOBS, tasks: batch, verbose: true }, path.join(outRoot, `record-${side}-${s}-${bi}.plan.json`), { threads: 3 });
         all.wall += st.wall;
         all.lockWait += st.lockWait;
         Object.assign(all.status, st.status);
@@ -521,8 +543,13 @@ async function check() {
     say(`${missed.length} clip runs went past the cache (their behaviour diverged); recording them (model, under the lock) ...`);
     const tf = now();
     const bySide = (side) => platformGuard(missed.filter(([s]) => s === side).map(([, j]) => j), say);
-    const rec = [...makeTasks(bySide('base'), 'base', base, outRoot, 'record', { perClip: true }), ...makeTasks(bySide('cand'), 'cand', cand, outRoot, 'record', { perClip: true })];
-    await runLocked({ jobs: 1, tasks: rec, verbose: true }, path.join(outRoot, 'fill.plan.json'), { threads: 3 });
+    const recB = makeTasks(bySide('base'), 'base', base, outRoot, 'record', { perClip: true });
+    const recC = makeTasks(bySide('cand'), 'cand', cand, outRoot, 'record', { perClip: true });
+    // side by side (VF_RECORD_JOBS > 1): base first, then candidate, so two writers never share one clip's entry
+    if (RECORD_JOBS > 1) {
+      if (recB.length) await runLocked({ jobs: RECORD_JOBS, tasks: recB, verbose: true }, path.join(outRoot, 'fill.plan.json'), { threads: 3 });
+      if (recC.length) await runLocked({ jobs: RECORD_JOBS, tasks: recC, verbose: true }, path.join(outRoot, 'fill-cand.plan.json'), { threads: 3 });
+    } else await runLocked({ jobs: 1, tasks: [...recB, ...recC], verbose: true }, path.join(outRoot, 'fill.plan.json'), { threads: 3 });
     stampProvenance([...bySide('base'), ...bySide('cand')]);
     const again = [...makeTasks(bySide('base'), 'base', base, outRoot, 'replay'), ...makeTasks(bySide('cand'), 'cand', cand, outRoot, 'replay')];
     const st2 = await runLocked({ jobs: JOBS, tasks: again }, path.join(outRoot, 'replay2.plan.json'));

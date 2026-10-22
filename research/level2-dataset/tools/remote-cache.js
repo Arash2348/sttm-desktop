@@ -15,12 +15,15 @@ const crypto = require('crypto');
 
 const BASE = 'https://banidb.blob.core.windows.net/voice-follow-training-data';
 const PREFIX = 'bench-cache';
+// st / se are plain timestamps (not secret); a hand-edited copy can lose a '-' or ':' (seen Oct 15 2026):
+// rebuild them from their 14 digits as YYYY-MM-DDTHH:MM:SSZ, which is the exact form Azure signed
+const fixTimes = (s) => s.split('&').map((p) => { const m = p.match(/^(st|se)=(.*)$/); if (!m) return p; const d = decodeURIComponent(m[2]).replace(/\D/g, ''); return d.length === 14 ? `${m[1]}=${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}T${d.slice(8, 10)}:${d.slice(10, 12)}:${d.slice(12, 14)}Z` : p; }).join('&');
 function sas() {
   const s = (process.env.VF_AZURE_SAS || (() => {
     try { return fs.readFileSync(path.join(os.homedir(), '.vf-azure-sas'), 'utf8'); } catch (_) { return ''; }
-  })()).trim().replace(/^\?/, '');
+  })()).replace(/\s+/g, '').replace(/^['"]+|['"]+$/g, '').replace(/^[^?]*\?/, '').replace(/%$/, ''); // a pasted copy may carry spaces, quotes, the whole URL or zsh's end-of-line % mark: keep the query only
   if (!s) throw new Error('no SAS: set VF_AZURE_SAS or create ~/.vf-azure-sas (mode 600)');
-  return s;
+  return fixTimes(s);
 }
 const redact = (s) => String(s).replace(/sig=[^&\s"']+/g, 'sig=REDACTED').replace(/\?[^\s"']*se=[^\s"']*/g, '?<sas>');
 const url = (key, q = '') => `${BASE}/${key.split('/').map(encodeURIComponent).join('/')}?${q ? `${q}&` : ''}${sas()}`;
@@ -135,7 +138,9 @@ async function pull({ root, model, codec, clips, log = console.log }) {
     try {
       if (man == null) { const mb = await get(`${PREFIX}/manifest.json`); man = mb ? JSON.parse(mb.toString('utf8')) : { entries: {} }; }
       const me = man.entries[`${model}/${codec}/${audioSha(c.wav)}`];
-      if (me && me.platform) fs.writeFileSync(path.join(d, 'provenance.json'), `${JSON.stringify({ platform: me.platform, cpu: me.cpu || null, host: me.host || null, pulledFrom: 'azure bench-cache manifest' }, null, 1)}\n`);
+      // the x86 reference namespace (codec *-x86) holds linux-x64 output only, also when its manifest entry is missing
+      if (/-x86$/.test(codec) && !(me && me.platform)) fs.writeFileSync(path.join(d, 'provenance.json'), `${JSON.stringify({ platform: 'linux-x64', pulledFrom: 'azure bench-cache (x86 namespace)' }, null, 1)}\n`);
+      else if (me && me.platform) fs.writeFileSync(path.join(d, 'provenance.json'), `${JSON.stringify({ platform: me.platform, cpu: me.cpu || null, host: me.host || null, pulledFrom: 'azure bench-cache manifest' }, null, 1)}\n`);
     } catch (_) { /* provenance is advisory on pull */ }
     n += 1;
     bytes += b.length + i.length;
@@ -144,4 +149,4 @@ async function pull({ root, model, codec, clips, log = console.log }) {
   return { pulled: n, bytes };
 }
 
-module.exports = { push, pull, list, audioSha, redact, PREFIX };
+module.exports = { push, pull, list, audioSha, redact, fixTimes, PREFIX };

@@ -7,7 +7,7 @@
  *
  *   node gab-add-sheet-rows.js [--out ~/personal/vf-benchmark] [--dry-run] [--x86 rn,yuba,l3clip] [--azure] [--hf]
  *
- * Writes <out>/1-kirtan-shabad/<id>/{audio.wav (APFS clone of the clip), shabads.csv, lines.csv (header only: no line
+ * Writes <out>/1-kirtan-shabad/<id>/ (Akhand Kirtan smagams: <out>/5-akhand-kirtan/<id>/){audio.wav (APFS clone of the clip), shabads.csv, lines.csv (header only: no line
  * truth), meta.json} and APPENDS the rows to <out>/manifest.csv (existing rows are never changed; a re-run replaces
  * only its own rows); --hf also appends them to the manifest on Hugging Face (downloaded, never overwritten) and
  * uploads the clip folders. Truth per clip (Shabad level, human): the clip's own sheet row, plus the part of the previous
@@ -108,7 +108,8 @@ for (const G of GROUPS) {
     const x86 = X86.some((p) => id.startsWith(p));
     const lead = truthRows.filter((t) => !t.own);
     const meta = {
-      id, content_folder: '1-kirtan-shabad', bani: null, bani_id: null, gurdwara: r.gurdwara, reader: null, acoustics: 'hall',
+      // Akhand Kirtan smagams get their own folder (user, Oct 16 2026); the GAB-Akhand tier rule decides
+      id, content_folder: require('./gab-score').tierOf({ gurdwara: r.gurdwara, notes: G.tags }) === 'akhand' ? '5-akhand-kirtan' : '1-kirtan-shabad', bani: null, bani_id: null, gurdwara: r.gurdwara, reader: null, acoustics: 'hall',
       origin: r.link || `https://youtu.be/${r.video_id}?t=${r.start_s}`, source_file: path.basename(job.wav), duration_s: r2(dur),
       split: G.split(r), session: `${G.venue}-${r.video_id}`, truth_provenance: G.provenance(k, r), suite_jobs: `${G.suite}:${id}`,
       cache: 'no', cache_id: job.id, lines_n: 0, lines_source: 'none', shabads_n: truthRows.length,
