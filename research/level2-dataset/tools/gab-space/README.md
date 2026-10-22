@@ -19,4 +19,9 @@ Bani or mic type appears without a page change. `?open=<commit>` opens one versi
 
 Files: `index.html` (the page), `gab-names.json` (system name and each version's display name, by commit),
 `results/index.json` + `results/<build>.json` (written by `gab publish`; `rows` = main GAB, `hard.rows` = GAB-Hard).
+`timeline.html` + `timeline/index.json` + `timeline/<slug>-<set>.json`: every second of each practice recording coloured
+right pangti / right Shabad, other pangti / wrong Shabad / nothing shown, with the true and shown pangti on hover and two
+versions stacked to compare (`gab run` writes `timeline.json`, `gab publish` uploads it). `annotate.html`: a pangti
+labeller that exports GAB answer keys (audio stays on the computer). Both follow Karanbir Singh's Live Captioning for
+Gurbani Kirtan benchmark (github.com/karanbirsingh/live-gurbani-captioning-benchmark-v1), credited on the pages.
 The page needs no token or secret.

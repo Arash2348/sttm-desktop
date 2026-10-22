@@ -347,6 +347,13 @@ async function cmdRun() {
   if (badRun.length) { card.incomplete = badRun; write(path.join(out, 'scorecard.json'), card); }
   console.log(`\n${md}\n\nscorecard: ${path.join(out, 'scorecard.json')}`);
   if (badRun.length) { console.log(`\n${incompleteNote(badRun)}`); process.exitCode = 3; }
+  // the second-by-second view (Space timeline.html) from the screen events, before they are deleted; gab publish uploads it
+  try {
+    const sv = require('./sangat-score');
+    const tl = require('./gab-timeline').build({ sv, ds: sv.loadDataset(BENCH), card, sideDir: path.join(out, 'replay', 'base'), label: arg('name') || null });
+    sv.close();
+    if (tl) { write(path.join(out, 'timeline.json'), JSON.stringify(tl)); console.log(`timeline: ${path.join(out, 'timeline.json')} (${tl.clips.length} clips)`); }
+  } catch (e) { console.log(`(timeline not written: ${String(e.message).slice(0, 160)})`); }
   if (!flag('keep')) fs.rmSync(path.join(out, 'replay'), { recursive: true, force: true });
 }
 

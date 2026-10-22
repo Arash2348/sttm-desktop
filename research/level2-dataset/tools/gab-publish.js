@@ -225,7 +225,7 @@ async function main(args) {
   const S = fs.mkdtempSync(path.join(os.tmpdir(), 'gab-publish-'));
   try {
     const spaceOps = [];
-    for (const f of ['index.html', 'README.md', 'gab-names.json']) { fs.copyFileSync(path.join(SITE, f), path.join(S, `site-${f}`)); spaceOps.push([f, `site-${f}`]); }
+    for (const f of ['index.html', 'README.md', 'gab-names.json', 'timeline.html', 'annotate.html']) { fs.copyFileSync(path.join(SITE, f), path.join(S, `site-${f}`)); spaceOps.push([f, `site-${f}`]); }
     // the one-table page (Oct 14 2026) replaced the tabs: these files are removed from the Space when still there
     for (const f of RETIRED) if (await hfText('space', SPACE, f) != null) spaceOps.push([f, null]);
     let msg = 'GAB leaderboard: page files';
@@ -293,10 +293,36 @@ async function main(args) {
     const sorted = [...all].sort((a, b) => (a.order ?? 99) - (b.order ?? 99) || a.date.localeCompare(b.date));
     const vsText = (v) => (v && v.against ? `${v.against}: ${v.pass ? 'PASS' : `FAIL (${v.worse.map((w) => `${w.title} ${w.scope} ${w.metric} ${w.a} -> ${w.b}`).join('; ')})`}${v.info_worse && v.info_worse.length ? ` | info rows worse: ${v.info_worse.map((w) => `${w.title} ${w.metric} ${w.a} -> ${w.b}`).join('; ')}` : ''}` : '-');
     for (const r of sorted) console.log(`${r.name}\n   main vs ${r.vs.kind}: ${vsText(r.vs)}\n   hard vs ${r.hard.vs.kind}: ${vsText(r.hard.vs)}${r.akhand ? `\n   akhand vs ${r.akhand.vs.kind}: ${vsText(r.akhand.vs)}` : ''}`);
+    // second-by-second timelines (timeline.html): gab run writes timeline.json next to each scorecard; each one found is
+    // uploaded as timeline/<slug>-<set>.json and listed in timeline/index.json (per set, builds in leaderboard order)
+    const tlPrev = JSON.parse(await hfText('space', SPACE, 'timeline/index.json') || '{"tiers":[]}');
+    const TL_TITLE = { main: 'GAB (Gurdwara audio)', hard: 'GAB-Hard (Fremont hall, laptop mic; pangti keys)', akhand: 'GAB-Akhand Kirtan (smagam)' };
+    let tlN = 0;
+    for (const p of pub) {
+      for (const [set, f] of [['main', p.files.main], ['hard', p.files.hard], ['akhand', p.files.akhand]]) {
+        const tf = f && path.join(path.dirname(path.resolve(f)), 'timeline.json');
+        if (!tf || !fs.existsSync(tf)) { if (f) console.log(`  timeline: none next to ${f} (gab run writes timeline.json; older runs: node gab-timeline.js <gab run --keep dir>)`); continue; }
+        const file = `${p.slug}-${set}.json`;
+        fs.copyFileSync(tf, path.join(S, `tl-${file}`)); spaceOps.push([`timeline/${file}`, `tl-${file}`]); tlN++;
+        let t = tlPrev.tiers.find((x) => x.key === set);
+        if (!t) { t = { key: set, title: TL_TITLE[set] || set, builds: [] }; tlPrev.tiers.push(t); }
+        const nm0 = nameOf(p.res); const nm = { ...nm0, label: [...new Set(String(nm0.label).split(' · '))].join(' · ') };
+        t.builds = t.builds.filter((b) => b.slug !== p.slug && !(b.commit && String(b.commit).slice(0, 8) === String(p.res.commit).slice(0, 8)));
+        t.builds.push({ slug: p.slug, file, label: nm.kind === 'experiment' ? `Experiment: ${nm.label}` : `${loadNames().system.latin} ${nm.label}`, commit: String(p.res.commit).slice(0, 8), note: nm.kind, order: p.res.order ?? null, date: p.res.date });
+        t.builds.sort((a, b) => (a.order ?? 99) - (b.order ?? 99) || String(a.date || '').localeCompare(String(b.date || '')));
+      }
+    }
+    if (tlN) {
+      const ORDER = ['hard', 'main', 'akhand'];
+      tlPrev.tiers.sort((a, b) => (ORDER.indexOf(a.key) + 1 || 9) - (ORDER.indexOf(b.key) + 1 || 9));
+      fs.writeFileSync(path.join(S, 'timeline-index.json'), JSON.stringify(tlPrev, null, 1));
+      spaceOps.push(['timeline/index.json', 'timeline-index.json']);
+      console.log(`timeline: ${tlN} file(s) for ${pub.length} build(s)`);
+    }
     // --preview <dir>: write the Space as it would be (page files + results) into <dir> and stop (nothing pushed)
     if (opt('preview')) {
       const P = path.resolve(opt('preview'));
-      fs.mkdirSync(path.join(P, 'results'), { recursive: true });
+      fs.mkdirSync(path.join(P, 'results'), { recursive: true }); fs.mkdirSync(path.join(P, 'timeline'), { recursive: true });
       for (const [dst, src] of spaceOps) if (src) fs.copyFileSync(path.join(S, src), path.join(P, dst));
       console.log(`preview written to ${P}`);
       return;
