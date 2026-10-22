@@ -132,6 +132,22 @@ const SUITES = {
     score(dir) { return require('./kirtan-score').suiteMetrics(dir); },
     direction: (name) => require('./kirtan-score').direction(name),
   },
+  // Karanbir Singh's Live Captioning for Gurbani Kirtan benchmark v1 (github.com/karanbirsingh/live-gurbani-captioning-
+  // benchmark-v1; annotations CC BY 4.0): 4 YouTube kirtan recordings x 3 starts (0 / 33 / 66 %), each case cut at its
+  // UEM start (kbv1-prep.py), hand-reviewed pangti times. Runner: khalis-bench.js. Cache recorded on the Mac (codec q16).
+  kbv1: {
+    title: 'Karanbir v1 (12 cases)',
+    optIn: true,
+    smoke: [],
+    sentinel: [],
+    jobs: () => (fs.existsSync(path.join(DS, 'kbv1-tests.json')) ? JSON.parse(fs.readFileSync(path.join(DS, 'kbv1-tests.json'))) : []).map((t) => {
+      const wav = path.join(CLIPS, t.clip);
+      return { id: t.name, clip: t.name, wav, dur: durOf(wav), only: t.name, outFile: `${t.name}.json`, args: ['khalis-bench.js', '--fast', '--trace', '--tests', path.join(DS, 'kbv1-tests.json')] };
+    }),
+    metrics: null,
+    score(dir) { return require('./kirtan-score').suiteMetrics(dir); },
+    direction: (name) => require('./kirtan-score').direction(name),
+  },
   // Akhand / Sehaj Paath, reading Sri Guru Granth Sahib Ji Ang after Ang (benchmark folder 4-akhand-paath): manifest
   // rows with suite_jobs apaath:<id> (publisher-slide line answers, lines.csv / shabads.csv), whole clips from t=0,
   // Bani routes on as in the app. optIn: vf-check runs them only when named; GAB plays them from its manifest and

@@ -146,6 +146,13 @@ select { font: inherit; font-size: 13px; color: var(--ink); background: var(--pa
   <div class="box big"><div class="bigbar"><span>Big picture</span><select id="bigsel" aria-label="version shown in the big picture"></select><span class="note">one version across every situation · hours of recordings behind each number · worst 10% = the slowest tenth</span></div><table id="big"></table></div>
   <p class="tools"><b>Every version</b> · right Shabad % per version, oldest at the bottom · <sup class="ps">*</sup> scored on the recordings that replayed; a few more need speech-model output not recorded yet (hover for how many)</p>
   <div class="box"><table id="board"></table></div>
+  <details class="ext" style="margin-top:12px;font-size:14px"><summary style="cursor:pointer">Outside check: Karanbir Singh's benchmark (12 kirtan cases)</summary>
+  <p class="sub" style="margin:8px 0">Karanbir Singh's <a href="https://github.com/karanbirsingh/live-gurbani-captioning-benchmark-v1">Live Captioning for Gurbani Kirtan benchmark v1</a>: 4 hand-labelled kirtan recordings, each joined at the start, a third in and two thirds in. His score: every second, the right pangti (a 1 s collar at pangti changes and blank screens in pauses allowed), from his own eval.py. Speech-model output recorded on the Mac. <a href="./timeline.html?set=kbv1">See every second →</a></p>
+  <table style="font-size:14px"><thead><tr><th>System</th><th>His score</th><th>Right pangti</th><th>Right Shabad</th><th>Wrong Shabad s/h</th></tr></thead><tbody>
+  <tr><td>Gurbani Autopilot 10.0.4 and 10.0.5 (same result)</td><td><b>90.5%</b></td><td>88.6%</td><td>94.5%</td><td>0</td></tr>
+  <tr><td>Karanbir's own system (kirtan-captioning 0.2.0)</td><td>57.9%</td><td>–</td><td>10 of 12 found</td><td>–</td></tr>
+  <tr><td>Reference: nothing shown / right pangti 5 s late</td><td>26.0% / 85.5%</td><td>–</td><td>–</td><td>–</td></tr>
+  </tbody></table></details>
 </div>
 <script>
 let SYSTEM = { latin: 'Gurbani Autopilot' };
