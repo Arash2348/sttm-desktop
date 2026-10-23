@@ -112,8 +112,8 @@ const short = (s) => String(s).replace(/^Gurbani Autopilot\s*/, '');
 const store = { get(k) { try { return localStorage.getItem(k); } catch (_) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (_) {} } };
 const COL = { P: 'var(--ok)', S: 'var(--ok)', B: 'var(--okb)', A: 'var(--near)', W: 'var(--bad)', N: 'var(--none)', V: 'var(--wg)' };
 const RIGHT = (k) => k === 'P' || k === 'S' || k === 'B';
-const TABNAME = { main: 'Kirtan', akhand: 'Akhand Kirtan', kbv1: "Karanbir Singh's benchmark" };
-const VERB = { main: 'Kirtan from Gurdwara Sahib broadcasts on YouTube', akhand: 'Akhand Kirtan from smagam recordings on YouTube', kbv1: "Karanbir Singh's 4 kirtan recordings, each also joined 1/3 and 2/3 of the way in" };
+const TABNAME = { main: 'Kirtan', akhand: 'Akhand Kirtan', kbv1: "Karanbir Singh's benchmark", hard: 'Hall recordings (hard)', real: 'Real sessions' };
+const VERB = { main: 'Kirtan from Gurdwara Sahib broadcasts on YouTube', akhand: 'Akhand Kirtan from smagam recordings on YouTube', kbv1: "Karanbir Singh's 4 kirtan recordings, each also joined 1/3 and 2/3 of the way in", hard: 'Kirtan recorded in a resonant hall on a laptop microphone (the hardest audio)', real: "Real sangat sessions, replayed offline; the answer key is the sevadaar's screen, which itself lags the singing" };
 // first Shabad of a "Shabad: A  /  Shabad: B" label, without the prefix
 const label = (t) => String(t || '').split(/\s+\/\s+/).map((x) => x.replace(/^Shabad:\s*/, '').replace(/^Bani:\s*(.*)$/, '$1 (Bani)')).join('  or  ');
 const label1 = (t) => label(t).split('  or  ')[0];
