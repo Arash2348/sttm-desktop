@@ -58,3 +58,33 @@ heard-token fit disagrees with the span end. Sung Bani (223): 5 approved; candid
 hear 'none'. aa27: the hearing says Shabad 880 (11586 "ਸਰਣਿ ਤੁਮੑਾਰੀ ਆਇਓ ...") at 100-125 s, i.e. the current key, not
 the Aarti text the aligner placed there; all 11 aa27 rows rejected. Heard-token timing within 1.5 s start / 3 s end for
 66% of tier A, 52% B, 12% C, 50% D.
+
+## Batch 5 note
+
+`identify.py` now takes a key window with two possible Shabads (`2819|40621`): both Shabads' pangtis are the keyed pool
+(`in_shabad`). No batch-5 votes were made by this checker (its emission run did not finish); the tool change is kept.
+
+## Batch 6 (2026-10-23, Kirtan folder 1, the 15 remaining recordings below the 60% bar)
+
+Same method, `BATCH=batch6`; fresh app-model emissions (`emis2.js karanbir`, int8, 4 threads, nice 19; 4-19 s per
+recording) for clip38, rn50, clip34, clip09, rn14, clip01, clip17, clip25, rn09, rn60, rn80, clip26, rn21, rn73,
+clip32. Still no second model on this Mac (the Surinder ONNX int8 dirs are empty), so the forced CTC alignment is a
+non-independent second opinion and only the greedy heard-token fit decides timing; the candidate's verseId is read
+only after my pick is made. Approve = same pangti and confidence >= 0.95 (the owner's rule: every checker names the
+same pangti, each >= 0.95).
+Result: 677 spans, 75 approved (agree and confidence >= 0.95; A 74, D 1), 266 agree but under the bar, 289 a
+different pangti, 47 'none' (Vaheguru simran / jaikara / alaap / too little heard). Per recording (approved/spans):
+clip01 6/22, clip09 3/46, clip17 4/156, clip25 10/38, clip26 2/17, clip32 8/73, clip34 2/10, clip38 0/11, rn09 0/41,
+rn14 0/61, rn21 12/41, rn50 20/65, rn60 2/26, rn73 3/17, rn80 3/53. Heard-token timing within 1.5 s start / 3 s end
+for 44% of tier A, 27% B, 9% C, 9% D; 474 spans fail timing or overlap a neighbour by > 1 s (the tier A gap to the
+next candidate is 0.08 s at the 10th percentile; clip17 has 102 overlapping pairs, clip32 36, rn80 27).
+Findings: clip17 (keyed Shabad 3085) is heard as Shabad 3085 only in its first part; from ~460 s to ~853 s the
+hearing is "ਧੰਨੁ ਧੰਨੁ ਰਾਮਦਾਸ ਗੁਰੁ" (41412-41419, Shabad 3590; 57 spans), ~858-926 s "ਵਡੀ ਹੂ ਵਡਾ ਅਪਾਰੁ ਤੇਰਾ ਮਰਤਬਾ"
+(Shabad 3571, 13 spans) and ~934-972 s "ਪਵਣੁ ਗੁਰੂ ਪਾਣੀ ਪਿਤਾ" (Shabad 39, the Japji Sahib salok, 7 spans): the key
+needs more rows before clip17's 114 outside-key candidates mean anything (as the batch note already flagged, 84 of
+its rows are tier D). rn80 535-579 s is heard as a title line (Shabad 40545 "ਗੁਰੂ ਅਰਜਨ ਦੇਵ", 7 spans, low confidence)
+rather than Shabad 499. rn14 0-21 s is the jaikara / Vaheguru simran (none); its 8 key-mismatch rows and rn09's 6,
+rn80's 5 were not approved. clip38: the candidates at 28-40 s naming 58102 "ਐਸੇ ਮਰਨੇ ਜੋ ਮਰੈ" are heard as the first
+half of the salok, 58101 "ਕਬੀਰ ਮਰਤਾ ਮਰਤਾ ਜਗੁ ਮੂਆ" (0 approved). rn09 0-24 s is heard as the rahao 34271 "ਕਵਨ ਸੁ ਮਤਿ
+ਜਿਤੁ ਪ੍ਰੀਤਮੁ ਪਾਵਉ" at low confidence where the candidates name 50503/50504.
+Output `labels/votes/batch6-checker2.json`; working files (emissions, feats-*.json) in the session scratchpad only.

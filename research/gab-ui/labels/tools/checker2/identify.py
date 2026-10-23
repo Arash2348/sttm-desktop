@@ -256,7 +256,11 @@ for rid in recs:
             def ov(r): return max(0.0, min(e, r[1] + 0.4) - max(s, r[0]))
             r = max(runs, key=lambda r: (ov(r), r[2]))
             return dict(run_start=round(r[0], 2), run_end=round(r[1] + 0.4, 2), run_n=r[2], runs=len(runs))
-        pool = set(by_shabad.get(c['shabadId'], [])) | rec_vids | set(search(heard))
+        # batch 5+: a key window with two possible Shabads ('2819|40621') gives both Shabads' pangtis as context
+        keyed = set()
+        for sid in str(c['shabadId']).split('|'):
+            keyed |= set(by_shabad.get(int(sid) if sid.isdigit() else sid, []))
+        pool = keyed | rec_vids | set(search(heard))
         # a long Bani (Jaap Sahib: 808 pangtis) makes the pool big; the ranking is by text match first, so the
         # (slow) forced alignment is only run for the best-matching 40 + the candidate's own pangti (+ near ties)
         pre = {v: tscore(norm(spoken(verse[v]['text'])), [norm(w) for w in spoken(verse[v]['text']).split() if norm(w)]) for v in pool}
@@ -275,7 +279,7 @@ for rid in recs:
             ht = heard_text(toks, f0 + a['start'], f0 + a['end'] + 1)
             a['check'] = round(fuzz.partial_ratio(norm(ht), norm(txt)) / 100, 3) if ht else 0.0
             a['ovl'] = max(0.0, min(e, a['end_s']) - max(s, a['start_s'])) / max(0.5, e - s)
-            a['in_shabad'] = v in by_shabad.get(c['shabadId'], [])
+            a['in_shabad'] = v in keyed
             a['ntext'] = norm(txt)
             a['tscore'] = round(tscore(a['ntext'], [norm(w) for w in txt.split() if norm(w)]), 1)
             a['run'] = token_run(a['ntext'])
