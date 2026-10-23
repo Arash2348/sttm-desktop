@@ -1,4 +1,4 @@
-# Checker 1 of 3, label batch 1/2/3 (usage: vote.py batchN), lens A (text match). For every candidate span: decode the cached x86
+# Checker 1 of 3, label batch 1/2/3/4 (usage: vote.py batchN), lens A (text match). For every candidate span: decode the cached x86
 # speech-model output for exactly that range, rank every pangti of the keyed Shabad plus the best competing
 # pangtis of the whole Gurbani corpus by how much of the heard text they explain, pick my own answer and a
 # calibrated confidence (Karanbir v1 human pangti keys, cumulative bins, 90% Wilson lower bound), and only
@@ -37,6 +37,10 @@ def calibrated(L, m):
     return wilson_lo(sum(xs), len(xs)), len(xs)
 
 BATCH = sys.argv[1] if len(sys.argv) > 1 else 'batch1'
+# Banis ('bani:<id>', batch 4 Paath / Sung Bani): every pangti of the Bani is the keyed pool (labels/bani-verse-cache.json,
+# dumped from the app's Gurbani database by tools/bani-verses.js); all of them are in the corpus, so text and ids match
+for spec, vs in json.load(open(os.path.expanduser('~/personal/sttm-ws3/research/gab-ui/labels/bani-verse-cache.json'))).items():
+    if spec.startswith('bani:'): sh_verses[spec] = [int(v) for v in vs if int(v) in vtext]
 cands_in = json.load(open(os.path.expanduser(f'~/personal/sttm-ws3/research/gab-ui/labels/candidates/{BATCH}.json')))
 votes = []; dbg = []
 for c in cands_in:

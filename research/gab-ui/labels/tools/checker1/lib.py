@@ -56,7 +56,7 @@ def heard(rec, a, b, tokdir=os.path.join(S, 'tok')):
         _toks[rec] = (np.array([t for t, _ in tk['toks']]), [p for _, p in tk['toks']], tk['cov'])
     T, P, cov = _toks[rec]
     i, j = np.searchsorted(T, a), np.searchsorted(T, b)
-    covered = sum(max(0, min(b, y) - max(a, x)) for x, y in cov) / max(0.01, b - a)
+    covered = min(1.0, sum(max(0, min(b, y) - max(a, x)) for x, y in cov) / max(0.01, b - a))
     raw = ''.join(P[i:j])
     return norm(raw), raw.replace('▁', ' ').strip(), covered
 

@@ -27,3 +27,17 @@ keyed Shabad with no clear margin, 61 same-Shabad other pangti. Strict by design
 a corpus competitor is a reject. Confidence calibration is still the Karanbir v1 Kirtan set (no human Akhand Kirtan
 keys exist yet); the 37 approvals that overlap a current HF key line all name the same pangti, but that key is
 aligner-made (`aligned-2model-audited`), not human, so this is consistency, not truth.
+
+## Batch 4 (Paath folder 2 + Sung Bani folder 3; `vote.py batch4`, 2026-10-23)
+Decoded the 15 batch-4 recordings (`pt01/05/06/07/34/38`, `aa05/16/17/18/19/20/26/27/49`): the Azure x86 pull first, the
+local Mac q16 cache of the same model fills windows the pull lacks (`decode1.py` now merges both and keeps each second
+once where cache windows overlap; `aa18`, `aa20`, `pt07` still have gaps). Banis (`bani:2` Japji Sahib, `bani:4` Jaap Sahib,
+`bani:22` Aarti) take every pangti of the Bani as the keyed pool (`labels/bani-verse-cache.json`); all are in the corpus.
+Output `labels/votes/batch4-checker1.json`: 298 spans, 60 agree, 43 approved (agree and confidence >= 0.95); by tier
+A 36/122, B 1/49, C 1/53, D 5/74; by form Paath 3/75 (all Japji Sahib, pt01), Sung Bani 40/223 (aa05 33, aa49 6, aa18 1).
+164 'none': the model hears fast Paath only in fragments (pt34 Jaap Sahib: 0-9 chars per 0.8 s pangti, long silent
+stretches), and a Jaap Sahib pangti is 9-12 chars even when fully heard, under the 10-char floor and the 16-char 0.94
+cap, so this lens cannot approve Jaap Sahib pangtis without a Paath calibration set (none human-keyed yet). 10 same-Bani other pangti. 64 where my
+best match lies outside the keyed Shabad: in aa05 the candidates keyed to Shabad 2513 at 55-75 s, 126-152 s and 222-283 s
+are heard as the Dasam Bani Aarti pangtis (78270-78280, 87326-87332, 95387-95389, 57964-57967, 75015-75017) with margins
+of 10-38, i.e. the keyed Shabad is wrong there, not the timing. Calibration is still the Karanbir v1 Kirtan windows.
