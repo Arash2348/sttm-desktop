@@ -359,4 +359,4 @@ async function main(args) {
   } finally { fs.rmSync(S, { recursive: true, force: true }); }
 }
 
-module.exports = { main, resultOf, section, verdicts, slugOf, lineShown, nameOf, shownName };
+module.exports = { main, resultOf, section, verdicts, slugOf, lineShown, nameOf, shownName, push, hfText };

@@ -347,5 +347,5 @@ async function main(args) {
   if (flag('promote')) return promote();
   return harvest();
 }
-module.exports = { main, classify, cut, timelines };
+module.exports = { main, classify, cut, timelines, sas, download, ACCOUNT, DEV_NAMES, TEST_PLACES };
 if (require.main === module) main(process.argv.slice(2)).catch((e) => { console.error(String(e.stack || e).replace(/sig=[^&\s"']+/g, 'sig=REDACTED')); process.exit(2); });
