@@ -26,23 +26,24 @@ select { font: inherit; color: var(--ink); background: var(--card); border: 1px 
 .sum { font-size: 15px; margin-bottom: 16px; }
 .sum b { font-variant-numeric: tabular-nums; }
 .sum .k { color: var(--muted); }
-.cards { display: grid; gap: 12px; }
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; min-width: 0; }
-.head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
-.title { font-weight: 600; font-size: 15px; min-width: 0; overflow-wrap: anywhere; }
+.cards { display: grid; gap: 6px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px 8px; min-width: 0; position: relative; }
+.head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+.title { font-weight: 600; font-size: 14px; min-width: 0; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .meta { color: var(--muted); font-size: 12px; }
-.acc { text-align: right; white-space: nowrap; }
-.acc b { font-size: 20px; font-variant-numeric: tabular-nums; }
-.acc .vs { display: block; color: var(--muted); font-size: 12px; }
-.now { display: grid; grid-template-columns: 56px minmax(0,1fr) 18px; gap: 2px 8px; margin: 10px 0 8px; font-size: 14px; }
-.now .l { color: var(--muted); font-size: 12px; padding-top: 2px; }
+.acc { white-space: nowrap; font-size: 13px; color: var(--muted); }
+.acc b { font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.acc .vs { margin-left: 6px; }
+.tip { position: fixed; z-index: 10; display: none; pointer-events: none; max-width: min(460px, calc(100vw - 24px)); background: var(--card); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,.18); padding: 6px 10px; font-size: 13px; }
+.now { display: grid; grid-template-columns: auto minmax(0,1fr) 14px; gap: 1px 8px; }
+.now .l { color: var(--muted); font-size: 12px; }
 .g { font-family: "Mukta Mahee", "Noto Sans Gurmukhi", "Gurmukhi MN", "Raavi", sans-serif; overflow-wrap: anywhere; }
 .g.muted { color: var(--muted); }
 .st.ok { color: var(--ok); } .st.bad { color: var(--bad); } .st.near { color: var(--near); }
-.tl { display: grid; grid-template-columns: 56px minmax(0,1fr); gap: 3px 8px; align-items: center; position: relative; }
+.tl { display: grid; grid-template-columns: 44px minmax(0,1fr); gap: 2px 6px; align-items: center; position: relative; }
 .tl .l { color: var(--muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.row { position: relative; height: 14px; border-radius: 3px; background: var(--nil); overflow: hidden; cursor: crosshair; }
-.row.diff { height: 4px; border-radius: 2px; }
+.row { position: relative; height: 8px; border-radius: 2px; background: var(--nil); overflow: hidden; cursor: crosshair; }
+.row.gt { height: 5px; }
 .row i { position: absolute; top: 0; bottom: 0; }
 .row.seg i { border-right: 1px solid var(--card); }
 .ph { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); pointer-events: none; display: none; }
@@ -55,7 +56,7 @@ details p { margin: 6px 0; max-width: 70ch; }
 <body>
 <div class="wrap">
   <h1>GAB timeline</h1>
-  <p class="sub">Each card is one recording. Hover the bars to see the actual pangti and what was shown. <a href="./index.html">Leaderboard</a></p>
+  <p class="sub">One row per recording. Blue = actual pangtis; green = right, amber = other pangti, red = wrong Shabad. Hover for the pangti. <a href="./index.html">Leaderboard</a></p>
   <div class="bar">
     <select id="tier" aria-label="Set"></select>
     <select id="bA" aria-label="Version"></select>
@@ -115,15 +116,12 @@ async function render() {
     const title = first ? dA.texts[first[3]] : c.id;
     const aA = acc(c), aB = o ? acc(o) : null;
     return `<div class="card" data-i="${i}">
-      <div class="head"><div style="min-width:0"><div class="title g">${esc(title)}</div>
-        <div class="meta">${esc(c.id.replace(/_sttm_desktop_.*/, ''))} · ${esc(c.gurdwara || '')} · ${mmss(c.dur)}</div></div>
-        <div class="acc"><b>${f1(aA)}%</b>${aB != null ? `<span class="vs">${esc(nB)}: ${f1(aB)}%</span>` : ''}</div></div>
-      <div class="now"></div>
+      <div class="head" title="${esc(c.id.replace(/_sttm_desktop_.*/, ''))} · ${esc(c.gurdwara || '')} · ${mmss(c.dur)}"><div class="title g">${esc(title)}</div>
+        <div class="acc"><b>${f1(aA)}%</b>${aB != null ? `<span class="vs">vs ${f1(aB)}%</span>` : ''}</div></div>
       <div class="tl">
-        <span class="l">Actual</span><div class="row seg">${segRow(c, 3, 'var(--gt)')}</div>
-        <span class="l">${esc(nA)}</span><div class="row seg">${segRow(c, 4, 'var(--a)')}</div>
-        <span></span><div class="row diff">${diffRow(c)}</div>
-        ${dB ? (o ? `<span class="l">${esc(nB)}</span><div class="row seg">${segRow(o, 4, 'var(--b)')}</div><span></span><div class="row diff">${diffRow(o)}</div>`
+        <span class="l">Actual</span><div class="row seg gt">${segRow(c, 3, 'var(--gt)')}</div>
+        <span class="l">${esc(nA)}</span><div class="row">${diffRow(c)}</div>
+        ${dB ? (o ? `<span class="l">${esc(nB)}</span><div class="row">${diffRow(o)}</div>`
           : `<span class="l">${esc(nB)}</span><div class="meta">not played by this version</div>`) : ''}
         <div class="ph"></div>
       </div></div>`;
@@ -135,18 +133,24 @@ function line(label, text, cat) {
   const st = cat == null ? '' : cat === 'P' || cat === 'S' ? '<span class="st ok">✓</span>' : cat === 'A' ? '<span class="st near">~</span>' : cat === 'W' ? '<span class="st bad">✗</span>' : '';
   return `<span class="l">${esc(label)}</span><span class="g${text ? '' : ' muted'}">${esc(text || '—')}</span>${st || '<span></span>'}`;
 }
-function show(el, c, o, dA, dB, nA, nB, s) {
+const TIP = document.createElement('div'); TIP.className = 'tip'; document.body.appendChild(TIP);
+function show(el, c, o, dA, dB, nA, nB, s, ev) {
+  if (!ev) return;
   const rA = at(c, s), rB = o ? at(o, s) : null;
   const truth = rA && rA[3] >= 0 ? dA.texts[rA[3]] : (rB && rB[3] >= 0 ? dB.texts[rB[3]] : '');
-  el.querySelector('.now').innerHTML = line('Actual', truth) + line(nA, rA && rA[4] >= 0 ? dA.texts[rA[4]] : '', rA && truth ? rA[2] : null)
-    + (dB && o ? line(nB, rB && rB[4] >= 0 ? dB.texts[rB[4]] : '', rB && truth ? rB[2] : null) : '');
+  TIP.style.display = 'block';
+  const w = TIP.offsetWidth || 300; let left = ev.clientX + 14; if (left + w > innerWidth - 8) left = Math.max(8, ev.clientX - w - 14);
+  TIP.style.left = left + 'px'; TIP.style.top = (ev.clientY + 16) + 'px';
+  TIP.innerHTML = `<div class="meta">${mmss(s)}</div><div class="now">` + line('Actual', truth) + line(nA, rA && rA[4] >= 0 ? dA.texts[rA[4]] : '', rA && truth ? rA[2] : null)
+    + (dB && o ? line(nB, rB && rB[4] >= 0 ? dB.texts[rB[4]] : '', rB && truth ? rB[2] : null) : '') + '</div>';
 }
 function hook(el, c, o, dA, dB, nA, nB) {
   const tl = el.querySelector('.tl'), ph = el.querySelector('.ph');
   const move = (ev) => { const row = el.querySelector('.row'); const r = row.getBoundingClientRect();
     const x = Math.min(Math.max(ev.clientX - r.left, 0), r.width - 1); const s = Math.floor(x / r.width * c.dur);
     const tr = tl.getBoundingClientRect(); ph.style.display = 'block'; ph.style.left = (r.left - tr.left + x) + 'px';
-    show(el, c, o, dA, dB, nA, nB, s); el._s = s; };
+    show(el, c, o, dA, dB, nA, nB, s, ev); el._s = s; };
+  tl.addEventListener('mouseleave', () => { TIP.style.display = 'none'; ph.style.display = 'none'; });
   tl.querySelectorAll('.row').forEach((row) => { row.addEventListener('mousemove', move); row.addEventListener('click', (ev) => { move(ev);
     if (c.yt && !matchMedia('(hover: none)').matches) window.open(`https://www.youtube.com/watch?v=${c.yt.v}&t=${c.yt.at + el._s}s`, '_blank', 'noopener'); }); });
 }
