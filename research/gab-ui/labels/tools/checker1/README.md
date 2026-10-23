@@ -41,3 +41,18 @@ cap, so this lens cannot approve Jaap Sahib pangtis without a Paath calibration 
 best match lies outside the keyed Shabad: in aa05 the candidates keyed to Shabad 2513 at 55-75 s, 126-152 s and 222-283 s
 are heard as the Dasam Bani Aarti pangtis (78270-78280, 87326-87332, 95387-95389, 57964-57967, 75015-75017) with margins
 of 10-38, i.e. the keyed Shabad is wrong there, not the timing. Calibration is still the Karanbir v1 Kirtan windows.
+
+## Batch 5 (Kirtan folder 1, 15 recordings at 25-40% coverage; `vote.py batch5`, 2026-10-23)
+Decoded `clip03/04/12/20/36/40`, `rn12/13/22/23/30/31/61/67/71` with `decode1.py` (x86 cache; the `rn*` x86 entries are
+symlinks to the q16 pull; 96-100% of windows found). A span keyed under two Shabad ids (`2819|40621`, rn67) takes both
+Shabads as the keyed pool. Output `labels/votes/batch5-checker1.json`: 909 spans, 402 agree, 269 approved (agree and
+confidence >= 0.95); by tier A 200/358, B 0/47, C 43/190, D 26/314. Per recording (approved/spans): clip03 22/34,
+clip04 23/65, clip12 12/143, clip20 26/51, clip36 39/85, clip40 2/52, rn12 21/45, rn13 2/44, rn22 10/36, rn23 9/31,
+rn30 17/36, rn31 29/106, rn61 11/42, rn67 17/70, rn71 29/69. 162 'none' (alaap, simran, music, < 10 chars heard),
+109 same-Shabad other pangti, 385 best match outside the keyed Shabad. The one systematic key error is clip12: its 143
+candidates are keyed to Shabad 3014 but from ~314 s the hearing names "ਸੰਤਹੁ ਸੁਖੁ ਹੋਆ ਸਭ ਥਾਈ / ਤਿਨਿ ਸਗਲੀ ਚਿੰਤ ਮਿਟਾਈ"
+(27216-27221) and from ~750 s "ਜਿਸ ਦਾ ਕਰਤਾ ਮਿਤ੍ਰੁ ਸਭਿ ਕਾਜ ਸਵਾਰਿਆ" (41026-41029) with margins 8-24, so the key, not the
+timing, is wrong there (122 outside-key votes). rn67's five two-Shabad spans at 0-32 s are heard as the rahao
+"ਜੋ ਹਮ ਕਉ ਹਰਿ ਨਾਮੁ ਚਿਤਾਰੇ" (31605, Shabad 2819's rahao pangti itself is not the candidate) and "ਸਾਜਨੁ ਮੀਤੁ ਪਿਆਰਾ"
+(ties), none approved. 133 agree-but-below-0.95: 94 under the 16-char cap, 67 with margin < 10 (same calibration as
+before: Karanbir v1 Kirtan windows, 461 of them). Strict by design: a tie or a thin margin is a reject.

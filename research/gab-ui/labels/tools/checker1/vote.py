@@ -1,4 +1,4 @@
-# Checker 1 of 3, label batch 1/2/3/4 (usage: vote.py batchN), lens A (text match). For every candidate span: decode the cached x86
+# Checker 1 of 3, label batch 1/2/3/4/5 (usage: vote.py batchN), lens A (text match). For every candidate span: decode the cached x86
 # speech-model output for exactly that range, rank every pangti of the keyed Shabad plus the best competing
 # pangtis of the whole Gurbani corpus by how much of the heard text they explain, pick my own answer and a
 # calibrated confidence (Karanbir v1 human pangti keys, cumulative bins, 90% Wilson lower bound), and only
@@ -46,7 +46,9 @@ votes = []; dbg = []
 for c in cands_in:
     rec, a, b = c['recording'], c['start_s'], c['end_s']
     h, raw, cov = heard(rec, a, b)
-    ranked, scores, svs = judge(h, [c['shabadId']]) if len(h) else ([], {}, sh_verses.get(c['shabadId'], []))
+    # batch 5: a span can be a candidate under two Shabad ids ('2819|40621'); both Shabads form the keyed pool
+    keyed = [int(x) if str(x).isdigit() else x for x in str(c['shabadId']).split('|')]
+    ranked, scores, svs = judge(h, keyed) if len(h) else ([], {}, [v for s_ in keyed for v in sh_verses.get(s_, [])])
     top = ranked[0] if ranked else None; sec = ranked[1] if len(ranked) > 1 else None
     s1 = scores[top] if top else 0.0; s2 = scores[sec] if sec else 0.0; m = s1 - s2
     vah = h.count(VAHEGURU) * len(VAHEGURU) / max(1, len(h))
