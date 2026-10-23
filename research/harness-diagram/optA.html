@@ -17,8 +17,9 @@ flowchart TD
   MODEL --> HYP[/Heard text + confidence/]:::hear
   HYP --> PH{Which phase?}:::dec
 
-  PH -- searching --> S1[Full-text search<br/>3-gram, top 3 Shabads]:::find
-  PH -- searching --> S2[First-letter search<br/>8,6,5,4-letter pieces, voting]:::find
+  PH -- searching --> SB[Same heard text goes to<br/>two searches side by side]:::find
+  SB --> S1[Full-text search<br/>matches whole words, 3-letter pieces<br/>top 3 Shabads]:::find
+  SB --> S2[First-letter search<br/>matches first letters of words<br/>8,6,5,4-letter pieces, voting]:::find
   S1 --> R1{Mool Mantar?<br/>4 hits on Shabad 1}:::dec
   R1 -- no --> R2{Jaap / Aarti pool?<br/>5 of last 8 searches}:::dec
   R2 -- no --> R3{Sound check?<br/>leaders scored vs audio<br/>3 agreeing votes}:::dec
