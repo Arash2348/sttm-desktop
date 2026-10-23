@@ -1019,6 +1019,12 @@ const VoiceFollow = () => {
   const paathSeqRef = useRef({ ...PAATH_SEQ_OFF });
   const curCursorPrevRef = useRef(null);
   const seqNextRef = useRef(null);
+  // Akhand Paath events go to the session log and (shadow builds) the uploaded events.jsonl,
+  // so a live session shows when the mode started, carried over and ended.
+  const noteSeq = (type, fields) => {
+    sessionLog.logEvent(type, fields);
+    if (SHADOW_BUILD && shadowBus.active()) shadowBus.note({ type, ...fields });
+  };
   // Akhand Paath detection per plain Shabad (see seqDetectRef), and the Shabad before it.
   const seqPaceRef = useRef({ id: null });
   // Was Shabad `sid` (just followed) read in order at a reading pace (or only just begun,
@@ -2582,7 +2588,7 @@ const VoiceFollow = () => {
             readAtPaceRef.current(fromId) &&
             autopilotLockRef.current
           ) {
-            sessionLog.logEvent('paath_seq_on', {
+            noteSeq('paath_seq_on', {
               session: sessionIdRef.current,
               shabadId: cand.shabadId,
               section: bani,
@@ -2644,7 +2650,7 @@ const VoiceFollow = () => {
     setCurrentView({ id: sid, line: (prof.displayLines || [])[out.lineIndex] || '' });
     openShabadRef.current(sid, out.verseId, verse);
     lastAutoDecisionRef.current = Date.now();
-    sessionLog.logEvent('paath_next', {
+    noteSeq('paath_next', {
       session: sessionIdRef.current,
       from,
       to: sid,
@@ -2685,7 +2691,7 @@ const VoiceFollow = () => {
     const verse = ((curProfileRef.current && curProfileRef.current.rawLines) || [])[out.lineIndex];
     paathSeqRef.current = { ...PAATH_SEQ_OFF };
     seqNextRef.current = null;
-    sessionLog.logEvent('paath_seq_off', { session: sessionIdRef.current, shabadId: sid, why });
+    noteSeq('paath_seq_off', { session: sessionIdRef.current, shabadId: sid, why });
     if (typeof sid === 'number' && verse && autopilotLockRef.current && !lockingRef.current) {
       autopilotLockRef.current({ shabadId: sid, verseId: out.verseId, verse }, { promote: true });
     }
@@ -2771,7 +2777,7 @@ const VoiceFollow = () => {
     const verse = (prof.rawLines || [])[out.lineIndex];
     if (!verse || !autopilotLockRef.current) return;
     sq.eligible = false; // once per Shabad
-    sessionLog.logEvent('paath_seq_on', {
+    noteSeq('paath_seq_on', {
       session: sessionIdRef.current,
       shabadId: sid,
       lines: sq.lines.size,
