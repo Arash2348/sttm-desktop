@@ -1,0 +1,65 @@
+[
+ {
+  "recording": "aa05",
+  "category": "Sung Bani",
+  "folder": "3-bani-sung-like-kirtan/aarti",
+  "split": "dev",
+  "verseId": 78280,
+  "shabadId": "bani:22",
+  "text": "ਤੀਨ ਲੋਕ ਜੈ ਜੈ ਕਰੈ ਰਰੈ ਨਾਮੁ ਸਤਿ ਜਾਪ ॥੫੬॥",
+  "start_s": 181.72,
+  "end_s": 186.8,
+  "basis": "aligned-3check",
+  "min_confidence": 0.97,
+  "checker_confidences": {
+   "checker1": 0.98,
+   "checker2": 0.97,
+   "checker3": 0.97
+  },
+  "tier": "A",
+  "aligner_conf": 0.83,
+  "source_batch": "batch4"
+ },
+ {
+  "recording": "aa05",
+  "category": "Sung Bani",
+  "folder": "3-bani-sung-like-kirtan/aarti",
+  "split": "dev",
+  "verseId": 75017,
+  "shabadId": "bani:22",
+  "text": "ਦੁਕਾਲੰ ਪ੍ਰਣਾਸੀ ਦਿਆਲੰ ਸਰੂਪੇ ॥",
+  "start_s": 208.76,
+  "end_s": 213.08,
+  "basis": "aligned-3check",
+  "min_confidence": 0.96,
+  "checker_confidences": {
+   "checker1": 0.98,
+   "checker2": 0.97,
+   "checker3": 0.96
+  },
+  "tier": "D",
+  "aligner_conf": 0.96,
+  "source_batch": "batch4"
+ },
+ {
+  "recording": "aa49",
+  "category": "Sung Bani",
+  "folder": "3-bani-sung-like-kirtan/aarti",
+  "split": "dev",
+  "verseId": 87332,
+  "shabadId": "bani:22",
+  "text": "ਬਾਹਿ ਗਹੇ ਕੀ ਲਾਜ ਅਸਿ ਗੋਬਿੰਦ ਦਾਸ ਤੁਹਾਰ ॥੮੬੪॥",
+  "start_s": 96.44,
+  "end_s": 101.44,
+  "basis": "aligned-3check",
+  "min_confidence": 0.97,
+  "checker_confidences": {
+   "checker1": 0.97,
+   "checker2": 0.97,
+   "checker3": 0.97
+  },
+  "tier": "A",
+  "aligner_conf": 0.81,
+  "source_batch": "batch4"
+ }
+]
