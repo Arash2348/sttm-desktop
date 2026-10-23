@@ -6,7 +6,7 @@
 Every output file is passed through bani-fix (right Bani -> B, Waheguru slide -> V)."""
 import json, os, shutil, subprocess, sys, glob
 H = os.path.dirname(os.path.abspath(__file__)); B = os.path.dirname(H)
-O = f'{B}/timeline-orig'; PS = f'{B}/private-snap/timeline'
+O = f'{B}/timeline-pangti'; PS = f'{B}/timeline-pangti'  # pangti-level re-score (tools/pangti-timeline.js)
 ORDER = ['main', 'paath', 'sungbani', 'akhandpaath', 'akhand', 'kbv1', 'hard', 'real']
 VORDER = ['5348d9a0', '9b1fa814', '6a866c94']   # 9.0.5 current experimental, 10.0.4, 10.0.5
 idx = json.load(open(f'{O}/index.json')); extra = json.load(open(f'{O}/index-extra.json'))
@@ -18,7 +18,7 @@ for t in extra['tiers']:
     else:
         tiers[t['key']] = t
 # private-only tiers from the private Space snapshot
-pidx = json.load(open(f'{PS}/index.json'))
+pidx = json.load(open(f'{PS}/index-all.json'))
 for t in pidx['tiers']:
     if t['key'] not in tiers: tiers[t['key']] = {**t, 'private_only': True}
 for t in tiers.values():
@@ -44,7 +44,7 @@ def build(out, public):
             T = d['texts']; tix = {t: i for i, t in enumerate(T)}
             for c in d['clips']:
                 c['gurdwara'] = tidy(c.get('gurdwara', ''))
-                if k in ('main', 'akhand') and SUNG.get(c['id']):  # display-only pangti track (scoring unchanged)
+                if False and SUNG.get(c['id']):  # pangti keys are now the scored truth; display-only track no longer needed  # display-only pangti track (scoring unchanged)
                     tr = []
                     for st, en, txt in SUNG[c['id']]:
                         if txt not in tix: tix[txt] = len(T); T.append(txt)

@@ -8,14 +8,14 @@
 :root {
   --bg: #f6f5f1; --card: #ffffff; --ink: #1c1d1f; --muted: #686b70; --faint: #9a9da2; --line: #e2e1dc; --soft: #f0efea;
   --accent: #b5561c; --gt: #5b7fae;
-  --ok: #3f8f52; --okb: #86c296; --near: #d39b2a; --bad: #c4473f; --none: #cfcdc6; --wg: #b9c6d6; --unscored: #eceae4;
+  --ok: #3f8f52; --okb: #86c296; --near: #d39b2a; --bad: #c4473f; --none: #cfcdc6; --wg: #b9c6d6; --gap: #d9e3dc; --unscored: #eceae4;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) { --bg: #111315; --card: #1a1d20; --ink: #e8e9ea; --muted: #a2a6ab; --faint: #73777c; --line: #2f3337; --soft: #22262a;
-    --accent: #e08a50; --gt: #7f9fcb; --ok: #62b375; --okb: #3d7a4c; --near: #e3b14a; --bad: #e0675f; --none: #4a4e53; --wg: #3d4a5a; --unscored: #25292d; color-scheme: dark; }
+    --accent: #e08a50; --gt: #7f9fcb; --ok: #62b375; --okb: #3d7a4c; --near: #e3b14a; --bad: #e0675f; --none: #4a4e53; --wg: #3d4a5a; --gap: #2c3a31; --unscored: #25292d; color-scheme: dark; }
 }
 :root[data-theme="dark"] { --bg: #111315; --card: #1a1d20; --ink: #e8e9ea; --muted: #a2a6ab; --faint: #73777c; --line: #2f3337; --soft: #22262a;
-  --accent: #e08a50; --gt: #7f9fcb; --ok: #62b375; --okb: #3d7a4c; --near: #e3b14a; --bad: #e0675f; --none: #4a4e53; --wg: #3d4a5a; --unscored: #25292d; color-scheme: dark; }
+  --accent: #e08a50; --gt: #7f9fcb; --ok: #62b375; --okb: #3d7a4c; --near: #e3b14a; --bad: #e0675f; --none: #4a4e53; --wg: #3d4a5a; --gap: #2c3a31; --unscored: #25292d; color-scheme: dark; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
 .wrap { max-width: 1000px; margin: 0 auto; padding: 22px 16px 56px; }
@@ -123,7 +123,7 @@ const mmss = (s) => { s = Math.max(0, Math.round(s)); const h = Math.floor(s / 3
 const f1 = (v) => (v == null ? '–' : v.toFixed(1));
 const short = (s) => String(s).replace(/^Gurbani Autopilot\s*/, '');
 const store = { get(k) { try { return localStorage.getItem(k); } catch (_) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (_) {} } };
-const COL = { P: 'var(--ok)', S: 'var(--ok)', B: 'var(--okb)', A: 'var(--near)', W: 'var(--bad)', N: 'var(--none)', V: 'var(--wg)' };
+const COL = { P: 'var(--ok)', S: 'var(--ok)', B: 'var(--okb)', A: 'var(--bad)', W: 'var(--bad)', N: 'var(--none)', V: 'var(--wg)', G: 'var(--gap)' };
 const RIGHT = (k) => k === 'P' || k === 'S' || k === 'B';
 const TABNAME = { main: 'Kirtan', akhand: 'Akhand Kirtan', kbv1: "Karanbir Singh's benchmark", hard: 'Hall recordings (hard)', real: 'Real sessions', paath: 'Paath', sungbani: 'Sung Bani', akhandpaath: 'Sehaj / Akhand Paath' };
 const TABORDER = ['main', 'paath', 'sungbani', 'akhandpaath', 'akhand', 'kbv1', 'hard', 'real'];
@@ -137,17 +137,17 @@ async function load(f) { if (!DATA[f]) DATA[f] = await (await fetch('timeline/' 
 
 // ---------- per-recording facts (all derived from the per-second runs) ----------
 const nn = (c, k) => c.n[k] || 0;
-const scored = (c) => nn(c, 'P') + nn(c, 'A') + nn(c, 'S') + nn(c, 'B') + nn(c, 'W') + nn(c, 'N') + nn(c, 'V');
+const scored = (c) => nn(c, 'P') + nn(c, 'A') + nn(c, 'S') + nn(c, 'B') + nn(c, 'W') + nn(c, 'N') + nn(c, 'V'); // G (no pangti being said) is never scored
 let SETPANGTI = false; // the whole set is judged on one basis: pangti when most recordings have a pangti key
 const pangtiKeyed = (c) => SETPANGTI && !!c.basis;
 const PAATHSETS = ['paath', 'akhandpaath']; const SUNGBANI = 'sungbani';
 const isRead = () => PAATHSETS.includes(S.tier);
-const W = () => isRead() ? { act: 'read', place: 'the right place in the Bani', sung: 'Pangti read', while: 'while reading' } : S.tier === SUNGBANI ? { act: 'sung', place: 'the right place in the Bani', sung: 'Pangti sung', while: 'while singing' } : { act: 'sung', place: 'the right Shabad', sung: 'Shabad sung', while: 'while singing' };
+const W = () => isRead() ? { act: 'read', place: 'the right place in the Bani', sung: 'Pangti read', while: 'while reading' } : S.tier === SUNGBANI ? { act: 'sung', place: 'the right place in the Bani', sung: 'Pangti sung', while: 'while singing' } : { act: 'sung', place: 'the right Shabad', sung: SETPANGTI ? 'Pangti sung' : 'Shabad sung', while: 'while singing' };
 const VDESC = { '5348d9a0': 'in the experimental app today', '9b1fa814': 'candidate, not in the app yet', '6a866c94': 'newest candidate, not in the app yet' };
 const KEYNOTE = { human: 'answer key checked by a person', aligned: 'answer key machine-aligned, not yet checked by a person', 'broadcast-caption': "answer key from the broadcast's own on-screen pangtis" };
 const keyNote = (b) => KEYNOTE[b] || 'answer key at Shabad level';
 function acc(c) { if (!c) return null; const t = scored(c); if (!t) return null;
-  if (pangtiKeyed(c)) { const d = nn(c, 'P') + nn(c, 'A') + nn(c, 'W') + nn(c, 'N') + nn(c, 'V'); return d ? 100 * nn(c, 'P') / d : null; }
+  if (pangtiKeyed(c)) { const d = nn(c, 'P') + nn(c, 'B') + nn(c, 'A') + nn(c, 'W') + nn(c, 'N') + nn(c, 'V'); return d ? 100 * (nn(c, 'P') + nn(c, 'B')) / d : null; }
   return 100 * (nn(c, 'P') + nn(c, 'A') + nn(c, 'S') + nn(c, 'B')) / t; }
 function facts(c, d) {
   if (!c) return null;
@@ -268,11 +268,12 @@ async function renderList(dA, dB) {
   $('#app').innerHTML = `
     <h1>GAB: how well Voice Autopilot follows kirtan and paath</h1>
     <p class="lead">How well does Voice Autopilot keep the right Gurbani on screen during real kirtan and paath? Pick a category, then open any recording to see, second by second, what was sung or read and what was shown.</p>
-    <div class="tabs">${tabsSorted().map((t) => `<button data-tier="${esc(t.key)}" aria-pressed="${t.key === S.tier}">${esc(TABNAME[t.key] || t.title)}${t.key === 'paath' || t.key === 'sungbani' ? ' <small>(provisional)</small>' : ''}</button>`).join('')}</div>
+    <div class="tabs">${tabsSorted().map((t) => `<button data-tier="${esc(t.key)}" aria-pressed="${t.key === S.tier}">${esc(TABNAME[t.key] || t.title)}${['main', 'akhand', 'paath', 'sungbani'].includes(t.key) ? ' <small>(provisional)</small>' : ''}</button>`).join('')}</div>
     <div class="vs">Version <select id="selA">${opts(S.a)}</select><span class="cmp">${tier.builds.length > 1 ? `· compare with <select id="selB">${opts(S.b, true)}</select> <span class="dmeta">(optional)</span>` : ''}</span></div>
     <div class="summary">
       <p>${esc(VERB[S.tier] || tier.title)}: <b>${both.length} recordings</b>, ${TA.hours.toFixed(1)} hours scored, judged on ${keyed ? 'the exact pangti' : 'the Shabad'}. ${verdictLine}</p>${bigLine}
-      ${prov ? `<p class="prov"><b>Provisional:</b> this answer key was made by machine alignment and has not yet been checked by a person, and there is little of it (${both.length} short clips, about ${Math.round(TA.hours * 3600 / Math.max(1, both.length))} s scored each, ${TA.hours.toFixed(1)} h in all). Use it as a rough guide; the person-checked headline is Karanbir Singh's set.</p>` : ''}
+      ${prov ? `<p class="prov"><b>Provisional:</b> the pangti timings were made by machine alignment and have not yet been checked by a person. Only recordings whose pangtis are timed for most of the singing are shown (${both.length} here, ${TA.hours.toFixed(1)} h scored). Use it as a rough guide; the person-checked headline is Karanbir Singh's set.</p>` : ''}
+      <p class="dmeta">Scored only while a pangti is being ${W().act}: green = that exact pangti on screen; red = any other pangti or Shabad. When no pangti is being said (alaap, simran, a pause), a pangti already shown, or the current or previous Shabad, is fine and not counted.</p>
       ${keyed && majBasis === 'broadcast-caption' ? `<p class="prov">The answer key is the broadcast's own on-screen pangti, which can lag the reader by a second or two.</p>` : ''}
       ${vtable}
       <div class="kpis">
@@ -322,7 +323,7 @@ function renderDetail(c, dA, dB) {
     if (nn(cc, 'B')) items.push(`Showed the right Bani (which contains this Shabad) for ${nn(cc, 'B')} s.`);
     if (nn(cc, 'V')) items.push(`Waheguru slide while searching for ${nn(cc, 'V')} s (not an error).`);
     if (f.blank.length) items.push(`Screen empty for ${f.blank.reduce((s, x) => s + x.e - x.s, 0)} s ${W().while} (${f.blank.length} stretch${f.blank.length > 1 ? 'es' : ''}).`);
-    if (f.other.length) items.push(`Stayed on another pangti of the right Shabad ${f.other.length}× (${f.other.reduce((s, x) => s + x.e - x.s, 0)} s).`);
+    if (f.other.length) items.push(`Showed the wrong pangti of the right Shabad ${f.other.length}× (${f.other.reduce((s, x) => s + x.e - x.s, 0)} s).`);
     return `<div class="verdict"><h3>${esc(name)} <b>${pct(f.acc)}</b></h3><ul>${items.map((x) => `<li>${x}</li>`).join('')}</ul></div>`;
   };
   // events: what happened, in time order
@@ -332,12 +333,12 @@ function renderDetail(c, dA, dB) {
     else if (!f.wrong.length) ev.push({ s: f.start, who, kind: 'none', text: `Never found ${W().place}; ${f.blank.length ? 'the screen stayed empty' : 'nothing right was shown'}` });
     for (const x of f.wrong) ev.push({ s: x.s, who, kind: x.ahead || x.parmaan ? 'par' : 'bad', text: `${x.ahead ? 'Moved ahead to the next Shabad\'s heading for ' + (x.e - x.s) + ' s:' : f.find == null ? 'Never showed the right Shabad; showed' : x.parmaan ? 'Another Shabad (possibly a parmaan) for ' + (x.e - x.s) + ' s:' : 'Wrong Shabad for ' + (x.e - x.s) + ' s:'} <span class="g">${esc(x.shown >= 0 ? label(d.texts[x.shown]) : '')}</span>${f.find == null ? ` for ${x.e - x.s} s` : ''}` });
     for (const x of f.blank) if (!(f.find == null && x.s === f.start)) ev.push({ s: x.s, who, kind: 'none', text: `Nothing on screen for ${x.e - x.s} s` });
-    for (const x of f.other) ev.push({ s: x.s, who, kind: 'near', text: `Another pangti for ${x.e - x.s} s: <span class="g">${esc(x.shown >= 0 ? d.texts[x.shown] : '')}</span>` }); };
+    for (const x of f.other) ev.push({ s: x.s, who, kind: 'near', text: `Wrong pangti of the same Shabad for ${x.e - x.s} s: <span class="g">${esc(x.shown >= 0 ? d.texts[x.shown] : '')}</span>` }); };
   push(nA, dA, fa); if (o) push(nB, dB, fb);
   ev.sort((p, q) => p.s - q.s);
   if (o) { for (let i = 0; i < ev.length; i++) { const j = ev.findIndex((x, k) => k > i && x.s === ev[i].s && x.text === ev[i].text && x.who !== ev[i].who);
     if (j > 0) { ev[i].who = 'both versions'; ev.splice(j, 1); } } }
-  const KIND = { ok: ['found', 'var(--ok)'], bad: ['wrong', 'var(--bad)'], par: ['parmaan?', 'var(--near)'], none: ['empty', 'var(--faint)'], near: ['other pangti', 'var(--near)'] };
+  const KIND = { ok: ['found', 'var(--ok)'], bad: ['wrong', 'var(--bad)'], par: ['parmaan?', 'var(--near)'], none: ['empty', 'var(--faint)'], near: ['wrong pangti', 'var(--bad)'] };
   // actual row: blocks per Shabad / pangti, numbered
   const segs = (cc, k) => { const out = []; for (const r of cc.runs) { const last = out[out.length - 1]; if (last && last.id === r[k] && last.e === r[0]) last.e = r[1]; else out.push({ s: r[0], e: r[1], id: r[k] }); } return out; };
   const truthSegs = segs(c, 3).filter((x) => x.id >= 0);
@@ -367,7 +368,7 @@ function renderDetail(c, dA, dB) {
   scrollTo(0, 0);
   const tl = $('#tl'), ph = $('#ph'), now = $('#now');
   const at = (cc, s) => { if (!cc) return null; let lo = 0, hi = cc.runs.length - 1; while (lo <= hi) { const m = (lo + hi) >> 1, r = cc.runs[m]; if (s < r[0]) hi = m - 1; else if (s >= r[1]) lo = m + 1; else return r; } return null; };
-  const mark = (r) => (!r ? '' : r[2] === 'P' || r[2] === 'S' ? '<span class="tag" style="background:var(--ok)">right</span>' : r[2] === 'B' ? '<span class="tag" style="background:var(--ok)">right Bani</span>' : r[2] === 'A' ? '<span class="tag" style="background:var(--near)">other pangti</span>' : r[2] === 'W' ? '<span class="tag" style="background:var(--bad)">wrong</span>' : r[2] === 'V' ? '<span class="tag" style="background:var(--faint)">Waheguru slide</span>' : '<span class="tag" style="background:var(--faint)">nothing</span>');
+  const mark = (r) => (!r ? '' : r[2] === 'P' || r[2] === 'S' ? '<span class="tag" style="background:var(--ok)">right</span>' : r[2] === 'B' ? '<span class="tag" style="background:var(--ok)">right Bani</span>' : r[2] === 'A' ? '<span class="tag" style="background:var(--bad)">wrong pangti</span>' : r[2] === 'W' ? '<span class="tag" style="background:var(--bad)">wrong</span>' : r[2] === 'V' ? '<span class="tag" style="background:var(--faint)">Waheguru slide</span>' : r[2] === 'G' ? '<span class="tag" style="background:var(--faint)">no pangti said, fine</span>' : '<span class="tag" style="background:var(--faint)">nothing</span>');
   const secAt = (ev2) => { const r = tl.querySelector('.big').getBoundingClientRect(); return Math.floor(Math.min(Math.max(ev2.clientX - r.left, 0), r.width - 1) / r.width * c.dur); };
   const show = (ev2) => showAt(secAt(ev2));
   const showAt = (s) => { s = Math.max(0, Math.min(c.dur - 1, Math.floor(s))); const r = tl.querySelector('.big').getBoundingClientRect(); const tr = tl.getBoundingClientRect();
@@ -419,8 +420,8 @@ function legend(keyed, short) {
   const it = (c, t) => `<span><i class="sw" style="background:${c}"></i>${t}</span>`;
   const has = (k) => !HAS || HAS.has(k);
   return it('var(--ok)', keyed ? 'right pangti' : 'right Shabad') + (has('B') ? it('var(--okb)', 'right Bani (contains the Shabad)') : '')
-    + (keyed ? it('var(--near)', 'right Shabad, other pangti') : '') + it('var(--bad)', 'wrong Shabad') + (has('V') ? it('var(--wg)', 'Waheguru slide (searching)') : '')
-    + it('var(--none)', 'nothing shown') + (short ? '' : '<span><i class="sw" style="background:var(--unscored);border:1px solid var(--line)"></i>not scored (no answer key)</span>');
+    + it('var(--bad)', keyed ? 'wrong pangti (another pangti of the same Shabad, or another Shabad)' : 'wrong Shabad') + (has('V') ? it('var(--wg)', 'Waheguru slide (searching)') : '')
+    + it('var(--none)', 'nothing shown') + (has('G') ? it('var(--gap)', 'no pangti being said (screen fine)') : '') + (short ? '' : '<span><i class="sw" style="background:var(--unscored);border:1px solid var(--line)"></i>not scored (no answer key)</span>');
 }
 function about() {
   return `<details class="about"><summary>How this is scored</summary>
