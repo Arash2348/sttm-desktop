@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """make-candidates.py <gab-lines dir> <out.json> [--folder 1-kirtan-shabad] [--file c1-6a866c94-main.json]
-                      [--lo 0.50] [--hi 0.60] [--max 15]
+                      [--lo 0.50] [--hi 0.60] [--max 15] [--category Kirtan]
 
 CANDIDATE pangti timings for GAB recordings whose pangti coverage is in [lo, hi) (closest to the 60% bar first).
 
@@ -33,6 +33,7 @@ def opt(n, d):
 LINES, OUT = argv[0], argv[1]
 FOLDER = opt('folder', '1-kirtan-shabad')
 FILE = opt('file', 'c1-6a866c94-main.json')
+CATEGORY = opt('category', 'Kirtan')
 LO, HI, MAX = float(opt('lo', 0.5)), float(opt('hi', 0.6)), int(opt('max', 15))
 AGREE_S, SURE_CHECK, MIN_CONF, MERGE_GAP_S, MIN_GAP_S = 1.0, 0.5, 0.6, 2.0, 2.0
 PREC = {'A': 0.97, 'B': 0.65, 'C': 0.41, 'D': 0.2}  # D: no measurement; a conflict is below one-model
@@ -143,7 +144,7 @@ for cov_before, rid in covers:
               'aligner': 'line-build.js two-model forced alignment, cloud run 2026-10-15 (Azure gab-lines/align)'}
         if c.get('conflict'): ev['other_model_pangti_here'] = c['conflict']
         agree_prior = PREC[c['tier']]
-        out_rows.append({'recording': rid, 'category': 'Kirtan', 'folder': FOLDER, 'split': m['split'],
+        out_rows.append({'recording': rid, 'category': CATEGORY, 'folder': FOLDER, 'split': m['split'],
                          'verseId': g['verseId'], 'shabadId': int(sid) if sid and str(sid).isdigit() else sid,
                          'text': g['text'], 'start_s': g['start'], 'end_s': g['end'],
                          'aligner_conf': round(chk, 3), 'confidence_flag': 'high' if (c['tier'] == 'A' and chk >= MIN_CONF) or in_key else 'low',

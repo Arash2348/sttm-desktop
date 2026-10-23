@@ -19,3 +19,9 @@ decides. Every row carries `verify: {pangti_must_match, min_agreement: 0.95, agr
 Batches: batch1 = Kirtan (folder 1) recordings at 50-60% coverage (13). batch2 = Kirtan recordings at 40-50% coverage
 (15, closest to 50% first; 948 candidates, 492 tier A eligible for the 3-checker rule), same tool:
 `make-candidates.py <gab-lines> candidates/batch2.json --lo 0.40 --hi 0.50 --max 15`.
+batch3 = Akhand Kirtan (folder 5) recordings below the 60% bar (12 of 17 with a pangti key; l3clip36/38 have no
+pangti key and were not picked; l3clip02/16/27/37/39 are lower than the 12 taken; all train split, none accepted):
+443 candidates (A 148, B 32, C 154, D 109; 110 tier A eligible for the 3-checker rule; 295 new vs the current key),
+`make-candidates.py <gab-lines> candidates/batch3.json --folder 5-akhand-kirtan --file c1-6a866c94-akhand.json
+--lo 0 --hi 0.60 --max 12 --category "Akhand Kirtan"`. Tier precision figures were measured on Kirtan (GAB-Hard);
+for Akhand Kirtan they are a prior only. Long Waheguru simran between pangtis is a gap, never a pangti.
