@@ -1,0 +1,58 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#fff;font-family:-apple-system,Helvetica,Arial,sans-serif}h1{font-size:22px;margin:16px 20px 0}p{margin:4px 20px 0;color:#5d6470;font-size:14px}.m{padding:10px 20px}</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script></head><body>
+<h1>STTM Voice Autopilot — how it works (Option B)</h1><p>Current experimental build, Voice Autopilot 9.0.5. Blue = hear · green = find · amber = follow · red = switch · teal = what people see.</p>
+<div class="m"><pre class="mermaid">
+flowchart LR
+  classDef hear fill:#e8f1fb,stroke:#2b6cb0,color:#1d2127
+  classDef find fill:#e9f6ee,stroke:#2f855a,color:#1d2127
+  classDef follow fill:#fdf3e1,stroke:#b7791f,color:#1d2127
+  classDef sw fill:#fdeaea,stroke:#c53030,color:#1d2127
+  classDef out fill:#e6f5f5,stroke:#2c7a7b,color:#1d2127
+
+  subgraph H[1 · HEAR - every 0.5 s]
+    direction TB
+    a1[Mic] --> a2[Audio thread + queue] --> a3[Model hears last 10 s / 4 s] --> a4[/Heard Gurmukhi text/]
+  end
+  subgraph F[2 · FIND the Shabad]
+    direction TB
+    b1[Full-text search<br/>3-grams] --> b3{Any lock route agrees?<br/>Mool Mantar · Jaap/Aarti pool<br/>sound check · text tally<br/>first-letter lead + text}
+    b2[First-letter search<br/>voting] --> b3
+    b3 -- yes --> b4[[Lock]]
+    b4 --> b5{Part of a Bani?}
+  end
+  subgraph FO[3 · FOLLOW the pangti]
+    direction TB
+    c1[Shabad: line follower] --> c3{Sure enough to move?}
+    c2[Bani: position follower] --> c3
+  end
+  subgraph SW[4 · SWITCH if a new Shabad starts]
+    direction TB
+    d1[Candidates:<br/>first-letter · full-text · Shabad just left] --> d2{Wins: +1 / +2 / minus 1}
+    d2 -- 3 wins --> d3[[Switch]]
+  end
+  subgraph S[5 · SHOW]
+    direction TB
+    e1[(Sangat screen)]
+    e2[Sevadaar panel:<br/>candidates, heard words]
+  end
+
+  a4 --> b1
+  a4 --> b2
+  b5 -- Shabad --> c1
+  b5 -- Bani --> c2
+  a4 --> c1
+  a4 --> c2
+  a4 --> d1
+  c3 -- yes --> e1
+  d3 --> b4
+  d2 -- "2 wins: ਵਾਹਿਗੁਰੂ slide" --> e1
+  e2 -- tap --> b4
+  b4 --> e1
+
+  class a1,a2,a3,a4 hear
+  class b1,b2,b3,b4,b5 find
+  class c1,c2,c3 follow
+  class d1,d2,d3 sw
+  class e1,e2 out
+</pre></div>
+<script>mermaid.initialize({startOnLoad:true,theme:'base',flowchart:{curve:'basis',htmlLabels:true,nodeSpacing:30,rankSpacing:40},themeVariables:{fontSize:'15px'}});</script></body></html>

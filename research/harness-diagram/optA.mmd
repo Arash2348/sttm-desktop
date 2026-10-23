@@ -1,0 +1,50 @@
+flowchart TD
+  classDef hear fill:#e8f1fb,stroke:#2b6cb0,color:#1d2127
+  classDef find fill:#e9f6ee,stroke:#2f855a,color:#1d2127
+  classDef follow fill:#fdf3e1,stroke:#b7791f,color:#1d2127
+  classDef sw fill:#fdeaea,stroke:#c53030,color:#1d2127
+  classDef out fill:#e6f5f5,stroke:#2c7a7b,color:#1d2127
+  classDef dec fill:#ffffff,stroke:#4a5568,color:#1d2127
+
+  MIC([Mic / mixer audio]):::hear --> AW[Audio thread<br/>2048-sample chunks]:::hear
+  AW --> Q[Backlog queue<br/>merge if more than 1 s waiting<br/>nothing dropped]:::hear
+  Q --> REC[Recognizer every 0.5 s<br/>last 10 s while searching<br/>last 4 s while following]:::hear
+  REC --> MODEL[Speech model - CTC, int8<br/>greedy decode]:::hear
+  MODEL --> HYP[/Heard text + confidence/]:::hear
+  HYP --> PH{Which phase?}:::dec
+
+  PH -- searching --> S1[Full-text search<br/>3-gram, top 3 Shabads]:::find
+  PH -- searching --> S2[First-letter search<br/>8,6,5,4-letter pieces, voting]:::find
+  S1 --> R1{Mool Mantar?<br/>4 hits on Shabad 1}:::dec
+  R1 -- no --> R2{Jaap / Aarti pool?<br/>5 of last 8 searches}:::dec
+  R2 -- no --> R3{Sound check?<br/>leaders scored vs audio<br/>3 agreeing votes}:::dec
+  R3 -- no --> R4{Text tally?<br/>6+ hits, 4+ wins<br/>2+ pangtis, margin 0.08}:::dec
+  S2 --> R5{First-letter lead?<br/>65% share, 8+ votes<br/>2 decodes + text agrees}:::dec
+  R1 -- yes --> LOCK
+  R2 -- yes --> LOCK
+  R3 -- yes --> LOCK
+  R4 -- yes --> LOCK
+  R5 -- yes --> LOCK
+  R4 -- no --> WAIT([keep listening]):::find
+  R5 -- no --> WAIT
+
+  LOCK[[LOCK a Shabad]]:::find --> BANI{Is it part of a Bani?<br/>pangti only in one Bani,<br/>2 Shabads in Bani order,<br/>or 3 pangtis read in order}:::dec
+  BANI -- yes --> OB[Open the Bani<br/>at that pangti]:::find
+  BANI -- no --> OS[Open the Shabad<br/>at that pangti]:::find
+  OB --> SCREEN
+  OS --> SCREEN
+
+  PH -- following --> F{Shabad or Bani?}:::dec
+  F -- Shabad --> LF[Line follower<br/>fuzzy match each pangti<br/>next pangti easy, jumps need proof]:::follow
+  F -- Bani --> PF[Position follower<br/>align heard letters along the Bani]:::follow
+  LF --> GATE{Move the screen?<br/>confidence 0.4+, no switch building,<br/>sevadaar not just clicked}:::dec
+  PF --> GATE
+  GATE -- yes --> SCREEN[(Screen: Shabad / pangti<br/>for the sangat)]:::out
+  GATE -- no --> HOLD([hold current pangti]):::follow
+
+  PH -- following --> J[Switch judge<br/>3 slots: first-letter, full-text,<br/>Shabad just left]:::sw
+  J --> W{Candidate beats current?<br/>0.65 and +0.15 gives 1 win<br/>0.80 and +0.30 gives 2 wins<br/>else minus 1}:::dec
+  W -- 2+ wins --> WAHE[ਵਾਹਿਗੁਰੂ slide while unsure]:::out
+  W -- 3 wins, or 2 to return --> LOCK
+  W -- not yet --> HOLD
+  TAP([Sevadaar taps a candidate]):::out --> LOCK
