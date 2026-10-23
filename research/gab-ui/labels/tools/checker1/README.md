@@ -56,3 +56,17 @@ timing, is wrong there (122 outside-key votes). rn67's five two-Shabad spans at 
 "ਜੋ ਹਮ ਕਉ ਹਰਿ ਨਾਮੁ ਚਿਤਾਰੇ" (31605, Shabad 2819's rahao pangti itself is not the candidate) and "ਸਾਜਨੁ ਮੀਤੁ ਪਿਆਰਾ"
 (ties), none approved. 133 agree-but-below-0.95: 94 under the 16-char cap, 67 with margin < 10 (same calibration as
 before: Karanbir v1 Kirtan windows, 461 of them). Strict by design: a tie or a thin margin is a reject.
+
+## Batch 6 (Kirtan folder 1, the 15 remaining recordings below the 60% bar; `vote.py batch6`, 2026-10-23)
+Decoded `clip01/09/17/25/26/32/34/38`, `rn09/14/21/50/60/73/80` with `decode1.py` (x86 cache, `rn*` entries are symlinks to the
+q16 pull; 87-100% of windows found). Output `labels/votes/batch6-checker1.json`: 677 spans, 282 agree, 198 approved (agree
+and confidence >= 0.95); by tier A 142/255, B 3/71, C 41/159, D 12/192. Per recording (approved/spans): clip01 9/22,
+clip09 24/46, clip17 29/156, clip25 12/38, clip26 8/17, clip32 28/73, clip34 4/10, clip38 1/11, rn09 2/41, rn14 12/61,
+rn21 11/41, rn50 17/65, rn60 13/26, rn73 3/17, rn80 25/53. 145 'none' (alaap, simran, music, < 10 chars heard or no
+pangti explains >= 50), 121 same-Shabad other pangti, 258 best match outside the keyed Shabad. The one systematic key
+error is clip17: its 156 candidates are keyed to Shabad 3085, which holds to ~425 s, but from ~438 s to 841 s the hearing
+names "ਧੰਨੁ ਧੰਨੁ ਰਾਮਦਾਸ ਗੁਰੁ ਜਿਨਿ ਸਿਰਿਆ ਤਿਨੈ ਸਵਾਰਿਆ / ਪੂਰੀ ਹੋਈ ਕਰਾਮਾਤਿ" (41412-41419, Shabad 3590) in 57 spans, so the
+key, not the timing, is wrong there (113 outside-key votes, 84 of them tier D as the candidate maker flagged). rn80 406-430 s
+is heard as the Vaheguru swaiya 59394 (simran-like chant), 577-587 s as 55613 "ਐਸੇ ਗੁਰ ਕਉ ਬਲਿ ਬਲਿ ਜਾਈਐ"; rn09 is mostly
+not heard (23 none of 41). 84 agree-but-below-0.95: 48 under the 16-char cap, 45 with margin < 10 (same calibration as
+before: Karanbir v1 Kirtan windows, 461). Strict by design: a tie or a thin margin is a reject.
