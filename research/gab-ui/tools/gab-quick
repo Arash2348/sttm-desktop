@@ -1,0 +1,3 @@
+#!/bin/sh
+# gab-quick: pangti-level GAB re-test from cached model output (see gab-quick.js)
+exec node "$(dirname "$0")/gab-quick.js" "$@"

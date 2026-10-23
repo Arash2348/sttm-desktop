@@ -17,3 +17,7 @@ venv/
 dist/
 # AI translations database, downloaded at runtime from Azure
 www/assets/ai-translations.*
+
+# GAB quick re-test: generated worktrees/tools copies and run outputs (data stays out of git)
+research/gab-ui/gen/
+research/gab-ui/quick-out/

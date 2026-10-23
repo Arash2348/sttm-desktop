@@ -33,7 +33,8 @@ const os = require('os');
 const path = require('path');
 
 const H = os.homedir();
-const TOOLS = path.join(H, 'personal/gab-tools-x86-tmpcheck/wt/research/level2-dataset/tools'); // the x86 replay tools
+// the x86 replay tools; GAB_TOOLS overrides (gab-quick points it at its own copy of the same tools commit)
+const TOOLS = process.env.GAB_TOOLS || path.join(H, 'personal/gab-tools-x86-tmpcheck/wt/research/level2-dataset/tools');
 const sv = require(path.join(TOOLS, 'sangat-score.js'));
 const GUI = path.resolve(__dirname, '..');
 const SRC = path.join(GUI, 'private-fixed/timeline');
@@ -352,4 +353,6 @@ function main() {
   sv.close();
   realm.close();
 }
-main();
+if (require.main === module) main();
+// gab-quick.js uses the same scoring (one rule, one place)
+module.exports = { scoreClip, segments, truthOf, statesFromTrace, headline, CATS, sv, close: () => { sv.close(); realm.close(); } };
