@@ -79,3 +79,29 @@ rn12 403-480 s, rn61 287-315 s, rn13 194-250 s, rn31 280-335 s) are none.
 Result: 909 spans, 458 agree, 362 approved (agree and confidence >= 0.95; A 283, B 0, C 61, D 18), 159 none, 292 a
 different pangti; 47 agree but stay below 0.95 on the calibration alone (short or thin hearing). Output
 `labels/votes/batch5-checker3.json`.
+
+## Batch 6 (Kirtan, folder 1, the 15 remaining recordings below the 60% bar; `vote6.py batch6`, 2026-10-23)
+
+15 recordings decoded from the x86 q16 cache into tok6/ (`decode.py tok6 ...`, the rn* entries are symlinks to the
+q16 cache of the same model; 34/39 to 145/146 windows found, no model run). Same scorer and calibration as batch 5.
+Lens C additions: the empirical asthai may be a pair plus the rahao (three lines named >= 3 times by confident picks:
+clip25 sings 7828+7829 'ਪੀਊ ਦਾਦੇ ਕਾ ਖੋਲਿ ਡਿਠਾ ਖਜਾਨਾ / ਤਾ ਮੇਰੈ ਮਨਿ ਭਇਆ ਨਿਧਾਨਾ' as the asthai, clip09 49870+49871), and
+a region ruled by an unkeyed Shabad (confident out-of-key picks of one Shabad within 30 s on both sides) caps an
+in-key pick with corpus margin < 10 at 0.9 (a hearing coincidence).
+Structural findings: clip17 (key 3085 for 30-1000 s) sings 3085 'ਤਾਤੀ ਵਾਉ ਨ ਲਗਈ' only to ~440 s; 440-850 s is
+Shabad 3590 'ਧੰਨੁ ਧੰਨੁ ਰਾਮਦਾਸ ਗੁਰੁ' (41412-41420), ~850-930 s the Ramkali Vaar pauris 3571 'ਵਡਾ ਤੇਰਾ ਦਰਬਾਰੁ / ਜੀਆ
+ਅੰਦਰਿ ਜੀਉ ਸਬਦੁ ਹੈ' (41273-41280), ~930-980 s the salok 'ਪਵਣੁ ਗੁਰੂ ਪਾਣੀ ਪਿਤਾ' (Shabad 39, 380-385): every 3085
+candidate there (103 spans) is wrong and the key needs three more rows. rn80 (key 499 20-590 s): the 0-27 s rows
+naming 13421-13426 are heard as 6995 'ਹਮ ਰੁਲਤੇ ਫਿਰਤੇ' (the keyed Shabad, before its row starts), 406-439 s is Vaheguru
+simran, 530-580 s 'ਧੰਨ ਗੁਰੂ ਅਰਜਨ ਦੇਵ' is not Gurbani, and 580-600 s begins Shabad 4725 'ਐਸੇ ਗੁਰ ਕਉ ਬਲਿ ਬਲਿ ਜਾਈਐ'
+(55613), so the 6989-6996 candidates there are wrong. rn73 (key 3694|2883 0-30 s, 2883 30-100 s): 0-10 s is 42678
+'ਸਚੁ ਪੂੰਜੀ ਸਚੁ ਵਖਰੋ', 10-90 s is 32573/32574 (every 42673-42678 candidate at 11-32 s names the wrong Shabad), 80-140 s
+simran, and 42678 returns at 140-160 s outside any key row. clip34: 0-20 s a Jaap Sahib parmaan 'ਦੁਕਾਲੰ ਪ੍ਰਣਾਸੀ' before
+the keyed 4967, ~130 s on is Shabad 650 'ਮਿਲਹੁ ਪਿਆਰੇ ਜੀਆ' (the 57968 candidates at 89-143 s are wrong). clip38: the
+keyed salok 4997 and the near-identical 24405/24406 (Shabad 2129) tie on hearing at 100-152 s (capped 0.9). rn14 and
+rn21 are the same Shabad 1839 from one session: rn14 sings 22191 'ਅੰਮ੍ਰਿਤੁ ਪੀਵਹੁ ਸਦਾ ਚਿਰੁ ਜੀਵਹੁ' as the asthai (the
+aligner's repeated 22190 candidates are wrong), rn21 sings 22187 'ਪੂਤਾ ਮਾਤਾ ਕੀ ਆਸੀਸ' (the 22191/22192/22193 candidates
+at 161-251 s are 22187). rn09 hears too little throughout (22 none). Closing fateh / announcements (rn14 750 s on,
+rn09 260 s on, rn21 420 s on, rn50 578 s on) are none.
+Result: 677 spans, 320 agree, 225 approved (agree and confidence >= 0.95; A 175, B 3, C 38, D 9), 123 none, 234 a
+different pangti; 45 agree but stay below 0.95 on the calibration alone. Output `labels/votes/batch6-checker3.json`.
