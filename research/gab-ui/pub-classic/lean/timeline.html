@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GAB (lean, Oct 23)</title>
+<style>
+:root {
+  --bg: #f6f5f1; --card: #ffffff; --ink: #1c1d1f; --muted: #686b70; --faint: #9a9da2; --line: #e2e1dc; --soft: #f0efea;
+  --accent: #b5561c; --gt: #5b7fae;
+  --ok: #3f8f52; --okb: #86c296; --near: #d39b2a; --bad: #c4473f; --none: #cfcdc6; --wg: #b9c6d6; --unscored: #eceae4;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #111315; --card: #1a1d20; --ink: #e8e9ea; --muted: #a2a6ab; --faint: #73777c; --line: #2f3337; --soft: #22262a;
+    --accent: #e08a50; --gt: #7f9fcb; --ok: #62b375; --okb: #3d7a4c; --near: #e3b14a; --bad: #e0675f; --none: #4a4e53; --wg: #3d4a5a; --unscored: #25292d; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #111315; --card: #1a1d20; --ink: #e8e9ea; --muted: #a2a6ab; --faint: #73777c; --line: #2f3337; --soft: #22262a;
+  --accent: #e08a50; --gt: #7f9fcb; --ok: #62b375; --okb: #3d7a4c; --near: #e3b14a; --bad: #e0675f; --none: #4a4e53; --wg: #3d4a5a; --unscored: #25292d; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+.wrap { max-width: 1000px; margin: 0 auto; padding: 22px 16px 56px; }
+a { color: var(--accent); }
+.g { font-family: "Mukta Mahee", "Noto Sans Gurmukhi", "Gurmukhi MN", "Raavi", sans-serif; }
+h1 { font-size: 22px; margin: 0; }
+.lead { color: var(--muted); margin: 4px 0 18px; max-width: 72ch; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.tabs button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+.tabs button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.vs { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+select { font: inherit; font-size: 14px; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; }
+.summary { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+.summary p { margin: 0 0 12px; max-width: 80ch; }
+.prov { font-size: 14px; background: var(--soft); border-left: 3px solid var(--near); padding: 6px 10px; border-radius: 4px; }
+.kpi .v.provv { color: var(--muted); }
+.vt { font-size: 14px; margin: 0 0 12px; width: 100%; border-collapse: collapse; }
+.vt td, .vt th { padding: 4px 8px; border-bottom: 1px solid var(--line); text-align: left; }
+.vt th { color: var(--muted); font-weight: 500; font-size: 12px; } .vt td.n, .vt th.n { text-align: right; font-variant-numeric: tabular-nums; }
+.vt tr.sel td { font-weight: 600; }
+.tabs small { font-size: 11px; opacity: .7; }
+.bigch { font-size: 14px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+.kpi { background: var(--soft); border-radius: 8px; padding: 8px 12px; }
+.kpi .k { font-size: 12px; color: var(--muted); }
+.kpi .v { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.kpi .o { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.better { color: var(--ok); font-weight: 600; } .worse { color: var(--bad); font-weight: 600; } .same { color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--muted); margin: 0 0 10px; }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
+.filters button { font: inherit; font-size: 13px; border: 1px solid var(--line); background: var(--card); color: var(--muted); border-radius: 6px; padding: 3px 10px; cursor: pointer; }
+.filters button[aria-pressed="true"] { color: var(--ink); border-color: var(--ink); font-weight: 600; }
+.list { background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.item { display: grid; grid-template-columns: minmax(0, 1fr) 210px 120px; gap: 4px 14px; align-items: center; padding: 9px 14px; border-top: 1px solid var(--line); cursor: pointer; text-decoration: none; color: inherit; }
+.item:first-child { border-top: 0; }
+.item:hover { background: var(--soft); }
+.item .t { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item .m { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item .issues { font-size: 12px; color: var(--bad); }
+.mini { display: grid; gap: 3px; }
+.strip { position: relative; height: 8px; border-radius: 2px; background: var(--unscored); overflow: hidden; }
+.strip i { position: absolute; top: 0; bottom: 0; }
+.score { text-align: right; font-variant-numeric: tabular-nums; }
+.score b { font-size: 16px; }
+.score .o { display: block; font-size: 12px; color: var(--muted); }
+.empty { padding: 16px; color: var(--muted); }
+/* detail */
+.back { display: inline-block; margin-bottom: 12px; font-size: 14px; }
+.dhead { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; align-items: baseline; }
+.dhead h2 { font-size: 20px; margin: 0; text-wrap: balance; }
+.dmeta { color: var(--muted); font-size: 13px; margin: 2px 0 12px; }
+.verdicts { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.verdict { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
+.verdict h3 { margin: 0 0 4px; font-size: 14px; display: flex; justify-content: space-between; gap: 8px; }
+.verdict h3 b { font-size: 18px; font-variant-numeric: tabular-nums; }
+.verdict ul { margin: 6px 0 0; padding-left: 18px; font-size: 14px; }
+.verdict li { margin: 2px 0; }
+.aplayer { margin: 0 0 12px; } .aplayer audio { width: 100%; max-width: 640px; }
+.player { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16 / 9; margin: 0 0 12px; border-radius: 10px; overflow: hidden; background: #000; }
+.player iframe, .player > div { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.playnote { font-size: 13px; color: var(--muted); margin: -6px 0 12px; }
+.ev .when button { font: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; font-variant-numeric: tabular-nums; }
+.tlbox { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px 10px; margin-bottom: 14px; }
+.tl { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 4px 10px; align-items: center; position: relative; }
+.tl .l { font-size: 12px; color: var(--muted); text-align: right; }
+.big { position: relative; height: 22px; border-radius: 3px; background: var(--unscored); overflow: hidden; cursor: crosshair; }
+.big i { position: absolute; top: 0; bottom: 0; }
+.big.gt i { border-right: 1px solid var(--card); }
+.big.gt b { position: absolute; top: 2px; font-size: 11px; color: #fff; font-weight: 600; pointer-events: none; padding-left: 3px; }
+.axis { position: relative; height: 16px; font-size: 11px; color: var(--faint); font-variant-numeric: tabular-nums; }
+.axis span { position: absolute; transform: translateX(-50%); }
+.ph { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); pointer-events: none; display: none; }
+.now { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 8px; display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 3px 10px; font-size: 14px; min-height: 64px; }
+.now .l { font-size: 12px; color: var(--muted); text-align: right; padding-top: 2px; }
+.linkbtn { font: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
+.now .hint { grid-column: 1 / -1; color: var(--muted); font-size: 13px; }
+.tag { display: inline-block; font-size: 11px; font-weight: 600; border-radius: 4px; padding: 0 6px; margin-right: 6px; color: #fff; vertical-align: 1px; }
+.events { background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.events h3 { margin: 0; padding: 10px 14px; font-size: 14px; border-bottom: 1px solid var(--line); }
+.ev { display: grid; grid-template-columns: 96px 110px minmax(0, 1fr); gap: 2px 10px; padding: 7px 14px; border-top: 1px solid var(--line); font-size: 14px; align-items: baseline; }
+.ev:first-of-type { border-top: 0; }
+.ev .when { font-variant-numeric: tabular-nums; }
+.ev .when a { text-decoration: none; }
+.ev .who { color: var(--muted); font-size: 13px; }
+details.about { margin-top: 22px; font-size: 14px; color: var(--muted); }
+details.about summary { cursor: pointer; color: var(--ink); }
+details.about p { max-width: 75ch; }
+@media (max-width: 640px) {
+  .item { grid-template-columns: minmax(0, 1fr) 84px; }
+  .item .mini { grid-column: 1 / -1; grid-row: 2; }
+  .ev { grid-template-columns: 64px minmax(0, 1fr); }
+  .ev .who, .ev > span:nth-child(3) { grid-column: 2; }
+  .tl, .now { grid-template-columns: 52px minmax(0, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><p class="empty">Loading…</p></div>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const mmss = (s) => { s = Math.max(0, Math.round(s)); const h = Math.floor(s / 3600), m = Math.floor(s / 60) % 60, x = s % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(x).padStart(2, '0'); };
+const f1 = (v) => (v == null ? '–' : v.toFixed(1));
+const short = (s) => String(s).replace(/^Gurbani Autopilot\s*/, '');
+const store = { get(k) { try { return localStorage.getItem(k); } catch (_) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (_) {} } };
+const COL = { P: 'var(--ok)', S: 'var(--ok)', B: 'var(--okb)', A: 'var(--near)', W: 'var(--bad)', N: 'var(--none)', V: 'var(--wg)' };
+const RIGHT = (k) => k === 'P' || k === 'S' || k === 'B';
+const TABNAME = { main: 'Kirtan', akhand: 'Akhand Kirtan', kbv1: "Karanbir Singh's benchmark", hard: 'Hall recordings (hard)', real: 'Real sessions', paath: 'Paath', sungbani: 'Sung Bani', akhandpaath: 'Sehaj / Akhand Paath' };
+const TABORDER = ['main', 'paath', 'sungbani', 'akhandpaath', 'akhand', 'kbv1', 'hard', 'real'];
+const tabsSorted = () => [...INDEX.tiers].sort((p, q) => (TABORDER.indexOf(p.key) + 99) % 99 - (TABORDER.indexOf(q.key) + 99) % 99);
+const VERB = { main: 'Kirtan from Gurdwara Sahib broadcasts on YouTube', akhand: 'Akhand Kirtan from smagam recordings on YouTube', kbv1: "Karanbir Singh's 4 kirtan recordings, each also joined 1/3 and 2/3 of the way in", hard: 'Kirtan recorded in a resonant hall on a laptop microphone (the hardest audio)', real: "Real sangat sessions, replayed offline; the answer key is the sevadaar's screen, which itself lags the singing", paath: 'Paath of the Banis (Japji Sahib, Rehras Sahib, Sohila Sahib and others), read aloud', sungbani: 'Banis sung like kirtan (for example Aarti, Anand Sahib, Asa di Vaar)', akhandpaath: 'Sri Guru Granth Sahib Ji read straight through, Ang after Ang (Sehaj Paath recordings from YouTube)' };
+// first Shabad of a "Shabad: A  /  Shabad: B" label, without the prefix
+const label = (t) => String(t || '').split(/\s+\/\s+/).map((x) => x.replace(/^Shabad:\s*/, '').replace(/^Bani:\s*(.*)$/, '$1 (Bani)')).join('  or  ');
+const label1 = (t) => label(t).split('  or  ')[0];
+let INDEX = null; const DATA = {};
+async function load(f) { if (!DATA[f]) DATA[f] = await (await fetch('timeline/' + f)).json(); return DATA[f]; }
+
+// ---------- per-recording facts (all derived from the per-second runs) ----------
+const nn = (c, k) => c.n[k] || 0;
+const scored = (c) => nn(c, 'P') + nn(c, 'A') + nn(c, 'S') + nn(c, 'B') + nn(c, 'W') + nn(c, 'N') + nn(c, 'V');
+let SETPANGTI = false; // the whole set is judged on one basis: pangti when most recordings have a pangti key
+const pangtiKeyed = (c) => SETPANGTI && !!c.basis;
+const PAATHSETS = ['paath', 'akhandpaath']; const SUNGBANI = 'sungbani';
+const isRead = () => PAATHSETS.includes(S.tier);
+const W = () => isRead() ? { act: 'read', place: 'the right place in the Bani', sung: 'Pangti read', while: 'while reading' } : S.tier === SUNGBANI ? { act: 'sung', place: 'the right place in the Bani', sung: 'Pangti sung', while: 'while singing' } : { act: 'sung', place: 'the right Shabad', sung: 'Shabad sung', while: 'while singing' };
+const VDESC = { '5348d9a0': 'in the experimental app today', '9b1fa814': 'candidate, not in the app yet', '6a866c94': 'newest candidate, not in the app yet' };
+const KEYNOTE = { human: 'answer key checked by a person', aligned: 'answer key machine-aligned, not yet checked by a person', 'broadcast-caption': "answer key from the broadcast's own on-screen pangtis" };
+const keyNote = (b) => KEYNOTE[b] || 'answer key at Shabad level';
+function acc(c) { if (!c) return null; const t = scored(c); if (!t) return null;
+  if (pangtiKeyed(c)) { const d = nn(c, 'P') + nn(c, 'A') + nn(c, 'W') + nn(c, 'N') + nn(c, 'V'); return d ? 100 * nn(c, 'P') / d : null; }
+  return 100 * (nn(c, 'P') + nn(c, 'A') + nn(c, 'S') + nn(c, 'B')) / t; }
+function facts(c, d) {
+  if (!c) return null;
+  const firstKey = c.runs.find((r) => r[3] >= 0);
+  const start = firstKey ? firstKey[0] : 0;
+  const firstRight = c.runs.find((r) => RIGHT(r[2]) || r[2] === 'A');
+  const viaBani = !!firstRight && firstRight[2] === 'B';
+  const find = firstRight ? Math.max(0, firstRight[0] - start) : null;
+  // merge stretches of one kind (gaps under 2 s join), keep the shown text of the longest piece
+  const stretches = (kind, min) => { const out = [];
+    for (const r of c.runs) { if (r[2] !== kind) continue; const last = out[out.length - 1];
+      if (last && r[0] - last.e <= 2) { last.e = r[1]; if (r[1] - r[0] > last.best) { last.best = r[1] - r[0]; last.shown = r[4]; } }
+      else out.push({ s: r[0], e: r[1], best: r[1] - r[0], shown: r[4], truth: r[3] }); }
+    return out.filter((x) => x.e - x.s >= min); };
+  const wrong = stretches('W', 2), blank = stretches('N', 8), other = pangtiKeyed(c) ? stretches('A', 6) : [];
+  const catAt = (t) => { const r = c.runs.find((x) => t >= x[0] && t < x[1]); return r ? r[2] : null; };
+  for (const w of wrong) { w.parmaan = w.e - w.s <= 20 && RIGHT(catAt(w.s - 1)) && RIGHT(catAt(w.e));
+    const t = w.shown >= 0 ? label(d.texts[w.shown]) : ''; w.ahead = w.e - w.s <= 5 && t.split(/\s+/).length <= 5 && /ਮਹਲਾ|ਸਲੋਕ|ਪਉੜੀ|ਰਾਗੁ|ਛੰਤ/.test(t); }
+  const lost = nn(c, 'W') + nn(c, 'N');
+  return { start, find, viaBani, wrong, blank, other, wrongS: nn(c, 'W'), lost, scoredS: scored(c), acc: acc(c) };
+}
+const pct = (v) => (v == null ? '–' : Math.round(v) + '%');
+function cmp(a, b, higherBetter = true, unit = '') {
+  if (a == null || b == null) return '';
+  const d = a - b; if (Math.abs(d) < 0.5) return '<span class="same">same</span>';
+  const good = higherBetter ? d > 0 : d < 0;
+  return `<span class="${good ? 'better' : 'worse'}">${good ? 'better' : 'worse'} by ${Math.abs(d).toFixed(unit === '%' ? 1 : 0)}${unit}</span>`;
+}
+const median = (xs) => { const v = xs.filter((x) => x != null).sort((p, q) => p - q); return v.length ? v[Math.floor(v.length / 2)] : null; };
+const pos = (s, e, d) => `left:${(100 * s / d).toFixed(3)}%;width:${(100 * (e - s) / d).toFixed(3)}%`;
+const stripHtml = (c) => c ? c.runs.map((r) => `<i style="${pos(r[0], r[1], c.dur)};background:${COL[r[2]]}"></i>`).join('') : '';
+
+// ---------- state ----------
+const S = { tier: null, a: null, b: null, filter: 'worst' };
+function readHash() { const h = decodeURIComponent(location.hash.slice(1)); return h || null; }
+
+let AUDIO = {}; // recording id -> our own audio file (private page only); played instead of YouTube
+async function main() {
+  INDEX = await (await fetch('timeline/index.json')).json();
+  try { const r = await fetch('audio-index.json'); if (r.ok) AUDIO = await r.json(); } catch (_) { AUDIO = {}; }
+  let keep = null; try { keep = JSON.parse(store.get('gab-v4') || 'null'); } catch (_) {}
+  const q = new URLSearchParams(location.search);
+  S.tier = (q.get('set') && INDEX.tiers.some((t) => t.key === q.get('set'))) ? q.get('set') : (keep && INDEX.tiers.some((t) => t.key === keep.tier) ? keep.tier : INDEX.tiers[0].key);
+  pickBuilds(keep);
+  addEventListener('hashchange', render);
+  render();
+}
+function tierObj() { return INDEX.tiers.find((t) => t.key === S.tier); }
+function pickBuilds(keep) {
+  const f = tierObj().builds.map((x) => x.file);
+  S.a = keep && f.includes(keep.a) ? keep.a : f[f.length - 1];
+  S.b = keep && keep.b && f.includes(keep.b) && keep.b !== S.a ? keep.b : ''; // one version by default; comparing is optional
+}
+const nameOf = (file) => short(tierObj().builds.find((x) => x.file === file)?.label || '');
+function save() { store.set('gab-v4', JSON.stringify({ tier: S.tier, a: S.a, b: S.b })); }
+
+async function render() {
+  save();
+  const dA = await load(S.a), dB = S.b ? await load(S.b) : null;
+  SETPANGTI = dA.clips.filter((c) => c.basis).length > dA.clips.length / 2;
+  const id = readHash();
+  const clip = id && dA.clips.find((c) => c.id === id);
+  if (clip) return renderDetail(clip, dA, dB);
+  renderList(dA, dB);
+}
+
+// ---------- overview ----------
+async function renderList(dA, dB) {
+  HAS = new Set([...dA.clips, ...(dB ? dB.clips : [])].flatMap((c) => c.runs.map((r) => r[2])));
+  const tier = tierObj(), nA = nameOf(S.a), nB = S.b ? nameOf(S.b) : '';
+  const byB = dB ? new Map(dB.clips.map((c) => [c.id, c])) : null;
+  const rows = dA.clips.map((c) => { const o = byB ? byB.get(c.id) : null; const first = label1(dA.texts[(c.runs.find((r) => r[3] >= 0) || [])[3]] || c.id);
+    return { c, o, fa: facts(c, dA), fb: facts(o, dB), title: c.bani ? c.bani : first, sub: c.bani ? first : '' }; });
+  const baniCount = {}; rows.forEach((r) => { if (r.c.bani) { baniCount[r.c.bani] = (baniCount[r.c.bani] || 0) + 1; r.nth = baniCount[r.c.bani]; } });
+  const both = rows.filter((r) => !byB || r.o);
+  const tot = (key) => { let w = 0, v = 0, wr = 0, sec = 0; for (const r of both) { const c = key === 'a' ? r.c : r.o; const a = acc(c); if (a == null) continue; const t = scored(c); w += t; v += a * t; wr += nn(c, 'W'); sec += t; } return { acc: w ? v / w : null, wrongH: sec ? wr / (sec / 3600) : null, hours: sec / 3600 }; };
+  const TA = tot('a'), TB = dB ? tot('b') : null;
+  const keyed = SETPANGTI;
+  const majBasis = (() => { const m = {}; for (const r of both) m[r.c.basis] = (m[r.c.basis] || 0) + 1; return Object.entries(m).sort((p, q) => q[1] - p[1])[0]?.[0]; })();
+  const prov = keyed && majBasis === 'aligned';
+  const what = keyed ? 'the right pangti' : 'the right Shabad';
+  const keyedWord = keyed ? 'pangti' : 'Shabad';
+  const neverA = both.filter((r) => r.fa.find == null).length, neverB = dB ? both.filter((r) => r.fb && r.fb.find == null).length : null;
+  const big = dB ? both.filter((r) => r.o).map((r) => ({ r, d: (r.fa.acc ?? 0) - (r.fb.acc ?? 0) })).filter((x) => Math.abs(x.d) >= 10).sort((p, q) => Math.abs(q.d) - Math.abs(p.d)) : [];
+  const identical = dB && both.every((r) => r.o && JSON.stringify(r.c.runs) === JSON.stringify(r.o.runs));
+  let verdictLine = '';
+  if (dB) {
+    const dAcc = (TA.acc ?? 0) - (TB.acc ?? 0), dW = (TA.wrongH ?? 0) - (TB.wrongH ?? 0), relW = TB.wrongH ? Math.abs(dW) / TB.wrongH : 0;
+    if (identical) verdictLine = `<b>No difference:</b> ${esc(nA)} and ${esc(nB)} showed exactly the same thing, second for second, on every recording here.`;
+    else if (Math.abs(dAcc) < 1 && relW < 0.15) verdictLine = `<b>No real difference</b> between ${esc(nA)} and ${esc(nB)} on this set overall${big.length ? ', but a few recordings changed a lot (below).' : '.'}`;
+    else { const better = dAcc > 0 || (Math.abs(dAcc) < 1 && dW < 0); const win = better ? nA : nB, lose = better ? nB : nA;
+      const mixed = (better ? dW > 0 : dW < 0) && Math.abs(dW) >= 1;
+      verdictLine = `<b>${esc(win)} is better</b> on this set: right ${keyedWord} ${f1(Math.max(TA.acc, TB.acc))}% vs ${f1(Math.min(TA.acc, TB.acc))}%${big.length && big.length <= 2 ? `, mostly because of ${big.length === 1 ? 'one recording' : 'two recordings'} (below)` : ''}.${mixed ? ` ${esc(lose)} shows slightly less wrong Shabad (${Math.round(better ? TB.wrongH : TA.wrongH)} vs ${Math.round(better ? TA.wrongH : TB.wrongH)} s per hour).` : ''}`; }
+  }
+  const vtable = await (async () => {
+    if (tier.builds.length < 2) return '';
+    const ds = await Promise.all(tier.builds.map((b) => load(b.file)));
+    const ids = ds.reduce((acc2, d) => { const z = new Set(d.clips.map((c) => c.id)); return acc2 ? new Set([...acc2].filter((x) => z.has(x))) : z; }, null);
+    const rowsV = tier.builds.map((b, i) => { let w = 0, v = 0, wr = 0; for (const c of ds[i].clips) { if (!ids.has(c.id)) continue; const a = acc(c); if (a == null) continue; const t = scored(c); w += t; v += a * t; wr += nn(c, 'W'); } return { b, acc: w ? v / w : null, wh: w ? wr / (w / 3600) : null, sig: JSON.stringify(ds[i].clips.filter((c) => ids.has(c.id)).map((c) => c.runs)) }; });
+    const same = rowsV.every((r) => r.sig === rowsV[0].sig);
+    return `<table class="vt"><tr><th>Version</th><th></th><th class="n">Right ${keyedWord}</th><th class="n">Wrong Shabad s/h</th></tr>${rowsV.map((r) => `<tr class="${r.b.file === S.a ? 'sel' : ''}"><td>${esc(short(r.b.label))}</td><td class="dmeta">${esc(VDESC[r.b.commit] || '')}</td><td class="n">${f1(r.acc)}%</td><td class="n">${r.wh == null ? '–' : Math.round(r.wh)}</td></tr>`).join('')}</table>${same ? '<p class="dmeta" style="margin-top:-6px">All versions showed exactly the same thing, second for second, on these recordings.</p>' : ''}`;
+  })();
+  const bigLine = big.length ? `<p class="bigch">Biggest changes: ${big.slice(0, 4).map((x) => `<a href="#${encodeURIComponent(x.r.c.id)}"><span class="g">${esc(x.r.title)}</span></a> <span class="${x.d > 0 ? 'better' : 'worse'}">${pct(x.r.fa.acc)} vs ${pct(x.r.fb.acc)}</span>`).join(' · ')}${big.length > 4 ? ` · and ${big.length - 4} more under “Different between versions”` : ''}</p>` : '';
+  const changed = (r) => r.o && Math.abs((r.fa.acc ?? 0) - (r.fb.acc ?? 0)) >= 2;
+  const F = {
+    all: ['All', () => true],
+    changed: [`Different between versions`, changed],
+    wrong: ['Showed a wrong Shabad', (r) => r.fa.wrong.length || (r.fb && r.fb.wrong.length)],
+    worst: ['Most time wrong first', () => true],
+  };
+  if (!dB && S.filter === 'changed') S.filter = 'all';
+  const medScored = median(rows.map((r) => r.fa.scoredS)) || 0;
+  let list = rows.filter(F[S.filter][1]);
+  if (S.filter === 'all' && rows.some((r) => r.c.bani)) list.sort((x, y) => String(x.c.bani || '').localeCompare(String(y.c.bani || '')));
+  if (S.filter === 'worst') list.sort((x, y) => (y.fa.lost - x.fa.lost) || ((x.fa.acc ?? 101) - (y.fa.acc ?? 101)));
+  else if (S.filter === 'changed') list.sort((x, y) => Math.abs((y.fa.acc ?? 0) - (y.fb.acc ?? 0)) - Math.abs((x.fa.acc ?? 0) - (x.fb.acc ?? 0)));
+  const opts = (sel, none) => (none ? `<option value="">nothing</option>` : '') + tier.builds.map((x) => `<option value="${esc(x.file)}" ${x.file === sel ? 'selected' : ''}>${esc(short(x.label))}</option>`).join('');
+  $('#app').innerHTML = `
+    <h1>GAB: how well Voice Autopilot follows kirtan and paath</h1>
+    <p class="lead">How well does Voice Autopilot keep the right Gurbani on screen during real kirtan and paath? Pick a category, then open any recording to see, second by second, what was sung or read and what was shown. <a href="../cards/index.html">Card view</a></p>
+    <div class="tabs">${tabsSorted().map((t) => `<button data-tier="${esc(t.key)}" aria-pressed="${t.key === S.tier}">${esc(TABNAME[t.key] || t.title)}${t.key === 'paath' || t.key === 'sungbani' ? ' <small>(provisional)</small>' : ''}</button>`).join('')}</div>
+    <div class="vs">Version <select id="selA">${opts(S.a)}</select><span class="cmp">${tier.builds.length > 1 ? `· compare with <select id="selB">${opts(S.b, true)}</select> <span class="dmeta">(optional)</span>` : ''}</span></div>
+    <div class="summary">
+      <p>${esc(VERB[S.tier] || tier.title)}: <b>${both.length} recordings</b>, ${TA.hours.toFixed(1)} hours scored, judged on ${keyed ? 'the exact pangti' : 'the Shabad'}. ${verdictLine}</p>${bigLine}
+      ${prov ? `<p class="prov"><b>Provisional:</b> this answer key was made by machine alignment and has not yet been checked by a person, and there is little of it (${both.length} short clips, about ${Math.round(TA.hours * 3600 / Math.max(1, both.length))} s scored each, ${TA.hours.toFixed(1)} h in all). Use it as a rough guide; the person-checked headline is Karanbir Singh's set.</p>` : ''}
+      ${keyed && majBasis === 'broadcast-caption' ? `<p class="prov">The answer key is the broadcast's own on-screen pangti, which can lag the reader by a second or two.</p>` : ''}
+      ${vtable}
+      <div class="kpis">
+        <div class="kpi"><div class="k">Right ${keyed ? 'pangti' : 'Shabad'} on screen${prov ? ' (provisional)' : ''}</div><div class="v${prov ? ' provv' : ''}">${f1(TA.acc)}%</div><div class="o">${TB ? `${esc(nB)} ${f1(TB.acc)}% · ${cmp(TA.acc, TB.acc, true, '%')}` : ''}</div></div>
+        <div class="kpi"><div class="k">Wrong ${S.tier === 'main' || S.tier === 'akhand' || S.tier === 'kbv1' ? 'Shabad' : 'Shabad or Bani'} shown, seconds per hour ${W().while.replace('while ', 'of ')}</div><div class="v">${Math.round(TA.wrongH ?? 0)}</div><div class="o">${TB ? `${esc(nB)} ${Math.round(TB.wrongH ?? 0)} · ${cmp(TA.wrongH, TB.wrongH, false, ' s')}` : ''}</div></div>
+        <div class="kpi"><div class="k">Recordings where ${W().place} was never found</div><div class="v">${neverA} <span style="font-size:14px;font-weight:400;color:var(--muted)">of ${both.length}</span></div><div class="o">${neverB != null ? `${esc(nB)} ${neverB} · ${cmp(neverA, neverB, false, '')}` : ''}</div></div>
+      </div>
+    </div>
+    <div class="legend">${legend(keyed)}</div>
+    <div class="filters">${Object.entries(F).filter(([k]) => dB || k !== 'changed').map(([k, [t]]) => `<button data-f="${k}" aria-pressed="${S.filter === k}">${esc(t)}</button>`).join('')}</div>
+    <div class="list">${list.length ? list.map((r) => {
+      const iss = [];
+      if (r.fa.wrong.length) iss.push(`${esc(nA)}: wrong Shabad ${r.fa.wrong.length}× (${r.fa.wrong.reduce((s, x) => s + x.e - x.s, 0)} s)`);
+      if (r.fb && r.fb.wrong.length) iss.push(`${esc(nB)}: wrong Shabad ${r.fb.wrong.length}× (${r.fb.wrong.reduce((s, x) => s + x.e - x.s, 0)} s)`);
+      if (dB && !r.o) iss.push(`not played by ${esc(nB)}`);
+      if (r.fa.scoredS < 60 && medScored >= 120) iss.push(`only ${r.fa.scoredS} s scored`);
+      if (!r.fa.wrong.length && r.fa.lost >= 20) iss.push(`${esc(nA)}: nothing shown for ${nn(r.c, 'N')} s`);
+      return `<a class="item" href="#${encodeURIComponent(r.c.id)}">
+        <div style="min-width:0"><div class="t ${r.c.bani ? '' : 'g'}">${esc(r.title)}${r.c.bani ? ` <span class="m">clip ${r.nth} of ${baniCount[r.c.bani]}</span>` : ''}</div>${r.sub ? `<div class="m g">starts at ${esc(r.sub)}</div>` : ''}<div class="m">${esc(r.c.gurdwara || '')} · ${mmss(r.c.dur)}</div>${iss.length ? `<div class="issues">${iss.join(' · ')}</div>` : ''}</div>
+        <div class="mini"><div class="strip" title="${esc(nA)}">${stripHtml(r.c)}</div>${dB ? `<div class="strip" title="${esc(nB)}">${stripHtml(r.o)}</div>` : ''}</div>
+        <div class="score"><b>${pct(r.fa.acc)}</b>${dB ? `<span class="o">${esc(nB)} ${pct(r.fb && r.fb.acc)}</span>` : ''}</div></a>`;
+    }).join('') : '<p class="empty">No recordings match.</p>'}</div>
+    ${about()}`;
+  document.querySelectorAll('.tabs button').forEach((b) => b.onclick = () => { S.tier = b.dataset.tier; S.filter = 'worst'; pickBuilds(null); render(); });
+  $('#selA').onchange = (e) => { S.a = e.target.value; if (S.b === S.a) S.b = ''; render(); };
+  if ($('#selB')) $('#selB').onchange = (e) => { S.b = e.target.value; render(); };
+  document.querySelectorAll('.filters button').forEach((b) => b.onclick = () => { S.filter = b.dataset.f; render(); });
+}
+
+// ---------- one recording ----------
+function renderDetail(c, dA, dB) {
+  const o = dB ? dB.clips.find((x) => x.id === c.id) : null;
+  HAS = new Set([...c.runs, ...(o ? o.runs : [])].map((r) => r[2]));
+  const nA = nameOf(S.a), nB = S.b ? nameOf(S.b) : '';
+  const fa = facts(c, dA), fb = facts(o, dB);
+  const keyed = pangtiKeyed(c);
+  const title = label(dA.texts[(c.runs.find((r) => r[3] >= 0) || [])[3]] || c.id);
+  const yt = (s) => (c.yt ? `https://www.youtube.com/watch?v=${c.yt.v}&t=${c.yt.at + Math.max(0, Math.floor(s) - 2)}s` : null);
+  const when = (s) => (c.yt || AUDIO[c.id] ? `<button data-seek="${Math.max(0, Math.floor(s) - 2)}" title="Play from here">${mmss(s)} ▶</button>` : mmss(s));
+  const verdict = (name, f, cc, d) => {
+    if (!cc) return `<div class="verdict"><h3>${esc(name)}</h3><p class="dmeta">Not played by this version.</p></div>`;
+    const items = [];
+    const lead = f.start > 0 ? ` (the first ${mmss(f.start)} is a lead-in and not scored)` : '';
+    const what = S.tier === 'main' || S.tier === 'akhand' ? `the right ${f.viaBani ? 'Bani' : 'Shabad'}` : W().place;
+    items.push(f.find == null ? `Never found ${what}.` : f.find <= 1 ? `Found ${what} as soon as scoring began at ${mmss(f.start)}${lead}.` : `Found ${what} ${f.find} s after scoring began at ${mmss(f.start)}${lead}.`);
+    items.push(f.wrong.length ? `Showed a wrong Shabad ${f.wrong.length === 1 ? 'once' : f.wrong.length + ' times'}, ${f.wrong.reduce((s, x) => s + x.e - x.s, 0)} s in all${f.wrong.some((x) => x.parmaan) ? ' (short ones may be a parmaan, which is fine)' : ''}.` : 'Never showed a wrong Shabad.');
+    if (nn(cc, 'B')) items.push(`Showed the right Bani (which contains this Shabad) for ${nn(cc, 'B')} s.`);
+    if (nn(cc, 'V')) items.push(`Waheguru slide while searching for ${nn(cc, 'V')} s (not an error).`);
+    if (f.blank.length) items.push(`Screen empty for ${f.blank.reduce((s, x) => s + x.e - x.s, 0)} s ${W().while} (${f.blank.length} stretch${f.blank.length > 1 ? 'es' : ''}).`);
+    if (f.other.length) items.push(`Stayed on another pangti of the right Shabad ${f.other.length}× (${f.other.reduce((s, x) => s + x.e - x.s, 0)} s).`);
+    return `<div class="verdict"><h3>${esc(name)} <b>${pct(f.acc)}</b></h3><ul>${items.map((x) => `<li>${x}</li>`).join('')}</ul></div>`;
+  };
+  // events: what happened, in time order
+  const ev = [];
+  const push = (who, d, f) => { if (!f) return;
+    if (f.find != null) ev.push({ s: f.start + f.find, who, kind: 'ok', text: `Right ${f.viaBani ? 'Bani' : 'Shabad'} on screen ${f.find > 1 ? `(${f.find} s after scoring began)` : 'from the start of scoring'}` });
+    else if (!f.wrong.length) ev.push({ s: f.start, who, kind: 'none', text: `Never found ${W().place}; ${f.blank.length ? 'the screen stayed empty' : 'nothing right was shown'}` });
+    for (const x of f.wrong) ev.push({ s: x.s, who, kind: x.ahead || x.parmaan ? 'par' : 'bad', text: `${x.ahead ? 'Moved ahead to the next Shabad\'s heading for ' + (x.e - x.s) + ' s:' : f.find == null ? 'Never showed the right Shabad; showed' : x.parmaan ? 'Another Shabad (possibly a parmaan) for ' + (x.e - x.s) + ' s:' : 'Wrong Shabad for ' + (x.e - x.s) + ' s:'} <span class="g">${esc(x.shown >= 0 ? label(d.texts[x.shown]) : '')}</span>${f.find == null ? ` for ${x.e - x.s} s` : ''}` });
+    for (const x of f.blank) if (!(f.find == null && x.s === f.start)) ev.push({ s: x.s, who, kind: 'none', text: `Nothing on screen for ${x.e - x.s} s` });
+    for (const x of f.other) ev.push({ s: x.s, who, kind: 'near', text: `Another pangti for ${x.e - x.s} s: <span class="g">${esc(x.shown >= 0 ? d.texts[x.shown] : '')}</span>` }); };
+  push(nA, dA, fa); if (o) push(nB, dB, fb);
+  ev.sort((p, q) => p.s - q.s);
+  if (o) { for (let i = 0; i < ev.length; i++) { const j = ev.findIndex((x, k) => k > i && x.s === ev[i].s && x.text === ev[i].text && x.who !== ev[i].who);
+    if (j > 0) { ev[i].who = 'both versions'; ev.splice(j, 1); } } }
+  const KIND = { ok: ['found', 'var(--ok)'], bad: ['wrong', 'var(--bad)'], par: ['parmaan?', 'var(--near)'], none: ['empty', 'var(--faint)'], near: ['other pangti', 'var(--near)'] };
+  // actual row: blocks per Shabad / pangti, numbered
+  const segs = (cc, k) => { const out = []; for (const r of cc.runs) { const last = out[out.length - 1]; if (last && last.id === r[k] && last.e === r[0]) last.e = r[1]; else out.push({ s: r[0], e: r[1], id: r[k] }); } return out; };
+  const truthSegs = segs(c, 3).filter((x) => x.id >= 0);
+  const ids = [...new Set(truthSegs.map((x) => x.id))];
+  const maxT = innerWidth < 640 ? 5 : 10; const step = [15, 30, 60, 120, 300, 600, 900, 1800].find((x) => c.dur / x <= maxT) || 3600;
+  const ticks = []; for (let t = 0; t <= c.dur; t += step) ticks.push(t);
+  $('#app').innerHTML = `
+    <a class="back" href="#">← All ${esc(TABNAME[S.tier] || '')} recordings</a>
+    <div class="dhead"><h2 class="g">${esc(title)}</h2>${c.yt ? `<a class="dmeta" href="${yt(0)}" target="_blank" rel="noopener">Source recording ↗</a>` : ''}</div>
+    <div class="dmeta">${esc(c.gurdwara || '')} · ${mmss(c.dur)} · judged on ${keyed ? `the exact pangti (${esc(keyNote(c.basis))})` : 'the Shabad (answer key at Shabad level)'}</div>
+    <div class="verdicts">${verdict(nA, fa, c, dA)}${dB ? verdict(nB, fb, o, dB) : ''}</div>
+    ${AUDIO[c.id] ? `<div class="aplayer"><audio id="aud" controls preload="metadata" src="${esc(AUDIO[c.id])}"></audio></div><p class="playnote">This is the exact audio Voice Autopilot heard, cut from the source recording. Press play and the timeline and readout below follow along; click the bars, or a time in the list, to jump there.</p>`
+      : c.yt ? `<div class="player"><div id="ytp"></div></div><p class="playnote">Press play and the timeline and readout below follow along. Click anywhere on the bars, or a time in the list, to jump there.</p>` : '<p class="playnote">This recording is private, so it cannot be played here.</p>'}
+    <div class="tlbox">
+      <div class="legend"><span><i class="sw" style="background:var(--gt)"></i>${keyed ? `pangti being ${W().act} (each block is one pangti)` : c.sung ? 'pangti being sung (machine-aligned timing; scoring is by Shabad)' : 'Shabad being sung (each block is one Shabad)'}</span>${legend(keyed, true)}</div>
+      <div class="tl" id="tl">
+        <span class="l">${keyed ? W().sung : c.sung ? 'Pangti sung' : 'Shabad sung'}</span><div class="big gt">${!keyed && c.sung ? c.sung.map((x, i) => `<i style="${pos(x[0], x[1], c.dur)};background:var(--gt);opacity:${i % 2 ? 1 : 0.7}"></i>`).join('') : truthSegs.map((x) => `<i style="${pos(x.s, x.e, c.dur)};background:var(--gt);opacity:${0.65 + 0.35 * ((ids.indexOf(x.id) % 2))}"></i>`).join('')}</div>
+        <span class="l">${dB ? esc(nA) : 'On screen'}</span><div class="big">${stripHtml(c)}</div>
+        ${dB ? `<span class="l">${esc(nB)}</span><div class="big">${o ? stripHtml(o) : ''}</div>` : ''}
+        <span></span><div class="axis">${ticks.map((t) => `<span style="left:${(100 * t / c.dur).toFixed(2)}%">${mmss(t)}</span>`).join('')}</div>
+        <div class="ph" id="ph"></div>
+      </div>
+      <div class="now" id="now"><span class="hint">Move over (or tap) the bars to read what was sung and what was on screen at that moment.</span></div>
+    </div>
+    <div class="events"><h3>What happened, in order</h3>${ev.length ? ev.map((e) => `<div class="ev"><span class="when">${when(e.s)}</span><span class="who"><span class="tag" style="background:${KIND[e.kind][1]}">${KIND[e.kind][0]}</span>${esc(e.who)}</span><span>${e.text}</span></div>`).join('') : '<p class="empty">Nothing notable.</p>'}</div>
+    ${about()}`;
+  scrollTo(0, 0);
+  const tl = $('#tl'), ph = $('#ph'), now = $('#now');
+  const at = (cc, s) => { if (!cc) return null; let lo = 0, hi = cc.runs.length - 1; while (lo <= hi) { const m = (lo + hi) >> 1, r = cc.runs[m]; if (s < r[0]) hi = m - 1; else if (s >= r[1]) lo = m + 1; else return r; } return null; };
+  const mark = (r) => (!r ? '' : r[2] === 'P' || r[2] === 'S' ? '<span class="tag" style="background:var(--ok)">right</span>' : r[2] === 'B' ? '<span class="tag" style="background:var(--ok)">right Bani</span>' : r[2] === 'A' ? '<span class="tag" style="background:var(--near)">other pangti</span>' : r[2] === 'W' ? '<span class="tag" style="background:var(--bad)">wrong</span>' : r[2] === 'V' ? '<span class="tag" style="background:var(--faint)">Waheguru slide</span>' : '<span class="tag" style="background:var(--faint)">nothing</span>');
+  const secAt = (ev2) => { const r = tl.querySelector('.big').getBoundingClientRect(); return Math.floor(Math.min(Math.max(ev2.clientX - r.left, 0), r.width - 1) / r.width * c.dur); };
+  const show = (ev2) => showAt(secAt(ev2));
+  const showAt = (s) => { s = Math.max(0, Math.min(c.dur - 1, Math.floor(s))); const r = tl.querySelector('.big').getBoundingClientRect(); const tr = tl.getBoundingClientRect();
+    ph.style.display = 'block'; ph.style.left = (r.left - tr.left + r.width * (s + 0.5) / c.dur) + 'px';
+    const rA = at(c, s), rB = at(o, s); const truth = rA && rA[3] >= 0 ? label(dA.texts[rA[3]]) : '';
+    const shownTxt = (rr, d) => (rr && rr[4] >= 0 && rr[2] !== 'V' ? `<span class="g">${esc(label(d.texts[rr[4]]))}</span>` : rr && rr[2] === 'V' ? '<span class="dmeta">ਵਾਹਿਗੁਰੂ slide (searching)</span>' : '<span class="dmeta">nothing on screen</span>');
+    const sp = !keyed && c.sung ? c.sung.find((x) => s >= x[0] && s < x[1]) : null;
+    const sungTxt = !truth ? '<span class="dmeta">not scored here (no answer key)</span>'
+      : keyed ? `<span class="g">${esc(truth)}</span>`
+      : sp ? `<span class="g">${esc(dA.texts[sp[2]])}</span><span class="dmeta"> (pangti from a machine-aligned key; scored on the Shabad)</span>`
+      : `<span class="dmeta">${c.sung ? 'between timed pangtis (alaap, a repeat or simran) in ' : ''}Shabad </span><span class="g">${esc(truth)}</span>`;
+    now.innerHTML = `<span class="l">${mmss(s)} ${W().act}</span><span>${sungTxt}</span>`
+      + `<span class="l">${dB ? esc(nA) : 'on screen'}</span><span>${truth ? mark(rA) : ''}${shownTxt(rA, dA)}</span>`
+      + (dB ? `<span class="l">${esc(nB)}</span><span>${o ? (truth ? mark(rB) : '') + shownTxt(rB, dB) : '<span class="dmeta">not played</span>'}</span>` : '')
+      + (c.yt || AUDIO[c.id] ? `<span></span><span><button class="linkbtn" data-seek="${s}">Play from ${mmss(s)} ▶</button></span>` : '');
+    return s; };
+  let failed = false;
+  const AU = document.getElementById('aud');
+  const seek = (s) => { if (AU) { AU.currentTime = s; AU.play(); return; } if (failed || !P || !P.seekTo) { const u = yt(s + 2); if (u) open(u, '_blank', 'noopener'); return; } P.seekTo(c.yt.at + s, true); P.playVideo(); };
+  tl.querySelectorAll('.big').forEach((b) => { b.addEventListener('mousemove', (e) => { if (!playing()) show(e); }); b.addEventListener('click', (e) => { const s = show(e); seek(s); }); });
+  document.querySelectorAll('[data-seek]').forEach((b) => b.addEventListener('click', () => seek(Number(b.dataset.seek))));
+  now.addEventListener('click', (e) => { const b = e.target.closest('[data-seek]'); if (b) seek(Number(b.dataset.seek)); });
+  // in-page player (public YouTube recordings): the timeline follows the audio
+  let P = null; clearInterval(window.__gabTick);
+  const playing = () => (AU ? !AU.paused : P && P.getPlayerState && P.getPlayerState() === 1);
+  if (AU) {
+    const tick = () => { if (!document.body.contains(AU)) return; if (!AU.paused) showAt(AU.currentTime); requestAnimationFrame(tick); };
+    AU.addEventListener('play', () => requestAnimationFrame(tick)); AU.addEventListener('seeked', () => showAt(AU.currentTime));
+  } else if (c.yt) {
+    ytReady(() => {
+      P = new YT.Player('ytp', { videoId: c.yt.v, playerVars: { start: c.yt.at, rel: 0, modestbranding: 1, playsinline: 1, origin: location.origin },
+        events: { onError: () => { failed = true; const box = document.querySelector('.player'); document.querySelectorAll('.playnote').forEach((x) => x.remove()); if (box) box.outerHTML = `<p class="playnote">YouTube would not play this video inside the page. <a href="${yt(0)}" target="_blank" rel="noopener">Open it on YouTube</a>; the play buttons below open YouTube at that moment.</p>`; } } });
+      window.__gabPlayer = P;
+      window.__gabTick = setInterval(() => { if (!document.getElementById('ytp') && !document.querySelector('.player iframe')) { clearInterval(window.__gabTick); return; }
+        if (playing()) { const s = P.getCurrentTime() - c.yt.at; if (s >= 0 && s < c.dur) showAt(s); } }, 250);
+    });
+  }
+}
+// YouTube IFrame API, loaded once on first use
+let __ytQ = null;
+function ytReady(fn) {
+  if (window.YT && YT.Player) return fn();
+  if (!__ytQ) { __ytQ = []; window.onYouTubeIframeAPIReady = () => __ytQ.splice(0).forEach((f) => f());
+    const t = document.createElement('script'); t.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(t); }
+  __ytQ.push(fn);
+}
+let HAS = null; // which categories appear in the current view
+function legend(keyed, short) {
+  const it = (c, t) => `<span><i class="sw" style="background:${c}"></i>${t}</span>`;
+  const has = (k) => !HAS || HAS.has(k);
+  return it('var(--ok)', keyed ? 'right pangti' : 'right Shabad') + (has('B') ? it('var(--okb)', 'right Bani (contains the Shabad)') : '')
+    + (keyed ? it('var(--near)', 'right Shabad, other pangti') : '') + it('var(--bad)', 'wrong Shabad') + (has('V') ? it('var(--wg)', 'Waheguru slide (searching)') : '')
+    + it('var(--none)', 'nothing shown') + (short ? '' : '<span><i class="sw" style="background:var(--unscored);border:1px solid var(--line)"></i>not scored (no answer key)</span>');
+}
+function about() {
+  return `<details class="about"><summary>How this is scored</summary>
+    <p>Each recording is split into seconds. For every second we compare what was being sung (the answer key) with what Voice Autopilot had on screen: <b>right</b> (or the screen moved there less than 1 s ago), <b>right Bani</b> (a Bani such as Aarti or Rehras Sahib that contains the Shabad being sung, checked against BaniDB), <b>other pangti</b> of the right Shabad, <b>wrong Shabad</b>, the <b>Waheguru slide</b> while it searches (not an error, but not counted as right), or <b>nothing shown</b>. A short wrong stretch that returns to the right Shabad is marked “possibly a parmaan”; it still counts as wrong in the numbers. Seconds without an answer key (lead-in, katha, silence) are not scored. Recordings with a person-checked pangti key are judged on the exact pangti; the others on the Shabad.</p>
+    <p>"Time to find" is how long after the singing starts the right Shabad first appears. Only public recordings (YouTube) are shown; the held-out test set is never shown.</p>
+    <p>The second-by-second view follows Karanbir Singh's <a href="https://github.com/karanbirsingh/live-gurbani-captioning-benchmark-v1">Live Captioning for Gurbani Kirtan benchmark</a> and its <a href="https://karanbirsingh.github.io/live-gurbani-captioning-benchmark-v1/perfect.html">visualizations</a>, with thanks. <a href="https://huggingface.co/spaces/khalisfoundation/GAB">More about the benchmark</a>.</p></details>`;
+}
+main().catch((e) => { $('#app').innerHTML = `<p class="empty">Could not load the results (${esc(e.message)}).</p>`; });
+</script>
+</body>
+</html>
