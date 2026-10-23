@@ -846,8 +846,8 @@ ${full}`);
             locking: lockingRef.current, votes: [...detectVotesRef.current.entries()],
             vote: switchCandRef.current && { id: switchCandRef.current.shabadId, wins: switchCandRef.current.wins, score: switchCandRef.current.lastScore },
             backstop: backstopRef.current && { id: backstopRef.current.shabadId, wins: backstopRef.current.wins, score: backstopRef.current.lastScore },
-            cacheSize: lineCacheRef.current.size, indexSize: flIndexRef.current?.size || 0,
-            retrievalReady: !!flIndexRef.current,
+            cacheSize: lineCacheRef.current.size, indexSize: (typeof flIndexRef !== 'undefined' ? flIndexRef.current?.size : (typeof warmIndex !== 'undefined' && warmIndex.get && warmIndex.get() ? 1 : 0)) || 0,
+            retrievalReady: typeof flIndexRef !== 'undefined' ? !!flIndexRef.current : !!(typeof warmIndex !== 'undefined' && warmIndex.get && warmIndex.get()),
             seeking: seekingRef.current, cursor: curCursorRef.current }) });
         ${marker}`,
       );
