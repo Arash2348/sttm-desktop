@@ -1,0 +1,32 @@
+name: hwcheck
+on:
+  push:
+    branches: [hwcheck-ci]
+  workflow_dispatch:
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, windows-2019, macos-13, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install onnxruntime-node only
+        shell: bash
+        run: mkdir -p /tmp/ort && cd /tmp/ort && npm init -y >/dev/null && npm install onnxruntime-node@1.29.0 --no-audit --no-fund
+      - name: Download the speech model
+        shell: bash
+        run: curl -sL -o model.int8.onnx "https://huggingface.co/karansea/indicconformer-stt-pa-ctc-shabad-preview/resolve/main/model.int8.onnx?download=true" && ls -la model.int8.onnx
+      - name: Check this computer (3 runs)
+        shell: bash
+        env:
+          NODE_PATH: /tmp/ort/node_modules
+        run: for i in 1 2 3; do node research/hwcheck/ci-run.js model.int8.onnx | tee -a hwcheck-${{ matrix.os }}.txt; done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hwcheck-${{ matrix.os }}
+          path: hwcheck-${{ matrix.os }}.txt
