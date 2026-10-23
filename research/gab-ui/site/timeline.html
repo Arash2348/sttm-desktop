@@ -313,10 +313,10 @@ function renderDetail(c, dA, dB) {
     <div class="verdicts">${verdict(nA, fa, c, dA)}${dB ? verdict(nB, fb, o, dB) : ''}</div>
     ${c.yt ? `<div class="player"><div id="ytp"></div></div><p class="playnote">Press play and the timeline and readout below follow along. Click anywhere on the bars, or a time in the list, to jump there.</p>` : '<p class="playnote">This recording is private, so it cannot be played here.</p>'}
     <div class="tlbox">
-      <div class="legend"><span><i class="sw" style="background:var(--gt)"></i>what was sung (${keyed ? 'each block is one pangti' : 'each block is one Shabad'})</span>${legend(keyed, true)}</div>
+      <div class="legend"><span><i class="sw" style="background:var(--gt)"></i>${keyed ? 'pangti being sung (each block is one pangti)' : 'Shabad being sung (each block is one Shabad; pangtis are not keyed here)'}</span>${legend(keyed, true)}</div>
       <div class="tl" id="tl">
-        <span class="l">Sung</span><div class="big gt">${truthSegs.map((x) => `<i style="${pos(x.s, x.e, c.dur)};background:var(--gt);opacity:${0.65 + 0.35 * ((ids.indexOf(x.id) % 2))}"></i>${keyed && (x.e - x.s) / c.dur > 0.06 ? `<b style="left:${(100 * x.s / c.dur).toFixed(3)}%">${ids.indexOf(x.id) + 1}</b>` : ''}`).join('')}</div>
-        <span class="l">${esc(nA)}</span><div class="big">${stripHtml(c)}</div>
+        <span class="l">${keyed ? 'Pangti sung' : 'Shabad sung'}</span><div class="big gt">${truthSegs.map((x) => `<i style="${pos(x.s, x.e, c.dur)};background:var(--gt);opacity:${0.65 + 0.35 * ((ids.indexOf(x.id) % 2))}"></i>${keyed && (x.e - x.s) / c.dur > 0.06 ? `<b style="left:${(100 * x.s / c.dur).toFixed(3)}%">${ids.indexOf(x.id) + 1}</b>` : ''}`).join('')}</div>
+        <span class="l">${dB ? esc(nA) : 'On screen'}</span><div class="big">${stripHtml(c)}</div>
         ${dB ? `<span class="l">${esc(nB)}</span><div class="big">${o ? stripHtml(o) : ''}</div>` : ''}
         <span></span><div class="axis">${ticks.map((t) => `<span style="left:${(100 * t / c.dur).toFixed(2)}%">${mmss(t)}</span>`).join('')}</div>
         <div class="ph" id="ph"></div>
@@ -335,12 +335,16 @@ function renderDetail(c, dA, dB) {
     ph.style.display = 'block'; ph.style.left = (r.left - tr.left + r.width * (s + 0.5) / c.dur) + 'px';
     const rA = at(c, s), rB = at(o, s); const truth = rA && rA[3] >= 0 ? label(dA.texts[rA[3]]) : '';
     const shownTxt = (rr, d) => (rr && rr[4] >= 0 && rr[2] !== 'V' ? `<span class="g">${esc(label(d.texts[rr[4]]))}</span>` : rr && rr[2] === 'V' ? '<span class="dmeta">ਵਾਹਿਗੁਰੂ slide (searching)</span>' : '<span class="dmeta">nothing on screen</span>');
-    now.innerHTML = `<span class="l">${mmss(s)} sung</span><span class="g">${truth ? esc(truth) : '<span class="dmeta">not scored here</span>'}</span>`
-      + `<span class="l">${esc(nA)}</span><span>${truth ? mark(rA) : ''}${shownTxt(rA, dA)}</span>`
+    const sungTxt = !truth ? '<span class="dmeta">not scored here (no answer key)</span>'
+      : keyed ? `<span class="g">${esc(truth)}</span>`
+      : `<span class="dmeta">Shabad </span><span class="g">${esc(truth)}</span><span class="dmeta"> (first pangti shown; this recording's key names the Shabad, not each pangti)</span>`;
+    now.innerHTML = `<span class="l">${mmss(s)} sung</span><span>${sungTxt}</span>`
+      + `<span class="l">${dB ? esc(nA) : 'on screen'}</span><span>${truth ? mark(rA) : ''}${shownTxt(rA, dA)}</span>`
       + (dB ? `<span class="l">${esc(nB)}</span><span>${o ? (truth ? mark(rB) : '') + shownTxt(rB, dB) : '<span class="dmeta">not played</span>'}</span>` : '')
       + (c.yt ? `<span></span><span><button class="linkbtn" data-seek="${s}">Play from ${mmss(s)} ▶</button></span>` : '');
     return s; };
-  const seek = (s) => { if (P && P.seekTo) { P.seekTo(c.yt.at + s, true); P.playVideo(); } };
+  let failed = false;
+  const seek = (s) => { if (failed || !P || !P.seekTo) { const u = yt(s + 2); if (u) open(u, '_blank', 'noopener'); return; } P.seekTo(c.yt.at + s, true); P.playVideo(); };
   tl.querySelectorAll('.big').forEach((b) => { b.addEventListener('mousemove', (e) => { if (!playing()) show(e); }); b.addEventListener('click', (e) => { const s = show(e); seek(s); }); });
   document.querySelectorAll('[data-seek]').forEach((b) => b.addEventListener('click', () => seek(Number(b.dataset.seek))));
   now.addEventListener('click', (e) => { const b = e.target.closest('[data-seek]'); if (b) seek(Number(b.dataset.seek)); });
@@ -349,7 +353,9 @@ function renderDetail(c, dA, dB) {
   const playing = () => P && P.getPlayerState && P.getPlayerState() === 1;
   if (c.yt) {
     ytReady(() => {
-      P = new YT.Player('ytp', { videoId: c.yt.v, playerVars: { start: c.yt.at, rel: 0, modestbranding: 1, playsinline: 1 } }); window.__gabPlayer = P;
+      P = new YT.Player('ytp', { videoId: c.yt.v, playerVars: { start: c.yt.at, rel: 0, modestbranding: 1, playsinline: 1, origin: location.origin },
+        events: { onError: () => { failed = true; const box = document.querySelector('.player'); if (box) box.outerHTML = `<p class="playnote">YouTube would not play this video inside the page. <a href="${yt(0)}" target="_blank" rel="noopener">Open it on YouTube</a>; the play buttons below open YouTube at that moment.</p>`; } } });
+      window.__gabPlayer = P;
       window.__gabTick = setInterval(() => { if (!document.getElementById('ytp') && !document.querySelector('.player iframe')) { clearInterval(window.__gabTick); return; }
         if (playing()) { const s = P.getCurrentTime() - c.yt.at; if (s >= 0 && s < c.dur) showAt(s); } }, 250);
     });
