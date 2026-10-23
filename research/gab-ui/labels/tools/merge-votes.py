@@ -16,6 +16,7 @@ HF_DIR = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--hf-di
 MIN = 0.95
 cands = json.load(open(f'{L}/candidates/{batch}.json'))
 vfiles = sorted(f for f in os.listdir(f'{L}/votes') if re.match(rf'{batch}-checker\d+\.json$', f))
+assert len(vfiles) == 3, f'need votes from all 3 checkers, found {vfiles}'
 votes = [json.load(open(f'{L}/votes/{f}')) for f in vfiles]
 def key(r): return (r['recording'], int(r.get('cand_verseId', r.get('verseId'))), round(float(r['start_s']), 2), round(float(r['end_s']), 2))
 # Same span can be a candidate twice (e.g. a Bani pangti keyed under both the Bani and its Shabad id); votes
