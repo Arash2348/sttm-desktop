@@ -1,4 +1,4 @@
-# Checker 1 of 3, label batch 1, lens A (text match). For every candidate span: decode the cached x86
+# Checker 1 of 3, label batch 1/2 (usage: vote.py batchN), lens A (text match). For every candidate span: decode the cached x86
 # speech-model output for exactly that range, rank every pangti of the keyed Shabad plus the best competing
 # pangtis of the whole Gurbani corpus by how much of the heard text they explain, pick my own answer and a
 # calibrated confidence (Karanbir v1 human pangti keys, cumulative bins, 90% Wilson lower bound), and only
@@ -36,7 +36,8 @@ def calibrated(L, m):
     xs = [ok for l, mm, ok in cal if l >= lb and mm >= mb]
     return wilson_lo(sum(xs), len(xs)), len(xs)
 
-cands_in = json.load(open(os.path.expanduser('~/personal/sttm-ws3/research/gab-ui/labels/candidates/batch1.json')))
+BATCH = sys.argv[1] if len(sys.argv) > 1 else 'batch1'
+cands_in = json.load(open(os.path.expanduser(f'~/personal/sttm-ws3/research/gab-ui/labels/candidates/{BATCH}.json')))
 votes = []; dbg = []
 for c in cands_in:
     rec, a, b = c['recording'], c['start_s'], c['end_s']
@@ -66,10 +67,10 @@ for c in cands_in:
               f'candidate {cv} explains {cs:.0f}' + (f'; {note}' if note else ''))
     votes.append(dict(recording=rec, cand_verseId=cv, start_s=a, end_s=b, my_verseId=my, confidence=conf, agrees=bool(agrees), reason=reason))
     dbg.append(dict(rec=rec, a=a, tier=c['evidence']['tier'], s1=round(s1), m=round(m), L=len(h), conf=conf, agrees=bool(agrees), my=my, cv=cv, in_sh=top in svs if top else None))
-out = os.path.expanduser('~/personal/sttm-ws3/research/gab-ui/labels/votes/batch1-checker1.json')
+out = os.path.expanduser(f'~/personal/sttm-ws3/research/gab-ui/labels/votes/{BATCH}-checker1.json')
 os.makedirs(os.path.dirname(out), exist_ok=True)
 json.dump(votes, open(out, 'w'), ensure_ascii=False, indent=1)
-json.dump(dbg, open(os.path.join(S, 'dbg.json'), 'w'))
+json.dump(dbg, open(os.path.join(S, f'dbg-{BATCH}.json'), 'w'))
 from collections import Counter
 n = len(votes); ag = sum(v['agrees'] for v in votes); ap = sum(v['agrees'] and v['confidence'] >= 0.95 for v in votes)
 print('calibration windows', len(cal))
