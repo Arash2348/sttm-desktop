@@ -30,3 +30,14 @@ the forced CTC alignment is therefore treated as non-independent and only the gr
 Result: 948 spans, 197 approved (agree and confidence >= 0.95; all tier A), 251 agree but under the bar (timing off /
 shared phrase / little heard), 284 identified as a different pangti, 51 'none' (alaap / simran / silence). Heard-token
 timing within 1.5 s start / 3 s end for 59% of tier A, 46% B, 12% C, 17% D.
+
+## Batch 3 (2026-10-23, Akhand Kirtan, folder 5)
+
+Same method, `BATCH=batch3`; fresh app-model emissions (`emis2.js karanbir`, int8) for the 12 batch-3 recordings
+(still no second model on this Mac: the Surinder ONNX dirs are empty and `indic-conformer-600m` uses another
+vocabulary, so only the greedy heard-token fit decides timing; the forced alignment is a non-independent second opinion).
+Result: 443 spans, 14 approved (agree and confidence >= 0.95; all tier A), 185 agree but under the bar (Akhand Kirtan
+hearing is weaker: text match mostly 50-80, overlapping candidate spans, timing off), 178 identified as a different
+pangti, 66 'none' (Vaheguru simran / alaap / silence). Heard-token timing within 1.5 s start / 3 s end for 47% of
+tier A, 20% B, 13% C, 21% D. Candidate spans in this batch overlap each other often (10th percentile gap to the next
+tier A span = -4.4 s), which alone blocks approval under the no-overlap rule.
