@@ -75,6 +75,7 @@ select { font: inherit; font-size: 14px; color: var(--ink); background: var(--ca
 .verdict h3 b { font-size: 18px; font-variant-numeric: tabular-nums; }
 .verdict ul { margin: 6px 0 0; padding-left: 18px; font-size: 14px; }
 .verdict li { margin: 2px 0; }
+.aplayer { margin: 0 0 12px; } .aplayer audio { width: 100%; max-width: 640px; }
 .player { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16 / 9; margin: 0 0 12px; border-radius: 10px; overflow: hidden; background: #000; }
 .player iframe, .player > div { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .playnote { font-size: 13px; color: var(--muted); margin: -6px 0 12px; }
@@ -183,8 +184,10 @@ const stripHtml = (c) => c ? c.runs.map((r) => `<i style="${pos(r[0], r[1], c.du
 const S = { tier: null, a: null, b: null, filter: 'worst' };
 function readHash() { const h = decodeURIComponent(location.hash.slice(1)); return h || null; }
 
+let AUDIO = {}; // recording id -> our own audio file (private page only); played instead of YouTube
 async function main() {
   INDEX = await (await fetch('timeline/index.json')).json();
+  try { const r = await fetch('audio/index.json'); if (r.ok) AUDIO = await r.json(); } catch (_) { AUDIO = {}; }
   let keep = null; try { keep = JSON.parse(store.get('gab-v4') || 'null'); } catch (_) {}
   const q = new URLSearchParams(location.search);
   S.tier = (q.get('set') && INDEX.tiers.some((t) => t.key === q.get('set'))) ? q.get('set') : (keep && INDEX.tiers.some((t) => t.key === keep.tier) ? keep.tier : INDEX.tiers[0].key);
@@ -308,7 +311,7 @@ function renderDetail(c, dA, dB) {
   const keyed = pangtiKeyed(c);
   const title = label(dA.texts[(c.runs.find((r) => r[3] >= 0) || [])[3]] || c.id);
   const yt = (s) => (c.yt ? `https://www.youtube.com/watch?v=${c.yt.v}&t=${c.yt.at + Math.max(0, Math.floor(s) - 2)}s` : null);
-  const when = (s) => (c.yt ? `<button data-seek="${Math.max(0, Math.floor(s) - 2)}" title="Play from here">${mmss(s)} ▶</button>` : mmss(s));
+  const when = (s) => (c.yt || AUDIO[c.id] ? `<button data-seek="${Math.max(0, Math.floor(s) - 2)}" title="Play from here">${mmss(s)} ▶</button>` : mmss(s));
   const verdict = (name, f, cc, d) => {
     if (!cc) return `<div class="verdict"><h3>${esc(name)}</h3><p class="dmeta">Not played by this version.</p></div>`;
     const items = [];
@@ -346,7 +349,8 @@ function renderDetail(c, dA, dB) {
     <div class="dhead"><h2 class="g">${esc(title)}</h2>${c.yt ? `<a href="${yt(0)}" target="_blank" rel="noopener">Open on YouTube</a>` : ''}</div>
     <div class="dmeta">${esc(c.gurdwara || '')} · ${mmss(c.dur)} · judged on ${keyed ? `the exact pangti (${esc(keyNote(c.basis))})` : 'the Shabad (answer key at Shabad level)'}</div>
     <div class="verdicts">${verdict(nA, fa, c, dA)}${dB ? verdict(nB, fb, o, dB) : ''}</div>
-    ${c.yt ? `<div class="player"><div id="ytp"></div></div><p class="playnote">Press play and the timeline and readout below follow along. Click anywhere on the bars, or a time in the list, to jump there.</p>` : '<p class="playnote">This recording is private, so it cannot be played here.</p>'}
+    ${AUDIO[c.id] ? `<div class="aplayer"><audio id="aud" controls preload="metadata" src="${esc(AUDIO[c.id])}"></audio></div><p class="playnote">This is the exact audio Voice Autopilot heard. Press play and the timeline and readout below follow along; click the bars, or a time in the list, to jump there.</p>`
+      : c.yt ? `<div class="player"><div id="ytp"></div></div><p class="playnote">Press play and the timeline and readout below follow along. Click anywhere on the bars, or a time in the list, to jump there.</p>` : '<p class="playnote">This recording is private, so it cannot be played here.</p>'}
     <div class="tlbox">
       <div class="legend"><span><i class="sw" style="background:var(--gt)"></i>${keyed ? `pangti being ${W().act} (each block is one pangti)` : 'Shabad being sung (each block is one Shabad; pangtis are not keyed here)'}</span>${legend(keyed, true)}</div>
       <div class="tl" id="tl">
@@ -376,17 +380,21 @@ function renderDetail(c, dA, dB) {
     now.innerHTML = `<span class="l">${mmss(s)} ${W().act}</span><span>${sungTxt}</span>`
       + `<span class="l">${dB ? esc(nA) : 'on screen'}</span><span>${truth ? mark(rA) : ''}${shownTxt(rA, dA)}</span>`
       + (dB ? `<span class="l">${esc(nB)}</span><span>${o ? (truth ? mark(rB) : '') + shownTxt(rB, dB) : '<span class="dmeta">not played</span>'}</span>` : '')
-      + (c.yt ? `<span></span><span><button class="linkbtn" data-seek="${s}">Play from ${mmss(s)} ▶</button></span>` : '');
+      + (c.yt || AUDIO[c.id] ? `<span></span><span><button class="linkbtn" data-seek="${s}">Play from ${mmss(s)} ▶</button></span>` : '');
     return s; };
   let failed = false;
-  const seek = (s) => { if (failed || !P || !P.seekTo) { const u = yt(s + 2); if (u) open(u, '_blank', 'noopener'); return; } P.seekTo(c.yt.at + s, true); P.playVideo(); };
+  const AU = document.getElementById('aud');
+  const seek = (s) => { if (AU) { AU.currentTime = s; AU.play(); return; } if (failed || !P || !P.seekTo) { const u = yt(s + 2); if (u) open(u, '_blank', 'noopener'); return; } P.seekTo(c.yt.at + s, true); P.playVideo(); };
   tl.querySelectorAll('.big').forEach((b) => { b.addEventListener('mousemove', (e) => { if (!playing()) show(e); }); b.addEventListener('click', (e) => { const s = show(e); seek(s); }); });
   document.querySelectorAll('[data-seek]').forEach((b) => b.addEventListener('click', () => seek(Number(b.dataset.seek))));
   now.addEventListener('click', (e) => { const b = e.target.closest('[data-seek]'); if (b) seek(Number(b.dataset.seek)); });
   // in-page player (public YouTube recordings): the timeline follows the audio
   let P = null; clearInterval(window.__gabTick);
-  const playing = () => P && P.getPlayerState && P.getPlayerState() === 1;
-  if (c.yt) {
+  const playing = () => (AU ? !AU.paused : P && P.getPlayerState && P.getPlayerState() === 1);
+  if (AU) {
+    const tick = () => { if (!document.body.contains(AU)) return; if (!AU.paused) showAt(AU.currentTime); requestAnimationFrame(tick); };
+    AU.addEventListener('play', () => requestAnimationFrame(tick)); AU.addEventListener('seeked', () => showAt(AU.currentTime));
+  } else if (c.yt) {
     ytReady(() => {
       P = new YT.Player('ytp', { videoId: c.yt.v, playerVars: { start: c.yt.at, rel: 0, modestbranding: 1, playsinline: 1, origin: location.origin },
         events: { onError: () => { failed = true; const box = document.querySelector('.player'); document.querySelectorAll('.playnote').forEach((x) => x.remove()); if (box) box.outerHTML = `<p class="playnote">YouTube would not play this video inside the page. <a href="${yt(0)}" target="_blank" rel="noopener">Open it on YouTube</a>; the play buttons below open YouTube at that moment.</p>`; } } });

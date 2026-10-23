@@ -1,0 +1,4473 @@
+{
+ "summary": {
+  "recordings": 197,
+  "keyed_hours_on_page": 15.14,
+  "verdicts": {
+   "ok": 171,
+   "key covers simran": 6,
+   "Shabad start/end off (other Shabad heard)": 6,
+   "unkeyed parmaan (20-60 s)": 3,
+   "key covers lead-in / tail with no Gurbani": 5,
+   "weak evidence": 6
+  },
+  "by_category": {
+   "Kirtan": {
+    "ok": 86,
+    "key covers simran": 6,
+    "Shabad start/end off (other Shabad heard)": 5,
+    "unkeyed parmaan (20-60 s)": 2,
+    "key covers lead-in / tail with no Gurbani": 5,
+    "weak evidence": 4
+   },
+   "Kirtan (Karanbir v1, human keys)": {
+    "ok": 4
+   },
+   "Akhand Kirtan": {
+    "ok": 20,
+    "Shabad start/end off (other Shabad heard)": 1,
+    "unkeyed parmaan (20-60 s)": 1,
+    "weak evidence": 2
+   },
+   "Paath": {
+    "ok": 45
+   },
+   "Sung Bani": {
+    "ok": 12
+   },
+   "Sehaj / Akhand Paath": {
+    "ok": 4
+   }
+  },
+  "affected_keyed_seconds": 700.0,
+  "pangti_timing": {
+   "Kirtan (line keys not shown on page)": {
+    "clips": 106,
+    "median_best_shift_s": -0.5,
+    "within_2s": 0.84
+   },
+   "Kirtan (shown on page)": {
+    "clips": 1,
+    "median_best_shift_s": 0.0,
+    "within_2s": 1.0
+   },
+   "Kirtan (Karanbir v1, human keys) (shown on page)": {
+    "clips": 4,
+    "median_best_shift_s": -1.5,
+    "within_2s": 0.75
+   },
+   "Akhand Kirtan (line keys not shown on page)": {
+    "clips": 22,
+    "median_best_shift_s": -0.25,
+    "within_2s": 0.64
+   },
+   "Akhand Kirtan (shown on page)": {
+    "clips": 2,
+    "median_best_shift_s": -1.75,
+    "within_2s": 0.5
+   },
+   "Paath (shown on page)": {
+    "clips": 45,
+    "median_best_shift_s": 0.0,
+    "within_2s": 1.0
+   },
+   "Sung Bani (shown on page)": {
+    "clips": 12,
+    "median_best_shift_s": 0.0,
+    "within_2s": 1.0
+   },
+   "Sehaj / Akhand Paath (shown on page)": {
+    "clips": 4,
+    "median_best_shift_s": -0.5,
+    "within_2s": 1.0
+   }
+  },
+  "hf_files_longer_than_page": [
+   {
+    "id": "clip12",
+    "hf_keyed_s": 1140.0,
+    "page_keyed_s": 291.0
+   },
+   {
+    "id": "clip17",
+    "hf_keyed_s": 970.0,
+    "page_keyed_s": 442.0
+   }
+  ],
+  "calibration": {
+   "margin_points": 10,
+   "min_heard_score": 70,
+   "sustained_s": 20,
+   "share_of_windows": 0.6,
+   "false_flags_on_trusted_sets": "kbv1 0/4, Paath 0/45, Sung Bani 0/12, Sehaj Paath 0/4"
+  },
+  "sensitivity_wrong_key_injected": {
+   "main": {
+    "caught": 95,
+    "of": 108,
+    "caught_where_hearing_works": 85,
+    "of_where_hearing_works": 87
+   },
+   "akhand": {
+    "caught": 14,
+    "of": 24,
+    "caught_where_hearing_works": 7,
+    "of_where_hearing_works": 9
+   },
+   "kbv1": {
+    "caught": 4,
+    "of": 4,
+    "caught_where_hearing_works": 3,
+    "of_where_hearing_works": 3
+   }
+  },
+  "affected_pct_of_keyed_time": 1.28
+ },
+ "worst10": [
+  "rn55",
+  "clip21",
+  "l3clip16",
+  "rn69",
+  "clip04",
+  "l3clip02",
+  "rn18",
+  "clip17",
+  "rn72",
+  "clip23"
+ ],
+ "recordings": [
+  {
+   "id": "clip01",
+   "category": "Kirtan",
+   "duration_s": 253,
+   "keyed_on_page_s": 212.0,
+   "keyed_in_hf_shabads_csv_s": 212.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.81,
+   "cache_coverage": 0.97,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 0.5,
+    "sim_at_0": 73.1,
+    "null": 39.3,
+    "lines": 10
+   }
+  },
+  {
+   "id": "clip02",
+   "category": "Kirtan",
+   "duration_s": 64,
+   "keyed_on_page_s": 23.0,
+   "keyed_in_hf_shabads_csv_s": 23.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.75,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 91.7,
+    "null": 38.8,
+    "lines": 2
+   }
+  },
+  {
+   "id": "clip03",
+   "category": "Kirtan",
+   "duration_s": 450,
+   "keyed_on_page_s": 410.0,
+   "keyed_in_hf_shabads_csv_s": 410.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.73,
+   "cache_coverage": 0.99,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 2.8,
+    "sim_at_0": 72.4,
+    "null": 33.5,
+    "lines": 14
+   }
+  },
+  {
+   "id": "clip04",
+   "category": "Kirtan",
+   "duration_s": 415,
+   "keyed_on_page_s": 375.0,
+   "keyed_in_hf_shabads_csv_s": 375.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "key covers simran",
+   "hearing_supports_key": 0.77,
+   "cache_coverage": 0.97,
+   "findings": [
+    {
+     "kind": "simran",
+     "from": 70.0,
+     "to": 96.0,
+     "dur": 26.0,
+     "text": "Vaheguru simran 1:10-1:36 inside the keyed Shabad"
+    },
+    {
+     "kind": "simran",
+     "from": 244.0,
+     "to": 264.0,
+     "dur": 20.0,
+     "text": "Vaheguru simran 4:04-4:24 inside the keyed Shabad"
+    },
+    {
+     "kind": "simran",
+     "from": 346.0,
+     "to": 370.0,
+     "dur": 24.0,
+     "text": "Vaheguru simran 5:46-6:10 inside the keyed Shabad"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 1.6,
+    "sim_at_0": 77.3,
+    "null": 34.1,
+    "lines": 28
+   }
+  },
+  {
+   "id": "clip06",
+   "category": "Kirtan",
+   "duration_s": 337,
+   "keyed_on_page_s": 296.0,
+   "keyed_in_hf_shabads_csv_s": 296.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.86,
+   "cache_coverage": 0.89,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.5,
+    "gain": 6.4,
+    "sim_at_0": 72.8,
+    "null": 34.3,
+    "lines": 26
+   }
+  },
+  {
+   "id": "clip07",
+   "category": "Kirtan",
+   "duration_s": 428,
+   "keyed_on_page_s": 387.0,
+   "keyed_in_hf_shabads_csv_s": 387.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.83,
+   "cache_coverage": 0.92,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -2.5,
+    "gain": 1.4,
+    "sim_at_0": 77.4,
+    "null": 37.2,
+    "lines": 13
+   }
+  },
+  {
+   "id": "clip08",
+   "category": "Kirtan",
+   "duration_s": 309,
+   "keyed_on_page_s": 268.0,
+   "keyed_in_hf_shabads_csv_s": 268.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.76,
+   "cache_coverage": 0.95,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.5,
+    "gain": 1.4,
+    "sim_at_0": 75.3,
+    "null": 41.1,
+    "lines": 13
+   }
+  },
+  {
+   "id": "clip09",
+   "category": "Kirtan",
+   "duration_s": 547,
+   "keyed_on_page_s": 506.0,
+   "keyed_in_hf_shabads_csv_s": 506.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.71,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.5,
+    "gain": 0.7,
+    "sim_at_0": 72.2,
+    "null": 35.3,
+    "lines": 23
+   }
+  },
+  {
+   "id": "clip10",
+   "category": "Kirtan",
+   "duration_s": 531,
+   "keyed_on_page_s": 490.0,
+   "keyed_in_hf_shabads_csv_s": 490.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.8,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -2.0,
+    "gain": 4.7,
+    "sim_at_0": 81.6,
+    "null": 33.3,
+    "lines": 42
+   }
+  },
+  {
+   "id": "clip11",
+   "category": "Kirtan",
+   "duration_s": 277,
+   "keyed_on_page_s": 236.0,
+   "keyed_in_hf_shabads_csv_s": 236.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.58,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 2.1,
+    "sim_at_0": 76.5,
+    "null": 29.0,
+    "lines": 6
+   }
+  },
+  {
+   "id": "clip12",
+   "category": "Kirtan",
+   "duration_s": 1181,
+   "keyed_on_page_s": 291.0,
+   "keyed_in_hf_shabads_csv_s": 1140.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.79,
+   "cache_coverage": 0.99,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -2.0,
+    "gain": 3.3,
+    "sim_at_0": 78.4,
+    "null": 37.2,
+    "lines": 17
+   }
+  },
+  {
+   "id": "clip13",
+   "category": "Kirtan",
+   "duration_s": 223,
+   "keyed_on_page_s": 182.0,
+   "keyed_in_hf_shabads_csv_s": 182.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.95,
+   "cache_coverage": 0.96,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -3.0,
+    "gain": 1.2,
+    "sim_at_0": 89.0,
+    "null": 34.3,
+    "lines": 20
+   }
+  },
+  {
+   "id": "clip14",
+   "category": "Kirtan",
+   "duration_s": 360,
+   "keyed_on_page_s": 320.0,
+   "keyed_in_hf_shabads_csv_s": 320.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.76,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [
+    {
+     "kind": "timing",
+     "shift_s": -3.5,
+     "gain": 5.2,
+     "text": "pangti keys best match the hearing shifted -3.5 s (gain 5.2 points)"
+    }
+   ],
+   "timing_scan": {
+    "best_shift_s": -3.5,
+    "gain": 5.2,
+    "sim_at_0": 75.1,
+    "null": 39.1,
+    "lines": 8
+   }
+  },
+  {
+   "id": "clip15",
+   "category": "Kirtan",
+   "duration_s": 451,
+   "keyed_on_page_s": 411.0,
+   "keyed_in_hf_shabads_csv_s": 411.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.84,
+   "cache_coverage": 0.91,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.8,
+    "sim_at_0": 73.9,
+    "null": 35.4,
+    "lines": 21
+   }
+  },
+  {
+   "id": "clip16",
+   "category": "Kirtan",
+   "duration_s": 540,
+   "keyed_on_page_s": 500.0,
+   "keyed_in_hf_shabads_csv_s": 500.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.85,
+   "cache_coverage": 0.97,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.5,
+    "gain": 0.3,
+    "sim_at_0": 73.9,
+    "null": 42.6,
+    "lines": 23
+   }
+  },
+  {
+   "id": "clip17",
+   "category": "Kirtan",
+   "duration_s": 1011,
+   "keyed_on_page_s": 442.0,
+   "keyed_in_hf_shabads_csv_s": 970.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "Shabad start/end off (other Shabad heard)",
+   "hearing_supports_key": 0.7,
+   "cache_coverage": 1.0,
+   "findings": [
+    {
+     "from": 436.0,
+     "to": 466.0,
+     "dur": 30.0,
+     "heard_shabad": 3590,
+     "heard_pangti": "ਧੰਨੁ ਧੰਨੁ ਰਾਮਦਾਸ ਗੁਰੁ ਜਿਨਿ ਸਿਰਿਆ ਤਿਨੈ ਸਵਾਰਿਆ ॥",
+     "heard_raw": "ੁਰਧਨੁਧਨੁਰਾਮਦਾਸਰਾਮਦਾਸਗੁਰ",
+     "key_shabad": [
+      3085
+     ],
+     "key_first_pangti": "ਬਿਲਾਵਲੁ ਮਹਲਾ ੫ ॥",
+     "heard_score": 81.8,
+     "key_score": 50.9,
+     "margin": 30.9,
+     "heard_from": 441.0,
+     "heard_to": 461.0,
+     "kind": "end-late",
+     "shift_s": 31,
+     "key_end": 472.0,
+     "also_keyed_here": false,
+     "text": "key runs 31 s past the Shabad's end: from 7:21 the hearing is another Shabad until the key ends at 7:52"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 75.2,
+    "null": 36.8,
+    "lines": 18
+   }
+  },
+  {
+   "id": "clip18",
+   "category": "Kirtan",
+   "duration_s": 314,
+   "keyed_on_page_s": 274.0,
+   "keyed_in_hf_shabads_csv_s": 274.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.88,
+   "cache_coverage": 0.99,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 1.1,
+    "sim_at_0": 85.8,
+    "null": 37.9,
+    "lines": 27
+   }
+  },
+  {
+   "id": "clip19",
+   "category": "Kirtan",
+   "duration_s": 364,
+   "keyed_on_page_s": 323.0,
+   "keyed_in_hf_shabads_csv_s": 323.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.81,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.4,
+    "sim_at_0": 76.1,
+    "null": 35.9,
+    "lines": 17
+   }
+  },
+  {
+   "id": "clip20",
+   "category": "Kirtan",
+   "duration_s": 615,
+   "keyed_on_page_s": 575.0,
+   "keyed_in_hf_shabads_csv_s": 575.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.82,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.5,
+    "gain": 1.6,
+    "sim_at_0": 75.5,
+    "null": 36.3,
+    "lines": 25
+   }
+  },
+  {
+   "id": "clip21",
+   "category": "Kirtan",
+   "duration_s": 411,
+   "keyed_on_page_s": 370.0,
+   "keyed_in_hf_shabads_csv_s": 370.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "unkeyed parmaan (20-60 s)",
+   "hearing_supports_key": 0.69,
+   "cache_coverage": 0.99,
+   "findings": [
+    {
+     "from": 282.0,
+     "to": 326.0,
+     "dur": 44.0,
+     "heard_shabad": 2613,
+     "heard_pangti": "ਕਿਤੈ ਪ੍ਰਕਾਰਿ ਨ ਤੂਟਉ ਪ੍ਰੀਤਿ ॥ ਦਾਸ ਤੇਰੇ ਕੀ ਨਿਰਮਲ ਰੀਤਿ ॥੧॥ ਰਹਾਉ ॥",
+     "heard_raw": "ਕਾਰਨਤੂਟਹੁਦਾਸਤੇਰੇ",
+     "key_shabad": [
+      639,
+      3120
+     ],
+     "key_first_pangti": "ਗਉੜੀ ਮਹਲਾ ੫ ॥",
+     "heard_score": 80.3,
+     "key_score": 54.1,
+     "margin": 26.2,
+     "heard_from": 289.0,
+     "heard_to": 315.0,
+     "kind": "parmaan",
+     "also_keyed_here": false,
+     "text": "other Shabad heard 4:49-5:15 (26 s, parmaan length), not keyed"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.5,
+    "gain": 1.3,
+    "sim_at_0": 74.9,
+    "null": 38.8,
+    "lines": 17
+   }
+  },
+  {
+   "id": "clip22",
+   "category": "Kirtan",
+   "duration_s": 356,
+   "keyed_on_page_s": 315.0,
+   "keyed_in_hf_shabads_csv_s": 315.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "key covers lead-in / tail with no Gurbani",
+   "hearing_supports_key": 0.85,
+   "cache_coverage": 0.99,
+   "findings": [
+    {
+     "kind": "quiet-end",
+     "from": 312.0,
+     "to": 345.0,
+     "dur": 33.0,
+     "shift_s": 33,
+     "key_shabad": [
+      4563
+     ],
+     "text": "last 33 s of the key (5:12-5:45): no Gurbani heard (Ardas, talk, silence or music)"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 4.0,
+    "gain": 1.7,
+    "sim_at_0": 74.4,
+    "null": 41.4,
+    "lines": 8
+   }
+  },
+  {
+   "id": "clip23",
+   "category": "Kirtan",
+   "duration_s": 464,
+   "keyed_on_page_s": 423.0,
+   "keyed_in_hf_shabads_csv_s": 423.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "key covers lead-in / tail with no Gurbani",
+   "hearing_supports_key": 0.87,
+   "cache_coverage": 0.97,
+   "findings": [
+    {
+     "kind": "quiet-end",
+     "from": 412.0,
+     "to": 453.0,
+     "dur": 41.0,
+     "shift_s": 41,
+     "key_shabad": [
+      1928
+     ],
+     "text": "last 41 s of the key (6:52-7:33): no Gurbani heard (Ardas, talk, silence or music)"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.6,
+    "sim_at_0": 76.2,
+    "null": 42.4,
+    "lines": 7
+   }
+  },
+  {
+   "id": "clip24",
+   "category": "Kirtan",
+   "duration_s": 459,
+   "keyed_on_page_s": 418.0,
+   "keyed_in_hf_shabads_csv_s": 418.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.94,
+   "cache_coverage": 0.97,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 85.7,
+    "null": 31.6,
+    "lines": 55
+   }
+  },
+  {
+   "id": "clip25",
+   "category": "Kirtan",
+   "duration_s": 314,
+   "keyed_on_page_s": 273.0,
+   "keyed_in_hf_shabads_csv_s": 273.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.86,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 75.5,
+    "null": 35.0,
+    "lines": 22
+   }
+  },
+  {
+   "id": "clip26",
+   "category": "Kirtan",
+   "duration_s": 223,
+   "keyed_on_page_s": 182.0,
+   "keyed_in_hf_shabads_csv_s": 182.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.92,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 0.8,
+    "sim_at_0": 79.6,
+    "null": 36.1,
+    "lines": 6
+   }
+  },
+  {
+   "id": "clip27",
+   "category": "Kirtan",
+   "duration_s": 525,
+   "keyed_on_page_s": 485.0,
+   "keyed_in_hf_shabads_csv_s": 485.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.89,
+   "cache_coverage": 0.99,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.1,
+    "sim_at_0": 81.6,
+    "null": 36.4,
+    "lines": 44
+   }
+  },
+  {
+   "id": "clip28",
+   "category": "Kirtan",
+   "duration_s": 320,
+   "keyed_on_page_s": 279.0,
+   "keyed_in_hf_shabads_csv_s": 279.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.82,
+   "cache_coverage": 0.99,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 82.3,
+    "null": 39.2,
+    "lines": 17
+   }
+  },
+  {
+   "id": "clip29",
+   "category": "Kirtan",
+   "duration_s": 768,
+   "keyed_on_page_s": 728.0,
+   "keyed_in_hf_shabads_csv_s": 728.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.8,
+   "cache_coverage": 0.99,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 1.0,
+    "gain": 2.4,
+    "sim_at_0": 75.2,
+    "null": 38.3,
+    "lines": 13
+   }
+  },
+  {
+   "id": "clip30",
+   "category": "Kirtan",
+   "duration_s": 447,
+   "keyed_on_page_s": 406.0,
+   "keyed_in_hf_shabads_csv_s": 406.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.8,
+   "cache_coverage": 0.96,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 1.0,
+    "gain": 5.6,
+    "sim_at_0": 74.3,
+    "null": 35.2,
+    "lines": 28
+   }
+  },
+  {
+   "id": "clip31",
+   "category": "Kirtan",
+   "duration_s": 520,
+   "keyed_on_page_s": 479.0,
+   "keyed_in_hf_shabads_csv_s": 479.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.69,
+   "cache_coverage": 0.96,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 0.9,
+    "sim_at_0": 79.9,
+    "null": 33.6,
+    "lines": 28
+   }
+  },
+  {
+   "id": "clip32",
+   "category": "Kirtan",
+   "duration_s": 681,
+   "keyed_on_page_s": 640.0,
+   "keyed_in_hf_shabads_csv_s": 640.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.87,
+   "cache_coverage": 0.95,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.5,
+    "gain": 1.9,
+    "sim_at_0": 78.9,
+    "null": 39.8,
+    "lines": 19
+   }
+  },
+  {
+   "id": "clip33",
+   "category": "Kirtan",
+   "duration_s": 1091,
+   "keyed_on_page_s": 1050.0,
+   "keyed_in_hf_shabads_csv_s": 1050.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.74,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 1.7,
+    "sim_at_0": 73.3,
+    "null": 33.2,
+    "lines": 50
+   }
+  },
+  {
+   "id": "clip34",
+   "category": "Kirtan",
+   "duration_s": 150,
+   "keyed_on_page_s": 110.0,
+   "keyed_in_hf_shabads_csv_s": 110.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.87,
+   "cache_coverage": 0.97,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 83.5,
+    "null": 33.3,
+    "lines": 8
+   }
+  },
+  {
+   "id": "clip35",
+   "category": "Kirtan",
+   "duration_s": 1196,
+   "keyed_on_page_s": 1155.0,
+   "keyed_in_hf_shabads_csv_s": 1155.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.83,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 0.8,
+    "sim_at_0": 79.4,
+    "null": 37.8,
+    "lines": 38
+   }
+  },
+  {
+   "id": "clip36",
+   "category": "Kirtan",
+   "duration_s": 671,
+   "keyed_on_page_s": 630.0,
+   "keyed_in_hf_shabads_csv_s": 630.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.78,
+   "cache_coverage": 0.96,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 84.7,
+    "null": 40.8,
+    "lines": 40
+   }
+  },
+  {
+   "id": "clip37",
+   "category": "Kirtan",
+   "duration_s": 135,
+   "keyed_on_page_s": 95.0,
+   "keyed_in_hf_shabads_csv_s": 95.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.83,
+   "cache_coverage": 0.97,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 1.1,
+    "sim_at_0": 80.3,
+    "null": 30.5,
+    "lines": 12
+   }
+  },
+  {
+   "id": "clip38",
+   "category": "Kirtan",
+   "duration_s": 161,
+   "keyed_on_page_s": 120.0,
+   "keyed_in_hf_shabads_csv_s": 120.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.59,
+   "cache_coverage": 0.87,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -17.5,
+    "gain": 3.6,
+    "sim_at_0": 66.6,
+    "null": 42.1,
+    "lines": 5
+   }
+  },
+  {
+   "id": "clip39",
+   "category": "Kirtan",
+   "duration_s": 315,
+   "keyed_on_page_s": 275.0,
+   "keyed_in_hf_shabads_csv_s": 275.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.71,
+   "cache_coverage": 0.92,
+   "findings": [],
+   "hidden_line_key_timing": [
+    {
+     "kind": "timing",
+     "shift_s": -3.0,
+     "gain": 7.0,
+     "text": "pangti keys best match the hearing shifted -3.0 s (gain 7.0 points)"
+    }
+   ],
+   "timing_scan": {
+    "best_shift_s": -3.0,
+    "gain": 7.0,
+    "sim_at_0": 64.1,
+    "null": 32.4,
+    "lines": 10
+   }
+  },
+  {
+   "id": "clip40",
+   "category": "Kirtan",
+   "duration_s": 306,
+   "keyed_on_page_s": 265.0,
+   "keyed_in_hf_shabads_csv_s": 265.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.8,
+   "cache_coverage": 0.96,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 77.6,
+    "null": 33.5,
+    "lines": 25
+   }
+  },
+  {
+   "id": "clip41",
+   "category": "Kirtan",
+   "duration_s": 426,
+   "keyed_on_page_s": 385.0,
+   "keyed_in_hf_shabads_csv_s": 385.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.79,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 75.6,
+    "null": 38.2,
+    "lines": 19
+   }
+  },
+  {
+   "id": "kbv1_IZOsmkdmmcg",
+   "category": "Kirtan (Karanbir v1, human keys)",
+   "duration_s": 459,
+   "keyed_on_page_s": 457.0,
+   "keyed_in_hf_shabads_csv_s": 456.9,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.77,
+   "cache_coverage": 0.99,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -3.5,
+    "gain": 1.3,
+    "sim_at_0": 77.1,
+    "null": 34.4,
+    "lines": 15
+   }
+  },
+  {
+   "id": "kbv1_kZhIA8P6xWI",
+   "category": "Kirtan (Karanbir v1, human keys)",
+   "duration_s": 307,
+   "keyed_on_page_s": 289.0,
+   "keyed_in_hf_shabads_csv_s": 289.1,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.79,
+   "cache_coverage": 0.81,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.1,
+    "sim_at_0": 70.7,
+    "null": 30.9,
+    "lines": 17
+   }
+  },
+  {
+   "id": "kbv1_kchMJPK9Axs",
+   "category": "Kirtan (Karanbir v1, human keys)",
+   "duration_s": 651,
+   "keyed_on_page_s": 647.0,
+   "keyed_in_hf_shabads_csv_s": 646.6,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.84,
+   "cache_coverage": 0.99,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 0.3,
+    "sim_at_0": 74.7,
+    "null": 43.5,
+    "lines": 18
+   }
+  },
+  {
+   "id": "kbv1_zOtIpxMT9hU",
+   "category": "Kirtan (Karanbir v1, human keys)",
+   "duration_s": 289,
+   "keyed_on_page_s": 289.0,
+   "keyed_in_hf_shabads_csv_s": 288.6,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.33,
+   "cache_coverage": 0.99,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -2.0,
+    "gain": 0.8,
+    "sim_at_0": 63.8,
+    "null": 39.8,
+    "lines": 11
+   }
+  },
+  {
+   "id": "l3clip01",
+   "category": "Akhand Kirtan",
+   "duration_s": 555,
+   "keyed_on_page_s": 515.0,
+   "keyed_in_hf_shabads_csv_s": 515.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.37,
+   "cache_coverage": 0.91,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 1.9,
+    "sim_at_0": 63.3,
+    "null": 33.5,
+    "lines": 15
+   }
+  },
+  {
+   "id": "l3clip02",
+   "category": "Akhand Kirtan",
+   "duration_s": 351,
+   "keyed_on_page_s": 340.0,
+   "keyed_in_hf_shabads_csv_s": 340.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "Shabad start/end off (other Shabad heard)",
+   "hearing_supports_key": 0.53,
+   "cache_coverage": 0.96,
+   "findings": [
+    {
+     "from": 302.0,
+     "to": 332.0,
+     "dur": 30.0,
+     "heard_shabad": 3523,
+     "heard_pangti": "ਗਾਈਐ ਰਾਤਿ ਦਿਨੰਤੁ ਗਾਵਣ ਜੋਗਿਆ ॥",
+     "heard_raw": "ਦਿਨਤਗਵਣਜੋਗਿਆਖ",
+     "key_shabad": [
+      1435
+     ],
+     "key_first_pangti": "ਰਾਗੁ ਆਸਾਵਰੀ ਘਰੁ ੧੬ ਕੇ ੨ ਮਹਲਾ ੪ ਸੁਧੰਗ",
+     "heard_score": 73.8,
+     "key_score": 42.0,
+     "margin": 31.8,
+     "heard_from": 305.0,
+     "heard_to": 329.0,
+     "kind": "end-late",
+     "shift_s": 35,
+     "key_end": 340.0,
+     "also_keyed_here": false,
+     "text": "key runs 35 s past the Shabad's end: from 5:05 the hearing is another Shabad until the key ends at 5:40"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -4.5,
+    "gain": 4.9,
+    "sim_at_0": 61.6,
+    "null": 42.6,
+    "lines": 9
+   }
+  },
+  {
+   "id": "l3clip03",
+   "category": "Akhand Kirtan",
+   "duration_s": 386,
+   "keyed_on_page_s": 375.0,
+   "keyed_in_hf_shabads_csv_s": 375.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.37,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [
+    {
+     "kind": "timing",
+     "shift_s": -3.5,
+     "gain": 7.1,
+     "text": "pangti keys best match the hearing shifted -3.5 s (gain 7.1 points)"
+    }
+   ],
+   "timing_scan": {
+    "best_shift_s": -3.5,
+    "gain": 7.1,
+    "sim_at_0": 64.0,
+    "null": 33.6,
+    "lines": 11
+   }
+  },
+  {
+   "id": "l3clip04",
+   "category": "Akhand Kirtan",
+   "duration_s": 261,
+   "keyed_on_page_s": 220.0,
+   "keyed_in_hf_shabads_csv_s": 220.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.45,
+   "cache_coverage": 0.92,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 68.4,
+    "null": 38.8,
+    "lines": 7
+   }
+  },
+  {
+   "id": "l3clip15",
+   "category": "Akhand Kirtan",
+   "duration_s": 221,
+   "keyed_on_page_s": 195.0,
+   "keyed_in_hf_shabads_csv_s": 195.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.71,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [
+    {
+     "kind": "timing",
+     "shift_s": 13.0,
+     "gain": 8.5,
+     "text": "pangti keys best match the hearing shifted +13.0 s (gain 8.5 points)"
+    }
+   ],
+   "timing_scan": {
+    "best_shift_s": 13.0,
+    "gain": 8.5,
+    "sim_at_0": 58.0,
+    "null": 28.3,
+    "lines": 6
+   }
+  },
+  {
+   "id": "l3clip16",
+   "category": "Akhand Kirtan",
+   "duration_s": 186,
+   "keyed_on_page_s": 175.0,
+   "keyed_in_hf_shabads_csv_s": 175.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "unkeyed parmaan (20-60 s)",
+   "hearing_supports_key": 0.28,
+   "cache_coverage": 1.0,
+   "findings": [
+    {
+     "from": 118.0,
+     "to": 158.0,
+     "dur": 40.0,
+     "heard_shabad": 5281,
+     "heard_pangti": "ਜੋ ਸਿਰੁ ਸਾਈ ਨਾ ਨਿਵੈ ਸੋ ਸਿਰੁ ਕੀਜੈ ਕਾਂਇ ॥",
+     "heard_raw": "ਸੋਸਿਵਕੀਜੈਕਾਇਕਕੁਨੇਏੇ",
+     "key_shabad": [
+      5280
+     ],
+     "key_first_pangti": "ਉਠੁ ਫਰੀਦਾ ਉਜੂ ਸਾਜਿ ਸੁਬਹ ਨਿਵਾਜ ਗੁਜਾਰਿ ॥",
+     "heard_score": 76.6,
+     "key_score": 49.0,
+     "margin": 27.6,
+     "heard_from": 125.0,
+     "heard_to": 155.0,
+     "kind": "parmaan",
+     "also_keyed_here": false,
+     "text": "other Shabad heard 2:05-2:35 (30 s, parmaan length), not keyed"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 9.5,
+    "gain": 4.9,
+    "sim_at_0": 58.1,
+    "null": 28.7,
+    "lines": 5
+   }
+  },
+  {
+   "id": "l3clip18",
+   "category": "Akhand Kirtan",
+   "duration_s": 135,
+   "keyed_on_page_s": 95.0,
+   "keyed_in_hf_shabads_csv_s": 95.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.88,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 0.3,
+    "sim_at_0": 78.7,
+    "null": 31.4,
+    "lines": 11
+   }
+  },
+  {
+   "id": "l3clip19",
+   "category": "Akhand Kirtan",
+   "duration_s": 366,
+   "keyed_on_page_s": 355.0,
+   "keyed_in_hf_shabads_csv_s": 355.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.73,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 5.7,
+    "sim_at_0": 67.5,
+    "null": 33.2,
+    "lines": 34
+   }
+  },
+  {
+   "id": "l3clip21",
+   "category": "Akhand Kirtan",
+   "duration_s": 141,
+   "keyed_on_page_s": 100.0,
+   "keyed_in_hf_shabads_csv_s": 100.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.56,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 67.1,
+    "null": 41.0,
+    "lines": 13
+   }
+  },
+  {
+   "id": "l3clip22",
+   "category": "Akhand Kirtan",
+   "duration_s": 120,
+   "keyed_on_page_s": 80.0,
+   "keyed_in_hf_shabads_csv_s": 80.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.56,
+   "cache_coverage": 0.79,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -2.5,
+    "gain": 0.6,
+    "sim_at_0": 70.9,
+    "null": 37.8,
+    "lines": 5
+   }
+  },
+  {
+   "id": "l3clip23",
+   "category": "Akhand Kirtan",
+   "duration_s": 105,
+   "keyed_on_page_s": 65.0,
+   "keyed_in_hf_shabads_csv_s": 65.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.48,
+   "cache_coverage": 0.76,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -3.5,
+    "gain": 2.5,
+    "sim_at_0": 63.5,
+    "null": 37.4,
+    "lines": 6
+   }
+  },
+  {
+   "id": "l3clip24",
+   "category": "Akhand Kirtan",
+   "duration_s": 66,
+   "keyed_on_page_s": 25.0,
+   "keyed_in_hf_shabads_csv_s": 25.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.67,
+   "cache_coverage": 0.67,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 1.6,
+    "sim_at_0": 78.5,
+    "null": 35.9,
+    "lines": 2
+   }
+  },
+  {
+   "id": "l3clip26",
+   "category": "Akhand Kirtan",
+   "duration_s": 401,
+   "keyed_on_page_s": 360.0,
+   "keyed_in_hf_shabads_csv_s": 360.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.44,
+   "cache_coverage": 0.93,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 60.9,
+    "null": 31.7,
+    "lines": 33
+   }
+  },
+  {
+   "id": "l3clip27",
+   "category": "Akhand Kirtan",
+   "duration_s": 326,
+   "keyed_on_page_s": 285.0,
+   "keyed_in_hf_shabads_csv_s": 285.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.29,
+   "cache_coverage": 0.9,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -2.0,
+    "gain": 1.2,
+    "sim_at_0": 58.5,
+    "null": 36.6,
+    "lines": 4
+   }
+  },
+  {
+   "id": "l3clip29",
+   "category": "Akhand Kirtan",
+   "duration_s": 183,
+   "keyed_on_page_s": 142.0,
+   "keyed_in_hf_shabads_csv_s": 142.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.66,
+   "cache_coverage": 0.86,
+   "findings": [],
+   "hidden_line_key_timing": [
+    {
+     "kind": "timing",
+     "shift_s": -3.5,
+     "gain": 7.5,
+     "text": "pangti keys best match the hearing shifted -3.5 s (gain 7.5 points)"
+    }
+   ],
+   "timing_scan": {
+    "best_shift_s": -3.5,
+    "gain": 7.5,
+    "sim_at_0": 67.1,
+    "null": 34.7,
+    "lines": 6
+   }
+  },
+  {
+   "id": "l3clip31",
+   "category": "Akhand Kirtan",
+   "duration_s": 236,
+   "keyed_on_page_s": 195.0,
+   "keyed_in_hf_shabads_csv_s": 195.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.38,
+   "cache_coverage": 0.89,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 63.1,
+    "null": 41.0,
+    "lines": 5
+   }
+  },
+  {
+   "id": "l3clip32",
+   "category": "Akhand Kirtan",
+   "duration_s": 506,
+   "keyed_on_page_s": 495.0,
+   "keyed_in_hf_shabads_csv_s": 495.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.39,
+   "cache_coverage": 0.96,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.5,
+    "gain": 0.5,
+    "sim_at_0": 61.8,
+    "null": 33.2,
+    "lines": 31
+   }
+  },
+  {
+   "id": "l3clip34",
+   "category": "Akhand Kirtan",
+   "duration_s": 341,
+   "keyed_on_page_s": 300.0,
+   "keyed_in_hf_shabads_csv_s": 300.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.35,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 1.8,
+    "sim_at_0": 59.6,
+    "null": 37.6,
+    "lines": 12
+   }
+  },
+  {
+   "id": "l3clip35",
+   "category": "Akhand Kirtan",
+   "duration_s": 81,
+   "keyed_on_page_s": 70.0,
+   "keyed_in_hf_shabads_csv_s": 70.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.45,
+   "cache_coverage": 0.95,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 4.5,
+    "gain": 5.6,
+    "sim_at_0": 60.1,
+    "null": 29.1,
+    "lines": 3
+   }
+  },
+  {
+   "id": "l3clip36",
+   "category": "Akhand Kirtan",
+   "duration_s": 90,
+   "keyed_on_page_s": 60.0,
+   "keyed_in_hf_shabads_csv_s": 60.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.38,
+   "cache_coverage": 0.62,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 0.7,
+    "sim_at_0": 76.2,
+    "null": 55.1,
+    "lines": 2
+   }
+  },
+  {
+   "id": "l3clip37",
+   "category": "Akhand Kirtan",
+   "duration_s": 141,
+   "keyed_on_page_s": 130.0,
+   "keyed_in_hf_shabads_csv_s": 130.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.25,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -6.0,
+    "gain": 0.0,
+    "sim_at_0": 72.0,
+    "null": null,
+    "lines": 1
+   }
+  },
+  {
+   "id": "l3clip38",
+   "category": "Akhand Kirtan",
+   "duration_s": 86,
+   "keyed_on_page_s": 75.0,
+   "keyed_in_hf_shabads_csv_s": 75.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "weak evidence",
+   "hearing_supports_key": 0.2,
+   "cache_coverage": 0.65,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 5.0,
+    "sim_at_0": 57.1,
+    "null": null,
+    "lines": 1
+   }
+  },
+  {
+   "id": "l3clip39",
+   "category": "Akhand Kirtan",
+   "duration_s": 176,
+   "keyed_on_page_s": 160.0,
+   "keyed_in_hf_shabads_csv_s": 160.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "weak evidence",
+   "hearing_supports_key": 0.09,
+   "cache_coverage": 0.88,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 1.5,
+    "gain": 2.7,
+    "sim_at_0": 47.2,
+    "null": 25.0,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt01",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.82,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 96.4,
+    "null": 40.5,
+    "lines": 3
+   }
+  },
+  {
+   "id": "pt02",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 84.0,
+    "null": 36.0,
+    "lines": 9
+   }
+  },
+  {
+   "id": "pt03",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 1.2,
+    "sim_at_0": 89.0,
+    "null": 42.1,
+    "lines": 8
+   }
+  },
+  {
+   "id": "pt04",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.8,
+    "sim_at_0": 86.5,
+    "null": 31.4,
+    "lines": 7
+   }
+  },
+  {
+   "id": "pt05",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 68.2,
+    "null": 54.6,
+    "lines": 14
+   }
+  },
+  {
+   "id": "pt06",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.87,
+   "cache_coverage": 0.71,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.5,
+    "gain": 5.3,
+    "sim_at_0": 67.4,
+    "null": 30.5,
+    "lines": 6
+   }
+  },
+  {
+   "id": "pt07",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.71,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 65.1,
+    "null": 55.9,
+    "lines": 12
+   }
+  },
+  {
+   "id": "pt08",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.86,
+   "cache_coverage": 0.35,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 2.0,
+    "sim_at_0": 29.0,
+    "null": 16.1,
+    "lines": 9
+   }
+  },
+  {
+   "id": "pt09",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 79.6,
+    "null": 33.0,
+    "lines": 9
+   }
+  },
+  {
+   "id": "pt10",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 1.0,
+    "sim_at_0": 89.1,
+    "null": 33.3,
+    "lines": 9
+   }
+  },
+  {
+   "id": "pt11",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.9,
+    "sim_at_0": 80.3,
+    "null": 28.7,
+    "lines": 9
+   }
+  },
+  {
+   "id": "pt12",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 88.3,
+    "null": 34.8,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt13",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 1.5,
+    "gain": 1.3,
+    "sim_at_0": 74.0,
+    "null": 34.7,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt14",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 0.8,
+    "sim_at_0": 83.1,
+    "null": 34.9,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt15",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 1.0,
+    "gain": 0.9,
+    "sim_at_0": 87.8,
+    "null": 37.0,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt16",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 87.8,
+    "null": 44.0,
+    "lines": 6
+   }
+  },
+  {
+   "id": "pt17",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 0.7,
+    "sim_at_0": 85.5,
+    "null": 42.4,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt18",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.6,
+    "sim_at_0": 90.0,
+    "null": 40.9,
+    "lines": 6
+   }
+  },
+  {
+   "id": "pt19",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.67,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 90.9,
+    "null": 39.4,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt20",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.73,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 0.5,
+    "sim_at_0": 89.7,
+    "null": 38.3,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt21",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.93,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 1.0,
+    "gain": 3.3,
+    "sim_at_0": 87.2,
+    "null": 42.9,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt22",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 1.2,
+    "sim_at_0": 84.5,
+    "null": 36.1,
+    "lines": 4
+   }
+  },
+  {
+   "id": "pt23",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.93,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 88.1,
+    "null": 32.9,
+    "lines": 9
+   }
+  },
+  {
+   "id": "pt24",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 1.0,
+    "gain": 1.2,
+    "sim_at_0": 86.7,
+    "null": 38.0,
+    "lines": 10
+   }
+  },
+  {
+   "id": "pt26",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.3,
+    "sim_at_0": 85.8,
+    "null": 38.8,
+    "lines": 6
+   }
+  },
+  {
+   "id": "pt27",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 93.2,
+    "null": 33.5,
+    "lines": 7
+   }
+  },
+  {
+   "id": "pt28",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.87,
+   "cache_coverage": 0.88,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 0.3,
+    "sim_at_0": 85.7,
+    "null": 36.0,
+    "lines": 7
+   }
+  },
+  {
+   "id": "pt29",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.6,
+    "sim_at_0": 88.3,
+    "null": 33.4,
+    "lines": 7
+   }
+  },
+  {
+   "id": "pt30",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 1.0,
+    "gain": 1.3,
+    "sim_at_0": 82.0,
+    "null": 34.0,
+    "lines": 6
+   }
+  },
+  {
+   "id": "pt31",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 1.0,
+    "gain": 9.3,
+    "sim_at_0": 65.1,
+    "null": 54.3,
+    "lines": 10
+   }
+  },
+  {
+   "id": "pt32",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 76.5,
+    "null": 56.2,
+    "lines": 4
+   }
+  },
+  {
+   "id": "pt33",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 81.7,
+    "null": 62.3,
+    "lines": 27
+   }
+  },
+  {
+   "id": "pt34",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.87,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 66.1,
+    "null": 14.8,
+    "lines": 4
+   }
+  },
+  {
+   "id": "pt35",
+   "category": "Sung Bani",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.88,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 76.5,
+    "null": 35.2,
+    "lines": 4
+   }
+  },
+  {
+   "id": "pt36",
+   "category": "Sung Bani",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 84.1,
+    "null": 45.7,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt38",
+   "category": "Sung Bani",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.67,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 58.6,
+    "null": 38.3,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt39",
+   "category": "Sung Bani",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.88,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 1.9,
+    "sim_at_0": 83.8,
+    "null": 37.1,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt40",
+   "category": "Sung Bani",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.87,
+   "cache_coverage": 0.88,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 0.3,
+    "sim_at_0": 84.9,
+    "null": 38.1,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt41",
+   "category": "Sung Bani",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.82,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 71.8,
+    "null": 35.1,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt43",
+   "category": "Sung Bani",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.88,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -2.0,
+    "gain": 3.1,
+    "sim_at_0": 84.8,
+    "null": 35.7,
+    "lines": 4
+   }
+  },
+  {
+   "id": "pt44",
+   "category": "Sung Bani",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 1.0,
+    "gain": 2.3,
+    "sim_at_0": 83.2,
+    "null": 48.7,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt45",
+   "category": "Sung Bani",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.93,
+   "cache_coverage": 0.82,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.2,
+    "sim_at_0": 83.1,
+    "null": 31.7,
+    "lines": 8
+   }
+  },
+  {
+   "id": "pt51",
+   "category": "Sung Bani",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 0.1,
+    "sim_at_0": 89.4,
+    "null": 36.4,
+    "lines": 5
+   }
+  },
+  {
+   "id": "pt52",
+   "category": "Sung Bani",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 2.1,
+    "sim_at_0": 85.6,
+    "null": 44.7,
+    "lines": 6
+   }
+  },
+  {
+   "id": "pt53",
+   "category": "Sung Bani",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.8,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 5.2,
+    "sim_at_0": 70.0,
+    "null": 26.5,
+    "lines": 7
+   }
+  },
+  {
+   "id": "pt54",
+   "category": "Paath",
+   "duration_s": 56,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.77,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 10.8,
+    "sim_at_0": 81.1,
+    "null": 30.8,
+    "lines": 10
+   }
+  },
+  {
+   "id": "pt55",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.87,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 4.7,
+    "sim_at_0": 68.7,
+    "null": 28.5,
+    "lines": 13
+   }
+  },
+  {
+   "id": "pt56",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 3.9,
+    "sim_at_0": 75.6,
+    "null": 31.3,
+    "lines": 13
+   }
+  },
+  {
+   "id": "pt57",
+   "category": "Paath",
+   "duration_s": 56,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.85,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 86.7,
+    "null": 35.8,
+    "lines": 13
+   }
+  },
+  {
+   "id": "pt58",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.88,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 84.7,
+    "null": 31.6,
+    "lines": 16
+   }
+  },
+  {
+   "id": "pt59",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.93,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 84.3,
+    "null": 30.9,
+    "lines": 13
+   }
+  },
+  {
+   "id": "pt60",
+   "category": "Paath",
+   "duration_s": 56,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.85,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 1.3,
+    "sim_at_0": 90.7,
+    "null": 36.1,
+    "lines": 8
+   }
+  },
+  {
+   "id": "pt61",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 90.4,
+    "null": 31.2,
+    "lines": 13
+   }
+  },
+  {
+   "id": "pt62",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 85.6,
+    "null": 33.3,
+    "lines": 10
+   }
+  },
+  {
+   "id": "pt63",
+   "category": "Paath",
+   "duration_s": 56,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.85,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 87.6,
+    "null": 35.5,
+    "lines": 8
+   }
+  },
+  {
+   "id": "pt64",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.8,
+    "sim_at_0": 83.7,
+    "null": 29.3,
+    "lines": 11
+   }
+  },
+  {
+   "id": "pt65",
+   "category": "Paath",
+   "duration_s": 71,
+   "keyed_on_page_s": 30.0,
+   "keyed_in_hf_shabads_csv_s": 30.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 1.0,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 0.8,
+    "sim_at_0": 86.6,
+    "null": 31.7,
+    "lines": 10
+   }
+  },
+  {
+   "id": "rn01",
+   "category": "Kirtan",
+   "duration_s": 140,
+   "keyed_on_page_s": 100.0,
+   "keyed_in_hf_shabads_csv_s": 100.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.84,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.5,
+    "gain": 1.6,
+    "sim_at_0": 72.9,
+    "null": 33.0,
+    "lines": 8
+   }
+  },
+  {
+   "id": "rn02",
+   "category": "Kirtan",
+   "duration_s": 440,
+   "keyed_on_page_s": 400.0,
+   "keyed_in_hf_shabads_csv_s": 400.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.88,
+   "cache_coverage": 0.88,
+   "findings": [],
+   "hidden_line_key_timing": [
+    {
+     "kind": "timing",
+     "shift_s": -10.5,
+     "gain": 8.5,
+     "text": "pangti keys best match the hearing shifted -10.5 s (gain 8.5 points)"
+    }
+   ],
+   "timing_scan": {
+    "best_shift_s": -10.5,
+    "gain": 8.5,
+    "sim_at_0": 65.6,
+    "null": 52.4,
+    "lines": 8
+   }
+  },
+  {
+   "id": "rn03",
+   "category": "Kirtan",
+   "duration_s": 325,
+   "keyed_on_page_s": 279.0,
+   "keyed_in_hf_shabads_csv_s": 279.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.52,
+   "cache_coverage": 0.95,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.5,
+    "gain": 6.5,
+    "sim_at_0": 67.3,
+    "null": 36.8,
+    "lines": 6
+   }
+  },
+  {
+   "id": "rn04",
+   "category": "Kirtan",
+   "duration_s": 325,
+   "keyed_on_page_s": 294.0,
+   "keyed_in_hf_shabads_csv_s": 294.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.67,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.4,
+    "sim_at_0": 66.1,
+    "null": 36.4,
+    "lines": 11
+   }
+  },
+  {
+   "id": "rn05",
+   "category": "Kirtan",
+   "duration_s": 160,
+   "keyed_on_page_s": 114.0,
+   "keyed_in_hf_shabads_csv_s": 114.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.33,
+   "cache_coverage": 0.87,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 72.7,
+    "null": 31.8,
+    "lines": 4
+   }
+  },
+  {
+   "id": "rn06",
+   "category": "Kirtan",
+   "duration_s": 370,
+   "keyed_on_page_s": 291.0,
+   "keyed_in_hf_shabads_csv_s": 291.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.81,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 3.3,
+    "sim_at_0": 63.4,
+    "null": 58.0,
+    "lines": 14
+   }
+  },
+  {
+   "id": "rn07",
+   "category": "Kirtan",
+   "duration_s": 285,
+   "keyed_on_page_s": 245.0,
+   "keyed_in_hf_shabads_csv_s": 245.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.43,
+   "cache_coverage": 0.88,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.3,
+    "sim_at_0": 61.7,
+    "null": 36.2,
+    "lines": 6
+   }
+  },
+  {
+   "id": "rn08",
+   "category": "Kirtan",
+   "duration_s": 780,
+   "keyed_on_page_s": 740.0,
+   "keyed_in_hf_shabads_csv_s": 740.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.66,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 1.1,
+    "sim_at_0": 72.3,
+    "null": 32.9,
+    "lines": 55
+   }
+  },
+  {
+   "id": "rn09",
+   "category": "Kirtan",
+   "duration_s": 300,
+   "keyed_on_page_s": 282.0,
+   "keyed_in_hf_shabads_csv_s": 282.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "weak evidence",
+   "hearing_supports_key": 0.09,
+   "cache_coverage": 0.96,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 1.0,
+    "sim_at_0": 54.8,
+    "null": 34.8,
+    "lines": 18
+   }
+  },
+  {
+   "id": "rn10",
+   "category": "Kirtan",
+   "duration_s": 415,
+   "keyed_on_page_s": 329.0,
+   "keyed_in_hf_shabads_csv_s": 329.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.95,
+   "cache_coverage": 0.99,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 79.3,
+    "null": 35.3,
+    "lines": 23
+   }
+  },
+  {
+   "id": "rn11",
+   "category": "Kirtan",
+   "duration_s": 400,
+   "keyed_on_page_s": 360.0,
+   "keyed_in_hf_shabads_csv_s": 360.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.85,
+   "cache_coverage": 0.96,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -2.0,
+    "gain": 1.8,
+    "sim_at_0": 78.4,
+    "null": 34.0,
+    "lines": 26
+   }
+  },
+  {
+   "id": "rn12",
+   "category": "Kirtan",
+   "duration_s": 485,
+   "keyed_on_page_s": 445.0,
+   "keyed_in_hf_shabads_csv_s": 445.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "key covers simran",
+   "hearing_supports_key": 0.73,
+   "cache_coverage": 0.95,
+   "findings": [
+    {
+     "kind": "simran",
+     "from": 396.0,
+     "to": 416.0,
+     "dur": 20.0,
+     "text": "Vaheguru simran 6:36-6:56 inside the keyed Shabad"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 0.2,
+    "sim_at_0": 70.4,
+    "null": 37.1,
+    "lines": 21
+   }
+  },
+  {
+   "id": "rn13",
+   "category": "Kirtan",
+   "duration_s": 260,
+   "keyed_on_page_s": 250.0,
+   "keyed_in_hf_shabads_csv_s": 250.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "weak evidence",
+   "hearing_supports_key": 0.22,
+   "cache_coverage": 0.95,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.5,
+    "gain": 0.8,
+    "sim_at_0": 59.4,
+    "null": 27.0,
+    "lines": 14
+   }
+  },
+  {
+   "id": "rn14",
+   "category": "Kirtan",
+   "duration_s": 860,
+   "keyed_on_page_s": 742.0,
+   "keyed_in_hf_shabads_csv_s": 742.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.63,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.1,
+    "sim_at_0": 62.8,
+    "null": 34.7,
+    "lines": 23
+   }
+  },
+  {
+   "id": "rn15",
+   "category": "Kirtan",
+   "duration_s": 345,
+   "keyed_on_page_s": 305.0,
+   "keyed_in_hf_shabads_csv_s": 305.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.72,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -9.5,
+    "gain": 4.6,
+    "sim_at_0": 60.6,
+    "null": 41.0,
+    "lines": 14
+   }
+  },
+  {
+   "id": "rn16",
+   "category": "Kirtan",
+   "duration_s": 270,
+   "keyed_on_page_s": 166.0,
+   "keyed_in_hf_shabads_csv_s": 166.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "weak evidence",
+   "hearing_supports_key": 0.09,
+   "cache_coverage": 0.6,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -30.0,
+    "gain": 0.0,
+    "sim_at_0": 0.0,
+    "null": null,
+    "lines": 1
+   }
+  },
+  {
+   "id": "rn17",
+   "category": "Kirtan",
+   "duration_s": 700,
+   "keyed_on_page_s": 661.0,
+   "keyed_in_hf_shabads_csv_s": 661.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.61,
+   "cache_coverage": 0.96,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 2.0,
+    "gain": 1.6,
+    "sim_at_0": 65.9,
+    "null": 32.7,
+    "lines": 9
+   }
+  },
+  {
+   "id": "rn18",
+   "category": "Kirtan",
+   "duration_s": 315,
+   "keyed_on_page_s": 305.0,
+   "keyed_in_hf_shabads_csv_s": 305.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "unkeyed parmaan (20-60 s)",
+   "hearing_supports_key": 0.53,
+   "cache_coverage": 0.99,
+   "findings": [
+    {
+     "from": 246.0,
+     "to": 280.0,
+     "dur": 34.0,
+     "heard_shabad": 54,
+     "heard_pangti": "ਮੈ ਆਪਣਾ ਗੁਰੁ ਪੂਛਿ ਦੇਖਿਆ ਅਵਰੁ ਨਾਹੀ ਥਾਉ ॥੧॥ ਰਹਾਉ ॥",
+     "heard_raw": "ਜਲਬਲਿਜਾਉਮੈਆਪੇਨਾਗੁਰੇਤੂਊਛੁਦੇਖਿਆ",
+     "key_shabad": [
+      3375
+     ],
+     "key_first_pangti": "ਸਾਚੀ ਲਿਵੈ ਬਿਨੁ ਦੇਹ ਨਿਮਾਣੀ ॥",
+     "heard_score": 83.0,
+     "key_score": 63.4,
+     "margin": 19.6,
+     "heard_from": 255.0,
+     "heard_to": 271.0,
+     "kind": "parmaan",
+     "also_keyed_here": false,
+     "text": "other Shabad heard 4:15-4:31 (16 s, parmaan length), not keyed"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 76.4,
+    "null": 43.1,
+    "lines": 6
+   }
+  },
+  {
+   "id": "rn19",
+   "category": "Kirtan",
+   "duration_s": 415,
+   "keyed_on_page_s": 375.0,
+   "keyed_in_hf_shabads_csv_s": 375.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.31,
+   "cache_coverage": 0.99,
+   "findings": [],
+   "hidden_line_key_timing": [
+    {
+     "kind": "timing",
+     "shift_s": 4.0,
+     "gain": 8.7,
+     "text": "pangti keys best match the hearing shifted +4.0 s (gain 8.7 points)"
+    }
+   ],
+   "timing_scan": {
+    "best_shift_s": 4.0,
+    "gain": 8.7,
+    "sim_at_0": 56.0,
+    "null": 30.2,
+    "lines": 5
+   }
+  },
+  {
+   "id": "rn20",
+   "category": "Kirtan",
+   "duration_s": 400,
+   "keyed_on_page_s": 360.0,
+   "keyed_in_hf_shabads_csv_s": 360.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.69,
+   "cache_coverage": 0.81,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 69.0,
+    "null": 31.0,
+    "lines": 9
+   }
+  },
+  {
+   "id": "rn21",
+   "category": "Kirtan",
+   "duration_s": 470,
+   "keyed_on_page_s": 401.0,
+   "keyed_in_hf_shabads_csv_s": 401.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.85,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 1.0,
+    "gain": 0.2,
+    "sim_at_0": 79.8,
+    "null": 35.3,
+    "lines": 20
+   }
+  },
+  {
+   "id": "rn22",
+   "category": "Kirtan",
+   "duration_s": 390,
+   "keyed_on_page_s": 351.0,
+   "keyed_in_hf_shabads_csv_s": 351.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.75,
+   "cache_coverage": 0.95,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 1.6,
+    "sim_at_0": 76.7,
+    "null": 38.7,
+    "lines": 16
+   }
+  },
+  {
+   "id": "rn23",
+   "category": "Kirtan",
+   "duration_s": 240,
+   "keyed_on_page_s": 200.0,
+   "keyed_in_hf_shabads_csv_s": 200.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.92,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 1.2,
+    "sim_at_0": 90.4,
+    "null": 35.2,
+    "lines": 26
+   }
+  },
+  {
+   "id": "rn24",
+   "category": "Kirtan",
+   "duration_s": 155,
+   "keyed_on_page_s": 120.0,
+   "keyed_in_hf_shabads_csv_s": 120.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.97,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 79.9,
+    "null": 45.2,
+    "lines": 10
+   }
+  },
+  {
+   "id": "rn25",
+   "category": "Kirtan",
+   "duration_s": 135,
+   "keyed_on_page_s": 95.0,
+   "keyed_in_hf_shabads_csv_s": 95.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.96,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.5,
+    "gain": 0.7,
+    "sim_at_0": 76.0,
+    "null": 37.7,
+    "lines": 9
+   }
+  },
+  {
+   "id": "rn26",
+   "category": "Kirtan",
+   "duration_s": 800,
+   "keyed_on_page_s": 760.0,
+   "keyed_in_hf_shabads_csv_s": 760.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.45,
+   "cache_coverage": 0.85,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 0.2,
+    "sim_at_0": 57.3,
+    "null": 28.9,
+    "lines": 31
+   }
+  },
+  {
+   "id": "rn27",
+   "category": "Kirtan",
+   "duration_s": 1025,
+   "keyed_on_page_s": 987.0,
+   "keyed_in_hf_shabads_csv_s": 987.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.82,
+   "cache_coverage": 0.96,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 0.6,
+    "sim_at_0": 73.7,
+    "null": 30.0,
+    "lines": 40
+   }
+  },
+  {
+   "id": "rn28",
+   "category": "Kirtan",
+   "duration_s": 230,
+   "keyed_on_page_s": 190.0,
+   "keyed_in_hf_shabads_csv_s": 190.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.8,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 1.4,
+    "sim_at_0": 71.3,
+    "null": 43.9,
+    "lines": 17
+   }
+  },
+  {
+   "id": "rn29",
+   "category": "Kirtan",
+   "duration_s": 575,
+   "keyed_on_page_s": 535.0,
+   "keyed_in_hf_shabads_csv_s": 535.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.83,
+   "cache_coverage": 0.97,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 9.0,
+    "gain": 2.0,
+    "sim_at_0": 61.8,
+    "null": 46.7,
+    "lines": 12
+   }
+  },
+  {
+   "id": "rn30",
+   "category": "Kirtan",
+   "duration_s": 260,
+   "keyed_on_page_s": 250.0,
+   "keyed_in_hf_shabads_csv_s": 250.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.92,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 1.2,
+    "sim_at_0": 86.7,
+    "null": 39.4,
+    "lines": 11
+   }
+  },
+  {
+   "id": "rn31",
+   "category": "Kirtan",
+   "duration_s": 1000,
+   "keyed_on_page_s": 960.0,
+   "keyed_in_hf_shabads_csv_s": 960.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.71,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.5,
+    "gain": 2.0,
+    "sim_at_0": 74.3,
+    "null": 35.6,
+    "lines": 32
+   }
+  },
+  {
+   "id": "rn32",
+   "category": "Kirtan",
+   "duration_s": 255,
+   "keyed_on_page_s": 215.0,
+   "keyed_in_hf_shabads_csv_s": 215.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "key covers simran",
+   "hearing_supports_key": 0.28,
+   "cache_coverage": 0.98,
+   "findings": [
+    {
+     "kind": "simran",
+     "from": 124.0,
+     "to": 158.0,
+     "dur": 34.0,
+     "text": "Vaheguru simran 2:04-2:38 inside the keyed Shabad"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 82.0,
+    "null": 41.0,
+    "lines": 5
+   }
+  },
+  {
+   "id": "rn33",
+   "category": "Kirtan",
+   "duration_s": 915,
+   "keyed_on_page_s": 875.0,
+   "keyed_in_hf_shabads_csv_s": 875.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "key covers simran",
+   "hearing_supports_key": 0.37,
+   "cache_coverage": 0.98,
+   "findings": [
+    {
+     "kind": "simran",
+     "from": 772.0,
+     "to": 796.0,
+     "dur": 24.0,
+     "text": "Vaheguru simran 12:52-13:16 inside the keyed Shabad"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -4.0,
+    "gain": 2.2,
+    "sim_at_0": 63.3,
+    "null": 32.8,
+    "lines": 19
+   }
+  },
+  {
+   "id": "rn34",
+   "category": "Kirtan",
+   "duration_s": 195,
+   "keyed_on_page_s": 185.0,
+   "keyed_in_hf_shabads_csv_s": 185.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.67,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": null
+  },
+  {
+   "id": "rn35",
+   "category": "Kirtan",
+   "duration_s": 340,
+   "keyed_on_page_s": 300.0,
+   "keyed_in_hf_shabads_csv_s": 300.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.8,
+   "cache_coverage": 0.99,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 76.2,
+    "null": 34.3,
+    "lines": 18
+   }
+  },
+  {
+   "id": "rn36",
+   "category": "Kirtan",
+   "duration_s": 180,
+   "keyed_on_page_s": 140.0,
+   "keyed_in_hf_shabads_csv_s": 140.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.97,
+   "cache_coverage": 0.84,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 74.5,
+    "null": 36.2,
+    "lines": 25
+   }
+  },
+  {
+   "id": "rn50",
+   "category": "Kirtan",
+   "duration_s": 600,
+   "keyed_on_page_s": 575.0,
+   "keyed_in_hf_shabads_csv_s": 575.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.86,
+   "cache_coverage": 0.99,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 82.3,
+    "null": 35.4,
+    "lines": 48
+   }
+  },
+  {
+   "id": "rn51",
+   "category": "Kirtan",
+   "duration_s": 180,
+   "keyed_on_page_s": 140.0,
+   "keyed_in_hf_shabads_csv_s": 140.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "Shabad start/end off (other Shabad heard)",
+   "hearing_supports_key": 0.42,
+   "cache_coverage": 0.93,
+   "findings": [
+    {
+     "from": 144.0,
+     "to": 182.0,
+     "dur": 38.0,
+     "heard_shabad": 266,
+     "heard_pangti": "ਮਿਲੁ ਮੇਰੇ ਬੀਠੁਲਾ ਲੈ ਬਾਹੜੀ ਵਲਾਇ ॥ ਮਿਲੁ ਮੇਰੇ ਰਮਈਆ ਮੈ ਲੇਹਿ ਛਡਾਇ ॥੧॥ ਰਹਾਉ ॥",
+     "heard_raw": "ਮਿਲਮੇਰੇਬੀਠਿਲਾਾਲੈਬਾਹੜੀ",
+     "key_shabad": [
+      1725
+     ],
+     "key_first_pangti": "ਪਉੜੀ ॥",
+     "heard_score": 81.7,
+     "key_score": 37.0,
+     "margin": 44.7,
+     "heard_from": 155.0,
+     "heard_to": 171.0,
+     "kind": "end-late",
+     "shift_s": 15,
+     "key_end": 170.0,
+     "also_keyed_here": false,
+     "text": "key runs 15 s past the Shabad's end: from 2:35 the hearing is another Shabad until the key ends at 2:50"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 77.0,
+    "null": 45.3,
+    "lines": 10
+   }
+  },
+  {
+   "id": "rn52",
+   "category": "Kirtan",
+   "duration_s": 570,
+   "keyed_on_page_s": 540.0,
+   "keyed_in_hf_shabads_csv_s": 540.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "key covers lead-in / tail with no Gurbani",
+   "hearing_supports_key": 0.97,
+   "cache_coverage": 0.97,
+   "findings": [
+    {
+     "kind": "quiet-end",
+     "from": 524.0,
+     "to": 560.0,
+     "dur": 36.0,
+     "shift_s": 36,
+     "key_shabad": [
+      266
+     ],
+     "text": "last 36 s of the key (8:44-9:20): no Gurbani heard (Ardas, talk, silence or music)"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 1.6,
+    "sim_at_0": 76.6,
+    "null": 27.8,
+    "lines": 34
+   }
+  },
+  {
+   "id": "rn53",
+   "category": "Kirtan",
+   "duration_s": 545,
+   "keyed_on_page_s": 505.0,
+   "keyed_in_hf_shabads_csv_s": 505.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.84,
+   "cache_coverage": 0.97,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 1.0,
+    "gain": 1.3,
+    "sim_at_0": 81.5,
+    "null": 33.4,
+    "lines": 43
+   }
+  },
+  {
+   "id": "rn54",
+   "category": "Kirtan",
+   "duration_s": 600,
+   "keyed_on_page_s": 560.0,
+   "keyed_in_hf_shabads_csv_s": 560.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.77,
+   "cache_coverage": 0.94,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 0.5,
+    "sim_at_0": 69.5,
+    "null": 32.8,
+    "lines": 26
+   }
+  },
+  {
+   "id": "rn55",
+   "category": "Kirtan",
+   "duration_s": 230,
+   "keyed_on_page_s": 126.0,
+   "keyed_in_hf_shabads_csv_s": 126.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "Shabad start/end off (other Shabad heard)",
+   "hearing_supports_key": 0.35,
+   "cache_coverage": 1.0,
+   "findings": [
+    {
+     "from": 98.0,
+     "to": 160.0,
+     "dur": 62.0,
+     "heard_shabad": 299,
+     "heard_pangti": "ਅੰਮ੍ਰਿਤ ਬਾਣੀ ਹਰਿ ਹਰਿ ਤੇਰੀ ॥",
+     "heard_raw": "ਅਮ੍ਰਿਤਬਾਣੀਹਰਿਹਰਿਤੇਰੇਸੁ",
+     "key_shabad": [
+      39
+     ],
+     "key_first_pangti": "ਸਲੋਕੁ ॥",
+     "heard_score": 87.9,
+     "key_score": 40.0,
+     "margin": 47.9,
+     "heard_from": 109.0,
+     "heard_to": 149.0,
+     "kind": "end-late",
+     "shift_s": 47,
+     "key_end": 156.0,
+     "also_keyed_here": false,
+     "text": "key runs 47 s past the Shabad's end: from 1:49 the hearing is another Shabad until the key ends at 2:36"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.4,
+    "sim_at_0": 93.6,
+    "null": 27.6,
+    "lines": 7
+   }
+  },
+  {
+   "id": "rn56",
+   "category": "Kirtan",
+   "duration_s": 225,
+   "keyed_on_page_s": 185.0,
+   "keyed_in_hf_shabads_csv_s": 185.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.33,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -16.5,
+    "gain": 15.7,
+    "sim_at_0": 63.2,
+    "null": null,
+    "lines": 1
+   }
+  },
+  {
+   "id": "rn57",
+   "category": "Kirtan",
+   "duration_s": 295,
+   "keyed_on_page_s": 158.0,
+   "keyed_in_hf_shabads_csv_s": 158.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.46,
+   "cache_coverage": 0.9,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.4,
+    "sim_at_0": 64.6,
+    "null": 37.4,
+    "lines": 3
+   }
+  },
+  {
+   "id": "rn58",
+   "category": "Kirtan",
+   "duration_s": 310,
+   "keyed_on_page_s": 178.0,
+   "keyed_in_hf_shabads_csv_s": 178.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.33,
+   "cache_coverage": 0.95,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 68.9,
+    "null": 37.9,
+    "lines": 7
+   }
+  },
+  {
+   "id": "rn59",
+   "category": "Kirtan",
+   "duration_s": 430,
+   "keyed_on_page_s": 390.0,
+   "keyed_in_hf_shabads_csv_s": 390.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.54,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 1.3,
+    "sim_at_0": 74.1,
+    "null": 35.7,
+    "lines": 17
+   }
+  },
+  {
+   "id": "rn60",
+   "category": "Kirtan",
+   "duration_s": 245,
+   "keyed_on_page_s": 205.0,
+   "keyed_in_hf_shabads_csv_s": 205.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.89,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.9,
+    "sim_at_0": 79.3,
+    "null": 35.9,
+    "lines": 10
+   }
+  },
+  {
+   "id": "rn61",
+   "category": "Kirtan",
+   "duration_s": 325,
+   "keyed_on_page_s": 285.0,
+   "keyed_in_hf_shabads_csv_s": 285.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "key covers lead-in / tail with no Gurbani",
+   "hearing_supports_key": 0.76,
+   "cache_coverage": 0.85,
+   "findings": [
+    {
+     "kind": "quiet-end",
+     "from": 284.0,
+     "to": 315.0,
+     "dur": 31.0,
+     "shift_s": 31,
+     "key_shabad": [
+      1
+     ],
+     "text": "last 31 s of the key (4:44-5:15): no Gurbani heard (Ardas, talk, silence or music)"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 1.6,
+    "sim_at_0": 81.6,
+    "null": 37.2,
+    "lines": 14
+   }
+  },
+  {
+   "id": "rn62",
+   "category": "Kirtan",
+   "duration_s": 620,
+   "keyed_on_page_s": 580.0,
+   "keyed_in_hf_shabads_csv_s": 580.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.65,
+   "cache_coverage": 0.96,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 2.1,
+    "sim_at_0": 73.2,
+    "null": 36.0,
+    "lines": 36
+   }
+  },
+  {
+   "id": "rn63",
+   "category": "Kirtan",
+   "duration_s": 1575,
+   "keyed_on_page_s": 1565.0,
+   "keyed_in_hf_shabads_csv_s": 1565.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.81,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -2.5,
+    "gain": 1.5,
+    "sim_at_0": 76.9,
+    "null": 32.8,
+    "lines": 90
+   }
+  },
+  {
+   "id": "rn64",
+   "category": "Kirtan",
+   "duration_s": 420,
+   "keyed_on_page_s": 380.0,
+   "keyed_in_hf_shabads_csv_s": 380.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.89,
+   "cache_coverage": 0.95,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 0.9,
+    "sim_at_0": 72.8,
+    "null": 33.4,
+    "lines": 15
+   }
+  },
+  {
+   "id": "rn65",
+   "category": "Kirtan",
+   "duration_s": 565,
+   "keyed_on_page_s": 555.0,
+   "keyed_in_hf_shabads_csv_s": 555.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.95,
+   "cache_coverage": 0.96,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 3.3,
+    "sim_at_0": 79.3,
+    "null": 33.7,
+    "lines": 70
+   }
+  },
+  {
+   "id": "rn66",
+   "category": "Kirtan",
+   "duration_s": 610,
+   "keyed_on_page_s": 590.0,
+   "keyed_in_hf_shabads_csv_s": 590.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "Shabad start/end off (other Shabad heard)",
+   "hearing_supports_key": 0.74,
+   "cache_coverage": 0.99,
+   "findings": [
+    {
+     "from": 580.0,
+     "to": 612.0,
+     "dur": 32.0,
+     "heard_shabad": 2819,
+     "heard_pangti": "ਜੋ ਹਮ ਕਉ ਹਰਿ ਨਾਮੁ ਚਿਤਾਰੇ ॥੧॥ ਰਹਾਉ ॥",
+     "heard_raw": "ਜੋਹਮਕਉਜੋਹਮਕਾ",
+     "key_shabad": [
+      2171
+     ],
+     "key_first_pangti": "ਵਡਹੰਸੁ ਮਹਲਾ ੧ ॥",
+     "heard_score": 82.9,
+     "key_score": 51.4,
+     "margin": 31.5,
+     "heard_from": 587.0,
+     "heard_to": 601.0,
+     "kind": "end-late",
+     "shift_s": 13,
+     "key_end": 600.0,
+     "also_keyed_here": false,
+     "text": "key runs 13 s past the Shabad's end: from 9:47 the hearing is another Shabad until the key ends at 10:00"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 0.5,
+    "sim_at_0": 73.6,
+    "null": 36.6,
+    "lines": 35
+   }
+  },
+  {
+   "id": "rn67",
+   "category": "Kirtan",
+   "duration_s": 505,
+   "keyed_on_page_s": 495.0,
+   "keyed_in_hf_shabads_csv_s": 495.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.68,
+   "cache_coverage": 0.99,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 82.8,
+    "null": 39.0,
+    "lines": 27
+   }
+  },
+  {
+   "id": "rn68",
+   "category": "Kirtan",
+   "duration_s": 130,
+   "keyed_on_page_s": 90.0,
+   "keyed_in_hf_shabads_csv_s": 90.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.96,
+   "cache_coverage": 0.84,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 78.1,
+    "null": 34.1,
+    "lines": 12
+   }
+  },
+  {
+   "id": "rn69",
+   "category": "Kirtan",
+   "duration_s": 165,
+   "keyed_on_page_s": 125.0,
+   "keyed_in_hf_shabads_csv_s": 125.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "Shabad start/end off (other Shabad heard)",
+   "hearing_supports_key": 0.33,
+   "cache_coverage": 1.0,
+   "findings": [
+    {
+     "from": 112.0,
+     "to": 168.0,
+     "dur": 56.0,
+     "heard_shabad": 2345,
+     "heard_pangti": "ਗੁਰ ਪੂਰੇ ਕੀ ਸਰਣੀ ਉਬਰੇ ਕਾਰਜ ਸਗਲ ਸਵਾਰੇ ॥੧॥",
+     "heard_raw": "ਰੇਕੀਸਰਣੀਉਬਰੇ",
+     "key_shabad": [
+      7423
+     ],
+     "key_first_pangti": "ਭੁਜੰਗ ਪ੍ਰਯਾਤ ਛੰਦ ॥",
+     "heard_score": 92.1,
+     "key_score": 46.9,
+     "margin": 45.2,
+     "heard_from": 115.0,
+     "heard_to": 155.0,
+     "kind": "end-late",
+     "shift_s": 40,
+     "key_end": 155.0,
+     "also_keyed_here": false,
+     "text": "key runs 40 s past the Shabad's end: from 1:55 the hearing is another Shabad until the key ends at 2:35"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.3,
+    "sim_at_0": 79.9,
+    "null": 33.1,
+    "lines": 5
+   }
+  },
+  {
+   "id": "rn70",
+   "category": "Kirtan",
+   "duration_s": 660,
+   "keyed_on_page_s": 620.0,
+   "keyed_in_hf_shabads_csv_s": 620.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.86,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 81.2,
+    "null": 37.5,
+    "lines": 22
+   }
+  },
+  {
+   "id": "rn71",
+   "category": "Kirtan",
+   "duration_s": 715,
+   "keyed_on_page_s": 705.0,
+   "keyed_in_hf_shabads_csv_s": 705.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.81,
+   "cache_coverage": 0.99,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 78.6,
+    "null": 44.5,
+    "lines": 48
+   }
+  },
+  {
+   "id": "rn72",
+   "category": "Kirtan",
+   "duration_s": 1130,
+   "keyed_on_page_s": 1120.0,
+   "keyed_in_hf_shabads_csv_s": 1120.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "key covers simran",
+   "hearing_supports_key": 0.63,
+   "cache_coverage": 0.99,
+   "findings": [
+    {
+     "from": 992.0,
+     "to": 1036.0,
+     "dur": 44.0,
+     "heard_shabad": 5428,
+     "heard_pangti": "ਵਾਹਿਗੁਰੂ ਵਾਹਿਗੁਰੂ ਵਾਹਿਗੁਰੂ ਵਾਹਿ ਜੀਉ ॥",
+     "heard_raw": "ਵਾਹਿਗੁਰੂਾਵਾਹਿਗੁਰਵਾਹਿਗੁਰੂਵਾਹਿਗੁਰ",
+     "key_shabad": [
+      2883,
+      3694
+     ],
+     "key_first_pangti": "ਸੂਹੀ ਮਹਲਾ ੫ ਗੁਣਵੰਤੀ ॥",
+     "heard_score": 84.0,
+     "key_score": 47.4,
+     "margin": 36.6,
+     "heard_from": 999.0,
+     "heard_to": 1029.0,
+     "kind": "simran",
+     "also_keyed_here": false,
+     "text": "Vaheguru simran 16:32-17:16 inside the keyed Shabad"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 0.4,
+    "sim_at_0": 76.2,
+    "null": 32.7,
+    "lines": 37
+   }
+  },
+  {
+   "id": "rn73",
+   "category": "Kirtan",
+   "duration_s": 160,
+   "keyed_on_page_s": 100.0,
+   "keyed_in_hf_shabads_csv_s": 100.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.77,
+   "cache_coverage": 0.97,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -2.5,
+    "gain": 2.0,
+    "sim_at_0": 66.6,
+    "null": 38.2,
+    "lines": 8
+   }
+  },
+  {
+   "id": "rn74",
+   "category": "Kirtan",
+   "duration_s": 210,
+   "keyed_on_page_s": 170.0,
+   "keyed_in_hf_shabads_csv_s": 170.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.49,
+   "cache_coverage": 0.88,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 74.2,
+    "null": 35.9,
+    "lines": 7
+   }
+  },
+  {
+   "id": "rn75",
+   "category": "Kirtan",
+   "duration_s": 455,
+   "keyed_on_page_s": 261.0,
+   "keyed_in_hf_shabads_csv_s": 261.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "key covers simran",
+   "hearing_supports_key": 0.22,
+   "cache_coverage": 0.94,
+   "findings": [
+    {
+     "from": 52.0,
+     "to": 88.0,
+     "dur": 36.0,
+     "heard_shabad": 5428,
+     "heard_pangti": "ਵਾਹਿਗੁਰੂ ਵਾਹਿਗੁਰੂ ਵਾਹਿਗੁਰੂ ਵਾਹਿ ਜੀਉ ॥",
+     "heard_raw": "ੁਰੂਵਾਹਿਗੁਰੂਵਾਹਿਗੁਰ",
+     "key_shabad": [
+      1
+     ],
+     "key_first_pangti": "ੴ ਸਤਿ ਨਾਮੁ ਕਰਤਾ ਪੁਰਖੁ ਨਿਰਭਉ ਨਿਰਵੈਰੁ ਅਕਾਲ ਮੂਰਤਿ ਅਜੂਨੀ ਸੈਭੰ ਗੁਰ ਪ੍ਰਸਾਦਿ ॥",
+     "heard_score": 92.5,
+     "key_score": 46.0,
+     "margin": 46.5,
+     "heard_from": 55.0,
+     "heard_to": 85.0,
+     "kind": "simran",
+     "also_keyed_here": false,
+     "text": "Vaheguru simran 0:52-1:28 inside the keyed Shabad"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 1.5,
+    "gain": 1.1,
+    "sim_at_0": 73.4,
+    "null": 37.7,
+    "lines": 9
+   }
+  },
+  {
+   "id": "rn76",
+   "category": "Kirtan",
+   "duration_s": 610,
+   "keyed_on_page_s": 523.0,
+   "keyed_in_hf_shabads_csv_s": 523.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.39,
+   "cache_coverage": 0.96,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 71.4,
+    "null": 33.9,
+    "lines": 10
+   }
+  },
+  {
+   "id": "rn77",
+   "category": "Kirtan",
+   "duration_s": 1130,
+   "keyed_on_page_s": 938.0,
+   "keyed_in_hf_shabads_csv_s": 938.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.69,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 72.5,
+    "null": 33.9,
+    "lines": 36
+   }
+  },
+  {
+   "id": "rn78",
+   "category": "Kirtan",
+   "duration_s": 670,
+   "keyed_on_page_s": 630.0,
+   "keyed_in_hf_shabads_csv_s": 630.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "key covers lead-in / tail with no Gurbani",
+   "hearing_supports_key": 0.38,
+   "cache_coverage": 0.98,
+   "findings": [
+    {
+     "kind": "quiet-end",
+     "from": 628.0,
+     "to": 660.0,
+     "dur": 32.0,
+     "shift_s": 32,
+     "key_shabad": [
+      4721
+     ],
+     "text": "last 32 s of the key (10:28-11:00): no Gurbani heard (Ardas, talk, silence or music)"
+    }
+   ],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 3.1,
+    "sim_at_0": 73.9,
+    "null": 40.2,
+    "lines": 18
+   }
+  },
+  {
+   "id": "rn79",
+   "category": "Kirtan",
+   "duration_s": 355,
+   "keyed_on_page_s": 315.0,
+   "keyed_in_hf_shabads_csv_s": 315.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "weak evidence",
+   "hearing_supports_key": 0.06,
+   "cache_coverage": 0.93,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.5,
+    "gain": 0.7,
+    "sim_at_0": 71.5,
+    "null": 31.4,
+    "lines": 5
+   }
+  },
+  {
+   "id": "rn80",
+   "category": "Kirtan",
+   "duration_s": 600,
+   "keyed_on_page_s": 570.0,
+   "keyed_in_hf_shabads_csv_s": 570.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.77,
+   "cache_coverage": 0.97,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 12.0,
+    "gain": 1.5,
+    "sim_at_0": 65.2,
+    "null": 36.9,
+    "lines": 17
+   }
+  },
+  {
+   "id": "rn81",
+   "category": "Kirtan",
+   "duration_s": 200,
+   "keyed_on_page_s": 28.0,
+   "keyed_in_hf_shabads_csv_s": 28.0,
+   "page_shows_pangti_keys": false,
+   "verdict": "ok",
+   "hearing_supports_key": 0.36,
+   "cache_coverage": 0.9,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -9.5,
+    "gain": 16.5,
+    "sim_at_0": 60.3,
+    "null": null,
+    "lines": 2
+   }
+  },
+  {
+   "id": "ytap_5N6Cgw8WAaY_1200-1800",
+   "category": "Sehaj / Akhand Paath",
+   "duration_s": 600,
+   "keyed_on_page_s": 525.0,
+   "keyed_in_hf_shabads_csv_s": 528.5,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.97,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -1.0,
+    "gain": 3.3,
+    "sim_at_0": 76.9,
+    "null": 32.6,
+    "lines": 121
+   }
+  },
+  {
+   "id": "ytap_67Z-uUuScfs_300-900",
+   "category": "Sehaj / Akhand Paath",
+   "duration_s": 600,
+   "keyed_on_page_s": 550.0,
+   "keyed_in_hf_shabads_csv_s": 552.5,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.99,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.7,
+    "sim_at_0": 83.3,
+    "null": 35.2,
+    "lines": 112
+   }
+  },
+  {
+   "id": "ytap_PB6nfe3QKn4_900-1500",
+   "category": "Sehaj / Akhand Paath",
+   "duration_s": 600,
+   "keyed_on_page_s": 553.0,
+   "keyed_in_hf_shabads_csv_s": 551.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.99,
+   "cache_coverage": 0.98,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 0.7,
+    "sim_at_0": 81.4,
+    "null": 32.2,
+    "lines": 106
+   }
+  },
+  {
+   "id": "ytap_q_dwf8YWdXY_300-900",
+   "category": "Sehaj / Akhand Paath",
+   "duration_s": 600,
+   "keyed_on_page_s": 532.0,
+   "keyed_in_hf_shabads_csv_s": 531.5,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.99,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": -0.5,
+    "gain": 1.7,
+    "sim_at_0": 81.8,
+    "null": 31.4,
+    "lines": 118
+   }
+  },
+  {
+   "id": "ytasa1_4IXk2t_Irqo_900-1620",
+   "category": "Akhand Kirtan",
+   "duration_s": 720,
+   "keyed_on_page_s": 720.0,
+   "keyed_in_hf_shabads_csv_s": 720.0,
+   "page_shows_pangti_keys": true,
+   "verdict": "ok",
+   "hearing_supports_key": 0.96,
+   "cache_coverage": 1.0,
+   "findings": [],
+   "hidden_line_key_timing": [],
+   "timing_scan": {
+    "best_shift_s": 0.0,
+    "gain": 0.0,
+    "sim_at_0": 74.3,
+    "null": 32.0,
+    "lines": 154
+   }
+  }
+ ]
+}
