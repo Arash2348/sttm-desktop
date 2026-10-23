@@ -288,9 +288,9 @@ const PAATH_READ_LINES = 3;
 const PAATH_SEQ_LINES = 6; // distinct lines read in order before Akhand Paath following starts
 const PAATH_SEQ_WPS = 1.2; // ...at this many words per second at least (kirtan sung straight through: 0.6-1.0)
 const PAATH_SEQ_PACE_LINES = 2; // lines the pace is measured over at least
-// A slow reader (a Gatha, Saloks read with care): this many distinct lines in order, none
-// ever coming back, is a reading at any pace (kirtan returns to its rahao long before).
-const PAATH_SEQ_LINES_SLOW = 12;
+// ...and at most this fast (seconds per line on average): faster is the follower catching up
+// with a Shabad already under way, not a reader.
+const PAATH_SEQ_MIN_LINE_S = 2;
 const PAATH_SEQ_AHEAD = 2; // Shabads ahead of the current one in the reading window
 const PAATH_SEQ_CROSS = 2; // fixes inside the next Shabad before it opens (unless stepped into)...
 const PAATH_SEQ_CROSS_MS = 1500; // ...spread over at least this long (one look-alike line is not a crossing)
@@ -2759,13 +2759,13 @@ const VoiceFollow = () => {
     const n = (prof.verses || []).length;
     if (sq.lines.size < PAATH_SEQ_LINES && out.lineIndex < n - 1) return;
     // Reading pace: words of the lines finished per second (kirtan sung straight through
-    // is slower), or simply a long run of lines in order.
+    // is slower).
     const { seen } = sq;
     if (seen.length < PAATH_SEQ_PACE_LINES) return;
     const span = (seen[seen.length - 1].t - seen[0].t) / 1000;
     const words = seen.slice(0, -1).reduce((m, x) => m + x.words, 0);
-    if (!(span > 0 && words / span >= PAATH_SEQ_WPS) && sq.lines.size < PAATH_SEQ_LINES_SLOW)
-      return;
+    if (!(span > 0 && words / span >= PAATH_SEQ_WPS)) return;
+    if (span < PAATH_SEQ_MIN_LINE_S * (seen.length - 1)) return;
     const verse = (prof.rawLines || [])[out.lineIndex];
     if (!verse || !autopilotLockRef.current) return;
     sq.eligible = false; // once per Shabad
