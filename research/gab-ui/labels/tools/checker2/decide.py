@@ -5,7 +5,8 @@ from rapidfuzz import fuzz
 
 SCR = os.environ.get('CHK_WORK') or os.path.dirname(os.path.abspath(__file__))
 GAB = '/Users/asingh02/personal/sttm-ws3/research/gab-ui'
-cands = json.load(open(f'{GAB}/labels/candidates/batch1.json'))
+BATCH = os.environ.get('BATCH', 'batch1')
+cands = json.load(open(f'{GAB}/labels/candidates/{BATCH}.json'))
 feats = []
 for f in sorted(glob.glob(os.path.join(SCR, 'feats-*.json'))): feats += json.load(open(f))
 feats = sorted({x['ci']: x for x in feats}.values(), key=lambda x: x['ci'])

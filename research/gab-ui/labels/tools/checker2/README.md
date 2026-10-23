@@ -21,3 +21,12 @@ below that; a shared phrase resolved only by Shabad context is capped at 0.9. Ti
 fit is within 1.5 s (start) / 3.0 s (end) of the candidate and the span does not overlap a neighbour by > 1 s; a boundary
 the same pangti continues across (repetition split into two spans, pause <= 3 s) is not an error. Timing failures cap
 confidence at 0.85-0.9 (never approvable). Approved = agrees and confidence >= 0.95.
+
+## Batch 2 (2026-10-23)
+
+Same method, `BATCH=batch2` for both tools; fresh app-model emissions (`emis2.js karanbir`) for the 15 batch-2 Kirtan
+recordings (the Surinder ONNX dirs under ~/AAI/models/surinder-kirtan are empty, so again no second model on this Mac;
+the forced CTC alignment is therefore treated as non-independent and only the greedy heard-token fit decides timing).
+Result: 948 spans, 197 approved (agree and confidence >= 0.95; all tier A), 251 agree but under the bar (timing off /
+shared phrase / little heard), 284 identified as a different pangti, 51 'none' (alaap / simran / silence). Heard-token
+timing within 1.5 s start / 3 s end for 59% of tier A, 46% B, 12% C, 17% D.

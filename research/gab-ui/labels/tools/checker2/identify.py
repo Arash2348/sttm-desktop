@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Independent checker 2, label batch 1 (GAB pangti candidates).
+"""Independent checker 2, label batches 1 and 2 (GAB pangti candidates).
 
-Usage: CHK_WORK=<dir with emis/<id>.f32> python -I identify.py [recording ...]   (needs numpy + rapidfuzz)
-then   CHK_WORK=<dir> VOTES_OUT=../../votes/batch1-checker2.json python -I decide.py
+Usage: BATCH=batch2 CHK_WORK=<dir with emis/<id>.f32> python -I identify.py [recording ...]   (needs numpy + rapidfuzz)
+then   BATCH=batch2 CHK_WORK=<dir> VOTES_OUT=../../votes/batch2-checker2.json python -I decide.py
 
 For every candidate span: (1) identify the pangti myself from fresh full-clip speech-model emissions
 (forced CTC alignment with repeats + free boundaries, scored as explanatory gain over a garbage baseline,
@@ -165,7 +165,8 @@ def greedy(lp):
 def heard_text(toks, f0, f1):
     return ''.join(p for f, p in toks if f0 <= f < f1).replace('▁', ' ').strip()
 
-cands = json.load(open(f'{GAB}/labels/candidates/batch1.json'))
+BATCH = os.environ.get('BATCH', 'batch1')
+cands = json.load(open(f'{GAB}/labels/candidates/{BATCH}.json'))
 only = sys.argv[1:]
 recs = sorted({c['recording'] for c in cands})
 feats = []
