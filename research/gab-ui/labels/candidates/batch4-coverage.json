@@ -1,0 +1,444 @@
+{
+ "batch": "batch4",
+ "made": "2026-10-23",
+ "status": "CANDIDATES - not labels; human / verifier sign-off required",
+ "selection": "named recordings pt01,pt05,pt06,pt07,pt34,aa16,aa17,aa18,aa19,aa20,aa26,aa27,aa05,pt38,aa49 (dropped from c1-6a866c94-paath.json,c1-6a866c94-sungbani.json: below the 60% bar or no pangti key); held-out test split and labels/accepted/ excluded",
+ "verify_rule": "every checker (each Fable / Opus verifier, plus the aligner) must name the same verseId for the span, each with confidence >= 0.95; accept only then, else send to a person",
+ "tiers": {
+  "A": "both models, same pangti, start within 1 s, check >= 0.5 (~97% right pangti)",
+  "B": "both models agree, check < 0.5 (~65%)",
+  "C": "one model only (~41%)",
+  "D": "one model only, other model put a different pangti here (conflict)"
+ },
+ "recordings": [
+  {
+   "recording": "pt01",
+   "category": "Paath",
+   "folder": "2-bani-recited/japji",
+   "split": "dev",
+   "duration_s": 70.01,
+   "gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+   "coverage_before": 0.52,
+   "coverage_before_recomputed": 0.515,
+   "coverage_after_all_candidates": 0.829,
+   "coverage_after_high_only (current key + new tier A)": 0.515,
+   "candidates": 5,
+   "by_tier": {
+    "B": 1,
+    "A": 4
+   },
+   "new_vs_current_key": 1,
+   "gaps": [
+    {
+     "start_s": 40.44,
+     "end_s": 42.44,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 47.64,
+     "end_s": 49.92,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 56.84,
+     "end_s": 59.32,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "pt05",
+   "category": "Paath",
+   "folder": "2-bani-recited/jaap",
+   "split": "dev",
+   "duration_s": 70.01,
+   "gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+   "coverage_before": 0.57,
+   "coverage_before_recomputed": 0.606,
+   "coverage_after_all_candidates": 0.686,
+   "coverage_after_high_only (current key + new tier A)": 0.686,
+   "candidates": 15,
+   "by_tier": {
+    "B": 1,
+    "A": 14
+   },
+   "new_vs_current_key": 1,
+   "gaps": [
+    {
+     "start_s": 33.44,
+     "end_s": 37.08,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 43.64,
+     "end_s": 47.36,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 53.96,
+     "end_s": 57.64,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "pt06",
+   "category": "Paath",
+   "folder": "2-bani-recited/jaap",
+   "split": "dev",
+   "duration_s": 70.01,
+   "gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+   "coverage_before": 0.18,
+   "coverage_before_recomputed": 0.182,
+   "coverage_after_all_candidates": 0.833,
+   "coverage_after_high_only (current key + new tier A)": 0.606,
+   "candidates": 10,
+   "by_tier": {
+    "A": 6,
+    "C": 3,
+    "B": 1
+   },
+   "new_vs_current_key": 4,
+   "gaps": [
+    {
+     "start_s": 44.32,
+     "end_s": 47.8,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 54.56,
+     "end_s": 57.24,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "pt07",
+   "category": "Paath",
+   "folder": "2-bani-recited/jaap",
+   "split": "dev",
+   "duration_s": 70.01,
+   "gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+   "coverage_before": 0.58,
+   "coverage_before_recomputed": 0.633,
+   "coverage_after_all_candidates": 0.688,
+   "coverage_after_high_only (current key + new tier A)": 0.677,
+   "candidates": 14,
+   "by_tier": {
+    "A": 13,
+    "B": 1
+   },
+   "new_vs_current_key": 1,
+   "gaps": [
+    {
+     "start_s": 37.96,
+     "end_s": 41.56,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 48.28,
+     "end_s": 51.8,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "pt34",
+   "category": "Paath",
+   "folder": "2-bani-recited/jaap",
+   "split": "dev",
+   "duration_s": 70.01,
+   "gurdwara": "Jaap Sahib live path, Bhai Manpreet Singh Kanpuri",
+   "coverage_before": 0.44,
+   "coverage_before_recomputed": 0.531,
+   "coverage_after_all_candidates": 1.0,
+   "coverage_after_high_only (current key + new tier A)": 0.562,
+   "candidates": 31,
+   "by_tier": {
+    "A": 18,
+    "B": 12,
+    "C": 1
+   },
+   "new_vs_current_key": 13,
+   "gaps": []
+  },
+  {
+   "recording": "aa16",
+   "category": "Sung Bani",
+   "folder": "3-bani-sung-like-kirtan/aarti",
+   "split": "dev",
+   "duration_s": 160.0,
+   "gurdwara": "Gurdwara Sahib Renton",
+   "coverage_before": 0.0,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 1.0,
+   "coverage_after_high_only (current key + new tier A)": 0.0,
+   "candidates": 14,
+   "by_tier": {
+    "C": 8,
+    "D": 5,
+    "B": 1
+   },
+   "new_vs_current_key": 14,
+   "gaps": []
+  },
+  {
+   "recording": "aa17",
+   "category": "Sung Bani",
+   "folder": "3-bani-sung-like-kirtan/aarti",
+   "split": "dev",
+   "duration_s": 160.0,
+   "gurdwara": "Gurdwara Sahib Renton",
+   "coverage_before": 0.0,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.944,
+   "coverage_after_high_only (current key + new tier A)": 0.0,
+   "candidates": 13,
+   "by_tier": {
+    "C": 8,
+    "D": 1,
+    "B": 4
+   },
+   "new_vs_current_key": 13,
+   "gaps": [
+    {
+     "start_s": 119.88,
+     "end_s": 127.36,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "aa18",
+   "category": "Sung Bani",
+   "folder": "3-bani-sung-like-kirtan/aarti",
+   "split": "dev",
+   "duration_s": 160.0,
+   "gurdwara": "Gurdwara Sahib Renton",
+   "coverage_before": 0.0,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.884,
+   "coverage_after_high_only (current key + new tier A)": 0.1,
+   "candidates": 10,
+   "by_tier": {
+    "C": 4,
+    "B": 2,
+    "D": 3,
+    "A": 1
+   },
+   "new_vs_current_key": 9,
+   "gaps": [
+    {
+     "start_s": 59.88,
+     "end_s": 67.36,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 130.6,
+     "end_s": 136.16,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 147.68,
+     "end_s": 150.0,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "aa19",
+   "category": "Sung Bani",
+   "folder": "3-bani-sung-like-kirtan/aarti",
+   "split": "dev",
+   "duration_s": 146.0,
+   "gurdwara": "Gurdwara Sahib Renton",
+   "coverage_before": 0.0,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.893,
+   "coverage_after_high_only (current key + new tier A)": 0.113,
+   "candidates": 9,
+   "by_tier": {
+    "D": 2,
+    "C": 5,
+    "A": 1,
+    "B": 1
+   },
+   "new_vs_current_key": 8,
+   "gaps": [
+    {
+     "start_s": 70.6,
+     "end_s": 76.16,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 87.68,
+     "end_s": 95.04,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "aa20",
+   "category": "Sung Bani",
+   "folder": "3-bani-sung-like-kirtan/aarti",
+   "split": "dev",
+   "duration_s": 160.0,
+   "gurdwara": "Gurdwara Sahib Renton",
+   "coverage_before": 0.0,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.9,
+   "coverage_after_high_only (current key + new tier A)": 0.0,
+   "candidates": 5,
+   "by_tier": {
+    "C": 4,
+    "B": 1
+   },
+   "new_vs_current_key": 5,
+   "gaps": [
+    {
+     "start_s": 30.0,
+     "end_s": 35.04,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "aa26",
+   "category": "Sung Bani",
+   "folder": "3-bani-sung-like-kirtan/aarti",
+   "split": "dev",
+   "duration_s": 160.0,
+   "gurdwara": "Gurdwara Sahib Renton",
+   "coverage_before": 0.0,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.783,
+   "coverage_after_high_only (current key + new tier A)": 0.0,
+   "candidates": 8,
+   "by_tier": {
+    "C": 3,
+    "D": 5
+   },
+   "new_vs_current_key": 8,
+   "gaps": [
+    {
+     "start_s": 3.2,
+     "end_s": 27.4,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 150.16,
+     "end_s": 160.0,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "aa27",
+   "category": "Sung Bani",
+   "folder": "3-bani-sung-like-kirtan/aarti",
+   "split": "dev",
+   "duration_s": 138.0,
+   "gurdwara": "Gurdwara Sahib Renton",
+   "coverage_before": 0.0,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.88,
+   "coverage_after_high_only (current key + new tier A)": 0.0,
+   "candidates": 11,
+   "by_tier": {
+    "C": 4,
+    "D": 7
+   },
+   "new_vs_current_key": 11,
+   "gaps": [
+    {
+     "start_s": 125.36,
+     "end_s": 138.0,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "aa05",
+   "category": "Sung Bani",
+   "folder": "3-bani-sung-like-kirtan/aarti",
+   "split": "dev",
+   "duration_s": 300.0,
+   "gurdwara": "Gurdwara Sahib Renton",
+   "coverage_before": 0.59,
+   "coverage_before_recomputed": 0.63,
+   "coverage_after_all_candidates": 0.987,
+   "coverage_after_high_only (current key + new tier A)": 0.667,
+   "candidates": 115,
+   "by_tier": {
+    "B": 14,
+    "D": 44,
+    "C": 11,
+    "A": 46
+   },
+   "new_vs_current_key": 69,
+   "gaps": [
+    {
+     "start_s": 295.68,
+     "end_s": 300.0,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 295.68,
+     "end_s": 300.0,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "pt38",
+   "category": "Sung Bani",
+   "folder": "3-bani-sung-like-kirtan/aarti",
+   "split": "dev",
+   "duration_s": 70.01,
+   "gurdwara": "Aarti (verified bn07/bn08 video)",
+   "coverage_before": 0.56,
+   "coverage_before_recomputed": 0.562,
+   "coverage_after_all_candidates": 1.0,
+   "coverage_after_high_only (current key + new tier A)": 0.719,
+   "candidates": 8,
+   "by_tier": {
+    "A": 5,
+    "B": 3
+   },
+   "new_vs_current_key": 3,
+   "gaps": []
+  },
+  {
+   "recording": "aa49",
+   "category": "Sung Bani",
+   "folder": "3-bani-sung-like-kirtan/aarti",
+   "split": "dev",
+   "duration_s": 160.0,
+   "gurdwara": "Gurdwara Sahib Renton",
+   "coverage_before": 0.46,
+   "coverage_before_recomputed": 0.467,
+   "coverage_after_all_candidates": 0.886,
+   "coverage_after_high_only (current key + new tier A)": 0.516,
+   "candidates": 30,
+   "by_tier": {
+    "B": 7,
+    "A": 14,
+    "D": 7,
+    "C": 2
+   },
+   "new_vs_current_key": 16,
+   "gaps": [
+    {
+     "start_s": 60,
+     "end_s": 62.08,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 138.04,
+     "end_s": 150.0,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  }
+ ]
+}

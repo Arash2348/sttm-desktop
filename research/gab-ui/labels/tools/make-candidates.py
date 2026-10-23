@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """make-candidates.py <gab-lines dir> <out.json> [--folder 1-kirtan-shabad] [--file c1-6a866c94-main.json]
                       [--lo 0.50] [--hi 0.60] [--max 15] [--category Kirtan]
+       or, for Banis (batch4): --ids pt01,pt05,... --file c1-6a866c94-paath.json,c1-6a866c94-sungbani.json
+                      --hf-dir <HF dataset copy with nested content folders> (category from the content folder;
+                      'no pangti key' = coverage 0; Bani verse membership from labels/bani-verse-cache.json,
+                      made by tools/bani-verses.js from a copy of the app's Gurbani database)
 
 CANDIDATE pangti timings for GAB recordings whose pangti coverage is in [lo, hi) (closest to the 60% bar first).
 
@@ -35,6 +39,10 @@ FOLDER = opt('folder', '1-kirtan-shabad')
 FILE = opt('file', 'c1-6a866c94-main.json')
 CATEGORY = opt('category', 'Kirtan')
 LO, HI, MAX = float(opt('lo', 0.5)), float(opt('hi', 0.6)), int(opt('max', 15))
+IDS = [x for x in opt('ids', '').split(',') if x]
+HF_DIR = opt('hf-dir', None)
+CAT_OF = {'1-kirtan-shabad': 'Kirtan', '2-bani-recited': 'Paath', '3-bani-sung-like-kirtan': 'Sung Bani',
+          '4-akhand-paath': 'Sehaj/Akhand Paath', '5-akhand-kirtan': 'Akhand Kirtan'}
 AGREE_S, SURE_CHECK, MIN_CONF, MERGE_GAP_S, MIN_GAP_S = 1.0, 0.5, 0.6, 2.0, 2.0
 PREC = {'A': 0.97, 'B': 0.65, 'C': 0.41, 'D': 0.2}  # D: no measurement; a conflict is below one-model
 
@@ -54,17 +62,22 @@ if os.path.isdir(acc_dir):
                 accepted.add(r['recording'] if isinstance(r, dict) else r)
 rep = json.load(open(f'{B}/timeline-pangti/rescore-report.json'))
 covers = []
-for d in rep['files'][FILE]['dropped']:
-    m = re.search(r'cover (\d+)%', d['why'])
-    if not m: continue
-    c = int(m.group(1)) / 100
-    rid = d['id']
-    split = manifest.get(rid, {}).get('split')
-    if LO <= c < HI and split != 'test' and rid not in accepted:
-        covers.append((c, rid))
-covers.sort(key=lambda x: (-x[0], x[1]))
+for FN in FILE.split(','):
+    for d in rep['files'][FN]['dropped']:
+        m = re.search(r'cover (\d+)%', d['why'])
+        if m: c = int(m.group(1)) / 100
+        elif IDS and d['why'] == 'no pangti key': c = 0.0
+        else: continue
+        rid = d['id']
+        split = manifest.get(rid, {}).get('split')
+        if (rid in IDS if IDS else LO <= c < HI) and split != 'test' and rid not in accepted:
+            covers.append((c, rid))
+if IDS: covers.sort(key=lambda x: IDS.index(x[1]))
+else: covers.sort(key=lambda x: (-x[0], x[1]))
 covers = covers[:MAX]
 verse_cache = json.load(open(f'{B}/verse-cache.json'))
+if os.path.exists(f'{B}/labels/bani-verse-cache.json'):
+    for k, v in json.load(open(f'{B}/labels/bani-verse-cache.json')).items(): verse_cache.setdefault(k, v)
 
 def segs_of(model, rid):
     f = f'{LINES}/align/{model}/{rid}.json'
@@ -86,7 +99,9 @@ def coverage(spans, shabads, dur):
 rows, per = [], []
 for cov_before, rid in covers:
     m = manifest[rid]
-    key_dir = f'{B}/hf-keys/{FOLDER}/{rid}'
+    folder = m['content_folder'] if HF_DIR else FOLDER
+    category = CAT_OF.get(folder.split('/')[0], CATEGORY) if HF_DIR else CATEGORY
+    key_dir = f'{HF_DIR}/{folder}/{rid}' if HF_DIR else f'{B}/hf-keys/{FOLDER}/{rid}'
     shab = [(r['shabadId'], float(r['start_s']), float(r['end_s'])) for r in csv(f'{key_dir}/shabads.csv') if r.get('shabadId')]
     cur = csv(f'{key_dir}/lines.csv')
     dur = float(m['duration_s'])
@@ -143,8 +158,11 @@ for cov_before, rid in covers:
               'shabad_row': [shab[g['row']][1], shab[g['row']][2]] if g['row'] < len(shab) else None,
               'aligner': 'line-build.js two-model forced alignment, cloud run 2026-10-15 (Azure gab-lines/align)'}
         if c.get('conflict'): ev['other_model_pangti_here'] = c['conflict']
+        if not ok:  # the aligned pangti is not in any keyed Shabad / Bani: the key changed after the 2026-10-15 run
+            ev['verse_found_in'] = [k for k, v in verse_cache.items() if str(g['verseId']) in v][:3]
+            ev['key_mismatch'] = 'aligned text is not in the current key for this window; a person decides the key'
         agree_prior = PREC[c['tier']]
-        out_rows.append({'recording': rid, 'category': CATEGORY, 'folder': FOLDER, 'split': m['split'],
+        out_rows.append({'recording': rid, 'category': category, 'folder': folder, 'split': m['split'],
                          'verseId': g['verseId'], 'shabadId': int(sid) if sid and str(sid).isdigit() else sid,
                          'text': g['text'], 'start_s': g['start'], 'end_s': g['end'],
                          'aligner_conf': round(chk, 3), 'confidence_flag': 'high' if (c['tier'] == 'A' and chk >= MIN_CONF) or in_key else 'low',
@@ -172,7 +190,7 @@ for cov_before, rid in covers:
         if b - t >= MIN_GAP_S: gaps.append([round(t, 2), round(min(b, dur), 2)])
     cur_sp = merged([{'start_s': float(r['start_s']), 'end_s': float(r['end_s'])} for r in cur
                      if r.get('confidence') in (None, '') or float(r['confidence']) >= MIN_CONF])
-    per.append({'recording': rid, 'split': m['split'], 'duration_s': dur, 'gurdwara': m.get('gurdwara', ''),
+    per.append({'recording': rid, 'category': category, 'folder': folder, 'split': m['split'], 'duration_s': dur, 'gurdwara': m.get('gurdwara', ''),
                 'coverage_before': cov_before, 'coverage_before_recomputed': round(coverage(cur_sp, shab, dur), 3),
                 'coverage_after_all_candidates': round(coverage(all_sp, shab, dur), 3),
                 'coverage_after_high_only (current key + new tier A)': round(coverage(hi_sp, shab, dur), 3),
@@ -181,7 +199,7 @@ for cov_before, rid in covers:
                 'gaps': [{'start_s': a, 'end_s': b, 'kind': 'gap (alaap / simran / katha / silence, or not aligned): not a pangti'} for a, b in gaps]})
 
 doc = {'batch': os.path.basename(re.sub(r'\.json$', '', OUT)), 'made': '2026-10-23', 'status': 'CANDIDATES - not labels; human / verifier sign-off required',
-       'selection': f'{FOLDER} recordings with pangti coverage in [{LO:.0%}, {HI:.0%}) in timeline-pangti/rescore-report.json '
+       'selection': f'named recordings {",".join(IDS)} (dropped from {FILE}: below the 60% bar or no pangti key); held-out test split and labels/accepted/ excluded' if IDS else f'{FOLDER} recordings with pangti coverage in [{LO:.0%}, {HI:.0%}) in timeline-pangti/rescore-report.json '
                     f'({FILE}), closest to the 60% bar first, max {MAX}; held-out test split and labels/accepted/ excluded',
        'verify_rule': 'every checker (each Fable / Opus verifier, plus the aligner) must name the same verseId for the span, '
                       'each with confidence >= 0.95; accept only then, else send to a person',

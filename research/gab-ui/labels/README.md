@@ -25,3 +25,14 @@ pangti key and were not picked; l3clip02/16/27/37/39 are lower than the 12 taken
 `make-candidates.py <gab-lines> candidates/batch3.json --folder 5-akhand-kirtan --file c1-6a866c94-akhand.json
 --lo 0 --hi 0.60 --max 12 --category "Akhand Kirtan"`. Tier precision figures were measured on Kirtan (GAB-Hard);
 for Akhand Kirtan they are a prior only. Long Waheguru simran between pangtis is a gap, never a pangti.
+batch4 = Paath (folder 2) and Sung Bani (folder 3) recordings below the 60% bar or with no pangti key (15, all dev
+split, none accepted): Paath pt01, pt05, pt06, pt07, pt34; Sung Bani (Aarti) aa16-aa20, aa26, aa27 (no pangti key),
+aa05, pt38, aa49. 298 candidates (Paath 75: A 55, B 16, C 4; Sung Bani 223: A 67, B 33, C 49, D 74); 101 tier A
+eligible for the 3-checker rule; 176 new vs the current key. Same saved two-model alignment (no model re-run):
+`make-candidates.py <gab-lines> candidates/batch4.json --ids pt01,pt05,pt06,pt07,pt34,aa16,aa17,aa18,aa19,aa20,aa26,aa27,aa05,pt38,aa49
+--file c1-6a866c94-paath.json,c1-6a866c94-sungbani.json --hf-dir <HF dataset copy> --max 15`. Bani windows are
+`bani:<id>` in shabads.csv; verse membership comes from `bani-verse-cache.json` (`tools/bani-verses.js` on a COPY of the
+app's Gurbani database; bani:2 Japji, bani:4 Jaap, bani:22 Aarti, Shabads 880/2642/2513). aa27: the current key says
+Shabad 880 for 39-138 s, but the 2026-10-15 run aligned the Aarti Bani text there; its 11 rows carry
+`evidence.key_mismatch` and are not auto-accept eligible: a person decides the key first. Tier precision was measured on
+Kirtan; for Paath and Sung Bani it is a prior only. Same verify rule: every checker names the same pangti, each >= 0.95.
