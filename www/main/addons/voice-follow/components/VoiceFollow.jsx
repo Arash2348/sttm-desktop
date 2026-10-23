@@ -223,6 +223,12 @@ const AP_LOCK_STABLE = 2; // hold the lead this many decodes before the first lo
 // coin flip that then costs ~40 s to undo. Level 2 benchmark: every correct first
 // lock had a margin >= 0.12 over the runner-up; the one wrong lock had 0.00.
 const AP_LOCK_TEXT_MARGIN = 0.08;
+// Approach 11 (Karanbir Singh's search idea, Oct 22 2026): the search-phase full-text query joins the last few
+// non-overlapping 10 s recognizer windows (about 30 s of what was sung) instead of the latest 10 s only.
+// Offline search-only bench: right Shabad first 38% -> 52% when the query grows from 16 s to 32 s.
+// A11_CHUNKS = how many 10 s windows to join (1 = the shipped behaviour); A11_GAP_STEPS = decodes between them.
+const A11_CHUNKS = 3;
+const A11_GAP_STEPS = 16; // 16 decodes x 0.6 s hop ~= one 10 s window
 // First-lock line evidence: two different verses of the Shabad, or one decisive decode
 // (anchor). The panel's progress uses the same gate, so it only reaches 100% when a lock can
 // fire (without it the bar stops at 70%). A one-verse route was tried for kirtan that dwells on
@@ -3036,13 +3042,30 @@ const VoiceFollow = () => {
         const { step } = memory;
         memory.entries = memory.entries.filter((e) => step - e.step <= 24);
         const hyp = vfNorm(text);
+        // Approach 11: remember recent hypotheses and join non-overlapping ones into a longer query.
+        memory.texts = [...(memory.texts || []), { step, text }].filter(
+          (e) => step - e.step <= A11_GAP_STEPS * A11_CHUNKS,
+        );
+        let searchText = text;
+        if (A11_CHUNKS > 1) {
+          const picked = [];
+          let lastStep = Infinity;
+          for (let i = memory.texts.length - 1; i >= 0 && picked.length < A11_CHUNKS; i -= 1) {
+            const e = memory.texts[i];
+            if (e.step <= lastStep - A11_GAP_STEPS || !picked.length) {
+              picked.unshift(e.text);
+              lastStep = e.step;
+            }
+          }
+          searchText = picked.join(' ');
+        }
         if (hyp.length >= 8) {
           const acousticRecognizer = recognizerRef.current;
           const acousticPcm = acousticRecognizer?.buf;
           transcriptAbortRef.current?.abort();
           const request = new AbortController();
           transcriptAbortRef.current = request;
-          let leaders = await searchCanonicalText(text, 3 + DUP_AWARE_LOCK, request.signal);
+          let leaders = await searchCanonicalText(searchText, 3 + DUP_AWARE_LOCK, request.signal);
           if (DUP_AWARE_LOCK) leaders = await distinctLeaders(leaders, 3);
           if (
             session !== sessionRef.current ||
