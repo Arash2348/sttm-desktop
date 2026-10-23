@@ -1,0 +1,125 @@
+{
+ "_doc": "Extra timeline sets and builds for the GAB viewer, to merge into index.json: tiers paath / sungbani / akhandpaath are new (all three builds); for main / akhand / kbv1 only the 9.0.5 build is listed, to add to the builds already in index.json. Practice split only (held-out test set never included).",
+ "tiers": [
+  {
+   "key": "paath",
+   "title": "Paath (Banis read aloud: Japji Sahib, Jaap Sahib, Rehras Sahib, Sohila Sahib and others)",
+   "builds": [
+    {
+     "slug": "v905-5348d9a0",
+     "file": "v905-5348d9a0-paath.json",
+     "label": "Gurbani Autopilot 9.0.5",
+     "commit": "5348d9a0",
+     "note": "current experimental"
+    },
+    {
+     "slug": "v1004-9b1fa814",
+     "file": "v1004-9b1fa814-paath.json",
+     "label": "Gurbani Autopilot 10.0.4",
+     "commit": "9b1fa814",
+     "note": "release"
+    },
+    {
+     "slug": "c1-6a866c94",
+     "file": "c1-6a866c94-paath.json",
+     "label": "Gurbani Autopilot 10.0.5",
+     "commit": "6a866c94",
+     "note": "candidate"
+    }
+   ]
+  },
+  {
+   "key": "sungbani",
+   "title": "Sung Bani (Banis sung like kirtan: Aarti, Asa di Vaar, Rehras Sahib, Saloks)",
+   "builds": [
+    {
+     "slug": "v905-5348d9a0",
+     "file": "v905-5348d9a0-sungbani.json",
+     "label": "Gurbani Autopilot 9.0.5",
+     "commit": "5348d9a0",
+     "note": "current experimental"
+    },
+    {
+     "slug": "v1004-9b1fa814",
+     "file": "v1004-9b1fa814-sungbani.json",
+     "label": "Gurbani Autopilot 10.0.4",
+     "commit": "9b1fa814",
+     "note": "release"
+    },
+    {
+     "slug": "c1-6a866c94",
+     "file": "c1-6a866c94-sungbani.json",
+     "label": "Gurbani Autopilot 10.0.5",
+     "commit": "6a866c94",
+     "note": "candidate"
+    }
+   ]
+  },
+  {
+   "key": "akhandpaath",
+   "title": "Akhand Paath (Sri Guru Granth Sahib Ji read Ang after Ang)",
+   "builds": [
+    {
+     "slug": "v905-5348d9a0",
+     "file": "v905-5348d9a0-akhandpaath.json",
+     "label": "Gurbani Autopilot 9.0.5",
+     "commit": "5348d9a0",
+     "note": "current experimental"
+    },
+    {
+     "slug": "v1004-9b1fa814",
+     "file": "v1004-9b1fa814-akhandpaath.json",
+     "label": "Gurbani Autopilot 10.0.4",
+     "commit": "9b1fa814",
+     "note": "release"
+    },
+    {
+     "slug": "c1-6a866c94",
+     "file": "c1-6a866c94-akhandpaath.json",
+     "label": "Gurbani Autopilot 10.0.5",
+     "commit": "6a866c94",
+     "note": "candidate"
+    }
+   ]
+  },
+  {
+   "key": "main",
+   "title": "Kirtan (Gurdwara Sahib broadcasts on YouTube)",
+   "builds": [
+    {
+     "slug": "v905-5348d9a0",
+     "file": "v905-5348d9a0-main.json",
+     "label": "Gurbani Autopilot 9.0.5",
+     "commit": "5348d9a0",
+     "note": "current experimental"
+    }
+   ]
+  },
+  {
+   "key": "akhand",
+   "title": "Akhand Kirtan (smagam recordings on YouTube)",
+   "builds": [
+    {
+     "slug": "v905-5348d9a0",
+     "file": "v905-5348d9a0-akhand.json",
+     "label": "Gurbani Autopilot 9.0.5",
+     "commit": "5348d9a0",
+     "note": "current experimental"
+    }
+   ]
+  },
+  {
+   "key": "kbv1",
+   "title": "Karanbir Singh's benchmark v1 (4 kirtan recordings × 3 starts)",
+   "builds": [
+    {
+     "slug": "v905-5348d9a0",
+     "file": "v905-5348d9a0-kbv1.json",
+     "label": "Gurbani Autopilot 9.0.5",
+     "commit": "5348d9a0",
+     "note": "current experimental"
+    }
+   ]
+  }
+ ]
+}

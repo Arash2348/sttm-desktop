@@ -1,0 +1,17 @@
+--- a/research/level2-dataset/tools/gab-timeline.js
++++ b/research/level2-dataset/tools/gab-timeline.js	2026-10-22 20:41:07
+@@ -41,9 +41,11 @@
+ function eventsOf(sideDir, row) {
+   for (const sj of (row.suite_jobs || '').split(';').filter(Boolean)) {
+     const [suite, jid] = sj.split(':');
+-    for (const name of [jid, row.id, row.cache_id].filter(Boolean)) {
+-      for (const f of [path.join(sideDir, suite, 'trace', `${name}.events.jsonl`), path.join(sideDir, suite, `${name}.json`)]) if (fs.existsSync(f)) return f;
+-    }
++    // a screen-event trace (has verse ids, so the pangti strip) beats a run JSON of the same clip; the trace is often
++    // named by the cache id while the run JSON is named by the job id (paath pt01 -> trace/pt01_<video>_10-80)
++    const names = [jid, row.id, row.cache_id].filter(Boolean);
++    for (const name of names) { const f = path.join(sideDir, suite, 'trace', `${name}.events.jsonl`); if (fs.existsSync(f)) return f; }
++    for (const name of names) { const f = path.join(sideDir, suite, `${name}.json`); if (fs.existsSync(f)) return f; }
+   }
+   return null;
+ }
