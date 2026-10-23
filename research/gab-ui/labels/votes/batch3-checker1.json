@@ -1,0 +1,4432 @@
+[
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 28.56,
+  "end_s": 37.44,
+  "my_verseId": 11292,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਸੰਪ ਜਨਾਵਨ ਹ ਬਹੁਸਹੁਸ\" (15 chars, cache 97%); best 11292 \"ਜਿਸਹਿ ਜਨਾਵਹੁ ਸੋ ਜਾਨੈ ਨਾਨਕ ॥੩੯॥\" explains 53, runner-up 55377 \"ਸੰਤ ਜਨਾ ਕੀ ਬਹੁਤੁ ਬਹੁ ਸੋਭ\" 53, margin 0; candidate 36620 explains 40; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 38.56,
+  "end_s": 50.52,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸੰਤ ਜਲਾਵਈ ਬੋਲ ਬੋਲ ਰ ਸਡ ਨਾਮ\" (19 chars, cache 98%); best 36620 \"ਸੰਤ ਜਨਾ ਮਿਲਿ ਬੋਲਹੁ ਰਾਮ ॥\" explains 47, runner-up 205637 \"ਕਾਉ ਨ ਭਾਵੈ ਬੋਲਿਆ ਕੋਇਲ ਬੋ\" 47, margin 0; candidate 36620 explains 47; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 48.56,
+  "end_s": 55.88,
+  "my_verseId": 58902,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਸਡ ਨਾਮੁ ਸਤ ਨਾਮਜਹੁ ਰਾ\" (16 chars, cache 97%); best 58902 \"ਸਿਖੵਾ ਸੰਤ ਨਾਮੁ ਭਜੁ ਨਾਨਕ ਰਾਮ ਰੰਗਿ ਆਤਮ\" explains 56, runner-up 26410 \"ਊਡਿ ਜਾਇਗੋ ਧੂਮੁ ਬਾਦਰੋ ਇਕੁ\" 56, margin 0; candidate 36620 explains 44; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 59.84,
+  "end_s": 62.2,
+  "my_verseId": 209724,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਤ ਨ ਮਿਲਿ ਬਹੁਤ\" (10 chars, cache 96%); best 209724 \"ਜੈਸੇ ਜਲ ਮਿਲਿ ਬਹੁ ਬਰਨ ਬਨਾਸਪਤੀ ਚੰਦਨ ਸੁ\" explains 70, runner-up 16457 \"ਮਨਮੁਖਿ ਬਹੁਤੀ ਮਿਲੈ ਸਜਾਇ ॥\" 70, margin 0; candidate 36620 explains 50; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 62.32,
+  "end_s": 64.48,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ੰਤਿ\" (2 chars, cache 100%); best 36616 \"ਰਾਮ ਰਾਮ ਸੰਗਿ ਕਰਿ ਬਿਉਹਾਰ ॥\" explains 50, runner-up 36618 \"ਰਾਮ ਰਾਮ ਰਾਮ ਕੀਰਤਨੁ ਗਾਇ ॥\" 50, margin 0; candidate 36620 explains 50; almost nothing heard (2 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 64.88,
+  "end_s": 68.32,
+  "my_verseId": 36620,
+  "confidence": 0.94,
+  "agrees": true,
+  "reason": "heard \"ੰਤ ਮਿਲੁ ਬੋਲਹੁ ਰ ਤ ਮ\" (13 chars, cache 97%); best 36620 \"ਸੰਤ ਜਨਾ ਮਿਲਿ ਬੋਲਹੁ ਰਾਮ ॥\" explains 77, runner-up 123417 \"ਆਨਿ ਸਾਹੁ ਕੋ ਤੁਰਤ ਮਿਲਾਈ ॥\" 62, margin 15; candidate 36620 explains 77"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 67.44,
+  "end_s": 69.88,
+  "my_verseId": 36620,
+  "confidence": 0.94,
+  "agrees": true,
+  "reason": "heard \"ਤ ਮਿਲੁ ਬੋਲਹੁ ਰਾ\" (12 chars, cache 96%); best 36620 \"ਸੰਤ ਜਨਾ ਮਿਲਿ ਬੋਲਹੁ ਰਾਮ ॥\" explains 83, runner-up 43858 \"ਅੰਤ ਕਾਲਿ ਜਮੁ ਜੋਹਿ ਨ ਸਾਕੈ\" 67, margin 17; candidate 36620 explains 83"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36621,
+  "start_s": 71.08,
+  "end_s": 81.52,
+  "my_verseId": 36621,
+  "confidence": 0.91,
+  "agrees": true,
+  "reason": "heard \"ਸਭੁ ਪੇ ਨਿਰ ਪੂਰਨ ਕਾ ਸਭੁ\" (17 chars, cache 98%); best 36621 \"ਸਭ ਤੇ ਨਿਰਮਲ ਪੂਰਨ ਕਾਮ ॥੧॥ ਰਹਾਉ ॥\" explains 59, runner-up 45209 \"ਆਪੇ ਨਿਆਉ ਕਰੇ ਸਭੁ ਸਾਚਾ ਸਾ\" 53, margin 6; candidate 36621 explains 59"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36621,
+  "start_s": 81.68,
+  "end_s": 91.24,
+  "my_verseId": 208739,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਮ ਨਿਰਮ ਤ ਕ ਮਿਲ ਬਹੁ\" (13 chars, cache 97%); best 208739 \"ਪੁਨਿ ਕਤ ਮਾਨਸ ਜਨਮ ਨਿਰਮੋਲ ਹੁਇ ਦ੍ਰਿਸਟਿ \" explains 62, runner-up 4925 \"ਮੈਲੇ ਨਿਰਮਲ ਸਭਿ ਹੁਕਮਿ ਸਬਾ\" 54, margin 8; candidate 36621 explains 38; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 89.92,
+  "end_s": 92.12,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਮਿਲ ਬਹੁ ਦਹੁ\" (9 chars, cache 95%); best 17026 \"ਬਿਨੁ ਮਿਲਬੇ ਇਹੁ ਦਿਨੁ ਨ ਬਿਹਾਵੈ ॥\" explains 67, runner-up 88723 \"ਧਾਇ ਚਲੀ ਹਰਿ ਕੇ ਮਿਲਬੇ ਕਹੁ\" 67, margin 0; candidate 36620 explains 56; almost nothing heard (9 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 92.36,
+  "end_s": 94.68,
+  "my_verseId": 36620,
+  "confidence": 0.72,
+  "agrees": true,
+  "reason": "heard \"ਸੰਤ ਜਨਾ ਮਿਲ ਬਹੁ ਡਰਾ\" (14 chars, cache 96%); best 36620 \"ਸੰਤ ਜਨਾ ਮਿਲਿ ਬੋਲਹੁ ਰਾਮ ॥\" explains 71, runner-up 51591 \"ਸੰਤ ਜਨਾ ਮਿਲਿ ਹਰਿ ਰਸੁ ਪਾਇ\" 71, margin 0; candidate 36620 explains 71"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 94.88,
+  "end_s": 97.16,
+  "my_verseId": 55908,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਤ ਜਨਾ ਮਨੁ ਭਤਹੁਰੈ\" (13 chars, cache 100%); best 55908 \"ਜਿਉ ਸਤਸੰਗਤਿ ਤਰਿਓ ਜੁਲਾਹੋ ਸੰਤ ਜਨਾ ਮਨਿ \" explains 62, runner-up 55346 \"ਹਰਿ ਕੇ ਸੰਤ ਸੰਤ ਭਲ ਨੀਕੇ ਮ\" 54, margin 8; candidate 36620 explains 46; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 97.36,
+  "end_s": 99.68,
+  "my_verseId": 36620,
+  "confidence": 0.94,
+  "agrees": true,
+  "reason": "heard \"ਤ ਜਨਾਮ ਬੁਲਹੁ ਬੋਲਹੁ\" (15 chars, cache 96%); best 36620 \"ਸੰਤ ਜਨਾ ਮਿਲਿ ਬੋਲਹੁ ਰਾਮ ॥\" explains 73, runner-up 55346 \"ਹਰਿ ਕੇ ਸੰਤ ਸੰਤ ਭਲ ਨੀਕੇ ਮ\" 60, margin 13; candidate 36620 explains 73"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 99.84,
+  "end_s": 102.12,
+  "my_verseId": 80394,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਸੰਤੁ ਨਗ ਭਲਹੁ ਰਾ\" (11 chars, cache 100%); best 80394 \"ਡੁਬ ਰਤੁ ਨਾਲਹੁ ਨਿਕਲੀ ਬਰਛੀ ਦੁਧਾਰੀ ॥\" explains 55, runner-up 36620 \"ਸੰਤ ਜਨਾ ਮਿਲਿ ਬੋਲਹੁ ਰਾਮ ॥\" 55, margin 0; candidate 36620 explains 55; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 102.36,
+  "end_s": 104.56,
+  "my_verseId": 36620,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਅੰਤ ਜਨਾ ਮਿਲ ਕਹੁਲਹੁ ਰਾ\" (16 chars, cache 95%); best 36620 \"ਸੰਤ ਜਨਾ ਮਿਲਿ ਬੋਲਹੁ ਰਾਮ ॥\" explains 75, runner-up 33083 \"ਸੰਤ ਜਨਾ ਮਿਲਿ ਮੰਗਲੁ ਗਾਇਆ \" 62, margin 12; candidate 36620 explains 75"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 104.84,
+  "end_s": 107,
+  "my_verseId": 36620,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਅੰਤ ਜਨਾ ਮਿਲ ਕਹੁਲਾਹੁ\" (15 chars, cache 96%); best 36620 \"ਸੰਤ ਜਨਾ ਮਿਲਿ ਬੋਲਹੁ ਰਾਮ ॥\" explains 67, runner-up 55346 \"ਹਰਿ ਕੇ ਸੰਤ ਸੰਤ ਭਲ ਨੀਕੇ ਮ\" 60, margin 7; candidate 36620 explains 67"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 107.32,
+  "end_s": 109.76,
+  "my_verseId": 36620,
+  "confidence": 0.72,
+  "agrees": true,
+  "reason": "heard \"ੰਤ ਨਮ ਬੋਲਹੁ ਰਾਮ\" (11 chars, cache 100%); best 36620 \"ਸੰਤ ਜਨਾ ਮਿਲਿ ਬੋਲਹੁ ਰਾਮ ॥\" explains 73, runner-up 43858 \"ਅੰਤ ਕਾਲਿ ਜਮੁ ਜੋਹਿ ਨ ਸਾਕੈ\" 73, margin 0; candidate 36620 explains 73"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36620,
+  "start_s": 111.04,
+  "end_s": 132.36,
+  "my_verseId": 3148,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਸੰਤ ਜਨਾ ਮਦਹੁ ਨਾ ਨਤ ਨ ਜ\" (15 chars, cache 98%); best 3148 \"ਹਰਿ ਸੰਤ ਜਨਾ ਮਿਲਿ ਕਾਰਜੁ ਸੋਹਿਆ ਵਰੁ ਪਾਇ\" explains 53, runner-up 55379 \"ਹਰਿ ਕੇ ਸੰਤ ਜਨਾ ਮਹਿ ਹਰਿ ਹ\" 53, margin 0; candidate 36620 explains 47; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip21",
+  "cand_verseId": 36621,
+  "start_s": 120.44,
+  "end_s": 125.08,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਤ ਨ ਜ\" (3 chars, cache 98%); best 36618 \"ਰਾਮ ਰਾਮ ਰਾਮ ਕੀਰਤਨੁ ਗਾਇ ॥\" explains 67, runner-up 36620 \"ਸੰਤ ਜਨਾ ਮਿਲਿ ਬੋਲਹੁ ਰਾਮ ॥\" 67, margin 0; candidate 36621 explains 33; almost nothing heard (3 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 29.72,
+  "end_s": 35.04,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਬਾਬਾ ਰਾਮ\" (7 chars, cache 96%); best 51370 \"ਨਹੀ ਛੋਡਉ ਰੇ ਬਾਬਾ ਰਾਮ ਨਾਮ ॥\" explains 100, runner-up 16384 \"ਬਾਬਾ ਮਨੁ ਮਤਵਾਰੋ ਨਾਮ ਰਸੁ \" 71, margin 29; candidate 51370 explains 100; almost nothing heard (7 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51371,
+  "start_s": 35.16,
+  "end_s": 40.96,
+  "my_verseId": 51371,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਮੇਰੋ ਭ ਮੇਰੋ ਭਉਲ ਪਰਨ ਸਿਆ ਨਹੀ ਪਾਾਵਨ\" (26 chars, cache 114%); best 51371 \"ਮੇਰੋ ਅਉਰ ਪੜੑਨ ਸਿਉ ਨਹੀ ਕਾਮੁ ॥੧॥ ਰਹਾਉ \" explains 54, runner-up 403746 \"ਖ਼ਾਲਸਾ ਮੇਰੋ ਭਵਨ ਭੰਡਾਰਾ ॥\" 38, margin 15; candidate 51371 explains 54"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 40.96,
+  "end_s": 45.96,
+  "my_verseId": 11028,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਇਛਹੁ ਦੋਇ ਬਬਾਨ\" (11 chars, cache 96%); best 11028 \"ਨਹੀ ਹੋਤ ਕਛੁ ਦੋਊ ਬਾਰਾ ॥\" explains 55, runner-up 78651 \"ਬੂੰਦਨ ਤੇ ਉਠਿ ਕੈ ਬਹੁ ਦਾਨਵ\" 55, margin 0; candidate 51370 explains 27; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 46.76,
+  "end_s": 50.88,
+  "my_verseId": 51370,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਹੀ ਛੋਡਹੁਇ ਦਬਾ ਰਾ\" (13 chars, cache 98%); best 51370 \"ਨਹੀ ਛੋਡਉ ਰੇ ਬਾਬਾ ਰਾਮ ਨਾਮ ॥\" explains 62, runner-up 36974 \"ਤੁਰੀ ਨਾਰਿ ਕੀ ਛੋਡੀ ਬਾਤਾ ॥\" 54, margin 8; candidate 51370 explains 62"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 52.88,
+  "end_s": 59.28,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸ ਡੂੰਲੇ ਸਭ ਬਠ ਕਛਡ\" (12 chars, cache 97%); best 58930 \"ਨਾਨਕ ਸੰਤ ਚਰਨ ਸੰਗਿ ਉਧਰੇ ਹੋਰਿ ਮਾਇਆ ਮਗਨ\" explains 42, runner-up 42037 \"ਇਕਿ ਭਰਮਿ ਭੂਲੇ ਸਾਕਤਾ ਬਿਨੁ\" 42, margin 0; candidate 51370 explains 25; no pangti explains the hearing (best 42)"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 58.2,
+  "end_s": 62.4,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਕਛਡਰ ਬਾਬਾ\" (8 chars, cache 98%); best 204323 \"ਘਰਿ ਘਰਿ ਬਾਬਾ ਗਾਵੀਐ ਵਜਨਿ ਤਾਲ ਮ੍ਰਿਦੰਗੁ\" explains 62, runner-up 204328 \"ਜਾਹਰ ਪੀਰੁ ਜਗਤੁ ਗੁਰ ਬਾਬਾ \" 62, margin 0; candidate 51370 explains 50; almost nothing heard (8 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51371,
+  "start_s": 63.16,
+  "end_s": 68.28,
+  "my_verseId": 51371,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਮੇਰੋ ਅਰੁ ਪੜਨ ਸ ਸਿਉਨੀ ਕਾਮਦੇ\" (21 chars, cache 98%); best 51371 \"ਮੇਰੋ ਅਉਰ ਪੜੑਨ ਸਿਉ ਨਹੀ ਕਾਮੁ ॥੧॥ ਰਹਾਉ \" explains 67, runner-up 115744 \"ਰਾਨੀ ਪਛਾਨੀ ਕਿ ਮੰਦਰ ਕੇ ਪਿ\" 43, margin 24; candidate 51371 explains 67"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 68.28,
+  "end_s": 72.36,
+  "my_verseId": 204328,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਛਹੁ ਗੁਰ ਬਾਬਾ ਰਾ ਨਾ\" (14 chars, cache 98%); best 204328 \"ਜਾਹਰ ਪੀਰੁ ਜਗਤੁ ਗੁਰ ਬਾਬਾ ॥੪॥\" explains 57, runner-up 39978 \"ਕਰਤੇ ਹਥਿ ਵਡਿਆਈਆ ਬੂਝਹੁ ਗੁ\" 57, margin 0; candidate 51370 explains 57; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 73.56,
+  "end_s": 78.52,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਲੀਛਹੁ ਡੋਰੈ ਹਮਾਰਾ ਨਾਮ ਤਿ\" (19 chars, cache 96%); best 25875 \"ਧਨੁ ਧਨੁ ਹਰਿ ਭਗਤੁ ਸਤਿਗੁਰੂ ਹਮਾਰਾ ਜਿਸ ਕ\" explains 47, runner-up 6455 \"ਸਾਹੁ ਹਮਾਰਾ ਠਾਕੁਰੁ ਭਾਰਾ ਹ\" 47, margin 0; candidate 51370 explains 42; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 78.68,
+  "end_s": 83.64,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨ ਕਿਛਹੁ ਬੂਲੇ ਪ੍ਰਬਾ ਰਾਵਤ\" (19 chars, cache 98%); best 207638 \"ਪ੍ਰਭ ਹੁਕਮ ਬੂਝਿ ਪਹੁੰਚੇ ਦਰਬਾਰਾ॥\" explains 47, runner-up 31520 \"ਲਾਲ ਰੰਗੀਲੇ ਪ੍ਰੀਤਮ ਮਨਮੋਹਨ\" 42, margin 5; candidate 51370 explains 37; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 83.84,
+  "end_s": 87.56,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਨਹੀ ਲਛਹੁਇ ਕ\" (9 chars, cache 98%); best 75088 \"ਕਤਹੂੰ ਸਿਪਾਹੀ ਹੁਇ ਕੈ ਸਾਧਤ ਸਿਲਾਹਨ ਕੌ ਕ\" explains 67, runner-up 141987 \"ਤੁਹੀ ਕੱਛ ਹੁਇ ਦੈਤ ਮਧੁਕੀਟ \" 67, margin 0; candidate 51370 explains 44; almost nothing heard (9 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 89.44,
+  "end_s": 93.52,
+  "my_verseId": 78868,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਚਹੁ ਬੁਲੇ ਬਾਖ ਨਾ\" (12 chars, cache 98%); best 78868 \"ਜਿਉ ਸਰਤਾ ਕੇ ਪ੍ਰਵਾਹ ਕੇ ਬੀਚ ਮਿਲੇ ਬਰਖਾ \" explains 50, runner-up 138548 \"ਚਲੇ ਬਾਨ ਦੁਹੂੰ ਓਰ ਅਪਾਰਾ ॥\" 50, margin 0; candidate 51370 explains 33; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 94.28,
+  "end_s": 101.24,
+  "my_verseId": 49980,
+  "confidence": 0.94,
+  "agrees": false,
+  "reason": "heard \"ਨਿਹ ਜੋੜ ਦੜ ਸਭਨਾ ਮ\" (13 chars, cache 98%); best 49980 \"ਮਿਲਿ ਹਿੰਦੂ ਸਭ ਨਾਮੇ ਪਹਿ ਜਾਹਿ ॥੨੫॥\" explains 62, runner-up 106258 \"ਸੁਤ ਧਰ ਕਹੁ ਸਭ ਨਾਮ ਸਰ ਨਿਕ\" 46, margin 15; candidate 51370 explains 23; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 101.36,
+  "end_s": 105.48,
+  "my_verseId": 33210,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਕਿਿਰ ਛੋਡਹੁਾ ਰਾਮ ਨਾ\" (15 chars, cache 98%); best 33210 \"ਘਰ ਮਹਿ ਨਵ ਨਿਧਿ ਭਰੇ ਭੰਡਾਰਾ ਰਾਮ ਨਾਮਿ ਰ\" explains 60, runner-up 34149 \"ਸਿਮਰਿ ਮਨਾ ਰਾਮ ਨਾਮੁ ਚਿਤਾਰ\" 53, margin 7; candidate 51370 explains 47; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 105.88,
+  "end_s": 110.16,
+  "my_verseId": 51370,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ੈਗਰੀ ਜੋ ਡਹੁਰ ਬਾਪਾ ਰਾਖ ਨਾ\" (19 chars, cache 98%); best 51370 \"ਨਹੀ ਛੋਡਉ ਰੇ ਬਾਬਾ ਰਾਮ ਨਾਮ ॥\" explains 53, runner-up 56071 \"ਸਭ ਜੋਤਿ ਤੇਰੀ ਜੋਤੀ ਵਿਚਿ ਕ\" 42, margin 11; candidate 51370 explains 53"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 110.64,
+  "end_s": 115.2,
+  "my_verseId": 51370,
+  "confidence": 0.91,
+  "agrees": true,
+  "reason": "heard \"ਨੈਂ ਕਿਛ ਡਰੇੇ ਪਾਪਾ ਰਾਮ ਨਾਮ\" (19 chars, cache 97%); best 51370 \"ਨਹੀ ਛੋਡਉ ਰੇ ਬਾਬਾ ਰਾਮ ਨਾਮ ॥\" explains 58, runner-up 51981 \"ਗੋਬਿਦ ਭਜਨ ਕੇ ਨਿਰਭੈ ਵਾਪਾਰ\" 53, margin 5; candidate 51370 explains 58"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 115.48,
+  "end_s": 119.96,
+  "my_verseId": 51370,
+  "confidence": 0.94,
+  "agrees": true,
+  "reason": "heard \"ਹੀ ਛਡ ਰੇ ਬਾਬਾ ਨਾਮ\" (13 chars, cache 98%); best 51370 \"ਨਹੀ ਛੋਡਉ ਰੇ ਬਾਬਾ ਰਾਮ ਨਾਮ ॥\" explains 77, runner-up 4336 \"ਇਕਸੁ ਵਿਣੁ ਹੋਰੁ ਦੂਜਾ ਨਾਹੀ\" 62, margin 15; candidate 51370 explains 77"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 120.8,
+  "end_s": 125.84,
+  "my_verseId": 95314,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਨ ਹੀ ਛੋਡੁ ਮੇ ਕਹੀ\" (12 chars, cache 98%); best 95314 \"ਇਹ ਛੋਡਿ ਹਲੀ ਨਹੀ ਛੋਡਤ ਹੋ ਕਿਹ ਕਾਜ ਕਹਿਓ\" explains 58, runner-up 47447 \"ਜੰਮਣੁ ਮਰਣੁ ਕਾਲੁ ਨਹੀ ਛੋਡੈ\" 58, margin 0; candidate 51370 explains 58; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 125.6,
+  "end_s": 129.28,
+  "my_verseId": 51370,
+  "confidence": 0.72,
+  "agrees": true,
+  "reason": "heard \"ਹੀ ਛੋਡੁਰ ਹਮਰਾ\" (11 chars, cache 98%); best 51370 \"ਨਹੀ ਛੋਡਉ ਰੇ ਬਾਬਾ ਰਾਮ ਨਾਮ ॥\" explains 64, runner-up 52460 \"ਦਿਨਸੁ ਰੈਨੀ ਥਕਤ ਨਾਹੀ ਕਤਹਿ\" 64, margin 0; candidate 51370 explains 64"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51371,
+  "start_s": 129.88,
+  "end_s": 135.32,
+  "my_verseId": 51371,
+  "confidence": 0.91,
+  "agrees": true,
+  "reason": "heard \"ੇਰੋ ਮ ਪੜਨ ਸ ਉ ਨਹੀ ਕਾਵਨ\" (16 chars, cache 97%); best 51371 \"ਮੇਰੋ ਅਉਰ ਪੜੑਨ ਸਿਉ ਨਹੀ ਕਾਮੁ ॥੧॥ ਰਹਾਉ \" explains 56, runner-up 7900 \"ਹੈਵਰ ਗੈਵਰ ਆਪਨ ਨਹੀ ਕਾਮ ॥੩\" 50, margin 6; candidate 51371 explains 56"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 134.52,
+  "end_s": 138.32,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ੁਰ ਖਬ ਨਾ\" (6 chars, cache 98%); best 100425 \"ਇਕ ਅਉਰ ਪੁਰਖ ਬਨਾਇ ॥੫੮੬॥\" explains 100, runner-up 77131 \"ਅਕਾਲ ਪੁਰਖ ਬਾਚ ॥\" 83, margin 17; candidate 51370 explains 50; almost nothing heard (6 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 139.28,
+  "end_s": 145,
+  "my_verseId": 51370,
+  "confidence": 0.99,
+  "agrees": true,
+  "reason": "heard \"ਦੇਹੀ ਛੋਡੋਰ ਬਾਬਾ ਰਾਮਨਾ ਮਾ\" (20 chars, cache 97%); best 51370 \"ਨਹੀ ਛੋਡਉ ਰੇ ਬਾਬਾ ਰਾਮ ਨਾਮ ॥\" explains 75, runner-up 51625 \"ਜਪਿ ਮਨ ਨਰਹਰੇ ਨਰਹਰ ਸੁਆਮੀ \" 55, margin 20; candidate 51370 explains 75"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51371,
+  "start_s": 145,
+  "end_s": 150.6,
+  "my_verseId": 59394,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਹਿ ਗੁਰੂ ਵਾਹਿ ਤ ਵਾਹਿਗੁਰ\" (18 chars, cache 98%); best 59394 \"ਸਤਿ ਸਾਚੁ ਸ੍ਰੀ ਨਿਵਾਸੁ ਆਦਿ ਪੁਰਖੁ ਸਦਾ ਤ\" explains 83, runner-up 59386 \"ਵਾਹਿਗੁਰੂ ਵਾਹਿਗੁਰੂ ਵਾਹਿਗੁ\" 83, margin 0; candidate 51371 explains 28; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51366,
+  "start_s": 145.04,
+  "end_s": 151,
+  "my_verseId": 59394,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਹਿ ਗੁਰੂ ਵਾਹਿ ਤ ਵਾਹਿਗੁਰੂ ਵ\" (20 chars, cache 98%); best 59394 \"ਸਤਿ ਸਾਚੁ ਸ੍ਰੀ ਨਿਵਾਸੁ ਆਦਿ ਪੁਰਖੁ ਸਦਾ ਤ\" explains 85, runner-up 59386 \"ਵਾਹਿਗੁਰੂ ਵਾਹਿਗੁਰੂ ਵਾਹਿਗੁ\" 85, margin 0; candidate 51366 explains 15; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51372,
+  "start_s": 150.88,
+  "end_s": 155.36,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਜ ਹ ਵਹਿ\" (5 chars, cache 98%); best 51368 \"ਮੋ ਕਉ ਕਹਾ ਪੜੑਾਵਸਿ ਆਲ ਜਾਲ ॥\" explains 40, runner-up 51372 \"ਸੰਡੈ ਮਰਕੈ ਕਹਿਓ ਜਾਇ ॥\" 40, margin 0; candidate 51372 explains 40; almost nothing heard (5 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51367,
+  "start_s": 151,
+  "end_s": 159.32,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਜ ਹ ਵਹਿ ਵ\" (6 chars, cache 98%); best 50185 \"ਕਹੁ ਨਾਨਕ ਪਾਵਹਿ ਵਿਰਲੇ ਕੇਇ ॥੪॥੭॥\" explains 67, runner-up 45323 \"ਬਹੁ ਕਰਮ ਕਮਾਵਹਿ ਵਧਹਿ ਵਿਕਾ\" 67, margin 0; candidate 51367 explains 17; almost nothing heard (6 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51373,
+  "start_s": 155.68,
+  "end_s": 160.48,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਵਖ\" (2 chars, cache 97%); best 51367 \"ਸੰਗਿ ਸਖਾ ਬਹੁ ਲੀਏ ਬਾਲ ॥\" explains 50, runner-up 51368 \"ਮੋ ਕਉ ਕਹਾ ਪੜੑਾਵਸਿ ਆਲ ਜਾਲ\" 50, margin 0; candidate 51373 explains 0; almost nothing heard (2 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51368,
+  "start_s": 159.52,
+  "end_s": 171,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਬ ਹ ਵਚ ਵਚ ਵਹਿਸ ਵਸ ਬਸ ਵਸ\" (16 chars, cache 97%); best 60375 \"ਗਾਵਹਿ ਸਰਸ ਬਸੰਤ ਕਮੋਦਾ ॥\" explains 44, runner-up 25409 \"ਬਾਬਾ ਰੋਵਹਿ ਰਵਹਿ ਸੁ ਜਾਣੀਅ\" 38, margin 6; candidate 51368 explains 19; no pangti explains the hearing (best 44)"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51374,
+  "start_s": 160.52,
+  "end_s": 164.04,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਬ\" (1 chars, cache 97%); best 51367 \"ਸੰਗਿ ਸਖਾ ਬਹੁ ਲੀਏ ਬਾਲ ॥\" explains 100, runner-up 51370 \"ਨਹੀ ਛੋਡਉ ਰੇ ਬਾਬਾ ਰਾਮ ਨਾਮ\" 100, margin 0; candidate 51374 explains 100; almost nothing heard (1 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51375,
+  "start_s": 164.2,
+  "end_s": 170.64,
+  "my_verseId": 60375,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਹ ਵਚ ਵਚ ਵਹਿਸ ਵਸ ਬਸ ਵ\" (14 chars, cache 99%); best 60375 \"ਗਾਵਹਿ ਸਰਸ ਬਸੰਤ ਕਮੋਦਾ ॥\" explains 50, runner-up 6210 \"ਤੂੰ ਸਚਾ ਦਾਤਾਰੁ ਨਿਤ ਦੇਵਹਿ\" 43, margin 7; candidate 51375 explains 14; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51367,
+  "start_s": 170.68,
+  "end_s": 173.28,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਸ ਵਸ ਵਸ ਗ\" (6 chars, cache 96%); best 203025 \"ਮਾਨ ਸਰੋਵਰੁ ਆਖੀਐ ਉਪਰਿ ਹੰਸ ਸੁਵੰਸ ਵਸੰਦੇ\" explains 67, runner-up 203689 \"ਹੰਸ ਵੰਸ ਗੁਰਸਿਖ ਗੁਰਸਿਖ ਜਾ\" 67, margin 0; candidate 51367 explains 33; almost nothing heard (6 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51369,
+  "start_s": 171.12,
+  "end_s": 181.96,
+  "my_verseId": 209176,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਸ ਵਸ ਗੈਵ੍ਰ ਵ ਨ\" (10 chars, cache 97%); best 209176 \"ਜਉਪੈ ਜਾਨੇ ਰਾਗ ਨਾਦ ਸੁਨੀਅਤ ਸ੍ਰਵਨ ਕੈ ਸ੍\" explains 60, runner-up 52668 \"ਦਸ ਅਸਟ ਖਸਟ ਸ੍ਰਵਨ ਸੁਨੇ ॥\" 60, margin 0; candidate 51369 explains 30; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51368,
+  "start_s": 173.44,
+  "end_s": 178.24,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ੈਵ\" (2 chars, cache 98%); best 51368 \"ਮੋ ਕਉ ਕਹਾ ਪੜੑਾਵਸਿ ਆਲ ਜਾਲ ॥\" explains 50, runner-up 51372 \"ਸੰਡੈ ਮਰਕੈ ਕਹਿਓ ਜਾਇ ॥\" 50, margin 0; candidate 51368 explains 50; almost nothing heard (2 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51369,
+  "start_s": 178.64,
+  "end_s": 185.64,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"੍ਰ ਵ ਨਇਾ ਨਾ\" (8 chars, cache 97%); best 132369 \"ਹਜਰਤਿ ਬਚਨ ਸ੍ਰਵਨ ਇਹ ਧਾਰਾ ॥\" explains 75, runner-up 20597 \"ਸੁਨਿ ਸ੍ਰਵਨ ਬਾਨੀ ਪੁਰਖ ਗਿਆ\" 75, margin 0; candidate 51369 explains 38; almost nothing heard (8 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 186.64,
+  "end_s": 190.52,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਠਡਰ\" (3 chars, cache 98%); best 51366 \"ਪ੍ਰਹਲਾਦ ਪਠਾਏ ਪੜਨ ਸਾਲ ॥\" explains 33, runner-up 51369 \"ਮੇਰੀ ਪਟੀਆ ਲਿਖਿ ਦੇਹੁ ਸ੍ਰੀ\" 33, margin 0; candidate 51370 explains 33; almost nothing heard (3 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51371,
+  "start_s": 190.8,
+  "end_s": 196.28,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੇਰੋ ਬਾਲ ਭੜ ਸਨ ਸੂ ਨਹੀ ਕਾਵ ਨਹੀ ਛੋ\" (23 chars, cache 98%); best 51371 \"ਮੇਰੋ ਅਉਰ ਪੜੑਨ ਸਿਉ ਨਹੀ ਕਾਮੁ ॥੧॥ ਰਹਾਉ \" explains 48, runner-up 126851 \"ਤੁਮਰੋ ਬਾਲ ਬਿਘਨ ਨਹਿ ਹ੍ਵੈ \" 43, margin 4; candidate 51371 explains 48; no pangti explains the hearing (best 48)"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 197.24,
+  "end_s": 203.48,
+  "my_verseId": 51370,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਬਾਬਾ ਰਾਮੋ ਨਹੀ ਬੋਲਹੁਇ ਬਾਬਾ ਰਾਮ\" (24 chars, cache 98%); best 51370 \"ਨਹੀ ਛੋਡਉ ਰੇ ਬਾਬਾ ਰਾਮ ਨਾਮ ॥\" explains 67, runner-up 98701 \"ਨਹੀ ਬੋਰ ਬਾਰ ਮੋ ਪੂਜ ਸਾਜ ॥\" 50, margin 17; candidate 51370 explains 67"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 200.04,
+  "end_s": 228.88,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨਹੀ ਬੋਲਹੁਇ ਬਾਬਾ ਰਾਮ ਆਸਿਸਿਸਿ ਆਪਿ ਆਪਿ ਮਸਸਸਤ ਸ ਪੰਨ ਵਸ ਪੰਨ ਵਖ ਪੰੰਨ ਵਸ ਪੰਨ\" (49 chars, cache 98%); best 208739 \"ਪੁਨਿ ਕਤ ਮਾਨਸ ਜਨਮ ਨਿਰਮੋਲ ਹੁਇ ਦ੍ਰਿਸਟਿ \" explains 33, runner-up 30057 \"ਆਪੇ ਹੀ ਆਪਿ ਆਪਿ ਵਰਤੈ ਆਪੇ \" 31, margin 2; candidate 51370 explains 24; no pangti explains the hearing (best 33)"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51366,
+  "start_s": 232.28,
+  "end_s": 236.2,
+  "my_verseId": 51366,
+  "confidence": 0.94,
+  "agrees": true,
+  "reason": "heard \"ਹਲਾਦ ਪ ਖਾਈ ਪੜਨਸਾਰ\" (14 chars, cache 97%); best 51366 \"ਪ੍ਰਹਲਾਦ ਪਠਾਏ ਪੜਨ ਸਾਲ ॥\" explains 79, runner-up 39593 \"ਰਾਮਕਲੀ ਮਹਲਾ ੧ ਦਖਣੀ ਓਅੰਕਾ\" 50, margin 29; candidate 51366 explains 79"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51367,
+  "start_s": 237.56,
+  "end_s": 240.68,
+  "my_verseId": 51367,
+  "confidence": 0.94,
+  "agrees": true,
+  "reason": "heard \"ਗੁਰਸਖਾ ਹੜ ਲੀਏ ਬਾ\" (13 chars, cache 97%); best 51367 \"ਸੰਗਿ ਸਖਾ ਬਹੁ ਲੀਏ ਬਾਲ ॥\" explains 69, runner-up 35832 \"ਜਾਗੁ ਸਲੋਨੜੀਏ ਬੋਲੈ ਗੁਰਬਾਣ\" 54, margin 15; candidate 51367 explains 69"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51366,
+  "start_s": 241.84,
+  "end_s": 245.56,
+  "my_verseId": 204552,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਮਹਿਲਾਦ ਵਟਏ ਪਰਸ\" (12 chars, cache 100%); best 204552 \"ਬਲਿ ਪੋਤਾ ਪ੍ਰਹਿਲਾਦ ਦਾ ਇੰਦਰ ਪੁਰੀ ਦੀ ਇਛ\" explains 50, runner-up 403467 \"ਭਾਈ ਪ੍ਰਹਿਲਾਦ ਸਿੰਘ ਜੀ ਪ੍ਰ\" 50, margin 0; candidate 51366 explains 42; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51367,
+  "start_s": 246.76,
+  "end_s": 250.36,
+  "my_verseId": 51367,
+  "confidence": 0.94,
+  "agrees": true,
+  "reason": "heard \"ਗਿ ਸਦਾਾ ਬਹੁ ਲੀਏ\" (12 chars, cache 98%); best 51367 \"ਸੰਗਿ ਸਖਾ ਬਹੁ ਲੀਏ ਬਾਲ ॥\" explains 83, runner-up 12018 \"ਸਾਧ ਕੈ ਸੰਗਿ ਸਦਾ ਪਰਫੁਲੈ ॥\" 58, margin 25; candidate 51367 explains 83"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51368,
+  "start_s": 252.72,
+  "end_s": 266.2,
+  "my_verseId": 205478,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਖ ਕ ਆਲ ਕਲ ਮੁਖ ਕਗੜਾਵ\" (14 chars, cache 98%); best 205478 \"ਗੁਰਮੁਖਿ ਸੁਖ ਫਲੁ ਸਚੁ ਹੈ ਮਨਮੁਖ ਦੁਖ ਫਲੁ\" explains 50, runner-up 4616 \"ਮਨਮੁਖ ਕਰਮ ਕਰੇ ਨਹੀ ਪਾਏ ਬਿ\" 43, margin 7; candidate 51368 explains 29; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51368,
+  "start_s": 259.64,
+  "end_s": 264.8,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਖ ਕਗੜਾਵ\" (6 chars, cache 98%); best 202547 \"ਲਖ ਗੜਾੜ ਤਰੰਗ ਵਿਚਿ ਲਖ ਅਝੁ ਕਿਣੰਗਾ।\" explains 67, runner-up 207023 \"ਲਖ ਗੜਾੜ ਕੜਾਹ ਵਿਚਿ ਤ੍ਰਿਸਨ\" 67, margin 0; candidate 51368 explains 33; almost nothing heard (6 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51369,
+  "start_s": 266.56,
+  "end_s": 273.2,
+  "my_verseId": 51369,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਮੇਰੀ ਪਟੀਆ ਲਿਖਹੁ ਸੀਰੀ ਗੋਪਾਲ\" (22 chars, cache 99%); best 51369 \"ਮੇਰੀ ਪਟੀਆ ਲਿਖਿ ਦੇਹੁ ਸ੍ਰੀ ਗੋੁਪਾਲ ॥੧॥\" explains 82, runner-up 48249 \"ਮੇਰੀ ਪਟੀਆ ਲਿਖਹੁ ਹਰਿ ਗੋਵਿ\" 77, margin 5; candidate 51369 explains 82"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51369,
+  "start_s": 273.44,
+  "end_s": 278,
+  "my_verseId": 51369,
+  "confidence": 0.99,
+  "agrees": true,
+  "reason": "heard \"ੇਰੀ ਭੰਟੀਆ ਲਿਖ ਦੇਹੁ ਸ੍ਰੀ ਗੋਸ\" (21 chars, cache 98%); best 51369 \"ਮੇਰੀ ਪਟੀਆ ਲਿਖਿ ਦੇਹੁ ਸ੍ਰੀ ਗੋੁਪਾਲ ॥੧॥\" explains 86, runner-up 48249 \"ਮੇਰੀ ਪਟੀਆ ਲਿਖਹੁ ਹਰਿ ਗੋਵਿ\" 67, margin 19; candidate 51369 explains 86"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51369,
+  "start_s": 280.4,
+  "end_s": 284.64,
+  "my_verseId": 48249,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ੇਰੀ ਪਟੀ ਆਲਿਖ ਤੇ ਇਹ ਵਟੀਆ ਲਿਖੁ\" (22 chars, cache 98%); best 48249 \"ਮੇਰੀ ਪਟੀਆ ਲਿਖਹੁ ਹਰਿ ਗੋਵਿੰਦ ਗੋਪਾਲਾ ॥\" explains 68, runner-up 51369 \"ਮੇਰੀ ਪਟੀਆ ਲਿਖਿ ਦੇਹੁ ਸ੍ਰੀ\" 68, margin 0; candidate 51369 explains 68; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51369,
+  "start_s": 284.72,
+  "end_s": 289,
+  "my_verseId": 48249,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਇਹੁ ਵਟੀਆ ਲਿਖਿ ਸੀ ਗੋਪਾ\" (17 chars, cache 98%); best 48249 \"ਮੇਰੀ ਪਟੀਆ ਲਿਖਹੁ ਹਰਿ ਗੋਵਿੰਦ ਗੋਪਾਲਾ ॥\" explains 53, runner-up 51369 \"ਮੇਰੀ ਪਟੀਆ ਲਿਖਿ ਦੇਹੁ ਸ੍ਰੀ\" 53, margin 0; candidate 51369 explains 53; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51369,
+  "start_s": 290.16,
+  "end_s": 295.96,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"੍ਰੀ ਗ ਕ ਕੀ ਆ\" (8 chars, cache 97%); best 81085 \"ਸ੍ਰੀ ਗਿਆਨ ਪ੍ਰਬੋਧ ਪੋਥੀ ਦੁਤੀਆ ਜਗ ਸਮਾਪਤ\" explains 62, runner-up 87561 \"ਸ੍ਰੋਨਨ ਮੈ ਸੁਨਿ ਅਸਵਾਰੀ ਗਜ\" 50, margin 12; candidate 51369 explains 50; almost nothing heard (8 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 290.2,
+  "end_s": 297.68,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"੍ਰੀ ਗ ਕ ਕੀ ਆ ਸ\" (9 chars, cache 97%); best 88359 \"ਤਨ ਕਾਮ ਭਰੀ ਗੁਪੀਆ ਸਭ ਹੀ ਮੁਖ ਤੇ ਇਹ ਭਾਤ\" explains 67, runner-up 133555 \"ਕੈ ਜੜ ਪ੍ਰਾਨਨ ਕੀ ਆਸਾ ਤਜੁ \" 67, margin 0; candidate 51370 explains 11; almost nothing heard (9 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 296.84,
+  "end_s": 302.48,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸਨ ਪ ਬਲ ਪੜਨ ਸਿਿਆਵਗ ਕਾਵ\" (17 chars, cache 98%); best 201438 \"ਲਖ ਅਗਾਸ ਨ ਅਪੜਨਿ ਕੁਦਰਤਿ ਕਾਦਰੁ ਨੋ ਕੁਰਬ\" explains 41, runner-up 95278 \"ਪਾਇਨ ਧਾਇ ਕੈ ਭੂਪ ਬਲੀ ਸੁ ਗ\" 35, margin 6; candidate 51370 explains 12; no pangti explains the hearing (best 41)"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51371,
+  "start_s": 298.16,
+  "end_s": 303.72,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸਨ ਪ ਬਲ ਪੜਨ ਸਿਿਆਵਗ ਕਾਵਨਗੀ ਛੋ\" (22 chars, cache 97%); best 209935 \"ਦ੍ਰਿਸਟਿ ਸੁਰਤਿ ਗਿਆਨ ਧਿਆਨ ਸਰਬੰਗ ਹੀਨ ਪਤ\" explains 36, runner-up 29090 \"ਤੁਮੑ ਦਇਆਲ ਕਿਰਪਾਲ ਕ੍ਰਿਪਾ \" 36, margin 0; candidate 51371 explains 27; no pangti explains the hearing (best 36)"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 302.72,
+  "end_s": 306.04,
+  "my_verseId": 87906,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਗੀ ਛੋ ਦੂਇ ਕ ਭ ਨਾ\" (11 chars, cache 97%); best 87906 \"ਬਾਰਕੋ ਕੇ ਕਹੇ ਕਰਿ ਕ੍ਰੋਧ ਮਨ ਆਪਨੇ ਮੈ ਸ੍\" explains 55, runner-up 132431 \"ਅਬ ਲਗਿ ਗੀ ਛਤ੍ਰਾਨੀ ਨਾਹੀ ॥\" 45, margin 9; candidate 51370 explains 36; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 307.08,
+  "end_s": 315.52,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਛਟ ਨ ਛੋਡ ਰੇ\" (8 chars, cache 97%); best 7550 \"ਇਹ ਰਸ ਰਾਤੀ ਬਹੁਰਿ ਨ ਛੋਡੇ ॥\" explains 62, runner-up 10242 \"ਬਹੁਰਿ ਨ ਛੋਡੈ ਹਰਿ ਸੰਗਿ ਹਿ\" 50, margin 12; candidate 51370 explains 50; almost nothing heard (8 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 311.44,
+  "end_s": 315.12,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਛੋਡ ਰੇ\" (5 chars, cache 100%); best 51370 \"ਨਹੀ ਛੋਡਉ ਰੇ ਬਾਬਾ ਰਾਮ ਨਾਮ ॥\" explains 80, runner-up 51374 \"ਤੂ ਰਾਮ ਕਹਨ ਕੀ ਛੋਡੁ ਬਾਨਿ \" 60, margin 20; candidate 51370 explains 80; almost nothing heard (5 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 315.72,
+  "end_s": 324.36,
+  "my_verseId": 59402,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਨੈ ਗਨਛਡਹੁਰ ਅਬਰਾ\" (13 chars, cache 98%); best 59402 \"ਜਰਮ ਕਰਮ ਮਛ ਕਛ ਹੁਅ ਬਰਾਹ ਜਮੁਨਾ ਕੈ ਕੂਲਿ\" explains 54, runner-up 207750 \"ਦੋਹਰਾ: ਅਗਮ ਅਪਾਰ ਅਨੰਤ ਗੁਰ\" 46, margin 8; candidate 51370 explains 38; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 320.44,
+  "end_s": 324.32,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਬਰਾ\" (3 chars, cache 97%); best 51367 \"ਸੰਗਿ ਸਖਾ ਬਹੁ ਲੀਏ ਬਾਲ ॥\" explains 67, runner-up 51370 \"ਨਹੀ ਛੋਡਉ ਰੇ ਬਾਬਾ ਰਾਮ ਨਾਮ\" 67, margin 0; candidate 51370 explains 67; almost nothing heard (3 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 324.76,
+  "end_s": 328.28,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 97%); candidate 51370 explains 0; almost nothing heard (0 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 328.84,
+  "end_s": 332.72,
+  "my_verseId": 51370,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਨਹੀ ਛੋਡਹੁਵੇੈ ਹਖਾਰਾ\" (16 chars, cache 98%); best 51370 \"ਨਹੀ ਛੋਡਉ ਰੇ ਬਾਬਾ ਰਾਮ ਨਾਮ ॥\" explains 62, runner-up 37920 \"ਬਿਨੁ ਹਰਿ ਭਗਤਿ ਨਹੀ ਛੁਟਕਾਰ\" 50, margin 12; candidate 51370 explains 62"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 333.16,
+  "end_s": 336.8,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਛੋੁਰ ਤਿ\" (6 chars, cache 97%); best 24838 \"ਲਿਖੇ ਬਾਝਹੁ ਸੁਰਤਿ ਨਾਹੀ ਬੋਲਿ ਬੋਲਿ ਗਵਾਈ\" explains 67, runner-up 24839 \"ਜਿਥੈ ਜਾਇ ਬਹੀਐ ਭਲਾ ਕਹੀਐ ਸ\" 67, margin 0; candidate 51370 explains 33; almost nothing heard (6 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51371,
+  "start_s": 336.88,
+  "end_s": 342.68,
+  "my_verseId": 51371,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਮੇਰੋ ਆਰ ਪਲਨ ਸਿਖ ਮ ਨੈ\" (15 chars, cache 98%); best 51371 \"ਮੇਰੋ ਅਉਰ ਪੜੑਨ ਸਿਉ ਨਹੀ ਕਾਮੁ ॥੧॥ ਰਹਾਉ \" explains 53, runner-up 16754 \"ਨਾਮੁ ਜਪਹੁ ਮੇਰੇ ਗੁਰਸਿਖ ਮੀ\" 47, margin 7; candidate 51371 explains 53"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 341.08,
+  "end_s": 344.4,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ੈਬਾ ਰਾ\" (5 chars, cache 97%); best 51370 \"ਨਹੀ ਛੋਡਉ ਰੇ ਬਾਬਾ ਰਾਮ ਨਾਮ ॥\" explains 80, runner-up 51376 \"ਮੋ ਕਉ ਕਹਾ ਸਤਾਵਹੁ ਬਾਰ ਬਾਰ\" 60, margin 20; candidate 51370 explains 80; almost nothing heard (5 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51370,
+  "start_s": 342.92,
+  "end_s": 370.44,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਾ ਰਾਹੀ ਲੋੋ ਕ ਪ ਤੂੰ ਮਡੂ ਤੂੰ ਮੈਡ ਮ\" (21 chars, cache 98%); best 37677 \"ਹਉ ਤੇਰਾ ਤੂ ਮੈ ਮਨਿ ਵੂਠਾ ॥੪॥੩॥੧੪॥\" explains 38, runner-up 32067 \"ਮੇਰੇ ਸਾਹਿਬ ਤੂੰ ਮੈ ਮਾਣੁ ਨ\" 38, margin 0; candidate 51370 explains 29; no pangti explains the hearing (best 38)"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51371,
+  "start_s": 345.24,
+  "end_s": 362.76,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਹੀ ਲੋੋ ਕ ਪ\" (7 chars, cache 98%); best 209675 \"ਬਿਨ ਗੁਰਦੇਵ ਸੇਵ ਆਨ ਸੇਵ ਦੁਖਦਾਇਕ ਹੈ ਲੋਕ\" explains 71, runner-up 77130 \"ਇਮ ਕਹਿ ਕੈ ਇਹ ਲੋਕ ਪਠਾਯੋ ॥\" 71, margin 0; candidate 51371 explains 43; almost nothing heard (7 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51372,
+  "start_s": 362.76,
+  "end_s": 384.4,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਤੂੰ ਮਡੂ ਤੂੰ ਮੈਡ ਮੈਡੂ ਮਡੂ ਤੂੰ ਮਡੂ ਮੈਗਹੁਹੁਹੁ ਵਗਹੁ ਵਗਹੁ ਵਗਹੁ ਵਗਹੁ ਵਗਹੁ ਵਗ\" (65 chars, cache 98%); best 1647 \"ਮਨੁ ਰੰਗਹੁ ਵਡਭਾਗੀਹੋ ਗੁਰੁ ਤੁਠਾ ਕਰੇ ਪਸਾ\" explains 31, runner-up 203209 \"ਨਦੀਆਂ ਨਾਲੇ ਵਾਹੜੇ ਗੰਗ ਸੰਗ\" 28, margin 3; candidate 51372 explains 8; no pangti explains the hearing (best 31)"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51371,
+  "start_s": 370.88,
+  "end_s": 382.44,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮਡੂ ਤੂੰ ਮਡੂ ਮੈਗਹੁਹੁਹੁ ਵਗਹੁ ਵਗਹੁ ਵਗਹੁ ਵਗਹੁ ਵਗਹੁ ਵਗਹੁ ਵਡ ਵਗ ਮ\" (46 chars, cache 98%); best 1647 \"ਮਨੁ ਰੰਗਹੁ ਵਡਭਾਗੀਹੋ ਗੁਰੁ ਤੁਠਾ ਕਰੇ ਪਸਾ\" explains 39, runner-up 203209 \"ਨਦੀਆਂ ਨਾਲੇ ਵਾਹੜੇ ਗੰਗ ਸੰਗ\" 37, margin 2; candidate 51371 explains 11; no pangti explains the hearing (best 39)"
+ },
+ {
+  "recording": "l3clip26",
+  "cand_verseId": 51372,
+  "start_s": 383.32,
+  "end_s": 389.64,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਗ ਵਗ ਵਡ ਵਗ ਵ ਵ ਵ ਵ ਵ\" (12 chars, cache 97%); best 56088 \"ਹਰਿ ਤੁਮੑ ਵਡ ਵਡੇ ਵਡੇ ਵਡ ਊਚੇ ਸਭ ਊਪਰਿ ਵ\" explains 42, runner-up 5948 \"ਜਾ ਤੁਧੁ ਭਾਵੈ ਤੇਗ ਵਗਾਵਹਿ \" 42, margin 0; candidate 51372 explains 8; no pangti explains the hearing (best 42)"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20633,
+  "start_s": 27.96,
+  "end_s": 35,
+  "my_verseId": 90020,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਜ ਕੈ ਸੰਤਤ ਮ ਜਾ ਨਾ\" (11 chars, cache 97%); best 90020 \"ਆਈ ਹੈ ਖੇਲਨ ਰਾਸ ਬਿਖੈ ਸਜ ਕੈ ਸੁ ਤ੍ਰੀਯਾ \" explains 55, runner-up 57479 \"ਬ੍ਰਹਮਨ ਗਿਆਸ ਕਰਹਿ ਚਉਬੀਸਾ \" 55, margin 0; candidate 20633 explains 45; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20632,
+  "start_s": 35.96,
+  "end_s": 44.12,
+  "my_verseId": 20632,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਬਨੀਐ ਰੈਨਰੀਐ ਬਠਾ ਕਰ\" (15 chars, cache 98%); best 20632 \"ਭਿੰਨੀ ਰੈਨੜੀਐ ਚਾਮਕਨਿ ਤਾਰੇ ॥\" explains 53, runner-up 200872 \"ਪਾਇ ਕੁਠਾਲੀ ਗਾਲੀਐ ਰੈਣੀ ਕਰ\" 47, margin 7; candidate 20632 explains 53"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20631,
+  "start_s": 36,
+  "end_s": 37.6,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਨੀ\" (2 chars, cache 94%); best 20632 \"ਭਿੰਨੀ ਰੈਨੜੀਐ ਚਾਮਕਨਿ ਤਾਰੇ ॥\" explains 100, runner-up 20644 \"ਮਿਲਿ ਸਖੀਆ ਪੁਛਹਿ ਕਹੁ ਕੰਤ \" 100, margin 0; candidate 20631 explains 0; almost nothing heard (2 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20632,
+  "start_s": 37.84,
+  "end_s": 44.12,
+  "my_verseId": 82585,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਐ ਰੈਨਰੀਐ ਬਠਾ ਕਰ\" (12 chars, cache 98%); best 82585 \"ਕਥਾ ਬ੍ਰਿਧ ਤੇ ਥੋਰੀਐ ਬਾਤ ਰਾਖਉ ॥\" explains 50, runner-up 75935 \"ਚੰਦ੍ਰਾਨਨ ਚਾਰੈ ਨਰਕ ਨਿਵਾਰੈ\" 50, margin 0; candidate 20632 explains 50; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20633,
+  "start_s": 44.56,
+  "end_s": 54.8,
+  "my_verseId": 46357,
+  "confidence": 0.91,
+  "agrees": false,
+  "reason": "heard \"ਸ ਐਸੇ ਸੰਤ ਨਾ ਤੇਰਾ ਦਇਆ ਮਿਆਰੇ\" (20 chars, cache 97%); best 46357 \"ਨਾਮ ਰਤਨੁ ਤੇਰਾ ਹੈ ਪਿਆਰੇ ॥\" explains 50, runner-up 53540 \"ਮਨਿ ਅਨਦੁ ਭਇਆ ਮਿਲਿਆ ਹਰਿ ਪ\" 45, margin 5; candidate 20633 explains 45; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20633,
+  "start_s": 51.64,
+  "end_s": 59.2,
+  "my_verseId": 27571,
+  "confidence": 0.94,
+  "agrees": false,
+  "reason": "heard \"ਮਿਆਰੇ ਹ ਆ ਕਗੈ\" (10 chars, cache 97%); best 27571 \"ਹੁਕਮੈ ਅੰਦਰਿ ਨਿੰਮਿਆ ਪਿਆਰੇ ਹੁਕਮੈ ਉਦਰ ਮ\" explains 70, runner-up 34100 \"ਜਨਮ ਮਰਣ ਦੁਖੁ ਕਾਟੀਐ ਪਿਆਰੇ\" 60, margin 10; candidate 20633 explains 40; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20634,
+  "start_s": 61.36,
+  "end_s": 77.32,
+  "my_verseId": 27748,
+  "confidence": 0.91,
+  "agrees": false,
+  "reason": "heard \"ਹ ਆਪਿ ਆਰੇ ਲ ਜਾਗੈ ਅਮ ਸਤ\" (16 chars, cache 98%); best 27748 \"ਹਲਤੁ ਪਲਤੁ ਸਵਾਰਿਆ ਪਿਆਰੇ ਮਸਤਕਿ ਸਚੁ ਨੀਸ\" explains 56, runner-up 19720 \"ਸਾਈ ਕਾਰ ਕਮਾਵਣੀ ਪਿਆਰੇ ਧੁਰ\" 50, margin 6; candidate 20634 explains 38; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20634,
+  "start_s": 77.32,
+  "end_s": 85,
+  "my_verseId": 8218,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਅਮ ਸਿਮਰੈ ਨਾਮੁ ਜੈ\" (13 chars, cache 97%); best 8218 \"ਨਾਨਕ ਸਿਮਰੈ ਨਾਮੁ ਨਿਧਾਨੁ ॥੪॥੬੬॥੧੩੫॥\" explains 69, runner-up 32060 \"ਸਿਮਰਿ ਸਿਮਰਿ ਸਿਮਰਿ ਨਾਮੁ ਜ\" 69, margin 0; candidate 20634 explains 46; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20633,
+  "start_s": 77.96,
+  "end_s": 86.4,
+  "my_verseId": 8218,
+  "confidence": 0.91,
+  "agrees": false,
+  "reason": "heard \"ਮ ਸਿਮਰੈ ਨਾਮੁ ਜੈ ਨਾਮ ਜਨ ਅ\" (18 chars, cache 98%); best 8218 \"ਨਾਨਕ ਸਿਮਰੈ ਨਾਮੁ ਨਿਧਾਨੁ ॥੪॥੬੬॥੧੩੫॥\" explains 67, runner-up 32060 \"ਸਿਮਰਿ ਸਿਮਰਿ ਸਿਮਰਿ ਨਾਮੁ ਜ\" 61, margin 6; candidate 20633 explains 33; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20634,
+  "start_s": 85.32,
+  "end_s": 88.88,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮ ਜਨ ਅਸ ਕਲ ਰਾਮ ਸੰਗਵੈ ਅਟ ਕ\" (17 chars, cache 97%); best 135244 \"ਮਾਨਹੁ ਸਕਲ ਰਾਗ ਕੀ ਮਾਲਾ ॥\" explains 47, runner-up 132343 \"ਜਾਨਤ ਸਕਲ ਰਾਵ ਅਰੁ ਰਾਨਾ ॥੧\" 47, margin 0; candidate 20634 explains 24; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20634,
+  "start_s": 87.28,
+  "end_s": 91.84,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮ ਸੰਗਵੈ ਅਟ ਕਲ ਰਾਮ ਸੰਗੈ ਅੰੰਤ ਰਵਲਾਮ ਸੁਣ\" (25 chars, cache 98%); best 206466 \"ਕੈਹਾ ਦਿਸੈ ਉਜਲਾ ਮਸੁ ਅੰਦਰਿ ਚਿਤੈ।\" explains 44, runner-up 95012 \"ਭਨੈ ਰਾਮ ਸੰਗ੍ਰਾਮ ਅਤਿ ਤੁਮਲ\" 40, margin 4; candidate 20634 explains 24; no pangti explains the hearing (best 44)"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20634,
+  "start_s": 89.2,
+  "end_s": 92.72,
+  "my_verseId": 31721,
+  "confidence": 0.91,
+  "agrees": false,
+  "reason": "heard \"ਮ ਸੰਗੈ ਅੰੰਤ ਰਵਲਾਮ ਸੁਣੈ ਸੰਤ ਰ\" (18 chars, cache 97%); best 31721 \"ਨਾਨਕੁ ਮਾਗੈ ਸੰਤ ਰਵਾਲਾ ॥੪॥੧੭॥੨੩॥\" explains 56, runner-up 40102 \"ਜੀਵਤੁ ਮਰੈ ਤਾ ਸਭੁ ਕਿਛੁ ਸੂ\" 50, margin 6; candidate 20634 explains 28; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20635,
+  "start_s": 91.92,
+  "end_s": 109.8,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੈ ਸੰਤ ਰਵ ਨਾਮੁ ਸੁਣੈ ਅੰ ਰਾ ਰਾਮਦਾਸ ਰਾਮ ਰਾਮਦਾਸ ਸ ਤ ਸੰ ਸੰ ਸੰ ਤੁ ਸੰ ਸੰ ਸੰ ਕਰ\" (50 chars, cache 98%); best 59429 \"ਸ੍ਰੀ ਸਤਿ ਨਾਮੁ ਕਰਤਾ ਪੁਰਖੁ ਗੁਰ ਰਾਮਦਾਸ \" explains 40, runner-up 59487 \"ਜਿਹ ਪਿਖਤ ਅਤਿ ਹੋਇ ਰਹਸੁ ਮਨ\" 40, margin 0; candidate 20635 explains 16; no pangti explains the hearing (best 40)"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20634,
+  "start_s": 93.04,
+  "end_s": 96.6,
+  "my_verseId": 25102,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਨਾਮੁ ਸੁਣੈ ਅੰ ਰਾ ਰਾਮਦਾਸ ਰਾ\" (19 chars, cache 97%); best 25102 \"ਹਰਿ ਨਾਮੋ ਹਰਿ ਨਾਮੁ ਸੁਣਾਏ ਮੇਰਾ ਪ੍ਰੀਤਮੁ\" explains 58, runner-up 55870 \"ਨਾਮੁ ਸੁਣੈ ਨਾਮੋ ਮਨਿ ਭਾਵੈ \" 58, margin 0; candidate 20634 explains 42; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20634,
+  "start_s": 96.88,
+  "end_s": 101.24,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਰਾਮਦਾਸ ਸ\" (7 chars, cache 98%); best 59199 \"ਕਵਿ ਕਲੵ ਠਕੁਰ ਹਰਦਾਸ ਤਨੇ ਗੁਰ ਰਾਮਦਾਸ ਸਰ\" explains 100, runner-up 26951 \"ਸੰਤਹੁ ਰਾਮਦਾਸ ਸਰੋਵਰੁ ਨੀਕਾ\" 100, margin 0; candidate 20634 explains 43; almost nothing heard (7 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20636,
+  "start_s": 109.92,
+  "end_s": 129.96,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮਨ ਮ ਮਨਨਨ ਮਨਨ ਮਨ ਵਨਨ ਵਨ ਵ ਮ ਮਨ ਮ ਮਨ\" (24 chars, cache 98%); best 207879 \"ਓੁਲਟਿ ਪਵਨ ਮਨ ਮੀਨ ਤ੍ਰਿਬੇਨੀ ਪ੍ਰਸੰਗ ਤ੍ਰ\" explains 46, runner-up 208002 \"ਉਲਟਿ ਪਵਨ ਮਨ ਮੀਨ ਕੀ ਚਪਲ ਗ\" 46, margin 0; candidate 20636 explains 21; no pangti explains the hearing (best 46)"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20635,
+  "start_s": 131.28,
+  "end_s": 150.08,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਚਰਨ ਕ ਮਾਤਾਾ ਨਾ ਕੀ ਸਤਿ ਤਨ ਕਾ ਮਾਲਾ ਧ ਨ ਨ\" (27 chars, cache 98%); best 209056 \"ਚਰਨ ਕਮਲ ਚਰਨਾਮ੍ਰਿਤ ਨਿਧਾਨ ਪਾਨ ਪ੍ਰੇਮ ਰਸ\" explains 44, runner-up 209119 \"ਚਰਨ ਕਮਲ ਚਰਨਾਮ੍ਰਿਤ ਨਿਧਾਨ \" 44, margin 0; candidate 20635 explains 30; no pangti explains the hearing (best 44)"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20636,
+  "start_s": 150.64,
+  "end_s": 162.68,
+  "my_verseId": 78045,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਬ ਮਨ ਮਸੈ ਮਨ ਹਟ ਮ\" (11 chars, cache 98%); best 78045 \"ਜਬ ਮਨਸਾ ਮਨ ਮਯਾ ਬਿਚਾਰੀ ॥\" explains 64, runner-up 39938 \"ੜਾੜੈ ਗਾਰੁੜੁ ਤੁਮ ਸੁਣਹੁ ਹਰ\" 55, margin 9; candidate 20636 explains 27; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20635,
+  "start_s": 163.56,
+  "end_s": 200.32,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨ ਕ ਮਲ ਧਿਆਨ ਰ ਚਰਣ ਕਾਪ ਪ੍ਰਭਿ ਸਰਧਾਾਰੀ ਕੰਡੀਨ ਨੜੀਐ ਕਿ ਜਮ ਕਰ\" (41 chars, cache 98%); best 20635 \"ਚਰਣ ਕਮਲ ਧਿਆਨੁ ਹਿਰਦੈ ਪ੍ਰਭ ਬਿਸਰੁ ਨਾਹੀ \" explains 39, runner-up 58362 \"ਕਬੀਰ ਨ੍ਰਿਪ ਨਾਰੀ ਕਿਉ ਨਿੰਦ\" 39, margin 0; candidate 20635 explains 39; no pangti explains the hearing (best 39)"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20632,
+  "start_s": 195.72,
+  "end_s": 201.56,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਕੰਡੀਨ ਨੜੀਐ ਕਿ ਜਮ ਕਰ ਧ\" (15 chars, cache 97%); best 40008 \"ਦੁਨੀਆ ਸਾਗਰੁ ਦੁਤਰੁ ਕਹੀਐ ਕਿਉ ਕਰਿ ਪਾਈਐ \" explains 47, runner-up 15196 \"ਏਸ ਨੋ ਕਿਆ ਆਖੀਐ ਕਿਆ ਕਰੇ ਵ\" 47, margin 0; candidate 20632 explains 40; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20631,
+  "start_s": 200.64,
+  "end_s": 203.96,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਕਿਆ ਕ\" (4 chars, cache 97%); best 20633 \"ਜਾਗਹਿ ਸੰਤ ਜਨਾ ਮੇਰੇ ਰਾਮ ਪਿਆਰੇ ॥\" explains 50, runner-up 20634 \"ਰਾਮ ਪਿਆਰੇ ਸਦਾ ਜਾਗਹਿ ਨਾਮੁ\" 50, margin 0; candidate 20631 explains 0; almost nothing heard (4 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20633,
+  "start_s": 203.6,
+  "end_s": 209.08,
+  "my_verseId": 43534,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਿਆ ਕੈ ਸੰ ਨਾਚੈਰਾ\" (11 chars, cache 97%); best 43534 \"ਜੀਭ ਰਸਾਇਣਿ ਸਾਚੈ ਰਾਤੀ ॥\" explains 64, runner-up 6717 \"ਮਨਿ ਸਾਚੈ ਰਾਤੇ ਹਰਿ ਵੇਪਰਵਾ\" 64, margin 0; candidate 20633 explains 36; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20632,
+  "start_s": 209.56,
+  "end_s": 212.84,
+  "my_verseId": 20632,
+  "confidence": 0.99,
+  "agrees": true,
+  "reason": "heard \"ਿੰਨੀ ਰੈ ਨੜਐਚਮ ਕਰਤਾਰੇ\" (16 chars, cache 100%); best 20632 \"ਭਿੰਨੀ ਰੈਨੜੀਐ ਚਾਮਕਨਿ ਤਾਰੇ ॥\" explains 75, runner-up 203017 \"ਰਾਤਿ ਅਨ੍ਹੇਰੀ ਅੰਧਕਾਰੁ ਲਖ \" 56, margin 19; candidate 20632 explains 75"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20632,
+  "start_s": 213.28,
+  "end_s": 216.6,
+  "my_verseId": 18201,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਤਮ ਘਨ ਧਾਰੇ ਤਿਮ ਘਨ ਧਾਰੇ\" (17 chars, cache 100%); best 18201 \"ਜੇਤੇ ਖੰਡ ਬ੍ਰਹਮੰਡ ਉਧਾਰੇ ਤਿੰਨੑ ਖੇ ॥\" explains 59, runner-up 125827 \"ਹਾਰ ਸਿੰਗਾਰ ਚਾਰੁ ਤਨ ਧਾਰੇ \" 59, margin 0; candidate 20632 explains 35; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20632,
+  "start_s": 217,
+  "end_s": 220.2,
+  "my_verseId": 205687,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਮੀਿਲੈ ਗਰੀਐ ਜਮਨ ਧਾਰ\" (15 chars, cache 97%); best 205687 \"ਸਾਹ ਆਏ ਘਰਿ ਆਪਣੈ ਚੋਰ ਜਾਰਿ ਲੈ ਗਰਦਨਿ ਮਾ\" explains 53, runner-up 44306 \"ਕਾਮੁ ਕ੍ਰੋਧੁ ਲੈ ਗਰਦਨਿ ਮਾਰ\" 47, margin 7; candidate 20632 explains 33; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20633,
+  "start_s": 220.72,
+  "end_s": 224.04,
+  "my_verseId": 19714,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਗਿਨ ਸੰਤ ਕੇਨਾ ਮਰੇ ਨ ਪਿਆਰੇ\" (18 chars, cache 97%); best 19714 \"ਨਾਨਕ ਰੰਗਿ ਰਤੇ ਨਾਰਾਇਣੈ ਪਿਆਰੇ ਮਾਤੇ ਸਹਜ\" explains 56, runner-up 20381 \"ਗੁਰੁ ਨਾਨਕੁ ਪਾਇਆ ਮੇਰੇ ਪਿਆ\" 56, margin 0; candidate 20633 explains 56; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20633,
+  "start_s": 224.48,
+  "end_s": 227.72,
+  "my_verseId": 27744,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਗੈ ਸੰਤ ਜੈ ਨ ਖਲਿਆ ਪਿਆ\" (14 chars, cache 97%); best 27744 \"ਦੁਖ ਸਾਗਰੁ ਤਿਨ ਲੰਘਿਆ ਪਿਆਰੇ ਭਵਜਲੁ ਪਾਰਿ\" explains 57, runner-up 27582 \"ਨਾਉ ਮਿਲੈ ਸੰਤੋਖੀਆਂ ਪਿਆਰੇ \" 57, margin 0; candidate 20633 explains 36; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20634,
+  "start_s": 229.64,
+  "end_s": 249.32,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਣੀ ਲਹੀਐ ਗ ਕਰਸ ਅ ਜਤਨਤਾ ਮਰਾ ਭਆ\" (21 chars, cache 98%); best 9997 \"ਚਰਣੀ ਲਾਗੈ ਤਾ ਮਹਲੁ ਪਾਵੈ ॥\" explains 33, runner-up 17446 \"ਬੁਰਾ ਭਲਾ ਕਹੁ ਕਿਸ ਨੋ ਕਹੀਐ\" 33, margin 0; candidate 20634 explains 19; no pangti explains the hearing (best 33)"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20635,
+  "start_s": 246.24,
+  "end_s": 269.16,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਜ ਮਰਾਿਆ ਸਾਨ ਤਾਨ ਸਾਨ ਸਾਨ ਸਾਨ ਕਾਨ ਹਰਿ ਮਨ ਮੋਹ ਬਿਕਾਰੁ ਮਨ ਕ\" (41 chars, cache 98%); best 20636 \"ਤਜਿ ਮਾਨੁ ਮੋਹੁ ਬਿਕਾਰੁ ਮਨ ਕਾ ਕਲਮਲਾ ਦੁਖ\" explains 44, runner-up 209296 \"ਦੁਹੂੰ ਦਲ ਬਿਖੈ ਜੈਸੇ ਬਾਜਤ \" 41, margin 2; candidate 20635 explains 27; no pangti explains the hearing (best 44)"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20635,
+  "start_s": 249.56,
+  "end_s": 269.36,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਜ ਮਰਾਿਆ ਸਾਨ ਤਾਨ ਸਾਨ ਸਾਨ ਸਾਨ ਕਾਨ ਹਰਿ ਮਨ ਮੋਹ ਬਿਕਾਰੁ ਮਨ ਕਾ\" (42 chars, cache 98%); best 20636 \"ਤਜਿ ਮਾਨੁ ਮੋਹੁ ਬਿਕਾਰੁ ਮਨ ਕਾ ਕਲਮਲਾ ਦੁਖ\" explains 45, runner-up 92431 \"ਕਾਨ ਪ੍ਰਮਾਨ ਸਰਾਸਨ ਤਾਨਿ ਮਹ\" 40, margin 5; candidate 20635 explains 29; no pangti explains the hearing (best 45)"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20636,
+  "start_s": 270.6,
+  "end_s": 283.48,
+  "my_verseId": 20636,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਜ ਨ ਕ ਹੋ ਤੁੰਡਿਕਾਰ ਮਾਨ ਕਾ ਇਕ ਕਲ ਮਲਾ\" (24 chars, cache 98%); best 20636 \"ਤਜਿ ਮਾਨੁ ਮੋਹੁ ਬਿਕਾਰੁ ਮਨ ਕਾ ਕਲਮਲਾ ਦੁਖ\" explains 62, runner-up 126467 \"ਤਾ ਕੀ ਪ੍ਰਭਾ ਸਮਾਨ ਕਹੋ ਕਿਹ\" 42, margin 21; candidate 20636 explains 62"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20637,
+  "start_s": 286.24,
+  "end_s": 305.92,
+  "my_verseId": 20637,
+  "confidence": 0.99,
+  "agrees": true,
+  "reason": "heard \"ਿ ਮਨ ਮੁਤ ਨਾਾਨ ਸਦਾ ਧਨ ਮੰਤ ਨਾਨਕ ਹਰਿਦਾਸ ਸੰਤ ਧਿਆ\" (32 chars, cache 98%); best 20637 \"ਬਿਨਵੰਤਿ ਨਾਨਕ ਸਦਾ ਜਾਗਹਿ ਹਰਿ ਦਾਸ ਸੰਤ ਪ\" explains 56, runner-up 13344 \"ਸਾਧਸੰਗਿ ਨਾਨਕ ਹਰਿ ਧਿਆਇਆ ॥\" 47, margin 9; candidate 20637 explains 56"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20637,
+  "start_s": 293.96,
+  "end_s": 306.36,
+  "my_verseId": 20637,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਨ ਮੰਤ ਨਾਨਕ ਹਰਿਦਾਸ ਸੰਤ ਧਿਆਨ\" (19 chars, cache 98%); best 20637 \"ਬਿਨਵੰਤਿ ਨਾਨਕ ਸਦਾ ਜਾਗਹਿ ਹਰਿ ਦਾਸ ਸੰਤ ਪ\" explains 68, runner-up 28936 \"ਜਨ ਨਾਨਕ ਹਰਿ ਹਿਰਦੈ ਸਦ ਧਿਆ\" 58, margin 11; candidate 20637 explains 68"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20632,
+  "start_s": 307.44,
+  "end_s": 313,
+  "my_verseId": 20632,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਪਿਨਐੈ ਨੜੀਐ ਜਾਾਨਗੈ ਧਾਰੇ\" (19 chars, cache 98%); best 20632 \"ਭਿੰਨੀ ਰੈਨੜੀਐ ਚਾਮਕਨਿ ਤਾਰੇ ॥\" explains 53, runner-up 42257 \"ਤਉ ਦੇਵਾਨਾ ਜਾਣੀਐ ਜਾ ਸਾਹਿਬ\" 42, margin 11; candidate 20632 explains 53"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20633,
+  "start_s": 315.76,
+  "end_s": 328.08,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮੇ ਕਬੀਰ ਗੂ ਮਰ ਨਾਮ ਕਉਮਖ\" (17 chars, cache 98%); best 15298 \"ਕਹਿ ਕਬੀਰ ਭੈ ਸਾਗਰ ਤਰਨ ਕਉ ਮੈ ਸਤਿਗੁਰ ਓਟ\" explains 47, runner-up 104957 \"ਬੈਰ ਨਾਮ ਇਕ ਬੀਰ ਮਹਾ ਦੁਰ ਧ\" 47, margin 0; candidate 20633 explains 35; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20634,
+  "start_s": 320.48,
+  "end_s": 332.48,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਗੂ ਮਰ ਨਾਮ ਕਉਮਖ ਮੇਰੋ ਨਾਮਟੀਮ ਮਰੋ\" (24 chars, cache 98%); best 88456 \"ਜੋਰਿ ਪ੍ਰਨਾਮ ਕਰੋ ਹਮਰੋ ਕਰ ਲਾਜ ਕੀ ਕਾਟਿ \" explains 46, runner-up 136967 \"ਤੁਮਰੋ ਨਾਮ ਕਹਾ ਪਹਿਚਨਿਯਤ ॥\" 42, margin 4; candidate 20634 explains 38; no pangti explains the hearing (best 46)"
+ },
+ {
+  "recording": "l3clip34",
+  "cand_verseId": 20634,
+  "start_s": 328.16,
+  "end_s": 332.88,
+  "my_verseId": 94727,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ੇਰੋ ਨਾਮਟੀਮ ਮਰੋ ਨਾ\" (14 chars, cache 98%); best 94727 \"ਮੇਰੋ ਨਾਮ ਬਸੈ ਰਿਦ ਮਾਹੀ ॥੧੭੩੭॥\" explains 64, runner-up 76085 \"ਭਖਰੀ ਕੰਧਾਰੀ ਗੋਰ ਗਖਰੀ ਗਰਦ\" 64, margin 0; candidate 20634 explains 36; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23455,
+  "start_s": 27.24,
+  "end_s": 38.2,
+  "my_verseId": 23455,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਲੋਕਨ ਕੀਜੁਠਾਈ ਉਪਮਾ ਨ ਕੁਪਮਾ ਤੇ ਬਸਨੁ ਸਜਾ\" (30 chars, cache 116%); best 23455 \"ਲੋਕਨ ਕੀ ਚਤੁਰਾਈ ਉਪਮਾ ਤੇ ਬੈਸੰਤਰਿ ਜਾਰਿ \" explains 60, runner-up 20517 \"ਇਹੁ ਦਾਨੁ ਮਾਨੁ ਨਾਨਕੁ ਪਾਏ \" 43, margin 17; candidate 23455 explains 60"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23456,
+  "start_s": 41.36,
+  "end_s": 50.76,
+  "my_verseId": 23456,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਈ ਭਲਾ ਕਹੁ ਭਵਵੈ ਬੁਰਾ ਹਮ ਕਨ ਦੀੀਉ ਬੂਹ ਕਾ\" (28 chars, cache 98%); best 23456 \"ਕੋਈ ਭਲਾ ਕਹਉ ਭਾਵੈ ਬੁਰਾ ਕਹਉ ਹਮ ਤਨੁ ਦੀਓ\" explains 57, runner-up 43803 \"ਅੰਧੁਲੇ ਸੋਝੀ ਬੂਝ ਨ ਕਾਈ ਲੋ\" 36, margin 21; candidate 23456 explains 57"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23453,
+  "start_s": 53.92,
+  "end_s": 59.84,
+  "my_verseId": 75392,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਬ ਹਮ ਟਲੀ ਠਪ ਪੈਹ\" (11 chars, cache 98%); best 75392 \"ਗਾਹ ਹਾਰੇ ਗੋਰਨ ਮਨਾਇ ਹਾਰੇ ਮੜ੍ਹੀ ਮੱਟ ਲੀ\" explains 55, runner-up 23453 \"ਅਬ ਹਮ ਚਲੀ ਠਾਕੁਰ ਪਹਿ ਹਾਰਿ\" 55, margin 0; candidate 23453 explains 55; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23454,
+  "start_s": 62.4,
+  "end_s": 73.56,
+  "my_verseId": 23454,
+  "confidence": 0.92,
+  "agrees": true,
+  "reason": "heard \"ਬ ਹਮ ਸਰਣ ਪ੍ਰਭ ਕੀ ਆਟ ਵਹ ਚਰਣ ਪ੍ਰਭੂਖੀ ਤਿਟ ਅਉ ਚਰਣ ਪ੍ਰਭੂ ਚ\" (40 chars, cache 98%); best 23454 \"ਜਬ ਹਮ ਸਰਣਿ ਪ੍ਰਭੂ ਕੀ ਆਈ ਰਾਖੁ ਪ੍ਰਭੂ ਭਾ\" explains 52, runner-up 33057 \"ਹਰਿ ਪਾਈਐ ਭਾਗੀ ਸੁਣਿ ਬੈਰਾਗ\" 50, margin 2; candidate 23454 explains 52"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23454,
+  "start_s": 75.08,
+  "end_s": 86,
+  "my_verseId": 23454,
+  "confidence": 0.99,
+  "agrees": true,
+  "reason": "heard \"ਬ ਹਮ ਕਰ ਰਾਸ ਪ੍ਰਭੂ ਭਾਵਹਿ ਮਾਰ ਰਾਖ ਪ੍ਰਭ\" (28 chars, cache 98%); best 23454 \"ਜਬ ਹਮ ਸਰਣਿ ਪ੍ਰਭੂ ਕੀ ਆਈ ਰਾਖੁ ਪ੍ਰਭੂ ਭਾ\" explains 64, runner-up 56834 \"ਹਮਰੈ ਪ੍ਰਭਿ ਹਮ ਲੋਚ ਲਗਾਈ ਹ\" 54, margin 11; candidate 23454 explains 64"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23454,
+  "start_s": 85.92,
+  "end_s": 98.64,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਤਾਰ ਰਾਖ\" (6 chars, cache 97%); best 141086 \"ਜ਼ਨੇ ਪੇਚ ਦਸਤਾਰ ਰਾ ਤਾਬਦਾਦ ॥\" explains 83, runner-up 127803 \"ਖੰਡ ਖੰਡ ਕਰਿ ਗਾਡਿ ਭੀਤਿ ਤਰ\" 83, margin 0; candidate 23454 explains 50; almost nothing heard (6 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23455,
+  "start_s": 86.08,
+  "end_s": 94.92,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਤਾਰ\" (3 chars, cache 98%); best 23456 \"ਕੋਈ ਭਲਾ ਕਹਉ ਭਾਵੈ ਬੁਰਾ ਕਹਉ ਹਮ ਤਨੁ ਦੀਓ\" explains 67, runner-up 23457 \"ਜੋ ਆਵਤ ਸਰਣਿ ਠਾਕੁਰ ਪ੍ਰਭੁ \" 67, margin 0; candidate 23455 explains 67; almost nothing heard (3 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23456,
+  "start_s": 95.04,
+  "end_s": 108,
+  "my_verseId": 23454,
+  "confidence": 0.98,
+  "agrees": false,
+  "reason": "heard \"ਰਾਖ ਪ੍ਰਭੂ ਭਾਵੈ ਮਾਰ ਪ੍ਰਭੂ ਭਾ ਮਹਿ ਮਾਰ ਅ\" (29 chars, cache 98%); best 23454 \"ਜਬ ਹਮ ਸਰਣਿ ਪ੍ਰਭੂ ਕੀ ਆਈ ਰਾਖੁ ਪ੍ਰਭੂ ਭਾ\" explains 76, runner-up 95755 \"ਰਾਖੀ ਪ੍ਰਭੂ ਪਤਿ ਮੋਰ ਭਲੀ ਬ\" 59, margin 17; candidate 23456 explains 28"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23455,
+  "start_s": 98.92,
+  "end_s": 107.28,
+  "my_verseId": 23454,
+  "confidence": 0.97,
+  "agrees": false,
+  "reason": "heard \"ਭੂ ਭਾਵੈ ਮਾਰ ਪ੍ਰਭੂ ਭਾ ਮਹਿ ਮਾਰ ਅ\" (23 chars, cache 98%); best 23454 \"ਜਬ ਹਮ ਸਰਣਿ ਪ੍ਰਭੂ ਕੀ ਆਈ ਰਾਖੁ ਪ੍ਰਭੂ ਭਾ\" explains 74, runner-up 210147 \"ਜੋਈ ਪ੍ਰਭੁ ਭਾਵੈ ਤਾਹਿ ਸਬੈ \" 61, margin 13; candidate 23455 explains 22"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23456,
+  "start_s": 107.6,
+  "end_s": 117.12,
+  "my_verseId": 23457,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਜੋ ਅਵਤ ਸਸੁਰ ਸਭ ਤੁਮਲੀ\" (16 chars, cache 98%); best 23457 \"ਜੋ ਆਵਤ ਸਰਣਿ ਠਾਕੁਰ ਪ੍ਰਭੁ ਤੁਮਰੀ ਤਿਸੁ ਰ\" explains 50, runner-up 51910 \"ਹਉ ਨਾਹੀ ਕਿਛੁ ਮੈ ਕਿਆ ਹੋਸਾ\" 50, margin 0; candidate 23456 explains 19"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23457,
+  "start_s": 113.28,
+  "end_s": 124.8,
+  "my_verseId": 23457,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਜੋ ਅਵਤ ਸਸੁਰ ਸਭ ਤੁਮਲੀ ਇਸੁ ਰਾਖਾ ਕੀਰਪਾ ਧਾਰ\" (31 chars, cache 97%); best 23457 \"ਜੋ ਆਵਤ ਸਰਣਿ ਠਾਕੁਰ ਪ੍ਰਭੁ ਤੁਮਰੀ ਤਿਸੁ ਰ\" explains 58, runner-up 37798 \"ਜਾ ਕੀ ਓਟ ਗਹੀ ਸੁਖੁ ਪਾਇਆ ਰ\" 45, margin 13; candidate 23457 explains 58"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23457,
+  "start_s": 117.6,
+  "end_s": 124.76,
+  "my_verseId": 23457,
+  "confidence": 0.72,
+  "agrees": true,
+  "reason": "heard \"ਇਸੁ ਰਾਖਾ ਕੀਰਪਾ ਧਾਰ\" (15 chars, cache 97%); best 23457 \"ਜੋ ਆਵਤ ਸਰਣਿ ਠਾਕੁਰ ਪ੍ਰਭੁ ਤੁਮਰੀ ਤਿਸੁ ਰ\" explains 73, runner-up 37798 \"ਜਾ ਕੀ ਓਟ ਗਹੀ ਸੁਖੁ ਪਾਇਆ ਰ\" 73, margin 0; candidate 23457 explains 73"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23457,
+  "start_s": 125.64,
+  "end_s": 137.2,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਤਿਸਰ ਪਚ ਕਧਾਲ ਰਖ ਮੂ\" (14 chars, cache 98%); best 32524 \"ਨਾਮ ਬਿਨਾ ਸੁਖੁ ਨਾਹਿ ਸਰਪਰ ਹਾਰਿਆ ॥੪॥\" explains 43, runner-up 81938 \"ਅਤਿ ਪ੍ਰਪੰਚ ਕਰ ਬਨਹਿ ਸਿਧਾਯ\" 43, margin 0; candidate 23457 explains 43; no pangti explains the hearing (best 43)"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23458,
+  "start_s": 125.68,
+  "end_s": 137.84,
+  "my_verseId": 36171,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਿਸਰ ਪਚ ਕਧਾਲ ਰਖ ਮੂਏ\" (14 chars, cache 98%); best 36171 \"ਜਿਸ ਨੋ ਸਤਿਗੁਰ ਨਾਲਿ ਹਰਿ ਸਰਧਾ ਲਾਏ ਤਿਸੁ\" explains 50, runner-up 45827 \"ਬਿਨੁ ਸਤਿਗੁਰ ਪਚਿ ਮੂਏ ਸਾਕਤ\" 43, margin 7; candidate 23458 explains 21; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23458,
+  "start_s": 138.08,
+  "end_s": 151.04,
+  "my_verseId": 23458,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਨ ਨਾਨਕ ਕਰਣ ਸੁਮਾਰੀ ਹਰਿ ਜੀਉ ਰਾਖਹੁ ਲਾ ਸਾਚ\" (30 chars, cache 98%); best 23458 \"ਜਨ ਨਾਨਕ ਸਰਣਿ ਤੁਮਾਰੀ ਹਰਿ ਜੀਉ ਰਾਖਹੁ ਲਾ\" explains 80, runner-up 30857 \"ਨਾਨਕ ਸਰਣਿ ਤੁਮੑਾਰੀ ਹਰਿ ਜੀ\" 53, margin 27; candidate 23458 explains 80"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23458,
+  "start_s": 142.32,
+  "end_s": 149.36,
+  "my_verseId": 54485,
+  "confidence": 0.94,
+  "agrees": false,
+  "reason": "heard \"ਰਾਖਹੁ ਲਾ ਸਾਚ\" (10 chars, cache 97%); best 54485 \"ਤੁਮੑਰੀ ਸਰਣਿ ਪਰੇ ਪਤਿ ਰਾਖਹੁ ਸਾਚੁ ਮਿਲੈ \" explains 80, runner-up 31263 \"ਜਨ ਨਾਨਕ ਨਾਮੁ ਪਰਿਓ ਗੁਰ ਚੇ\" 70, margin 10; candidate 23458 explains 70; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23458,
+  "start_s": 150.64,
+  "end_s": 161.56,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਅਗ\" (2 chars, cache 97%); best 23452 \"ਦੇਵਗੰਧਾਰੀ ॥\" explains 50, runner-up 23453 \"ਅਬ ਹਮ ਚਲੀ ਠਾਕੁਰ ਪਹਿ ਹਾਰਿ\" 50, margin 0; candidate 23458 explains 0; almost nothing heard (2 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23452,
+  "start_s": 151.12,
+  "end_s": 155.16,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਅਗ\" (2 chars, cache 98%); best 23452 \"ਦੇਵਗੰਧਾਰੀ ॥\" explains 50, runner-up 23453 \"ਅਬ ਹਮ ਚਲੀ ਠਾਕੁਰ ਪਹਿ ਹਾਰਿ\" 50, margin 0; candidate 23452 explains 50; almost nothing heard (2 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23453,
+  "start_s": 155.36,
+  "end_s": 165.8,
+  "my_verseId": 51378,
+  "confidence": 0.99,
+  "agrees": false,
+  "reason": "heard \"ਇਕੁ ਰਾਮ ਨਛੋਅ ਵਡਹੁ ਗੁਰੈਡਾ\" (20 chars, cache 97%); best 51378 \"ਇਕੁ ਰਾਮੁ ਨ ਛੋਡਉ ਗੁਰਹਿ ਗਾਰਿ ॥\" explains 60, runner-up 57149 \"ਸਭੁ ਕਿਛੁ ਅਪਨਾ ਇਕੁ ਰਾਮੁ ਪ\" 45, margin 15; candidate 23453 explains 25; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23453,
+  "start_s": 162.4,
+  "end_s": 165.48,
+  "my_verseId": 51378,
+  "confidence": 0.98,
+  "agrees": false,
+  "reason": "heard \"ਇਕੁ ਰਾਮ ਨਛੋਅ ਵਡਹੁ ਗੁਰੈ\" (18 chars, cache 97%); best 51378 \"ਇਕੁ ਰਾਮੁ ਨ ਛੋਡਉ ਗੁਰਹਿ ਗਾਰਿ ॥\" explains 67, runner-up 15378 \"ਕਹਿ ਕਬੀਰ ਰਾਜਾ ਰਾਮ ਨ ਛੋਡਉ\" 44, margin 22; candidate 23453 explains 28; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip29",
+  "cand_verseId": 23454,
+  "start_s": 166.64,
+  "end_s": 173.6,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੁ ਰਵ ਨ ਛੋਇ ਸੋਗਉ ਘਾ ਵੀਚਾਰ ਮਮਹਿ ਮਾਰਟ\" (26 chars, cache 97%); best 49308 \"ਆਤਮ ਮਹਿ ਰਾਮੁ ਰਾਮ ਮਹਿ ਆਤਮੁ ਚੀਨਸਿ ਗੁਰ \" explains 42, runner-up 1127 \"ਜਿਸ ਨਉ ਆਪਿ ਦਇਆਲੁ ਹੋਇ ਸੋ \" 38, margin 4; candidate 23454 explains 27; no pangti explains the hearing (best 42)"
+ },
+ {
+  "recording": "l3clip23",
+  "cand_verseId": 43854,
+  "start_s": 29.48,
+  "end_s": 37.76,
+  "my_verseId": 43854,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਸੰਤ ਸਭਾ ਮਹਿ ਇਹ ਰਵਸੋ ਇਹ\" (16 chars, cache 98%); best 43854 \"ਸੰਤ ਸਭਾ ਮਹਿ ਇਹੁ ਰਸੁ ਟੋਲਹੁ ॥\" explains 69, runner-up 57932 \"ਸੰਤ ਸਭਾ ਮਹਿ ਬੈਸਿ ਕਿ ਕੀਰਤ\" 56, margin 12; candidate 43854 explains 69"
+ },
+ {
+  "recording": "l3clip23",
+  "cand_verseId": 43854,
+  "start_s": 38,
+  "end_s": 52.36,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਤ ਸਭਾਵਹ ਸੇ ਅਸਗਾ ਹਮ ਨਾ ਲ ਰਨਹੁ ਲ\" (22 chars, cache 98%); best 203922 \"ਅਬਿਗਤਿ ਗਤਿ ਅਸਗਾਹੁ ਨ ਅਲਖੁ ਲਖਾਈਐ ॥੧੯॥\" explains 45, runner-up 43854 \"ਸੰਤ ਸਭਾ ਮਹਿ ਇਹੁ ਰਸੁ ਟੋਲਹ\" 41, margin 5; candidate 43854 explains 41; no pangti explains the hearing (best 45)"
+ },
+ {
+  "recording": "l3clip23",
+  "cand_verseId": 43854,
+  "start_s": 47.12,
+  "end_s": 55.92,
+  "my_verseId": 9347,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਲ ਰਨਹੁ ਲਿਰ ਰਾਮ ਰਾਮ\" (14 chars, cache 98%); best 9347 \"ਹਰਿ ਰਾਮ ਰਾਮ ਰਾਮ ਰਾਮਾ ॥\" explains 57, runner-up 205960 \"ਹਿੰਦੂ ਆਖਨਿ ਰਾਮ ਰਾਮ ਮੁਸਲਮ\" 57, margin 0; candidate 43854 explains 21; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip23",
+  "cand_verseId": 43853,
+  "start_s": 53.48,
+  "end_s": 60.36,
+  "my_verseId": 41685,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਿਰ ਰਾਮ ਰਾਮ ਫਿਰ ਰਾਮ ਗੁਰ ਬਚਨੀਹੁ\" (23 chars, cache 99%); best 41685 \"ਰਾਮ ਨਾਮੁ ਜਪਿਓ ਗੁਰ ਬਚਨੀ ਹਰਿ ਧਾਰੀ ਹਰਿ \" explains 57, runner-up 43853 \"ਰਾਮ ਨਾਮੁ ਗੁਰ ਬਚਨੀ ਬੋਲਹੁ \" 52, margin 4; candidate 43853 explains 52; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip23",
+  "cand_verseId": 43853,
+  "start_s": 57,
+  "end_s": 60.4,
+  "my_verseId": 47622,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਮ ਗੁਰ ਬਚਨੀਹੁ\" (10 chars, cache 97%); best 47622 \"ਤਿਨ ਕੇ ਪਾਪ ਇਕ ਨਿਮਖ ਸਭਿ ਲਾਥੇ ਜਿਨ ਗੁਰ \" explains 80, runner-up 27690 \"ਗੁਰ ਬਚਨੀ ਸੁਖੁ ਊਪਜੈ ਭਾਈ ਸ\" 80, margin 0; candidate 43853 explains 70; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip23",
+  "cand_verseId": 43853,
+  "start_s": 61.12,
+  "end_s": 64.44,
+  "my_verseId": 43853,
+  "confidence": 0.92,
+  "agrees": true,
+  "reason": "heard \"ਗੁਰ ਬਚਨੀ ਕੋ ਲੋ\" (11 chars, cache 97%); best 43853 \"ਰਾਮ ਨਾਮੁ ਗੁਰ ਬਚਨੀ ਬੋਲਹੁ ॥\" explains 82, runner-up 19004 \"ਸਤਿਗੁਰ ਬਚਨੀ ਏਕੋ ਜਾਤਾ ॥\" 73, margin 9; candidate 43853 explains 82"
+ },
+ {
+  "recording": "l3clip23",
+  "cand_verseId": 43853,
+  "start_s": 65.24,
+  "end_s": 68.48,
+  "my_verseId": 36640,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਨਾਮ ਭਗਤੀ ਕਉ  ਚ\" (10 chars, cache 97%); best 36640 \"ਰਾਮ ਭਗਤ ਕੇ ਪਾਨੀਹਾਰ ॥੧॥ ਰਹਾਉ ॥\" explains 60, runner-up 20595 \"ਨਾਮ ਧਾਰੀਕ ਉਧਾਰੇ ਭਗਤਹ ਸੰਸ\" 60, margin 0; candidate 43853 explains 50; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip23",
+  "cand_verseId": 43853,
+  "start_s": 69.36,
+  "end_s": 74.84,
+  "my_verseId": 47122,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਨਾਮ ਗੁਰਿ ਬਲੀਏ\" (11 chars, cache 97%); best 47122 \"ਗੁਰਿ ਬਖਸਿਆ ਨਾਮੁ ਨਿਧਾਨੁ ਸਭੋ ਦੁਖੁ ਲਥਾ \" explains 55, runner-up 7189 \"ਗੁਰ ਦੀਪਕੁ ਗਿਆਨੁ ਸਦਾ ਮਨਿ \" 55, margin 0; candidate 43853 explains 55; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip23",
+  "cand_verseId": 43854,
+  "start_s": 75.16,
+  "end_s": 97.52,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਤ ਸਭਾ ਮੈ ਸੰਡ ਨਾ ਸੈ ਇਹਸ ਨਾ ਵਹੁ ਭਹੁ ਵਗਹੁ ਭ\" (28 chars, cache 98%); best 43854 \"ਸੰਤ ਸਭਾ ਮਹਿ ਇਹੁ ਰਸੁ ਟੋਲਹੁ ॥\" explains 39, runner-up 42354 \"ਐਥੈ ਨਾਵਹੁ ਭੁਲਿਆ ਫਿਰਿ ਹਥੁ\" 39, margin 0; candidate 43854 explains 39; no pangti explains the hearing (best 39)"
+ },
+ {
+  "recording": "l3clip23",
+  "cand_verseId": 43855,
+  "start_s": 84.2,
+  "end_s": 88.76,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ੈ ਇਹਸ\" (4 chars, cache 98%); best 43854 \"ਸੰਤ ਸਭਾ ਮਹਿ ਇਹੁ ਰਸੁ ਟੋਲਹੁ ॥\" explains 50, runner-up 43858 \"ਅੰਤ ਕਾਲਿ ਜਮੁ ਜੋਹਿ ਨ ਸਾਕੈ\" 50, margin 0; candidate 43855 explains 25; almost nothing heard (4 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58712,
+  "start_s": 14.04,
+  "end_s": 32.16,
+  "my_verseId": 58712,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਭਾਇਆ ਨਾ ਤੇਰਾਤ ਕਥੂਰੀ ਵੰਡੀਐ ਮਰਾਤਿ ਕਥੂਰੀ ਮੰਡੀ\" (33 chars, cache 98%); best 58712 \"ਫਰੀਦਾ ਰਾਤਿ ਕਥੂਰੀ ਵੰਡੀਐ ਸੁਤਿਆ ਮਿਲੈ ਨ \" explains 64, runner-up 200390 \"ਸਿਧਿ ਬੋਲਨਿ ਸੁਭਿ ਬਚਨਿ ਧਨੁ\" 45, margin 18; candidate 58712 explains 64"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58712,
+  "start_s": 32.44,
+  "end_s": 44.6,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਐ ਇਹ ਲਾ ਤ ਕਥੂਰੀ ਮਟੀਐ ਜਾਤ ਕ\" (19 chars, cache 98%); best 88639 \"ਪ੍ਰਾਤ ਭਯੋ ਚੁਹਲਾਤ ਚਿਰੀ ਜਲਜਾਤ ਖਿਰੇ ਬਨ \" explains 47, runner-up 58712 \"ਫਰੀਦਾ ਰਾਤਿ ਕਥੂਰੀ ਵੰਡੀਐ ਸ\" 47, margin 0; candidate 58712 explains 47; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58712,
+  "start_s": 44.68,
+  "end_s": 61.92,
+  "my_verseId": 58712,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ੂਰੀ ਵੰਡੀਐ ਸੁਟਿਆ ਮਿਲੈ ਨ ਬ ਹਾ ਸੁਤਿਆ ਮਿਲੈ ਨ ਭਾਾਇ\" (34 chars, cache 97%); best 58712 \"ਫਰੀਦਾ ਰਾਤਿ ਕਥੂਰੀ ਵੰਡੀਐ ਸੁਤਿਆ ਮਿਲੈ ਨ \" explains 79, runner-up 2381 \"ਪੂੰਜੀ ਸਾਚੀ ਗੁਰੁ ਮਿਲੈ ਨਾ \" 47, margin 32; candidate 58712 explains 79"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58712,
+  "start_s": 46.04,
+  "end_s": 61.84,
+  "my_verseId": 58712,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਡੀਐ ਸੁਟਿਆ ਮਿਲੈ ਨ ਬ ਹਾ ਸੁਤਿਆ ਮਿਲੈ ਨ ਭਾਾਇ\" (30 chars, cache 98%); best 58712 \"ਫਰੀਦਾ ਰਾਤਿ ਕਥੂਰੀ ਵੰਡੀਐ ਸੁਤਿਆ ਮਿਲੈ ਨ \" explains 77, runner-up 2381 \"ਪੂੰਜੀ ਸਾਚੀ ਗੁਰੁ ਮਿਲੈ ਨਾ \" 50, margin 27; candidate 58712 explains 77"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58712,
+  "start_s": 61.92,
+  "end_s": 73.24,
+  "my_verseId": 58712,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਰਾਤਿ ਘਥੂਠ ਵੰਡੀਐ ਵਰੀਤਾਰਥ ਖਥਰੀ ਵ\" (24 chars, cache 98%); best 58712 \"ਫਰੀਦਾ ਰਾਤਿ ਕਥੂਰੀ ਵੰਡੀਐ ਸੁਤਿਆ ਮਿਲੈ ਨ \" explains 54, runner-up 58588 \"ਫਰੀਦਾ ਰਾਤੀ ਵਡੀਆਂ ਧੁਖਿ ਧੁ\" 42, margin 13; candidate 58712 explains 54"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58712,
+  "start_s": 73.36,
+  "end_s": 92.28,
+  "my_verseId": 58712,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਡੀ ਹੈ ਮ ਪਨ ਪ ਮਨ ਪ ਰਾਤਿ ਕਥੂਰੀ ਵੰਡੀਐ ਤ ਵੰਡੀਐ ਰਾਤਿ ਕਥ\" (35 chars, cache 97%); best 58712 \"ਫਰੀਦਾ ਰਾਤਿ ਕਥੂਰੀ ਵੰਡੀਐ ਸੁਤਿਆ ਮਿਲੈ ਨ \" explains 57, runner-up 3376 \"ਹਰਿ ਕੀ ਵਡਿਆਈ ਵਡੀ ਹੈ ਹਰਿ \" 40, margin 17; candidate 58712 explains 57"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58712,
+  "start_s": 92.36,
+  "end_s": 109,
+  "my_verseId": 58712,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਰੀ ਵੰਡੀਐ ਸੁ ਧ ਮਿਲੈ ਨ ਸਾ ਸੁਤਿਆ ਨਾਲੈ ਨ ਭਾਵ\" (29 chars, cache 98%); best 58712 \"ਫਰੀਦਾ ਰਾਤਿ ਕਥੂਰੀ ਵੰਡੀਐ ਸੁਤਿਆ ਮਿਲੈ ਨ \" explains 69, runner-up 205512 \"ਥੋਮ ਕਥੂਰੀ ਵਾਸੁ ਲੈ ਨਕੁ ਮਰ\" 45, margin 24; candidate 58712 explains 69"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58712,
+  "start_s": 93.52,
+  "end_s": 109.04,
+  "my_verseId": 58712,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ੰਡੀਐ ਸੁ ਧ ਮਿਲੈ ਨ ਸਾ ਸੁਤਿਆ ਨਾਲੈ ਨ ਭਾਵ\" (26 chars, cache 98%); best 58712 \"ਫਰੀਦਾ ਰਾਤਿ ਕਥੂਰੀ ਵੰਡੀਐ ਸੁਤਿਆ ਮਿਲੈ ਨ \" explains 65, runner-up 208387 \"ਪਰ ਬਸਿ ਹੋਇ ਜੈਸੀ ਜੈਸੀਐ ਸੰ\" 42, margin 23; candidate 58712 explains 65"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58713,
+  "start_s": 111.4,
+  "end_s": 122.16,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਿਨਾ ਮੈ ਨੀ ਰਵ ਲੇਸਨਾ ਨੈਣ ਨੀਦ ਰਵ ਲ\" (23 chars, cache 98%); best 58713 \"ਜਿੰਨੑਾ ਨੈਣ ਨੀਂਦ੍ਰਾਵਲੇ ਤਿੰਨੑਾ ਮਿਲਣੁ ਕ\" explains 48, runner-up 3750 \"ਹਉ ਰਹਿ ਨ ਸਕਾ ਬਿਨੁ ਦੇਖੇ ਪ\" 43, margin 4; candidate 58713 explains 48; no pangti explains the hearing (best 48)"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58713,
+  "start_s": 124.12,
+  "end_s": 148.52,
+  "my_verseId": 58713,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਟਨਾਾਨੈ ਨੀਦ ਰਾਾਵ ਲੇ ਜਿ ਨਾਮ ਨਾ ਲਣ ਗੂਆ ਮਿਲਣ ਧਆ\" (33 chars, cache 98%); best 58713 \"ਜਿੰਨੑਾ ਨੈਣ ਨੀਂਦ੍ਰਾਵਲੇ ਤਿੰਨੑਾ ਮਿਲਣੁ ਕ\" explains 52, runner-up 48210 \"ਆਪਿ ਤਰੇ ਸਗਲੇ ਕੁਲ ਤਾਰੇ ਜਿ\" 36, margin 15; candidate 58713 explains 52"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58712,
+  "start_s": 149.36,
+  "end_s": 156.08,
+  "my_verseId": 58712,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਫਰੀਦਾਸਤ ਵਰੀ ਵੰਡੀਐ ਵੰਡੀ\" (17 chars, cache 97%); best 58712 \"ਫਰੀਦਾ ਰਾਤਿ ਕਥੂਰੀ ਵੰਡੀਐ ਸੁਤਿਆ ਮਿਲੈ ਨ \" explains 59, runner-up 58588 \"ਫਰੀਦਾ ਰਾਤੀ ਵਡੀਆਂ ਧੁਖਿ ਧੁ\" 59, margin 0; candidate 58712 explains 59"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58712,
+  "start_s": 156.12,
+  "end_s": 168.24,
+  "my_verseId": 58712,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਰਾਤ ਕਥੂਰੀ ਵੰਡੀ ਕੁੁਤੀਆ ਮਿਲੈ ਨ ਸ\" (23 chars, cache 98%); best 58712 \"ਫਰੀਦਾ ਰਾਤਿ ਕਥੂਰੀ ਵੰਡੀਐ ਸੁਤਿਆ ਮਿਲੈ ਨ \" explains 78, runner-up 30244 \"ਨਾਨਕ ਕੀ ਬੇਨੰਤੀਆ ਮਿਲੈ ਨਿਥ\" 48, margin 30; candidate 58712 explains 78"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58712,
+  "start_s": 159.52,
+  "end_s": 174.56,
+  "my_verseId": 58712,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਡੀ ਕੁੁਤੀਆ ਮਿਲੈ ਨ ਸ ਸੁਪਿਆ ਮੈ ਨ ਭਾ\" (24 chars, cache 97%); best 58712 \"ਫਰੀਦਾ ਰਾਤਿ ਕਥੂਰੀ ਵੰਡੀਐ ਸੁਤਿਆ ਮਿਲੈ ਨ \" explains 62, runner-up 30244 \"ਨਾਨਕ ਕੀ ਬੇਨੰਤੀਆ ਮਿਲੈ ਨਿਥ\" 46, margin 17; candidate 58712 explains 62"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58713,
+  "start_s": 168.28,
+  "end_s": 181.04,
+  "my_verseId": 58712,
+  "confidence": 0.99,
+  "agrees": false,
+  "reason": "heard \"ਸੁਪਿਆ ਮੈ ਨ ਭਾਵਰਾ ਕਥੂਰੀ ਵੰਡੀਐ ਵ\" (23 chars, cache 98%); best 58712 \"ਫਰੀਦਾ ਰਾਤਿ ਕਥੂਰੀ ਵੰਡੀਐ ਸੁਤਿਆ ਮਿਲੈ ਨ \" explains 61, runner-up 205512 \"ਥੋਮ ਕਥੂਰੀ ਵਾਸੁ ਲੈ ਨਕੁ ਮਰ\" 43, margin 17; candidate 58713 explains 22"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58712,
+  "start_s": 176.36,
+  "end_s": 192.52,
+  "my_verseId": 58712,
+  "confidence": 0.99,
+  "agrees": true,
+  "reason": "heard \"ਰਾ ਕਥੂਰੀ ਵੰਡੀਐ ਵੰਡੀਐ ਰਤ ਕਥੂ ਵੰਡੀਐ ਗ ਬ\" (26 chars, cache 98%); best 58712 \"ਫਰੀਦਾ ਰਾਤਿ ਕਥੂਰੀ ਵੰਡੀਐ ਸੁਤਿਆ ਮਿਲੈ ਨ \" explains 54, runner-up 41371 \"ਲੰਗਰਿ ਦਉਲਤਿ ਵੰਡੀਐ ਰਸੁ ਅੰ\" 42, margin 12; candidate 58712 explains 54"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58712,
+  "start_s": 181.12,
+  "end_s": 203.04,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੰਡੀਐ ਰਤ ਕਥੂ ਵੰਡੀਐ ਗ ਬ ਬਤਨ ਕੋ ਉਠਿ\" (22 chars, cache 98%); best 41371 \"ਲੰਗਰਿ ਦਉਲਤਿ ਵੰਡੀਐ ਰਸੁ ਅੰਮ੍ਰਿਤੁ ਖੀਰਿ \" explains 36, runner-up 90397 \"ਸੁਨਿ ਕੈ ਇਹ ਰਾਧਿਕਾ ਕੀ ਬਤੀ\" 36, margin 0; candidate 58712 explains 36; no pangti explains the hearing (best 36)"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58713,
+  "start_s": 192.72,
+  "end_s": 212.36,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਬਤਨ ਕੋ ਉਠਿ ਫਰੀਦਊਜੂ ਸਾਚਿ ਵ ਵਰੀਦ\" (24 chars, cache 98%); best 58693 \"ਉਠੁ ਫਰੀਦਾ ਉਜੂ ਸਾਜਿ ਸੁਬਹ ਨਿਵਾਜ ਗੁਜਾਰਿ\" explains 46, runner-up 58616 \"ਫਰੀਦਾ ਚਿੰਤ ਖਟੋਲਾ ਵਾਣੁ ਦੁ\" 33, margin 12; candidate 58713 explains 21; no pangti explains the hearing (best 46)"
+ },
+ {
+  "recording": "l3clip15",
+  "cand_verseId": 58712,
+  "start_s": 203.2,
+  "end_s": 212.4,
+  "my_verseId": 58693,
+  "confidence": 0.91,
+  "agrees": false,
+  "reason": "heard \"ਫਰੀਦਊਜੂ ਸਾਚਿ ਵ ਵਰੀਦ\" (16 chars, cache 98%); best 58693 \"ਉਠੁ ਫਰੀਦਾ ਉਜੂ ਸਾਜਿ ਸੁਬਹ ਨਿਵਾਜ ਗੁਜਾਰਿ\" explains 56, runner-up 58622 \"ਫਰੀਦਾ ਚਾਰਿ ਗਵਾਇਆ ਹੰਢਿ ਕੈ\" 50, margin 6; candidate 58712 explains 44; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 18433,
+  "start_s": 0.28,
+  "end_s": 11.08,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 0%); candidate 18433 explains 0; cache covers only 0% of the span, cannot hear it"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 18433,
+  "start_s": 3.96,
+  "end_s": 11.08,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 0%); candidate 18433 explains 0; cache covers only 0% of the span, cannot hear it"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 18430,
+  "start_s": 11.24,
+  "end_s": 16.24,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 0%); candidate 18430 explains 0; cache covers only 0% of the span, cannot hear it"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 18431,
+  "start_s": 16.36,
+  "end_s": 28.96,
+  "my_verseId": 25344,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਹੋਇ ਮ ਮ ਨ ਹੋਇੂਖ ਮਰ ਮਚੈ\" (16 chars, cache 65%); best 25344 \"ਮਰਣੁ ਮੁਣਸਾ ਸੂਰਿਆ ਹਕੁ ਹੈ ਜੋ ਹੋਇ ਮਰਨਿ \" explains 50, runner-up 29744 \"ਦੂਜੈ ਭਾਇ ਦੁਖੁ ਹੋਇ ਮਨਮੁਖ \" 50, margin 0; candidate 18431 explains 31; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 27.24,
+  "end_s": 40.32,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਰ ਮਚੈ ਸਾਗੈ ਕੋਇ ਕਤਾ ਤੇੈ ਕੋ\" (19 chars, cache 107%); best 2322 \"ਸੁਖ ਕਉ ਮਾਗੈ ਸਭੁ ਕੋ ਦੁਖੁ ਨ ਮਾਗੈ ਕੋਇ ॥\" explains 47, runner-up 48050 \"ਚਹੁ ਵਰਨਾ ਵਿਚਿ ਜਾਗੈ ਕੋਇ ॥\" 47, margin 0; candidate 35751 explains 21; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 33.64,
+  "end_s": 40.36,
+  "my_verseId": 40450,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਸਾਗੈ ਕੋਇ ਕਤਾ ਤੇੈ ਕੋ\" (15 chars, cache 99%); best 40450 \"ਗੁਰ ਪਰਸਾਦੀ ਹਰਿ ਮਨਿ ਵਸੈ ਜਮ ਡੰਡੁ ਨ ਲਾਗ\" explains 53, runner-up 27655 \"ਨਾਨਕ ਨਾਮੁ ਹਰਿ ਮਨਿ ਵਸੈ ਭਾ\" 53, margin 0; candidate 35752 explains 53; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 41.72,
+  "end_s": 51.8,
+  "my_verseId": 42404,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ੈ ਬੋਲੈ ਨਾ ਮਰ ਨਾ ਨਾ ਨਾ ਕੈ ਹੋਇ\" (20 chars, cache 98%); best 42404 \"ਬੇਸੁਆ ਰਵਤ ਅਜਾਮਲੁ ਉਧਰਿਓ ਮੁਖਿ ਬੋਲੈ ਨਾਰ\" explains 50, runner-up 37578 \"ਕੋਈ ਬੋਲੈ ਰਾਮ ਰਾਮ ਕੋਈ ਖੁਦ\" 50, margin 0; candidate 35752 explains 45; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35753,
+  "start_s": 48.76,
+  "end_s": 55.64,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਨਾ ਕੈ ਹੋਇ\" (7 chars, cache 97%); best 10262 \"ਐਸੀ ਦ੍ਰਿੜਤਾ ਤਾ ਕੈ ਹੋਇ ॥\" explains 86, runner-up 12128 \"ਬ੍ਰਹਮ ਗਿਆਨੀ ਕੈ ਹੋਇ ਸੁ ਭਲ\" 86, margin 0; candidate 35753 explains 29; almost nothing heard (7 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 56.48,
+  "end_s": 59.48,
+  "my_verseId": 21268,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਸਤਾ ਕਰ ਵ ਡਾਟਾਹੁ\" (12 chars, cache 97%); best 21268 \"ਸਤਿਗੁਰੁ ਵਡਾ ਕਰਿ ਸਾਲਾਹੀਐ ਜਿਸੁ ਵਿਚਿ ਵਡ\" explains 50, runner-up 53037 \"ਵਡਾ ਕਰਿ ਸਾਲਾਹੀਐ ਅੰਤੁ ਨ ਪ\" 50, margin 0; candidate 35751 explains 42; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 60.36,
+  "end_s": 64.4,
+  "my_verseId": 35752,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਜਿਸ ਨੋ ਮਾਰੁ ਨ ਸਾਗੈ ਮਾਰ\" (17 chars, cache 98%); best 35752 \"ਤਿਸ ਨੋ ਮਾਰਿ ਨ ਸਾਕੈ ਕੋਇ ॥\" explains 71, runner-up 41092 \"ਜਿਸ ਨੋ ਤੂ ਰਖਵਾਲਾ ਮਾਰੇ ਤਿ\" 59, margin 12; candidate 35752 explains 71"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 64,
+  "end_s": 71.2,
+  "my_verseId": 41217,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਾਰਣਾ ਸਾੈ ਮੈ ਕੋਇ ਨਾ\" (14 chars, cache 97%); best 41217 \"ਤੈਡੀ ਬੰਦਸਿ ਮੈ ਕੋਇ ਨ ਡਿਠਾ ਤੂ ਨਾਨਕ ਮਨਿ\" explains 57, runner-up 35752 \"ਤਿਸ ਨੋ ਮਾਰਿ ਨ ਸਾਕੈ ਕੋਇ ॥\" 57, margin 0; candidate 35751 explains 29; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35750,
+  "start_s": 64.72,
+  "end_s": 71.2,
+  "my_verseId": 41217,
+  "confidence": 0.94,
+  "agrees": false,
+  "reason": "heard \"ਸਾੈ ਮੈ ਕੋਇ ਨਾ\" (10 chars, cache 97%); best 41217 \"ਤੈਡੀ ਬੰਦਸਿ ਮੈ ਕੋਇ ਨ ਡਿਠਾ ਤੂ ਨਾਨਕ ਮਨਿ\" explains 70, runner-up 50688 \"ਤੁਝ ਬਿਨੁ ਦੂਜਾ ਕੋਇ ਨਾਹਿ ॥\" 60, margin 10; candidate 35750 explains 30; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 71.64,
+  "end_s": 74.92,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 97%); candidate 35752 explains 0; almost nothing heard (0 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 77.64,
+  "end_s": 81.88,
+  "my_verseId": 78019,
+  "confidence": 0.94,
+  "agrees": false,
+  "reason": "heard \"ਸਾਜਨ ਰਾਖਸੀਮਨ\" (11 chars, cache 98%); best 78019 \"ਜਿਸ ਨੋ ਸਾਜਨ ਰਾਖਸੀ ਦੁਸਮਨ ਕਵਨ ਬਿਚਾਰ ॥\" explains 82, runner-up 50192 \"ਤੈਸੇ ਸੰਤ ਜਨ ਰਾਮ ਨਾਮ ਰਵਤ \" 64, margin 18; candidate 35751 explains 27; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 82,
+  "end_s": 86.84,
+  "my_verseId": 31523,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਕਭ ਕਿਆ ਸੇਣਾ ਸਿਆ ਕਹ\" (14 chars, cache 98%); best 31523 \"ਕਿਆ ਸੇਵ ਕਮਾਵਉ ਕਿਆ ਕਹਿ ਰੀਝਾਵਉ ਬਿਧਿ ਕਿ\" explains 50, runner-up 32560 \"ਕਿਆ ਮਾਗਉ ਕਿਆ ਕਹਿ ਸੁਣੀ ਮੈ\" 50, margin 0; candidate 35752 explains 29; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35753,
+  "start_s": 87.32,
+  "end_s": 92.4,
+  "my_verseId": 78020,
+  "confidence": 0.99,
+  "agrees": false,
+  "reason": "heard \"ਹਿ ਕੋਉ ਸਿਹ ਭਲ ਜਾਤ ਗਵਾ\" (16 chars, cache 98%); best 78020 \"ਛ੍ਵੈ ਨ ਸਕੈ ਤਿਹ ਛਾਹਿ ਕੌ ਨਿਹਫਲ ਜਾਇ ਗਵਾ\" explains 69, runner-up 206348 \"ਲੂਣ ਖਾਇ ਧੀ ਪੁਤੁ ਹੋਇ ਸਭ ਲ\" 50, margin 19; candidate 35753 explains 25; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 92.56,
+  "end_s": 95.96,
+  "my_verseId": 43132,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਜਿਸੁ ਲਾਇ ਆਪ ਨ ਨਾ ਹੋਇ\" (15 chars, cache 97%); best 43132 \"ਇਸਤ੍ਰੀ ਤਜਿ ਕਰਿ ਕਾਮਿ ਵਿਆਪਿਆ ਚਿਤੁ ਲਾਇਆ\" explains 60, runner-up 13257 \"ਜਿਸੁ ਭਾਵੈ ਤਿਸੁ ਆਪਨ ਨਾਇ ਲ\" 60, margin 0; candidate 35751 explains 47; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 96.84,
+  "end_s": 102.84,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਸਚੈ ਜਾ ਨਾੈ\" (8 chars, cache 97%); best 56325 \"ਜਾਚਿਕੁ ਨਾਮੁ ਜਾਚੈ ਜਾਚੈ ॥\" explains 62, runner-up 15367 \"ਜੀਅਰੇ ਜਾਹਿਗਾ ਮੈ ਜਾਨਾਂ ॥\" 62, margin 0; candidate 35752 explains 38; almost nothing heard (8 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 98.28,
+  "end_s": 102.96,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਸਚੈ ਜਾ ਨਾੈ\" (8 chars, cache 96%); best 56325 \"ਜਾਚਿਕੁ ਨਾਮੁ ਜਾਚੈ ਜਾਚੈ ॥\" explains 62, runner-up 15367 \"ਜੀਅਰੇ ਜਾਹਿਗਾ ਮੈ ਜਾਨਾਂ ॥\" 62, margin 0; candidate 35752 explains 38; almost nothing heard (8 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 103.76,
+  "end_s": 106.96,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਸ ਕ ਹਰਿ ਦਾਤਾ\" (9 chars, cache 97%); best 200199 \"ਸੁਣੀ ਪੁਕਾਰਿ ਦਾਤਾਰ ਪ੍ਰਭੁ ਗੁਰੁ ਨਾਨਕ ਜਗ\" explains 78, runner-up 43784 \"ਸਭ ਤੇਰੀ ਕੁਦਰਤਿ ਤੂ ਸਿਰਿ ਸ\" 78, margin 0; candidate 35751 explains 44; almost nothing heard (9 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 103.76,
+  "end_s": 107.04,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਸ ਕ ਹਰਿ ਦਾਤਾ\" (9 chars, cache 97%); best 200199 \"ਸੁਣੀ ਪੁਕਾਰਿ ਦਾਤਾਰ ਪ੍ਰਭੁ ਗੁਰੁ ਨਾਨਕ ਜਗ\" explains 78, runner-up 43784 \"ਸਭ ਤੇਰੀ ਕੁਦਰਤਿ ਤੂ ਸਿਰਿ ਸ\" 78, margin 0; candidate 35752 explains 33; almost nothing heard (9 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 107.72,
+  "end_s": 112.88,
+  "my_verseId": 43610,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਿਸੁ ਨ ਮਾਰੁ ਨ ਜਾਗੈ ਹ ਹਰਿ ਨਾ ਆਾਗੈ\" (23 chars, cache 98%); best 43610 \"ਨਾਮ ਬਿਨਾ ਕਿਛੁ ਸਾਦਿ ਨ ਲਾਗੈ ਹਰਿ ਬਿਸਰਿਐ\" explains 52, runner-up 30951 \"ਐਸਾ ਬਾਜੀ ਸੈਸਾਰੁ ਨ ਚੇਤੈ ਹ\" 52, margin 0; candidate 35752 explains 48; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 110.96,
+  "end_s": 114.24,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਹਰਿ ਨਾ ਆਾਗੈ\" (9 chars, cache 100%); best 37414 \"ਹਿਰਦੈ ਪ੍ਰਗਾਸੁ ਹੋਵੈ ਲਿਵ ਲਾਗੈ ਗੁਰਮਤਿ ਹ\" explains 67, runner-up 55603 \"ਨਾਨਕੁ ਜਾਚਕੁ ਹਰਿ ਹਰਿ ਨਾਮੁ\" 67, margin 0; candidate 35752 explains 56; almost nothing heard (9 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35753,
+  "start_s": 115.28,
+  "end_s": 121.04,
+  "my_verseId": 35753,
+  "confidence": 0.99,
+  "agrees": true,
+  "reason": "heard \"ਸਾਹਿਬ ਕੀ ਸੇਵਕ ਕਹ ਸਰਧਾਾਈ\" (19 chars, cache 98%); best 35753 \"ਸਾਹਿਬ ਕੀ ਸੇਵਕੁ ਰਹੈ ਸਰਣਾਈ ॥\" explains 74, runner-up 17167 \"ਵਜਹੁ ਸਾਹਿਬ ਕਾ ਸੇਵ ਬਿਰਾਨੀ\" 58, margin 16; candidate 35753 explains 74"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35753,
+  "start_s": 122.44,
+  "end_s": 128.84,
+  "my_verseId": 35753,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਸਚੀ ਸੇਵਤਿ ਰਹੈ ਸਰਣਾਈ\" (16 chars, cache 97%); best 35753 \"ਸਾਹਿਬ ਕੀ ਸੇਵਕੁ ਰਹੈ ਸਰਣਾਈ ॥\" explains 75, runner-up 44290 \"ਸਤਿਗੁਰ ਸੇਵਿ ਰਹਹੁ ਸਰਣਾਈ ॥\" 62, margin 12; candidate 35753 explains 75"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35753,
+  "start_s": 130.28,
+  "end_s": 136.4,
+  "my_verseId": 105638,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਹਿ ਤੀਚੇਵਕ ਨਰ ਚਨ\" (12 chars, cache 97%); best 105638 \"ਬੀਸ ਬਾਣ ਕੁਮਤਹਿ ਤੀਸ ਕੁਕਰਮਹਿ ਭੇਦ੍ਯੋ ॥\" explains 50, runner-up 89900 \"ਖੇਲਨ ਕੋ ਭਗਵਾਨ ਰਚੀ ਰਸ ਕੇ \" 50, margin 0; candidate 35753 explains 50; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35754,
+  "start_s": 139.04,
+  "end_s": 144.68,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਵਖ ਜੇ ਦੇ ਵਖ\" (8 chars, cache 96%); best 82208 \"ਭਜੇ ਦੇਵਤਾ ਦਈਤ ਜਿਤੇ ਜੁਝਾਰੰ ॥੧॥\" explains 62, runner-up 201505 \"ਦੇਵੀ ਦੇਵ ਸਰੇਵਦੇ ਦੇਵ ਸਥਲ \" 62, margin 0; candidate 35754 explains 62; almost nothing heard (8 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35754,
+  "start_s": 146.72,
+  "end_s": 151.88,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਸ ਪਿਆਨ\" (5 chars, cache 96%); best 35738 \"ਤਾ ਕੈ ਮਨਿ ਵਸਿਆ ਪ੍ਰਭੁ ਏਕੁ ॥੧॥ ਰਹਾਉ ॥\" explains 60, runner-up 35771 \"ਥਿਤੀ ਵਾਰ ਸਭਿ ਆਵਹਿ ਜਾਹਿ ॥\" 60, margin 0; candidate 35754 explains 40; almost nothing heard (5 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35754,
+  "start_s": 154.56,
+  "end_s": 160.68,
+  "my_verseId": 19238,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਆਪ ਮਖ ਦੇੇਵਡਿਆਾਈ\" (13 chars, cache 97%); best 19238 \"ਆਪੇ ਦੇ ਵਡਿਆਈਆ ਦੇ ਤੋਟਿ ਨ ਹੋਈ ॥੩॥\" explains 69, runner-up 2615 \"ਗੁਰਮੁਖਿ ਆਪੇ ਦੇ ਵਡਿਆਈ ਆਪੇ\" 69, margin 0; candidate 35754 explains 62; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35754,
+  "start_s": 162.2,
+  "end_s": 167.44,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਲਆਈ\" (3 chars, cache 98%); best 35754 \"ਆਪੇ ਬਖਸੇ ਦੇ ਵਡਿਆਈ ॥\" explains 67, runner-up 35730 \"ਬਿਲਾਵਲੁ ਮਹਲਾ ੩ ॥\" 33, margin 33; candidate 35754 explains 67; almost nothing heard (3 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35755,
+  "start_s": 169.52,
+  "end_s": 175.48,
+  "my_verseId": 33864,
+  "confidence": 0.91,
+  "agrees": false,
+  "reason": "heard \"ਿਸੁ ਤੇ ਮੂ ਭਰ ਨਾਹੀ ਕੋਇ\" (16 chars, cache 98%); best 33864 \"ਤਿਸ ਤੇ ਦੂਜਾ ਨਾਹੀ ਕੋਇ ॥\" explains 75, runner-up 35722 \"ਏਕਸ ਤੇ ਦੂਜਾ ਨਾਹੀ ਕੋਇ ॥\" 69, margin 6; candidate 35755 explains 69; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35755,
+  "start_s": 177.44,
+  "end_s": 183.12,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਨ ਮ\" (2 chars, cache 98%); best 35740 \"ਕੋਇ ਨ ਮੇਟੈ ਤੇਰੈ ਲੇਖੈ ॥\" explains 100, runner-up 35775 \"ਮਨਮੁਖ ਮਰਹਿ ਮਰਿ ਬਿਗਤੀ ਜਾਹ\" 100, margin 0; candidate 35755 explains 50; almost nothing heard (2 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35756,
+  "start_s": 184.92,
+  "end_s": 191.28,
+  "my_verseId": 209974,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਕਣ ਚਲੇੈ ਹ ਦਸੁ ਨ ਹੋਇ\" (14 chars, cache 99%); best 209974 \"ਗੁਰ ਚਰਨਾਮ੍ਰਿਤ ਕੈ ਚਾਤ੍ਰਿਕੁ ਨ ਹੋਇ ਮਿਲੈ\" explains 50, runner-up 40518 \"ਰਸਨਾ ਹਰਿ ਰਸੁ ਨ ਚਖਿਓ ਕਮਲੁ\" 50, margin 0; candidate 35756 explains 36; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 192.6,
+  "end_s": 198.44,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 98%); candidate 35751 explains 0; almost nothing heard (0 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 198.88,
+  "end_s": 202.08,
+  "my_verseId": 101664,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਤਨੋਪ ਨ ਜਾ ਪੈ ਸਇ\" (11 chars, cache 97%); best 101664 \"ਦਿਨੰ ਰੈਣ ਜਾਪੈ ਸਹੰਸ੍ਰ ਭੁਜਾਨੰ ॥੫੨॥\" explains 55, runner-up 28992 \"ਤੇਰਾ ਵਰਨੁ ਨ ਜਾਪੈ ਰੂਪੁ ਨ \" 55, margin 0; candidate 35752 explains 27; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 202.6,
+  "end_s": 205.6,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਤ ਮਾਰ\" (4 chars, cache 97%); best 35732 \"ਜੀਅ ਜੰਤ ਮਾਇਆ ਮੋਹਿ ਪਾਜੇ ॥\" explains 75, runner-up 35744 \"ਹਉਮੈ ਮਾਰੇ ਤਾ ਦਰੁ ਸੂਝੈ ॥੨\" 75, margin 0; candidate 35752 explains 75; almost nothing heard (4 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 202.68,
+  "end_s": 209.08,
+  "my_verseId": 87056,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਤ ਮਾਰ ਹਾਰਣਾ ਸਾਾਗੈ ਧ\" (15 chars, cache 97%); best 87056 \"ਭਖੰਤ ਮਾਸ ਹਾਰਣੰ ਬਮੰਤ ਜ੍ਵਾਲ ਦੁਰਗਯੰ ॥\" explains 53, runner-up 75882 \"ਫਣੀਅਰ ਫੁੰਕਾਰਣਿ ਬਾਘ ਬੁਕਾਰ\" 53, margin 0; candidate 35751 explains 20; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 205.64,
+  "end_s": 209.04,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਹਾਰਣਾ ਸਾਾਗੈ ਧ\" (11 chars, cache 97%); best 75010 \"ਕੁਕਰਮੰ ਪ੍ਰਣਾਸੀ ਸੁਧਰਮੰ ਬਿਭੂਤੇ ॥੧੯੭॥\" explains 45, runner-up 30886 \"ਕੇਸਰਿ ਕੁਸਮ ਮਿਰਗਮੈ ਹਰਣਾ ਸ\" 45, margin 0; candidate 35752 explains 45; no pangti explains the hearing (best 45)"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 209.92,
+  "end_s": 213.48,
+  "my_verseId": 35752,
+  "confidence": 0.94,
+  "agrees": true,
+  "reason": "heard \"ਤਿਸਨੋ ਮਾਰੁ ਨ ਸਾਗੈ\" (14 chars, cache 97%); best 35752 \"ਤਿਸ ਨੋ ਮਾਰਿ ਨ ਸਾਕੈ ਕੋਇ ॥\" explains 86, runner-up 23302 \"ਤਿਸ ਨੋ ਮੰਨਿ ਵਸਾਇ ਜਿਨਿ ਉਪ\" 57, margin 29; candidate 35752 explains 86"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 214.2,
+  "end_s": 216.6,
+  "my_verseId": 47526,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਸੂ ਮਾਤਾਾ ਸਾਚੁ\" (11 chars, cache 100%); best 47526 \"ਸਚੁ ਸਾਚਿ ਪਛਾਤਾ ਸਾਚੈ ਰਾਤਾ ਸਾਚੁ ਮਿਲੈ ਮ\" explains 64, runner-up 35836 \"ਰਹੈ ਅਤੀਤੁ ਅਪਰੰਪਰਿ ਰਾਤਾ ਸ\" 64, margin 0; candidate 35752 explains 36; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 217.08,
+  "end_s": 222.08,
+  "my_verseId": 36164,
+  "confidence": 0.91,
+  "agrees": false,
+  "reason": "heard \"ਮਾਰਿ ਨ ਸਾਗੈ ਇਹ ਜਿਸਦਾ\" (16 chars, cache 96%); best 36164 \"ਕਾਲੁ ਮਾਰਿ ਮਨਸਾ ਮਨਹਿ ਸਮਾਣੀ ਅੰਤਰਿ ਨਿਰਮ\" explains 62, runner-up 5130 \"ਦੋਵੈ ਮਾਰਿ ਜਾਇ ਇਕਤੁ ਘਰਿ ਆ\" 56, margin 6; candidate 35752 explains 50; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 217.56,
+  "end_s": 224.88,
+  "my_verseId": 209590,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਾਰਿ ਨ ਸਾਗੈ ਇਹ ਜਿਸਦਾ ਜਾ\" (17 chars, cache 99%); best 209590 \"ਬੀਰ ਬਿਦਿਆ ਮਹਾ ਬਲੀ ਭਏ ਹੈ ਧਨੁਖ ਧਾਰੀ ਹਉ\" explains 53, runner-up 38842 \"ਮਨਸਾ ਮਾਰਿ ਮਨੁ ਸਹਜਿ ਸਮਾਣਾ\" 53, margin 0; candidate 35751 explains 47; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 225.28,
+  "end_s": 232.04,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ੋ ਸਾਖੈ\" (5 chars, cache 97%); best 35747 \"ਦੂਜੇ ਤੇ ਜੇ ਏਕੋ ਜਾਣੈ ॥\" explains 60, runner-up 35748 \"ਗੁਰ ਕੈ ਸਬਦਿ ਹਰਿ ਦਰਿ ਨੀਸਾ\" 60, margin 0; candidate 35752 explains 60; almost nothing heard (5 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 232.76,
+  "end_s": 236.88,
+  "my_verseId": 35751,
+  "confidence": 0.99,
+  "agrees": true,
+  "reason": "heard \"ਿਸ ਦਾਾ ਸਾਹਿਬਠੰਡਾ ਹੋਇ\" (16 chars, cache 98%); best 35751 \"ਜਿਸ ਦਾ ਸਾਹਿਬੁ ਡਾਢਾ ਹੋਇ ॥\" explains 75, runner-up 2100 \"ਸਚਾ ਸਾਹਿਬੁ ਮਨਿ ਵੁਠਾ ਹੋਆ \" 56, margin 19; candidate 35751 explains 75"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 238.4,
+  "end_s": 241.68,
+  "my_verseId": 35752,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਿਸਨੋ ਹਰਿ ਸਾਗੈ ਕੋ\" (13 chars, cache 99%); best 35752 \"ਤਿਸ ਨੋ ਮਾਰਿ ਨ ਸਾਕੈ ਕੋਇ ॥\" explains 69, runner-up 32265 \"ਨਾਨਕ ਸਚੁ ਵਡਿਆਈ ਪਾਏ ਜਿਸ ਨ\" 62, margin 8; candidate 35752 explains 69"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 241.68,
+  "end_s": 245,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਸ ਨਾ ਸਾਗੈ\" (7 chars, cache 98%); best 12601 \"ਬਹੁਰਿ ਨ ਤ੍ਰਿਸਨਾ ਲਾਗੈ ਆਇ ॥\" explains 86, runner-up 39293 \"ਹਰਿ ਰਸੁ ਪਾਇ ਪਲੈ ਪੀਐ ਹਰਿ \" 86, margin 0; candidate 35752 explains 57; almost nothing heard (7 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35753,
+  "start_s": 241.88,
+  "end_s": 271.6,
+  "my_verseId": 52636,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਸ ਨਾ ਸਾਗੈੰ ਸ ਸ ਸ ਸ ਸ ਸ ਸ ਸ\" (15 chars, cache 98%); best 52636 \"ਮਾਨ ਮੋਹੁ ਨ ਬੁਝਤ ਤ੍ਰਿਸਨਾ ਕਾਲ ਗ੍ਰਸ ਸੰਸ\" explains 53, runner-up 210347 \"ਮਧੁਰ ਬਚਨ ਤਾਹੀ ਰਸਨਾ ਸੈ ਪਿ\" 47, margin 7; candidate 35753 explains 20; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35750,
+  "start_s": 245.36,
+  "end_s": 269.2,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ੰ ਸ ਸ ਸ ਸ ਸ ਸ ਸ ਸ\" (8 chars, cache 98%); best 103535 \"ਤਿਹ ਜਾਨ ਰਿਖੀਨ ਹੀ ਸਾਸ ਸਸ੍ਰਯੋ ॥\" explains 62, runner-up 82063 \"ਸਸੰ ਸੂਰਜੰ ਆਦਿ ਲੈ ਕੈ ਉਪਿੰ\" 50, margin 12; candidate 35750 explains 0; almost nothing heard (8 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 273.32,
+  "end_s": 276.88,
+  "my_verseId": 35751,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਸ ਸਾਹਿਬ ਨਾ ਕਾ ਹੋਇ\" (13 chars, cache 97%); best 35751 \"ਜਿਸ ਦਾ ਸਾਹਿਬੁ ਡਾਢਾ ਹੋਇ ॥\" explains 69, runner-up 42241 \"ਸਾਹਿਬ ਕਾ ਹੁਕਮੁ ਨ ਕਰਣਾ ਜਾ\" 62, margin 8; candidate 35751 explains 69"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 277.24,
+  "end_s": 283.88,
+  "my_verseId": 35752,
+  "confidence": 0.92,
+  "agrees": true,
+  "reason": "heard \"ਤਿਸ ਨੋ ਹਰਾਨੈ ਕੋਲੈ ਹਰਿ ਨ ਸਾਖੈ ਐੁ ਹੋ\" (26 chars, cache 97%); best 35752 \"ਤਿਸ ਨੋ ਮਾਰਿ ਨ ਸਾਕੈ ਕੋਇ ॥\" explains 50, runner-up 89659 \"ਏਕ ਕਹੈ ਭਗਵਾਨ ਹਰੀ ਇਕ ਲੈ ਹ\" 46, margin 4; candidate 35752 explains 50"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 280.88,
+  "end_s": 288.16,
+  "my_verseId": 10211,
+  "confidence": 0.91,
+  "agrees": false,
+  "reason": "heard \"ਰਿ ਨ ਸਾਖੈ ਐੁ ਹੋਇ ਤਿਸਲਾ\" (17 chars, cache 97%); best 10211 \"ਨਹ ਤ੍ਰਿਪਤਾਵੈ ਨਹ ਤਿਸ ਲਾਥੀ ॥\" explains 59, runner-up 35752 \"ਤਿਸ ਨੋ ਮਾਰਿ ਨ ਸਾਕੈ ਕੋਇ ॥\" 53, margin 6; candidate 35751 explains 29; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 284.72,
+  "end_s": 299.4,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਤਿਸਲਾ ਬਿਸ ਨ ਸਸ ਸ ਖ ਪੀਉ ਮਾਲ ਖੰਡੈ ਨ ਮ ਖੰਡੈ ਹਿ ਜ\" (30 chars, cache 97%); best 203463 \"ਸਚੀ ਸਿਫਤਿ ਸਲਾਹ ਸਚੁ ਸਚੁ ਸਲਾਹਣੁ ਅੰਮ੍ਰਿ\" explains 33, runner-up 83266 \"ਇਤਿ ਸ੍ਰੀ ਬਚਿਤ੍ਰ ਨਾਟਕ ਗ੍ਰ\" 30, margin 3; candidate 35752 explains 27; no pangti explains the hearing (best 33)"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 288.64,
+  "end_s": 293.6,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਬਿਸ ਨ ਸਸ\" (6 chars, cache 98%); best 82431 \"ਧਰਿਯੋ ਸੁ ਬਿਸਨ ਸਪਤਮ ਵਤਾਰ ॥\" explains 83, runner-up 121364 \"ਬਿਸਨ ਸਿੰਘ ਕੌ ਰਾਣੀ ਲਯੋ ਬੁ\" 83, margin 0; candidate 35752 explains 50; almost nothing heard (6 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35753,
+  "start_s": 294.24,
+  "end_s": 296.92,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸ ਖ ਪੀਉ ਮਾਲ ਖੰਡੈ\" (11 chars, cache 96%); best 205081 \"ਲਖ ਜਪ ਤਪ ਲਖ ਸੰਜਮਾ ਲਖ ਤੀਰਥ ਨ੍ਹਾਈ।\" explains 45, runner-up 93376 \"ਤਾ ਛਬਿ ਕੀ ਉਪਮਾ ਲਖਿ ਕੈ ਕਬ\" 45, margin 0; candidate 35753 explains 18; no pangti explains the hearing (best 45)"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35754,
+  "start_s": 297.08,
+  "end_s": 298.96,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਮ ਖੰਡੈ\" (4 chars, cache 100%); best 35739 \"ਸ੍ਰਿਸਟਿ ਉਪਾਇ ਆਪੇ ਸਭੁ ਵੇਖੈ ॥\" explains 50, runner-up 35740 \"ਕੋਇ ਨ ਮੇਟੈ ਤੇਰੈ ਲੇਖੈ ॥\" 50, margin 0; candidate 35754 explains 25; almost nothing heard (4 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35755,
+  "start_s": 299.4,
+  "end_s": 302.04,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ੀਵਨ ਮ ਮੇਲਰ\" (8 chars, cache 100%); best 208137 \"ਜੀਵਨ ਮੁਕਤਿ ਜਗ ਜੀਵਨ ਜੀਵਨ ਮੂਲ ਆਪਾ ਖੋਇ \" explains 62, runner-up 208675 \"ਜਗਜੀਵਨ ਜਗ ਜਗ ਜਗਜੀਵਨ ਮੈ ਪ\" 62, margin 0; candidate 35755 explains 12; almost nothing heard (8 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35753,
+  "start_s": 299.6,
+  "end_s": 308.08,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨ ਮ ਮੇਲਰ ਹੋਇ ਜਰਣ ਸਇਲਾ ਸਇ\" (18 chars, cache 98%); best 200532 \"ਆਪੇ ਆਪਿ ਵਰੱਤਦਾ ਗੁਰਮੁਖਿ ਹੋਇ ਜਰਣਾ ॥੧੩॥\" explains 44, runner-up 28758 \"ਜਗੁ ਮੈਲਾ ਮੈਲੋ ਹੋਇ ਜਾਇ ॥\" 44, margin 0; candidate 35753 explains 28; no pangti explains the hearing (best 44)"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35756,
+  "start_s": 302.16,
+  "end_s": 308.08,
+  "my_verseId": 200532,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਹੋਇ ਜਰਣ ਸਇਲਾ ਸਇ\" (12 chars, cache 97%); best 200532 \"ਆਪੇ ਆਪਿ ਵਰੱਤਦਾ ਗੁਰਮੁਖਿ ਹੋਇ ਜਰਣਾ ॥੧੩॥\" explains 58, runner-up 13828 \"ਜਿਉ ਲੋਹਾ ਪਾਰਸਿ ਭੇਟੀਐ ਮਿਲ\" 50, margin 8; candidate 35756 explains 25; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35754,
+  "start_s": 308.28,
+  "end_s": 319.12,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸੁੁਰਲਾ ਜੋਤ ਸੁਣ ਸੰਣਾ ਸੁਲਿਰਜਾ ਸਾਹਿ\" (26 chars, cache 98%); best 206353 \"ਜਿਉ ਮਿਰਜਾਦਾ ਹਿੰਦੂਆਂ ਗਊ ਮਾਸੁ ਅਖਾਜੁ।\" explains 42, runner-up 207193 \"ਸਾਹਿਬ ਤੁਲਿ ਨ ਸਾਹਿਬੀ ਸਤਿਗ\" 42, margin 0; candidate 35754 explains 8; no pangti explains the hearing (best 42)"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35757,
+  "start_s": 308.32,
+  "end_s": 313.52,
+  "my_verseId": 3852,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਸੁੁਰਲਾ ਜੋਤ ਸੁਣ ਸੰਣਾ\" (15 chars, cache 98%); best 3852 \"ਸੋ ਕੰਮੁ ਸੁਹੇਲਾ ਜੋ ਤੇਰੀ ਘਾਲੀ ॥\" explains 53, runner-up 99435 \"ਸੁਰ ਲਾਜਤ ਹੈ ॥੩੫੧॥\" 53, margin 0; candidate 35757 explains 33; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35758,
+  "start_s": 315.16,
+  "end_s": 322.96,
+  "my_verseId": 401018,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਲਿਰਜਾ ਸਾਹਿਬ ਸਾਧਿ ਸ\" (15 chars, cache 98%); best 401018 \"ਜਾਹਿਲ ਆਣ-ਜਾ ਸਾਹਿਬਿ-ਦਿਲ ਮੀਸ਼ਵਦ\" explains 60, runner-up 201736 \"ਹੁਕਮਿ ਰਜਾਈ ਚਲਣਾ ਸਾਧਸੰਗਿ \" 53, margin 7; candidate 35758 explains 20; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35755,
+  "start_s": 319.28,
+  "end_s": 328.08,
+  "my_verseId": 208134,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਸਾਧਿ ਸਸ ਸਮਾਨੈ ਹੋ\" (13 chars, cache 97%); best 208134 \"ਚਰਨ ਕਮਲ ਮਕਰੰਦ ਰਸ ਲੁਭਿਤ ਹੁਇ ਸਹਜ ਸਮਾਧਿ\" explains 54, runner-up 210095 \"ਤੈਸੇ ਮਨ ਸਾਧਿ ਸਾਧਿ ਸਾਧਨਾ \" 54, margin 0; candidate 35755 explains 23; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35759,
+  "start_s": 323.24,
+  "end_s": 328.04,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਸ ਸਮਾਨੈ ਹੋ\" (8 chars, cache 96%); best 43555 \"ਸਾਚੀ ਦਰਗਹ ਸਾਚੁ ਨਿਵਾਸਾ ਮਾਨੈ ਹੁਕਮੁ ਰਜਾ\" explains 75, runner-up 17934 \"ਮਿਤ੍ਰ ਸਤ੍ਰੁ ਜਾ ਕੈ ਏਕ ਸਮਾ\" 62, margin 12; candidate 35759 explains 12; almost nothing heard (8 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35755,
+  "start_s": 328.68,
+  "end_s": 334.4,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਲਾ ਵਿਛ ਨੋ\" (7 chars, cache 98%); best 27915 \"ਆਪਿ ਵਿਛੋੜੇਨੁ ਸੇ ਵਿਛੁੜੇ ਦੂਜੈ ਭਾਇ ਖੁਆਇ\" explains 57, runner-up 45836 \"ਐਸਾ ਪ੍ਰਭੁ ਮਿਲਿਆ ਸੁਖਦਾਤਾ \" 57, margin 0; candidate 35755 explains 29; almost nothing heard (7 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35756,
+  "start_s": 334.76,
+  "end_s": 348.04,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮਾਰੁ ਨ ਸਾਗੈ ਸੰੰ ਸੰੰ ਮਨ ਮਨ ਮ ਮਨ ਮ ਮਨ ਮ\" (22 chars, cache 98%); best 207879 \"ਓੁਲਟਿ ਪਵਨ ਮਨ ਮੀਨ ਤ੍ਰਿਬੇਨੀ ਪ੍ਰਸੰਗ ਤ੍ਰ\" explains 45, runner-up 8806 \"ਸੰਤ ਪ੍ਰਸਾਦਿ ਗਾਏ ਗੁਨ ਸਾਗਰ\" 45, margin 0; candidate 35756 explains 14; no pangti explains the hearing (best 45)"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35756,
+  "start_s": 335.96,
+  "end_s": 347.92,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮਾਰੁ ਨ ਸਾਗੈ ਸੰੰ ਸੰੰ ਮਨ ਮਨ ਮ ਮਨ ਮ ਮਨ ਮ\" (22 chars, cache 98%); best 207879 \"ਓੁਲਟਿ ਪਵਨ ਮਨ ਮੀਨ ਤ੍ਰਿਬੇਨੀ ਪ੍ਰਸੰਗ ਤ੍ਰ\" explains 45, runner-up 8806 \"ਸੰਤ ਪ੍ਰਸਾਦਿ ਗਾਏ ਗੁਨ ਸਾਗਰ\" 45, margin 0; candidate 35756 explains 14; no pangti explains the hearing (best 45)"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35757,
+  "start_s": 354.48,
+  "end_s": 360.12,
+  "my_verseId": 35757,
+  "confidence": 0.94,
+  "agrees": true,
+  "reason": "heard \"ੁਰਮਤੀ ਸਾਂਤ ਪਸੈ ਸਰੀਰ\" (15 chars, cache 98%); best 35757 \"ਗੁਰਮਤੀ ਸਾਂਤਿ ਵਸੈ ਸਰੀਰ ॥\" explains 87, runner-up 204426 \"ਦੁਖੁ ਸੁਖੁ ਸਮਸਰਿ ਗੁਰਮਤੀ ਸ\" 60, margin 27; candidate 35757 explains 87"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35757,
+  "start_s": 360.2,
+  "end_s": 368.2,
+  "my_verseId": 35757,
+  "confidence": 0.94,
+  "agrees": true,
+  "reason": "heard \"ਸਾਂਤ ਵਸੈ ਸਰੀਦ\" (10 chars, cache 98%); best 35757 \"ਗੁਰਮਤੀ ਸਾਂਤਿ ਵਸੈ ਸਰੀਰ ॥\" explains 80, runner-up 79617 \"ਮਨੋ ਮੇਰ ਕੋ ਸਾਤਵੋ ਸ੍ਰਿੰਗ \" 50, margin 30; candidate 35757 explains 80"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35757,
+  "start_s": 362.32,
+  "end_s": 368.12,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਸਾਂਤ ਵਸੈ ਸਰੀ\" (9 chars, cache 98%); best 35757 \"ਗੁਰਮਤੀ ਸਾਂਤਿ ਵਸੈ ਸਰੀਰ ॥\" explains 89, runner-up 79617 \"ਮਨੋ ਮੇਰ ਕੋ ਸਾਤਵੋ ਸ੍ਰਿੰਗ \" 56, margin 33; candidate 35757 explains 89; almost nothing heard (9 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35758,
+  "start_s": 370.2,
+  "end_s": 376.08,
+  "my_verseId": 35758,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਸਬਦ ਜੀਣਾ ਫਿਰਿ ਲਗੈ ਨ ਪੀਰਾ\" (19 chars, cache 98%); best 35758 \"ਸਬਦੁ ਚੀਨਿੑ ਫਿਰਿ ਲਗੈ ਨ ਪੀਰ ॥\" explains 68, runner-up 96939 \"ਦੁਇ ਹੀ ਸੁ ਮਾਸ ਰਹੇ ਤਿਹ ਠਾ\" 47, margin 21; candidate 35758 explains 68"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35758,
+  "start_s": 377.88,
+  "end_s": 383.48,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਕੀ ਨ ਕੀੀ\" (6 chars, cache 98%); best 104708 \"ਹਸਤ ਕੀ ਨ ਕਮੀ ਮੁਝੈ ਹਯ ਸਾਰ ਲੀਜੈ ਪਰਖ ॥\" explains 83, runner-up 90895 \"ਧਾਇ ਗਯੋ ਨ੍ਰਿਪ ਕੇ ਪੁਰ ਮੈ \" 83, margin 0; candidate 35758 explains 33; almost nothing heard (6 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35759,
+  "start_s": 385.56,
+  "end_s": 391.44,
+  "my_verseId": 41782,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਿਆਵੈ ਨ ਜਾਹੀ ਜਿਸੁ ਨ ਨ ਸੁਖੁ ਪਾ\" (21 chars, cache 98%); best 41782 \"ਆਗਿਆ ਮਾਨਿ ਜਾਨਿ ਸੁਖੁ ਪਾਇਆ ਸੁਨਿ ਸੁਨਿ ਨ\" explains 57, runner-up 45382 \"ਜਮਕਾਲੁ ਤਿਸੁ ਨੇੜਿ ਨ ਆਵੈ ਮ\" 57, margin 0; candidate 35759 explains 57; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35759,
+  "start_s": 393.48,
+  "end_s": 399.16,
+  "my_verseId": 35759,
+  "confidence": 0.94,
+  "agrees": true,
+  "reason": "heard \"ਵੈ ਨ ਜਾਇ ਨਾ ਨਾ ਦੁਖ ਭਏ\" (15 chars, cache 98%); best 35759 \"ਆਵੈ ਨ ਜਾਇ ਨਾ ਦੁਖੁ ਪਾਏ ॥\" explains 73, runner-up 34758 \"ਸਿਮਰਿ ਸਿਮਰਿ ਪ੍ਰਭੁ ਆਪਨਾ ਨ\" 53, margin 20; candidate 35759 explains 73"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35760,
+  "start_s": 401.36,
+  "end_s": 407.08,
+  "my_verseId": 959,
+  "confidence": 0.94,
+  "agrees": false,
+  "reason": "heard \"ਆਪੇ ਰਾਗ ਜ ਹਾਇ\" (10 chars, cache 97%); best 959 \"ਆਪੇ ਰਸੀਆ ਆਪਿ ਰਸੁ ਆਪੇ ਰਾਵਣਹਾਰੁ ॥\" explains 70, runner-up 27659 \"ਹਰਿ ਜੀ ਤੂ ਆਪੇ ਰੰਗੁ ਚੜਾਇ \" 60, margin 10; candidate 35760 explains 30; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35760,
+  "start_s": 408.96,
+  "end_s": 414.68,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 97%); candidate 35760 explains 0; almost nothing heard (0 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35761,
+  "start_s": 415.72,
+  "end_s": 422.88,
+  "my_verseId": 35761,
+  "confidence": 0.91,
+  "agrees": true,
+  "reason": "heard \"ਾਨਕ ਗੁਰਮੁਖਿ ਵੇਖਿਆਰ ਭਦੇ\" (19 chars, cache 97%); best 35761 \"ਨਾਨਕ ਗੁਰਮੁਖਿ ਵੇਖੈ ਹਦੂਰਿ ॥\" explains 74, runner-up 48145 \"ਨਾਨਕ ਗੁਰਮੁਖਿ ਹਿਰਦੈ ਰਾਮ ਨ\" 68, margin 5; candidate 35761 explains 74"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35761,
+  "start_s": 419.76,
+  "end_s": 422.96,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਰ ਭਦੇ\" (4 chars, cache 97%); best 35735 \"ਸਤਿਗੁਰਿ ਭੇਟਿਐ ਸੋਝੀ ਪਾਇ ॥\" explains 50, runner-up 35738 \"ਤਾ ਕੈ ਮਨਿ ਵਸਿਆ ਪ੍ਰਭੁ ਏਕੁ\" 50, margin 0; candidate 35761 explains 25; almost nothing heard (4 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35762,
+  "start_s": 423.92,
+  "end_s": 427.68,
+  "my_verseId": 16552,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ੇਰਾ ਪ੍ਰਭ ਸਤਿਗ੍ਰਹਿ ਹੈ ਭਾਈ ਪੂ\" (22 chars, cache 97%); best 16552 \"ਮੇਰਾ ਪ੍ਰਭੁ ਸਰਬ ਰਹਿਆ ਭਰਪੂਰਿ ॥੩॥\" explains 59, runner-up 35762 \"ਮੇਰਾ ਪ੍ਰਭੁ ਸਦ ਰਹਿਆ ਭਰਪੂਰ\" 59, margin 0; candidate 35762 explains 59; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35762,
+  "start_s": 427.8,
+  "end_s": 437.24,
+  "my_verseId": 25103,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਮੇਰਾ ਪ੍ਰਭ ਇਹ ਤਿਸ ਲਹਿ ਨ ਹਰਿ\" (20 chars, cache 98%); best 25103 \"ਹਰਿ ਹਰਿ ਨਾਮੁ ਮੇਰਾ ਪ੍ਰਾਨ ਸਖਾਈ ਤਿਸੁ ਬਿ\" explains 55, runner-up 4514 \"ਮੇਰਾ ਪ੍ਰਭੁ ਅਤਿ ਊਚੋ ਊਚਾ ਕ\" 55, margin 0; candidate 35762 explains 55; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35755,
+  "start_s": 431.76,
+  "end_s": 435.16,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਤਿਸ ਲਹਿ ਨ\" (7 chars, cache 97%); best 201751 \"ਦੁਇ ਦੁਇ ਕੰਨਿ ਵਖਾਣੀਅਨਿ ਇਕ ਸੁਰਤਿ ਸਲਿਸੈ\" explains 71, runner-up 50598 \"ਘਰਿ ਰਤਨ ਲਾਲ ਬਹੁ ਮਾਣਕ ਲਾਦ\" 71, margin 0; candidate 35755 explains 43; almost nothing heard (7 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 435.64,
+  "end_s": 438.96,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਹਰਿ ਨ ਜਾਣੈ\" (8 chars, cache 97%); best 5630 \"ਜਿਨਿ ਰਚਿ ਰਚਿਆ ਤਿਸਹਿ ਨ ਜਾਣੈ ਅੰਧਾ ਅੰਧੁ\" explains 88, runner-up 3030 \"ਜਿਨਿ ਰਚਿ ਰਚਿਆ ਤਿਸਹਿ ਨ ਜਾ\" 88, margin 0; candidate 35752 explains 62; almost nothing heard (8 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 437.28,
+  "end_s": 442.56,
+  "my_verseId": 28798,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਜਾਣੈ ਕਾਰਰਣਾ ਸਾਖੈ ਹੋਇ\" (17 chars, cache 96%); best 28798 \"ਇਹੁ ਮਨੁ ਮਰੈ ਦਾਰੂ ਜਾਣੈ ਕੋਇ ॥\" explains 53, runner-up 37518 \"ਸੋਈ ਜਾਣੈ ਕਰਣੈਹਾਰਾ ਕੀਤਾ ਕ\" 53, margin 0; candidate 35752 explains 47; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 439.24,
+  "end_s": 446.6,
+  "my_verseId": 54839,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਰਣਾ ਸਾਖੈ ਹੋਇਏ ਨਿਸ ਰਾ\" (16 chars, cache 97%); best 54839 \"ਨਾਨਕ ਨਦਰੀ ਸੁਖੁ ਹੋਇ ਏਨਾ ਜੰਤਾ ਕਾ ਦੁਖੁ \" explains 56, runner-up 205937 \"ਰੰਨਾ ਦੇਖਿ ਪਿਟੰਦੀਆ ਢਾਹਾਂ \" 56, margin 0; candidate 35751 explains 38; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 443.2,
+  "end_s": 457.56,
+  "my_verseId": 35752,
+  "confidence": 0.91,
+  "agrees": true,
+  "reason": "heard \"ਿਸ ਰਾ ਨ ਕਰਣਾ ਚਾ ਕੈ ਕੋਇ\" (16 chars, cache 98%); best 35752 \"ਤਿਸ ਨੋ ਮਾਰਿ ਨ ਸਾਕੈ ਕੋਇ ॥\" explains 56, runner-up 56592 \"ਜੋ ਕਿਛੁ ਕਰਹਿ ਸੋਈ ਪਰੁ ਹੋਇ\" 50, margin 6; candidate 35752 explains 56"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 447,
+  "end_s": 453.72,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਨ\" (1 chars, cache 99%); best 35738 \"ਤਾ ਕੈ ਮਨਿ ਵਸਿਆ ਪ੍ਰਭੁ ਏਕੁ ॥੧॥ ਰਹਾਉ ॥\" explains 100, runner-up 35740 \"ਕੋਇ ਨ ਮੇਟੈ ਤੇਰੈ ਲੇਖੈ ॥\" 100, margin 0; candidate 35752 explains 100; almost nothing heard (1 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 454.44,
+  "end_s": 459.48,
+  "my_verseId": 19944,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਕਰਣਾ ਚਾ ਕੈ ਕੋਇ ਨਾ ਧ\" (14 chars, cache 96%); best 19944 \"ਹਰਿ ਬਾਝੁ ਰਾਖਾ ਕੋਇ ਨਾਹੀ ਸੋਇ ਤੁਝਹਿ ਬਿਸ\" explains 57, runner-up 53810 \"ਤਾ ਕੈ ਪਾਛੈ ਕੋਇ ਨ ਖਾਇ ॥੩॥\" 50, margin 7; candidate 35751 explains 29; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35753,
+  "start_s": 458.4,
+  "end_s": 466,
+  "my_verseId": 40450,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਨਾ ਧਾਗੈ ਹੋਇਗੈ ਕੋਇ\" (14 chars, cache 98%); best 40450 \"ਗੁਰ ਪਰਸਾਦੀ ਹਰਿ ਮਨਿ ਵਸੈ ਜਮ ਡੰਡੁ ਨ ਲਾਗ\" explains 64, runner-up 27655 \"ਨਾਨਕ ਨਾਮੁ ਹਰਿ ਮਨਿ ਵਸੈ ਭਾ\" 64, margin 0; candidate 35753 explains 21; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 459.92,
+  "end_s": 465.28,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ੈ ਹੋਇਗੈ ਕੋਇ\" (9 chars, cache 98%); best 40450 \"ਗੁਰ ਪਰਸਾਦੀ ਹਰਿ ਮਨਿ ਵਸੈ ਜਮ ਡੰਡੁ ਨ ਲਾਗ\" explains 67, runner-up 27655 \"ਨਾਨਕ ਨਾਮੁ ਹਰਿ ਮਨਿ ਵਸੈ ਭਾ\" 67, margin 0; candidate 35752 explains 56; almost nothing heard (9 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 466,
+  "end_s": 471.08,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਸਾਚੈ ਭੈਾਨ\" (8 chars, cache 97%); best 15374 \"ਸੂਰੁ ਕਿ ਸਨਮੁਖ ਰਨ ਤੇ ਡਰਪੈ ਸਤੀ ਕਿ ਸਾਂਚ\" explains 75, runner-up 50367 \"ਸੇ ਜਨ ਸਾਚੇ ਸਾਚੈ ਭਾਇ ॥\" 75, margin 0; candidate 35751 explains 25; almost nothing heard (8 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35754,
+  "start_s": 466.44,
+  "end_s": 470.56,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਸਾਚੈ ਭੈਾਨ\" (8 chars, cache 98%); best 15374 \"ਸੂਰੁ ਕਿ ਸਨਮੁਖ ਰਨ ਤੇ ਡਰਪੈ ਸਤੀ ਕਿ ਸਾਂਚ\" explains 75, runner-up 50367 \"ਸੇ ਜਨ ਸਾਚੇ ਸਾਚੈ ਭਾਇ ॥\" 75, margin 0; candidate 35754 explains 12; almost nothing heard (8 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35755,
+  "start_s": 471.04,
+  "end_s": 475.52,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਹਰਿ ਨਾਸ\" (6 chars, cache 96%); best 39429 \"ਕਿਲਵਿਖ ਸਭਿ ਦੋਖ ਬਿਨਾਸਨੁ ਹਰਿ ਨਾਮੁ ਜਪੀਐ\" explains 83, runner-up 20129 \"ਹਰਿ ਹਰਿ ਕਰਤਾ ਦੂਖ ਬਿਨਾਸਨੁ\" 83, margin 0; candidate 35755 explains 67; almost nothing heard (6 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 471.48,
+  "end_s": 476.8,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਹਰਿ ਨਾਸ\" (6 chars, cache 98%); best 39429 \"ਕਿਲਵਿਖ ਸਭਿ ਦੋਖ ਬਿਨਾਸਨੁ ਹਰਿ ਨਾਮੁ ਜਪੀਐ\" explains 83, runner-up 20129 \"ਹਰਿ ਹਰਿ ਕਰਤਾ ਦੂਖ ਬਿਨਾਸਨੁ\" 83, margin 0; candidate 35752 explains 67; almost nothing heard (6 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35751,
+  "start_s": 477.32,
+  "end_s": 480.92,
+  "my_verseId": 42316,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ੈਜਿਸਡ ਵਡਾ ਵਡਾ ਹੋਵ\" (14 chars, cache 97%); best 42316 \"ਸੋ ਜਾਣੈ ਜਿਸੁ ਵੇਦਨ ਹੋਵੈ ॥\" explains 57, runner-up 57092 \"ਸਤਿਗੁਰੁ ਭੇਟੈ ਜਮੁ ਨ ਤੇਟੈ \" 50, margin 7; candidate 35751 explains 43; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35752,
+  "start_s": 481,
+  "end_s": 488.92,
+  "my_verseId": 55122,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਗ ਮਾਰ ਲਾਰਨਾ ਕਾਵਿਆ\" (14 chars, cache 98%); best 55122 \"ਚੁਪੈ ਚੰਗਾ ਨਾਨਕਾ ਵਿਣੁ ਨਾਵੈ ਮੁਹਿ ਗੰਧੁ \" explains 57, runner-up 46692 \"ਗੁਣ ਕਾ ਗਾਹਕੁ ਨਾਨਕਾ ਵਿਰਲਾ\" 50, margin 7; candidate 35752 explains 36; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35753,
+  "start_s": 484.96,
+  "end_s": 491.8,
+  "my_verseId": 41645,
+  "confidence": 0.91,
+  "agrees": false,
+  "reason": "heard \"ਾਰਨਾ ਕਾਵਿਆ ਭਰਮ ਪੁਰਖ\" (16 chars, cache 97%); best 41645 \"ਦਸਮ ਦੁਆਰਾ ਅਗਮ ਅਪਾਰਾ ਪਰਮ ਪੁਰਖ ਕੀ ਘਾਟੀ\" explains 56, runner-up 98563 \"ਪਰਮ ਪੁਰਖ ਪਾਵਨ ਸਦਾ ਆਪ ਪ੍ਰ\" 50, margin 6; candidate 35753 explains 25; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35742,
+  "start_s": 489.8,
+  "end_s": 495.16,
+  "my_verseId": 102407,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਭਰਮ ਪੁਰਖ ਜਵ ਤੇ ਭਗਤ\" (14 chars, cache 98%); best 102407 \"ਪਰਮ ਪੁਰਖ ਪਵਿਤ੍ਰ ਕੈ ਗਏ ਦਤ ਦੇਵ ਮਹੰਤ ॥\" explains 57, runner-up 56091 \"ਤੁਮ ਜੈਸੇ ਹਰਿ ਪੁਰਖ ਜਾਨੇ ਮ\" 57, margin 0; candidate 35742 explains 36; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35754,
+  "start_s": 492.16,
+  "end_s": 497.24,
+  "my_verseId": 51385,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਵ ਤੇ ਭਗਤਿ ਹਏਤ ਨਰ ਸ\" (13 chars, cache 98%); best 51385 \"ਭਗਤਿ ਹੇਤਿ ਨਰਸਿੰਘ ਭੇਵ ॥\" explains 62, runner-up 27430 \"ਜਾ ਤੇ ਭਗਤਿ ਰਾਮ ਕੀ ਪਾਵੈ ਜ\" 54, margin 8; candidate 35754 explains 15; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip32",
+  "cand_verseId": 35743,
+  "start_s": 495.48,
+  "end_s": 497.36,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਏਤ ਨਰ ਸੇ\" (6 chars, cache 95%); best 41953 \"ਜਿਉ ਜਿਉ ਨਿਵਹਿ ਸਾਕਤ ਨਰ ਸੇਤੀ ਛੇੜਿ ਛੇੜਿ\" explains 83, runner-up 55970 \"ਸਾਕਤ ਨਰ ਸਤਿਗੁਰੁ ਨਹੀ ਕੀਆ \" 67, margin 17; candidate 35743 explains 33; almost nothing heard (6 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29380,
+  "start_s": 36,
+  "end_s": 45.68,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 0%); candidate 29380 explains 0; cache covers only 0% of the span, cannot hear it"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 45.52,
+  "end_s": 49.44,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 0%); candidate 29381 explains 0; cache covers only 0% of the span, cannot hear it"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29380,
+  "start_s": 45.88,
+  "end_s": 61.32,
+  "my_verseId": 29380,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਨਿਸ ਨਾਲਾਨ ਤਤਹੂੰਜਾ\" (14 chars, cache 77%); best 29380 \"ਏਕੁ ਨਾਮੁ ਦੀਓ ਮਨ ਮੰਤਾ ਬਿਨਸਿ ਨ ਕਤਹੂ ਜਾ\" explains 57, runner-up 51755 \"ਪਾਇਓ ਲਾਲੁ ਅਮੋਲੁ ਨਾਮੁ ਹਰਿ\" 50, margin 7; candidate 29380 explains 57"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29380,
+  "start_s": 50.68,
+  "end_s": 61.32,
+  "my_verseId": 29380,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਨਿਸ ਨਾਲਾਨ ਤਤਹੂੰਜਾ\" (14 chars, cache 112%); best 29380 \"ਏਕੁ ਨਾਮੁ ਦੀਓ ਮਨ ਮੰਤਾ ਬਿਨਸਿ ਨ ਕਤਹੂ ਜਾ\" explains 57, runner-up 51755 \"ਪਾਇਓ ਲਾਲੁ ਅਮੋਲੁ ਨਾਮੁ ਹਰਿ\" 50, margin 7; candidate 29380 explains 57"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29380,
+  "start_s": 61.4,
+  "end_s": 79.68,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਇਸ ਨ ਕਬੁ ਜਾਆ ਬਿਨੁ ਨ ਕਬੂ ਜਾਆ ਨਾਿ ਨਾ ਖਡਾਇ ਨਓ ਮਹਾ ਬ\" (35 chars, cache 97%); best 41938 \"ਨਿਜ ਘਰਿ ਜਾਇ ਅੰਮ੍ਰਿਤ ਰਸੁ ਪੀਆ ਬਿਨੁ ਨੈਨ\" explains 37, runner-up 29952 \"ਗੁਰਿ ਪੂਰੈ ਹਰਿ ਨਾਮੁ ਦ੍ਰਿੜ\" 34, margin 3; candidate 29380 explains 34; no pangti explains the hearing (best 37)"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29379,
+  "start_s": 83.36,
+  "end_s": 100.16,
+  "my_verseId": 29379,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਛਡਾਇਹੀਉ ਮਹਾ ਬਚ ਸਡਇ ਲਆਵ ਤੇਰੀ\" (22 chars, cache 98%); best 29379 \"ਛਡਾਇ ਲੀਓ ਮਹਾ ਬਲੀ ਤੇ ਅਪਨੇ ਚਰਨ ਪਰਾਤਿ ॥\" explains 55, runner-up 54954 \"ਬਾਬੀਹਾ ਇਵ ਤੇਰੀ ਤਿਖਾ ਨ ਉਤ\" 45, margin 9; candidate 29379 explains 55"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29379,
+  "start_s": 101.68,
+  "end_s": 119.6,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੀਉ ਮਹਾ ਪਰੈ ਚਰਣ ਮਰਾ ਤ ਮ ਕਹ ਮ ਹ ਮੈ\" (22 chars, cache 97%); best 104464 \"ਪਾਰਸ ਪਰਮ ਤਤ ਕੇ ਬੇਤਾ ਮਹਾ ਪਰਮ ਕਰ ਮਾਨੇ \" explains 41, runner-up 403773 \"ਪ੍ਰਗਟਿਓ ਖ਼ਾਲਸਾ ਪ੍ਰਮਾਤਮ ਕੀ\" 41, margin 0; candidate 29379 explains 36; no pangti explains the hearing (best 41)"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29379,
+  "start_s": 115.16,
+  "end_s": 125.64,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਕਹ ਮ ਹ ਮੈ ਚ\" (7 chars, cache 98%); best 141619 \"ਜ਼ਿ ਸਰਤਾ ਕਦਮ ਹਮ ਚੁ ਆਹਨ ਗ਼ਰੀਕ ॥੧੧੮॥\" explains 71, runner-up 111921 \"ਭਜਹੁ ਆਜੁ ਤੁਮ ਹਮੈ ਪਿਯਾਰੇ \" 57, margin 14; candidate 29379 explains 29; almost nothing heard (7 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29380,
+  "start_s": 125.64,
+  "end_s": 150.28,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਏਖ ਨਾ ਦੀਓ ਮਨਏੇਤ ਨਾਮੁ ਦੀਆਾ ਅਸ ਪ ਗਹਿ ਬ ਬਾਇ ਬ ਬ ਪ ਬ ਬ\" (35 chars, cache 98%); best 29008 \"ਕਰਿ ਕਿਰਪਾ ਦੀਓ ਮੋਹਿ ਨਾਮਾ ਬੰਧਨ ਤੇ ਛੁਟਕ\" explains 34, runner-up 20326 \"ਜਨ ਨਾਨਕ ਨਾਮੁ ਦੀਬਾਣੁ ਹੈ ਹ\" 34, margin 0; candidate 29380 explains 34; no pangti explains the hearing (best 34)"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29380,
+  "start_s": 129.92,
+  "end_s": 140.84,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੇਤ ਨਾਮੁ ਦੀਆਾ ਅਸ ਪ ਗਹਿ ਬ ਬਾਇ ਬ ਬ ਪ ਬ\" (24 chars, cache 97%); best 42366 \"ਸਬਦਿ ਭੇਦਿ ਭ੍ਰਮੁ ਕਟਿਆ ਗੁਰਿ ਨਾਮੁ ਦੀਆ ਸ\" explains 42, runner-up 39816 \"ਜਿਨਿ ਨਾਮੁ ਦੀਆ ਤਿਸੁ ਸੇਵਸਾ\" 42, margin 0; candidate 29380 explains 33; no pangti explains the hearing (best 42)"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 140.96,
+  "end_s": 143.56,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 96%); candidate 29381 explains 0; almost nothing heard (0 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29378,
+  "start_s": 143.56,
+  "end_s": 145.2,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 100%); candidate 29378 explains 0; almost nothing heard (0 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29379,
+  "start_s": 145.24,
+  "end_s": 150.4,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਬ\" (1 chars, cache 98%); best 29379 \"ਛਡਾਇ ਲੀਓ ਮਹਾ ਬਲੀ ਤੇ ਅਪਨੇ ਚਰਨ ਪਰਾਤਿ ॥\" explains 100, runner-up 29380 \"ਏਕੁ ਨਾਮੁ ਦੀਓ ਮਨ ਮੰਤਾ ਬਿਨ\" 100, margin 0; candidate 29379 explains 100; almost nothing heard (1 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29380,
+  "start_s": 150.64,
+  "end_s": 171.4,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਏਕ ਦੀੀਉ ਭਰਿ ਮਨ ਕਾਦ ਕਕੇ ਮਨ ਬਿਨਸੁ ਨ ਬਿ\" (27 chars, cache 98%); best 53652 \"ਕਾਏਂ ਰੇ ਮਨ ਬਿਖਿਆ ਬਨ ਜਾਇ ॥\" explains 37, runner-up 140215 \"ਚਸ਼ੀਦਹ ਯਕੇ ਤੀਰਿ ਮਨ ਬੇਦਰੰਗ\" 37, margin 0; candidate 29380 explains 33; no pangti explains the hearing (best 37)"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29380,
+  "start_s": 167.16,
+  "end_s": 179.96,
+  "my_verseId": 33024,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਨਸੁ ਨ ਬਿਿਸ ਨਾੂੰ ਬਿਨੁ ਨ ਕ ਜਾ\" (19 chars, cache 98%); best 33024 \"ਜਨ ਨਾਨਕ ਨਾਮੁ ਸਲਾਹਿ ਤੂ ਬਿਨੁ ਨਾਵੈ ਪਚਿ \" explains 53, runner-up 135230 \"ਧਨ ਬਿਹੀਨ ਬਿਨੁ ਨਾਰਿ ਬਿਚਾਰ\" 53, margin 0; candidate 29380 explains 37; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29380,
+  "start_s": 171.48,
+  "end_s": 179.92,
+  "my_verseId": 58945,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਿਸ ਨਾੂੰ ਬਿਨੁ ਨ ਕ ਜਾ\" (13 chars, cache 98%); best 58945 \"ਕਾਮ ਕ੍ਰੋਧ ਮਦ ਮਤਸਰ ਤ੍ਰਿਸਨਾ ਬਿਨਸਿ ਜਾਹਿ\" explains 69, runner-up 33024 \"ਜਨ ਨਾਨਕ ਨਾਮੁ ਸਲਾਹਿ ਤੂ ਬਿ\" 62, margin 8; candidate 29380 explains 38; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 184.28,
+  "end_s": 187.52,
+  "my_verseId": 48801,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਸਤਿਗੁਰੁ ਪੂੂਰੈ ਕੀ ਨਿਧ\" (17 chars, cache 97%); best 48801 \"ਸਤਿਗੁਰ ਪੂਰੈ ਕੀਨੋ ਦਾਨੁ ॥੧॥\" explains 76, runner-up 29381 \"ਸਤਿਗੁਰਿ ਪੂਰੈ ਕੀਨੀ ਦਾਤਿ ॥\" 76, margin 0; candidate 29381 explains 76; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 188.68,
+  "end_s": 191.8,
+  "my_verseId": 15087,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਭਬਸੂੂਰੈ ਨਿਤਾ\" (11 chars, cache 100%); best 15087 \"ਗੋਬਿੰਦੁ ਬਸੈ ਨਿਤਾ ਨਿਤ ਚੀਤ ॥੨॥\" explains 64, runner-up 112657 \"ਤਬ ਸੂਥਨਿ ਸਾਹੁ ਉਤਾਰ ਦਈ ਸਭ\" 55, margin 9; candidate 29381 explains 27; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 193.08,
+  "end_s": 196.24,
+  "my_verseId": 48801,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਸਤਿਗੁਰੁ ਪੂਰੇੈ ਕੀ ਨਿਧ\" (17 chars, cache 100%); best 48801 \"ਸਤਿਗੁਰ ਪੂਰੈ ਕੀਨੋ ਦਾਨੁ ॥੧॥\" explains 76, runner-up 29381 \"ਸਤਿਗੁਰਿ ਪੂਰੈ ਕੀਨੀ ਦਾਤਿ ॥\" 76, margin 0; candidate 29381 explains 76; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 197.44,
+  "end_s": 201.6,
+  "my_verseId": 13317,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਤਿਗੁਰੁ ਪੂੂਰੈ ਦੀ ਨਿਧਾਈ ਪੂਰੇ ਗੁਰ ਕੀ\" (27 chars, cache 98%); best 13317 \"ਪੂਰੇ ਗੁਰ ਕੀ ਪੂਰੀ ਦੀਖਿਆ ॥\" explains 56, runner-up 29381 \"ਸਤਿਗੁਰਿ ਪੂਰੈ ਕੀਨੀ ਦਾਤਿ ॥\" 56, margin 0; candidate 29381 explains 56; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 200.76,
+  "end_s": 204.56,
+  "my_verseId": 13317,
+  "confidence": 0.98,
+  "agrees": false,
+  "reason": "heard \"ਪੂਰੇ ਗੁਰ ਕੀ ਪੂਰੀ ਦਿਖਿਆ\" (18 chars, cache 99%); best 13317 \"ਪੂਰੇ ਗੁਰ ਕੀ ਪੂਰੀ ਦੀਖਿਆ ॥\" explains 94, runner-up 45884 \"ਪੂਰੇ ਗੁਰ ਕੀ ਪੂਰੀ ਬਾਣੀ ॥\" 72, margin 22; candidate 29381 explains 44; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29380,
+  "start_s": 201.88,
+  "end_s": 215.56,
+  "my_verseId": 23075,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਪੂਰੀ ਦਿਖਿਆਤਿਗੁਰ ਦੂਰੈ ਦੀ ਨੀਧ ਸਭ ਗੁਰ ਪੂੂਰੈ ਨੀਿਤਾ\" (38 chars, cache 98%); best 23075 \"ਨਾਨਕ ਨਾਮੁ ਅਰਾਧਿਆ ਗੁਰ ਪੂਰੈ ਦੀਆ ਮਿਲਾਇ \" explains 50, runner-up 39450 \"ਸਭ ਇਛ ਪੁੰਨੀ ਆਸ ਪੂਰੀ ਮਿਲੇ\" 47, margin 3; candidate 29380 explains 18; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 208.24,
+  "end_s": 211.88,
+  "my_verseId": 19670,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਤਿਗੁਰ ਦੂਰੈ ਦੀ ਨੀਧ\" (14 chars, cache 98%); best 19670 \"ਸਤਿਗੁਰਿ ਕਰਿ ਦੀਨੀ ਧੁਰ ਕੀ ਛਾਪ ॥੫॥\" explains 79, runner-up 29381 \"ਸਤਿਗੁਰਿ ਪੂਰੈ ਕੀਨੀ ਦਾਤਿ ॥\" 71, margin 7; candidate 29381 explains 71; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 212.6,
+  "end_s": 216.04,
+  "my_verseId": 28067,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਭ ਗੁਰ ਪੂੂਰੈ ਨੀਿਤਾ\" (14 chars, cache 97%); best 28067 \"ਵਡਿਆਈ ਵਡੀ ਗੁਰਮੁਖਾ ਗੁਰ ਪੂਰੈ ਹਰਿ ਨਾਮਿ \" explains 64, runner-up 52226 \"ਸਰਬ ਫਲਾ ਦੀਨੑੇ ਗੁਰਿ ਪੂਰੈ \" 57, margin 7; candidate 29381 explains 50; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 216.92,
+  "end_s": 221.64,
+  "my_verseId": 38049,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਗੁਰ ਪੂਰੈ ਕੀ ਨਿਧਾਰ ਹ\" (15 chars, cache 96%); best 38049 \"ਗੁਰ ਪੂਰੇ ਕੀ ਨਿਰਮਲ ਰੀਤਿ ॥\" explains 73, runner-up 48801 \"ਸਤਿਗੁਰ ਪੂਰੈ ਕੀਨੋ ਦਾਨੁ ॥੧\" 73, margin 0; candidate 29381 explains 67; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 221.36,
+  "end_s": 225.2,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਿੈ ਨ ਨਧ\" (5 chars, cache 100%); best 29380 \"ਏਕੁ ਨਾਮੁ ਦੀਓ ਮਨ ਮੰਤਾ ਬਿਨਸਿ ਨ ਕਤਹੂ ਜਾ\" explains 40, runner-up 29382 \"ਹਰਿ ਹਰਿ ਨਾਮੁ ਦੀਓ ਕੀਰਤਨ ਕ\" 40, margin 0; candidate 29381 explains 20; almost nothing heard (5 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29382,
+  "start_s": 225.6,
+  "end_s": 254.76,
+  "my_verseId": 34868,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਹਰਿ ਹਰਿ ਨਾਮੁ ਦੀਉ ਸੀਰਸਨ ਸੋੰਗੀ ਹਰਿ ਹਰਿ ਨਾਮ ਕ ਬ ਪਰ ਬ ਸੰਉ\" (38 chars, cache 98%); best 34868 \"ਕਰਿ ਕਿਰਪਾ ਹਰਿ ਹਰਿ ਨਾਮੁ ਦੀਨੋ ਬਿਨਸਿ ਗਏ\" explains 61, runner-up 38406 \"ਹਰਿ ਹਰਿ ਨਾਮੁ ਰਸਨ ਨਿਤ ਜਪਨ\" 58, margin 3; candidate 29382 explains 58; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 233.36,
+  "end_s": 258.44,
+  "my_verseId": 25136,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਹਰਿ ਹਰਿ ਨਾਮ ਕ ਬ ਪਰ ਬ ਸੰਉ ਸੰੰੰ\" (17 chars, cache 97%); best 25136 \"ਕਹੁ ਨਾਨਕ ਗੁਰਿ ਨਾਮੁ ਦ੍ਰਿੜ੍ਹਾਇਆ ਹਰਿ ਹਰ\" explains 65, runner-up 43850 \"ਹਰਿ ਹਰਿ ਨਾਮੁ ਜਪਹੁ ਰਸੁ ਮੀ\" 65, margin 0; candidate 29381 explains 18; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29382,
+  "start_s": 258.88,
+  "end_s": 269.32,
+  "my_verseId": 25877,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਰਿ ਹਰਿ ਨਾਮੀਆ ਪਿਰਛ ਹਿ ਨਾਮੁ ਦੀਆ ਪ੍ਰੀਤ ਹਰਿ ਨਾਆ\" (34 chars, cache 98%); best 25877 \"ਧਨੁ ਧਨੁ ਸਤਿਗੁਰੂ ਮਿਤ੍ਰੁ ਹਮਾਰਾ ਜਿਨਿ ਹਰ\" explains 56, runner-up 25643 \"ਨਾਨਕੁ ਗੁਰ ਵਿਟਹੁ ਵਾਰਿਆ ਜਿ\" 56, margin 0; candidate 29382 explains 56; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29382,
+  "start_s": 265.4,
+  "end_s": 269.8,
+  "my_verseId": 13839,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਨਾਮੁ ਦੀਆ ਪ੍ਰੀਤ ਹਰਿ ਨਾਆ\" (18 chars, cache 98%); best 13839 \"ਹਰਿ ਨਾਮੁ ਤਾਣੁ ਹਰਿ ਨਾਮੁ ਦੀਬਾਣੁ ਹਰਿ ਨਾ\" explains 61, runner-up 25643 \"ਨਾਨਕੁ ਗੁਰ ਵਿਟਹੁ ਵਾਰਿਆ ਜਿ\" 61, margin 0; candidate 29382 explains 61; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 269.96,
+  "end_s": 271.88,
+  "my_verseId": 34602,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਹਰਿ ਨਾਮ ਜਿਉ ਬਿਤ\" (12 chars, cache 95%); best 34602 \"ਸੁਨਤ ਜਪਤ ਹਰਿ ਨਾਮ ਜਸੁ ਤਾ ਕੀ ਦੂਰਿ ਬਲਾਈ\" explains 67, runner-up 39227 \"ਵੇਦਾ ਮਹਿ ਨਾਮੁ ਉਤਮੁ ਸੋ ਸੁ\" 67, margin 0; candidate 29381 explains 17; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29382,
+  "start_s": 270.28,
+  "end_s": 288.08,
+  "my_verseId": 25702,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਹਰਿ ਨਾਮ ਜਿਉ ਬਿਤ ਬ\" (13 chars, cache 97%); best 25702 \"ਸਦਾ ਸਦਾ ਨਾਮੁ ਉਚਰੈ ਹਰਿ ਨਾਮੋ ਨਿਤ ਬਿਉਹਾ\" explains 69, runner-up 35860 \"ਬਿਨੁ ਹਰਿ ਨਾਮ ਨ ਜੀਵਦੇ ਜਿਉ\" 62, margin 8; candidate 29382 explains 46; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29382,
+  "start_s": 290.68,
+  "end_s": 303.8,
+  "my_verseId": 29382,
+  "confidence": 0.92,
+  "agrees": true,
+  "reason": "heard \"ਹਰਿ ਨਾਮੀਆ ਕਰਸਤੁ ਮਾਰ ਭ ਹਮਾਰੀ ਗਾ ਮਾਰ\" (27 chars, cache 97%); best 29382 \"ਹਰਿ ਹਰਿ ਨਾਮੁ ਦੀਓ ਕੀਰਤਨ ਕਉ ਭਈ ਹਮਾਰੀ ਗ\" explains 56, runner-up 9319 \"ਰਤਨ ਪਦਾਰਥ ਹਰਿ ਨਾਮੁ ਤੁਮਾਰ\" 52, margin 4; candidate 29382 explains 56"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29383,
+  "start_s": 304.28,
+  "end_s": 328.88,
+  "my_verseId": 29379,
+  "confidence": 0.99,
+  "agrees": false,
+  "reason": "heard \"ਸ ਵਡਾਇ ਜੀਅਉ ਮਹਾ ਬਹੀ ਛਡਾਇਹੀਉ ਮ ਮਨ ਅ\" (26 chars, cache 98%); best 29379 \"ਛਡਾਇ ਲੀਓ ਮਹਾ ਬਲੀ ਤੇ ਅਪਨੇ ਚਰਨ ਪਰਾਤਿ ॥\" explains 50, runner-up 2990 \"ਠੋਕਿ ਵਜਾਇ ਸਭ ਡਿਠੀਆ ਤੁਸਿ \" 38, margin 12; candidate 29383 explains 15"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29383,
+  "start_s": 306.52,
+  "end_s": 325.92,
+  "my_verseId": 29379,
+  "confidence": 0.97,
+  "agrees": false,
+  "reason": "heard \"ਸ ਵਡਾਇ ਜੀਅਉ ਮਹਾ ਬਹੀ ਛਡਾਇਹੀਉ ਮ\" (23 chars, cache 98%); best 29379 \"ਛਡਾਇ ਲੀਓ ਮਹਾ ਬਲੀ ਤੇ ਅਪਨੇ ਚਰਨ ਪਰਾਤਿ ॥\" explains 57, runner-up 2990 \"ਠੋਕਿ ਵਜਾਇ ਸਭ ਡਿਠੀਆ ਤੁਸਿ \" 43, margin 13; candidate 29383 explains 17"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29384,
+  "start_s": 326.2,
+  "end_s": 349.36,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨ ਅਪੁਨੇ ਚਰਣ ਪਰਰਾਵ ਅਪੁਨੇ ਜਤਨਾ ਹਰਿ ਨੇ ਚਰ ਮ ਕਉ ਵਿਚ ਭਗਤ\" (39 chars, cache 97%); best 10816 \"ਸਖੀ ਨਾਲਿ ਵਸਾ ਅਪੁਨੇ ਨਾਹ ਪਿਆਰੇ ਮੇਰਾ ਮਨ\" explains 41, runner-up 52809 \"ਸਤਿਗੁਰ ਮਿਲਿ ਰਹੀਐ ਸਦ ਅਪੁਨ\" 41, margin 0; candidate 29384 explains 31; no pangti explains the hearing (best 41)"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29384,
+  "start_s": 329,
+  "end_s": 352.36,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਪੁਨੇ ਚਰਣ ਪਰਰਾਵ ਅਪੁਨੇ ਜਤਨਾ ਹਰਿ ਨੇ ਚਰ ਮ ਕਉ ਵਿਚ ਭਗਤ\" (37 chars, cache 98%); best 10816 \"ਸਖੀ ਨਾਲਿ ਵਸਾ ਅਪੁਨੇ ਨਾਹ ਪਿਆਰੇ ਮੇਰਾ ਮਨ\" explains 41, runner-up 52809 \"ਸਤਿਗੁਰ ਮਿਲਿ ਰਹੀਐ ਸਦ ਅਪੁਨ\" 41, margin 0; candidate 29384 explains 30; no pangti explains the hearing (best 41)"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29383,
+  "start_s": 356.92,
+  "end_s": 370.32,
+  "my_verseId": 27390,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ੰਗੀਚਾਰ ਜਉ ਪ੍ਰਭ ਅਭੈ ਬਿਖ ਅੰਗਿਕਾਰ ਕੀਉਉ ਪ੍ਰਭ ਅਪਲ\" (34 chars, cache 98%); best 27390 \"ਅੰਗੀਕਾਰੁ ਕੀਓ ਪ੍ਰਭ ਅਪੁਨੇ ਭਵ ਨਿਧਿ ਪਾਰਿ\" explains 50, runner-up 26636 \"ਸਦ ਬਲਿਹਾਰਿ ਜਾਉ ਪ੍ਰਭ ਅਪੁਨ\" 47, margin 3; candidate 29383 explains 47; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29383,
+  "start_s": 366.64,
+  "end_s": 374.68,
+  "my_verseId": 27390,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਅੰਗਿਕਾਰ ਕੀਉਉ ਪ੍ਰਭ ਅਪਲੈ ਮਲੀਠ ਪ੍ਰਭ\" (26 chars, cache 98%); best 27390 \"ਅੰਗੀਕਾਰੁ ਕੀਓ ਪ੍ਰਭ ਅਪੁਨੇ ਭਵ ਨਿਧਿ ਪਾਰਿ\" explains 58, runner-up 29383 \"ਅੰਗੀਕਾਰੁ ਕੀਓ ਪ੍ਰਭਿ ਅਪੁਨੈ\" 54, margin 4; candidate 29383 explains 54; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29383,
+  "start_s": 371.36,
+  "end_s": 384.2,
+  "my_verseId": 29383,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਲੀਠ ਪ੍ਰਭ ਅਭੇਰ ਸੰਕੀਰਾਖੀ ਪ ਹੈ\" (21 chars, cache 98%); best 29383 \"ਅੰਗੀਕਾਰੁ ਕੀਓ ਪ੍ਰਭਿ ਅਪੁਨੈ ਭਗਤਨ ਕੀ ਰਾਖ\" explains 52, runner-up 34586 \"ਪ੍ਰਗਟ ਭਈ ਸਭ ਲੋਅ ਮਹਿ ਸੇਵਕ\" 48, margin 5; candidate 29383 explains 52"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29383,
+  "start_s": 374.76,
+  "end_s": 388.8,
+  "my_verseId": 29383,
+  "confidence": 0.99,
+  "agrees": true,
+  "reason": "heard \"ਭੇਰ ਸੰਕੀਰਾਖੀ ਪ ਹੈ ਮਨ ਤੰਜੀ ਰਾਣੀ ਪਾਤ\" (25 chars, cache 98%); best 29383 \"ਅੰਗੀਕਾਰੁ ਕੀਓ ਪ੍ਰਭਿ ਅਪੁਨੈ ਭਗਤਨ ਕੀ ਰਾਖ\" explains 56, runner-up 29398 \"ਮੇਲਿ ਲੀਓ ਆਪੇ ਸੁਖਦਾਤੈ ਨਾਨ\" 48, margin 8; candidate 29383 explains 56"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29383,
+  "start_s": 385.4,
+  "end_s": 397.96,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮਨ ਤੰਜੀ ਰਾਣੀ ਪਾਤ ਭਗ ਜ ਭਗਦ ਕੀ ਨ\" (21 chars, cache 98%); best 29383 \"ਅੰਗੀਕਾਰੁ ਕੀਓ ਪ੍ਰਭਿ ਅਪੁਨੈ ਭਗਤਨ ਕੀ ਰਾਖ\" explains 48, runner-up 16428 \"ਸਚੀ ਬਾਣੀ ਪਾਏ ਭਾਗਿ ਕੋਇ ॥੧\" 43, margin 5; candidate 29383 explains 48; no pangti explains the hearing (best 48)"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29383,
+  "start_s": 390.16,
+  "end_s": 405.88,
+  "my_verseId": 29384,
+  "confidence": 0.99,
+  "agrees": false,
+  "reason": "heard \"ਗ ਜ ਭਗਦ ਕੀ ਨ ਨਾ ਨਾਨਕ ਚਰਣ ਗਹਿ ਪ੍ਰਭ ਅ\" (25 chars, cache 98%); best 29384 \"ਨਾਨਕ ਚਰਨ ਗਹੇ ਪ੍ਰਭ ਅਪਨੇ ਸੁਖੁ ਪਾਇਓ ਦਿਨ\" explains 56, runner-up 33041 \"ਜਨ ਨਾਨਕ ਹਰਿ ਪ੍ਰਭ ਭਾਣੀਆ ਰ\" 48, margin 8; candidate 29383 explains 32"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29384,
+  "start_s": 402.08,
+  "end_s": 411.52,
+  "my_verseId": 29384,
+  "confidence": 0.99,
+  "agrees": true,
+  "reason": "heard \"ਾਨਕ ਚਰਣ ਗਹਿ ਪ੍ਰਭ ਅ ਆਰਉ\" (17 chars, cache 98%); best 29384 \"ਨਾਨਕ ਚਰਨ ਗਹੇ ਪ੍ਰਭ ਅਪਨੇ ਸੁਖੁ ਪਾਇਓ ਦਿਨ\" explains 71, runner-up 17426 \"ਦਿੜੁ ਕਰਿ ਚਰਣ ਗਹੇ ਪ੍ਰਭ ਤੁ\" 53, margin 18; candidate 29384 explains 71"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29384,
+  "start_s": 407,
+  "end_s": 415.48,
+  "my_verseId": 26638,
+  "confidence": 0.91,
+  "agrees": false,
+  "reason": "heard \"ਰਉ ਨਾਨਕ ਚਰਣ ਗ ਪ੍ਰਭੁ ਅਪੁਨ\" (19 chars, cache 98%); best 26638 \"ਭਇਓ ਕ੍ਰਿਪਾਲੁ ਨਾਨਕ ਪ੍ਰਭੁ ਅਪੁਨਾ ਅਨਦ ਸੇ\" explains 68, runner-up 11957 \"ਰਾਖੁ ਪਰੋਇ ਪ੍ਰਭੁ ਅਪੁਨੇ ਮਨ\" 63, margin 5; candidate 29384 explains 63; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29384,
+  "start_s": 411.76,
+  "end_s": 425.92,
+  "my_verseId": 29384,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਾਨਕ ਚਰਣ ਗ ਪ੍ਰਭੁ ਅਪੁਨੇ ਸੁਖੁ ਪਾਇਆ ਦਿਨ ਰਾ ਸੂ\" (32 chars, cache 98%); best 29384 \"ਨਾਨਕ ਚਰਨ ਗਹੇ ਪ੍ਰਭ ਅਪਨੇ ਸੁਖੁ ਪਾਇਓ ਦਿਨ\" explains 75, runner-up 26638 \"ਭਇਓ ਕ੍ਰਿਪਾਲੁ ਨਾਨਕ ਪ੍ਰਭੁ \" 47, margin 28; candidate 29384 explains 75"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29384,
+  "start_s": 416.48,
+  "end_s": 425.92,
+  "my_verseId": 29384,
+  "confidence": 0.94,
+  "agrees": true,
+  "reason": "heard \"ਸੁਖੁ ਪਾਇਆ ਦਿਨ ਰਾ ਸੂ\" (15 chars, cache 98%); best 29384 \"ਨਾਨਕ ਚਰਨ ਗਹੇ ਪ੍ਰਭ ਅਪਨੇ ਸੁਖੁ ਪਾਇਓ ਦਿਨ\" explains 80, runner-up 53524 \"ਗੁਰਮੁਖਿ ਭਏ ਨਿਰਾਸ ਪਰਮ ਸੁਖ\" 67, margin 13; candidate 29384 explains 80"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29384,
+  "start_s": 426.16,
+  "end_s": 437.52,
+  "my_verseId": 29745,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਮਾਇਆ ਦਿਨਰਾ ਸੁਖ ਮਾਇਆ ਤਿਨੁ ਕ ਮਾਇ ਨ\" (25 chars, cache 98%); best 29745 \"ਹਾਇ ਹਾਇ ਕਰੇ ਦਿਨੁ ਰਾਤਿ ਮਾਇਆ ਦੁਖਿ ਮੋਹਿ\" explains 52, runner-up 46744 \"ਜਿਨ ਕਉ ਪੂਰਬਿ ਲਿਖਿਆ ਤਿਨ ਸ\" 52, margin 0; candidate 29384 explains 48; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29379,
+  "start_s": 438.4,
+  "end_s": 463.88,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਛਡ ਲੀਅਉ ਜ ਹ ਕੀੀੈ ਤਠਡਹੀਓ ਨਾਮ ਭਰ ਮ ਅਪਨੇ ਧਰ ਪਨਾ ਆਪ\" (35 chars, cache 98%); best 29379 \"ਛਡਾਇ ਲੀਓ ਮਹਾ ਬਲੀ ਤੇ ਅਪਨੇ ਚਰਨ ਪਰਾਤਿ ॥\" explains 31, runner-up 34862 \"ਕਰਿ ਕਿਰਪਾ ਅਪਨੇ ਪ੍ਰਭਿ ਕੀਨ\" 29, margin 3; candidate 29379 explains 31; no pangti explains the hearing (best 31)"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29378,
+  "start_s": 438.68,
+  "end_s": 445.08,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਡ ਲੀਅਉ ਜ ਹ ਕੀੀੈ\" (11 chars, cache 99%); best 51743 \"ਬਿਨੁ ਸਿਮਰਨ ਕੋਟਿ ਬਰਖ ਜੀਵੈ ਸਗਲੀ ਅਉਧ ਬ੍\" explains 45, runner-up 78678 \"ਕਾਲੀ ਅਉ ਕੇਹਰਿ ਸੰਗਿ ਲੈ ਚੰ\" 45, margin 0; candidate 29378 explains 18; no pangti explains the hearing (best 45)"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29379,
+  "start_s": 447.2,
+  "end_s": 459.36,
+  "my_verseId": 55650,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਠਡਹੀਓ ਨਾਮ ਭਰ ਮ ਅ\" (12 chars, cache 98%); best 55650 \"ਆਗੈ ਦ੍ਰਿਸਟਿ ਆਵਤ ਸਭ ਪਰਗਟ ਈਹਾ ਮੋਹਿਓ ਭਰ\" explains 50, runner-up 41698 \"ਤੁਮ ਵਡ ਪੁਰਖ ਦੀਨ ਦੁਖ ਭੰਜਨ\" 50, margin 0; candidate 29379 explains 25; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29380,
+  "start_s": 459.52,
+  "end_s": 474.2,
+  "my_verseId": 24670,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਪਨੇ ਧਰ ਪਨਾ ਆਪਨ ਚਣ ਕਰ ਸਤਿਗੁਰੁ ਪੂਰੇ ਕੀਨੀ\" (30 chars, cache 98%); best 24670 \"ਧਨੁ ਧੰਨੁ ਗੁਰੂ ਗੁਰ ਸਤਿਗੁਰੁ ਪੂਰਾ ਨਾਨਕ \" explains 53, runner-up 13841 \"ਜੋ ਨਿੰਦਾ ਕਰੇ ਸਤਿਗੁਰ ਪੂਰੇ\" 50, margin 3; candidate 29380 explains 20; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29380,
+  "start_s": 464.04,
+  "end_s": 478.4,
+  "my_verseId": 41060,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਚਣ ਕਰ ਸਤਿਗੁਰੁ ਪੂਰੇ ਕੀਨੀ ਜਾਇੈ ਦਸ ਲ\" (26 chars, cache 98%); best 41060 \"ਅੰਮ੍ਰਿਤ ਬਾਣੀ ਸਤਿਗੁਰ ਪੂਰੇ ਕੀ ਜਿਸੁ ਕਿਰ\" explains 58, runner-up 13938 \"ਜੋ ਨਿੰਦਾ ਕਰੇ ਸਤਿਗੁਰ ਪੂਰੇ\" 58, margin 0; candidate 29380 explains 19; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 475.52,
+  "end_s": 479.12,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ੈ ਦਸ ਲਖ\" (5 chars, cache 100%); best 29384 \"ਨਾਨਕ ਚਰਨ ਗਹੇ ਪ੍ਰਭ ਅਪਨੇ ਸੁਖੁ ਪਾਇਓ ਦਿਨ\" explains 40, runner-up 29378 \"ਧਨਾਸਰੀ ਮਹਲਾ ੫ ॥\" 20, margin 20; candidate 29381 explains 20; almost nothing heard (5 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 479.8,
+  "end_s": 484.64,
+  "my_verseId": 24670,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਤਿਗੁਰੁ ਪੂਰੇੈ ਨੀਦ\" (14 chars, cache 98%); best 24670 \"ਧਨੁ ਧੰਨੁ ਗੁਰੂ ਗੁਰ ਸਤਿਗੁਰੁ ਪੂਰਾ ਨਾਨਕ \" explains 71, runner-up 29381 \"ਸਤਿਗੁਰਿ ਪੂਰੈ ਕੀਨੀ ਦਾਤਿ ॥\" 71, margin 0; candidate 29381 explains 71; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 484.16,
+  "end_s": 488.2,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ੈ ਜਾ\" (3 chars, cache 98%); best 29380 \"ਏਕੁ ਨਾਮੁ ਦੀਓ ਮਨ ਮੰਤਾ ਬਿਨਸਿ ਨ ਕਤਹੂ ਜਾ\" explains 67, runner-up 29378 \"ਧਨਾਸਰੀ ਮਹਲਾ ੫ ॥\" 33, margin 33; candidate 29381 explains 33; almost nothing heard (3 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29382,
+  "start_s": 489.2,
+  "end_s": 501.2,
+  "my_verseId": 29382,
+  "confidence": 0.92,
+  "agrees": true,
+  "reason": "heard \"ਹਰਿ ਹਰਿ ਨਾਮ ਦੀੀਉ ਸਿਰ ਧਨ ਕਉ ਹਰਿ ਹਰਿ ਪ ਹਰਿ ਹਰਿ ਨਾ ਜੀਉ ਕੀਰ ਸੰਸ\" (43 chars, cache 98%); best 29382 \"ਹਰਿ ਹਰਿ ਨਾਮੁ ਦੀਓ ਕੀਰਤਨ ਕਉ ਭਈ ਹਮਾਰੀ ਗ\" explains 60, runner-up 7244 \"ਹਰਿ ਹਰਿ ਨਾਮੁ ਜੀਉ ਪ੍ਰਾਨ ਹ\" 58, margin 2; candidate 29382 explains 60"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29382,
+  "start_s": 497.44,
+  "end_s": 506.16,
+  "my_verseId": 21564,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਰਿ ਹਰਿ ਨਾ ਜੀਉ ਕੀਰ ਸੰਸਾਰ ਹਰਿ ਜੀਅਉ\" (24 chars, cache 98%); best 21564 \"ਹਰਿ ਜੀਉ ਕ੍ਰਿਪਾ ਕਰੈ ਲਿਵ ਲਾਵੈ ਲਾਹਾ ਹਰਿ\" explains 62, runner-up 55882 \"ਕ੍ਰਿਪਾ ਕ੍ਰਿਪਾ ਕ੍ਰਿਪਾ ਕਰਿ\" 62, margin 0; candidate 29382 explains 42; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29382,
+  "start_s": 502,
+  "end_s": 519.96,
+  "my_verseId": 29382,
+  "confidence": 0.99,
+  "agrees": true,
+  "reason": "heard \"ਰਿ ਜੀਅਉ ਕੀਰਤਨ ਕਉ ਨਾ ਜੀਉ ਨਚ ਕਉ ਭਈ ਹਮਾਰੀ ਸਾ ਦੀ ਹਮਾਰੀ\" (38 chars, cache 98%); best 29382 \"ਹਰਿ ਹਰਿ ਨਾਮੁ ਦੀਓ ਕੀਰਤਨ ਕਉ ਭਈ ਹਮਾਰੀ ਗ\" explains 53, runner-up 16378 \"ਹਰਿ ਕੀਰਤਿ ਰਹਰਾਸਿ ਹਮਾਰੀ ਗ\" 42, margin 11; candidate 29382 explains 53"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29382,
+  "start_s": 506.44,
+  "end_s": 520.48,
+  "my_verseId": 29382,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਰਤਨ ਕਉ ਨਾ ਜੀਉ ਨਚ ਕਉ ਭਈ ਹਮਾਰੀ ਸਾ ਦੀ ਹਮਾਰੀ\" (30 chars, cache 97%); best 29382 \"ਹਰਿ ਹਰਿ ਨਾਮੁ ਦੀਓ ਕੀਰਤਨ ਕਉ ਭਈ ਹਮਾਰੀ ਗ\" explains 57, runner-up 28950 \"ਹਰਿ ਹਰਿ ਕਰੀ ਦ੍ਰਿਸਟਿ ਤਬ ਭ\" 43, margin 13; candidate 29382 explains 57"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29378,
+  "start_s": 520.4,
+  "end_s": 530.68,
+  "my_verseId": 30622,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਕਰ ਹਮਾਰੀ ਲਹਾਉ ਅ\" (12 chars, cache 98%); best 30622 \"ਮਿਲੈ ਸੂਖੁ ਨਾਮੁ ਹਰਿ ਸੋਭਾ ਚਿੰਤਾ ਲਾਹਿ ਹ\" explains 67, runner-up 6887 \"ਕਰਿ ਕਿਰਪਾ ਲੋਚ ਪੂਰਿ ਹਮਾਰੀ\" 67, margin 0; candidate 29378 explains 33; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29381,
+  "start_s": 522.64,
+  "end_s": 531.28,
+  "my_verseId": 30622,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਕਰ ਹਮਾਰੀ ਲਹਾਉ ਅਨ ਬ\" (14 chars, cache 98%); best 30622 \"ਮਿਲੈ ਸੂਖੁ ਨਾਮੁ ਹਰਿ ਸੋਭਾ ਚਿੰਤਾ ਲਾਹਿ ਹ\" explains 57, runner-up 6887 \"ਕਰਿ ਕਿਰਪਾ ਲੋਚ ਪੂਰਿ ਹਮਾਰੀ\" 57, margin 0; candidate 29381 explains 21; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29379,
+  "start_s": 530.84,
+  "end_s": 536.12,
+  "my_verseId": 37924,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਨ ਬਿਨ ਹਰਿ ਨਾ ਕੀ ਬੰਦਰਉ ਮਨੁ ਬਿਨੁ ਹਰਿ\" (25 chars, cache 98%); best 37924 \"ਮਨ ਬਿਨੁ ਹਰਿ ਨਾਵੈ ਜਾਇ ਨ ਕਾਈ ॥\" explains 60, runner-up 30734 \"ਸੁਖ ਸੰਪਤਿ ਭੋਗ ਇਸੁ ਜੀਅ ਕੇ\" 56, margin 4; candidate 29379 explains 20; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29382,
+  "start_s": 531.28,
+  "end_s": 538.72,
+  "my_verseId": 57086,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਿਨ ਹਰਿ ਨਾ ਕੀ ਬੰਦਰਉ ਮਨੁ ਬਿਨੁ ਹਰਿ ਨਾ ਹਉ\" (27 chars, cache 97%); best 57086 \"ਨਾਹੀ ਬਿਨੁ ਹਰਿ ਨਾਉ ॥\" explains 59, runner-up 30734 \"ਸੁਖ ਸੰਪਤਿ ਭੋਗ ਇਸੁ ਜੀਅ ਕੇ\" 56, margin 4; candidate 29382 explains 44; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29380,
+  "start_s": 536.32,
+  "end_s": 547.52,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਹਉ ਮਨ ਬਿੰਦਵਨ ਜਨ ਹਰ ਨਾਉ ਕੀ ਜਨ ਕਰਨ\" (23 chars, cache 98%); best 20537 \"ਹਰਿ ਚਰਨ ਕਾਰਨ ਕਰਨ ਸੁਆਮੀ ਪਤਿਤ ਉਧਰਨ ਹਰਿ\" explains 39, runner-up 11579 \"ਸਿਮਰਿ ਸਿਮਰਿ ਹਰਿ ਕਾਰਨ ਕਰਨ\" 39, margin 0; candidate 29380 explains 26; no pangti explains the hearing (best 39)"
+ },
+ {
+  "recording": "l3clip01",
+  "cand_verseId": 29383,
+  "start_s": 538.96,
+  "end_s": 547.8,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨ ਬਿੰਦਵਨ ਜਨ ਹਰ ਨਾਉ ਕੀ ਜਨ ਕਰਨ\" (20 chars, cache 98%); best 78935 \"ਰਕਤ ਬੀਰਜ ਹਰਨ ਰਕਤ ਭਛਨ ਕਰਨ ਦਰਨ ਅਨਸੁੰਭ \" explains 45, runner-up 15362 \"ਬਿੰਦ੍ਰਾਬਨ ਮਨ ਹਰਨ ਮਨੋਹਰ ਕ\" 40, margin 5; candidate 29383 explains 25; no pangti explains the hearing (best 45)"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28969,
+  "start_s": 28.64,
+  "end_s": 35.96,
+  "my_verseId": 54351,
+  "confidence": 0.97,
+  "agrees": false,
+  "reason": "heard \"ਮਨ ਸ ਨਾਮੁ ਸਦਾ ਸਦ ਨਾਮ ਜਮਨਾ ਨਾ ਕ\" (22 chars, cache 97%); best 54351 \"ਸਦਾ ਸਦਾ ਮਨ ਨਾਮੁ ਸਮੑਾਲਿ ॥\" explains 64, runner-up 45321 \"ਨਾਮੋ ਨਾਮੁ ਸਦਾ ਸੁਖਦਾਤਾ ਨਾ\" 55, margin 9; candidate 28969 explains 50; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28969,
+  "start_s": 33.96,
+  "end_s": 38,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਮਨਾ ਨਾ ਕ\" (6 chars, cache 98%); best 16393 \"ਖੁਰਾਸਾਨ ਖਸਮਾਨਾ ਕੀਆ ਹਿੰਦੁਸਤਾਨੁ ਡਰਾਇਆ \" explains 83, runner-up 134705 \"ਦੇਖਹੁ ਜਾਇ ਜਨਾਨਾ ਕਹਿ ਜਿਨ \" 83, margin 0; candidate 28969 explains 33; almost nothing heard (6 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28970,
+  "start_s": 39.16,
+  "end_s": 58.08,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਹਰਦ ਬਰਸਤ ਮੁ ਊਝ ਪਈ ਹੈ ਹੋਈ ਲਿਾਈਆ ਹਰਿ ਅਰ ਪਨ ਖੰਨ ਸੰੰਡਾ ਨਾਮ\" (38 chars, cache 97%); best 31075 \"ਹਰਿ ਹਰਿ ਤੇਰਾ ਨਾਮੁ ਹੈ ਹਰਿ ਖਰਚੁ ਲੈ ਜਾਈ\" explains 37, runner-up 56199 \"ਅਖੀ ਪ੍ਰੇਮਿ ਕਸਾਈਆ ਹਰਿ ਹਰਿ\" 37, margin 0; candidate 28970 explains 32; no pangti explains the hearing (best 37)"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28969,
+  "start_s": 59.76,
+  "end_s": 63.84,
+  "my_verseId": 95495,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਜ ਮਨ ਸ ਨਾ ਸਤਜਾਮ\" (11 chars, cache 98%); best 95495 \"ਇਤਿ ਸ੍ਰੀ ਬਚਿਤ੍ਰ ਨਾਟਕ ਗ੍ਰੰਥੇ ਕ੍ਰਿਸਨਾਵ\" explains 55, runner-up 209697 \"ਨਾਮ ਇਸਨਾਨ ਦਾਨ ਸੰਜਮ ਨ ਜਾਪ\" 55, margin 0; candidate 28969 explains 55; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28969,
+  "start_s": 64.92,
+  "end_s": 74.36,
+  "my_verseId": 28967,
+  "confidence": 0.97,
+  "agrees": false,
+  "reason": "heard \"ਸੁ ਇਛਾ ਪੁਰਤਿ ਸਰਮ ਸੁਖ ਨਤਾ ਹਰਿ\" (22 chars, cache 97%); best 28967 \"ਇਛਾ ਪੂਰਕੁ ਸਰਬ ਸੁਖਦਾਤਾ ਹਰਿ ਜਾ ਕੈ ਵਸਿ \" explains 64, runner-up 210440 \"ਅੰਮ੍ਰਿਤ ਬਚਨ ਸੁਨਿ ਸ੍ਰਵਨ ਬ\" 50, margin 14; candidate 28969 explains 32"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28967,
+  "start_s": 70.04,
+  "end_s": 89.16,
+  "my_verseId": 28967,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਇਛਾ ਪੁਰਤਿ ਸਰਮ ਸੁਖ ਨਤਾ ਹਰਿ ਜਨੈ ਵਸ ਹੈ ਨਾਮ ਦੇਲਾ ਨਾਮ ਮ\" (38 chars, cache 98%); best 28967 \"ਇਛਾ ਪੂਰਕੁ ਸਰਬ ਸੁਖਦਾਤਾ ਹਰਿ ਜਾ ਕੈ ਵਸਿ \" explains 61, runner-up 4301 \"ਸਾ ਧਰਤਿ ਸੁਹਾਵੀ ਜਿਤੁ ਵਸਹਿ\" 42, margin 18; candidate 28967 explains 61"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28967,
+  "start_s": 75.24,
+  "end_s": 89.2,
+  "my_verseId": 28967,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਜਨੈ ਵਸ ਹੈ ਨਾਮ ਦੇਲਾ ਨਾਮ ਮ\" (18 chars, cache 98%); best 28967 \"ਇਛਾ ਪੂਰਕੁ ਸਰਬ ਸੁਖਦਾਤਾ ਹਰਿ ਜਾ ਕੈ ਵਸਿ \" explains 50, runner-up 49896 \"ਪ੍ਰਣਵੈ ਨਾਮਦੇਉ ਲਾਗੀ ਪ੍ਰੀਤ\" 50, margin 0; candidate 28967 explains 50"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28968,
+  "start_s": 90.4,
+  "end_s": 107.32,
+  "my_verseId": 28968,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਸੋ ਐਸਹਾਵ ਧਿਆਈਐ ਮੇਰੇੈ ਜੀਅ ਤ ਸਰਦ ਸੁਖੁਵੈ ਮੇਰੇ ਮਨਾ ਸਖ\" (39 chars, cache 98%); best 28968 \"ਸੋ ਐਸਾ ਹਰਿ ਧਿਆਈਐ ਮੇਰੇ ਜੀਅੜੇ ਤਾ ਸਰਬ ਸ\" explains 64, runner-up 26608 \"ਪੂਰਨ ਪਾਰਬ੍ਰਹਮ ਪਰਮੇਸੁਰ ਮੇ\" 46, margin 18; candidate 28968 explains 64"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28969,
+  "start_s": 110.2,
+  "end_s": 123.84,
+  "my_verseId": 28969,
+  "confidence": 0.91,
+  "agrees": true,
+  "reason": "heard \"ਮਨ ਸਤ ਨਾ ਸ ਸਤਿ ਨਾਮ ਜਮ ਸ ਗਮ\" (18 chars, cache 97%); best 28969 \"ਜਪਿ ਮਨ ਸਤਿ ਨਾਮੁ ਸਦਾ ਸਤਿ ਨਾਮੁ ॥\" explains 56, runner-up 17760 \"ਸਿਮਰਤ ਨਾਮ ਸਗਲ ਰੋਗ ਖਇਆ ॥੧\" 50, margin 6; candidate 28969 explains 56"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28969,
+  "start_s": 115.2,
+  "end_s": 123.88,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਜਮ ਸ ਗਮ\" (5 chars, cache 98%); best 28969 \"ਜਪਿ ਮਨ ਸਤਿ ਨਾਮੁ ਸਦਾ ਸਤਿ ਨਾਮੁ ॥\" explains 40, runner-up 28971 \"ਜਹ ਹਰਿ ਸਿਮਰਨੁ ਭਇਆ ਤਹ ਉਪਾ\" 40, margin 0; candidate 28969 explains 40; almost nothing heard (5 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28970,
+  "start_s": 124.44,
+  "end_s": 155.72,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਾਥਾਖਾਤੀ ਵਹਿ ਗੁਰ ਸਾਹਿਬ ਦੇਾਤ ਨਾ ਕ ਕ ਜਾਇ ਕਰ ਸੰ ਕਰ ਅਖਾ ਨਾ ਸਾਹਿ ਸਾਹਿਬ ਕੀ ਕਰ\" (58 chars, cache 98%); best 58671 \"ਫਰੀਦਾ ਸਾਹਿਬ ਦੀ ਕਰਿ ਚਾਕਰੀ ਦਿਲ ਦੀ ਲਾਹਿ\" explains 40, runner-up 42233 \"ਤੂ ਦਾਨਾ ਸਾਹਿਬੁ ਸਿਰਿ ਮੇਰਾ\" 40, margin 0; candidate 28970 explains 19; no pangti explains the hearing (best 40)"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28971,
+  "start_s": 159.28,
+  "end_s": 169.32,
+  "my_verseId": 28971,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਹ ਸਿਮਰਨ ਭਇਆ ਤੈਪਦਗਤਿ ਕੀਨੀਨ ਕੀਨ ਵਡ ਭਾਗੀ ਹਰਿ ਜਪਨਾ\" (37 chars, cache 97%); best 28971 \"ਜਹ ਹਰਿ ਸਿਮਰਨੁ ਭਇਆ ਤਹ ਉਪਾਧਿ ਗਤੁ ਕੀਨੀ \" explains 68, runner-up 51856 \"ਆਠ ਪਹਰ ਅਪਨਾ ਪ੍ਰਭੁ ਸਿਮਰਨੁ\" 46, margin 22; candidate 28971 explains 68"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28971,
+  "start_s": 164.88,
+  "end_s": 173.12,
+  "my_verseId": 28971,
+  "confidence": 0.99,
+  "agrees": true,
+  "reason": "heard \"ਨ ਕੀਨ ਵਡ ਭਾਗੀ ਹਰਿ ਜਪਨਾ\" (17 chars, cache 98%); best 28971 \"ਜਹ ਹਰਿ ਸਿਮਰਨੁ ਭਇਆ ਤਹ ਉਪਾਧਿ ਗਤੁ ਕੀਨੀ \" explains 88, runner-up 51856 \"ਆਠ ਪਹਰ ਅਪਨਾ ਪ੍ਰਭੁ ਸਿਮਰਨੁ\" 71, margin 18; candidate 28971 explains 88"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28972,
+  "start_s": 174.16,
+  "end_s": 195.52,
+  "my_verseId": 28972,
+  "confidence": 0.99,
+  "agrees": true,
+  "reason": "heard \"ਜਲ ਨਾਨਕ ਕਾਗੁਰ ਇਹ ਮਤਿ ਦੀਨੀਹ ਨਾਨ ਕਉ ਰ ਜਪਿ ਹਰਿਜ ਹ ਜਪਨ ਜਪਨ ਸਾਬ ਨਾ ਸਭ ਨਾ\" (50 chars, cache 98%); best 28972 \"ਜਨ ਨਾਨਕ ਕਉ ਗੁਰਿ ਇਹ ਮਤਿ ਦੀਨੀ ਜਪਿ ਹਰਿ \" explains 54, runner-up 41765 \"ਜਨ ਨਾਨਕ ਕਉ ਮਤਿ ਹਰਿ ਪ੍ਰਭਿ\" 44, margin 10; candidate 28972 explains 54"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28969,
+  "start_s": 182.52,
+  "end_s": 188.76,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਜਪਿ ਹਰਿਜ ਹ\" (8 chars, cache 97%); best 25091 \"ਸਤਿਗੁਰੁ ਮੇਲਿ ਹਰਿ ਨਾਮਿ ਸਮਾਣੀ ਜਪਿ ਹਰਿ \" explains 88, runner-up 42501 \"ਸਤਿਗੁਰੁ ਬੋਹਿਥੁ ਦੇਇ ਪ੍ਰਭੁ\" 88, margin 0; candidate 28969 explains 38; almost nothing heard (8 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28969,
+  "start_s": 188.88,
+  "end_s": 196.4,
+  "my_verseId": 24583,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਜਪਨ ਜਪਨ ਸਾਬ ਨਾ ਸਭ ਨਾ\" (15 chars, cache 99%); best 24583 \"ਨਾਨਕ ਇਕਸੁ ਬਿਨੁ ਮੈ ਅਵਰੁ ਨ ਜਾਣਾ ਸਭਨਾ ਦ\" explains 53, runner-up 207627 \"ਤਿਨ ਅਪਨਾ ਕੁਲ ਸਭ ਨਾਸ ਕਰਾਇ\" 53, margin 0; candidate 28969 explains 40; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28969,
+  "start_s": 196.6,
+  "end_s": 208,
+  "my_verseId": 2061,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਸਭੁ ਮਨੁ ਸਾ ਤੂ ਮਾੂ\" (13 chars, cache 97%); best 2061 \"ਦੇਖਿ ਦਰਸਨੁ ਮਨੁ ਸਾਧਾਰੈ ਪਾਪ ਸਗਲੇ ਜਾਹਿ \" explains 62, runner-up 14080 \"ਜਾ ਡਿਠਾ ਪੂਰਾ ਸਤਿਗੁਰੂ ਤਾਂ\" 54, margin 8; candidate 28969 explains 38; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28968,
+  "start_s": 204.88,
+  "end_s": 211.36,
+  "my_verseId": 25915,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਤੂ ਮਾੂਸ ਖਸੂਸ\" (10 chars, cache 98%); best 25915 \"ਸਭਨਾ ਦਾਤਾ ਏਕੁ ਤੂ ਮਾਣਸ ਦਾਤਿ ਨ ਹੋਇ ॥\" explains 50, runner-up 46410 \"ਮਿਰਤੁ ਦੂਖ ਸੂਖ ਲਿਖਿ ਪਾਏ ॥\" 50, margin 0; candidate 28968 explains 40; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28970,
+  "start_s": 208.32,
+  "end_s": 247.52,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸ ਖਸੂਸੂ ਮ ਦ ਪੁਰਾ ਜਿਸ ਜ ਸੁਣਿਆਸਿਆ ਨਾਨਕ ਨਾਮ ਅਰਾਧਨਾ ਖਾਲਜ ਆਵੈ ਰਾਸ ਸਬਦੁ ਪਿਆਰ\" (58 chars, cache 98%); best 60185 \"ਨਾਨਕ ਨਾਮੁ ਅਰਾਧਣਾ ਕਾਰਜੁ ਆਵੈ ਰਾਸਿ ॥੮॥\" explains 36, runner-up 14511 \"ਨਾਨਕ ਨਾਮਿ ਅਰਾਧਿਐ ਕਾਰਜੁ ਆ\" 36, margin 0; candidate 28970 explains 21; no pangti explains the hearing (best 36)"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28969,
+  "start_s": 211.48,
+  "end_s": 224.8,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ੂ ਮ\" (2 chars, cache 98%); best 28966 \"ਧਨਾਸਰੀ ਮਹਲਾ ੪ ॥\" explains 50, runner-up 28967 \"ਇਛਾ ਪੂਰਕੁ ਸਰਬ ਸੁਖਦਾਤਾ ਹਰ\" 50, margin 0; candidate 28969 explains 50; almost nothing heard (2 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28970,
+  "start_s": 228.64,
+  "end_s": 246.48,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਦ ਪੁਰਾ ਜਿਸ ਜ ਸੁਣਿਆਸਿਆ ਨਾਨਕ ਨਾਮ ਅਰਾਧਨਾ ਖਾਲਜ ਆਵੈ ਰਾਸ ਸ\" (41 chars, cache 97%); best 60185 \"ਨਾਨਕ ਨਾਮੁ ਅਰਾਧਣਾ ਕਾਰਜੁ ਆਵੈ ਰਾਸਿ ॥੮॥\" explains 49, runner-up 14511 \"ਨਾਨਕ ਨਾਮਿ ਅਰਾਧਿਐ ਕਾਰਜੁ ਆ\" 46, margin 2; candidate 28970 explains 24; no pangti explains the hearing (best 49)"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28971,
+  "start_s": 246.56,
+  "end_s": 249.92,
+  "my_verseId": 14501,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਦੁ ਪਿਆਰੇਹੁ ਜਨ ਮਨ ਕੀ\" (15 chars, cache 98%); best 14501 \"ਸਿਖਹੁ ਸਬਦੁ ਪਿਆਰਿਹੋ ਜਨਮ ਮਰਨ ਕੀ ਟੇਕ ॥\" explains 73, runner-up 26573 \"ਹਮ ਸੰਤਨ ਕੀ ਰੇਨੁ ਪਿਆਰੇ ਹਮ\" 67, margin 7; candidate 28971 explains 27; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip04",
+  "cand_verseId": 28971,
+  "start_s": 248.8,
+  "end_s": 249.96,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਨ ਮਨ ਕੀ\" (5 chars, cache 92%); best 28972 \"ਜਨ ਨਾਨਕ ਕਉ ਗੁਰਿ ਇਹ ਮਤਿ ਦੀਨੀ ਜਪਿ ਹਰਿ \" explains 60, runner-up 28966 \"ਧਨਾਸਰੀ ਮਹਲਾ ੪ ॥\" 40, margin 20; candidate 28971 explains 40; almost nothing heard (5 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18430,
+  "start_s": 27.28,
+  "end_s": 30.08,
+  "my_verseId": 18430,
+  "confidence": 0.94,
+  "agrees": true,
+  "reason": "heard \"ਹਨ ਮੀ ਹੋਇ ਨਿਖਾਵੈ\" (13 chars, cache 147%); best 18430 \"ਸੇਵਕ ਕਉ ਨਿਕਟੀ ਹੋਇ ਦਿਖਾਵੈ ॥\" explains 69, runner-up 40999 \"ਮਨੁ ਤਨੁ ਹੋਇ ਨਿਹਾਲੁ ਬਿੰਦਕ\" 54, margin 15; candidate 18430 explains 69"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18430,
+  "start_s": 30.88,
+  "end_s": 37.88,
+  "my_verseId": 18430,
+  "confidence": 0.91,
+  "agrees": true,
+  "reason": "heard \"ਖੜ ਹੋਇ ਲ ਨਾਾਵੈ ਸੇਵਕ ਕਉਜ\" (18 chars, cache 97%); best 18430 \"ਸੇਵਕ ਕਉ ਨਿਕਟੀ ਹੋਇ ਦਿਖਾਵੈ ॥\" explains 56, runner-up 1079 \"ਸੁਖੁ ਹੋਵੈ ਸੇਵ ਕਮਾਣੀਆ ॥\" 50, margin 6; candidate 18430 explains 56"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18430,
+  "start_s": 33.64,
+  "end_s": 37.76,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ੇਵਕ ਕਉਜ\" (6 chars, cache 98%); best 8728 \"ਅਪਨੇ ਸੇਵਕ ਕਉ ਆਪਿ ਸਹਾਈ ॥\" explains 83, runner-up 16925 \"ਤੇਰੇ ਸੇਵਕ ਕਉ ਕਿਸ ਕੀ ਕਾਣਿ\" 83, margin 0; candidate 18430 explains 83; almost nothing heard (6 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18431,
+  "start_s": 38,
+  "end_s": 50.6,
+  "my_verseId": 18431,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਜੋ ਜੋ ਕ ਹੈ ਥਾਕਵਨ ਭੈ ਦੇਵ ਸਤਿਕਾਲੁ ਹੋਇ ਆਵੈ ਅਬਟ\" (33 chars, cache 98%); best 18431 \"ਜੋ ਜੋ ਕਹੈ ਠਾਕੁਰ ਪਹਿ ਸੇਵਕੁ ਤਤਕਾਲ ਹੋਇ \" explains 58, runner-up 12366 \"ਕਹੁ ਮਾਨੁਖ ਤੇ ਕਿਆ ਹੋਇ ਆਵੈ\" 36, margin 21; candidate 18431 explains 58"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18432,
+  "start_s": 45.88,
+  "end_s": 56.08,
+  "my_verseId": 205822,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਸਤਿਕਾਲੁ ਹੋਇ ਆਵੈ ਅਬਟਾਲੁ ਹੋਇ ਸਤ ਲਗੁ ਹੋਇ\" (30 chars, cache 98%); best 205822 \"ਸਿੰਮਲੁ ਬਿਰਖੁ ਨ ਸਫਲੁ ਹੋਇ ਆਪ ਗਣਾਏ ਵਡਾ \" explains 50, runner-up 204324 \"ਭਗਤਿ ਵਛਲੁ ਹੋਇ ਆਇਆ ਪਤਿਤ ਉ\" 50, margin 0; candidate 18432 explains 23; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18427,
+  "start_s": 50.92,
+  "end_s": 59.04,
+  "my_verseId": 24737,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਾਲੁ ਹੋਇ ਸਤ ਲਗੁ ਹੋਇ\" (14 chars, cache 98%); best 24737 \"ਮਨੁ ਨਿਰਮਲੁ ਹੋਇ ਸੰਤਾ ਧੂਰੇ ॥੨॥\" explains 71, runner-up 202986 \"ਰਾਤੀ ਭਵਰੁ ਲੁਭਾਇਦਾ ਸੀਤਲੁ \" 71, margin 0; candidate 18427 explains 21; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18427,
+  "start_s": 57.6,
+  "end_s": 60.4,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 100%); candidate 18427 explains 0; almost nothing heard (0 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18428,
+  "start_s": 61.24,
+  "end_s": 76.72,
+  "my_verseId": 35017,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਬਨੇ ਸਿਵਕ ਕੀ ਤੇਰਾ ਤੇੈ ਐਸੇ ਭਚੀ ਆਪੇ\" (25 chars, cache 98%); best 35017 \"ਅਪਨੇ ਸੇਵਕ ਕੀ ਆਪੇ ਰਾਖੈ ਪ੍ਰਭ ਮੇਰੇ ਕੋ ਵ\" explains 52, runner-up 26832 \"ਅਪੁਨੇ ਸੇਵਕ ਕੀ ਆਪੇ ਰਾਖੈ ਪ\" 52, margin 0; candidate 18428 explains 52; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18428,
+  "start_s": 73.52,
+  "end_s": 82.64,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਆਪੇ ਨਾਮ ਨਾਮ\" (9 chars, cache 97%); best 30057 \"ਆਪੇ ਹੀ ਆਪਿ ਆਪਿ ਵਰਤੈ ਆਪੇ ਨਾਮਿ ਓੁਮਾਹਾ \" explains 78, runner-up 18428 \"ਅਪੁਨੇ ਸੇਵਕ ਕੀ ਆਪੇ ਰਾਖੈ ਆ\" 78, margin 0; candidate 18428 explains 78; almost nothing heard (9 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18428,
+  "start_s": 77.08,
+  "end_s": 96.96,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮ ਨਾਮ ਹਇਆ ਨ ਜ ਸਿਚ ਸਿਚਣਚੇ ਨਾਮ ਪਵੈ ਹਾਸਮੋਹੈ ਨਾਮ ਪਵੈ ਹਾਸਮੋੈਵੈ ਨਾ ਮਵੈ\" (50 chars, cache 98%); best 106683 \"ਜਾਮੀ ਪਦ ਏ ਹੋਤ ਹੈ ਨਾਮ ਪਾਸਿ ਕੇ ਜਾਨੁ ॥੩\" explains 38, runner-up 2821 \"ਦਮੜਾ ਪਲੈ ਨਾ ਪਵੈ ਨਾ ਕੋ ਦੇ\" 36, margin 2; candidate 18428 explains 26; no pangti explains the hearing (best 38)"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18428,
+  "start_s": 84.04,
+  "end_s": 91.44,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨ ਜ ਸਿਚ ਸਿਚਣਚੇ ਨਾਮ ਪਵੈ\" (17 chars, cache 97%); best 55077 \"ਨਾਨਕ ਸਚੇ ਨਾਮ ਵਿਣੁ ਕੇਤੇ ਡੁਬੇ ਸਾਥ ॥੩॥\" explains 47, runner-up 33588 \"ਨਾਨਕ ਸਚੇ ਨਾਮ ਵਿਣੁ ਸਭੋ ਦੁ\" 47, margin 0; candidate 18428 explains 29; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18428,
+  "start_s": 91.6,
+  "end_s": 97,
+  "my_verseId": 56173,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਹਾਸਮੋਹੈ ਨਾਮ ਪਵੈ ਹਾਸਮੋੈਵੈ ਨਾ ਮਵੈ\" (26 chars, cache 98%); best 56173 \"ਨਾਮੁ ਚਿਤਵੈ ਨਾਮੋ ਪੜੈ ਨਾਮਿ ਰਹੈ ਲਿਵ ਲਾਇ\" explains 50, runner-up 2821 \"ਦਮੜਾ ਪਲੈ ਨਾ ਪਵੈ ਨਾ ਕੋ ਦੇ\" 46, margin 4; candidate 18428 explains 31; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18428,
+  "start_s": 103.8,
+  "end_s": 118.2,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਵਡ ਮ ਮਹੁ ਵਡ ਵਡਹੁ ਮ ਮ ਮ ਮ ਮ ਮ ਮ ਮਗ ਲਗਗ ਮਗ ਮਗ ਜਹ ਨ ਨਸ ਨਮ ਸੇਵਡ\" (39 chars, cache 98%); best 21231 \"ਵਡਹੁ ਵਡਾ ਵਡ ਮੇਦਨੀ ਸਿਰੇ ਸਿਰਿ ਧੰਧੈ ਲਾਇ\" explains 31, runner-up 32610 \"ਆਵਹੁ ਮੀਤ ਪਿਆਰੇ ॥ ਮੰਗਲ ਗਾ\" 28, margin 3; candidate 18428 explains 13; no pangti explains the hearing (best 31)"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18429,
+  "start_s": 115.4,
+  "end_s": 125.24,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਹ ਨ ਨਸ ਨਮ ਸੇਵਡਨੀ ਮਨ ਨਾਮਖ ਮਹਾ ਮਹਾ ਉਠ ਲਾਵੈ\" (30 chars, cache 98%); best 18429 \"ਜਹ ਜਹ ਕਾਜ ਕਿਰਤਿ ਸੇਵਕ ਕੀ ਤਹਾ ਤਹਾ ਉਠਿ \" explains 40, runner-up 102427 \"ਲਖੈ ਮੋਨ ਮਾਨੀ ਮਹਾ ਮਾਨ ਮੋਹ\" 37, margin 3; candidate 18429 explains 40; no pangti explains the hearing (best 40)"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18429,
+  "start_s": 119.12,
+  "end_s": 129.32,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨ ਨਾਮਖ ਮਹਾ ਮਹਾ ਉਠ ਲਾਵੈ ਸੁ ਕਹਾ ਮੁਖਿ ਧਾਵੈ\" (30 chars, cache 98%); best 88045 \"ਮਾਰਗੁ ਰੋਕ ਰਹੈ ਤਿਨ ਕੋ ਧਰਿ ਪੰਨਗ ਰੂਪ ਮਹ\" explains 47, runner-up 26096 \"ਗੁਰਮੁਖਿ ਹੋਵੈ ਸੁ ਨਾਮੁ ਧਿਆ\" 47, margin 0; candidate 18429 explains 43; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18429,
+  "start_s": 126.12,
+  "end_s": 132.64,
+  "my_verseId": 136707,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਸੁ ਕਹਾ ਮੁਖਿ ਧਾਵੈ ਨ ਸੋ\" (16 chars, cache 97%); best 136707 \"ਸੁ ਕਹੁ ਕਹਾ ਮੁਹਿ ਜੁ ਤੈ ਨਿਹਾਰਾ ॥\" explains 56, runner-up 209655 \"ਤੈਸੇ ਆਵਾ ਗੌਨ ਨ ਮਿਟਤ ਨ ਆਨ\" 56, margin 0; candidate 18429 explains 44; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18430,
+  "start_s": 130.36,
+  "end_s": 139.2,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨ ਸੋਸ ਨ ਨ ਮ ਨਿਕੜੀ ਹੋਇਿ ਗਵਰ\" (19 chars, cache 98%); best 43135 \"ਸੋ ਸੰਨਿਆਸੀ ਜੋ ਸਤਿਗੁਰ ਸੇਵੈ ਵਿਚਹੁ ਆਪੁ \" explains 47, runner-up 96589 \"ਕਉਨ ਬਲੀ ਪ੍ਰਗਟਿਯੋ ਭੂਅ ਮੈ \" 42, margin 5; candidate 18430 explains 42; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18430,
+  "start_s": 134.56,
+  "end_s": 139.2,
+  "my_verseId": 16850,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਮ ਨਿਕੜੀ ਹੋਇਿ ਗਵਰ\" (13 chars, cache 98%); best 16850 \"ਗਿਆਨੀ ਕੀ ਹੋਇ ਵਰਤੀ ਦਾਸਿ ॥\" explains 62, runner-up 88068 \"ਰਾਹ ਭਯੋ ਤਬ ਹੀ ਨਿਕਸੇ ਹਰਿ \" 54, margin 8; candidate 18430 explains 54; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18430,
+  "start_s": 139.36,
+  "end_s": 161.32,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਹਤ ਕਾ ਮ ਨ ਸ ਸ ਸ ਸ  ਸਆ ਸ  ਸਆ ਸ ਸੂ ਸੂਰ ਸ ਸਸਮਛਸ\" (27 chars, cache 98%); best 105221 \"ਸੁਰ ਅਸੁਰ ਚਕ੍ਰਿਤ ਚਹੁ ਦਿਸ ਭਏ ਅਨਲ ਪਵਨ ਸ\" explains 37, runner-up 116029 \"ਕਾਮਸੈਨ ਐਸੇ ਕਹਿਯੋ ਸੂਰ ਸਾਮ\" 37, margin 0; candidate 18430 explains 7; no pangti explains the hearing (best 37)"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18430,
+  "start_s": 146.92,
+  "end_s": 154.64,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸ ਸ ਸ  ਸਆ ਸ  ਸਆ ਸ ਸੂ ਸੂਰ ਸ\" (15 chars, cache 98%); best 83063 \"ਸੁ ਸਸਤ੍ਰ ਸੂਰ ਸੋਭਹੀ ॥\" explains 47, runner-up 105358 \"ਭਜ੍ਯੋ ਨ ਜੁਧ ਤੇ ਕਹੂੰ ਨਿਸੇ\" 47, margin 0; candidate 18430 explains 7; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18430,
+  "start_s": 155.56,
+  "end_s": 162.16,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਸਮਛਸ\" (4 chars, cache 97%); best 18432 \"ਤਿਸੁ ਸੇਵਕ ਕੈ ਹਉ ਬਲਿਹਾਰੀ ਜੋ ਅਪਨੇ ਪ੍ਰਭ\" explains 50, runner-up 18433 \"ਤਿਸ ਕੀ ਸੋਇ ਸੁਣੀ ਮਨੁ ਹਰਿਆ\" 50, margin 0; candidate 18430 explains 25; almost nothing heard (4 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18431,
+  "start_s": 163,
+  "end_s": 174.6,
+  "my_verseId": 18431,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਜੋ ਇਹ ਠਾਕੁਰ ਕੈ ਸੇਵਡੈ ਸੰਕਾਲੁ ਹੋਇ ਨਾੈ ਹ\" (28 chars, cache 98%); best 18431 \"ਜੋ ਜੋ ਕਹੈ ਠਾਕੁਰ ਪਹਿ ਸੇਵਕੁ ਤਤਕਾਲ ਹੋਇ \" explains 54, runner-up 12871 \"ਠਾਕੁਰ ਕਉ ਸੇਵਕੁ ਜਾਨੈ ਸੰਗਿ\" 46, margin 7; candidate 18431 explains 54"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18432,
+  "start_s": 174.76,
+  "end_s": 184.44,
+  "my_verseId": 42038,
+  "confidence": 0.97,
+  "agrees": false,
+  "reason": "heard \"ਮਾਰੁ ਹੋਇਆਵ ਸੰਦਾਸੁ ਹੋਇਆ ਕੋਈਸਾੋਇ ਨ ਕੋਇ\" (29 chars, cache 97%); best 42038 \"ਧੁਰਿ ਹੋਵਨਾ ਸੁ ਹੋਇਆ ਕੋ ਨ ਮੇਟਣਹਾਰ ॥੩॥\" explains 55, runner-up 208382 \"ਖੁਲੇ ਸੇ ਬੰਧਨ ਬਿਖੈ ਭਲੋ ਹੈ\" 48, margin 7; candidate 18432 explains 17; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18432,
+  "start_s": 176.08,
+  "end_s": 187.92,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਵ ਸੰਦਾਸੁ ਹੋਇਆ ਕੋਈਸਾੋਇ ਨ ਕੋਇ ਤਿਸ ਜ ਸੋਇ ਸੁੜੀ ਮਨਿ ਹਰਿਆ\" (39 chars, cache 98%); best 18433 \"ਤਿਸ ਕੀ ਸੋਇ ਸੁਣੀ ਮਨੁ ਹਰਿਆ ਤਿਸੁ ਨਾਨਕ ਪ\" explains 46, runner-up 56145 \"ਤਨੁ ਮਨੁ ਸੀਤਲੁ ਹੋਇਆ ਸਾਂਤਿ\" 41, margin 5; candidate 18432 explains 18; no pangti explains the hearing (best 46)"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18433,
+  "start_s": 184.48,
+  "end_s": 194.44,
+  "my_verseId": 18433,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਤਿਸ ਜ ਸੋਇ ਸੁੜੀ ਮਨਿ ਹਰਿਆ ਇਸੁ ਨਾਨਕ ਬਰਸਨੁ ਆਵੈ\" (33 chars, cache 98%); best 18433 \"ਤਿਸ ਕੀ ਸੋਇ ਸੁਣੀ ਮਨੁ ਹਰਿਆ ਤਿਸੁ ਨਾਨਕ ਪ\" explains 73, runner-up 54306 \"ਮਹਾ ਅਨੰਦ ਕਰਹੁ ਦਾਸ ਹਰਿ ਕੇ\" 45, margin 27; candidate 18433 explains 73"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18433,
+  "start_s": 188.32,
+  "end_s": 194.48,
+  "my_verseId": 18433,
+  "confidence": 0.94,
+  "agrees": true,
+  "reason": "heard \"ਇਸੁ ਨਾਨਕ ਬਰਸਨੁ ਆਵੈ\" (15 chars, cache 97%); best 18433 \"ਤਿਸ ਕੀ ਸੋਇ ਸੁਣੀ ਮਨੁ ਹਰਿਆ ਤਿਸੁ ਨਾਨਕ ਪ\" explains 73, runner-up 53538 \"ਨਾਨਕ ਬਿਨੁ ਬੂਝੇ ਕਿਨੈ ਨ ਪਾ\" 53, margin 20; candidate 18433 explains 73"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18432,
+  "start_s": 195.24,
+  "end_s": 211.44,
+  "my_verseId": 23592,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਿਸੁ ਨਾਨਕ ਤਿਤਿਸੁ ਨਾਨਕ ਤ ਜਿਸ ਨ ਸਾਹਿਬ ਨਾਤਾ ਬਿਸਮਮ ਮਰ ਨ\" (39 chars, cache 98%); best 23592 \"ਕਰੁਣਾ ਮੈ ਪੂਰਨ ਪਰਮੇਸੁਰ ਨਾਨਕ ਤਿਸੁ ਸਰਨਹ\" explains 51, runner-up 22294 \"ਕਹੁ ਨਾਨਕ ਤਿਸੁ ਗੁਰ ਬਲਿਹਾਰ\" 49, margin 3; candidate 18432 explains 28; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18433,
+  "start_s": 195.24,
+  "end_s": 201.88,
+  "my_verseId": 18433,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਿਸੁ ਨਾਨਕ ਤਿਤਿਸੁ ਨਾਨਕ\" (17 chars, cache 97%); best 18433 \"ਤਿਸ ਕੀ ਸੋਇ ਸੁਣੀ ਮਨੁ ਹਰਿਆ ਤਿਸੁ ਨਾਨਕ ਪ\" explains 76, runner-up 22294 \"ਕਹੁ ਨਾਨਕ ਤਿਸੁ ਗੁਰ ਬਲਿਹਾਰ\" 65, margin 12; candidate 18433 explains 76"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18432,
+  "start_s": 202.76,
+  "end_s": 211.24,
+  "my_verseId": 21331,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਤ ਜਿਸ ਨ ਸਾਹਿਬ ਨਾਤਾ ਬਿਸਮਮ ਮਰ\" (21 chars, cache 98%); best 21331 \"ਜਿਉ ਸਾਹਿਬ ਨਾਲਿ ਨ ਹਾਰੀਐ ਤੇਵੇਹਾ ਪਾਸਾ ਢ\" explains 52, runner-up 32106 \"ਅੰਤਿ ਨ ਸਾਹਿਬੁ ਸਿਮਰਿਆ ਜਾਈ\" 52, margin 0; candidate 18432 explains 29; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip31",
+  "cand_verseId": 18433,
+  "start_s": 211.72,
+  "end_s": 226.4,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਖੈ ਲੋਇ ਨ ਸਭੈ ਖੋਇ ਇਸਿਸੁਦਾਸ ਸਾਹਿਬ ਰਾਜਾ ਹੋਇ ਜ\" (33 chars, cache 97%); best 40859 \"ਆਸਾ ਅੰਦਰਿ ਸਭੁ ਕੋ ਕੋਇ ਨਿਰਾਸਾ ਹੋਇ ॥\" explains 42, runner-up 35751 \"ਜਿਸ ਦਾ ਸਾਹਿਬੁ ਡਾਢਾ ਹੋਇ ॥\" 39, margin 3; candidate 18433 explains 21; no pangti explains the hearing (best 42)"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 16819,
+  "start_s": 0.2,
+  "end_s": 12.08,
+  "my_verseId": 40926,
+  "confidence": 0.99,
+  "agrees": false,
+  "reason": "heard \"ਲੋਗਿਆ ਗਾਵਣ ਨ ਗਾਵਣੁ ਜਾਗਇਿਆਾਈਐ ਨਾ\" (26 chars, cache 99%); best 40926 \"ਗਾਈਐ ਰਾਤਿ ਦਿਨੰਤੁ ਗਾਵਣ ਜੋਗਿਆ ॥\" explains 54, runner-up 4775 \"ਬਿਨੁ ਭਾਗਾ ਗੁਰੁ ਪਾਈਐ ਨਾਹੀ\" 42, margin 12; candidate 16819 explains 27; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 16822,
+  "start_s": 0.24,
+  "end_s": 15.56,
+  "my_verseId": 40926,
+  "confidence": 0.98,
+  "agrees": false,
+  "reason": "heard \"ਲੋਗਿਆ ਗਾਵਣ ਨ ਗਾਵਣੁ ਜਾਗਇਿਆਾਈਐ ਨਾਨੰਤ ਗਵਣ ਜੋਗਿਆ\" (36 chars, cache 99%); best 40926 \"ਗਾਈਐ ਰਾਤਿ ਦਿਨੰਤੁ ਗਾਵਣ ਜੋਗਿਆ ॥\" explains 56, runner-up 53108 \"ਗੁਰਮਤੀ ਨਾਉ ਪਾਈਐ ਨਾਨਕ ਗੁਣ\" 39, margin 17; candidate 16822 explains 19; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 16820,
+  "start_s": 12.36,
+  "end_s": 19.44,
+  "my_verseId": 40926,
+  "confidence": 0.94,
+  "agrees": false,
+  "reason": "heard \"ਨੰਤ ਗਵਣ ਜੋਗਿਆ\" (10 chars, cache 98%); best 40926 \"ਗਾਈਐ ਰਾਤਿ ਦਿਨੰਤੁ ਗਾਵਣ ਜੋਗਿਆ ॥\" explains 80, runner-up 39825 \"ਤੂਟੀ ਤੰਤੁ ਰਬਾਬ ਕੀ ਵਾਜੈ ਨ\" 60, margin 20; candidate 16820 explains 20; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40926,
+  "start_s": 34.92,
+  "end_s": 39.72,
+  "my_verseId": 40926,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਪਾਈਐ ਰਾਿ ਗਵਣ ਜੋਗਿਆ\" (15 chars, cache 98%); best 40926 \"ਗਾਈਐ ਰਾਤਿ ਦਿਨੰਤੁ ਗਾਵਣ ਜੋਗਿਆ ॥\" explains 67, runner-up 3254 \"ਹਰਿ ਗੁਰ ਸਰਣਾਈ ਪਾਈਐ ਵਣਜਾਰ\" 60, margin 7; candidate 40926 explains 67"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40926,
+  "start_s": 41.76,
+  "end_s": 52.68,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਣੀ ਜਾਗਇਿਆ ਭਈਐਤ ਰਾਵਣ ਹੋਿਆ\" (20 chars, cache 98%); best 40926 \"ਗਾਈਐ ਰਾਤਿ ਦਿਨੰਤੁ ਗਾਵਣ ਜੋਗਿਆ ॥\" explains 45, runner-up 4610 \"ਗੁਰ ਕਿਰਪਾ ਤੇ ਹਰਿ ਨਿਰਭਉ ਧ\" 40, margin 5; candidate 40926 explains 45; no pangti explains the hearing (best 45)"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40926,
+  "start_s": 50.84,
+  "end_s": 84.2,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਿਆ ਵ ਵ ਵ ਵ ਵ ਵ ਸ ਸਵਾ ਸਵਾ ਸਵਾ ਸਵਾ ਸਵਾ ਸਵਾ ਸਵਾ ਵਸੀ ਵਸੀ ਵਸੀ ਵਸੀ ਵਸੀ ਵਸੀ ਵ\" (62 chars, cache 98%); best 59669 \"ਪਰਮ ਜੋਤਿ ਜਾਗਾਇ ਵਾਜਾ ਵਾਵਸੀ ॥੧੪॥\" explains 32, runner-up 32355 \"ਸੇਵਾ ਸਾ ਪ੍ਰਭ ਭਾਵਸੀ ਜੋ ਪ੍\" 32, margin 0; candidate 40926 explains 13; no pangti explains the hearing (best 32)"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40926,
+  "start_s": 70.4,
+  "end_s": 84.2,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਵ ਵ ਵ ਵ ਵ ਸ ਸਵਾ ਸਵਾ ਸਵਾ ਸਵਾ ਸਵਾ ਸਵਾ ਸਵਾ ਵਸੀ ਵਸੀ ਵਸੀ ਵਸੀ ਵਸੀ ਵਸੀ ਵਜ ਗੁਰ\" (59 chars, cache 98%); best 59669 \"ਪਰਮ ਜੋਤਿ ਜਾਗਾਇ ਵਾਜਾ ਵਾਵਸੀ ॥੧੪॥\" explains 34, runner-up 32355 \"ਸੇਵਾ ਸਾ ਪ੍ਰਭ ਭਾਵਸੀ ਜੋ ਪ੍\" 34, margin 0; candidate 40926 explains 12; no pangti explains the hearing (best 34)"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40927,
+  "start_s": 85.24,
+  "end_s": 90.28,
+  "my_verseId": 54379,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਜੋ ਗੁਰ ਨ ਹਰ ਰਸ ਪਗ\" (12 chars, cache 96%); best 54379 \"ਸੋ ਮਨੁ ਨਿਰਮਲੁ ਜੋ ਗੁਰ ਸੰਗਿ ਰਾਚੀ ॥੩॥\" explains 58, runner-up 209099 \"ਤ੍ਰਿਗੁਨ ਅਤੀਤ ਜੀਤ ਹਾਰ ਨ ਹ\" 58, margin 0; candidate 40927 explains 50; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40927,
+  "start_s": 91.48,
+  "end_s": 112.36,
+  "my_verseId": 40927,
+  "confidence": 0.92,
+  "agrees": true,
+  "reason": "heard \"ਤਿਨੀ ਹਰਿ ਰਸ ਪਿਆ ਤਿਨੀ ਹਰਿ ਰਸਮ ਹਰ ਹਰਿ ਵਸੀ ਮ ਵ ਵ ਵ\" (34 chars, cache 98%); best 40927 \"ਜੋ ਗੁਰ ਕੀ ਪੈਰੀ ਪਾਹਿ ਤਿਨੀ ਹਰਿ ਰਸੁ ਭੋਗ\" explains 56, runner-up 20208 \"ਮਨਿ ਹਰਿ ਹਰਿ ਵਸਿਆ ਗੁਰਮਤਿ \" 53, margin 3; candidate 40927 explains 56"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40919,
+  "start_s": 99.4,
+  "end_s": 100.2,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਰਿ\" (2 chars, cache 100%); best 40921 \"ਜਿਸੁ ਰਖੈ ਕਿਰਪਾ ਧਾਰਿ ਰਿਜਕੁ ਸਮਾਹੀਐ ॥\" explains 100, runner-up 40927 \"ਜੋ ਗੁਰ ਕੀ ਪੈਰੀ ਪਾਹਿ ਤਿਨੀ\" 100, margin 0; candidate 40919 explains 0; almost nothing heard (2 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40920,
+  "start_s": 121.04,
+  "end_s": 127.16,
+  "my_verseId": 40920,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਦੇਵਣਹਰਿ ਦਤਾ ਚਿਤਮੁਖਿ ਸਦਾ\" (20 chars, cache 97%); best 40920 \"ਦੇਵਣਹਾਰੁ ਦਾਤਾਰੁ ਕਿਤੁ ਮੁਖਿ ਸਾਲਾਹੀਐ ॥\" explains 60, runner-up 54897 \"ਅੰਤਰਿ ਤੇਰੈ ਹਰਿ ਵਸੈ ਗੁਰਮੁ\" 55, margin 5; candidate 40920 explains 60"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40920,
+  "start_s": 129,
+  "end_s": 135.32,
+  "my_verseId": 207462,
+  "confidence": 0.91,
+  "agrees": false,
+  "reason": "heard \"ਵਨਹਾਰਿ ਕਰ ਕਿਨ ਮੁਖਾਈ\" (16 chars, cache 97%); best 207462 \"ਰਾਵਨਹਾਰੁ ਰਹੀਮੁ ਰਾਮ ਆਪੇ ਨਰ ਨਾਰੀ॥\" explains 56, runner-up 10920 \"ਏਕਹਿ ਆਪਿ ਕਰਾਵਨਹਾਰਾ ॥\" 50, margin 6; candidate 40920 explains 38; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40921,
+  "start_s": 137.16,
+  "end_s": 143.52,
+  "my_verseId": 40921,
+  "confidence": 0.99,
+  "agrees": true,
+  "reason": "heard \"ਿਸੁ ਰਖੈ ਕ੍ਰਪਾ ਹ ਬਿਜਤ ਸਮਹੀ\" (20 chars, cache 97%); best 40921 \"ਜਿਸੁ ਰਖੈ ਕਿਰਪਾ ਧਾਰਿ ਰਿਜਕੁ ਸਮਾਹੀਐ ॥\" explains 60, runner-up 49518 \"ਮਾਇਆ ਮਹਿ ਜਿਸੁ ਰਖੈ ਉਦਾਸੁ \" 45, margin 15; candidate 40921 explains 60"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40921,
+  "start_s": 145.36,
+  "end_s": 155.52,
+  "my_verseId": 52865,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਮਰ ਨਿਰਮਾ ਅਪਖ ਕੋਇ ਨ ਕੇਸੀ ਹੀ ਬਸਾ\" (23 chars, cache 98%); best 52865 \"ਨੀਰੁ ਧਰਣਿ ਕਰਿ ਰਾਖੇ ਏਕਤ ਕੋਇ ਨ ਕਿਸ ਹੀ \" explains 52, runner-up 26155 \"ਹਉ ਮੇਰਾ ਜਗੁ ਪਲਚਿ ਰਹਿਆ ਭਾ\" 48, margin 4; candidate 40921 explains 26; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40922,
+  "start_s": 153.8,
+  "end_s": 159.88,
+  "my_verseId": 124664,
+  "confidence": 0.91,
+  "agrees": false,
+  "reason": "heard \"ਇ ਨ ਕੇਸੀ ਹੀ ਬਸਾਨਹੀਵਾ\" (16 chars, cache 97%); best 124664 \"ਦਸ ਰਾਵਨ ਕੇ ਸੀਸ ਇਹੀ ਬਾਤਨ ਗਏ ॥\" explains 56, runner-up 93193 \"ਆਵਤ ਹੀ ਅਰਿ ਕੋ ਤਿਹ ਹੇਰਿ ਸ\" 50, margin 6; candidate 40922 explains 50; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40922,
+  "start_s": 155.84,
+  "end_s": 163.76,
+  "my_verseId": 47958,
+  "confidence": 0.92,
+  "agrees": false,
+  "reason": "heard \"ਨਹੀਵਾਇ ਨੁ ਹੀ ਭ\" (11 chars, cache 99%); best 47958 \"ਨੈਨੀ ਦ੍ਰਿਸਟਿ ਨਹੀ ਤਨੁ ਹੀਨਾ ਜਰਿ ਜੀਤਿਆ \" explains 64, runner-up 9755 \"ਬਿਨੁ ਬੋਹਿਥ ਸਾਗਰ ਨਹੀ ਵਾਟ \" 55, margin 9; candidate 40922 explains 36; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40922,
+  "start_s": 161.88,
+  "end_s": 168,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਇ ਨੁ ਹੀ ਭ\" (6 chars, cache 97%); best 34561 \"ਸੋਈ ਮਲੀਨੁ ਦੀਨੁ ਹੀਨੁ ਜਿਸੁ ਪ੍ਰਭੁ ਬਿਸਰਾ\" explains 67, runner-up 11012 \"ਮਿਰਤਕ ਕਹੀਅਹਿ ਨਾਨਕਾ ਜਿਹ ਪ\" 67, margin 0; candidate 40922 explains 33; almost nothing heard (6 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40922,
+  "start_s": 169.76,
+  "end_s": 176.08,
+  "my_verseId": 40922,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ਇ ਨ ਕਿਸ ਹੀ ਵਸ ਸਭਨਾ ਇਕ ਧਰ\" (17 chars, cache 98%); best 40922 \"ਕੋਇ ਨ ਕਿਸ ਹੀ ਵਸਿ ਸਭਨਾ ਇਕ ਧਰ ॥\" explains 94, runner-up 18230 \"ਕੋਇ ਨ ਕਿਸ ਹੀ ਸੰਗਿ ਕਾਹੇ ਗ\" 59, margin 35; candidate 40922 explains 94"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40922,
+  "start_s": 178,
+  "end_s": 185.64,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਇ ਨਨ ਕ ਤ\" (5 chars, cache 97%); best 40922 \"ਕੋਇ ਨ ਕਿਸ ਹੀ ਵਸਿ ਸਭਨਾ ਇਕ ਧਰ ॥\" explains 60, runner-up 40926 \"ਗਾਈਐ ਰਾਤਿ ਦਿਨੰਤੁ ਗਾਵਣ ਜੋ\" 40, margin 20; candidate 40922 explains 60; almost nothing heard (5 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40923,
+  "start_s": 178.36,
+  "end_s": 207.44,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨਨ ਕ ਤ ਭੇ ਬਾਲਕੁ ਮਾਨ ਦੇਖੈ ਆਪਿ ਕਰਿਵਨ ਕਖਾ ਕਰ ਬਲ ਬਲ ਕ ਅ\" (37 chars, cache 98%); best 40923 \"ਪਾਲੇ ਬਾਲਕ ਵਾਗਿ ਦੇ ਕੈ ਆਪਿ ਕਰ ॥\" explains 41, runner-up 48254 \"ਸਾਸਨਾ ਤੇ ਬਾਲਕੁ ਗਮੁ ਨ ਕਰੈ\" 38, margin 3; candidate 40923 explains 41; no pangti explains the hearing (best 41)"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40923,
+  "start_s": 186.08,
+  "end_s": 192.04,
+  "my_verseId": 40923,
+  "confidence": 0.98,
+  "agrees": true,
+  "reason": "heard \"ੇ ਬਾਲਕੁ ਮਾਨ ਦੇਖੈ ਆਪਿ ਕਰ\" (18 chars, cache 98%); best 40923 \"ਪਾਲੇ ਬਾਲਕ ਵਾਗਿ ਦੇ ਕੈ ਆਪਿ ਕਰ ॥\" explains 72, runner-up 34828 \"ਅਪਣੇ ਬਾਲਕ ਆਪਿ ਰਖਿਅਨੁ ਪਾਰ\" 50, margin 22; candidate 40923 explains 72"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40924,
+  "start_s": 194,
+  "end_s": 207.24,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਵਨ ਕਖਾ ਕਰ ਬਲ ਬਲ ਕ ਅ\" (13 chars, cache 98%); best 89425 \"ਸੋ ਸਭ ਹੀ ਜਗ ਕੋ ਪਤਿ ਹੈ ਤਿਨ ਜੀਵਨ ਕੇ ਬਲ\" explains 46, runner-up 121284 \"ਮੁਹਿੰਮ ਸੈਦ ਖਾ ਕਰੀ ਬਿਕਟ ਮ\" 46, margin 0; candidate 40924 explains 23; no pangti explains the hearing (best 46)"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40925,
+  "start_s": 207.4,
+  "end_s": 212.12,
+  "my_verseId": 124272,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਧ ਕਰਿ ਜਬ ਬਿਖੀਏ ਰਹ ਕ\" (14 chars, cache 98%); best 124272 \"ਨ੍ਰਿਪ ਕੌ ਪ੍ਰਥਮ ਪ੍ਰਬੋਧ ਕਰਿ ਜਾਰਹਿ ਲਯੋ \" explains 50, runner-up 127404 \"ਅਸਿਨ ਭਏ ਅਤਿ ਜੁਧ ਕਰਿ ਜਬ ਜ\" 50, margin 0; candidate 40925 explains 21; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40924,
+  "start_s": 208,
+  "end_s": 213.04,
+  "my_verseId": 36272,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਿ ਜਬ ਬਿਖੀਏ ਰਹ ਕ ਜਾਈ\" (14 chars, cache 97%); best 36272 \"ਬਿਖੈ ਬਿਖੈ ਕੀ ਬਾਸਨਾ ਤਜੀਅ ਨਹ ਜਾਈ ॥\" explains 50, runner-up 95445 \"ਕ੍ਰੋਧ ਭਰੇ ਰਨ ਭੂਮਿ ਬਿਖੈ ਇ\" 50, margin 0; candidate 40924 explains 21; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40926,
+  "start_s": 212.2,
+  "end_s": 225.08,
+  "my_verseId": 43555,
+  "confidence": 0.97,
+  "agrees": false,
+  "reason": "heard \"ਜਾਈ ਸਾਚ ਸੁ ਨਾਮਾ ਨਾਮ ਬੈ ਹੁਕਮੁ ਭਵ ਅਪਤ ਪ੍ਰ\" (30 chars, cache 98%); best 43555 \"ਸਾਚੀ ਦਰਗਹ ਸਾਚੁ ਨਿਵਾਸਾ ਮਾਨੈ ਹੁਕਮੁ ਰਜਾ\" explains 50, runner-up 54534 \"ਚਹੁ ਦਿਸਿ ਹੁਕਮੁ ਵਰਤੈ ਪ੍ਰਭ\" 43, margin 7; candidate 40926 explains 17; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40922,
+  "start_s": 215.56,
+  "end_s": 232.08,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਚ ਸੁ ਨਾਮਾ ਨਾਮ ਬੈ ਹੁਕਮੁ ਭਵ ਅਪਤ ਪ੍ਰਭ ਬਾਰਗ\" (30 chars, cache 98%); best 54534 \"ਚਹੁ ਦਿਸਿ ਹੁਕਮੁ ਵਰਤੈ ਪ੍ਰਭ ਤੇਰਾ ਚਹੁ ਦਿ\" explains 47, runner-up 43555 \"ਸਾਚੀ ਦਰਗਹ ਸਾਚੁ ਨਿਵਾਸਾ ਮਾ\" 43, margin 3; candidate 40922 explains 20; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40927,
+  "start_s": 225.24,
+  "end_s": 234.48,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਬਾਰਗ\" (4 chars, cache 97%); best 40920 \"ਦੇਵਣਹਾਰੁ ਦਾਤਾਰੁ ਕਿਤੁ ਮੁਖਿ ਸਾਲਾਹੀਐ ॥\" explains 50, runner-up 40921 \"ਜਿਸੁ ਰਖੈ ਕਿਰਪਾ ਧਾਰਿ ਰਿਜਕ\" 50, margin 0; candidate 40927 explains 25; almost nothing heard (4 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40923,
+  "start_s": 234.6,
+  "end_s": 248.76,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮੇ ਬ ਮੇਟੈ ਆਪ ਕਰ ਪ੍ਰਤ ਕ ਪ ਦੇੇਖੈ ਨਉ ਕਰ\" (26 chars, cache 98%); best 208934 \"ਜੈਸੇ ਜਲ ਜਲਜ ਅਉ ਜਲ ਦੁਧ ਸੀਲ ਮੀਨ ਚਕਈ ਕਮ\" explains 38, runner-up 90013 \"ਰੂਪ ਸਚੀ ਅਰੁ ਪੈ ਰਤਿ ਕੀ ਮਨ\" 38, margin 0; candidate 40923 explains 27; no pangti explains the hearing (best 38)"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40923,
+  "start_s": 242.6,
+  "end_s": 248.76,
+  "my_verseId": 202814,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਤ ਕ ਪ ਦੇੇਖੈ ਨਉ ਕਰ\" (12 chars, cache 98%); best 202814 \"ਅਖੀ ਦੇਖੈ ਨਦਰਿ ਕਰਿ ਜਿਹਬਾ ਬੋਲੈ ਬਚਨ ਬਿਦ\" explains 50, runner-up 25937 \"ਨਾਨਕ ਵੇਖੈ ਨਦਰਿ ਕਰਿ ਚੜੈ ਚ\" 50, margin 0; candidate 40923 explains 33; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40924,
+  "start_s": 250.96,
+  "end_s": 260.88,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਕਰਦਾ ਮਨਦ ਬਿਨੋਇਛੁ ਮਾਣੀ ਹੈ ਇਹ ਕਰਤਾ ਦਬਿੰਦ\" (30 chars, cache 98%); best 40924 \"ਕਰਦਾ ਅਨਦ ਬਿਨੋਦ ਕਿਛੂ ਨ ਜਾਣੀਐ ॥\" explains 43, runner-up 117750 \"ਬਿਨੁ ਦਾਮਨ ਹੀ ਇਹ ਕਾਮਨਿ ਯੌ\" 43, margin 0; candidate 40924 explains 43; no pangti explains the hearing (best 43)"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40924,
+  "start_s": 259.04,
+  "end_s": 265,
+  "my_verseId": 45083,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਕਰਤਾ ਦਬਿੰਦੁ ਨਾ\" (11 chars, cache 98%); best 45083 \"ਅਨਦਿਨੁ ਨਾਮਿ ਰਤਾ ਦਿਨੁ ਰਾਤੀ ਮਾਇਆ ਮੋਹੁ \" explains 64, runner-up 10783 \"ਕਲਿਮਲਹ ਦਹਤਾ ਸੁਧੁ ਕਰਤਾ ਦਿ\" 64, margin 0; candidate 40924 explains 45; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40925,
+  "start_s": 267.24,
+  "end_s": 273.28,
+  "my_verseId": 40925,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਸਰਬ ਧਾਰਿ ਸਮਰਥ ਹਾਰ ਤਿਸੁ ਪੁਰਮਾਰੀਐ\" (26 chars, cache 99%); best 40925 \"ਸਰਬ ਧਾਰ ਸਮਰਥ ਹਉ ਤਿਸੁ ਕੁਰਬਾਣੀਐ ॥\" explains 77, runner-up 42827 \"ਸਰਬ ਧਾਰਨ ਪ੍ਰਤਿਪਾਰਨ ਇਕ ਬਿ\" 46, margin 31; candidate 40925 explains 77"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40926,
+  "start_s": 283.16,
+  "end_s": 288.76,
+  "my_verseId": 32256,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਾਈਐ ਨ ਦਿਨੰਤ ਕਹੀਐ ਨਾਨ ਬ\" (16 chars, cache 98%); best 32256 \"ਮੋਲਿ ਕਿਤ ਹੀ ਨਾਮੁ ਪਾਈਐ ਨਾਹੀ ਨਾਮੁ ਪਾਈਐ\" explains 50, runner-up 24326 \"ਗੁਰਮੁਖਿ ਪਾਈਐ ਨਾਨਕਾ ਖਾਧੈ \" 50, margin 0; candidate 40926 explains 38; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40926,
+  "start_s": 289,
+  "end_s": 295.96,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਦਤ ਗਹਵ ਸ ਹਮਿਆ ਗਾਵਨ ਨ ਪਿਆ\" (18 chars, cache 97%); best 401995 \"ਰੱਬੀ ਦਰਗਾਹ ਦੇ ਪਰਵਾਨ ਪਿਆਰੇ ਉਸ ਦੀ ਸੇਵਾ\" explains 44, runner-up 78156 \"ਕਿਤਕਿ ਦਿਵਸ ਬੀਤੇ ਤਹਾਂ ਨਾਵ\" 39, margin 6; candidate 40926 explains 28; no pangti explains the hearing (best 44)"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40926,
+  "start_s": 298.6,
+  "end_s": 315.24,
+  "my_verseId": 27163,
+  "confidence": 0.72,
+  "agrees": false,
+  "reason": "heard \"ਾਈ ਲਾਈਐ ਗਵਰ ਜਾਗਿਆ\" (14 chars, cache 98%); best 27163 \"ਪਰਾ ਪੂਰਬਲਾ ਅੰਕੁਰੁ ਜਾਗਿਆ ॥\" explains 50, runner-up 210283 \"ਰਸਨਾ ਸਬਦ ਗੁਰ ਹਸਤ ਸੇਵਾ ਡੰ\" 50, margin 0; candidate 40926 explains 43; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40926,
+  "start_s": 313.44,
+  "end_s": 323.04,
+  "my_verseId": 201848,
+  "confidence": 0.91,
+  "agrees": false,
+  "reason": "heard \"ਵਰ ਜਾਗਿਆ ਜਾਵ ਜਾਗਿਆਿਆ\" (17 chars, cache 98%); best 201848 \"ਪਿਛੈ ਰਾਜਾ ਜਾਗਿਆ ਅਧੀ ਰਾਤਿ ਨਿਖੰਡਿ ਵਿਹਾ\" explains 59, runner-up 59913 \"ਤਬ ਨਰੁ ਸੁਤਾ ਜਾਗਿਆ ਸਿਰਿ ਡ\" 53, margin 6; candidate 40926 explains 47; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40926,
+  "start_s": 317.28,
+  "end_s": 328.72,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਵ ਜਾਗਿਆਿਆ ਕਹੀਐ ਕਹੀਐ ਦਸ ਗਈਐ ਗਈ\" (23 chars, cache 97%); best 31016 \"ਜਿਨਿ ਕੀਆ ਤਿਨਿ ਦੇਖਿਆ ਕਿਆ ਕਹੀਐ ਰੇ ਭਾਈ \" explains 43, runner-up 31029 \"ਜੋ ਦਿਲਿ ਮਿਲਿਆ ਸੁ ਮਿਲਿ ਰਹ\" 43, margin 0; candidate 40926 explains 22; no pangti explains the hearing (best 43)"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40927,
+  "start_s": 325.72,
+  "end_s": 368.4,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਕਹੀਐ ਕਹੀਐ ਦਸ ਗਈਐ ਗਈਐ ਭ ਕਰਿ ਕਰ ਕਰ ਕਰ ਕਰ ਕਰ ਕਰ ਕਰ ਕਰ ਕਰ ਕਰ ਕਰ ਪਰ ਕਰ ਪਰ ਪ\" (75 chars, cache 98%); best 205277 \"ਚਾਕਰ ਕਰਿ ਕਰਿ ਚਾਕਰੀ ਹਉਮੈ ਮਾਰਿ ਨ ਸੁਲਹ \" explains 36, runner-up 34868 \"ਕਰਿ ਕਿਰਪਾ ਹਰਿ ਹਰਿ ਨਾਮੁ ਦ\" 32, margin 4; candidate 40927 explains 23; no pangti explains the hearing (best 36)"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40927,
+  "start_s": 328.8,
+  "end_s": 368.92,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਐ ਭ ਕਰਿ ਕਰ ਕਰ ਕਰ ਕਰ ਕਰ ਕਰ ਕਰ ਕਰ ਕਰ ਕਰ ਕਰ ਪਰ ਕਰ ਪਰ ਪਰ ਕਰ ਕਰ ਉ ਮੈਟ ਨ ਦਇਆ\" (61 chars, cache 98%); best 205277 \"ਚਾਕਰ ਕਰਿ ਕਰਿ ਚਾਕਰੀ ਹਉਮੈ ਮਾਰਿ ਨ ਸੁਲਹ \" explains 43, runner-up 34868 \"ਕਰਿ ਕਿਰਪਾ ਹਰਿ ਹਰਿ ਨਾਮੁ ਦ\" 36, margin 7; candidate 40927 explains 23; no pangti explains the hearing (best 43)"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40927,
+  "start_s": 368.56,
+  "end_s": 377.64,
+  "my_verseId": 29382,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਤੰ ਭਈ ਹਮਾਰੀ ਘ ਨਾ ਹਰਿ\" (14 chars, cache 97%); best 29382 \"ਹਰਿ ਹਰਿ ਨਾਮੁ ਦੀਓ ਕੀਰਤਨ ਕਉ ਭਈ ਹਮਾਰੀ ਗ\" explains 64, runner-up 28950 \"ਹਰਿ ਹਰਿ ਕਰੀ ਦ੍ਰਿਸਟਿ ਤਬ ਭ\" 57, margin 7; candidate 40927 explains 36; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40919,
+  "start_s": 369.12,
+  "end_s": 371.16,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਭਈ\" (2 chars, cache 100%); best 40922 \"ਕੋਇ ਨ ਕਿਸ ਹੀ ਵਸਿ ਸਭਨਾ ਇਕ ਧਰ ॥\" explains 50, runner-up 40926 \"ਗਾਈਐ ਰਾਤਿ ਦਿਨੰਤੁ ਗਾਵਣ ਜੋ\" 50, margin 0; candidate 40919 explains 0; almost nothing heard (2 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip03",
+  "cand_verseId": 40920,
+  "start_s": 371.4,
+  "end_s": 372.84,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਮਾਰੀ ਘ\" (5 chars, cache 94%); best 40921 \"ਜਿਸੁ ਰਖੈ ਕਿਰਪਾ ਧਾਰਿ ਰਿਜਕੁ ਸਮਾਹੀਐ ॥\" explains 60, runner-up 40920 \"ਦੇਵਣਹਾਰੁ ਦਾਤਾਰੁ ਕਿਤੁ ਮੁਖ\" 40, margin 20; candidate 40920 explains 40; almost nothing heard (5 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip35",
+  "cand_verseId": 20637,
+  "start_s": 1.2,
+  "end_s": 5.92,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 0%); candidate 20637 explains 0; cache covers only 0% of the span, cannot hear it"
+ },
+ {
+  "recording": "l3clip35",
+  "cand_verseId": 20632,
+  "start_s": 7.44,
+  "end_s": 13,
+  "my_verseId": 20632,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਪਿੰਨੀ ਮੈ ਲੜੀਐ ਨੜੀਐ ਜਮ ਕਰਥਾ ਧਰ\" (22 chars, cache 147%); best 20632 \"ਭਿੰਨੀ ਰੈਨੜੀਐ ਚਾਮਕਨਿ ਤਾਰੇ ॥\" explains 50, runner-up 1804 \"ਸਾਧਸੰਗਤਿ ਹੋਇ ਨਿਰਮਲਾ ਕਟੀਐ\" 41, margin 9; candidate 20632 explains 50"
+ },
+ {
+  "recording": "l3clip35",
+  "cand_verseId": 20633,
+  "start_s": 14.56,
+  "end_s": 21.24,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਕਬੀਰ ਤੂ ਮਨ\" (8 chars, cache 97%); best 33691 \"ਕਹੁ ਕਬੀਰ ਤੇਈ ਨਰ ਭੂਲੇ ॥\" explains 75, runner-up 58450 \"ਕਬੀਰ ਤੂੰ ਤੂੰ ਕਰਤਾ ਤੂ ਹੂਆ\" 75, margin 0; candidate 20633 explains 25; almost nothing heard (8 chars): alaap, music, simran or hearing failure"
+ },
+ {
+  "recording": "l3clip35",
+  "cand_verseId": 20634,
+  "start_s": 21.44,
+  "end_s": 32.44,
+  "my_verseId": 91514,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਮ ਕੋਮੁਖ ਅ ਮੇਰਾਹੁ ਮੁਖ ਅ ਮੇਰਹੁ\" (22 chars, cache 98%); best 91514 \"ਜੋਗਿਨ ਹੋਇ ਜਪੋ ਹਰਿ ਕੋ ਮੁਖ ਮਾਗਹੁਗੀ ਤੁਮ\" explains 55, runner-up 136770 \"ਨਿਰਖ ਲਜਤ ਜਾ ਕੋ ਮੁਖ ਮਾਹ ॥\" 50, margin 5; candidate 20634 explains 36; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip35",
+  "cand_verseId": 58191,
+  "start_s": 27.24,
+  "end_s": 29.48,
+  "my_verseId": 54986,
+  "confidence": 0.94,
+  "agrees": false,
+  "reason": "heard \"ਮੁਖ ਅ ਮੇਰਾਹੁ\" (10 chars, cache 96%); best 54986 \"ਕਲਿਜੁਗ ਮਹਿ ਘੋਰ ਅੰਧਾਰੁ ਹੈ ਮਨਮੁਖ ਰਾਹੁ \" explains 70, runner-up 26243 \"ਆਪੇ ਉਝੜਿ ਪਾਇਦਾ ਪਿਆਰਾ ਆਪਿ\" 60, margin 10; candidate 58191 explains 40; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip35",
+  "cand_verseId": 58191,
+  "start_s": 31,
+  "end_s": 37.16,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮੁਖ ਅ ਮੇਰਹੁ ਸੰੰਗ ਕੀਆ ਮਹਿ ਰੋਲਾ\" (21 chars, cache 97%); best 35339 \"ਧਰਮੁ ਅਰਥੁ ਸਭੁ ਹਿਰਿ ਲੇ ਜਾਵਹਿ ਮਨਮੁਖ ਅੰ\" explains 48, runner-up 49671 \"ਪੰਖੀ ਮ੍ਰਿਗ ਮਾਇਆ ਮਹਿ ਰਾਤੇ\" 43, margin 5; candidate 58191 explains 43; no pangti explains the hearing (best 48)"
+ },
+ {
+  "recording": "l3clip35",
+  "cand_verseId": 58192,
+  "start_s": 38.68,
+  "end_s": 44.8,
+  "my_verseId": 96895,
+  "confidence": 0.91,
+  "agrees": false,
+  "reason": "heard \"ਤੀਆ ਮੇਰੋ ਨਾਮ ਗਲੇ ਹਮਾਰੇ ਭਈ\" (20 chars, cache 98%); best 96895 \"ਤੇਰੋ ਦੇਸੁ ਕਹਾ ਤੇਰੋ ਨਾਮ ਕਹਾ ਰੇ ॥੨੨੪੮॥\" explains 55, runner-up 58191 \"ਕਬੀਰ ਕੂਕਰੁ ਰਾਮ ਕੋ ਮੁਤੀਆ \" 50, margin 5; candidate 58192 explains 40; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip35",
+  "cand_verseId": 58192,
+  "start_s": 46.32,
+  "end_s": 51.96,
+  "my_verseId": 58192,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਲੇੈ ਹਮਾਰੇੈ ਦੇਸਰੀ ਜਾ ਖਿਡੈ ਤੇ ਜਾ\" (24 chars, cache 98%); best 58192 \"ਗਲੇ ਹਮਾਰੇ ਜੇਵਰੀ ਜਹ ਖਿੰਚੈ ਤਹ ਜਾਉ ॥੭੪॥\" explains 71, runner-up 401976 \"ਤੀਸਰੀ ਪਾਤਸ਼ਾਹੀ ਗੁਰੂ ਅਮਰ ਦ\" 46, margin 25; candidate 58192 explains 71"
+ },
+ {
+  "recording": "l3clip35",
+  "cand_verseId": 58191,
+  "start_s": 54,
+  "end_s": 62.6,
+  "my_verseId": 58494,
+  "confidence": 0.98,
+  "agrees": false,
+  "reason": "heard \"ਕਬੀਰੀਕੇੈ ਸੋ ਕੇ ਸ ਦੂਖੀਐ\" (18 chars, cache 98%); best 58494 \"ਕਬੀਰ ਕੇਸੋ ਕੇਸੋ ਕੂਕੀਐ ਨ ਸੋਈਐ ਅਸਾਰ ॥\" explains 72, runner-up 58454 \"ਕਬੀਰ ਹਰਿ ਕਾ ਸਿਮਰਨੁ ਜੋ ਕਰ\" 50, margin 22; candidate 58191 explains 33; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip35",
+  "cand_verseId": 58191,
+  "start_s": 56.84,
+  "end_s": 63.64,
+  "my_verseId": 58494,
+  "confidence": 0.98,
+  "agrees": false,
+  "reason": "heard \"ਬੀਰੀਕੇੈ ਸੋ ਕੇ ਸ ਦੂਖੀਐ\" (17 chars, cache 97%); best 58494 \"ਕਬੀਰ ਕੇਸੋ ਕੇਸੋ ਕੂਕੀਐ ਨ ਸੋਈਐ ਅਸਾਰ ॥\" explains 71, runner-up 110343 \"ਹੋ ਤਦਿਨ ਘਰੀ ਕੇ ਸਖੀ ਸਹਿਤ \" 47, margin 24; candidate 58191 explains 29; best match is outside the keyed Shabad"
+ },
+ {
+  "recording": "l3clip35",
+  "cand_verseId": 58191,
+  "start_s": 63.04,
+  "end_s": 71.24,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਕਬੀਰ ਚ ਖਏਥਾਸੀਐਸੈ ਸ\" (15 chars, cache 98%); best 33674 \"ਕਹਿ ਕਬੀਰ ਇਹ ਕਥਾ ਸਿਰਾਨੀ ॥੪॥੨॥\" explains 47, runner-up 15392 \"ਕਬੀਰ ਕੋ ਸੁਆਮੀ ਐਸੋ ਠਾਕੁਰੁ\" 47, margin 0; candidate 58191 explains 27; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "l3clip35",
+  "cand_verseId": 58191,
+  "start_s": 64.28,
+  "end_s": 72.32,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਕਬੀਰ ਚ ਖਏਥਾਸੀਐਸੈ ਸ ਸੰ\" (16 chars, cache 98%); best 33674 \"ਕਹਿ ਕਬੀਰ ਇਹ ਕਥਾ ਸਿਰਾਨੀ ॥੪॥੨॥\" explains 44, runner-up 15392 \"ਕਬੀਰ ਕੋ ਸੁਆਮੀ ਐਸੋ ਠਾਕੁਰੁ\" 44, margin 0; candidate 58191 explains 25; no pangti explains the hearing (best 44)"
+ }
+]

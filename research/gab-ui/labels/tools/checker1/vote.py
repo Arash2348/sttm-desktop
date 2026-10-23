@@ -1,4 +1,4 @@
-# Checker 1 of 3, label batch 1/2 (usage: vote.py batchN), lens A (text match). For every candidate span: decode the cached x86
+# Checker 1 of 3, label batch 1/2/3 (usage: vote.py batchN), lens A (text match). For every candidate span: decode the cached x86
 # speech-model output for exactly that range, rank every pangti of the keyed Shabad plus the best competing
 # pangtis of the whole Gurbani corpus by how much of the heard text they explain, pick my own answer and a
 # calibrated confidence (Karanbir v1 human pangti keys, cumulative bins, 90% Wilson lower bound), and only
