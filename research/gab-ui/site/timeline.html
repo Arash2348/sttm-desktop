@@ -130,7 +130,9 @@ async function load(f) { if (!DATA[f]) DATA[f] = await (await fetch('timeline/' 
 // ---------- per-recording facts (all derived from the per-second runs) ----------
 const nn = (c, k) => c.n[k] || 0;
 const scored = (c) => nn(c, 'P') + nn(c, 'A') + nn(c, 'S') + nn(c, 'B') + nn(c, 'W') + nn(c, 'N') + nn(c, 'V');
-const pangtiKeyed = (c) => c.basis === 'human'; // machine-aligned keys are judged on the Shabad only
+const pangtiKeyed = (c) => !!c.basis; // a pangti-level key exists (person-checked, machine-aligned or broadcast captions)
+const KEYNOTE = { human: 'answer key checked by a person', aligned: 'answer key machine-aligned, not yet checked by a person', 'broadcast-caption': "answer key from the broadcast's own on-screen pangtis" };
+const keyNote = (b) => KEYNOTE[b] || 'answer key at Shabad level';
 function acc(c) { if (!c) return null; const t = scored(c); if (!t) return null;
   if (pangtiKeyed(c)) { const d = nn(c, 'P') + nn(c, 'A') + nn(c, 'W') + nn(c, 'N') + nn(c, 'V'); return d ? 100 * nn(c, 'P') / d : null; }
   return 100 * (nn(c, 'P') + nn(c, 'A') + nn(c, 'S') + nn(c, 'B')) / t; }
@@ -228,17 +230,18 @@ function renderList(dA, dB) {
     worst: ['Most time wrong first', () => true],
   };
   if (!dB && S.filter === 'changed') S.filter = 'all';
+  const medScored = median(rows.map((r) => r.fa.scoredS)) || 0;
   let list = rows.filter(F[S.filter][1]);
   if (S.filter === 'worst') list.sort((x, y) => (y.fa.lost - x.fa.lost) || ((x.fa.acc ?? 101) - (y.fa.acc ?? 101)));
   else if (S.filter === 'changed') list.sort((x, y) => Math.abs((y.fa.acc ?? 0) - (y.fb.acc ?? 0)) - Math.abs((x.fa.acc ?? 0) - (x.fb.acc ?? 0)));
   const opts = (sel, none) => (none ? `<option value="">nothing</option>` : '') + tier.builds.map((x) => `<option value="${esc(x.file)}" ${x.file === sel ? 'selected' : ''}>${esc(short(x.label))}</option>`).join('');
   $('#app').innerHTML = `
-    <h1>GAB: how well Voice Autopilot follows kirtan</h1>
-    <p class="lead">How well does Voice Autopilot keep the right Gurbani on screen during real kirtan? Pick a set, then open any recording to see, second by second, what was sung and what was shown.</p>
+    <h1>GAB: how well Voice Autopilot follows kirtan and paath</h1>
+    <p class="lead">How well does Voice Autopilot keep the right Gurbani on screen during real kirtan and paath? Pick a category, then open any recording to see, second by second, what was sung or read and what was shown.</p>
     <div class="tabs">${tabsSorted().map((t) => `<button data-tier="${esc(t.key)}" aria-pressed="${t.key === S.tier}">${esc(TABNAME[t.key] || t.title)}</button>`).join('')}</div>
     <div class="vs">Version <select id="selA">${opts(S.a)}</select><span class="cmp">${tier.builds.length > 1 ? `· compare with <select id="selB">${opts(S.b, true)}</select> <span class="dmeta">(optional)</span>` : ''}</span></div>
     <div class="summary">
-      <p>${esc(VERB[S.tier] || tier.title)}: <b>${both.length} recordings</b>, ${TA.hours.toFixed(1)} hours of scored singing. ${verdictLine}</p>${bigLine}
+      <p>${esc(VERB[S.tier] || tier.title)}: <b>${both.length} recordings</b>, ${TA.hours.toFixed(1)} hours scored${keyed ? `, judged on the exact pangti (${esc([...new Set(both.map((r) => keyNote(r.c.basis)))].join('; '))})` : ', judged on the Shabad'}. ${verdictLine}</p>${bigLine}
       <div class="kpis">
         <div class="kpi"><div class="k">Right ${keyed ? 'pangti' : 'Shabad'} on screen</div><div class="v">${f1(TA.acc)}%</div><div class="o">${TB ? `${esc(nB)} ${f1(TB.acc)}% · ${cmp(TA.acc, TB.acc, true, '%')}` : ''}</div></div>
         <div class="kpi"><div class="k">Wrong Shabad shown, seconds per hour of singing</div><div class="v">${Math.round(TA.wrongH ?? 0)}</div><div class="o">${TB ? `${esc(nB)} ${Math.round(TB.wrongH ?? 0)} · ${cmp(TA.wrongH, TB.wrongH, false, ' s')}` : ''}</div></div>
@@ -252,7 +255,7 @@ function renderList(dA, dB) {
       if (r.fa.wrong.length) iss.push(`${esc(nA)}: wrong Shabad ${r.fa.wrong.length}× (${r.fa.wrong.reduce((s, x) => s + x.e - x.s, 0)} s)`);
       if (r.fb && r.fb.wrong.length) iss.push(`${esc(nB)}: wrong Shabad ${r.fb.wrong.length}× (${r.fb.wrong.reduce((s, x) => s + x.e - x.s, 0)} s)`);
       if (dB && !r.o) iss.push(`not played by ${esc(nB)}`);
-      if (r.fa.scoredS < 60) iss.push(`only ${r.fa.scoredS} s scored`);
+      if (r.fa.scoredS < 60 && medScored >= 120) iss.push(`only ${r.fa.scoredS} s scored`);
       if (!r.fa.wrong.length && r.fa.lost >= 20) iss.push(`${esc(nA)}: nothing shown for ${nn(r.c, 'N')} s`);
       return `<a class="item" href="#${encodeURIComponent(r.c.id)}">
         <div style="min-width:0"><div class="t g">${esc(r.title)}</div><div class="m">${esc(r.c.gurdwara || '')} · ${mmss(r.c.dur)}</div>${iss.length ? `<div class="issues">${iss.join(' · ')}</div>` : ''}</div>
@@ -309,7 +312,7 @@ function renderDetail(c, dA, dB) {
   $('#app').innerHTML = `
     <a class="back" href="#">← All ${esc(TABNAME[S.tier] || '')} recordings</a>
     <div class="dhead"><h2 class="g">${esc(title)}</h2>${c.yt ? `<a href="${yt(0)}" target="_blank" rel="noopener">Open on YouTube</a>` : ''}</div>
-    <div class="dmeta">${esc(c.gurdwara || '')} · ${mmss(c.dur)} · judged on ${keyed ? 'the exact pangti (answer key checked by a person)' : 'the Shabad (answer key at Shabad level)'}</div>
+    <div class="dmeta">${esc(c.gurdwara || '')} · ${mmss(c.dur)} · judged on ${keyed ? `the exact pangti (${esc(keyNote(c.basis))})` : 'the Shabad (answer key at Shabad level)'}</div>
     <div class="verdicts">${verdict(nA, fa, c, dA)}${dB ? verdict(nB, fb, o, dB) : ''}</div>
     ${c.yt ? `<div class="player"><div id="ytp"></div></div><p class="playnote">Press play and the timeline and readout below follow along. Click anywhere on the bars, or a time in the list, to jump there.</p>` : '<p class="playnote">This recording is private, so it cannot be played here.</p>'}
     <div class="tlbox">
