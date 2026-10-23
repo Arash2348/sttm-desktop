@@ -1,0 +1,2982 @@
+[
+ {
+  "recording": "pt01",
+  "cand_verseId": 1,
+  "start_s": 28.28,
+  "end_s": 38.88,
+  "my_verseId": 1,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਜੂ ਸੈਭੰੰਗ ਗੁਰ ਪ੍ਰਸਾਦਿ\" (16 chars, cache 97%, 10.6 s); my pick 1 \"ੴ ਸਤਿ ਨਾਮੁ ਕਰਤਾ ਪੁਰਖੁ ਨਿਰਭਉ ਨਿਰਵੈਰੁ \" explains 86, runner-up 31107 \"ੴ ਸਤਿਗੁਰ ਪ੍ਰਸਾਦਿ ॥\" 69; candidate 1 \"ੴ ਸਤਿ ਨਾਮੁ ਕਰਤਾ ਪੁਰਖੁ ਨਿਰਭਉ ਨਿ\" explains 86; heard 16 chars, in-Bani margin 49, corpus margin 17; only 16 of ~62 chars heard but it is the end of the pangti (tail explains 86): the reading finishes inside the span, a late start, not an identity doubt"
+ },
+ {
+  "recording": "pt01",
+  "cand_verseId": 2,
+  "start_s": 40.08,
+  "end_s": 40.44,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਪਪ\" (2 chars, cache 100%, 0.4 s); my pick 66 \"ਸੁਣਿਐ ਦੂਖ ਪਾਪ ਕਾ ਨਾਸੁ ॥੮॥\" explains 70, runner-up 149 \"ਅਸੰਖ ਪਾਪੀ ਪਾਪੁ ਕਰਿ ਜਾਹਿ \" 70; candidate 2 \"॥ ਜਪੁ ॥\" explains 50; almost nothing heard (2 chars \"ਪਪ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt01",
+  "cand_verseId": 3,
+  "start_s": 42.44,
+  "end_s": 47.64,
+  "my_verseId": 3,
+  "confidence": 0.96,
+  "agrees": true,
+  "reason": "heard \"ਦਿ ਸਚੁ ਜੁਗਾਦਿ ਸਚੁ\" (14 chars, cache 100%, 5.2 s); my pick 3 \"ਆਦਿ ਸਚੁ ਜੁਗਾਦਿ ਸਚੁ ॥\" explains 100, runner-up 206993 \"ਗੁਰਪਰਸਾਦਿ ਸੁ ਆਦਿ ਸਚੁ ਜੁਗ\" 75; candidate 3 \"ਆਦਿ ਸਚੁ ਜੁਗਾਦਿ ਸਚੁ ॥\" explains 100; heard 14 chars, in-Bani margin 50, corpus margin 25"
+ },
+ {
+  "recording": "pt01",
+  "cand_verseId": 4,
+  "start_s": 49.92,
+  "end_s": 56.84,
+  "my_verseId": 4,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਭੀ ਸਚੁ ਨਾ ਨਾਨਕ ਹੋਸੀ ਭੀ ਸਚੁ\" (20 chars, cache 99%, 6.9 s); my pick 4 \"ਹੈ ਭੀ ਸਚੁ ਨਾਨਕ ਹੋਸੀ ਭੀ ਸਚੁ ॥੧॥\" explains 90, runner-up 12845 \"ਹੈ ਭਿ ਸਚੁ ਨਾਨਕ ਹੋਸੀ ਭਿ ਸ\" 80; candidate 4 \"ਹੈ ਭੀ ਸਚੁ ਨਾਨਕ ਹੋਸੀ ਭੀ ਸਚੁ ॥੧॥\" explains 90; heard 20 chars, in-Bani margin 41, corpus margin 10"
+ },
+ {
+  "recording": "pt01",
+  "cand_verseId": 5,
+  "start_s": 59.32,
+  "end_s": 63,
+  "my_verseId": 5,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਸੋਚੈ ਸੋਚੁ ਨ ਹੋਵਈ ਜੇ ਸੋਚ\" (18 chars, cache 97%, 3.7 s); my pick 5 \"ਸੋਚੈ ਸੋਚਿ ਨ ਹੋਵਈ ਜੇ ਸੋਚੀ ਲਖ ਵਾਰ ॥\" explains 94, runner-up 28174 \"ਬਿਨੁ ਸਬਦੈ ਸੁਧੁ ਨ ਹੋਵਈ ਜੇ\" 61; candidate 5 \"ਸੋਚੈ ਸੋਚਿ ਨ ਹੋਵਈ ਜੇ ਸੋਚੀ ਲਖ ਵਾ\" explains 94; heard 18 chars, in-Bani margin 42, corpus margin 33"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74223,
+  "start_s": 27.84,
+  "end_s": 28.24,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਾਲ\" (2 chars, cache 100%, 0.4 s); my pick 74223 \"ਨਮਸਤ੍ਵੰ ਅਕਾਲੇ ॥\" explains 100, runner-up 74224 \"ਨਮਸਤ੍ਵੰ ਕ੍ਰਿਪਾਲੇ ॥\" 100; candidate 74223 \"ਨਮਸਤ੍ਵੰ ਅਕਾਲੇ ॥\" explains 100; almost nothing heard (2 chars \"ਾਲ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74224,
+  "start_s": 28.44,
+  "end_s": 29.96,
+  "my_verseId": 74224,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਮ ਕ੍ਰਿਪਾਲੇ\" (9 chars, cache 93%, 1.5 s); my pick 74224 \"ਨਮਸਤ੍ਵੰ ਕ੍ਰਿਪਾਲੇ ॥\" explains 89, runner-up 54647 \"ਨਾਨਕ ਪ੍ਰੀਤਮ ਕ੍ਰਿਪਾਲ ਸਦਹੂ\" 89; candidate 74224 \"ਨਮਸਤ੍ਵੰ ਕ੍ਰਿਪਾਲੇ ॥\" explains 89; heard 9 chars, in-Bani margin 11, corpus margin 0; no confident neighbouring pangti within 6 s supports the sequence (isolated)"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74225,
+  "start_s": 30.16,
+  "end_s": 31.68,
+  "my_verseId": 74225,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਨਮਤੰਗ ਰੂਪੇ\" (8 chars, cache 100%, 1.5 s); my pick 74225 \"ਨਮਸਤੰ ਅਰੂਪੇ ॥\" explains 80, runner-up 74430 \"ਨਮੋ ਰਾਗ ਰੂਪੇ ॥\" 72; candidate 74225 \"ਨਮਸਤੰ ਅਰੂਪੇ ॥\" explains 80; heard 8 chars, in-Bani margin 8, corpus margin 12"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74226,
+  "start_s": 31.84,
+  "end_s": 33.44,
+  "my_verseId": 74225,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਨਮਸਤੰਗ ਰੋਖੇ\" (9 chars, cache 94%, 1.6 s); my pick 74225 \"ਨਮਸਤੰ ਅਰੂਪੇ ॥\" explains 67, runner-up 74227 \"ਨਮਸਤੰ ਅਭੇਖੇ ॥\" 67; candidate 74226 \"ਨਮਸਤੰ ਅਨੂਪੇ ॥੨॥\" explains 56; heard 9 chars, in-Bani margin 0, corpus margin 7"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74227,
+  "start_s": 37.08,
+  "end_s": 38.56,
+  "my_verseId": 74239,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਨਮਸਤੰਗਿ ਪਿਛੀ\" (10 chars, cache 100%, 1.5 s); my pick 74239 \"ਨਮਸਤੰ ਅਜੀਤੇ ॥\" explains 50, runner-up 6182 \"ਲਕੀ ਕਾਸੇ ਹਥੀ ਫੁੰਮਣ ਅਗੋ ਪ\" 60; candidate 74227 \"ਨਮਸਤੰ ਅਭੇਖੇ ॥\" explains 40; heard 10 chars, in-Bani margin 0, corpus margin -10; out of Bani order with a confident neighbour: 74228 (-11 lines in 0.2 s)"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74228,
+  "start_s": 38.72,
+  "end_s": 40.24,
+  "my_verseId": 74228,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਨਮਸਤੰਗਿ ਲੇਖੀ\" (10 chars, cache 100%, 1.5 s); my pick 74228 \"ਨਮਸਤੰ ਅਲੇਖੇ ॥\" explains 70, runner-up 203343 \"ਲੇਖੈ ਅੰਦਰਿ ਸਭ ਕੋ ਸਭਨਾ ਮਸ\" 74; candidate 74228 \"ਨਮਸਤੰ ਅਲੇਖੇ ॥\" explains 70; heard 10 chars, in-Bani margin 10, corpus margin -4; no confident neighbouring pangti within 6 s supports the sequence (isolated)"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74229,
+  "start_s": 40.44,
+  "end_s": 41.88,
+  "my_verseId": 46159,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਮਸਤ ਸੰਗਾਥਾਇ\" (9 chars, cache 93%, 1.4 s); my pick 46159 \"ਲਗੀ ਲਾਗਿ ਸੰਤ ਸੰਗਾਰਾ ॥\" explains 67, runner-up 52952 \"ਚਰਨ ਬਸਾਇਆ ਸੰਤ ਸੰਗਾਇਆ ਅਗਿ\" 67; candidate 74229 \"ਨਮਸਤੰ ਅਕਾਏ ॥\" explains 44; heard 9 chars, in-Bani margin 11, corpus margin 0; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74230,
+  "start_s": 42.12,
+  "end_s": 43.64,
+  "my_verseId": 74230,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਹਮਸਤੰਗ ਜਾਇ\" (8 chars, cache 100%, 1.5 s); my pick 74230 \"ਨਮਸਤੰ ਅਜਾਏ ॥੩॥\" explains 62, runner-up 26991 \"ਹਮ ਸੰਤ ਜਨਾਂ ਰੇਨਾਰਾ ॥\" 68; candidate 74230 \"ਨਮਸਤੰ ਅਜਾਏ ॥੩॥\" explains 62; heard 8 chars, in-Bani margin 0, corpus margin -5"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74231,
+  "start_s": 47.36,
+  "end_s": 48.8,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮਤਮ ਗੰਞ\" (5 chars, cache 100%, 1.4 s); my pick 74231 \"ਨਮਸਤੰ ਅਗੰਜੇ ॥\" explains 48, runner-up 74246 \"ਨਮਸਤੰ ਅਗਾਧੇ ॥੭॥\" 48; candidate 74231 \"ਨਮਸਤੰ ਅਗੰਜੇ ॥\" explains 48; almost nothing heard (5 chars \"ਮਤਮ ਗੰਞ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74232,
+  "start_s": 49,
+  "end_s": 50.52,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸਤੰਗ ਪੰਜ\" (5 chars, cache 93%, 1.5 s); my pick 74231 \"ਨਮਸਤੰ ਅਗੰਜੇ ॥\" explains 68, runner-up 74230 \"ਨਮਸਤੰ ਅਜਾਏ ॥੩॥\" 60; candidate 74232 \"ਨਮਸਤੰ ਅਭੰਜੇ ॥\" explains 60; almost nothing heard (5 chars \"ਸਤੰਗ ਪੰਜ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74233,
+  "start_s": 50.72,
+  "end_s": 52.24,
+  "my_verseId": 74302,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਮਸਤੰਗੁ ਨ ਮਿ\" (8 chars, cache 100%, 1.5 s); my pick 74302 \"ਨਮਸਤੰ ਸੁਬਨਮੇ ॥੨੧॥\" explains 68, runner-up 44066 \"ਹਰਖਹੁ ਸੋਗੁ ਨ ਮਿਟਈ ਕਬਹੂ ਵ\" 75; candidate 74233 \"ਨਮਸਤੰ ਅਨਾਮੇ ॥\" explains 55; heard 8 chars, in-Bani margin 0, corpus margin -8; no confident neighbouring pangti within 6 s supports the sequence (isolated)"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74234,
+  "start_s": 52.4,
+  "end_s": 53.96,
+  "my_verseId": 74229,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਨ ਮਸਤੰਗ ਕਠਾੈ\" (9 chars, cache 94%, 1.6 s); my pick 74229 \"ਨਮਸਤੰ ਅਕਾਏ ॥\" explains 67, runner-up 74234 \"ਨਮਸਤੰ ਅਠਾਮੇ ॥੪॥\" 67; candidate 74234 \"ਨਮਸਤੰ ਅਠਾਮੇ ॥੪॥\" explains 67; heard 9 chars, in-Bani margin 0, corpus margin 7; no confident neighbouring pangti within 6 s supports the sequence (isolated)"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74235,
+  "start_s": 57.64,
+  "end_s": 59.12,
+  "my_verseId": 74236,
+  "confidence": 0.9,
+  "agrees": false,
+  "reason": "heard \"ਨਮਸ ਸੰੰਗ ਧਰਮ\" (8 chars, cache 100%, 1.5 s); my pick 74236 \"ਨਮਸਤੰ ਅਧਰਮੰ ॥\" explains 75, runner-up 74280 \"ਨਮਸਤਸਤੁ ਰੰਮੇ ॥\" 68; candidate 74235 \"ਨਮਸਤੰ ਅਕਰਮੰ ॥\" explains 62; heard 8 chars, in-Bani margin 8, corpus margin 12; no confident neighbouring pangti within 6 s supports the sequence (isolated)"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74236,
+  "start_s": 59.28,
+  "end_s": 60.84,
+  "my_verseId": 74236,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਨਮਸ ਸੰੰਗ ਧਰਮ\" (8 chars, cache 100%, 1.6 s); my pick 74236 \"ਨਮਸਤੰ ਅਧਰਮੰ ॥\" explains 75, runner-up 74280 \"ਨਮਸਤਸਤੁ ਰੰਮੇ ॥\" 68; candidate 74236 \"ਨਮਸਤੰ ਅਧਰਮੰ ॥\" explains 75; heard 8 chars, in-Bani margin 8, corpus margin 12; no confident neighbouring pangti within 6 s supports the sequence (isolated)"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74237,
+  "start_s": 61,
+  "end_s": 62.52,
+  "my_verseId": 74233,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਮਸ ਸੰਗਾ ਨਾਮ\" (8 chars, cache 93%, 1.5 s); my pick 74233 \"ਨਮਸਤੰ ਅਨਾਮੇ ॥\" explains 62, runner-up 402436 \"ਸਿਹਗਾਨਾ ਮਵਾਲੀਦੋ ਅਸ਼ਰਾ ਹਵਾ\" 72; candidate 74237 \"ਨਮਸਤੰ ਅਨਾਮੰ ॥\" explains 62; heard 8 chars, in-Bani margin 0, corpus margin -10; no confident neighbouring pangti within 6 s supports the sequence (isolated)"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74443,
+  "start_s": 27.36,
+  "end_s": 30.48,
+  "my_verseId": 74443,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਦਾ ਸਿਧ ਦਾ ਤੁਧ ਬਿਧਿ ਕਰਥ\" (17 chars, cache 97%, 3.1 s); my pick 74443 \"ਸਦਾ ਸਿਧਦਾ ਬੁਧਦਾ ਬ੍ਰਿਧ ਕਰਤਾ ॥\" explains 68, runner-up 80424 \"ਸਦਾ ਸਰਬਦਾ ਸਿਧਦਾ ਬੁਧਿ ਧਾਮ\" 65; candidate 74443 \"ਸਦਾ ਸਿਧਦਾ ਬੁਧਦਾ ਬ੍ਰਿਧ ਕਰਤਾ ॥\" explains 68; heard 17 chars, in-Bani margin 15, corpus margin 4"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74444,
+  "start_s": 30.84,
+  "end_s": 33.92,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਅਧਹੁ ਬੁਧਿ ਅਰਧ ਅ ਸੋਗਹਠ\" (17 chars, cache 97%, 3.1 s); my pick 74444 \"ਅਧੋ ਉਰਧ ਅਰਧੰ ਅਘੰ ਓਘ ਹਰਤਾ ॥੫੯॥\" explains 47, runner-up 106550 \"ਸਕਲ ਨਾਮ ਸ੍ਰੀ ਬਾਨ ਕੇ ਜਾਨੀ\" 49; candidate 74444 \"ਅਧੋ ਉਰਧ ਅਰਧੰ ਅਘੰ ਓਘ ਹਰਤਾ ॥੫੯॥\" explains 47; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74445,
+  "start_s": 34,
+  "end_s": 40.88,
+  "my_verseId": 74445,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਾ ਭਮ ਪਰਮ ਪਰਮੇਸਰ ਕਛ ਪਾਲੰਸ\" (18 chars, cache 99%, 6.9 s); my pick 74445 \"ਪਰੰ ਪਰਮ ਪਰਮੇਸ੍ਵਰੰ ਪ੍ਰੋਛ ਪਾਲੰ ॥\" explains 61, runner-up 76530 \"ਪਾਇ ਪਰੋ ਪਰਮੇਸਰ ਕੇ ਜੜ ਪਾਹ\" 60; candidate 74445 \"ਪਰੰ ਪਰਮ ਪਰਮੇਸ੍ਵਰੰ ਪ੍ਰੋਛ ਪਾਲੰ ॥\" explains 61; heard 18 chars, in-Bani margin 14, corpus margin 1"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74445,
+  "start_s": 37.56,
+  "end_s": 40.88,
+  "my_verseId": 74445,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਮ ਪਰਮ ਪਰਮੇਸਰ ਕਛ ਪਾਲੰਸ\" (16 chars, cache 100%, 3.3 s); my pick 74445 \"ਪਰੰ ਪਰਮ ਪਰਮੇਸ੍ਵਰੰ ਪ੍ਰੋਛ ਪਾਲੰ ॥\" explains 66, runner-up 76530 \"ਪਾਇ ਪਰੋ ਪਰਮੇਸਰ ਕੇ ਜੜ ਪਾਹ\" 61; candidate 74445 \"ਪਰੰ ਪਰਮ ਪਰਮੇਸ੍ਵਰੰ ਪ੍ਰੋਛ ਪਾਲੰ ॥\" explains 66; heard 16 chars, in-Bani margin 16, corpus margin 4; no confident neighbouring pangti within 6 s supports the sequence (isolated)"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74446,
+  "start_s": 41.04,
+  "end_s": 44.32,
+  "my_verseId": 74446,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਸਦਾ ਸਰਬ ਦਾਸ ਤੇਤਾ ਕਾ ਜਹਰ\" (18 chars, cache 99%, 3.3 s); my pick 74446 \"ਸਦਾ ਸਰਬਦਾ ਸਿੱਧ ਦਾਤਾ ਦਿਆਲੰ ॥੬੦॥\" explains 61, runner-up 136124 \"ਸਦਾ ਸਰਬਦਾ ਸਿਵ ਰਤ ਸੋਹੈ ॥\" 58; candidate 74446 \"ਸਦਾ ਸਰਬਦਾ ਸਿੱਧ ਦਾਤਾ ਦਿਆਲੰ ॥੬੦॥\" explains 61; heard 18 chars, in-Bani margin 6, corpus margin 3"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74447,
+  "start_s": 47.8,
+  "end_s": 51.08,
+  "my_verseId": 74447,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਛ ਜੀਅ ਭੇ ਨਾਮਗਾ ਤਮ\" (13 chars, cache 97%, 3.3 s); my pick 74447 \"ਅਛੇਦੀ ਅਭੇਦੀ ਅਨਾਮੰ ਅਕਾਮੰ ॥\" explains 54, runner-up 101968 \"ਮੋਨੀ ਮਹਾਨ ਮਾਨੀ ਅਭੇਵ ॥੮॥\" 48; candidate 74447 \"ਅਛੇਦੀ ਅਭੇਦੀ ਅਨਾਮੰ ਅਕਾਮੰ ॥\" explains 54; heard 13 chars, in-Bani margin 8, corpus margin 6; no confident neighbouring pangti within 6 s supports the sequence (isolated)"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74448,
+  "start_s": 51.32,
+  "end_s": 54.56,
+  "my_verseId": 74448,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਸਮਸੋਪਿਆ ਜੀ ਸ ਸਤ ਧਮ\" (14 chars, cache 97%, 3.2 s); my pick 74448 \"ਸਮਸਤੋ ਪਰਾਜੀ ਸਮਸਤਸਤੁ ਧਾਮੰ ॥੬੧॥\" explains 63, runner-up 3231 \"ਸੰਤਨ ਕੈ ਪਰਸਾਦਿ ਅਗਾਧਿ ਕੰਠ\" 57; candidate 74448 \"ਸਮਸਤੋ ਪਰਾਜੀ ਸਮਸਤਸਤੁ ਧਾਮੰ ॥੬੧॥\" explains 63; heard 14 chars, in-Bani margin 10, corpus margin 6"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74449,
+  "start_s": 57.24,
+  "end_s": 59.6,
+  "my_verseId": 74449,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਤੇਰਾ ਜਹੁ ਚਰ\" (9 chars, cache 96%, 2.4 s); my pick 74449 \"ਤੇਰਾ ਜੋਰੁ ॥\" explains 67, runner-up 47755 \"ਨਾਨਕ ਕਉ ਹਰਿ ਕੈ ਰੰਗਿ ਰਾਗਹ\" 67; candidate 74449 \"ਤੇਰਾ ਜੋਰੁ ॥\" explains 67; heard 9 chars, in-Bani margin 18, corpus margin 0; no confident neighbouring pangti within 6 s supports the sequence (isolated)"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74450,
+  "start_s": 59.16,
+  "end_s": 60.56,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਰਛਾ\" (3 chars, cache 100%, 1.4 s); my pick 74212 \"ੴ ਸਤਿਗੁਰ ਪ੍ਰਸਾਦਿ ॥\" explains 67, runner-up 74215 \"ਛਪੈ ਛੰਦ ॥ ਤ੍ਵ ਪ੍ਰਸਾਦਿ ॥\" 67; candidate 74450 \"ਚਾਚਰੀ ਛੰਦ ॥\" explains 47; almost nothing heard (3 chars \"ਰਛਾ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74451,
+  "start_s": 61.52,
+  "end_s": 62.68,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਚਲੀ ਚ\" (4 chars, cache 98%, 1.2 s); my pick 74218 \"ਅਚਲ ਮੂਰਤਿ ਅਨਭਉ ਪ੍ਰਕਾਸ ਅਮਿਤੋਜਿ ਕਹਿੱਜੈ\" explains 50, runner-up 74331 \"ਚਾਚਰੀ ਛੰਦ ॥ ਤ੍ਵ ਪ੍ਰਸਾਦਿ \" 50; candidate 74451 \"ਜਲੇ ਹੈਂ ॥\" explains 25; almost nothing heard (4 chars \"ਚਲੀ ਚ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74657,
+  "start_s": 27.24,
+  "end_s": 27.72,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਉਣੈ\" (3 chars, cache 100%, 0.5 s); my pick 74399 \"ਨਮੋ ਸਰਬ ਗਉਣੇ ॥\" explains 67, runner-up 74400 \"ਨਮੋ ਸਰਬ ਭਉਣੇ ॥੪੫॥\" 67; candidate 74657 \"ਕਿ ਸਰਬੱਤ੍ਰ ਭਉਨੈ ॥੧੧੧॥\" explains 67; almost nothing heard (3 chars \"ਉਣੈ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74658,
+  "start_s": 31.24,
+  "end_s": 32.8,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸਰਮਤ ਸੇ\" (6 chars, cache 98%, 1.6 s); my pick 100133 \"ਸਰਖੰਤ ਸੇਲ ਬਰਖੰਤ ਬਾਣ ॥\" explains 83, runner-up 134181 \"ਅਪਸਰ ਮਤੀ ਸੁਤਾ ਤਿਹ ਸੋਹੈ ॥\" 73; candidate 74658 \"ਕਿ ਸਰਬੱਤ੍ਰ ਦੇਸੈ ॥\" explains 50; almost nothing heard (6 chars \"ਸਰਮਤ ਸੇ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74659,
+  "start_s": 33,
+  "end_s": 34.52,
+  "my_verseId": 74537,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਕੇ ਸਰਬੰਚ ਖਸੈ\" (9 chars, cache 100%, 1.5 s); my pick 74537 \"ਲੋਕ ਚਉਦਹ ਕੇ ਬਿਖੈ ਜਗ ਜਾਪਹੀ ਜਿਂਹ ਜਾਪ ॥\" explains 56, runner-up 83987 \"ਛੁਟੇ ਸਰਬ ਸਸਤ੍ਰੰ ॥\" 56; candidate 74659 \"ਕਿ ਸਰਬੱਤ੍ਰ ਭੇਸੈ ॥\" explains 47; heard 9 chars, in-Bani margin 7, corpus margin 0; only 9 of ~26 chars heard: the span does not hold the whole pangti (timing, not identity); no confident neighbouring pangti within 6 s supports the sequence (isolated)"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74660,
+  "start_s": 34.68,
+  "end_s": 36.24,
+  "my_verseId": 74660,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਕੇ ਸਰਬੰਚ ਰਾਜੈ\" (10 chars, cache 100%, 1.6 s); my pick 74660 \"ਕਿ ਸਰਬੱਤ੍ਰ ਰਾਜੈ ॥\" explains 68, runner-up 101961 \"ਜਿਮ ਕਥੇ ਸਰਬ ਰਾਜਾਨ ਰਾਜ ॥\" 74; candidate 74660 \"ਕਿ ਸਰਬੱਤ੍ਰ ਰਾਜੈ ॥\" explains 68; heard 10 chars, in-Bani margin 0, corpus margin -6"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74661,
+  "start_s": 36.4,
+  "end_s": 37.96,
+  "my_verseId": 74717,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਸਰਬੰ ਸਤ ਸਾਜ\" (8 chars, cache 94%, 1.6 s); my pick 74717 \"ਸਦਾ ਸਰਬ ਸਾਜ ਹੈਂ ॥੧੨੬॥\" explains 75, runner-up 141330 \"ਕਿ ਬਖ਼ਸ਼ੇਮ ਸਰਬਸਤਹ ਗੰਜੇ ਤੁਰ\" 75; candidate 74661 \"ਕਿ ਸਰਬੱਤ੍ਰ ਸਾਜੈ ॥੧੧੨॥\" explains 72; heard 8 chars, in-Bani margin 2, corpus margin 0; out of Bani order with a confident neighbour: 74663 (-54 lines in 3.6 s), 74663 (-54 lines in 5.3 s)"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74662,
+  "start_s": 41.56,
+  "end_s": 43.08,
+  "my_verseId": 74663,
+  "confidence": 0.9,
+  "agrees": false,
+  "reason": "heard \"ਸਰਬਤਿ ਲਨੈ\" (8 chars, cache 100%, 1.5 s); my pick 74663 \"ਕਿ ਸਰਬੱਤ੍ਰ ਲੀਨੈ ॥\" explains 73, runner-up 40869 \"ਰਵਿ ਰਹਿਆ ਸਰਬਤਿ ਨਾਨਕੁ ਬਲਿ\" 75; candidate 74662 \"ਕਿ ਸਰਬੱਤ੍ਰ ਦੀਨੈ ॥\" explains 60; heard 8 chars, in-Bani margin 10, corpus margin -2"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74663,
+  "start_s": 43.28,
+  "end_s": 44.8,
+  "my_verseId": 74663,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਸਰਬਤਿ ਲੀਨੈ\" (9 chars, cache 100%, 1.5 s); my pick 74663 \"ਕਿ ਸਰਬੱਤ੍ਰ ਲੀਨੈ ॥\" explains 82, runner-up 74662 \"ਕਿ ਸਰਬੱਤ੍ਰ ਦੀਨੈ ॥\" 71; candidate 74663 \"ਕਿ ਸਰਬੱਤ੍ਰ ਲੀਨੈ ॥\" explains 82; heard 9 chars, in-Bani margin 11, corpus margin 16"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74664,
+  "start_s": 45,
+  "end_s": 46.52,
+  "my_verseId": 74664,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਸਰਬਤ ਜਾਹੁ\" (8 chars, cache 94%, 1.5 s); my pick 74664 \"ਕਿ ਸਰਬੱਤ੍ਰ ਜਾਹੋ ॥\" explains 72, runner-up 44425 \"ਊਪਰਿ ਆਦਿ ਸਰਬ ਤਿਹੁ ਲੋਈ ਸਚ\" 75; candidate 74664 \"ਕਿ ਸਰਬੱਤ੍ਰ ਜਾਹੋ ॥\" explains 72; heard 8 chars, in-Bani margin 10, corpus margin -2"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74665,
+  "start_s": 46.68,
+  "end_s": 48.28,
+  "my_verseId": 74664,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਸਰਬਤਿ ਪਾਹ\" (8 chars, cache 100%, 1.6 s); my pick 74664 \"ਕਿ ਸਰਬੱਤ੍ਰ ਜਾਹੋ ॥\" explains 68, runner-up 44425 \"ਊਪਰਿ ਆਦਿ ਸਰਬ ਤਿਹੁ ਲੋਈ ਸਚ\" 75; candidate 74665 \"ਕਿ ਸਰਬੱਤ੍ਰ ਭਾਹੋ ॥੧੧੩॥\" explains 68; heard 8 chars, in-Bani margin 0, corpus margin -8"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74666,
+  "start_s": 51.8,
+  "end_s": 53.4,
+  "my_verseId": 7368,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਜ ਸਰਵਤ ਤੇ ਸ\" (8 chars, cache 94%, 1.6 s); my pick 7368 \"ਜਿਨਿ ਕੀਤਾ ਬੇਸੁਰਤ ਤੇ ਸੁਰਤਾ ॥\" explains 68, runner-up 94466 \"ਚਕ੍ਰਤ ਤੇ ਸਬਹੂੰ ਬਲੁ ਹਾਰਿਓ\" 62; candidate 74666 \"ਕਿ ਸਰਬੱਤ੍ਰ ਦੇਸੈ ॥\" explains 48; heard 8 chars, in-Bani margin 18, corpus margin 5; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; only 8 of ~21 chars heard: the span does not hold the whole pangti (timing, not identity); the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74667,
+  "start_s": 53.56,
+  "end_s": 55.08,
+  "my_verseId": 74667,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਕੇ ਸਰਬਤਿ ਭੇਸੈ\" (11 chars, cache 100%, 1.5 s); my pick 74659 \"ਕਿ ਸਰਬੱਤ੍ਰ ਭੇਸੈ ॥\" explains 76, runner-up 74658 \"ਕਿ ਸਰਬੱਤ੍ਰ ਦੇਸੈ ॥\" 67; candidate 74667 \"ਕਿ ਸਰਬੱਤ੍ਰ ਭੇਸੈ ॥\" explains 76; heard 11 chars, in-Bani margin 9, corpus margin 18; no confident neighbouring pangti within 6 s supports the sequence (isolated)"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74668,
+  "start_s": 55.28,
+  "end_s": 56.8,
+  "my_verseId": 74668,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਕੇ ਸਰਬਤ ਖਾਲੈ\" (10 chars, cache 100%, 1.5 s); my pick 74668 \"ਕਿ ਸਰਬੱਤ੍ਰ ਕਾਲੈ ॥\" explains 68, runner-up 42011 \"ਜਿਨੑ ਹਰਿ ਨਾਮੁ ਧਿਆਇਆ ਤਿਨੑ\" 70; candidate 74668 \"ਕਿ ਸਰਬੱਤ੍ਰ ਕਾਲੈ ॥\" explains 68; heard 10 chars, in-Bani margin 0, corpus margin -2; no confident neighbouring pangti within 6 s supports the sequence (isolated)"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74669,
+  "start_s": 56.96,
+  "end_s": 58.56,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸ ਮੰਤ ਭਾਲੈ\" (7 chars, cache 94%, 1.6 s); my pick 75012 \"ਕਰੀਮੁਲ ਕੁਨਿੰਦਾ ਸਮਸਤੁਲ ਨਿਵਾਸੀ ॥\" explains 49, runner-up 50232 \"ਮਤ ਭੂਲਹਿ ਰੇ ਮਨ ਚੇਤਿ ਹਰੀ \" 57; candidate 74669 \"ਕਿ ਸਰਬੱਤ੍ਰ ਪਾਲੈ ॥੧੧੪॥\" explains 46; almost nothing heard (7 chars \"ਸ ਮੰਤ ਭਾਲੈ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74670,
+  "start_s": 62.08,
+  "end_s": 62.72,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸਰਬ\" (3 chars, cache 100%, 0.6 s); my pick 74221 \"ਤਵ ਸਰਬ ਨਾਮ ਕਥੈ ਕਵਨ ਕਰਮ ਨਾਮ ਬਰਨਤ ਸੁਮਤ\" explains 100, runner-up 74291 \"ਨਮੋ ਸਰਬ ਕਾਲੇ ॥\" 100; candidate 74670 \"ਕਿ ਸਰਬੱਤ੍ਰ ਹੰਤਾ ॥\" explains 100; almost nothing heard (3 chars \"ਸਰਬ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74869,
+  "start_s": 27.04,
+  "end_s": 28,
+  "my_verseId": 74574,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ੁ ਗਨ ਪਰ ਨਾਮੁ\" (9 chars, cache 100%, 1.0 s); my pick 74574 \"ਮੁਨਿ ਗਨ ਪ੍ਰਨਾਮ ॥\" explains 76, runner-up 74869 \"ਗੁਨਿ ਗਨ ਪ੍ਰਨਾਮ ॥\" 76; candidate 74869 \"ਗੁਨਿ ਗਨ ਪ੍ਰਨਾਮ ॥\" explains 76; heard 9 chars, in-Bani margin 0, corpus margin 9; no confident neighbouring pangti within 6 s supports the sequence (isolated)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74870,
+  "start_s": 28.28,
+  "end_s": 29.2,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਥ\" (1 chars, cache 89%, 0.9 s); my pick 74221 \"ਤਵ ਸਰਬ ਨਾਮ ਕਥੈ ਕਵਨ ਕਰਮ ਨਾਮ ਬਰਨਤ ਸੁਮਤ\" explains 100, runner-up 74268 \"ਨਮਸਤੰ ਅਥਾਪੇ ॥\" 100; candidate 74870 \"ਜਲ ਥਲ ਮੁਦਾਮ ॥੧੬੩॥\" explains 100; almost nothing heard (1 chars \"ਥ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74871,
+  "start_s": 29.44,
+  "end_s": 30.24,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 100%, 0.8 s); candidate 74871 \"ਅਨਛਿੱਜ ਅੰਗ ॥\" explains 0; almost nothing heard (0 chars \"\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74872,
+  "start_s": 30.52,
+  "end_s": 31.32,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 100%, 0.8 s); candidate 74872 \"ਆਸਨ ਅਭੰਗ ॥\" explains 0; almost nothing heard (0 chars \"\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74873,
+  "start_s": 31.56,
+  "end_s": 32.24,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮਾ\" (2 chars, cache 100%, 0.7 s); my pick 74269 \"ਨਮਸਤੰ ਤ੍ਰਿਮਾਨੇ ॥\" explains 100, runner-up 74344 \"ਤ੍ਰਿਮਾਨ ਹੈਂ ॥\" 100; candidate 74873 \"ਉਪਮਾ ਅਪਾਰ ॥\" explains 100; almost nothing heard (2 chars \"ਮਾ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74874,
+  "start_s": 32.32,
+  "end_s": 33.08,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਤਿ\" (2 chars, cache 88%, 0.8 s); my pick 74212 \"ੴ ਸਤਿਗੁਰ ਪ੍ਰਸਾਦਿ ॥\" explains 100, runner-up 74214 \"ਸ੍ਰੀ ਮੁਖਵਾਕ ਪਾਤਿਸਾਹੀ ੧੦ \" 100; candidate 74874 \"ਗਤਿ ਮਿਤਿ ਉਦਾਰ ॥੧੬੪॥\" explains 100; almost nothing heard (2 chars \"ਤਿ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74875,
+  "start_s": 33.36,
+  "end_s": 34.16,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 100%, 0.8 s); candidate 74875 \"ਜਲ ਥਲ ਅਮੰਡ ॥\" explains 0; almost nothing heard (0 chars \"\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74876,
+  "start_s": 34.24,
+  "end_s": 34.92,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 100%, 0.7 s); candidate 74876 \"ਦਿਸ ਵਿਸ ਅਭੰਡ ॥\" explains 0; almost nothing heard (0 chars \"\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74877,
+  "start_s": 35.32,
+  "end_s": 36.12,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 100%, 0.8 s); candidate 74877 \"ਜਲ ਥਲ ਮਹੰਤ ॥\" explains 0; almost nothing heard (0 chars \"\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74878,
+  "start_s": 36.2,
+  "end_s": 37.08,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 89%, 0.9 s); candidate 74878 \"ਦਿਸ ਵਿਸ ਬਿਅੰਤ ॥੧੬੫॥\" explains 0; almost nothing heard (0 chars \"\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74879,
+  "start_s": 37.48,
+  "end_s": 38.04,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਅਨਭਹੁ ਨ\" (6 chars, cache 100%, 0.6 s); my pick 74637 \"ਕਿ ਅਨਭਉ ਅਨੂਪੈ ॥੧੦੬॥\" explains 67, runner-up 74867 \"ਅਨਭਵ ਅਨਾਸ ॥\" 67; candidate 74879 \"ਅਨਭਵ ਅਨਾਸ ॥\" explains 67; almost nothing heard (6 chars \"ਅਨਭਹੁ ਨ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74880,
+  "start_s": 38.16,
+  "end_s": 39,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਤੇਤਤਰਾਸ\" (7 chars, cache 100%, 0.8 s); my pick 126056 \"ਤਾ ਤੇ ਤ੍ਰਾਸ ਸਭਨ ਚਿਤ ਆਵੈ ॥੧॥\" explains 86, runner-up 200168 \"ਤੰਤ ਮੰਤ ਰਾਸਾਇਣਾ ਕਰਾਮਾਤਿ \" 77; candidate 74880 \"ਧ੍ਰਿਤ ਧਰ ਧੁਰਾਸ ॥\" explains 49; almost nothing heard (7 chars \"ਤੇਤਤਰਾਸ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74881,
+  "start_s": 39.32,
+  "end_s": 40.16,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਆਜਾਨ ਭਉ\" (6 chars, cache 100%, 0.8 s); my pick 56181 \"ਦੁਖੁ ਦਾਲਦੁ ਸਭੋ ਲਹਿ ਗਇਆ ਜਾਂ ਨਾਉ ਗੁਰੂ \" explains 83, runner-up 36913 \"ਅਪਨੇ ਕਰਮ ਕੀ ਗਤਿ ਮੈ ਕਿਆ ਜ\" 83; candidate 74881 \"ਆਜਾਨ ਬਾਹੁ ॥\" explains 67; almost nothing heard (6 chars \"ਆਜਾਨ ਭਉ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74882,
+  "start_s": 40.2,
+  "end_s": 40.96,
+  "my_verseId": 84361,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਏਕੈ ਸੁਧਾਉ\" (8 chars, cache 100%, 0.8 s); my pick 84361 \"ਸੁਧਾ ਸੌ ਸੁਧਾਰੇ ਰੂਪ ਸੋਭਤ ਉਜਿਯਾਰੇ ਕਿਧੌ\" explains 75, runner-up 101790 \"ਨਾਗਨ ਕੇ ਛਉਨਾ ਹੈਂ ਕਿ ਕੀਨੇ\" 75; candidate 74882 \"ਏਕੈ ਸਦਾਹੁ ॥੧੬੬॥\" explains 62; heard 8 chars, in-Bani margin 12, corpus margin 0; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; 57 text chars over 0.8 s is not a plausible reading rate; only 8 of ~57 chars heard but it is the end of the pangti (tail explains 75): the reading finishes inside the span, a late start, not an identity doubt; the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74883,
+  "start_s": 41.2,
+  "end_s": 42,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਅਉ ਕਰਿਆਦ\" (7 chars, cache 100%, 0.8 s); my pick 74883 \"ਓਅੰਕਾਰ ਆਦਿ ॥\" explains 63, runner-up 201900 \"ਨਿਹਚਉ ਕਰਿ ਆਰਾਧਿਆ ਹੋਇ ਦਇਆ\" 71; candidate 74883 \"ਓਅੰਕਾਰ ਆਦਿ ॥\" explains 63; almost nothing heard (7 chars \"ਅਉ ਕਰਿਆਦ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74884,
+  "start_s": 42.04,
+  "end_s": 42.88,
+  "my_verseId": 74884,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਕਥਨੀ ਅਨਾਦ\" (8 chars, cache 100%, 0.8 s); my pick 74884 \"ਕਥਨੀ ਅਨਾਦਿ ॥\" explains 100, runner-up 2740 \"ਸਹਜੇ ਗਾਵਿਆ ਥਾਇ ਪਵੈ ਬਿਨੁ \" 75; candidate 74884 \"ਕਥਨੀ ਅਨਾਦਿ ॥\" explains 100; heard 8 chars, in-Bani margin 45, corpus margin 25"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74885,
+  "start_s": 43.08,
+  "end_s": 44.08,
+  "my_verseId": 74885,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਖਲ ਖੰਡ ਕਿਆਲ\" (8 chars, cache 100%, 1.0 s); my pick 74885 \"ਖਲ ਖੰਡ ਖਿਆਲ ॥\" explains 88, runner-up 36322 \"ਕਿਆ ਖੇਤੀ ਕਿਆ ਲੇਵਾ ਦੇਈ ਪਰ\" 62; candidate 74885 \"ਖਲ ਖੰਡ ਖਿਆਲ ॥\" explains 88; heard 8 chars, in-Bani margin 32, corpus margin 25"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74886,
+  "start_s": 44.36,
+  "end_s": 45.2,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੁਰ ਬਰ\" (4 chars, cache 89%, 0.8 s); my pick 74886 \"ਗੁਰ ਬਰ ਅਕਾਲ ॥੧੬੭॥\" explains 100, runner-up 74216 \"ਚੱਕ੍ਰ ਚਿਹਨ ਅਰੁ ਬਰਨ ਜਾਤਿ \" 75; candidate 74886 \"ਗੁਰ ਬਰ ਅਕਾਲ ॥੧੬੭॥\" explains 100; almost nothing heard (4 chars \"ੁਰ ਬਰ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74887,
+  "start_s": 45.44,
+  "end_s": 46.32,
+  "my_verseId": 88392,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਕਰਿ ਕਰਿ ਪਰ ਨਾਮੁ\" (12 chars, cache 100%, 0.9 s); my pick 88392 \"ਪਾਇ ਪਰੈ ਤਿਹ ਕੇ ਹਿਤ ਸੋ ਕਰਿ ਕੋਟਿ ਪ੍ਰਨਾ\" explains 82, runner-up 87457 \"ਕਰਿ ਪ੍ਰਨਾਮੁ ਤਾ ਕੋ ਤਬੈ ਇਉ\" 78; candidate 74887 \"ਘਰ ਘਰਿ ਪ੍ਰਨਾਮ ॥\" explains 62; heard 12 chars, in-Bani margin 20, corpus margin 3; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; 39 text chars over 0.9 s is not a plausible reading rate; only 12 of ~39 chars heard: the span does not hold the whole pangti (timing, not identity); the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74888,
+  "start_s": 46.4,
+  "end_s": 47.32,
+  "my_verseId": 74888,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਿਤੁ ਚਰਣ ਨਾਮੁ\" (10 chars, cache 100%, 0.9 s); my pick 74888 \"ਚਿਤ ਚਰਨ ਨਾਮ ॥\" explains 70, runner-up 29475 \"ਸਰਣਿ ਸਮਰਥ ਅਕਥ ਅਗੋਚਰਾ ਪਤਿ\" 74; candidate 74888 \"ਚਿਤ ਚਰਨ ਨਾਮ ॥\" explains 70; heard 10 chars, in-Bani margin 10, corpus margin -4"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74889,
+  "start_s": 47.56,
+  "end_s": 48.32,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੰਛਜ ਗਦ\" (4 chars, cache 100%, 0.8 s); my pick 74622 \"ਕਿ ਆਛਿੱਜ ਦੇਸੈ ॥\" explains 60, runner-up 74889 \"ਅਨਛਿੱਜ ਗਾਤ ॥\" 60; candidate 74889 \"ਅਨਛਿੱਜ ਗਾਤ ॥\" explains 60; almost nothing heard (4 chars \"ੰਛਜ ਗਦ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74890,
+  "start_s": 48.4,
+  "end_s": 49.4,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਜੀ ਨਾਮ ਬਾ\" (7 chars, cache 90%, 1.0 s); my pick 11242 \"ਹਰਿ ਹਰਿ ਪੂੰਜੀ ਨਾਮ ਬਿਸਾਹਾ ॥\" explains 86, runner-up 106504 \"ਅਰਿ ਪਦ ਬਹੁਰਿ ਬਖਾਨੀਐ ਨਾਮ \" 77; candidate 74890 \"ਆਜਿਜ ਨ ਬਾਤ ॥੧੬੮॥\" explains 57; almost nothing heard (7 chars \"ਜੀ ਨਾਮ ਬਾ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74891,
+  "start_s": 49.72,
+  "end_s": 50.56,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 100%, 0.8 s); candidate 74891 \"ਅਨਝੰਝ ਗਾਤ ॥\" explains 0; almost nothing heard (0 chars \"\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74892,
+  "start_s": 50.68,
+  "end_s": 51.68,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਅ ਬਾ\" (3 chars, cache 100%, 1.0 s); my pick 74241 \"ਨਮਸਤੰ ਅਬਾਹੇ ॥\" explains 100, runner-up 74386 \"ਅਬਾਹ ਹੈਂ ॥\" 100; candidate 74892 \"ਅਨਰੰਜ ਬਾਤ ॥\" explains 67; almost nothing heard (3 chars \"ਅ ਬਾ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74893,
+  "start_s": 52,
+  "end_s": 53,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਭੰਡਾਰ\" (4 chars, cache 100%, 1.0 s); my pick 74893 \"ਅਨਟੁਟ ਭੰਡਾਰ ॥\" explains 100, runner-up 74553 \"ਮਧੁਭਾਰ ਛੰਦ ॥ ਤ੍ਵ ਪ੍ਰਸਾਦਿ\" 75; candidate 74893 \"ਅਨਟੁਟ ਭੰਡਾਰ ॥\" explains 100; almost nothing heard (4 chars \"ਭੰਡਾਰ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74894,
+  "start_s": 53.32,
+  "end_s": 54.2,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਅੰਠਡ ਪਾਰ\" (6 chars, cache 98%, 0.9 s); my pick 74250 \"ਨਮਸਤੰ ਅਪਾਰੇ ॥੮॥\" explains 67, runner-up 28720 \"ਹਰਿ ਨਾਮੁ ਧਨੁ ਨਿਰਮਲੁ ਅਤਿ \" 67; candidate 74894 \"ਅਨਠਟ ਅਪਾਰ ॥੧੬੯॥\" explains 67; almost nothing heard (6 chars \"ਅੰਠਡ ਪਾਰ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74895,
+  "start_s": 54.56,
+  "end_s": 55.44,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਡਟ ਧਰਮ\" (5 chars, cache 100%, 0.9 s); my pick 74895 \"ਆਡੀਠ ਧਰਮ ॥\" explains 68, runner-up 74236 \"ਨਮਸਤੰ ਅਧਰਮੰ ॥\" 60; candidate 74895 \"ਆਡੀਠ ਧਰਮ ॥\" explains 68; almost nothing heard (5 chars \"ਡਟ ਧਰਮ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74896,
+  "start_s": 55.8,
+  "end_s": 56.8,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਤਢੀਟ ਕਰਮ\" (7 chars, cache 100%, 1.0 s); my pick 74896 \"ਅਤਿ ਢੀਠ ਕਰਮ ॥\" explains 77, runner-up 51682 \"ਬੈਸਨੌ ਨਾਮੁ ਕਰਤ ਖਟ ਕਰਮਾ ਅ\" 71; candidate 74896 \"ਅਤਿ ਢੀਠ ਕਰਮ ॥\" explains 77; almost nothing heard (7 chars \"ਤਢੀਟ ਕਰਮ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74897,
+  "start_s": 57.16,
+  "end_s": 58.24,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 91%, 1.1 s); candidate 74897 \"ਅਣਬ੍ਰਣ ਅਨੰਤ ॥\" explains 0; almost nothing heard (0 chars \"\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74898,
+  "start_s": 58.6,
+  "end_s": 59.4,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 100%, 0.8 s); candidate 74898 \"ਦਾਤਾ ਮਹੰਤ ॥੧੭੦॥\" explains 0; almost nothing heard (0 chars \"\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74899,
+  "start_s": 59.76,
+  "end_s": 62.48,
+  "my_verseId": 74899,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਹਰ ਬੋਲ ਮਨਾਛੰਦ\" (10 chars, cache 96%, 2.7 s); my pick 74899 \"ਹਰਿਬੋਲਮਨਾ ਛੰਦ ॥ ਤ੍ਵ ਪ੍ਰਸਾਦਿ ॥\" explains 94, runner-up 99351 \"ਹਰਿ ਬੋਲ ਮਨਾ ਛੰਦ ॥\" 94; candidate 74899 \"ਹਰਿਬੋਲਮਨਾ ਛੰਦ ॥ ਤ੍ਵ ਪ੍ਰਸਾਦਿ ॥\" explains 94; heard 10 chars, in-Bani margin 54, corpus margin 0; only 10 of ~21 chars heard: the span does not hold the whole pangti (timing, not identity); no confident neighbouring pangti within 6 s supports the sequence (isolated)"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 78277,
+  "start_s": 27.28,
+  "end_s": 39,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸੰਗਿਆ ਸੁਕਾਲ ਕਰ ਲਸੀ ਦਇਆਲੰਸ ਲ ਰੰਗ ਸੁੰਦੇ\" (26 chars, cache 98%, 11.7 s); my pick 75017 \"ਦੁਕਾਲੰ ਪ੍ਰਣਾਸੀ ਦਿਆਲੰ ਸਰੂਪੇ ॥\" explains 47, runner-up 10175 \"ਗੁਰਿ ਨਉ ਨਿਧਿ ਨਾਮੁ ਵਿਖਾਲਿ\" 42; candidate 78277 \"ਹੋਤ ਕੁਲਾਹਲ ਦੇਵਪੁਰੀ ਮਿਲ ਦੇਵਨ ਕੇ\" explains 25; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 78280,
+  "start_s": 27.28,
+  "end_s": 28.68,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸੰਗਿਆ\" (4 chars, cache 99%, 1.4 s); my pick 37 \"ਨਾਨਕ ਏਵੈ ਜਾਣੀਐ ਸਭੁ ਆਪੇ ਸਚਿਆਰੁ ॥੪॥\" explains 75, runner-up 57510 \"ਸੁੰਨ ਸੰਧਿਆ ਤੇਰੀ ਦੇਵ ਦੇਵਾ\" 75; candidate 78280 \"ਤੀਨ ਲੋਕ ਜੈ ਜੈ ਕਰੈ ਰਰੈ ਨਾਮੁ ਸਤਿ\" explains 50; almost nothing heard (4 chars \"ਸੰਗਿਆ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95385,
+  "start_s": 29.16,
+  "end_s": 32.96,
+  "my_verseId": 85412,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਸੁਕਾਲ ਕਰ ਲ\" (8 chars, cache 98%, 3.8 s); my pick 85412 \"ਭਜੋ ਏਕ ਚਿੱਤੰ ਸੁ ਕਾਲੰ ਕ੍ਰਿਪਾਲੰ ॥੪੧੩॥\" explains 80, runner-up 205629 \"ਜਾਣ ਅਮਿਓ ਰਸੁ ਕਾਲਕੂਟੁ ਖਾਧ\" 75; candidate 95385 \"ਸਵੈਯਾ ॥\" explains 18; heard 8 chars, in-Bani margin 12, corpus margin 5; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; overlaps 3.8 s with a candidate naming 78277 (the two aligners disagree here; my hearing of that span is weak); the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95386,
+  "start_s": 33.32,
+  "end_s": 86.84,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸੀ ਦਇਆਲੰਸ ਲ ਰੰਗ ਸੁੰਦੇ ਅ ਬੰਧੂੇ ਲੈ ਅ ਮ ਸ ਲ ਕ ਕ ਕ ਮੇਰੀ ਅਵ ਬੇਨਤੀ ਸੁ ਲੀਿਆ ਮ\" (46 chars, cache 98%, 53.5 s); my pick 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰੀ ਅਬੈ \" explains 33, runner-up 33294 \"ਸੰਤਾ ਕੀ ਬੇਨੰਤੀ ਸੁਆਮੀ ਨਾਮ\" 39; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 33; no pangti explains the hearing (best 33)"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95385,
+  "start_s": 39.52,
+  "end_s": 40.88,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਅ ਬੰਧ\" (3 chars, cache 100%, 1.4 s); my pick 78941 \"ਜਬ ਆਵ ਕੀ ਅਉਧ ਨਿਦਾਨ ਬਨੈ ਅਤਿ ਹੀ ਰਨ ਮੈ \" explains 67, runner-up 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿ\" 67; candidate 95385 \"ਸਵੈਯਾ ॥\" explains 0; almost nothing heard (3 chars \"ਅ ਬੰਧ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95386,
+  "start_s": 42.72,
+  "end_s": 87.32,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੇ ਲੈ ਅ ਮ ਸ ਲ ਕ ਕ ਕ ਮੇਰੀ ਅਵ ਬੇਨਤੀ ਸੁ ਲੀਿਆ ਮੇਰੀ\" (31 chars, cache 98%, 44.6 s); my pick 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰੀ ਅਬੈ \" explains 47, runner-up 33294 \"ਸੰਤਾ ਕੀ ਬੇਨੰਤੀ ਸੁਆਮੀ ਨਾਮ\" 46; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 47; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95386,
+  "start_s": 86.92,
+  "end_s": 99.24,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਰੀ ਆਰੈ ਮਨਤੀ ਆਵੈ ਰਵੈਨ ਕ\" (17 chars, cache 98%, 12.3 s); my pick 36 \"ਕਰਮੀ ਆਵੈ ਕਪੜਾ ਨਦਰੀ ਮੋਖੁ ਦੁਆਰੁ ॥\" explains 47, runner-up 35805 \"ਰਾਮ ਨਾਮ ਰਸਾਲ ਰਸੀਆ ਰਵੈ ਸਾ\" 50; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 38; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95385,
+  "start_s": 87.76,
+  "end_s": 90.04,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਆਰੈ ਮਨਤੀ\" (7 chars, cache 100%, 2.3 s); my pick 47441 \"ਰਵਿ ਸਸਿ ਦੀਪਕ ਗੁਰਮਤਿ ਦੁਆਰੈ ਮਨਿ ਸਾਚਾ ਮ\" explains 71, runner-up 90475 \"ਯਾ ਕੋ ਬਿਸਾਰ ਡਰੈ ਮਨ ਤੇ ਤਬ\" 71; candidate 95385 \"ਸਵੈਯਾ ॥\" explains 14; almost nothing heard (7 chars \"ਆਰੈ ਮਨਤੀ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95386,
+  "start_s": 93.76,
+  "end_s": 111.56,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਆਵੈ ਰਵੈਨ ਕ ਮੇਰੀ ਅਵੈ ਮੈ ਨ ਕਹੀ ਸਖਆਾ ਤੇ ਤੁ ਮੇ\" (31 chars, cache 97%, 17.8 s); my pick 87329 \"ਸ੍ਰੀ ਅਸਿਪਾਨ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਰਿ ਮੈ ਨ ਕਹ\" explains 35, runner-up 90291 \"ਨੈਨ ਬਨੇ ਤੁਮਰੇ ਸਰ ਸੇ ਸੁ ਧ\" 38; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 33; no pangti explains the hearing (best 35)"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95386,
+  "start_s": 100.24,
+  "end_s": 111.56,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੇਰੀ ਅਵੈ ਮੈ ਨ ਕਹੀ ਸਖਆਾ ਤੇ ਤੁ ਮੇ\" (22 chars, cache 97%, 11.3 s); my pick 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰੀ ਅਬੈ \" explains 41, runner-up 41602 \"ਹਮ ਨਹੀ ਹੋਤੇ ਤੁਮ ਨਹੀ ਹੋਤੇ\" 45; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 41; no pangti explains the hearing (best 41)"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95385,
+  "start_s": 112.56,
+  "end_s": 114.64,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਰਾਮ ਕੇ ਸਚ\" (7 chars, cache 100%, 2.1 s); my pick 88902 \"ਦਾਮਿਨਿ ਜਿਉ ਗਰਜੈ ਜਨੁ ਰਾਮ ਕੇ ਸਾਮੁਹਿ ਰਾ\" explains 86, runner-up 91143 \"ਸ੍ਯਾਮ ਕੇ ਸੰਗ ਸਭੈ ਹਮ ਖੇਲਤ\" 71; candidate 95385 \"ਸਵੈਯਾ ॥\" explains 29; almost nothing heard (7 chars \"ਰਾਮ ਕੇ ਸਚ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95386,
+  "start_s": 115.08,
+  "end_s": 136.12,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੇਖ ਨ ਮ ਕੀ ਆਵ ਹੀ ਨ ਤੇਰੀ ਆਵਨ ਭਹੀ ਸੁਖ\" (24 chars, cache 98%, 21.0 s); my pick 8391 \"ਆਨ ਸੁਖਾ ਨਹੀ ਆਵਹਿ ਚੀਤਿ ॥੩॥\" explains 47, runner-up 91507 \"ਗ੍ਵਾਰਨਿ ਬ੍ਯਾਕੁਲ ਚਿਤ ਭਈ ਹ\" 45; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 33; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95386,
+  "start_s": 116.16,
+  "end_s": 149.96,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਖ ਨ ਮ ਕੀ ਆਵ ਹੀ ਨ ਤੇਰੀ ਆਵਨ ਭਹੀ ਸੁਖ ਮੇਰੀ ਅਵਰ ਮਰੀ ਸੁਖ ਮੇ ਸ\" (39 chars, cache 98%, 33.8 s); my pick 76501 \"ਸੇਵ ਕਰੀ ਤੁਮਰੀ ਤਿਨ ਕੇ ਸਭ ਹੀ ਗ੍ਰਿਹ ਦੇਖ\" explains 32, runner-up 46816 \"ਤੇਰੀ ਭਗਤਿ ਭਰੇ ਭੰਡਾਰ ਤੋਟਿ\" 38; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 32; no pangti explains the hearing (best 32)"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95387,
+  "start_s": 136.96,
+  "end_s": 149.64,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੇਰੀ ਅਵਰ ਮਰੀ ਸੁਖ ਮੇ ਸ\" (15 chars, cache 98%, 12.7 s); my pick 76501 \"ਸੇਵ ਕਰੀ ਤੁਮਰੀ ਤਿਨ ਕੇ ਸਭ ਹੀ ਗ੍ਰਿਹ ਦੇਖ\" explains 47, runner-up 117673 \"ਰੀਝਤ ਕੋਟਿ ਸੁਰੀ ਅਸੁਰੀ ਸੁਧ\" 49; candidate 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \" explains 23; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95386,
+  "start_s": 27.2,
+  "end_s": 39.24,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਰੀ ਆਰੈ ਮ ਮੈਿਰਤੀਤੀ ਮਰੀ ਮੇਰੀ ਆਵੈ ਰਵੈਣ ਤੇ ਸਅ\" (32 chars, cache 100%, 12.0 s); my pick 57517 \"ਕਬੀਰ ਦਾਸ ਤੇਰੀ ਆਰਤੀ ਕੀਨੀ ਨਿਰੰਕਾਰ ਨਿਰਬ\" explains 36, runner-up 29829 \"ਮੇਰੀ ਮੇਰੀ ਕੈਰਉ ਕਰਤੇ ਦੁਰਜ\" 40; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 34; no pangti explains the hearing (best 36)"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95385,
+  "start_s": 27.76,
+  "end_s": 30.04,
+  "my_verseId": 78924,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਆਰੈ ਮ ਮੈਿਰਤੀਤੀ\" (12 chars, cache 100%, 2.3 s); my pick 78924 \"ਦੇਹਿ ਅਸੀਸ ਸਭੈ ਸੁਰ ਨਾਰਿ ਸੁਧਾਰਿ ਕੈ ਆਰਤ\" explains 50, runner-up 12869 \"ਠਾਕੁਰ ਕੇ ਸੇਵਕ ਕੈ ਮਨਿ ਪਰਤ\" 53; candidate 95385 \"ਸਵੈਯਾ ॥\" explains 8; heard 12 chars, in-Bani margin 8, corpus margin -3; 2.3 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible); a corpus pangti of different text explains the hearing as well (corpus margin -3) and no confident neighbour from the same Shabad within 30 s supports it; overlaps 2.3 s with a candidate naming 95386 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95386,
+  "start_s": 33.76,
+  "end_s": 51.56,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮੇਰੀ ਆਵੈ ਰਵੈਣ ਤੇ ਸਅਲਾ ਦੇਹੀ ਭਵਨ ਮੈਣ ਦੇਹੀ ਸਖ ਮਰੀ ਅਖਾ ਮਿ ਤੇ ਮੀਜਨ\" (47 chars, cache 98%, 17.8 s); my pick 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰੀ ਅਬੈ \" explains 31, runner-up 23810 \"ਸਖੀ ਸਹੇਲੀ ਮੇਰੀਆ ਮੇਰੀ ਜਿੰ\" 35; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 31; no pangti explains the hearing (best 31)"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95386,
+  "start_s": 40.24,
+  "end_s": 51.56,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਹੀ ਭਵਨ ਮੈਣ ਦੇਹੀ ਸਖ ਮਰੀ ਅਖਾ ਮਿ ਤੇ ਮੀਜਨ\" (28 chars, cache 97%, 11.3 s); my pick 78928 \"ਸਕ੍ਰਹਿ ਸਾਜਿ ਸਮਾਜ ਦੈ ਚੰਡ ਸੁ ਮੋਦ ਮਹਾ ਮ\" explains 34, runner-up 45145 \"ਮਨਮੁਖ ਦੇਹੀ ਭਰਮੁ ਭਤਾਰੋ ॥\" 38; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 28; no pangti explains the hearing (best 34)"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95385,
+  "start_s": 52.56,
+  "end_s": 54.64,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਰਾ ਸ\" (3 chars, cache 96%, 2.1 s); my pick 78912 \"ਜੰਬੁਕ ਗ੍ਰਿਝ ਨਿਰਾਸ ਭਏ ਬਨ ਬਾਸ ਗਏ ਜੁਗ ਜ\" explains 100, runner-up 76464 \"ਕਾਲ ਹੀ ਪਾਇ ਸੁਰਾਸੁਰ ਗੰਧ੍ਰ\" 100; candidate 95385 \"ਸਵੈਯਾ ॥\" explains 67; almost nothing heard (3 chars \"ਰਾ ਸ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95386,
+  "start_s": 55.08,
+  "end_s": 76.12,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਕਰ ਨਾਮ ਮ ਮਰਾ ਸਚ ਕਰ ਨਾ ਮੇਰੀ ਆਵੈਵੈਣ ਦੇ ਸਰ\" (29 chars, cache 98%, 21.0 s); my pick 29893 \"ਨਾਮੁ ਤੇਰੋ ਆਰਤੀ ਮਜਨੁ ਮੁਰਾਰੇ ॥\" explains 35, runner-up 50080 \"ਤੇਰਾ ਸਚੁ ਨਾਮੁ ਪਰਮੇਸਰਾ ॥\" 43; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 32; no pangti explains the hearing (best 35)"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95386,
+  "start_s": 56.16,
+  "end_s": 89.96,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨਾਮ ਮ ਮਰਾ ਸਚ ਕਰ ਨਾ ਮੇਰੀ ਆਵੈਵੈਣ ਦੇ ਸਰ ਮੇਰੀ ਆਪਰਣ ਮਨ ਸੁ ਸ\" (40 chars, cache 98%, 33.8 s); my pick 29893 \"ਨਾਮੁ ਤੇਰੋ ਆਰਤੀ ਮਜਨੁ ਮੁਰਾਰੇ ॥\" explains 34, runner-up 38194 \"ਨਾਮ ਬਿਨਾ ਕਿਛੁ ਕਾਮਿ ਨ ਆਵੈ\" 38; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 29; no pangti explains the hearing (best 34)"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95386,
+  "start_s": 76.96,
+  "end_s": 101.52,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੇਰੀ ਆਪਰਣ ਮਨ ਸੁ ਸ ਨਾ ਨਾ ਕ ਆਇ ਨ ਮਉ ਤੁੁਨ ਕਹਿ ਗਛ\" (31 chars, cache 98%, 24.6 s); my pick 28410 \"ਕਹਿ ਕਬੀਰ ਮਨੁ ਮਾਨਿਆ ॥\" explains 35, runner-up 14746 \"ਜਉ ਪੈ ਰਸਨਾ ਰਾਮੁ ਨ ਕਹਿਬੋ \" 37; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 26; no pangti explains the hearing (best 35)"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95387,
+  "start_s": 96,
+  "end_s": 119.88,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਇ ਨ ਮਉ ਤੁੁਨ ਕਹਿ ਗਛ ਹੋਇ ਨਾਗ ਹਾਰਪ ਮ ਦੇਤਾ ਚਾਤਿਆਉ ਚਿਤ ਮਹਿ ਕੋਹੀ ਕੀਜੈ\" (48 chars, cache 98%, 23.9 s); my pick 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ ਹਉ ਚਿਤ\" explains 39, runner-up 94285 \"ਚੇਤ ਰੇ ਚੇਤ ਅਜਉ ਚਿਤ ਮੈ ਹਰ\" 38; candidate 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \" explains 39; no pangti explains the hearing (best 39)"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95387,
+  "start_s": 108.4,
+  "end_s": 119.88,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਹੋਇ ਨਾਗ ਹਾਰਪ ਮ ਦੇਤਾ ਚਾਤਿਆਉ ਚਿਤ ਮਹਿ ਕੋਹੀ ਕੀਜੈ\" (35 chars, cache 97%, 11.5 s); my pick 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ ਹਉ ਚਿਤ\" explains 47, runner-up 94285 \"ਚੇਤ ਰੇ ਚੇਤ ਅਜਉ ਚਿਤ ਮੈ ਹਰ\" 40; candidate 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \" explains 47; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95385,
+  "start_s": 127.36,
+  "end_s": 128.44,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਾਹਤਿਆਉ\" (6 chars, cache 100%, 1.1 s); my pick 22099 \"ਸੇ ਕੂਕਰ ਸੂਕਰ ਗਰਧਭ ਪਵਹਿ ਗਰਭ ਜੋਨੀ ਦਯਿ \" explains 83, runner-up 14310 \"ਧਰਮ ਰਾਇ ਜਮਕੰਕਰਾ ਨੋ ਆਖਿ ਛ\" 83; candidate 95385 \"ਸਵੈਯਾ ॥\" explains 17; almost nothing heard (6 chars \"ਾਹਤਿਆਉ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95386,
+  "start_s": 129.36,
+  "end_s": 144.92,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਿਤੁ ਰਹ ਨ ਕੀਜੈ ਮੇਰੀ ਆਵ ਲੈ ਨ ਦੇ ਸੁ ਮੀਐ ਮੇਰੀ ਅਵੈ ਬਨਤੀ ਜ ਮੀਐ\" (41 chars, cache 97%, 15.6 s); my pick 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰੀ ਅਬੈ \" explains 41, runner-up 6956 \"ਮੈ ਮੂਰਖ ਕੀ ਗਤਿ ਕੀਜੈ ਮੇਰੇ\" 35; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 41; no pangti explains the hearing (best 41)"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95387,
+  "start_s": 146,
+  "end_s": 152.36,
+  "my_verseId": 60086,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਦਿਆਵ ਏਕਦੇ\" (8 chars, cache 97%, 6.4 s); my pick 60086 \"ਤਿਨ ਬਹਦਿਆ ਉਠਦਿਆ ਕਦੇ ਨ ਵਿਸਰੈ ਜਿ ਆਪਿ ਬ\" explains 75, runner-up 209281 \"ਚਟੀਆ ਅਨੇਕ ਜੈਸੇ ਏਕ ਚਟਿਸਾਰ\" 75; candidate 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \" explains 12; heard 8 chars, in-Bani margin 25, corpus margin 0; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; a corpus pangti of different text explains the hearing as well (corpus margin 0) and no confident neighbour from the same Shabad within 30 s supports it; the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95386,
+  "start_s": 29,
+  "end_s": 41.52,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 0%, 12.5 s); candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 0; cache covers only 0% of the span: cannot hear it"
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95387,
+  "start_s": 36,
+  "end_s": 59.88,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 0%, 23.9 s); candidate 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \" explains 0; cache covers only 0% of the span: cannot hear it"
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95387,
+  "start_s": 48.4,
+  "end_s": 59.88,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 0%, 11.5 s); candidate 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \" explains 0; cache covers only 0% of the span: cannot hear it"
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95385,
+  "start_s": 67.36,
+  "end_s": 68.44,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 0%, 1.1 s); candidate 95385 \"ਸਵੈਯਾ ॥\" explains 0; cache covers only 0% of the span: cannot hear it"
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95386,
+  "start_s": 69.36,
+  "end_s": 84.92,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਜ ਮੀਐੈ\" (5 chars, cache 27%, 15.6 s); my pick 60316 \"ਚਿੰਤਾ ਤਾ ਕੀ ਕੀਜੀਐ ਜੋ ਅਨਹੋਨੀ ਹੋਇ ॥\" explains 60, runner-up 36 \"ਕਰਮੀ ਆਵੈ ਕਪੜਾ ਨਦਰੀ ਮੋਖੁ \" 48; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 40; cache covers only 27% of the span: cannot hear it"
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95386,
+  "start_s": 85.96,
+  "end_s": 103.84,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਤੇਰਾਰਾ ਹ ਏਕ ਨਉਦੇ ਮਿਲਾਵੇ ਸਾ ਮਿਲੇਵਡ ਨਾ ਹੈ ਤੇਰੀ ਆਵੈ ਤੈਨ ਦੇਰੀ\" (45 chars, cache 100%, 17.9 s); my pick 29893 \"ਨਾਮੁ ਤੇਰੋ ਆਰਤੀ ਮਜਨੁ ਮੁਰਾਰੇ ॥\" explains 35, runner-up 7337 \"ਨਿਮਖ ਮਾਹਿ ਹੋਵੈ ਤੇਰੀ ਛੋਟਿ\" 37; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 29; no pangti explains the hearing (best 35)"
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95387,
+  "start_s": 86,
+  "end_s": 108.84,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਰਾਰਾ ਹ ਏਕ ਨਉਦੇ ਮਿਲਾਵੇ ਸਾ ਮਿਲੇਵਡ ਨਾ ਹੈ ਤੇਰੀ ਆਵੈ ਤੈਨ ਦੇਰੀ ਮੇਰੀ ਅਵਤ ਤੈ ਕੀ\" (56 chars, cache 100%, 22.8 s); my pick 29897 \"ਨਾਮੁ ਤੇਰਾ ਦੀਵਾ ਨਾਮੁ ਤੇਰੋ ਬਾਤੀ ਨਾਮੁ ਤ\" explains 31, runner-up 43888 \"ਮੇਰੀ ਮੇਰੀ ਕਰਤ ਕਿਆ ਲੇ ਚਾਲ\" 36; candidate 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \" explains 22; no pangti explains the hearing (best 31)"
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95387,
+  "start_s": 104.64,
+  "end_s": 128.6,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮੇਰੀ ਅਵਤ ਤੈ ਕੀ ਸਗ ਕ ਸਸਤ੍ਰਣ ਸਿਉ ਅਤਿਲੀ ਬ ਭੀ\" (31 chars, cache 98%, 24.0 s); my pick 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ ਮਰੋ ਕਹ\" explains 43, runner-up 99627 \"ਸ੍ਰੀ ਕਲਕੀ ਅਵਤਾਰ ਤਹਾ ਗਹਿ \" 37; candidate 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \" explains 21; no pangti explains the hearing (best 43)"
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95388,
+  "start_s": 123.6,
+  "end_s": 130.6,
+  "my_verseId": 95388,
+  "confidence": 0.96,
+  "agrees": true,
+  "reason": "heard \"ਸਸਤ੍ਰਣ ਸਿਉ ਅਤਿਲੀ ਬ ਭੀਤ\" (18 chars, cache 99%, 7.0 s); my pick 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ ਮਰੋ ਕਹ\" explains 69, runner-up 104955 \"ਸਬ ਸਸਤ੍ਰ ਅਸਤ੍ਰ ਭੀਤਰ ਨਿਪੁ\" 56; candidate 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ \" explains 69; heard 18 chars, in-Bani margin 30, corpus margin 13"
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95388,
+  "start_s": 136.16,
+  "end_s": 147.68,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸਤਨ ਸਿਉ ਅਤ ਹੀਰਾਤੀ ਜੁਝਨ ਤਸਾਨ ਨ ਕ\" (24 chars, cache 97%, 11.5 s); my pick 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ ਮਰੋ ਕਹ\" explains 42, runner-up 42279 \"ਭਣਤਿ ਨਾਨਕੁ ਜਨੋ ਰਵੈ ਜੇ ਹਰ\" 47; candidate 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ \" explains 42; no pangti explains the hearing (best 42)"
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 87327,
+  "start_s": 27.28,
+  "end_s": 38.68,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਏਕ ਹਵ ਲਵਾਨੈ ਦੇ\" (11 chars, cache 98%, 11.4 s); my pick 87368 \"ਦੇਵੀ ਬਰੁ ਲਾਇਕ ਸੁਬੁਧਿ ਹੂ ਕੀ ਦਾਇਕ ਸੁ ਦ\" explains 45, runner-up 42742 \"ਏਕਹਿ ਸੁਪਨੈ ਦਾਮੁ ਨ ਛਡਹੈ ॥\" 55; candidate 87327 \"ਰਾਮ ਰਹੀਮ ਪੁਰਾਨ ਕੁਰਾਨ ਅਨੇਕ ਕਹੈਂ\" explains 36; no pangti explains the hearing (best 45)"
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95386,
+  "start_s": 27.32,
+  "end_s": 43.84,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਏਕ ਹਵ ਲਵਾਨੈ ਦੇਰੀ ਆਵਹੀ ਸ\" (18 chars, cache 97%, 16.5 s); my pick 28689 \"ਕੈਸੀ ਆਰਤੀ ਹੋਇ ਭਵ ਖੰਡਨਾ ਤੇਰੀ ਆਰਤੀ ॥\" explains 39, runner-up 76040 \"ਬੰਗ ਕੇ ਬੰਗਾਲੀ ਫਿਰਹੰਗ ਕੇ \" 41; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 36; no pangti explains the hearing (best 39)"
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95387,
+  "start_s": 39.04,
+  "end_s": 70.6,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਰੀ ਆਵਹੀ ਸ ਮੇਰੀ ਅਵਤਿ ਤਿਨ ਹੀ ਸੁ ਕ ਸਸਤਣ ਸਿਉ ਅਖ ਹੀਵਨ ਭੀਤ\" (39 chars, cache 98%, 31.6 s); my pick 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ ਮਰੋ ਕਹ\" explains 36, runner-up 53640 \"ਰਾਜਾਸ੍ਰਮ ਮਿਤਿ ਨਹੀ ਜਾਨੀ ਤ\" 37; candidate 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \" explains 21; no pangti explains the hearing (best 36)"
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95387,
+  "start_s": 44.64,
+  "end_s": 68.6,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮੇਰੀ ਅਵਤਿ ਤਿਨ ਹੀ ਸੁ ਕ ਸਸਤਣ ਸਿਉ ਅਖ ਹੀਵਨ ਭੀ\" (31 chars, cache 98%, 24.0 s); my pick 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰੀ ਅਬੈ \" explains 39, runner-up 128836 \"ਤਿਨ ਕੀ ਦੁਤਿ ਤਿਨ ਹੀ ਬਨੀ ਕ\" 40; candidate 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \" explains 19; no pangti explains the hearing (best 39)"
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95388,
+  "start_s": 76.16,
+  "end_s": 87.68,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਅਸਤ ਸਿਉ ਅਤ ਹੀਰਣ ਕੀ ਛਰੀ ਨ ਤਸਜਵ ਨਐ\" (24 chars, cache 98%, 11.5 s); my pick 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ ਮਰੋ ਕਹ\" explains 38, runner-up 59043 \"ਗਰਲ ਨਾਸੁ ਤਨਿ ਨਠਯੋ ਅਮਿਉ ਅ\" 39; candidate 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ \" explains 38; no pangti explains the hearing (best 38)"
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95389,
+  "start_s": 95.04,
+  "end_s": 115,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸੰਗ ਸਾਹਿ ਜੰਗ ਨ ਹੋਇ ਜਿਤਾ ਕਰ ਇਹ ਵਰਿ ਰਐ\" (25 chars, cache 87%, 20.0 s); my pick 28698 \"ਕ੍ਰਿਪਾ ਜਲੁ ਦੇਹਿ ਨਾਨਕ ਸਾਰਿੰਗ ਕਉ ਹੋਇ ਜ\" explains 40, runner-up 402795 \"ਨਗਨ ਹੋਇ ਬਾਹਰ ਫਿਰੈ ਨਗਨ ਸੀ\" 43; candidate 95389 \"ਸੰਤ ਸਹਾਇ ਸਦਾ ਜਗ ਮਾਇ ਕ੍ਰਿਪਾ ਕਰ \" explains 35; no pangti explains the hearing (best 40)"
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95386,
+  "start_s": 115.04,
+  "end_s": 137.44,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 0%, 22.4 s); candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 0; cache covers only 0% of the span: cannot hear it"
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95386,
+  "start_s": 120.12,
+  "end_s": 131.24,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 0%, 11.1 s); candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 0; cache covers only 0% of the span: cannot hear it"
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95386,
+  "start_s": 132.16,
+  "end_s": 138.6,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 0%, 6.4 s); candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 0; cache covers only 0% of the span: cannot hear it"
+ },
+ {
+  "recording": "aa20",
+  "cand_verseId": 95388,
+  "start_s": 27.48,
+  "end_s": 27.68,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 0%, 0.2 s); candidate 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ \" explains 0; cache covers only 0% of the span: cannot hear it"
+ },
+ {
+  "recording": "aa20",
+  "cand_verseId": 95389,
+  "start_s": 35.04,
+  "end_s": 55,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਕਿ ਕਿ੍ਰਰਪਪਾਾ ਕਰ ਦਰਨ\" (16 chars, cache 28%, 20.0 s); my pick 22493 \"ਕਰਿ ਕਿਰਪਾ ਗੁਰ ਦਰਸੁ ਦਿਖਾਵਹੁ ਹਉਮੈ ਸਬਦਿ\" explains 59, runner-up 401562 \"ਸਾਲਿਕਿ ਈਂ ਰਾਹ ਅਗਰ ਦਰਯਾਫ਼ਤ\" 46; candidate 95389 \"ਸੰਤ ਸਹਾਇ ਸਦਾ ਜਗ ਮਾਇ ਕ੍ਰਿਪਾ ਕਰ \" explains 44; cache covers only 28% of the span: cannot hear it"
+ },
+ {
+  "recording": "aa20",
+  "cand_verseId": 95386,
+  "start_s": 55.04,
+  "end_s": 77.44,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੋ ਇਹ ਰਾ ਨਰੈ ਮੇਹੀ ਅਵਰਿ ਮੇਰਾ ਭ ਸੁ ਮੀਰਾ ਮੇਰੀ ਅਰਵ ਰਿਤੇਈ ਸੰੰਗਰੈ ਮਿਲਾਇ ਮੇ ਕਰ\" (55 chars, cache 98%, 22.4 s); my pick 29902 \"ਕਹੈ ਰਵਿਦਾਸੁ ਨਾਮੁ ਤੇਰੋ ਆਰਤੀ ਸਤਿ ਨਾਮੁ \" explains 34, runner-up 22003 \"ਹਰਿ ਮੇਰਾ ਸਿਮ੍ਰਿਤਿ ਹਰਿ ਮੇ\" 41; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 33; no pangti explains the hearing (best 34)"
+ },
+ {
+  "recording": "aa20",
+  "cand_verseId": 95386,
+  "start_s": 60.12,
+  "end_s": 71.24,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮੇਹੀ ਅਵਰਿ ਮੇਰਾ ਭ ਸੁ ਮੀਰਾ ਮੇਰੀ ਅਰਵ ਰਿਤੇਈ ਸੰੰਗਰੈ\" (35 chars, cache 97%, 11.1 s); my pick 28407 \"ਤੇਰੀ ਭਗਤਿ ਕਰੈ ਜਨੁ ਥੀਂਧਾ ॥੩॥\" explains 37, runner-up 38073 \"ਹਰਿ ਮੇਰੀ ਵਰਤਣਿ ਹਰਿ ਮੇਰੀ \" 47; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 35; no pangti explains the hearing (best 37)"
+ },
+ {
+  "recording": "aa20",
+  "cand_verseId": 95386,
+  "start_s": 72.16,
+  "end_s": 78.6,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮਿਲਾਇ ਮੇ ਕਰਰਾਜ ਮੈ\" (14 chars, cache 97%, 6.4 s); my pick 78272 \"ਝਾਲਰ ਤਾਲ ਮ੍ਰਿਦੰਗ ਉਪੰਗ ਰਬਾਬ ਲੀਏ ਸੁਰ ਸ\" explains 46, runner-up 135524 \"ਦਿਯਾ ਮਿਲਾਇ ਮਿਤ੍ਰ ਤਾ ਕੋ ਇ\" 53; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 36; no pangti explains the hearing (best 46)"
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 87326,
+  "start_s": 27.4,
+  "end_s": 102.4,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸਰ ਦੇ ਜਏ ਪ੍ਰਬੰ ਕਮਹਿ ਦੂਚੇ ਕ ਜ ਨਾ ਵਹਿ ਗੁਰ ਦੀੀਨ ਬ ਰ\" (34 chars, cache 98%, 75.0 s); my pick 76499 \"ਮੇਰੁ ਕਰੋ ਤ੍ਰਿਣ ਤੇ ਮੁਹਿ ਜਾਹਿ ਗਰੀਬ ਨਿਵ\" explains 36, runner-up 98589 \"ਨਰ ਨਾਰਦ ਤੁੰਬਰ ਕਿੰਨਰ ਜਛ ਸ\" 39; candidate 87326 \"ਪਾਇ ਗਹੇ ਜਬ ਤੇ ਤੁਮਰੇ ਤਬ ਤੇ ਕੋਊ \" explains 24; no pangti explains the hearing (best 36)"
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 78279,
+  "start_s": 100.88,
+  "end_s": 110.56,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਦੀੀਨ ਬ ਰ ਲੋਗੀ ਖਾਂਾਲ ਰੋ ਨੀਮੰਗਲ ਲੋਗੀ ਭਾਂਾਲ\" (29 chars, cache 98%, 9.7 s); my pick 76502 \"ਯਾ ਕਲ ਮੈਂ ਸਭ ਕਾਲ ਕ੍ਰਿਪਾਨ ਕੇ ਭਾਰੀ ਭੁਜ\" explains 31, runner-up 49320 \"ਰੋਗੀ ਖਟ ਦਰਸਨ ਭੇਖਧਾਰੀ ਨਾਨ\" 35; candidate 78279 \"ਐਸੇ ਚੰਡ ਪ੍ਰਤਾਪ ਤੇ ਦੇਵਨ ਬਢਿਓ ਪ੍\" explains 17; no pangti explains the hearing (best 31)"
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 76119,
+  "start_s": 102.8,
+  "end_s": 120.76,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਲੋਗੀ ਖਾਂਾਲ ਰੋ ਨੀਮੰਗਲ ਲੋਗੀ ਭਾਂਾਲ ਰੋ ਨਨੰਦਰ ਮਗੀਬੰੰਤ ਰਾ ਦੀਨੰਦਰਰ ਮਗੀਬੰ\" (46 chars, cache 99%, 18.0 s); my pick 29923 \"ਮੰਗਲਾ ਹਰਿ ਮੰਗਲਾ ॥ ਨਿਤ ਮੰਗਲੁ ਰਾਜਾ ਰਾਮ\" explains 30, runner-up 137175 \"ਬਰੀ ਖਾਤ ਰਾਨੀ ਮਰਿ ਗਈ ॥\" 38; candidate 76119 \"ਖਗ ਖੰਡ ਬਿਹੰਡੰ ਖਲ ਦਲ ਖੰਡੰ ਅਤਿ ਰ\" explains 19; no pangti explains the hearing (best 30)"
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 78280,
+  "start_s": 112.64,
+  "end_s": 125.64,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨਨੰਦਰ ਮਗੀਬੰੰਤ ਰਾ ਦੀਨੰਦਰਰ ਮਗੀਬੰਦ ਤੇ ਰਾਵ ਘਟਿ ਘਟਿ ਰਾ ਤ\" (36 chars, cache 96%, 13.0 s); my pick 29924 \"ਊਤਮੁ ਦੀਅਰਾ ਨਿਰਮਲ ਬਾਤੀ ॥\" explains 36, runner-up 38118 \"ਪੂਰਨ ਪਰਮੇਸੁਰ ਸੁਆਮੀ ਘਟਿ ਘ\" 42; candidate 78280 \"ਤੀਨ ਲੋਕ ਜੈ ਜੈ ਕਰੈ ਰਰੈ ਨਾਮੁ ਸਤਿ\" explains 21; no pangti explains the hearing (best 36)"
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 76118,
+  "start_s": 121.56,
+  "end_s": 128.24,
+  "my_verseId": 35814,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਤੇ ਰਾਵ ਘਟਿ ਘਟਿ ਰਾ ਤਿ ਅਨਾ\" (18 chars, cache 96%, 6.7 s); my pick 35814 \"ਘਟਿ ਘਟਿ ਰਵਿ ਰਹਿਆ ਅਲਖ ਅਪਾਰੇ ਰਾਮ ॥\" explains 61, runner-up 38118 \"ਪੂਰਨ ਪਰਮੇਸੁਰ ਸੁਆਮੀ ਘਟਿ ਘ\" 58; candidate 76118 \"ਤ੍ਰਿਭੰਗੀ ਛੰਦ ॥\" explains 22; heard 18 chars, in-Bani margin 22, corpus margin 3; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; a corpus pangti of different text explains the hearing as well (corpus margin 3) and no confident neighbour from the same Shabad within 30 s supports it; overlaps 4.1 s with a candidate naming 78280 (the two aligners disagree here; my hearing of that span is weak); the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 95385,
+  "start_s": 126.04,
+  "end_s": 131.92,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਅਨਾ\" (3 chars, cache 100%, 5.9 s); my pick 57516 \"ਪੰਚੇ ਸਬਦ ਅਨਾਹਦ ਬਾਜੇ ਸੰਗੇ ਸਾਰਿੰਗਪਾਨੀ \" explains 100, runner-up 29942 \"ਪਨੑੀਆ ਛਾਦਨੁ ਨੀਕਾ ॥ ਅਨਾਜੁ\" 100; candidate 95385 \"ਸਵੈਯਾ ॥\" explains 33; almost nothing heard (3 chars \"ਅਨਾ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 95386,
+  "start_s": 131.92,
+  "end_s": 150.16,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸਤ ਸਤ ਨਾਮ ਜ ਆਖਾ ਦੀਨੰ ਦ ਜਚ ਨਾਮਨਬਤੰਚ ਨਾ\" (26 chars, cache 97%, 18.2 s); my pick 29897 \"ਨਾਮੁ ਤੇਰਾ ਦੀਵਾ ਨਾਮੁ ਤੇਰੋ ਬਾਤੀ ਨਾਮੁ ਤ\" explains 40, runner-up 76179 \"ਮਹਾ ਦੀਨ ਦੀਨੰ ਮਹਾ ਨਾਥ ਨਾਥ\" 44; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 19; no pangti explains the hearing (best 40)"
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 76119,
+  "start_s": 135.2,
+  "end_s": 150.16,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸਤ ਸਤ ਨਾਮ ਜ ਆਖਾ ਦੀਨੰ ਦ ਜਚ ਨਾਮਨਬਤੰਚ ਨਾ\" (26 chars, cache 98%, 15.0 s); my pick 29897 \"ਨਾਮੁ ਤੇਰਾ ਦੀਵਾ ਨਾਮੁ ਤੇਰੋ ਬਾਤੀ ਨਾਮੁ ਤ\" explains 40, runner-up 76179 \"ਮਹਾ ਦੀਨ ਦੀਨੰ ਮਹਾ ਨਾਥ ਨਾਥ\" 44; candidate 76119 \"ਖਗ ਖੰਡ ਬਿਹੰਡੰ ਖਲ ਦਲ ਖੰਡੰ ਅਤਿ ਰ\" explains 13; no pangti explains the hearing (best 40)"
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 29926,
+  "start_s": 30.48,
+  "end_s": 43.28,
+  "my_verseId": null,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਵਾਹਿ ਗੁਰ ਨਅੰਗੋਰਦ ਲੋਗ\" (16 chars, cache 96%, 12.8 s); my pick 403456 \"ਨਿੰਦਹਿ ਨਹਿਂ ਪ੍ਰਸਾਦਿ ਕਉ ਕਬਹੂੰ ਵਾਹਿਗੁਰ\" explains 56, runner-up 202448 \"ਵੇਦ ਕਤੇਬ ਅਗੋਚਰਾ ਵਾਹਿਗੁਰੂ\" 56; candidate 29926 \"ਰਾਮਾ ਭਗਤਿ ਰਾਮਾਨੰਦੁ ਜਾਨੈ ॥\" explains 24; heard mostly Vaheguru simran: none"
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 87327,
+  "start_s": 40.88,
+  "end_s": 58,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨਅੰਗੋਰਦ ਲੋਗੀ ਬਾਂਾਲ ਦੀਅ ਬੋਰਦ ਲੋਗੀ ਬਾਂਾਲ ਨਹੀਨੰ ਬ ਮੁਗੀ ਬੰਦਰ ਨ\" (42 chars, cache 97%, 17.1 s); my pick 87365 \"ਸੰਕਟ ਹਰਨ ਸਭ ਸਿਧਿ ਕੀ ਕਰਨ ਚੰਡ ਤਾਰਨ ਤਰਨ\" explains 34, runner-up 201554 \"ਸੰਨਿਆਸੀ ਦਸ ਨਾਮ ਧਰਿ ਜੋਗੀ \" 35; candidate 87327 \"ਰਾਮ ਰਹੀਮ ਪੁਰਾਨ ਕੁਰਾਨ ਅਨੇਕ ਕਹੈਂ\" explains 25; no pangti explains the hearing (best 34)"
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 29927,
+  "start_s": 43.68,
+  "end_s": 49.76,
+  "my_verseId": 14392,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਾਂਾਲ ਦੀਅ ਬੋਰਦ ਲੋਗੀ ਬਾਂ\" (16 chars, cache 100%, 6.1 s); my pick 14392 \"ਗਉੜੀ ਕੀ ਵਾਰ ਮਹਲਾ ੫ ਰਾਇ ਕਮਾਲਦੀ ਮੋਜਦੀ \" explains 50, runner-up 204894 \"ਕੁਕੜੀ ਬਚਾ ਪਾਲਦੀ ਮੁਰਗਾਈ ਨ\" 46; candidate 29927 \"ਪੂਰਨ ਪਰਮਾਨੰਦੁ ਬਖਾਨੈ ॥੩॥\" explains 25; heard 16 chars, in-Bani margin 12, corpus margin 4; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; overlaps 6.1 s with a candidate naming 87327 (the two aligners disagree here; my hearing of that span is weak); the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 29928,
+  "start_s": 50.44,
+  "end_s": 61.6,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਾਲ ਨਹੀਨੰ ਬ ਮੁਗੀ ਬੰਦਰ ਨਨੰ ਬਲ ਮੁਗੀ ਬੰਤਰ\" (25 chars, cache 96%, 11.2 s); my pick 29924 \"ਊਤਮੁ ਦੀਅਰਾ ਨਿਰਮਲ ਬਾਤੀ ॥\" explains 38, runner-up 42771 \"ਕਉਡੀ ਬਦਲੈ ਜਨਮੁ ਗਵਾਤਾ ॥\" 40; candidate 29928 \"ਮਦਨ ਮੂਰਤਿ ਭੈ ਤਾਰਿ ਗੋਬਿੰਦੇ ॥\" explains 24; no pangti explains the hearing (best 38)"
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 87328,
+  "start_s": 58.44,
+  "end_s": 86.56,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨੰ ਬਲ ਮੁਗੀ ਬੰਤਰ ਘਟਿ ਘਟਿ ਰਾਿ ਅਨਾ ਸਤ ਖਤ ਨਾ ਜ ਹਖਾ ਦੀਨ ਅੰਧਹੁ ਭ ਅਗੀ ਹੂੰਚ ਨਾ\" (51 chars, cache 97%, 28.1 s); my pick 11585 \"ਦੀਨ ਦਰਦ ਦੁਖ ਭੰਜਨਾ ਘਟਿ ਘਟਿ ਨਾਥ ਅਨਾਥ ॥\" explains 35, runner-up 43417 \"ਆਦਿ ਜੁਗਾਦਿ ਅਨਾਹਦਿ ਅਨਦਿਨੁ\" 33; candidate 87328 \"ਸਿੰਮ੍ਰਿਤਿ ਸਾਸਤ੍ਰ ਬੇਦ ਸਭੈ ਬਹੁ ਭ\" explains 25; no pangti explains the hearing (best 35)"
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 29926,
+  "start_s": 62,
+  "end_s": 75.64,
+  "my_verseId": 11585,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਘਟਿ ਘਟਿ ਰਾਿ ਅਨਾ ਸਤ ਖ\" (15 chars, cache 98%, 13.6 s); my pick 11585 \"ਦੀਨ ਦਰਦ ਦੁਖ ਭੰਜਨਾ ਘਟਿ ਘਟਿ ਨਾਥ ਅਨਾਥ ॥\" explains 67, runner-up 3824 \"ਤੂ ਘਟਿ ਘਟਿ ਰਵਿਆ ਅੰਤਰਜਾਮੀ\" 63; candidate 29926 \"ਰਾਮਾ ਭਗਤਿ ਰਾਮਾਨੰਦੁ ਜਾਨੈ ॥\" explains 27; heard 15 chars, in-Bani margin 31, corpus margin 4; only 15 chars heard over 14 s: most of the span is unheard (alaap / sangat / simran), cannot confirm the pangti is sung throughout; the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 29927,
+  "start_s": 75.8,
+  "end_s": 84.08,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਤ ਨਾ ਜ ਹਖਾ ਦੀਨ ਅੰਧਹੁ ਭ ਅਗੀ ਹੂੰ\" (20 chars, cache 97%, 8.3 s); my pick 78087 \"ਕਾਰਨ ਈਸ ਕਲਾ ਕਮਲਾ ਹਰਿ ਅਦ੍ਰਸੁਤਾ ਜਹ ਦੇਖ\" explains 40, runner-up 41208 \"ਸਭੇ ਦੁਖ ਸੰਤਾਪ ਜਾਂ ਤੁਧਹੁ \" 42; candidate 29927 \"ਪੂਰਨ ਪਰਮਾਨੰਦੁ ਬਖਾਨੈ ॥੩॥\" explains 25; no pangti explains the hearing (best 40)"
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 29928,
+  "start_s": 84.56,
+  "end_s": 107.36,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਦੀਨ ਅਗੀ ਘੰਚੈ ਨਾ ਅ ਸਰਤ ਤੁਮਾਈਿਾਇ\" (23 chars, cache 98%, 22.8 s); my pick 28405 \"ਸਿਰਹਾਨਾ ਅਵਰ ਤੁਲਾਈ ॥\" explains 37, runner-up 55354 \"ਪ੍ਰਭਿ ਦੀਨ ਦਇਆਲਿ ਕੀਓ ਅੰਗੀ\" 39; candidate 29928 \"ਮਦਨ ਮੂਰਤਿ ਭੈ ਤਾਰਿ ਗੋਬਿੰਦੇ ॥\" explains 23; no pangti explains the hearing (best 37)"
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 87329,
+  "start_s": 88,
+  "end_s": 123.48,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਅਗੀ ਘੰਚੈ ਨਾ ਅ ਸਰਤ ਤੁਮਾਈਿਾਇਓ ਹਰਿ ਜਨ ਧਰ ਆਾਈਾਇਓ ਨਾਨਕ ਕ\" (39 chars, cache 96%, 35.5 s); my pick 11586 \"ਸਰਣਿ ਤੁਮੑਾਰੀ ਆਇਓ ਨਾਨਕ ਕੇ ਪ੍ਰਭ ਸਾਥ ॥੧\" explains 39, runner-up 52205 \"ਕਹੁ ਨਾਨਕ ਜਿਨਿ ਜਗਤੁ ਠਗਾਨਾ\" 45; candidate 87329 \"ਸ੍ਰੀ ਅਸਿਪਾਨ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਰਿ ਮ\" explains 23; no pangti explains the hearing (best 39)"
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 29929,
+  "start_s": 107.56,
+  "end_s": 122,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਓ ਹਰਿ ਜਨ ਧਰ ਆਾਈਾਇਓ ਨਾਨਕ ਕ\" (19 chars, cache 98%, 14.4 s); my pick 11586 \"ਸਰਣਿ ਤੁਮੑਾਰੀ ਆਇਓ ਨਾਨਕ ਕੇ ਪ੍ਰਭ ਸਾਥ ॥੧\" explains 47, runner-up 56875 \"ਹਰਿ ਹਰਿ ਆਪੁ ਧਰਿਓ ਹਰਿ ਜਨ \" 53; candidate 29929 \"ਸੈਨੁ ਭਣੈ ਭਜੁ ਪਰਮਾਨੰਦੇ ॥੪॥੨॥\" explains 21; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 57509,
+  "start_s": 122.8,
+  "end_s": 125.36,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 3%, 2.6 s); candidate 57509 \"ਪ੍ਰਭਾਤੀ ॥\" explains 0; cache covers only 3% of the span: cannot hear it"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29942,
+  "start_s": 0.4,
+  "end_s": 5.28,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard \"ਸੰਗੋ ਸੰਤਨ ਰ\" (7 chars, cache 22%, 4.9 s); my pick 28396 \"ਹਉ ਮਾਂਗਉ ਸੰਤਨ ਰੇਨਾ ॥\" explains 71, runner-up 32017 \"ਜੇਹਾ ਮਨੋਰਥੁ ਕਰਿ ਆਰਾਧੇ ਸੋ\" 71; candidate 29942 \"ਪਨੑੀਆ ਛਾਦਨੁ ਨੀਕਾ ॥ ਅਨਾਜੁ ਮਗਉ ਸ\" explains 43; cache covers only 22% of the span: cannot hear it"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29943,
+  "start_s": 5.32,
+  "end_s": 7.88,
+  "my_verseId": 28397,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ੇਨਾ ਮੈ ਨਾਹੀ ਕਿਸੀ ਕਾਦੇ ਨ\" (18 chars, cache 100%, 2.6 s); my pick 28397 \"ਮੈ ਨਾਹੀ ਕਿਸੀ ਕਾ ਦੇਨਾ ॥੧॥\" explains 100, runner-up 28474 \"ਆਪਨ ਬਾਪੈ ਨਾਹੀ ਕਿਸੀ ਕੋ ਭਾ\" 68; candidate 29943 \"ਗਊ ਭੈਸ ਮਗਉ ਲਾਵੇਰੀ ॥\" explains 17; heard 18 chars, in-Bani margin 50, corpus margin 32; span lies outside the keyed row of its Bani / Shabad"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29944,
+  "start_s": 8.2,
+  "end_s": 9.8,
+  "my_verseId": 28398,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਦੂ ਕੈ ਸਿਵ ਨ ਤੁਮ ਸੰੰਗ\" (13 chars, cache 100%, 1.6 s); my pick 28398 \"ਮਾਧੋ ਕੈਸੀ ਬਨੈ ਤੁਮ ਸੰਗੇ ॥\" explains 65, runner-up 17813 \"ਉਨ ਕੈ ਸੰਗਿ ਹਮ ਤੁਮ ਸੰਗਿ ਮ\" 65; candidate 29944 \"ਇਕ ਤਾਜਨਿ ਤੁਰੀ ਚੰਗੇਰੀ ॥\" explains 29; heard 13 chars, in-Bani margin 23, corpus margin 0; 1.6 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible); span lies outside the keyed row of its Bani / Shabad"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29945,
+  "start_s": 9.84,
+  "end_s": 12.52,
+  "my_verseId": 29897,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਹਿ ਆਪਨਾ ਦੇਉਨ\" (10 chars, cache 100%, 2.7 s); my pick 29897 \"ਨਾਮੁ ਤੇਰਾ ਦੀਵਾ ਨਾਮੁ ਤੇਰੋ ਬਾਤੀ ਨਾਮੁ ਤ\" explains 60, runner-up 92167 \"ਕਾਇਰ ਹੁਇ ਤਿਹ ਪੇਖਿ ਡਰੇ ਨਹ\" 70; candidate 29945 \"ਘਰ ਕੀ ਗੀਹਨਿ ਚੰਗੀ ॥\" explains 20; heard 10 chars, in-Bani margin 10, corpus margin -10; out of order: neither the previous confident pangti 28398 (#30) nor the next 28402 (#34) makes 29897 (#62) a plausible kirtan move; span lies outside the keyed row of its Bani / Shabad"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29940,
+  "start_s": 12.88,
+  "end_s": 14.4,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਈ ਸਿਰਿ ਵਾਂਗਹੁਝੂ ਨ\" (13 chars, cache 100%, 1.5 s); my pick 30 \"ਨਾਨਕ ਵਿਗਸੈ ਵੇਪਰਵਾਹੁ ॥੩॥\" explains 46, runner-up 47755 \"ਨਾਨਕ ਕਉ ਹਰਿ ਕੈ ਰੰਗਿ ਰਾਗਹ\" 54; candidate 29940 \"ਦਾਲਿ ਸੀਧਾ ਮਾਗਉ ਘੀਉ ॥\" explains 23; no pangti explains the hearing (best 46)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29946,
+  "start_s": 13.36,
+  "end_s": 16.16,
+  "my_verseId": 47755,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਿਰਿ ਵਾਂਗਹੁਝੂ ਨ ਭਉ ਕੇਓ ਸੰਗ\" (18 chars, cache 100%, 2.8 s); my pick 47755 \"ਨਾਨਕ ਕਉ ਹਰਿ ਕੈ ਰੰਗਿ ਰਾਗਹੁ ਚਰਨ ਕਮਲ ਸੰ\" explains 56, runner-up 30 \"ਨਾਨਕ ਵਿਗਸੈ ਵੇਪਰਵਾਹੁ ॥੩॥\" 44; candidate 29946 \"ਜਨੁ ਧੰਨਾ ਲੇਵੈ ਮੰਗੀ ॥੨॥੪॥\" explains 20; heard 18 chars, in-Bani margin 11, corpus margin 11; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29941,
+  "start_s": 15.16,
+  "end_s": 18.32,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਉ ਕੇਓ ਸੰਗ ਲੋ ਸਿਰਿ ਮਗਹੁ\" (16 chars, cache 97%, 3.2 s); my pick 57516 \"ਪੰਚੇ ਸਬਦ ਅਨਾਹਦ ਬਾਜੇ ਸੰਗੇ ਸਾਰਿੰਗਪਾਨੀ \" explains 44, runner-up 44414 \"ਨਿਰਭਉ ਸੋ ਸਿਰਿ ਨਾਹੀ ਲੇਖਾ \" 50; candidate 29941 \"ਹਮਰਾ ਖੁਸੀ ਕਰੈ ਨਿਤ ਜੀਉ ॥\" explains 19; no pangti explains the hearing (best 44)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29940,
+  "start_s": 16.32,
+  "end_s": 18.92,
+  "my_verseId": 28402,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਸਿਰਿ ਮਗਹੁ ਦਾਲੇ\" (12 chars, cache 96%, 2.6 s); my pick 28402 \"ਅਧ ਸੇਰੁ ਮਾਂਗਉ ਦਾਲੇ ॥\" explains 62, runner-up 104484 \"ਕੁੰਚਰ ਸਦਾ ਧੂਰਿ ਸਿਰਿ ਮੇਲਤ\" 58; candidate 29940 \"ਦਾਲਿ ਸੀਧਾ ਮਾਗਉ ਘੀਉ ॥\" explains 35; heard 12 chars, in-Bani margin 12, corpus margin 3; overlaps 2.0 s with a candidate naming 29941 (the two aligners disagree here; my hearing of that span is weak); span lies outside the keyed row of its Bani / Shabad"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29942,
+  "start_s": 18.52,
+  "end_s": 24.12,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਦਾਲੇ ਮੁਖ ਦੋਨੋ ਵਖ ਹਾਟਿ ਮੰਗਉ ਚਹੁ ਪਾਈ ਸਿਰ\" (29 chars, cache 98%, 5.6 s); my pick 28404 \"ਖਾਟ ਮਾਂਗਉ ਚਉਪਾਈ ॥\" explains 37, runner-up 201478 \"ਸਿਰਿ ਸਿਰਿ ਲੇਖ ਅਲੇਖੁ ਦਾ ਲ\" 39; candidate 29942 \"ਪਨੑੀਆ ਛਾਦਨੁ ਨੀਕਾ ॥ ਅਨਾਜੁ ਮਗਉ ਸ\" explains 26; no pangti explains the hearing (best 37)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29941,
+  "start_s": 19.04,
+  "end_s": 21.2,
+  "my_verseId": 28403,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਮੁਖ ਦੋਨੋ ਵਖ\" (9 chars, cache 95%, 2.2 s); my pick 28403 \"ਮੋ ਕਉ ਦੋਨਉ ਵਖਤ ਜਿਵਾਲੇ ॥੨॥\" explains 60, runner-up 9372 \"ਸੁਖੁ ਦੁਖੁ ਦੋਨੋ ਸਮ ਕਰਿ ਜਾ\" 60; candidate 29941 \"ਹਮਰਾ ਖੁਸੀ ਕਰੈ ਨਿਤ ਜੀਉ ॥\" explains 22; heard 9 chars, in-Bani margin 16, corpus margin 0; 2.2 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible); overlaps 2.2 s with a candidate naming 29942 (the two aligners disagree here; my hearing of that span is weak); span lies outside the keyed row of its Bani / Shabad"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29942,
+  "start_s": 21.48,
+  "end_s": 26.92,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਹਾਟਿ ਮੰਗਉ ਚਹੁ ਪਾਈ ਸਿਰ ਨ ਅ ਪਰਤਿ ਮਾ\" (24 chars, cache 98%, 5.4 s); my pick 28405 \"ਸਿਰਹਾਨਾ ਅਵਰ ਤੁਲਾਈ ॥\" explains 47, runner-up 28404 \"ਖਾਟ ਮਾਂਗਉ ਚਉਪਾਈ ॥\" 43; candidate 29942 \"ਪਨੑੀਆ ਛਾਦਨੁ ਨੀਕਾ ॥ ਅਨਾਜੁ ਮਗਉ ਸ\" explains 27; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29938,
+  "start_s": 24.28,
+  "end_s": 26.64,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਅ ਪਰਤਿ\" (5 chars, cache 96%, 2.4 s); my pick 78273 \"ਕਿੰਨਰ ਗੰਧ੍ਰਬ ਗਾਨ ਕਰੈ ਗਨਿ ਜਛ ਅਪਛਰ ਨਿਰ\" explains 68, runner-up 57510 \"ਸੁੰਨ ਸੰਧਿਆ ਤੇਰੀ ਦੇਵ ਦੇਵਾ\" 68; candidate 29938 \"ਗੋਪਾਲ ਤੇਰਾ ਆਰਤਾ ॥\" explains 40; almost nothing heard (5 chars \"ਅ ਪਰਤਿ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29939,
+  "start_s": 26.76,
+  "end_s": 32.68,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਮਾਗਹੁ ਕੀਦਾ ਤੇਰੇ ਭਗ ਕਰੈ ਜਨ ਥੀਨ ਮਹਿ ਨਾਹੀ ਕੇਥ ਲਭਾਈ\" (37 chars, cache 98%, 5.9 s); my pick 28407 \"ਤੇਰੀ ਭਗਤਿ ਕਰੈ ਜਨੁ ਥੀਂਧਾ ॥੩॥\" explains 40, runner-up 46361 \"ਜਿਨ ਵਿਸਰਹਿ ਨਾਹੀ ਕਾਹੂ ਬੇਰ\" 42; candidate 29939 \"ਜੋ ਜਨ ਤੁਮਰੀ ਭਗਤਿ ਕਰੰਤੇ ਤਿਨ ਕੇ \" explains 29; no pangti explains the hearing (best 40)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28407,
+  "start_s": 28.12,
+  "end_s": 30.2,
+  "my_verseId": 28407,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਰੇ ਭਗ ਕਰੈ ਜਨ ਥੀਨ\" (12 chars, cache 95%, 2.1 s); my pick 28407 \"ਤੇਰੀ ਭਗਤਿ ਕਰੈ ਜਨੁ ਥੀਂਧਾ ॥੩॥\" explains 68, runner-up 56275 \"ਹਮਰੀ ਮਤਿ ਵਸਗਤਿ ਪ੍ਰਭ ਤੁਮਰ\" 53; candidate 28407 \"ਤੇਰੀ ਭਗਤਿ ਕਰੈ ਜਨੁ ਥੀਂਧਾ ॥੩॥\" explains 68; heard 12 chars, in-Bani margin 23, corpus margin 15; 2.1 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28407,
+  "start_s": 28.12,
+  "end_s": 30.2,
+  "my_verseId": 28407,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਰੇ ਭਗ ਕਰੈ ਜਨ ਥੀਨ\" (12 chars, cache 95%, 2.1 s); my pick 28407 \"ਤੇਰੀ ਭਗਤਿ ਕਰੈ ਜਨੁ ਥੀਂਧਾ ॥੩॥\" explains 68, runner-up 56275 \"ਹਮਰੀ ਮਤਿ ਵਸਗਤਿ ਪ੍ਰਭ ਤੁਮਰ\" 53; candidate 28407 \"ਤੇਰੀ ਭਗਤਿ ਕਰੈ ਜਨੁ ਥੀਂਧਾ ॥੩॥\" explains 68; heard 12 chars, in-Bani margin 23, corpus margin 15; 2.1 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28408,
+  "start_s": 30.32,
+  "end_s": 32.24,
+  "my_verseId": 28408,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਮਹਿ ਨਾਹੀ ਕੇਥ ਲਭ\" (12 chars, cache 100%, 1.9 s); my pick 28408 \"ਮੈ ਨਾਹੀ ਕੀਤਾ ਲਬੋ ॥\" explains 53, runner-up 5480 \"ਲਖ ਸੀਗਾਰ ਬਣਾਇਆ ਕਾਰਜਿ ਨਾਹ\" 62; candidate 28408 \"ਮੈ ਨਾਹੀ ਕੀਤਾ ਲਬੋ ॥\" explains 53; heard 12 chars, in-Bani margin 3, corpus margin -8; 1.9 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible); overlaps 1.9 s with a candidate naming 29939 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28408,
+  "start_s": 30.32,
+  "end_s": 32.24,
+  "my_verseId": 28408,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਮਹਿ ਨਾਹੀ ਕੇਥ ਲਭ\" (12 chars, cache 100%, 1.9 s); my pick 28408 \"ਮੈ ਨਾਹੀ ਕੀਤਾ ਲਬੋ ॥\" explains 53, runner-up 5480 \"ਲਖ ਸੀਗਾਰ ਬਣਾਇਆ ਕਾਰਜਿ ਨਾਹ\" 62; candidate 28408 \"ਮੈ ਨਾਹੀ ਕੀਤਾ ਲਬੋ ॥\" explains 53; heard 12 chars, in-Bani margin 3, corpus margin -8; 1.9 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible); overlaps 1.9 s with a candidate naming 29939 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28409,
+  "start_s": 32.64,
+  "end_s": 34.48,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨਾਮੁਰਾ\" (6 chars, cache 95%, 1.8 s); my pick 54274 \"ਨਾਮੁ ਰਾਸਿ ਸਾਝੀ ਕਰਿ ਜਨ ਸਿਉ ਜਾਂਉ ਨ ਜਮ \" explains 100, runner-up 50499 \"ਰਾਮ ਨਾਮੁ ਰਾਖੈ ਉਰ ਧਾਰੇ ॥੩\" 100; candidate 28409 \"ਇਕੁ ਨਾਉ ਤੇਰਾ ਮੈ ਫਬੋ ॥\" explains 57; almost nothing heard (6 chars \"ਨਾਮੁਰਾ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28409,
+  "start_s": 32.64,
+  "end_s": 34.48,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਨਾਮੁਰਾ\" (6 chars, cache 95%, 1.8 s); my pick 54274 \"ਨਾਮੁ ਰਾਸਿ ਸਾਝੀ ਕਰਿ ਜਨ ਸਿਉ ਜਾਂਉ ਨ ਜਮ \" explains 100, runner-up 50499 \"ਰਾਮ ਨਾਮੁ ਰਾਖੈ ਉਰ ਧਾਰੇ ॥੩\" 100; candidate 28409 \"ਇਕੁ ਨਾਉ ਤੇਰਾ ਮੈ ਫਬੋ ॥\" explains 57; almost nothing heard (6 chars \"ਨਾਮੁਰਾ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28410,
+  "start_s": 35.16,
+  "end_s": 36.8,
+  "my_verseId": 28410,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਹਤ ਕਬੀਰੁ ਮਨ ਮਾਨਿਆ\" (14 chars, cache 100%, 1.6 s); my pick 28410 \"ਕਹਿ ਕਬੀਰ ਮਨੁ ਮਾਨਿਆ ॥\" explains 81, runner-up 47229 \"ਅਬ ਤਉ ਬਿਮਲ ਭਏ ਘਟ ਹੀ ਮਹਿ \" 81; candidate 28410 \"ਕਹਿ ਕਬੀਰ ਮਨੁ ਮਾਨਿਆ ॥\" explains 81; heard 14 chars, in-Bani margin 24, corpus margin -0; 1.6 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28410,
+  "start_s": 35.16,
+  "end_s": 36.8,
+  "my_verseId": 28410,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਹਤ ਕਬੀਰੁ ਮਨ ਮਾਨਿਆ\" (14 chars, cache 100%, 1.6 s); my pick 28410 \"ਕਹਿ ਕਬੀਰ ਮਨੁ ਮਾਨਿਆ ॥\" explains 81, runner-up 47229 \"ਅਬ ਤਉ ਬਿਮਲ ਭਏ ਘਟ ਹੀ ਮਹਿ \" 81; candidate 28410 \"ਕਹਿ ਕਬੀਰ ਮਨੁ ਮਾਨਿਆ ॥\" explains 81; heard 14 chars, in-Bani margin 24, corpus margin -0; 1.6 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28411,
+  "start_s": 37.08,
+  "end_s": 38.92,
+  "my_verseId": 28411,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਮਾਨ ਉਤ ਹਰਿ ਜਾਨਿਆ\" (13 chars, cache 100%, 1.8 s); my pick 28411 \"ਮਨੁ ਮਾਨਿਆ ਤਉ ਹਰਿ ਜਾਨਿਆ ॥੪॥੧੧॥\" explains 83, runner-up 94750 \"ਬਾਨ ਕਮਾਨ ਗਹੀ ਘਨਿ ਸ੍ਯਾਮ ਜ\" 65; candidate 28411 \"ਮਨੁ ਮਾਨਿਆ ਤਉ ਹਰਿ ਜਾਨਿਆ ॥੪॥੧੧॥\" explains 83; heard 13 chars, in-Bani margin 25, corpus margin 18; 1.8 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28411,
+  "start_s": 37.08,
+  "end_s": 38.92,
+  "my_verseId": 28411,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਮਾਨ ਉਤ ਹਰਿ ਜਾਨਿਆ\" (13 chars, cache 100%, 1.8 s); my pick 28411 \"ਮਨੁ ਮਾਨਿਆ ਤਉ ਹਰਿ ਜਾਨਿਆ ॥੪॥੧੧॥\" explains 83, runner-up 94750 \"ਬਾਨ ਕਮਾਨ ਗਹੀ ਘਨਿ ਸ੍ਯਾਮ ਜ\" 65; candidate 28411 \"ਮਨੁ ਮਾਨਿਆ ਤਉ ਹਰਿ ਜਾਨਿਆ ॥੪॥੧੧॥\" explains 83; heard 13 chars, in-Bani margin 25, corpus margin 18; 1.8 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28402,
+  "start_s": 39.04,
+  "end_s": 42.44,
+  "my_verseId": 28398,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਮਾਧੂ ਕੈ ਸਿਬਹਿ ਸੰਗੇ\" (14 chars, cache 97%, 3.4 s); my pick 28398 \"ਮਾਧੋ ਕੈਸੀ ਬਨੈ ਤੁਮ ਸੰਗੇ ॥\" explains 59, runner-up 10982 \"ਆਇ ਬਸਹਿ ਸਾਧੂ ਕੈ ਸੰਗੇ ॥\" 57; candidate 28402 \"ਅਧ ਸੇਰੁ ਮਾਂਗਉ ਦਾਲੇ ॥\" explains 29; heard 14 chars, in-Bani margin 13, corpus margin 1"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28402,
+  "start_s": 39.04,
+  "end_s": 43.04,
+  "my_verseId": 28398,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਮਾਧੂ ਕੈ ਸਿਬਹਿ ਸੰਗੇ ਸੰਗੇ\" (17 chars, cache 97%, 4.0 s); my pick 28398 \"ਮਾਧੋ ਕੈਸੀ ਬਨੈ ਤੁਮ ਸੰਗੇ ॥\" explains 59, runner-up 10982 \"ਆਇ ਬਸਹਿ ਸਾਧੂ ਕੈ ਸੰਗੇ ॥\" 52; candidate 28402 \"ਅਧ ਸੇਰੁ ਮਾਂਗਉ ਦਾਲੇ ॥\" explains 24; heard 17 chars, in-Bani margin 18, corpus margin 7"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28403,
+  "start_s": 39.32,
+  "end_s": 45.36,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਧੂ ਕੈ ਸਿਬਹਿ ਸੰਗੇ ਸੰਗੇ ਆਪਨਾਹੁ\" (21 chars, cache 97%, 6.0 s); my pick 28398 \"ਮਾਧੋ ਕੈਸੀ ਬਨੈ ਤੁਮ ਸੰਗੇ ॥\" explains 43, runner-up 10982 \"ਆਇ ਬਸਹਿ ਸਾਧੂ ਕੈ ਸੰਗੇ ॥\" 45; candidate 28403 \"ਮੋ ਕਉ ਦੋਨਉ ਵਖਤ ਜਿਵਾਲੇ ॥੨॥\" explains 11; no pangti explains the hearing (best 43)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28393,
+  "start_s": 42.68,
+  "end_s": 45.24,
+  "my_verseId": 210024,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਗੇ ਆਪਨਾਹੁ\" (8 chars, cache 96%, 2.6 s); my pick 210024 \"ਜੈਸੇ ਬੀਰਾਰਾਧੀ ਮਿਸਟਾਨ ਪਾਨ ਆਨ ਕਹੁ ਖੁਵਾ\" explains 75, runner-up 89249 \"ਜਾਨਿ ਆਪਨਾ ਮੁਝੈ ਨਿਵਾਜ ॥\" 62; candidate 28393 \"ਰਾਗੁ ਸੋਰਠਿ ॥\" explains 25; heard 8 chars, in-Bani margin 20, corpus margin 12; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; overlaps 2.6 s with a candidate naming 28403 (the two aligners disagree here; my hearing of that span is weak); the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28399,
+  "start_s": 43.56,
+  "end_s": 47.6,
+  "my_verseId": 28399,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਆਪਨਾਹੁਹੁ ਮੰਗੇ ਮੰਗੇ\" (14 chars, cache 98%, 4.0 s); my pick 28399 \"ਆਪਿ ਨ ਦੇਹੁ ਤ ਲੇਵਉ ਮੰਗੇ ॥ ਰਹਾਉ ॥\" explains 51, runner-up 28979 \"ਸਭਿ ਤੁਝ ਹੀ ਥਾਵਹੁ ਮੰਗਦੇ ਮ\" 53; candidate 28399 \"ਆਪਿ ਨ ਦੇਹੁ ਤ ਲੇਵਉ ਮੰਗੇ ॥ ਰਹਾਉ \" explains 51; heard 14 chars, in-Bani margin 9, corpus margin -1; overlaps 1.8 s with a candidate naming 28403 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87330,
+  "start_s": 45.76,
+  "end_s": 46.84,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਹੁ ਮੰਗੇ\" (5 chars, cache 100%, 1.1 s); my pick 28398 \"ਮਾਧੋ ਕੈਸੀ ਬਨੈ ਤੁਮ ਸੰਗੇ ॥\" explains 68, runner-up 32 \"ਆਖਹਿ ਮੰਗਹਿ ਦੇਹਿ ਦੇਹਿ ਦਾਤ\" 60; candidate 87330 \"ਦੋਹਰਾ ॥\" explains 20; almost nothing heard (5 chars \"ਹੁ ਮੰਗੇ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28404,
+  "start_s": 45.76,
+  "end_s": 54,
+  "my_verseId": 28979,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਹੁ ਮੰਗੇ ਮੰਗੇ ਪਰਸਨ\" (12 chars, cache 98%, 8.2 s); my pick 28979 \"ਸਭਿ ਤੁਝ ਹੀ ਥਾਵਹੁ ਮੰਗਦੇ ਮੇਰੇ ਸਾਹਾ ਤੂ \" explains 65, runner-up 47185 \"ਬੂਡਹੁਗੇ ਪਰਵਾਰ ਸਕਲ ਸਿਉ ਰਾ\" 50; candidate 28404 \"ਖਾਟ ਮਾਂਗਉ ਚਉਪਾਈ ॥\" explains 20; heard 12 chars, in-Bani margin 15, corpus margin 15; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; overlaps 1.8 s with a candidate naming 28399 (the two aligners disagree here; my hearing of that span is weak); the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 95385,
+  "start_s": 47.08,
+  "end_s": 50.52,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੰਗੇ\" (2 chars, cache 97%, 3.4 s); my pick 57516 \"ਪੰਚੇ ਸਬਦ ਅਨਾਹਦ ਬਾਜੇ ਸੰਗੇ ਸਾਰਿੰਗਪਾਨੀ \" explains 100, runner-up 29944 \"ਇਕ ਤਾਜਨਿ ਤੁਰੀ ਚੰਗੇਰੀ ॥\" 100; candidate 95385 \"ਸਵੈਯਾ ॥\" explains 0; almost nothing heard (2 chars \"ੰਗੇ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28398,
+  "start_s": 50.04,
+  "end_s": 55.4,
+  "my_verseId": 78270,
+  "confidence": 0.95,
+  "agrees": false,
+  "reason": "heard \"ਪਰਸਨੁ ਪਏਹਿ ਮਹ\" (11 chars, cache 98%, 5.4 s); my pick 78270 \"ਯਾ ਤੇ ਪ੍ਰਸੰਨ ਭਏ ਹੈ ਮਹਾ ਮੁਨ ਦੇਵਨ ਕੇ ਤ\" explains 67, runner-up 59571 \"ਗੁਰ ਰਾਮਦਾਸ ਦਰਸਨੁ ਪਰਸਿ ਕਹ\" 64; candidate 28398 \"ਮਾਧੋ ਕੈਸੀ ਬਨੈ ਤੁਮ ਸੰਗੇ ॥\" explains 18; heard 11 chars, in-Bani margin 18, corpus margin 4; overlaps 4.0 s with a candidate naming 28404 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78270,
+  "start_s": 50.48,
+  "end_s": 59.48,
+  "my_verseId": 78270,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਪਰਸਨੁ ਪਏਹਿ ਮਹਮ ਦੇੇਵਨ ਕੇ ਤਬ ਮਹਿ ਸੁਖੁ ਭਵੈ\" (31 chars, cache 98%, 9.0 s); my pick 78270 \"ਯਾ ਤੇ ਪ੍ਰਸੰਨ ਭਏ ਹੈ ਮਹਾ ਮੁਨ ਦੇਵਨ ਕੇ ਤ\" explains 63, runner-up 31272 \"ਦਰਸਨੁ ਸੰਤ ਦੇਹੁ ਸੁਖੁ ਪਾਵੈ\" 43; candidate 78270 \"ਯਾ ਤੇ ਪ੍ਰਸੰਨ ਭਏ ਹੈ ਮਹਾ ਮੁਨ ਦੇਵ\" explains 63; heard 31 chars, in-Bani margin 25, corpus margin 21; overlaps 3.5 s with a candidate naming 28404 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78270,
+  "start_s": 52.76,
+  "end_s": 59.44,
+  "my_verseId": 78270,
+  "confidence": 0.96,
+  "agrees": true,
+  "reason": "heard \"ਪਰਸਨੁ ਪਏਹਿ ਮਹਮ ਦੇੇਵਨ ਕੇ ਤਬ ਮਹਿ ਸੁਖੁ ਭਵੈ\" (31 chars, cache 97%, 6.7 s); my pick 78270 \"ਯਾ ਤੇ ਪ੍ਰਸੰਨ ਭਏ ਹੈ ਮਹਾ ਮੁਨ ਦੇਵਨ ਕੇ ਤ\" explains 63, runner-up 31272 \"ਦਰਸਨੁ ਸੰਤ ਦੇਹੁ ਸੁਖੁ ਪਾਵੈ\" 43; candidate 78270 \"ਯਾ ਤੇ ਪ੍ਰਸੰਨ ਭਏ ਹੈ ਮਹਾ ਮੁਨ ਦੇਵ\" explains 63; heard 31 chars, in-Bani margin 25, corpus margin 21"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28405,
+  "start_s": 54.28,
+  "end_s": 57.8,
+  "my_verseId": 78270,
+  "confidence": 0.96,
+  "agrees": false,
+  "reason": "heard \"ਏਹਿ ਮਹਮ ਦੇੇਵਨ ਕੇ ਤਬ\" (15 chars, cache 97%, 3.5 s); my pick 78270 \"ਯਾ ਤੇ ਪ੍ਰਸੰਨ ਭਏ ਹੈ ਮਹਾ ਮੁਨ ਦੇਵਨ ਕੇ ਤ\" explains 68, runner-up 78749 \"ਦੇਖਿ ਮਹਾ ਦਲ ਦੇਵਨ ਕੋ ਬਰ ਬ\" 56; candidate 28405 \"ਸਿਰਹਾਨਾ ਅਵਰ ਤੁਲਾਈ ॥\" explains 27; heard 15 chars, in-Bani margin 21, corpus margin 12"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28399,
+  "start_s": 55.64,
+  "end_s": 60.2,
+  "my_verseId": 78270,
+  "confidence": 0.95,
+  "agrees": false,
+  "reason": "heard \"ਮ ਦੇੇਵਨ ਕੇ ਤਬ ਮਹਿ ਸੁਖੁ ਭਵੈ ਜ\" (21 chars, cache 98%, 4.6 s); my pick 78270 \"ਯਾ ਤੇ ਪ੍ਰਸੰਨ ਭਏ ਹੈ ਮਹਾ ਮੁਨ ਦੇਵਨ ਕੇ ਤ\" explains 62, runner-up 47359 \"ਨਾਨਕ ਚੇਤਿ ਸਹਜਿ ਸੁਖੁ ਪਾਵੈ\" 53; candidate 28399 \"ਆਪਿ ਨ ਦੇਹੁ ਤ ਲੇਵਉ ਮੰਗੇ ॥ ਰਹਾਉ \" explains 24; heard 21 chars, in-Bani margin 19, corpus margin 9; overlaps 2.2 s with a candidate naming 28406 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28406,
+  "start_s": 58.04,
+  "end_s": 62,
+  "my_verseId": 78271,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਮਹਿ ਸੁਖੁ ਭਵੈ ਜਗ ਕਰੈ ਏਕੁ ਬਿਦ\" (21 chars, cache 97%, 4.0 s); my pick 78271 \"ਜਗ੍ਯ ਕਰੈ ਇਕ ਬੇਦ ਰਰੈ ਭਵ ਤਾਪ ਹਰੈ ਮਿਲਿ \" explains 51, runner-up 47359 \"ਨਾਨਕ ਚੇਤਿ ਸਹਜਿ ਸੁਖੁ ਪਾਵੈ\" 49; candidate 28406 \"ਊਪਰ ਕਉ ਮਾਂਗਉ ਖੀਂਧਾ ॥\" explains 19; heard 21 chars, in-Bani margin 16, corpus margin 3; overlaps 2.2 s with a candidate naming 28399 where I hear 78270: conflicting hearing"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78271,
+  "start_s": 59.84,
+  "end_s": 66.48,
+  "my_verseId": 78271,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਜਗ ਕਰੈ ਏਕੁ ਬਿਦ ਰਰੈ ਭਵਤਪ ਹਰੈ ਮਲਿ ਧਿਆਨ\" (28 chars, cache 97%, 6.6 s); my pick 78271 \"ਜਗ੍ਯ ਕਰੈ ਇਕ ਬੇਦ ਰਰੈ ਭਵ ਤਾਪ ਹਰੈ ਮਿਲਿ \" explains 81, runner-up 209988 \"ਜੈਸੇ ਮਧੁ ਮਾਖੀ ਸੀਚਿ ਸੀਚਿ \" 41; candidate 78271 \"ਜਗ੍ਯ ਕਰੈ ਇਕ ਬੇਦ ਰਰੈ ਭਵ ਤਾਪ ਹਰੈ\" explains 81; heard 28 chars, in-Bani margin 49, corpus margin 40"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28400,
+  "start_s": 60.52,
+  "end_s": 64.08,
+  "my_verseId": 78271,
+  "confidence": 0.97,
+  "agrees": false,
+  "reason": "heard \"ਕਰੈ ਏਕੁ ਬਿਦ ਰਰੈ ਭਵਤਪ ਹ\" (17 chars, cache 97%, 3.6 s); my pick 78271 \"ਜਗ੍ਯ ਕਰੈ ਇਕ ਬੇਦ ਰਰੈ ਭਵ ਤਾਪ ਹਰੈ ਮਿਲਿ \" explains 79, runner-up 118355 \"ਨ੍ਰਹਾਨ ਕਰੈ ਨਿਤ ਧ੍ਯਾਨ ਧਰੈ\" 49; candidate 28400 \"ਦੁਇ ਸੇਰ ਮਾਂਗਉ ਚੂਨਾ ॥\" explains 12; heard 17 chars, in-Bani margin 41, corpus margin 29"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28407,
+  "start_s": 62.28,
+  "end_s": 66.2,
+  "my_verseId": 78271,
+  "confidence": 0.97,
+  "agrees": false,
+  "reason": "heard \"ਰੈ ਭਵਤਪ ਹਰੈ ਮਲਿ ਧਿਆਨ\" (16 chars, cache 98%, 3.9 s); my pick 78271 \"ਜਗ੍ਯ ਕਰੈ ਇਕ ਬੇਦ ਰਰੈ ਭਵ ਤਾਪ ਹਰੈ ਮਿਲਿ \" explains 93, runner-up 13595 \"ਦੂਖ ਹਰੈ ਭਵਜਲੁ ਤਰੈ ਮਨ ਚਿੰ\" 55; candidate 28407 \"ਤੇਰੀ ਭਗਤਿ ਕਰੈ ਜਨੁ ਥੀਂਧਾ ॥੩॥\" explains 38; heard 16 chars, in-Bani margin 55, corpus margin 38"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28401,
+  "start_s": 64.24,
+  "end_s": 66.52,
+  "my_verseId": 78271,
+  "confidence": 0.95,
+  "agrees": false,
+  "reason": "heard \"ਰੈ ਮਲਿ ਧਿਆਨ\" (9 chars, cache 96%, 2.3 s); my pick 78271 \"ਜਗ੍ਯ ਕਰੈ ਇਕ ਬੇਦ ਰਰੈ ਭਵ ਤਾਪ ਹਰੈ ਮਿਲਿ \" explains 93, runner-up 208358 \"ਗੁਰਮੁਖਿ ਧਿਆਨ ਕੈ ਪਤਿਸਟਾ ਸ\" 71; candidate 28401 \"ਪਾਉ ਘੀਉ ਸੰਗਿ ਲੂਨਾ ॥\" explains 22; heard 9 chars, in-Bani margin 44, corpus margin 22; 2.3 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28408,
+  "start_s": 66.32,
+  "end_s": 69.04,
+  "my_verseId": 29923,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਛਲਥਾਲ ਨਿਰਧੰਗ\" (10 chars, cache 100%, 2.7 s); my pick 29923 \"ਮੰਗਲਾ ਹਰਿ ਮੰਗਲਾ ॥ ਨਿਤ ਮੰਗਲੁ ਰਾਜਾ ਰਾਮ\" explains 50, runner-up 30628 \"ਰਸਨਾ ਗੁਣ ਗੋਪਾਲ ਨਿਧਿ ਗਾਇਣ\" 54; candidate 28408 \"ਮੈ ਨਾਹੀ ਕੀਤਾ ਲਬੋ ॥\" explains 20; heard 10 chars, in-Bani margin 6, corpus margin -4; overlaps 2.2 s with a candidate naming 78272 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78272,
+  "start_s": 66.88,
+  "end_s": 73.4,
+  "my_verseId": 78272,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਛਲਥਾਲ ਨਿਰਧੰਗਪਨ ਗਗਲ ਬਾਵਲੀਸਰੁ ਸਾਜੁ ਮਿਲਾਵੈ\" (33 chars, cache 98%, 6.5 s); my pick 78272 \"ਝਾਲਰ ਤਾਲ ਮ੍ਰਿਦੰਗ ਉਪੰਗ ਰਬਾਬ ਲੀਏ ਸੁਰ ਸ\" explains 58, runner-up 50569 \"ਜਗੰਨਾਥ ਜਗਦੀਸ ਗੁਸਾਈ ਕਰਿ ਕ\" 41; candidate 78272 \"ਝਾਲਰ ਤਾਲ ਮ੍ਰਿਦੰਗ ਉਪੰਗ ਰਬਾਬ ਲੀਏ\" explains 58; heard 33 chars, in-Bani margin 26, corpus margin 17; overlaps 2.2 s with a candidate naming 28408 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28402,
+  "start_s": 66.96,
+  "end_s": 70.44,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਛਲਥਾਲ ਨਿਰਧੰਗਪਨ ਗਗਲ ਬਾ\" (17 chars, cache 97%, 3.5 s); my pick 60319 \"ਨਾਨਕ ਹਰਿ ਗੁਨ ਗਾਇ ਲੇ ਛਾਡਿ ਸਗਲ ਜੰਜਾਲ ॥\" explains 44, runner-up 210143 \"ਤੈਸੇ ਆਪਾ ਕਾਛਿ ਕਾਛਿ ਕਾਮਨੀ\" 44; candidate 28402 \"ਅਧ ਸੇਰੁ ਮਾਂਗਉ ਦਾਲੇ ॥\" explains 24; no pangti explains the hearing (best 44)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28403,
+  "start_s": 69.48,
+  "end_s": 74.04,
+  "my_verseId": 78272,
+  "confidence": 0.97,
+  "agrees": false,
+  "reason": "heard \"ਗਗਲ ਬਾਵਲੀਸਰੁ ਸਾਜੁ ਮਿਲਾਵੈ\" (21 chars, cache 96%, 4.6 s); my pick 78272 \"ਝਾਲਰ ਤਾਲ ਮ੍ਰਿਦੰਗ ਉਪੰਗ ਰਬਾਬ ਲੀਏ ਸੁਰ ਸ\" explains 70, runner-up 50569 \"ਜਗੰਨਾਥ ਜਗਦੀਸ ਗੁਸਾਈ ਕਰਿ ਕ\" 50; candidate 28403 \"ਮੋ ਕਉ ਦੋਨਉ ਵਖਤ ਜਿਵਾਲੇ ॥੨॥\" explains 19; heard 21 chars, in-Bani margin 31, corpus margin 20"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28403,
+  "start_s": 70.72,
+  "end_s": 74.92,
+  "my_verseId": 78272,
+  "confidence": 0.96,
+  "agrees": false,
+  "reason": "heard \"ਵਲੀਸਰੁ ਸਾਜੁ ਮਿਲਾਵੈ ਨਰ ਗੰ\" (19 chars, cache 98%, 4.2 s); my pick 78272 \"ਝਾਲਰ ਤਾਲ ਮ੍ਰਿਦੰਗ ਉਪੰਗ ਰਬਾਬ ਲੀਏ ਸੁਰ ਸ\" explains 62, runner-up 50569 \"ਜਗੰਨਾਥ ਜਗਦੀਸ ਗੁਸਾਈ ਕਰਿ ਕ\" 55; candidate 28403 \"ਮੋ ਕਉ ਦੋਨਉ ਵਖਤ ਜਿਵਾਲੇ ॥੨॥\" explains 21; heard 19 chars, in-Bani margin 25, corpus margin 7"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78273,
+  "start_s": 73.84,
+  "end_s": 80.24,
+  "my_verseId": 78273,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਨਰ ਗੰਧਵ ਗ ਕਰ ਗਨ ਕਛੇ ਬਚਰ ਨ੍ਰਿਤ ਦੇਖਾਵੈ\" (27 chars, cache 98%, 6.4 s); my pick 78273 \"ਕਿੰਨਰ ਗੰਧ੍ਰਬ ਗਾਨ ਕਰੈ ਗਨਿ ਜਛ ਅਪਛਰ ਨਿਰ\" explains 57, runner-up 93287 \"ਬਰ ਨ੍ਰਿਤ ਕਰੈ ਕਿ ਲਰੈ ਨਟ ਜ\" 41; candidate 78273 \"ਕਿੰਨਰ ਗੰਧ੍ਰਬ ਗਾਨ ਕਰੈ ਗਨਿ ਜਛ ਅਪ\" explains 57; heard 27 chars, in-Bani margin 21, corpus margin 16; overlaps 3.8 s with a candidate naming 28404 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28404,
+  "start_s": 74.64,
+  "end_s": 78.44,
+  "my_verseId": 55743,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਗੰਧਵ ਗ ਕਰ ਗਨ ਕਛੇ ਬਚ\" (13 chars, cache 97%, 3.8 s); my pick 55743 \"ਰੰਗਾ ਰੰਗ ਰੰਗਨ ਕੇ ਰੰਗਾ ॥\" explains 54, runner-up 104593 \"ਭੂਖਨ ਬਸਤ੍ਰ ਰੰਗ ਰੰਗਨ ਕੇ ਛ\" 46; candidate 28404 \"ਖਾਟ ਮਾਂਗਉ ਚਉਪਾਈ ॥\" explains 15; heard 13 chars, in-Bani margin 15, corpus margin 8; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; overlaps 3.8 s with a candidate naming 78273 (the two aligners disagree here; my hearing of that span is weak); the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28405,
+  "start_s": 78.88,
+  "end_s": 81.24,
+  "my_verseId": 78273,
+  "confidence": 0.95,
+  "agrees": false,
+  "reason": "heard \"ਨ੍ਰਿਤ ਦੇਖਾਵੈ ਸੰਕਨ\" (14 chars, cache 100%, 2.4 s); my pick 78273 \"ਕਿੰਨਰ ਗੰਧ੍ਰਬ ਗਾਨ ਕਰੈ ਗਨਿ ਜਛ ਅਪਛਰ ਨਿਰ\" explains 67, runner-up 114978 \"ਦੀਨ ਦਯਾਲ ਯੌ ਚਰਿਤ ਦਿਖਾਵੈ \" 64; candidate 28405 \"ਸਿਰਹਾਨਾ ਅਵਰ ਤੁਲਾਈ ॥\" explains 29; heard 14 chars, in-Bani margin 14, corpus margin 3; 2.4 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78274,
+  "start_s": 80.64,
+  "end_s": 87.52,
+  "my_verseId": 78274,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਸੰਕਨ ਕੀ ਤੁ ਖੰਟਨ ਕੀ ਕਾ ਬੋਲਨ ਕੀ ਬਾਰੇਖ\" (25 chars, cache 97%, 6.9 s); my pick 78274 \"ਸੰਖਨ ਕੀ ਧੁਨ ਘੰਟਨਿ ਕੀ ਕਰਿ ਫੂਲਨ ਕੀ ਬਰਖ\" explains 61, runner-up 22878 \"ਰਸਨਾ ਹਰਿ ਰਸੁ ਨ ਚਖਿਓ ਫੀਕਾ\" 44; candidate 78274 \"ਸੰਖਨ ਕੀ ਧੁਨ ਘੰਟਨਿ ਕੀ ਕਰਿ ਫੂਲਨ \" explains 61; heard 25 chars, in-Bani margin 26, corpus margin 17; overlaps 2.2 s with a candidate naming 28407 where I hear 78275: conflicting hearing"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28406,
+  "start_s": 81.48,
+  "end_s": 85,
+  "my_verseId": 78274,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਤੁ ਖੰਟਨ ਕੀ ਕਾ ਬੋਲਨ ਕੀ\" (15 chars, cache 97%, 3.5 s); my pick 78274 \"ਸੰਖਨ ਕੀ ਧੁਨ ਘੰਟਨਿ ਕੀ ਕਰਿ ਫੂਲਨ ਕੀ ਬਰਖ\" explains 55, runner-up 85217 \"ਮਿਲਹੁ ਦੇਹੁ ਜਾਨਕੀ ਕਾਲ ਨਾਤ\" 53; candidate 28406 \"ਊਪਰ ਕਉ ਮਾਂਗਉ ਖੀਂਧਾ ॥\" explains 27; heard 15 chars, in-Bani margin 8, corpus margin 1"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28407,
+  "start_s": 85.28,
+  "end_s": 92.52,
+  "my_verseId": 78275,
+  "confidence": 0.9,
+  "agrees": false,
+  "reason": "heard \"ਾਰੇਖ ਆਤੀ ਘੋਟਿ ਕਰਿ ਸੁਰਸ ਸੁੰਦਰ ਬੇ ਕੁਰੰਦਰ\" (29 chars, cache 97%, 7.2 s); my pick 78275 \"ਆਰਤੀ ਕੋਟਿ ਕਰੈ ਸੁਰ ਸੁੰਦਰਿ ਪੇਖ ਪੁਰੰਦਰ \" explains 66, runner-up 135191 \"ਤਜਿ ਕਰਿ ਸਕਲ ਸੁੰਦਰੀ ਨਾਰਾ \" 45; candidate 28407 \"ਤੇਰੀ ਭਗਤਿ ਕਰੈ ਜਨੁ ਥੀਂਧਾ ॥੩॥\" explains 26; heard 29 chars, in-Bani margin 28, corpus margin 21; overlaps 2.2 s with a candidate naming 78274 where I hear 78274: conflicting hearing"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78275,
+  "start_s": 87.52,
+  "end_s": 94.2,
+  "my_verseId": 78275,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਆਤੀ ਘੋਟਿ ਕਰਿ ਸੁਰਸ ਸੁੰਦਰ ਬੇ ਕੁਰੰਦਰ ਕੈ ਬਲਿ ਜਾਵੈ\" (34 chars, cache 99%, 6.7 s); my pick 78275 \"ਆਰਤੀ ਕੋਟਿ ਕਰੈ ਸੁਰ ਸੁੰਦਰਿ ਪੇਖ ਪੁਰੰਦਰ \" explains 77, runner-up 111021 \"ਜਤਨ ਕੋਟਿ ਕਰਿ ਬਹੁਰਿ ਸੁ ਮੰ\" 42; candidate 78275 \"ਆਰਤੀ ਕੋਟਿ ਕਰੈ ਸੁਰ ਸੁੰਦਰਿ ਪੇਖ ਪ\" explains 77; heard 34 chars, in-Bani margin 44, corpus margin 35"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78275,
+  "start_s": 87.52,
+  "end_s": 94.2,
+  "my_verseId": 78275,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਆਤੀ ਘੋਟਿ ਕਰਿ ਸੁਰਸ ਸੁੰਦਰ ਬੇ ਕੁਰੰਦਰ ਕੈ ਬਲਿ ਜਾਵੈ\" (34 chars, cache 99%, 6.7 s); my pick 78275 \"ਆਰਤੀ ਕੋਟਿ ਕਰੈ ਸੁਰ ਸੁੰਦਰਿ ਪੇਖ ਪੁਰੰਦਰ \" explains 77, runner-up 111021 \"ਜਤਨ ਕੋਟਿ ਕਰਿ ਬਹੁਰਿ ਸੁ ਮੰ\" 42; candidate 78275 \"ਆਰਤੀ ਕੋਟਿ ਕਰੈ ਸੁਰ ਸੁੰਦਰਿ ਪੇਖ ਪ\" explains 77; heard 34 chars, in-Bani margin 44, corpus margin 35"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78276,
+  "start_s": 94.6,
+  "end_s": 101.12,
+  "my_verseId": 78276,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਨ ਤੇ ਦਰਚਨ ਦੇਖੈ ਪਰ ਦਸਨ ਮੈ ਕੰਖ ਮਹਿਹਿਚਤਲਾਵ\" (30 chars, cache 98%, 6.5 s); my pick 78276 \"ਦਾਨਤ ਦਛਨ ਦੈ ਕੈ ਪ੍ਰਦਛਨ ਭਾਲ ਮੈ ਕੁੰਕਮ ਅ\" explains 50, runner-up 48535 \"ਨਿਕਟਿ ਨ ਦੇਖੈ ਪਰ ਗ੍ਰਿਹਿ ਜ\" 40; candidate 78276 \"ਦਾਨਤ ਦਛਨ ਦੈ ਕੈ ਪ੍ਰਦਛਨ ਭਾਲ ਮੈ ਕ\" explains 50; heard 30 chars, in-Bani margin 14, corpus margin 10"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78276,
+  "start_s": 94.6,
+  "end_s": 101.12,
+  "my_verseId": 78276,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਨ ਤੇ ਦਰਚਨ ਦੇਖੈ ਪਰ ਦਸਨ ਮੈ ਕੰਖ ਮਹਿਹਿਚਤਲਾਵ\" (30 chars, cache 98%, 6.5 s); my pick 78276 \"ਦਾਨਤ ਦਛਨ ਦੈ ਕੈ ਪ੍ਰਦਛਨ ਭਾਲ ਮੈ ਕੁੰਕਮ ਅ\" explains 50, runner-up 48535 \"ਨਿਕਟਿ ਨ ਦੇਖੈ ਪਰ ਗ੍ਰਿਹਿ ਜ\" 40; candidate 78276 \"ਦਾਨਤ ਦਛਨ ਦੈ ਕੈ ਪ੍ਰਦਛਨ ਭਾਲ ਮੈ ਕ\" explains 50; heard 30 chars, in-Bani margin 14, corpus margin 10"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78277,
+  "start_s": 101.52,
+  "end_s": 108.08,
+  "my_verseId": 78277,
+  "confidence": 0.96,
+  "agrees": true,
+  "reason": "heard \"ਕਹਲ ਦੇ ਪੁਰ ਮਿਲਿਆਨ ਕੇ ਕਰ ਮੰਗੈ ਲਵੈ\" (24 chars, cache 97%, 6.6 s); my pick 78277 \"ਹੋਤ ਕੁਲਾਹਲ ਦੇਵਪੁਰੀ ਮਿਲ ਦੇਵਨ ਕੇ ਕੁਲਿ \" explains 62, runner-up 110693 \"ਬਹੁ ਪੁਰਖਨ ਕੇ ਕਰਤ ਹੈ ਹ੍ਰਿ\" 42; candidate 78277 \"ਹੋਤ ਕੁਲਾਹਲ ਦੇਵਪੁਰੀ ਮਿਲ ਦੇਵਨ ਕੇ\" explains 62; heard 24 chars, in-Bani margin 24, corpus margin 20"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78277,
+  "start_s": 101.52,
+  "end_s": 109.4,
+  "my_verseId": 78277,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਕਹਲ ਦੇ ਪੁਰ ਮਿਲਿਆਨ ਕੇ ਕਰ ਮੰਗੈ ਲਵੈ ਰਵ ਹੀ\" (28 chars, cache 98%, 7.9 s); my pick 78277 \"ਹੋਤ ਕੁਲਾਹਲ ਦੇਵਪੁਰੀ ਮਿਲ ਦੇਵਨ ਕੇ ਕੁਲਿ \" explains 56, runner-up 110693 \"ਬਹੁ ਪੁਰਖਨ ਕੇ ਕਰਤ ਹੈ ਹ੍ਰਿ\" 39; candidate 78277 \"ਹੋਤ ਕੁਲਾਹਲ ਦੇਵਪੁਰੀ ਮਿਲ ਦੇਵਨ ਕੇ\" explains 56; heard 28 chars, in-Bani margin 21, corpus margin 17"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 95386,
+  "start_s": 108.48,
+  "end_s": 115.16,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਰਵ ਹੀ ਸਸੁ ਹ ਕਰ ਕਹੀ ਅਵੈ ਬੇਨਤੀ ਸੋ ਮਲਾ\" (26 chars, cache 97%, 6.7 s); my pick 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰੀ ਅਬੈ \" explains 49, runner-up 45254 \"ਨਾਨਕ ਦਾਸੁ ਕਹੈ ਬੇਨੰਤੀ ਸਚਿ\" 46; candidate 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\" explains 49; no pangti explains the hearing (best 49)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78272,
+  "start_s": 108.48,
+  "end_s": 117.56,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਰਵ ਹੀ ਸਸੁ ਹ ਕਰ ਕਹੀ ਅਵੈ ਬੇਨਤੀ ਸੋ ਮਲਾ ਅਰੁ ਨ ਮਾਾਂਗਤ ਹਉ\" (37 chars, cache 98%, 9.1 s); my pick 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰੀ ਅਬੈ \" explains 41, runner-up 5951 \"ਨਾਨਕੁ ਏਕ ਕਹੈ ਬੇਨੰਤੀ ਹੋਰਿ\" 39; candidate 78272 \"ਝਾਲਰ ਤਾਲ ਮ੍ਰਿਦੰਗ ਉਪੰਗ ਰਬਾਬ ਲੀਏ\" explains 24; no pangti explains the hearing (best 41)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78273,
+  "start_s": 109.72,
+  "end_s": 118.32,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸੁ ਹ ਕਰ ਕਹੀ ਅਵੈ ਬੇਨਤੀ ਸੋ ਮਲਾ ਅਰੁ ਨ ਮਾਾਂਗਤ ਹਉ ਤੁਮਤੇ\" (37 chars, cache 98%, 8.6 s); my pick 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ ਹਉ ਚਿਤ\" explains 47, runner-up 45254 \"ਨਾਨਕ ਦਾਸੁ ਕਹੈ ਬੇਨੰਤੀ ਸਚਿ\" 41; candidate 78273 \"ਕਿੰਨਰ ਗੰਧ੍ਰਬ ਗਾਨ ਕਰੈ ਗਨਿ ਜਛ ਅਪ\" explains 19; no pangti explains the hearing (best 47)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 95387,
+  "start_s": 115.64,
+  "end_s": 122.32,
+  "my_verseId": 95387,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਰੁ ਨ ਮਾਾਂਗਤ ਹਉ ਤੁਮਤੇ ਕ ਕਹਤ ਹ ਚਿਤੁ ਮਹਿ ਸੋਈ ਕੀ ਜੈ\" (34 chars, cache 99%, 6.7 s); my pick 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ ਹਉ ਚਿਤ\" explains 75, runner-up 95825 \"ਜੋਊ ਸੂਰ ਹਨਿਯੋ ਨ ਹਨਿਯੋ ਛਲ\" 44; candidate 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \" explains 75; heard 34 chars, in-Bani margin 41, corpus margin 31"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78273,
+  "start_s": 117.88,
+  "end_s": 126.2,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਤੁਮਤੇ ਕ ਕਹਤ ਹ ਚਿਤੁ ਮਹਿ ਸੋਈ ਕੀ ਜੈਸ ਰ੍ਰਣ ਸਿਉ ਅਤਿ ਹੀ ਰਣ ਭੀਤਰ ਜ\" (44 chars, cache 98%, 8.3 s); my pick 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ ਮਰੋ ਕਹ\" explains 50, runner-up 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ\" 49; candidate 78273 \"ਕਿੰਨਰ ਗੰਧ੍ਰਬ ਗਾਨ ਕਰੈ ਗਨਿ ਜਛ ਅਪ\" explains 17; no pangti explains the hearing (best 50)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78274,
+  "start_s": 118.56,
+  "end_s": 125.64,
+  "my_verseId": 95388,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਕਹਤ ਹ ਚਿਤੁ ਮਹਿ ਸੋਈ ਕੀ ਜੈਸ ਰ੍ਰਣ ਸਿਉ ਅਤਿ ਹੀ ਰਣ ਭੀਤਰ\" (37 chars, cache 97%, 7.1 s); my pick 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ ਮਰੋ ਕਹ\" explains 54, runner-up 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ\" 47; candidate 78274 \"ਸੰਖਨ ਕੀ ਧੁਨ ਘੰਟਨਿ ਕੀ ਕਰਿ ਫੂਲਨ \" explains 23; heard 37 chars, in-Bani margin 6, corpus margin 13; overlaps 3.8 s with a candidate naming 95387 where I hear 95387: conflicting hearing"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 95388,
+  "start_s": 122.64,
+  "end_s": 129.28,
+  "my_verseId": 95388,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਸ ਰ੍ਰਣ ਸਿਉ ਅਤਿ ਹੀ ਰਣ ਭੀਤਰ ਜ ਸਾਚੁ ਭਤੀ ਜੈ\" (29 chars, cache 97%, 6.6 s); my pick 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ ਮਰੋ ਕਹ\" explains 67, runner-up 91083 \"ਸੀਸ ਝੁਕਾਇ ਗਯੋ ਬ੍ਰਿਜ ਕੋ ਅ\" 48; candidate 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ \" explains 67; heard 29 chars, in-Bani margin 32, corpus margin 19; overlaps 3.1 s with a candidate naming 78275 where I hear 95389: conflicting hearing"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78275,
+  "start_s": 126.16,
+  "end_s": 136.4,
+  "my_verseId": 95389,
+  "confidence": 0.9,
+  "agrees": false,
+  "reason": "heard \"ਜ ਸਾਚੁ ਭਤੀ ਜੈ ਸੰਤ ਸਾਹਿਬ ਸਦਾ ਜਗ ਮਾਇ ਕ੍ਰਿਪਾ ਕਰਿ ਸਿਆਵੈ ਹੈ ਵਰ ਨਿੈ\" (46 chars, cache 97%, 10.2 s); my pick 95389 \"ਸੰਤ ਸਹਾਇ ਸਦਾ ਜਗ ਮਾਇ ਕ੍ਰਿਪਾ ਕਰ ਸ੍ਯਾਮ \" explains 62, runner-up 53637 \"ਜਿਨ ਕਉ ਕ੍ਰਿਪਾ ਕਰਤ ਹੈ ਗੋਬ\" 40; candidate 78275 \"ਆਰਤੀ ਕੋਟਿ ਕਰੈ ਸੁਰ ਸੁੰਦਰਿ ਪੇਖ ਪ\" explains 23; heard 46 chars, in-Bani margin 23, corpus margin 22; overlaps 3.1 s with a candidate naming 95388 where I hear 95388: conflicting hearing"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78274,
+  "start_s": 126.48,
+  "end_s": 134.8,
+  "my_verseId": 95389,
+  "confidence": 0.9,
+  "agrees": false,
+  "reason": "heard \"ਸਾਚੁ ਭਤੀ ਜੈ ਸੰਤ ਸਾਹਿਬ ਸਦਾ ਜਗ ਮਾਇ ਕ੍ਰਿਪਾ ਕਰਿ ਸਿਆਵੈ\" (38 chars, cache 98%, 8.3 s); my pick 95389 \"ਸੰਤ ਸਹਾਇ ਸਦਾ ਜਗ ਮਾਇ ਕ੍ਰਿਪਾ ਕਰ ਸ੍ਯਾਮ \" explains 66, runner-up 56297 \"ਜਨ ਨਾਨਕ ਕਉ ਹਰਿ ਕ੍ਰਿਪਾ ਕਰ\" 44; candidate 78274 \"ਸੰਖਨ ਕੀ ਧੁਨ ਘੰਟਨਿ ਕੀ ਕਰਿ ਫੂਲਨ \" explains 22; heard 38 chars, in-Bani margin 25, corpus margin 21; overlaps 2.8 s with a candidate naming 95388 where I hear 95388: conflicting hearing"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 95389,
+  "start_s": 129.76,
+  "end_s": 136.4,
+  "my_verseId": 95389,
+  "confidence": 0.96,
+  "agrees": true,
+  "reason": "heard \"ਤ ਸਾਹਿਬ ਸਦਾ ਜਗ ਮਾਇ ਕ੍ਰਿਪਾ ਕਰਿ ਸਿਆਵੈ ਹੈ ਵਰ ਨਿੈ\" (35 chars, cache 97%, 6.6 s); my pick 95389 \"ਸੰਤ ਸਹਾਇ ਸਦਾ ਜਗ ਮਾਇ ਕ੍ਰਿਪਾ ਕਰ ਸ੍ਯਾਮ \" explains 67, runner-up 30843 \"ਨਾਨਕ ਜਿਸੁ ਕ੍ਰਿਪਾ ਕਰੇ ਸੁ \" 44; candidate 95389 \"ਸੰਤ ਸਹਾਇ ਸਦਾ ਜਗ ਮਾਇ ਕ੍ਰਿਪਾ ਕਰ \" explains 67; heard 35 chars, in-Bani margin 24, corpus margin 23"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78275,
+  "start_s": 135.36,
+  "end_s": 145.28,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਵਰ ਨਿੈ ਕਹ ਜਬਤ ਤੁਮ ਗੁਰਿਤ ਪ੍ਰਭੇ ਕੋ ਅਤਰ ਨਹੀ ਅਨ ਰਾਮ ਰਹੀਮ ਪਰ\" (42 chars, cache 98%, 9.9 s); my pick 87326 \"ਪਾਇ ਗਹੇ ਜਬ ਤੇ ਤੁਮਰੇ ਤਬ ਤੇ ਕੋਊ ਆਂਖ ਤਰ\" explains 38, runner-up 87327 \"ਰਾਮ ਰਹੀਮ ਪੁਰਾਨ ਕੁਰਾਨ ਅਨੇ\" 37; candidate 78275 \"ਆਰਤੀ ਕੋਟਿ ਕਰੈ ਸੁਰ ਸੁੰਦਰਿ ਪੇਖ ਪ\" explains 23; no pangti explains the hearing (best 38)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87326,
+  "start_s": 136.88,
+  "end_s": 143.52,
+  "my_verseId": 87326,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਕਹ ਜਬਤ ਤੁਮ ਗੁਰਿਤ ਪ੍ਰਭੇ ਕੋ ਅਤਰ ਨਹੀ ਅਨ\" (28 chars, cache 97%, 6.6 s); my pick 87326 \"ਪਾਇ ਗਹੇ ਜਬ ਤੇ ਤੁਮਰੇ ਤਬ ਤੇ ਕੋਊ ਆਂਖ ਤਰ\" explains 54, runner-up 37510 \"ਕਹੁ ਨਾਨਕ ਹਮ ਤੁਮ ਗੁਰਿ ਖੋਈ\" 43; candidate 87326 \"ਪਾਇ ਗਹੇ ਜਬ ਤੇ ਤੁਮਰੇ ਤਬ ਤੇ ਕੋਊ \" explains 54; heard 28 chars, in-Bani margin 15, corpus margin 11; overlaps 6.1 s with a candidate naming 78276 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78276,
+  "start_s": 137.4,
+  "end_s": 148.28,
+  "my_verseId": 87327,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਹ ਜਬਤ ਤੁਮ ਗੁਰਿਤ ਪ੍ਰਭੇ ਕੋ ਅਤਰ ਨਹੀ ਅਨ ਰਾਮ ਰਹੀਮ ਪਰੁਰਾਨਕੁਰਾਨ ਅਨੇਖ ਕਹਿ ਮ\" (53 chars, cache 97%, 10.9 s); my pick 87327 \"ਰਾਮ ਰਹੀਮ ਪੁਰਾਨ ਕੁਰਾਨ ਅਨੇਕ ਕਹੈਂ ਮਤ ਏਕ\" explains 55, runner-up 95722 \"ਨਹੀ ਨੈਕੁ ਮੁਰਾਏ ਮੁਰੈ ਹਮਰੇ\" 39; candidate 78276 \"ਦਾਨਤ ਦਛਨ ਦੈ ਕੈ ਪ੍ਰਦਛਨ ਭਾਲ ਮੈ ਕ\" explains 21; heard 53 chars, in-Bani margin 18, corpus margin 16; overlaps 7.9 s with a candidate naming 78275 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87327,
+  "start_s": 143.72,
+  "end_s": 150.56,
+  "my_verseId": 87327,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਮ ਰਹੀਮ ਪਰੁਰਾਨਕੁਰਾਨ ਅਨੇਖ ਕਹਿ ਮਤਿ ਇਕੁ ਨ ਮਨਿ ਅ\" (34 chars, cache 99%, 6.8 s); my pick 87327 \"ਰਾਮ ਰਹੀਮ ਪੁਰਾਨ ਕੁਰਾਨ ਅਨੇਕ ਕਹੈਂ ਮਤ ਏਕ\" explains 75, runner-up 105918 \"ਬੇਦ ਪੁਰਾਨ ਕੁਰਾਨ ਦੁਹੂੰ ਮਿ\" 45; candidate 87327 \"ਰਾਮ ਰਹੀਮ ਪੁਰਾਨ ਕੁਰਾਨ ਅਨੇਕ ਕਹੈਂ\" explains 75; heard 34 chars, in-Bani margin 38, corpus margin 29; overlaps 1.6 s with a candidate naming 78275 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78276,
+  "start_s": 145.44,
+  "end_s": 152.04,
+  "my_verseId": 87327,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ੁਰਾਨਕੁਰਾਨ ਅਨੇਖ ਕਹਿ ਮਤਿ ਇਕੁ ਨ ਮਨਿ ਅੰਮ੍ਰਿਤ ਸਚੁ ਅਸਤ\" (38 chars, cache 97%, 6.6 s); my pick 87327 \"ਰਾਮ ਰਹੀਮ ਪੁਰਾਨ ਕੁਰਾਨ ਅਨੇਕ ਕਹੈਂ ਮਤ ਏਕ\" explains 56, runner-up 23806 \"ਗੁਰਮਤਿ ਮਨਿ ਅੰਮ੍ਰਿਤੁ ਵੁਠੜ\" 45; candidate 78276 \"ਦਾਨਤ ਦਛਨ ਦੈ ਕੈ ਪ੍ਰਦਛਨ ਭਾਲ ਮੈ ਕ\" explains 22; heard 38 chars, in-Bani margin 18, corpus margin 11"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87327,
+  "start_s": 147.08,
+  "end_s": 150.56,
+  "my_verseId": 87327,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ੇਖ ਕਹਿ ਮਤਿ ਇਕੁ ਨ ਮਨਿ ਅ\" (16 chars, cache 97%, 3.5 s); my pick 87327 \"ਰਾਮ ਰਹੀਮ ਪੁਰਾਨ ਕੁਰਾਨ ਅਨੇਕ ਕਹੈਂ ਮਤ ਏਕ\" explains 53, runner-up 35893 \"ਇਕ ਚਿਤਿ ਇਕ ਮਨਿ ਧਿਆਇ ਸੁਆਮ\" 56; candidate 87327 \"ਰਾਮ ਰਹੀਮ ਪੁਰਾਨ ਕੁਰਾਨ ਅਨੇਕ ਕਹੈਂ\" explains 53; heard 16 chars, in-Bani margin 13, corpus margin -4"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87328,
+  "start_s": 150.64,
+  "end_s": 156.92,
+  "my_verseId": 87328,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਮ੍ਰਿਤ ਸਚੁ ਅਸਤ੍ਰ ਬੇਦ ਸਭ ਬਹੁਏ ਕਹ ਹਮ ਨ ਜਾਨ\" (30 chars, cache 97%, 6.3 s); my pick 87328 \"ਸਿੰਮ੍ਰਿਤਿ ਸਾਸਤ੍ਰ ਬੇਦ ਸਭੈ ਬਹੁ ਭੇਦ ਕਹੈ\" explains 73, runner-up 105933 \"ਸਿੰਮ੍ਰਿਤ ਸਾਸਤ੍ਰ ਬੇਦ ਸਬੈ \" 61; candidate 87328 \"ਸਿੰਮ੍ਰਿਤਿ ਸਾਸਤ੍ਰ ਬੇਦ ਸਭੈ ਬਹੁ ਭ\" explains 73; heard 30 chars, in-Bani margin 38, corpus margin 11"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87328,
+  "start_s": 150.64,
+  "end_s": 156.92,
+  "my_verseId": 87328,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਮ੍ਰਿਤ ਸਚੁ ਅਸਤ੍ਰ ਬੇਦ ਸਭ ਬਹੁਏ ਕਹ ਹਮ ਨ ਜਾਨ\" (30 chars, cache 97%, 6.3 s); my pick 87328 \"ਸਿੰਮ੍ਰਿਤਿ ਸਾਸਤ੍ਰ ਬੇਦ ਸਭੈ ਬਹੁ ਭੇਦ ਕਹੈ\" explains 73, runner-up 105933 \"ਸਿੰਮ੍ਰਿਤ ਸਾਸਤ੍ਰ ਬੇਦ ਸਬੈ \" 61; candidate 87328 \"ਸਿੰਮ੍ਰਿਤਿ ਸਾਸਤ੍ਰ ਬੇਦ ਸਭੈ ਬਹੁ ਭ\" explains 73; heard 30 chars, in-Bani margin 38, corpus margin 11"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87329,
+  "start_s": 157.12,
+  "end_s": 163.72,
+  "my_verseId": 87329,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਰੀਅਸ ਪਾ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਾਖ ਮੈ ਨ ਕਹਓ ਸਭੁ ਧੋਹਿ ਬਖਾਨੀਹੁ\" (40 chars, cache 98%, 6.6 s); my pick 87329 \"ਸ੍ਰੀ ਅਸਿਪਾਨ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਰਿ ਮੈ ਨ ਕਹ\" explains 76, runner-up 23511 \"ਤੁਮਰੀ ਕ੍ਰਿਪਾ ਤੇ ਸਭੁ ਕੋ ਅ\" 45; candidate 87329 \"ਸ੍ਰੀ ਅਸਿਪਾਨ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਰਿ ਮ\" explains 76; heard 40 chars, in-Bani margin 40, corpus margin 31"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87329,
+  "start_s": 157.12,
+  "end_s": 164.12,
+  "my_verseId": 87329,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਰੀਅਸ ਪਾ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਾਖ ਮੈ ਨ ਕਹਓ ਸਭੁ ਧੋਹਿ ਬਖਾਨੀਹੁ\" (40 chars, cache 97%, 7.0 s); my pick 87329 \"ਸ੍ਰੀ ਅਸਿਪਾਨ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਰਿ ਮੈ ਨ ਕਹ\" explains 76, runner-up 23511 \"ਤੁਮਰੀ ਕ੍ਰਿਪਾ ਤੇ ਸਭੁ ਕੋ ਅ\" 45; candidate 87329 \"ਸ੍ਰੀ ਅਸਿਪਾਨ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਰਿ ਮ\" explains 76; heard 40 chars, in-Bani margin 40, corpus margin 31"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87330,
+  "start_s": 163.96,
+  "end_s": 164.44,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 100%, 0.5 s); candidate 87330 \"ਦੋਹਰਾ ॥\" explains 0; almost nothing heard (0 chars \"\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87331,
+  "start_s": 165.88,
+  "end_s": 170.52,
+  "my_verseId": 87331,
+  "confidence": 0.96,
+  "agrees": true,
+  "reason": "heard \"ਗਲ ਦੁਆਰ ਕੋ ਛਾਡਕ ਗਹਓਤਹਰਿਧੁਆਰ\" (23 chars, cache 98%, 4.6 s); my pick 87331 \"ਸਗਲ ਦੁਆਰ ਕਉ ਛਾਡਿ ਕੈ ਗਹਯੋ ਤੁਹਾਰੋ ਦੁਆਰ\" explains 70, runner-up 103239 \"ਕਿਧੌ ਦੁਆਰਕਾ ਛੈ ॥੩੧੦॥\" 47; candidate 87331 \"ਸਗਲ ਦੁਆਰ ਕਉ ਛਾਡਿ ਕੈ ਗਹਯੋ ਤੁਹਾਰ\" explains 70; heard 23 chars, in-Bani margin 30, corpus margin 23"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87331,
+  "start_s": 165.88,
+  "end_s": 170.52,
+  "my_verseId": 87331,
+  "confidence": 0.96,
+  "agrees": true,
+  "reason": "heard \"ਗਲ ਦੁਆਰ ਕੋ ਛਾਡਕ ਗਹਓਤਹਰਿਧੁਆਰ\" (23 chars, cache 98%, 4.6 s); my pick 87331 \"ਸਗਲ ਦੁਆਰ ਕਉ ਛਾਡਿ ਕੈ ਗਹਯੋ ਤੁਹਾਰੋ ਦੁਆਰ\" explains 70, runner-up 103239 \"ਕਿਧੌ ਦੁਆਰਕਾ ਛੈ ॥੩੧੦॥\" 47; candidate 87331 \"ਸਗਲ ਦੁਆਰ ਕਉ ਛਾਡਿ ਕੈ ਗਹਯੋ ਤੁਹਾਰ\" explains 70; heard 23 chars, in-Bani margin 30, corpus margin 23"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87332,
+  "start_s": 171.36,
+  "end_s": 175.84,
+  "my_verseId": 87332,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਕੀ ਲਾਜ ਐਸ ਗੋਬਿੰਦ ਦਾਸ ਤੁਹਾਰੇ\" (21 chars, cache 98%, 4.5 s); my pick 87332 \"ਬਾਹਿ ਗਹੇ ਕੀ ਲਾਜ ਅਸਿ ਗੋਬਿੰਦ ਦਾਸ ਤੁਹਾਰ\" explains 88, runner-up 117198 \"ਬੀਨ ਸਕੈ ਬਿਗਸੈ ਨਹਿ ਕਾਹੂ ਸ\" 52; candidate 87332 \"ਬਾਹਿ ਗਹੇ ਕੀ ਲਾਜ ਅਸਿ ਗੋਬਿੰਦ ਦਾਸ\" explains 88; heard 21 chars, in-Bani margin 47, corpus margin 35"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87332,
+  "start_s": 171.36,
+  "end_s": 176.72,
+  "my_verseId": 87332,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਕੀ ਲਾਜ ਐਸ ਗੋਬਿੰਦ ਦਾਸ ਤੁਹਾਰੇ ਐ\" (22 chars, cache 96%, 5.4 s); my pick 87332 \"ਬਾਹਿ ਗਹੇ ਕੀ ਲਾਜ ਅਸਿ ਗੋਬਿੰਦ ਦਾਸ ਤੁਹਾਰ\" explains 84, runner-up 117198 \"ਬੀਨ ਸਕੈ ਬਿਗਸੈ ਨਹਿ ਕਾਹੂ ਸ\" 50; candidate 87332 \"ਬਾਹਿ ਗਹੇ ਕੀ ਲਾਜ ਅਸਿ ਗੋਬਿੰਦ ਦਾਸ\" explains 84; heard 22 chars, in-Bani margin 45, corpus margin 34"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78279,
+  "start_s": 176.68,
+  "end_s": 181.28,
+  "my_verseId": 78279,
+  "confidence": 0.96,
+  "agrees": true,
+  "reason": "heard \"ੈਸ ਚਨ ਪਰਤਾਪ ਤੇ ਦੇਵਨ ਵਡਿਓਪਰਪ\" (22 chars, cache 98%, 4.6 s); my pick 78279 \"ਐਸੇ ਚੰਡ ਪ੍ਰਤਾਪ ਤੇ ਦੇਵਨ ਬਢਿਓ ਪ੍ਰਤਾਪ ॥\" explains 69, runner-up 13568 \"ਪੰਚਮਿ ਪੰਚ ਪ੍ਰਧਾਨ ਤੇ ਜਿਹ \" 47; candidate 78279 \"ਐਸੇ ਚੰਡ ਪ੍ਰਤਾਪ ਤੇ ਦੇਵਨ ਬਢਿਓ ਪ੍\" explains 69; heard 22 chars, in-Bani margin 33, corpus margin 22"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87333,
+  "start_s": 177.16,
+  "end_s": 180.56,
+  "my_verseId": 78279,
+  "confidence": 0.97,
+  "agrees": false,
+  "reason": "heard \"ਨ ਪਰਤਾਪ ਤੇ ਦੇਵਨ ਵਡਿਓਪਰ\" (18 chars, cache 97%, 3.4 s); my pick 78279 \"ਐਸੇ ਚੰਡ ਪ੍ਰਤਾਪ ਤੇ ਦੇਵਨ ਬਢਿਓ ਪ੍ਰਤਾਪ ॥\" explains 77, runner-up 13679 \"ਸਗਲ ਭਵਨ ਪੂਰਨ ਪਰਤਾਪ ॥\" 56; candidate 87333 \"ਇਤਿ ਸ੍ਰੀ ਰਾਮਾਇਣ ਸਮਾਪਤਮ ਸਤੁ ਸੁਭ\" explains 22; heard 18 chars, in-Bani margin 38, corpus margin 21"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78280,
+  "start_s": 181.72,
+  "end_s": 186.8,
+  "my_verseId": 78280,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਨ ਲੋਕ ਜੈ ਜੈ ਕਰੇੈ ਨਾਮੁ ਸਦ ਜਾਪ\" (21 chars, cache 98%, 5.1 s); my pick 78280 \"ਤੀਨ ਲੋਕ ਜੈ ਜੈ ਕਰੈ ਰਰੈ ਨਾਮੁ ਸਤਿ ਜਾਪ ॥\" explains 82, runner-up 78922 \"ਐਸੇ ਜਸੁ ਪੂਰ ਰਹਿਓ ਚੰਡਿਕਾ \" 48; candidate 78280 \"ਤੀਨ ਲੋਕ ਜੈ ਜੈ ਕਰੈ ਰਰੈ ਨਾਮੁ ਸਤਿ\" explains 82; heard 21 chars, in-Bani margin 34, corpus margin 37"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28393,
+  "start_s": 187.4,
+  "end_s": 188.52,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਤ ਚਕਰ\" (4 chars, cache 92%, 1.1 s); my pick 32 \"ਆਖਹਿ ਮੰਗਹਿ ਦੇਹਿ ਦੇਹਿ ਦਾਤਿ ਕਰੇ ਦਾਤਾਰੁ\" explains 75, runner-up 78939 \"ਨ ਡਰੋ ਅਰਿ ਸੋ ਜਬ ਜਾਇ ਲਰੋ \" 75; candidate 28393 \"ਰਾਗੁ ਸੋਰਠਿ ॥\" explains 25; almost nothing heard (4 chars \"ਤ ਚਕਰ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 75015,
+  "start_s": 187.4,
+  "end_s": 191.6,
+  "my_verseId": 75015,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਤ ਚਕਰ ਧਰਤੀ ਚਤ੍ਰ ਚਕ੍ਰ ਭੂਤੇ\" (20 chars, cache 98%, 4.2 s); my pick 75015 \"ਚੱਤ੍ਰ ਚੱਕ੍ਰ ਵਰਤੀ ਚੱਤ੍ਰ ਚੱਕ੍ਰ ਭੁਗਤੇ ॥\" explains 79, runner-up 74597 \"ਚੱਤੁ੍ਰ ਚੱਕ੍ਰ ਭਰਤੀ ॥\" 74; candidate 75015 \"ਚੱਤ੍ਰ ਚੱਕ੍ਰ ਵਰਤੀ ਚੱਤ੍ਰ ਚੱਕ੍ਰ ਭ\" explains 79; heard 20 chars, in-Bani margin 42, corpus margin 5"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87328,
+  "start_s": 188.6,
+  "end_s": 201.16,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਰਤੀ ਚਤ੍ਰ ਚਕ੍ਰ ਭੂਤੇ ਸਅੰ ਬਸਨੋ ਸਰਬਦਾ ਸਰਬਜ ਕਾਲੰ ਪ੍ਰਣਾਸੀ ਦਇਆ\" (43 chars, cache 98%, 12.6 s); my pick 75015 \"ਚੱਤ੍ਰ ਚੱਕ੍ਰ ਵਰਤੀ ਚੱਤ੍ਰ ਚੱਕ੍ਰ ਭੁਗਤੇ ॥\" explains 43, runner-up 7526 \"ਸਰਬ ਸੁਖਾ ਪ੍ਰਭ ਤੇਰੀ ਦਇਆ ॥\" 40; candidate 87328 \"ਸਿੰਮ੍ਰਿਤਿ ਸਾਸਤ੍ਰ ਬੇਦ ਸਭੈ ਬਹੁ ਭ\" explains 26; no pangti explains the hearing (best 43)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 75016,
+  "start_s": 192.64,
+  "end_s": 196.92,
+  "my_verseId": 75016,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਸਅੰ ਬਸਨੋ ਸਰਬਦਾ ਸਰਬਜ\" (15 chars, cache 98%, 4.3 s); my pick 75016 \"ਸੁਯੰਭਵ ਸੁਭੰ ਸਰਬਦਾ ਸਰਬ ਜੁਗਤੇ ॥\" explains 67, runner-up 75817 \"ਸਰਬ ਭੁਗਤਾ ਸਰਬ ਜੁਗਤਾ ਸਰਬ \" 55; candidate 75016 \"ਸੁਯੰਭਵ ਸੁਭੰ ਸਰਬਦਾ ਸਰਬ ਜੁਗਤੇ ॥\" explains 67; heard 15 chars, in-Bani margin 24, corpus margin 12; overlaps 4.3 s with a candidate naming 87328 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 75017,
+  "start_s": 198.04,
+  "end_s": 202.4,
+  "my_verseId": 75017,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਕਾਲੰ ਪ੍ਰਣਾਸੀ ਦਇਆਲ ਅੰਸਰੂਤੇ\" (20 chars, cache 98%, 4.4 s); my pick 75017 \"ਦੁਕਾਲੰ ਪ੍ਰਣਾਸੀ ਦਿਆਲੰ ਸਰੂਪੇ ॥\" explains 85, runner-up 75832 \"ਸਤਿ ਦੁਆਪਰ ਤ੍ਰਿਤੀਆ ਕਲਿਜੁਗ\" 54; candidate 75017 \"ਦੁਕਾਲੰ ਪ੍ਰਣਾਸੀ ਦਿਆਲੰ ਸਰੂਪੇ ॥\" explains 85; heard 20 chars, in-Bani margin 45, corpus margin 31"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 95388,
+  "start_s": 201.32,
+  "end_s": 213.04,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਲ ਅੰਸਰੂਤੇ ਸਦਾ ਅੰਗ ਸੰ ਅਭੰਗੰਭੀ ਭੂਤੇ ਦੂ ਕਾਲੰਤਰਣਾਸੀ ਕਆਲੰਸਰ ਉਖੇ\" (41 chars, cache 98%, 11.7 s); my pick 75017 \"ਦੁਕਾਲੰ ਪ੍ਰਣਾਸੀ ਦਿਆਲੰ ਸਰੂਪੇ ॥\" explains 48, runner-up 75018 \"ਸਦਾ ਅੰਗ ਸੰਗੇ ਅਭੰਗੰ ਬਿਭੂਤ\" 42; candidate 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ \" explains 23; no pangti explains the hearing (best 48)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 75018,
+  "start_s": 203.6,
+  "end_s": 207.6,
+  "my_verseId": 75018,
+  "confidence": 0.96,
+  "agrees": true,
+  "reason": "heard \"ਦਾ ਅੰਗ ਸੰ ਅਭੰਗੰਭੀ ਭੂਤੇ\" (14 chars, cache 98%, 4.0 s); my pick 75018 \"ਸਦਾ ਅੰਗ ਸੰਗੇ ਅਭੰਗੰ ਬਿਭੂਤੇ ॥੧੯੯॥\" explains 77, runner-up 74796 \"ਅਭੰਗੰ ਬਿਭੂਤੇ ॥੧੪੫॥\" 50; candidate 75018 \"ਸਦਾ ਅੰਗ ਸੰਗੇ ਅਭੰਗੰ ਬਿਭੂਤੇ ॥੧੯੯\" explains 77; heard 14 chars, in-Bani margin 27, corpus margin 27"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 75017,
+  "start_s": 208.76,
+  "end_s": 213.08,
+  "my_verseId": 75017,
+  "confidence": 0.96,
+  "agrees": true,
+  "reason": "heard \"ਕਾਲੰਤਰਣਾਸੀ ਕਆਲੰਸਰ ਉਖੇ\" (17 chars, cache 96%, 4.3 s); my pick 75017 \"ਦੁਕਾਲੰ ਪ੍ਰਣਾਸੀ ਦਿਆਲੰ ਸਰੂਪੇ ॥\" explains 69, runner-up 105839 \"ਕ੍ਰਿਪਾ ਸਿੰਧ ਕਾਲ ਤ੍ਰੈ ਦਰਸ\" 46; candidate 75017 \"ਦੁਕਾਲੰ ਪ੍ਰਣਾਸੀ ਦਿਆਲੰ ਸਰੂਪੇ ॥\" explains 69; heard 17 chars, in-Bani margin 28, corpus margin 24"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 75018,
+  "start_s": 214.12,
+  "end_s": 218.76,
+  "my_verseId": 75018,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਸਾਂਗਿ ਸੰਗੇ ਅਭ ਗੰਗ ਪੁਟ\" (14 chars, cache 98%, 4.6 s); my pick 75018 \"ਸਦਾ ਅੰਗ ਸੰਗੇ ਅਭੰਗੰ ਬਿਭੂਤੇ ॥੧੯੯॥\" explains 56, runner-up 20715 \"ਮਿਲੁ ਸਾਧਸੰਗੇ ਭਜੁ ਨਿਸੰਗੇ \" 50; candidate 75018 \"ਸਦਾ ਅੰਗ ਸੰਗੇ ਅਭੰਗੰ ਬਿਭੂਤੇ ॥੧੯੯\" explains 56; heard 14 chars, in-Bani margin 17, corpus margin 6; overlaps 4.6 s with a candidate naming 95389 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 95389,
+  "start_s": 214.16,
+  "end_s": 230,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸਾਂਗਿ ਸੰਗੇ ਅਭ ਗੰਗ ਪੁਟ ਡਿਠੈ ਸਭਥਾਰੇ ਨਹੀ ਤੁਧੁ ਜੇਹਿਆ ਜਿਥੈ\" (40 chars, cache 98%, 15.8 s); my pick 57964 \"ਡਿਠੇ ਸਭੇ ਥਾਵ ਨਹੀ ਤੁਧੁ ਜੇਹਿਆ ॥\" explains 50, runner-up 3475 \"ਜਿਥੈ ਓਹੁ ਜਾਇ ਤਿਥੈ ਓਹੁ ਸੁ\" 41; candidate 95389 \"ਸੰਤ ਸਹਾਇ ਸਦਾ ਜਗ ਮਾਇ ਕ੍ਰਿਪਾ ਕਰ \" explains 22; no pangti explains the hearing (best 50)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 33,
+  "start_s": 222.08,
+  "end_s": 235.08,
+  "my_verseId": 57964,
+  "confidence": 0.95,
+  "agrees": false,
+  "reason": "heard \"ਡਿਠੈ ਸਭਥਾਰੇ ਨਹੀ ਤੁਧੁ ਜੇਹਿਆ ਜਿਥੈ ਸਮੇਥ ਨਹਿ ਤੁਧੁ\" (37 chars, cache 98%, 13.0 s); my pick 57964 \"ਡਿਠੇ ਸਭੇ ਥਾਵ ਨਹੀ ਤੁਧੁ ਜੇਹਿਆ ॥\" explains 74, runner-up 15818 \"ਜੋ ਸੇਵਹਿ ਜੋ ਸੇਵਹਿ ਤੁਧੁ ਜ\" 48; candidate 33 \"ਫੇਰਿ ਕਿ ਅਗੈ ਰਖੀਐ ਜਿਤੁ ਦਿਸੈ ਦਰਬ\" explains 31; heard 37 chars, in-Bani margin 38, corpus margin 25; overlaps 4.6 s with a candidate naming 87326 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57964,
+  "start_s": 222.12,
+  "end_s": 228.72,
+  "my_verseId": 57964,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਡਿਠੈ ਸਭਥਾਰੇ ਨਹੀ ਤੁਧੁ ਜੇਹਿਆ\" (22 chars, cache 98%, 6.6 s); my pick 57964 \"ਡਿਠੇ ਸਭੇ ਥਾਵ ਨਹੀ ਤੁਧੁ ਜੇਹਿਆ ॥\" explains 84, runner-up 32071 \"ਅੰਤਰ ਕੀ ਗਤਿ ਤੁਧੁ ਪਹਿ ਸਾਰ\" 50; candidate 57964 \"ਡਿਠੇ ਸਭੇ ਥਾਵ ਨਹੀ ਤੁਧੁ ਜੇਹਿਆ ॥\" explains 84; heard 22 chars, in-Bani margin 45, corpus margin 34"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57964,
+  "start_s": 229.52,
+  "end_s": 236.52,
+  "my_verseId": 57964,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਜਿਥੈ ਸਮੇਥ ਨਹਿ ਤੁਧੁ ਜੇਹਿਆ\" (20 chars, cache 99%, 7.0 s); my pick 57964 \"ਡਿਠੇ ਸਭੇ ਥਾਵ ਨਹੀ ਤੁਧੁ ਜੇਹਿਆ ॥\" explains 69, runner-up 6206 \"ਸਚੁ ਜਿ ਮੰਗਹਿ ਦਾਨੁ ਸਿ ਤੁਧ\" 57; candidate 57964 \"ਡਿਠੇ ਸਭੇ ਥਾਵ ਨਹੀ ਤੁਧੁ ਜੇਹਿਆ ॥\" explains 69; heard 20 chars, in-Bani margin 29, corpus margin 12; overlaps 6.0 s with a candidate naming 87326 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87326,
+  "start_s": 230.52,
+  "end_s": 243.4,
+  "my_verseId": 57965,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਸਮੇਥ ਨਹਿ ਤੁਧੁ ਜੇਹਿਆ ਕਹੁ ਪੁਰਖੁ ਬਿਧਾਤੇ ਤਾ ਤੂ ਸੋ\" (36 chars, cache 98%, 12.9 s); my pick 57965 \"ਬਧੋਹੁ ਪੁਰਖਿ ਬਿਧਾਤੈ ਤਾਂ ਤੂ ਸੋਹਿਆ ॥\" explains 58, runner-up 41771 \"ਕ੍ਰਿਪਾ ਕਰਹੁ ਜਿਸੁ ਪੁਰਖ ਬਿ\" 49; candidate 87326 \"ਪਾਇ ਗਹੇ ਜਬ ਤੇ ਤੁਮਰੇ ਤਬ ਤੇ ਕੋਊ \" explains 25; heard 36 chars, in-Bani margin 14, corpus margin 10; overlaps 4.6 s with a candidate naming 33 where I hear 57964: conflicting hearing"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 34,
+  "start_s": 235.48,
+  "end_s": 240.24,
+  "my_verseId": 57965,
+  "confidence": 0.96,
+  "agrees": false,
+  "reason": "heard \"ਜੇਹਿਆ ਕਹੁ ਪੁਰਖੁ ਬਿਧਾ\" (17 chars, cache 98%, 4.8 s); my pick 57965 \"ਬਧੋਹੁ ਪੁਰਖਿ ਬਿਧਾਤੈ ਤਾਂ ਤੂ ਸੋਹਿਆ ॥\" explains 69, runner-up 26534 \"ਜਿਹ ਨਰ ਬਿਸਰਿਆ ਪੁਰਖੁ ਬਿਧਾ\" 65; candidate 34 \"ਮੁਹੌ ਕਿ ਬੋਲਣੁ ਬੋਲੀਐ ਜਿਤੁ ਸੁਣਿ \" explains 35; heard 17 chars, in-Bani margin 24, corpus margin 5"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57965,
+  "start_s": 237.48,
+  "end_s": 244.36,
+  "my_verseId": 57965,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਕਹੁ ਪੁਰਖੁ ਬਿਧਾਤੇ ਤਾ ਤੂ ਸੋਹਿਆ\" (23 chars, cache 97%, 6.9 s); my pick 57965 \"ਬਧੋਹੁ ਪੁਰਖਿ ਬਿਧਾਤੈ ਤਾਂ ਤੂ ਸੋਹਿਆ ॥\" explains 87, runner-up 47844 \"ਪੂਰਿ ਰਹਿਆ ਸਰਬਤ੍ਰ ਮੈ ਸੋ ਪ\" 63; candidate 57965 \"ਬਧੋਹੁ ਪੁਰਖਿ ਬਿਧਾਤੈ ਤਾਂ ਤੂ ਸੋਹਿ\" explains 87; heard 23 chars, in-Bani margin 47, corpus margin 24"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 35,
+  "start_s": 242.24,
+  "end_s": 255.28,
+  "my_verseId": 57965,
+  "confidence": 0.9,
+  "agrees": false,
+  "reason": "heard \"ਤਾ ਤੂ ਸੋਹਿਆ ਪਧ ਸ ਪੁਰਖੁ ਬਿਦਾਤੇ ਤਾ ਤੋ ਸੋਹਿਿਆ ਜ ਜਗਨ ਅਪਾ\" (40 chars, cache 98%, 13.0 s); my pick 57965 \"ਬਧੋਹੁ ਪੁਰਖਿ ਬਿਧਾਤੈ ਤਾਂ ਤੂ ਸੋਹਿਆ ॥\" explains 62, runner-up 26534 \"ਜਿਹ ਨਰ ਬਿਸਰਿਆ ਪੁਰਖੁ ਬਿਧਾ\" 42; candidate 35 \"ਅੰਮ੍ਰਿਤ ਵੇਲਾ ਸਚੁ ਨਾਉ ਵਡਿਆਈ ਵੀਚ\" explains 25; heard 40 chars, in-Bani margin 27, corpus margin 20; overlaps 2.1 s with a candidate naming 57966 where I hear 57966: conflicting hearing"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87327,
+  "start_s": 244.32,
+  "end_s": 257.64,
+  "my_verseId": 57965,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਿਆ ਪਧ ਸ ਪੁਰਖੁ ਬਿਦਾਤੇ ਤਾ ਤੋ ਸੋਹਿਿਆ ਜ ਜਗਨ ਅਪਾਹੁ\" (35 chars, cache 98%, 13.3 s); my pick 57965 \"ਬਧੋਹੁ ਪੁਰਖਿ ਬਿਧਾਤੈ ਤਾਂ ਤੂ ਸੋਹਿਆ ॥\" explains 53, runner-up 25821 \"ਹਰਿ ਨਾਮੁ ਹਮਾਰਾ ਪ੍ਰਭੁ ਅਬਿ\" 47; candidate 87327 \"ਰਾਮ ਰਹੀਮ ਪੁਰਾਨ ਕੁਰਾਨ ਅਨੇਕ ਕਹੈਂ\" explains 20; heard 35 chars, in-Bani margin 16, corpus margin 6; overlaps 4.5 s with a candidate naming 57966 where I hear 57966: conflicting hearing"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57965,
+  "start_s": 245.32,
+  "end_s": 252.36,
+  "my_verseId": 57965,
+  "confidence": 0.96,
+  "agrees": true,
+  "reason": "heard \"ਧ ਸ ਪੁਰਖੁ ਬਿਦਾਤੇ ਤਾ ਤੋ ਸੋਹਿਿਆ\" (23 chars, cache 97%, 7.0 s); my pick 57965 \"ਬਧੋਹੁ ਪੁਰਖਿ ਬਿਧਾਤੈ ਤਾਂ ਤੂ ਸੋਹਿਆ ॥\" explains 70, runner-up 47515 \"ਜਗਜੀਵਨੁ ਦਾਤਾ ਪੁਰਖੁ ਬਿਧਾਤ\" 57; candidate 57965 \"ਬਧੋਹੁ ਪੁਰਖਿ ਬਿਧਾਤੈ ਤਾਂ ਤੂ ਸੋਹਿ\" explains 70; heard 23 chars, in-Bani margin 30, corpus margin 13"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57966,
+  "start_s": 253.16,
+  "end_s": 260.2,
+  "my_verseId": 57966,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਜ ਜਗਨ ਅਪਾਹੁ ਪੇ ਰਾਮਦਾਸ ਪੁਰ\" (20 chars, cache 97%, 7.0 s); my pick 57966 \"ਵਸਦੀ ਸਘਨ ਅਪਾਰ ਅਨੂਪ ਰਾਮਦਾਸ ਪੁਰ ॥\" explains 64, runner-up 26510 \"ਹਰਿ ਜੀਉ ਨਾਮੁ ਪਰਿਓ ਰਾਮਦਾਸ\" 59; candidate 57966 \"ਵਸਦੀ ਸਘਨ ਅਪਾਰ ਅਨੂਪ ਰਾਮਦਾਸ ਪੁਰ \" explains 64; heard 20 chars, in-Bani margin 17, corpus margin 5; overlaps 2.1 s with a candidate naming 35 where I hear 57965: conflicting hearing"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 27,
+  "start_s": 257.16,
+  "end_s": 266.56,
+  "my_verseId": 57966,
+  "confidence": 0.95,
+  "agrees": false,
+  "reason": "heard \"ਹੁ ਪੇ ਰਾਮਦਾਸ ਪੁਰ ਹਸਤੀਨਪਾ ਅਨੂਪਰਾ ਰਾ\" (28 chars, cache 97%, 9.4 s); my pick 57966 \"ਵਸਦੀ ਸਘਨ ਅਪਾਰ ਅਨੂਪ ਰਾਮਦਾਸ ਪੁਰ ॥\" explains 68, runner-up 83170 \"ਧਰ ਹੈ ਰੂਪ ਅਨੂਪ ਮੁਰਾਰਾ ॥੧\" 49; candidate 27 \"ਦੇਦਾ ਦੇ ਲੈਦੇ ਥਕਿ ਪਾਹਿ ॥\" explains 21; heard 28 chars, in-Bani margin 29, corpus margin 19; overlaps 8.3 s with a candidate naming 87328 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87328,
+  "start_s": 258.28,
+  "end_s": 272.28,
+  "my_verseId": 57967,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਰਾਮਦਾਸ ਪੁਰ ਹਸਤੀਨਪਾ ਅਨੂਪਰਾ ਰਾਮਦਾਸ ਪਰੁਰੈ ਹਰਿਹਾਨਕ ਇਕ ਕਸਮ ਲ ਜਾਇ\" (49 chars, cache 98%, 14.0 s); my pick 57967 \"ਹਰਿਹਾਂ ਨਾਨਕ ਕਸਮਲ ਜਾਹਿ ਨਾਇਐ ਰਾਮਦਾਸ ਸਰ\" explains 58, runner-up 57966 \"ਵਸਦੀ ਸਘਨ ਅਪਾਰ ਅਨੂਪ ਰਾਮਦਾ\" 53; candidate 87328 \"ਸਿੰਮ੍ਰਿਤਿ ਸਾਸਤ੍ਰ ਬੇਦ ਸਭੈ ਬਹੁ ਭ\" explains 24; heard 49 chars, in-Bani margin 5, corpus margin 12; overlaps 1.9 s with a candidate naming 57966 where I hear 57966: conflicting hearing"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57966,
+  "start_s": 260.88,
+  "end_s": 268.12,
+  "my_verseId": 57966,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਸਤੀਨਪਾ ਅਨੂਪਰਾ ਰਾਮਦਾਸ ਪਰੁਰ\" (22 chars, cache 97%, 7.2 s); my pick 57966 \"ਵਸਦੀ ਸਘਨ ਅਪਾਰ ਅਨੂਪ ਰਾਮਦਾਸ ਪੁਰ ॥\" explains 72, runner-up 110924 \"ਏਕ ਬਿਮਾਤ੍ਰਾ ਭਾਨ ਕੀ ਰਾਮਦਾ\" 52; candidate 57966 \"ਵਸਦੀ ਸਘਨ ਅਪਾਰ ਅਨੂਪ ਰਾਮਦਾਸ ਪੁਰ \" explains 72; heard 22 chars, in-Bani margin 25, corpus margin 20; overlaps 7.2 s with a candidate naming 87328 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28,
+  "start_s": 266.88,
+  "end_s": 279.4,
+  "my_verseId": 57967,
+  "confidence": 0.96,
+  "agrees": false,
+  "reason": "heard \"ਦਾਸ ਪਰੁਰੈ ਹਰਿਹਾਨਕ ਇਕ ਕਸਮ ਲ ਜਾਇ ਨਰਾਮ ਹਰਿ ਹਾਨਕ ਕਸਮਲ\" (39 chars, cache 98%, 12.5 s); my pick 57967 \"ਹਰਿਹਾਂ ਨਾਨਕ ਕਸਮਲ ਜਾਹਿ ਨਾਇਐ ਰਾਮਦਾਸ ਸਰ\" explains 66, runner-up 55577 \"ਸਿਮਰਤ ਇਕ ਬਾਰ ਹਰਿ ਹਰਿ ਮਿਟ\" 43; candidate 28 \"ਜੁਗਾ ਜੁਗੰਤਰਿ ਖਾਹੀ ਖਾਹਿ ॥\" explains 23; heard 39 chars, in-Bani margin 29, corpus margin 23"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57967,
+  "start_s": 269.04,
+  "end_s": 275.72,
+  "my_verseId": 57967,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਰਿਹਾਨਕ ਇਕ ਕਸਮ ਲ ਜਾਇ ਨਰਾਮ\" (19 chars, cache 97%, 6.7 s); my pick 57967 \"ਹਰਿਹਾਂ ਨਾਨਕ ਕਸਮਲ ਜਾਹਿ ਨਾਇਐ ਰਾਮਦਾਸ ਸਰ\" explains 72, runner-up 104373 \"ਕ੍ਰਿਸਨ ਰਾਮ ਭਏ ਕਿਤੇ ਪੁਨਿ \" 53; candidate 57967 \"ਹਰਿਹਾਂ ਨਾਨਕ ਕਸਮਲ ਜਾਹਿ ਨਾਇਐ ਰਾਮ\" explains 72; heard 19 chars, in-Bani margin 24, corpus margin 19"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87329,
+  "start_s": 273.68,
+  "end_s": 283.76,
+  "my_verseId": 57967,
+  "confidence": 0.97,
+  "agrees": false,
+  "reason": "heard \"ਰਾਮ ਹਰਿ ਹਾਨਕ ਕਸਮਲਿ ਜਾਇ ਨਾਇ ਰਾਮਦਾਸ ਸਰ\" (29 chars, cache 97%, 10.1 s); my pick 57967 \"ਹਰਿਹਾਂ ਨਾਨਕ ਕਸਮਲ ਜਾਹਿ ਨਾਇਐ ਰਾਮਦਾਸ ਸਰ\" explains 78, runner-up 32045 \"ਮੇਰੇ ਰਾਮ ਹਰਿ ਜਨ ਕੈ ਹਉ ਬਲ\" 51; candidate 87329 \"ਸ੍ਰੀ ਅਸਿਪਾਨ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਰਿ ਮ\" explains 31; heard 29 chars, in-Bani margin 34, corpus margin 27"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57967,
+  "start_s": 277,
+  "end_s": 283.76,
+  "my_verseId": 57967,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਹਰਿ ਹਾਨਕ ਕਸਮਲਿ ਜਾਇ ਨਾਇ ਰਾਮਦਾਸ ਸਰ\" (26 chars, cache 97%, 6.8 s); my pick 57967 \"ਹਰਿਹਾਂ ਨਾਨਕ ਕਸਮਲ ਜਾਹਿ ਨਾਇਐ ਰਾਮਦਾਸ ਸਰ\" explains 83, runner-up 76994 \"ਰਾਮਦਾਸ ਹਰਿ ਸੋ ਮਿਲ ਗਏ ॥\" 48; candidate 57967 \"ਹਰਿਹਾਂ ਨਾਨਕ ਕਸਮਲ ਜਾਹਿ ਨਾਇਐ ਰਾਮ\" explains 83; heard 26 chars, in-Bani margin 38, corpus margin 35"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29,
+  "start_s": 279.76,
+  "end_s": 282.64,
+  "my_verseId": 57967,
+  "confidence": 0.95,
+  "agrees": false,
+  "reason": "heard \"ਜਾਇ ਨਾਇ ਰਾਮਦਾ\" (11 chars, cache 99%, 2.9 s); my pick 57967 \"ਹਰਿਹਾਂ ਨਾਨਕ ਕਸਮਲ ਜਾਹਿ ਨਾਇਐ ਰਾਮਦਾਸ ਸਰ\" explains 80, runner-up 207007 \"ਰਾਮਦਾਸ ਗੁਰੁ ਅਰਜਣ ਛਾਇਆ ॥੨\" 67; candidate 29 \"ਹੁਕਮੀ ਹੁਕਮੁ ਚਲਾਏ ਰਾਹੁ ॥\" explains 27; heard 11 chars, in-Bani margin 16, corpus margin 13"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 30,
+  "start_s": 283.16,
+  "end_s": 295.68,
+  "my_verseId": 76117,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਸ ਸਰਗ ਕ ਨਾ ਲ\" (8 chars, cache 98%, 12.5 s); my pick 76117 \"ਸ੍ਰੀ ਕਾਲ ਜੀ ਕੀ ਉਸਤਤਿ ॥\" explains 62, runner-up 206172 \"ਮਿਰਤਕ ਨਾਲਿ ਵੀਆਹੀਐ ਸੋਹਾਗੁ\" 62; candidate 30 \"ਨਾਨਕ ਵਿਗਸੈ ਵੇਪਰਵਾਹੁ ॥੩॥\" explains 25; heard 8 chars, in-Bani margin 2, corpus margin 0; only 8 chars heard over 13 s: most of the span is unheard (alaap / sangat / simran), cannot confirm the pangti is sung throughout; a corpus pangti of different text explains the hearing as well (corpus margin 0) and no confident neighbour from the same Shabad within 30 s supports it"
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 29924,
+  "start_s": 27.88,
+  "end_s": 31.48,
+  "my_verseId": 29923,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ੂਤਮ ਗਾਂਧਆਰਾਜ ਬਲਬਾ\" (14 chars, cache 97%, 3.6 s); my pick 29923 \"ਮੰਗਲਾ ਹਰਿ ਮੰਗਲਾ ॥ ਨਿਤ ਮੰਗਲੁ ਰਾਜਾ ਰਾਮ\" explains 50, runner-up 120222 \"ਜੌਨ ਬਾਤ ਚਿਤ ਮੈ ਰੁਚੈ ਤਿਨ \" 50; candidate 29924 \"ਊਤਮੁ ਦੀਅਰਾ ਨਿਰਮਲ ਬਾਤੀ ॥\" explains 41; heard 14 chars, in-Bani margin 9, corpus margin 0"
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 29925,
+  "start_s": 31.92,
+  "end_s": 35.52,
+  "my_verseId": 401773,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਰੂਰੀਐ ਤ ਸਭਿ ਕਮਲਾ ਬਾਾ ਕੀ\" (18 chars, cache 98%, 3.6 s); my pick 401773 \"ਈਂ ਤਿਲਾ ਬਾਕੀ ਚੂ ਜ਼ਾਤਿ ਕਿਬਰੀਆ ॥ ੪੮੪ ॥\" explains 52, runner-up 20732 \"ਕਮਲਾ ਭ੍ਰਮ ਭੀਤਿ ਕਮਲਾ ਭ੍ਰਮ\" 47; candidate 29925 \"ਤੁਹੀਂ ਨਿਰੰਜਨੁ ਕਮਲਾ ਪਾਤੀ ॥੨॥\" explains 39; heard 18 chars, in-Bani margin 13, corpus margin 6; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 29926,
+  "start_s": 36.04,
+  "end_s": 39.76,
+  "my_verseId": 29926,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਮਲ ਰਾਮਾਨੰਦ ਜਾਰ\" (11 chars, cache 97%, 3.7 s); my pick 29926 \"ਰਾਮਾ ਭਗਤਿ ਰਾਮਾਨੰਦੁ ਜਾਨੈ ॥\" explains 67, runner-up 51428 \"ਰਾਮਾਨੰਦ ਜੀ ਘਰੁ ੧\" 67; candidate 29926 \"ਰਾਮਾ ਭਗਤਿ ਰਾਮਾਨੰਦੁ ਜਾਨੈ ॥\" explains 67; heard 11 chars, in-Bani margin 15, corpus margin 0"
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 29927,
+  "start_s": 40.16,
+  "end_s": 44.04,
+  "my_verseId": 29927,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ੂਰਨ ਕਰਮਾਨਤ ਬਥਾਨ\" (13 chars, cache 97%, 3.9 s); my pick 29927 \"ਪੂਰਨ ਪਰਮਾਨੰਦੁ ਬਖਾਨੈ ॥੩॥\" explains 72, runner-up 34691 \"ਨਾਨਕ ਤਿਸੁ ਪ੍ਰਭੁ ਭੇਟਿਆ ਜਾ\" 77; candidate 29927 \"ਪੂਰਨ ਪਰਮਾਨੰਦੁ ਬਖਾਨੈ ॥੩॥\" explains 72; heard 13 chars, in-Bani margin 26, corpus margin -5"
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 29928,
+  "start_s": 44.2,
+  "end_s": 47.52,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਬੈ ਨਿ\" (4 chars, cache 97%, 3.3 s); my pick 78926 \"ਧੂਪ ਜਗਾਇ ਕੈ ਸੰਖ ਬਜਾਇ ਕੈ ਸੀਸ ਨਿਵਾਇ ਕੈ\" explains 75, runner-up 78942 \"ਚੰਡਿ ਚਰਿਤ੍ਰ ਕਵਿਤਨ ਮੈ ਬਰਨ\" 75; candidate 29928 \"ਮਦਨ ਮੂਰਤਿ ਭੈ ਤਾਰਿ ਗੋਬਿੰਦੇ ॥\" explains 50; almost nothing heard (4 chars \"ਬੈ ਨਿ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 29929,
+  "start_s": 48,
+  "end_s": 52.24,
+  "my_verseId": 60249,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ੈ ਭ ਗਰ ਨਰ ਨਾਨਕ ਸੁਨ\" (13 chars, cache 98%, 4.2 s); my pick 60249 \"ਕਹੁ ਨਾਨਕ ਸੁਨੁ ਰੇ ਮਨਾ ਤਿਹ ਨਰ ਮਾਥੈ ਭਾਗ\" explains 68, runner-up 60241 \"ਕਹੁ ਨਾਨਕ ਸੁਨੁ ਰੇ ਮਨਾ ਸੋ \" 63; candidate 29929 \"ਸੈਨੁ ਭਣੈ ਭਜੁ ਪਰਮਾਨੰਦੇ ॥੪॥੨॥\" explains 49; heard 13 chars, in-Bani margin 18, corpus margin 5; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 57510,
+  "start_s": 52.48,
+  "end_s": 59.04,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸੁੰਧਿਆ ਤੇਵ ਦਆ ਕਰਿ ਅਦਿ ਬਲਿਆਲਾਈ\" (23 chars, cache 97%, 6.6 s); my pick 57510 \"ਸੁੰਨ ਸੰਧਿਆ ਤੇਰੀ ਦੇਵ ਦੇਵਾਕਰ ਅਧਪਤਿ ਆਦਿ\" explains 45, runner-up 202088 \"ਪਿਰਮ ਪਿਆਲਾ ਸਾਧਸੰਗ ਸਬਦ ਸੁ\" 45; candidate 57510 \"ਸੁੰਨ ਸੰਧਿਆ ਤੇਰੀ ਦੇਵ ਦੇਵਾਕਰ ਅਧਪ\" explains 45; no pangti explains the hearing (best 45)"
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 57511,
+  "start_s": 59.52,
+  "end_s": 62.84,
+  "my_verseId": 29900,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਡ ਸ ਸਮਾਨ ਤੇਰਾ ਅੰਤ ਨਹੀ\" (15 chars, cache 97%, 3.3 s); my pick 29900 \"ਤੇਰੋ ਕੀਆ ਤੁਝਹਿ ਕਿਆ ਅਰਪਉ ਨਾਮੁ ਤੇਰਾ ਤੁ\" explains 53, runner-up 19604 \"ਏ ਮਨ ਤੇਰਾ ਕੋ ਨਹੀ ਕਰਿ ਵੇਖ\" 60; candidate 57511 \"ਸਿਧ ਸਮਾਧਿ ਅੰਤੁ ਨਹੀ ਪਾਇਆ ਲਾਗਿ ਰ\" explains 49; heard 15 chars, in-Bani margin 4, corpus margin -7; out of order: neither the previous confident pangti 29927 (#75) nor the next None (#-) makes 29900 (#65) a plausible kirtan move"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28405,
+  "start_s": 27.16,
+  "end_s": 27.52,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਈ\" (1 chars, cache 100%, 0.4 s); my pick 19 \"ਗਾਵੈ ਕੋ ਗੁਣ ਵਡਿਆਈਆ ਚਾਰ ॥\" explains 100, runner-up 35 \"ਅੰਮ੍ਰਿਤ ਵੇਲਾ ਸਚੁ ਨਾਉ ਵਡਿ\" 100; candidate 28405 \"ਸਿਰਹਾਨਾ ਅਵਰ ਤੁਲਾਈ ॥\" explains 100; almost nothing heard (1 chars \"ਈ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28406,
+  "start_s": 28.2,
+  "end_s": 30.96,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ੂਪੀ\" (3 chars, cache 96%, 2.8 s); my pick 29921 \"ਧੂਪ ਦੀਪ ਘ੍ਰਿਤ ਸਾਜਿ ਆਰਤੀ ॥\" explains 80, runner-up 28688 \"ਧੂਪੁ ਮਲਆਨਲੋ ਪਵਣੁ ਚਵਰੋ ਕਰ\" 67; candidate 28406 \"ਊਪਰ ਕਉ ਮਾਂਗਉ ਖੀਂਧਾ ॥\" explains 33; almost nothing heard (3 chars \"ੂਪੀ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28407,
+  "start_s": 31.16,
+  "end_s": 33.68,
+  "my_verseId": 28407,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਤੇਰੀ ਭਗਤਿ ਕਰਿ ਗਛੀਦਾਾ\" (17 chars, cache 96%, 2.5 s); my pick 28407 \"ਤੇਰੀ ਭਗਤਿ ਕਰੈ ਜਨੁ ਥੀਂਧਾ ॥੩॥\" explains 64, runner-up 25233 \"ਨਾਨਕ ਦਾਸੁ ਸਦਾ ਸੰਗਿ ਸੇਵਕੁ\" 65; candidate 28407 \"ਤੇਰੀ ਭਗਤਿ ਕਰੈ ਜਨੁ ਥੀਂਧਾ ॥੩॥\" explains 64; heard 17 chars, in-Bani margin 13, corpus margin -1"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28408,
+  "start_s": 34.2,
+  "end_s": 36.6,
+  "my_verseId": 26153,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਹਿ ਨਾਹੀਤ ਲਗਹੁ\" (11 chars, cache 100%, 2.4 s); my pick 26153 \"ਬਿਨੁ ਗੁਰ ਬੰਧਨ ਟੂਟਹਿ ਨਾਹੀ ਗੁਰਮੁਖਿ ਮੋਖ\" explains 73, runner-up 37535 \"ਤੂ ਅਡੋਲੁ ਕਦੇ ਡੋਲਹਿ ਨਾਹੀ \" 73; candidate 28408 \"ਮੈ ਨਾਹੀ ਕੀਤਾ ਲਬੋ ॥\" explains 38; heard 11 chars, in-Bani margin 24, corpus margin 0; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; 2.4 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible); a corpus pangti of different text explains the hearing as well (corpus margin 0) and no confident neighbour from the same Shabad within 30 s supports it; the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28409,
+  "start_s": 37.24,
+  "end_s": 39.6,
+  "my_verseId": 17302,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਇਕੁ ਨਾਮੁ ਧਿਆ ਮਹਿ ਠੰਬਹੁ\" (17 chars, cache 100%, 2.4 s); my pick 17302 \"ਜਪਿ ਜਪਿ ਹੋਏ ਸਗਲ ਸਾਧ ਜਨ ਏਕੁ ਨਾਮੁ ਧਿਆਇ\" explains 71, runner-up 36556 \"ਦਿਨੁ ਰੈਣਿ ਨਾਨਕੁ ਨਾਮੁ ਧਿਆ\" 65; candidate 28409 \"ਇਕੁ ਨਾਉ ਤੇਰਾ ਮੈ ਫਬੋ ॥\" explains 41; heard 17 chars, in-Bani margin 27, corpus margin 6; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; 2.4 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible); the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28410,
+  "start_s": 40.56,
+  "end_s": 42.56,
+  "my_verseId": 28410,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਹ ਕਬੀਰ ਮਨ ਮਿਆ\" (10 chars, cache 95%, 2.0 s); my pick 28410 \"ਕਹਿ ਕਬੀਰ ਮਨੁ ਮਾਨਿਆ ॥\" explains 76, runner-up 47229 \"ਅਬ ਤਉ ਬਿਮਲ ਭਏ ਘਟ ਹੀ ਮਹਿ \" 76; candidate 28410 \"ਕਹਿ ਕਬੀਰ ਮਨੁ ਮਾਨਿਆ ॥\" explains 76; heard 10 chars, in-Bani margin 26, corpus margin -0; 2.0 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible)"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28411,
+  "start_s": 43.16,
+  "end_s": 45.48,
+  "my_verseId": 28411,
+  "confidence": 0.95,
+  "agrees": true,
+  "reason": "heard \"ਨ ਮਾਨਿਆ ਤਉ ਹਰਿ ਜਨਿਆ\" (15 chars, cache 96%, 2.3 s); my pick 28411 \"ਮਨੁ ਮਾਨਿਆ ਤਉ ਹਰਿ ਜਾਨਿਆ ॥੪॥੧੧॥\" explains 92, runner-up 20220 \"ਹਰਿ ਜਨ ਪ੍ਰਭੁ ਰਲਿ ਏਕੋ ਹੋਏ\" 67; candidate 28411 \"ਮਨੁ ਮਾਨਿਆ ਤਉ ਹਰਿ ਜਾਨਿਆ ॥੪॥੧੧॥\" explains 92; heard 15 chars, in-Bani margin 39, corpus margin 25; 2.3 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible)"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 5591,
+  "start_s": 45.68,
+  "end_s": 48.2,
+  "my_verseId": 78267,
+  "confidence": 0.96,
+  "agrees": false,
+  "reason": "heard \"ਦੂਰਾ ਲੋੂਪਝੰਡ ਕ ਹੋਇ\" (14 chars, cache 100%, 2.5 s); my pick 78267 \"ਲੋਪ ਚੰਡਕਾ ਹੋਇ ਗਈ ਸੁਰਪਤਿ ਕੌ ਦੇ ਰਾਜ ॥\" explains 70, runner-up 46238 \"ਕੇਸਵ ਚਲਤ ਕਰਹਿ ਨਿਰਾਲੇ ਕੀਤ\" 43; candidate 5591 \"ਸਲੋਕੁ ਮਃ ੧ ॥\" explains 24; heard 14 chars, in-Bani margin 34, corpus margin 27"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28405,
+  "start_s": 45.72,
+  "end_s": 48.72,
+  "my_verseId": 78267,
+  "confidence": 0.96,
+  "agrees": false,
+  "reason": "heard \"ੂਰਾ ਲੋੂਪਝੰਡ ਕ ਹੋਇ ਗਈ\" (15 chars, cache 100%, 3.0 s); my pick 78267 \"ਲੋਪ ਚੰਡਕਾ ਹੋਇ ਗਈ ਸੁਰਪਤਿ ਕੌ ਦੇ ਰਾਜ ॥\" explains 72, runner-up 88745 \"ਹੋਇ ਗਈ ਤਨ ਮੈ ਗ੍ਰਿਹ ਕੀ ਸੁ\" 47; candidate 28405 \"ਸਿਰਹਾਨਾ ਅਵਰ ਤੁਲਾਈ ॥\" explains 16; heard 15 chars, in-Bani margin 39, corpus margin 25"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28402,
+  "start_s": 48.52,
+  "end_s": 52.8,
+  "my_verseId": 78267,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਈ ਗੁਰਪਤਿ ਕੋੁਰਗਰਾ ਦਾਨ ਵ\" (18 chars, cache 98%, 4.3 s); my pick 78267 \"ਲੋਪ ਚੰਡਕਾ ਹੋਇ ਗਈ ਸੁਰਪਤਿ ਕੌ ਦੇ ਰਾਜ ॥\" explains 50, runner-up 80128 \"ਪਾਈ ਧੂਮ ਸਵਾਰੀ ਦੁਰਗਾ ਦਾਨਵ\" 50; candidate 28402 \"ਅਧ ਸੇਰੁ ਮਾਂਗਉ ਦਾਲੇ ॥\" explains 24; heard 18 chars, in-Bani margin 6, corpus margin 0; overlaps 3.6 s with a candidate naming 28406 (the two aligners disagree here; my hearing of that span is weak)"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28406,
+  "start_s": 49.24,
+  "end_s": 53.96,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਗੁਰਪਤਿ ਕੋੁਰਗਰਾ ਦਾਨ ਵਮਾਨ ਭੇ\" (22 chars, cache 98%, 4.7 s); my pick 78268 \"ਦਾਨਵ ਮਾਰਿ ਅਭੇਖ ਕਰਿ ਕੀਨੇ ਸੰਤਨ ਕਾਜ ॥੫੩\" explains 42, runner-up 80286 \"ਭੇੜਿ ਮਚਿਆ ਬੀਰਾਲੀ ਦੁਰਗਾ ਦ\" 50; candidate 28406 \"ਊਪਰ ਕਉ ਮਾਂਗਉ ਖੀਂਧਾ ॥\" explains 18; no pangti explains the hearing (best 42)"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28403,
+  "start_s": 53,
+  "end_s": 56.92,
+  "my_verseId": 78268,
+  "confidence": 0.97,
+  "agrees": false,
+  "reason": "heard \"ਾਨ ਭੇਖ ਕਰ ਕੀਨੇ ਸੰਤਨ ਕਾ\" (16 chars, cache 98%, 3.9 s); my pick 78268 \"ਦਾਨਵ ਮਾਰਿ ਅਭੇਖ ਕਰਿ ਕੀਨੇ ਸੰਤਨ ਕਾਜ ॥੫੩\" explains 84, runner-up 81900 \"ਭੇਖ ਕਰਤ ਕਿਨਹੂੰ ਨਹਿ ਪਾਯਾ \" 52; candidate 28403 \"ਮੋ ਕਉ ਦੋਨਉ ਵਖਤ ਜਿਵਾਲੇ ॥੨॥\" explains 26; heard 16 chars, in-Bani margin 40, corpus margin 31"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28396,
+  "start_s": 54.2,
+  "end_s": 58.12,
+  "my_verseId": 78268,
+  "confidence": 0.96,
+  "agrees": false,
+  "reason": "heard \"ਖ ਕਰ ਕੀਨੇ ਸੰਤਨ ਕਾ ਲਾ\" (14 chars, cache 97%, 3.9 s); my pick 78268 \"ਦਾਨਵ ਮਾਰਿ ਅਭੇਖ ਕਰਿ ਕੀਨੇ ਸੰਤਨ ਕਾਜ ॥੫੩\" explains 84, runner-up 76217 \"ਸਬੈ ਜੇਰ ਕੀਨੇ ਬਲੀ ਕਾਲ ਹਾਥ\" 60; candidate 28396 \"ਹਉ ਮਾਂਗਉ ਸੰਤਨ ਰੇਨਾ ॥\" explains 29; heard 14 chars, in-Bani margin 39, corpus margin 24"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28393,
+  "start_s": 58.12,
+  "end_s": 60,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਗੁ ਸੋਈਆ\" (6 chars, cache 100%, 1.9 s); my pick 33847 \"ਧ੍ਰਿਗੁ ਧ੍ਰਿਗੁ ਖਾਇਆ ਧ੍ਰਿਗੁ ਧ੍ਰਿਗੁ ਸੋਇ\" explains 83, runner-up 8813 \"ਮਾਇਆ ਮੋਹਿ ਸਭੋ ਜਗੁ ਸੋਇਆ ਇ\" 83; candidate 28393 \"ਰਾਗੁ ਸੋਰਠਿ ॥\" explains 67; almost nothing heard (6 chars \"ਗੁ ਸੋਈਆ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87330,
+  "start_s": 59.52,
+  "end_s": 60,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸੋਈਆ\" (4 chars, cache 100%, 0.5 s); my pick 39 \"ਆਪੇ ਆਪਿ ਨਿਰੰਜਨੁ ਸੋਇ ॥\" explains 75, runner-up 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ\" 75; candidate 87330 \"ਦੋਹਰਾ ॥\" explains 25; almost nothing heard (4 chars \"ਸੋਈਆ\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87326,
+  "start_s": 62.08,
+  "end_s": 69.16,
+  "my_verseId": 87326,
+  "confidence": 0.96,
+  "agrees": true,
+  "reason": "heard \"ਾਇ ਗਹਿ ਜਬ ਤੇ ਤੁਮਰੇ ਤਬ ਤੁਤੀ ਸਉ ਅਤਤਰਰ ਨਹੀ ਆਗ ਅ\" (33 chars, cache 99%, 7.1 s); my pick 87326 \"ਪਾਇ ਗਹੇ ਜਬ ਤੇ ਤੁਮਰੇ ਤਬ ਤੇ ਕੋਊ ਆਂਖ ਤਰ\" explains 67, runner-up 125454 \"ਨੈਨ ਲਗੇ ਜਬ ਤੇ ਤੁਮ ਸੌ ਤਬ \" 39; candidate 87326 \"ਪਾਇ ਗਹੇ ਜਬ ਤੇ ਤੁਮਰੇ ਤਬ ਤੇ ਕੋਊ \" explains 67; heard 33 chars, in-Bani margin 33, corpus margin 27"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87327,
+  "start_s": 69.4,
+  "end_s": 76.16,
+  "my_verseId": 87327,
+  "confidence": 0.96,
+  "agrees": true,
+  "reason": "heard \"ਬ ਰਹੀਮ ਪੁਰਾਨਕ ਅਨੇਕ ਕਰਵਤ ਏਕੁ ਨ ਮਾਨਿਓ\" (28 chars, cache 97%, 6.8 s); my pick 87327 \"ਰਾਮ ਰਹੀਮ ਪੁਰਾਨ ਕੁਰਾਨ ਅਨੇਕ ਕਹੈਂ ਮਤ ਏਕ\" explains 68, runner-up 34965 \"ਕਹੁ ਨਾਨਕ ਠਾਕੁਰ ਭਾਰੋਸੈ ਕਹ\" 41; candidate 87327 \"ਰਾਮ ਰਹੀਮ ਪੁਰਾਨ ਕੁਰਾਨ ਅਨੇਕ ਕਹੈਂ\" explains 68; heard 28 chars, in-Bani margin 26, corpus margin 26"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87328,
+  "start_s": 76.36,
+  "end_s": 82.96,
+  "my_verseId": 87328,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਮ੍ਰਤ ਸਸਤ ਬ ਸਭੁ ਬਹੁ ਬਿਰ ਕਹ ਹਉ ਏੁ\" (23 chars, cache 97%, 6.6 s); my pick 87328 \"ਸਿੰਮ੍ਰਿਤਿ ਸਾਸਤ੍ਰ ਬੇਦ ਸਭੈ ਬਹੁ ਭੇਦ ਕਹੈ\" explains 53, runner-up 13522 \"ਬੇਦ ਪੁਰਾਨ ਸਿਮ੍ਰਿਤਿ ਸੁਨੇ \" 49; candidate 87328 \"ਸਿੰਮ੍ਰਿਤਿ ਸਾਸਤ੍ਰ ਬੇਦ ਸਭੈ ਬਹੁ ਭ\" explains 53; heard 23 chars, in-Bani margin 21, corpus margin 4"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87329,
+  "start_s": 83.32,
+  "end_s": 89.6,
+  "my_verseId": 87329,
+  "confidence": 0.96,
+  "agrees": true,
+  "reason": "heard \"ਅਸ ਪਾਨੈ ਕ੍ਰਿਪਾ ਤੁਉਮਾਰੀ ਸਬ ਮਹਿ ਨ ਕਹਓ ਸਭ ਤਹੀ ਮਖਾਨੀਓ\" (39 chars, cache 99%, 6.3 s); my pick 87329 \"ਸ੍ਰੀ ਅਸਿਪਾਨ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਰਿ ਮੈ ਨ ਕਹ\" explains 63, runner-up 38896 \"ਸਤਿਗੁਰੁ ਦਾਤਾ ਤਿਨੈ ਪਛਾਤਾ \" 47; candidate 87329 \"ਸ੍ਰੀ ਅਸਿਪਾਨ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਰਿ ਮ\" explains 63; heard 39 chars, in-Bani margin 24, corpus margin 16"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87330,
+  "start_s": 89.84,
+  "end_s": 90.32,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"\" (0 chars, cache 79%, 0.5 s); candidate 87330 \"ਦੋਹਰਾ ॥\" explains 0; almost nothing heard (0 chars \"\"): a header, alaap, music, simran, pause or hearing failure, not a pangti I can confirm"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87331,
+  "start_s": 91.12,
+  "end_s": 95.88,
+  "my_verseId": 87331,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਸਗਲ ਦੁਆਰ ਕਉ ਛਾਡ ਕੈ ਭਇਓ\" (17 chars, cache 98%, 4.8 s); my pick 87331 \"ਸਗਲ ਦੁਆਰ ਕਉ ਛਾਡਿ ਕੈ ਗਹਯੋ ਤੁਹਾਰੋ ਦੁਆਰ\" explains 79, runner-up 23676 \"ਆਇ ਪਇਓ ਨਾਨਕ ਗੁਰ ਚਰਨੀ ਤਉ \" 53; candidate 87331 \"ਸਗਲ ਦੁਆਰ ਕਉ ਛਾਡਿ ਕੈ ਗਹਯੋ ਤੁਹਾਰ\" explains 79; heard 17 chars, in-Bani margin 44, corpus margin 26"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87332,
+  "start_s": 96.44,
+  "end_s": 101.44,
+  "my_verseId": 87332,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਮਾਇ ਗੈ ਕੀ ਲਾਲ ਅਸੁ ਗੋਬਿੰਦ ਦਾਸ ਤੁਹਾ\" (25 chars, cache 98%, 5.0 s); my pick 87332 \"ਬਾਹਿ ਗਹੇ ਕੀ ਲਾਜ ਅਸਿ ਗੋਬਿੰਦ ਦਾਸ ਤੁਹਾਰ\" explains 75, runner-up 52232 \"ਦਾਮੋਦਰ ਦਇਆਲ ਆਰਾਧਹੁ ਗੋਬਿੰ\" 46; candidate 87332 \"ਬਾਹਿ ਗਹੇ ਕੀ ਲਾਜ ਅਸਿ ਗੋਬਿੰਦ ਦਾਸ\" explains 75; heard 25 chars, in-Bani margin 38, corpus margin 30"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 78279,
+  "start_s": 101.88,
+  "end_s": 106.64,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਸੀ ਜਨ ਪਰਤਾਪ ਤੇ ਜੀਵਨ ਵਡੀਓ ਭਤਾਗ\" (23 chars, cache 96%, 4.8 s); my pick 78279 \"ਐਸੇ ਚੰਡ ਪ੍ਰਤਾਪ ਤੇ ਦੇਵਨ ਬਢਿਓ ਪ੍ਰਤਾਪ ॥\" explains 49, runner-up 43323 \"ਇਹ ਬਿਧਿ ਤਿਸਹਿ ਪਰਾਪਤੇ ਜਾ \" 45; candidate 78279 \"ਐਸੇ ਚੰਡ ਪ੍ਰਤਾਪ ਤੇ ਦੇਵਨ ਬਢਿਓ ਪ੍\" explains 49; no pangti explains the hearing (best 49)"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 78280,
+  "start_s": 107.24,
+  "end_s": 112.32,
+  "my_verseId": 78280,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਨ ਲੋਕ ਜਹ ਜੈ ਕਰੇ ਰਤਾ ਸ ਚ\" (16 chars, cache 98%, 5.1 s); my pick 78280 \"ਤੀਨ ਲੋਕ ਜੈ ਜੈ ਕਰੈ ਰਰੈ ਨਾਮੁ ਸਤਿ ਜਾਪ ॥\" explains 62, runner-up 78922 \"ਐਸੇ ਜਸੁ ਪੂਰ ਰਹਿਓ ਚੰਡਿਕਾ \" 53; candidate 78280 \"ਤੀਨ ਲੋਕ ਜੈ ਜੈ ਕਰੈ ਰਰੈ ਨਾਮੁ ਸਤਿ\" explains 62; heard 16 chars, in-Bani margin 10, corpus margin 10; out of order: neither the previous confident pangti 87332 (#198) nor the next 75015 (#105) makes 78280 (#155) a plausible kirtan move"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28393,
+  "start_s": 112.56,
+  "end_s": 114.92,
+  "my_verseId": 75015,
+  "confidence": 0.95,
+  "agrees": false,
+  "reason": "heard \"ਤ੍ਰ ਚਕ੍ਰ ਵਰਤੀ\" (11 chars, cache 96%, 2.4 s); my pick 75015 \"ਚੱਤ੍ਰ ਚੱਕ੍ਰ ਵਰਤੀ ਚੱਤ੍ਰ ਚੱਕ੍ਰ ਭੁਗਤੇ ॥\" explains 100, runner-up 74596 \"ਚੱਤੁ੍ਰ ਚੱਕ੍ਰ ਵਰਤੀ ॥\" 95; candidate 28393 \"ਰਾਗੁ ਸੋਰਠਿ ॥\" explains 18; heard 11 chars, in-Bani margin 45, corpus margin 5; 2.4 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible)"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28394,
+  "start_s": 115.2,
+  "end_s": 119.2,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "heard \"ਤ ਚਤ ਭੁਗਤੈ ਸੁ ਅੰਤਰ ਸ\" (14 chars, cache 98%, 4.0 s); my pick 75016 \"ਸੁਯੰਭਵ ਸੁਭੰ ਸਰਬਦਾ ਸਰਬ ਜੁਗਤੇ ॥\" explains 43, runner-up 208745 \"ਕਥਤਾ ਬਕਤਾ ਸ੍ਰੋਤਾ ਦਾਤਾ ਭੁ\" 50; candidate 28394 \"ਭੂਖੇ ਭਗਤਿ ਨ ਕੀਜੈ ॥\" explains 21; no pangti explains the hearing (best 43)"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28395,
+  "start_s": 119.36,
+  "end_s": 122.48,
+  "my_verseId": 75016,
+  "confidence": 0.96,
+  "agrees": false,
+  "reason": "heard \"ੰ ਸਰਬ ਦਾ ਸਰਬ ਜੁਗ ਤੇੈ\" (14 chars, cache 100%, 3.1 s); my pick 75016 \"ਸੁਯੰਭਵ ਸੁਭੰ ਸਰਬਦਾ ਸਰਬ ਜੁਗਤੇ ॥\" explains 93, runner-up 74790 \"ਸਰਬੰ ਜੁਗਤਾ ॥\" 66; candidate 28395 \"ਯਹ ਮਾਲਾ ਅਪਨੀ ਲੀਜੈ ॥\" explains 14; heard 14 chars, in-Bani margin 50, corpus margin 27"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 78280,
+  "start_s": 123.2,
+  "end_s": 129.12,
+  "my_verseId": 75017,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਾਲੰ ਪਰਣਾਸੀ ਦਇਆਲੰ ਸਰਹੁਉ ਤੇੇ ਸਦਾ ਅਧ\" (25 chars, cache 98%, 5.9 s); my pick 75017 \"ਦੁਕਾਲੰ ਪ੍ਰਣਾਸੀ ਦਿਆਲੰ ਸਰੂਪੇ ॥\" explains 58, runner-up 31753 \"ਦੀਨ ਦਇਆਲ ਕਰਹੁ ਉਤਸਾਹਾ ॥\" 54; candidate 78280 \"ਤੀਨ ਲੋਕ ਜੈ ਜੈ ਕਰੈ ਰਰੈ ਨਾਮੁ ਸਤਿ\" explains 18; heard 25 chars, in-Bani margin 25, corpus margin 4"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28393,
+  "start_s": 129.4,
+  "end_s": 131.72,
+  "my_verseId": 84603,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਦੇੇ ਅਪੰਗ ਰੰਗ\" (8 chars, cache 96%, 2.3 s); my pick 84603 \"ਅਧੱਕ ਧੱਕੇ ਅਪੰਗ ਪੰਗੇ ॥\" explains 62, runner-up 104838 \"ਅਨੰਗ ਰੰਗ ਰੰਗ ਕੇ ਸੁਰੰਗ ਬਾ\" 62; candidate 28393 \"ਰਾਗੁ ਸੋਰਠਿ ॥\" explains 18; heard 8 chars, in-Bani margin 12, corpus margin 0; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; 2.3 s is brisk for a sung pangti (Aarti is often sung fast; fragment possible); a corpus pangti of different text explains the hearing as well (corpus margin 0) and no confident neighbour from the same Shabad within 30 s supports it; the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28394,
+  "start_s": 131.92,
+  "end_s": 138.04,
+  "my_verseId": 74796,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਭੂਤ ਅਭੰਗੰਗਿ ਭੂਰੀ ਭੂਤੀ\" (16 chars, cache 99%, 6.1 s); my pick 74796 \"ਅਭੰਗੰ ਬਿਭੂਤੇ ॥੧੪੫॥\" explains 59, runner-up 80431 \"ਅਭੂਤੰ ਅਭੰਗੰ ਅਭਿਖੰ ਭਵਾਨੰ \" 58; candidate 28394 \"ਭੂਖੇ ਭਗਤਿ ਨ ਕੀਜੈ ॥\" explains 43; heard 16 chars, in-Bani margin 12, corpus margin 1; a pangti outside the keyed Bani / Shabad explains the hearing better (parmaan, another Shabad, or a hearing coincidence); the Shabad-level key does not support it; person decides; a corpus pangti of different text explains the hearing as well (corpus margin 1) and no confident neighbour from the same Shabad within 30 s supports it; the pangti belongs to no Bani / Shabad in the existing key (key mismatch)"
+ }
+]
