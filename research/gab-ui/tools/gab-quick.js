@@ -375,11 +375,11 @@ function buildCache() {
   process.env.GAB_TOOLS = T.tools;
   const L = lib(T);
   const { SUITES } = require(path.join(T.tools, 'vf-suites.js'));
-  const HF_DS = path.join(ROOT, 'gab-hf/701fee8e59c4');
+  const HF_DS = process.env.GAB_HF_DS || path.join(ROOT, 'gab-hf/701fee8e59c4'); // answer keys (override for new keys)
   const KBV1_DS = path.join(H, 'personal/gab-builds/kbv1-bench');
   const hf = L.sv.loadDataset(HF_DS);
   const kb = L.sv.loadDataset(KBV1_DS);
-  const TP = path.join(GUI, 'timeline-pangti');
+  const TP = path.join(GUI, process.env.GAB_PANGTI_DIR || 'timeline-pangti'); // which recordings pass the pangti-coverage bar
   const idx = [...JSON.parse(fs.readFileSync(path.join(TP, 'index.json'), 'utf8')).tiers, ...JSON.parse(fs.readFileSync(path.join(TP, 'index-extra.json'), 'utf8')).tiers];
   const man = { version: 1, made: new Date().toISOString(), model: { id: MODEL_ID, name: 'karansea IndicConformer CTC, int8 export used by STTM Desktop', sha256: '5f9e41d867dee2883796e290eef85abc11cbd32fe0f10c1f763a638d824634f9' },
     tools: { ref: T.sha, branch: 'gab-v1.5-timeline (sttm-desktop repo)' }, rule: 'owner pangti rule 2026-10-22 (research/gab-ui/tools/pangti-timeline.js)',
