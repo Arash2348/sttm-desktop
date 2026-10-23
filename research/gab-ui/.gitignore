@@ -4,3 +4,6 @@ research/gab-ui/private-snap/
 research/gab-ui/private-fixed/audio/
 hf-keys/
 research/gab-ui/site/audio/
+timeline-pangti/*-hard.json
+timeline-pangti/real-sessions-*.json
+timeline-pangti/rescore-report-private.json
