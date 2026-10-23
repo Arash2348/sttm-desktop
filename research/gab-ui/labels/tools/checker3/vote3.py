@@ -6,6 +6,7 @@
 # structural checks. Only after that: compare with the candidate's verseId.
 import json, os, sys, math, csv, collections
 from lib3 import *
+VAH4 = norm('ਵਾਹਿ')
 BATCH = sys.argv[1] if len(sys.argv) > 1 else 'batch2'
 OUT = sys.argv[2] if len(sys.argv) > 2 else f'{GAB}/labels/votes/{BATCH}-checker3.json'
 
@@ -64,11 +65,12 @@ for rec, cs in by_rec.items():
     for i, c in enumerate(cs):
         p = pick[i]; a, b = c['start_s'], c['end_s']; dur = b - a
         h, raw, cov, top, sec, s1, s2, m, svs = p['h'], p['raw'], p['cov'], p['top'], p['sec'], p['s1'], p['s2'], p['m'], p['svs']
-        vah = h.count(VAHEGURU) * len(VAHEGURU) / max(1, len(h))
+        # Vaheguru simran: the hearing is mostly 'ਵਾਹਿ(ਗੁਰੂ)' pieces (matras often dropped by the model)
+        vah = (h.count(VAH4) * 8 + h.count(norm('ਗੁਰੂ')) * 4) / max(1, len(h))
         notes = []; my = None; conf = 0.6
         if cov < 0.6: conf = 0.6; notes.append(f'cache covers only {cov:.0%} of the span: cannot hear it')
         elif len(h) < 8: conf = 0.7; notes.append(f'almost nothing heard ({len(h)} chars "{raw[:30]}"): alaap, music, simran, pause or hearing failure, not a sung pangti I can confirm')
-        elif vah >= 0.5: conf = 0.85; notes.append('heard mostly Vaheguru simran: none')
+        elif vah >= 0.4: conf = 0.85; notes.append('heard mostly Vaheguru simran: none')
         elif s1 < 50: conf = 0.7; notes.append(f'no pangti explains the hearing (best {s1:.0f})')
         else:
             my = top
@@ -80,7 +82,15 @@ for rec, cs in by_rec.items():
             # ---- lens C: structure
             if dur < 2.5: conf = min(conf, 0.9); notes.append(f'{dur:.1f} s is too short for a sung pangti (fragment)')
             if dur > 60: conf = min(conf, 0.9); notes.append(f'{dur:.0f} s is implausibly long for one pangti')
-            srow = [(x, y) for s, x, y in shab if str(main_sid) in s.split('|')]
+            if dur > 8 and len(h) / dur < 1.2: conf = min(conf, 0.9); notes.append(f'only {len(h)} chars heard over {dur:.0f} s: most of the span is unheard (alaap / sangat / simran), cannot confirm the pangti is sung throughout')
+            if p['m_out'] < 3:
+                near = any(pick[j]['top'] in order and pick[j]['s1'] >= 60 and pick[j]['m_in'] >= 10 and pick[j]['top'] != my
+                           and order[pick[j]['top']][0] == order.get(my, (None,))[0]
+                           and min(abs(cs[j]['start_s'] - b), abs(a - cs[j]['end_s'])) < 30 for j in range(len(cs)) if j != i)
+                if not near: conf = min(conf, 0.94); notes.append(f'a corpus pangti of different text explains the hearing as well (corpus margin {p["m_out"]:.0f}) and no confident neighbour from the same Shabad within 30 s supports it')
+            # the key row(s) of the Shabad my pick belongs to (a recording may hold several keyed Shabads)
+            my_sids = {s_ for s_ in sids if my in sh_verses.get(s_, [])}
+            srow = [(x, y) for s, x, y in shab if any(str(s_) in s.split('|') for s_ in my_sids)]
             if srow and not any(x - 3 <= a and b <= y + 3 for x, y in srow):
                 conf = min(conf, 0.85); notes.append('span lies outside the keyed Shabad row')
             if is_title(my) and (s1 < 85 or p['m_in'] < 25 or p['m_out'] < 10): conf = min(conf, 0.9); notes.append('title line rarely sung; needs strong evidence')

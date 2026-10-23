@@ -16,3 +16,8 @@ candidate naming a different pangti unless the hearing is strong, title lines on
 / alaap / too little heard = none. Confidence is reported BELOW the measured rate (0.95 / 0.96 / 0.97) and only after
 all checks; the candidate's verseId is compared last. Output `labels/votes/batch2-checker3.json`.
 Run: `python decode.py tok <id>=<cache dir>=<audio.wav> ...; python calib.py; python vote3.py batch2` (needs numpy).
+
+## Batch 3 (Akhand Kirtan, folder 5; `vote3.py batch3`, 2026-10-23)
+
+Decoded the 12 batch-3 recordings from the local q16 cache of the same speech model (`~/personal/live-darbar-venues/cache/5f9e41d867de-q16/l3clip*`, no model run; the x86 namespace holds no l3clip caches). Same scorer and calibration (Kirtan, kbv1) used as a prior only; lens C additions for Akhand Kirtan: the Shabad-row check uses the row of the Shabad my pick belongs to (a recording may hold two keyed Shabads), Vaheguru simran is detected on 'ਵਾਹਿ' pieces (the model drops matras), a span longer than 8 s with under 1.2 heard chars per second is capped at 0.9 (most of it is unheard: sangat, alaap, simran), and a pick that a different-text corpus pangti explains as well (corpus margin < 3) is capped at 0.94 unless a confident neighbour from the same Shabad within 30 s supports it. Hearing is much sparser than Kirtan (about 1.7 tokens/s), so most spans fall under the bar.
+Result: 443 spans, 153 agree, 49 approved (agree and confidence >= 0.95; A 36, B 1, C 11, D 1), 175 'none' (simran / alaap / too little heard / cache gap at l3clip32 0-16 s), 115 a different pangti (mostly a corpus pangti explaining a short hearing better; also l3clip34 61-77 s heard as 20634 not 20633). Output `labels/votes/batch3-checker3.json`.
