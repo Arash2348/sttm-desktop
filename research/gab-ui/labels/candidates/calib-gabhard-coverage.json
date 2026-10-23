@@ -1,0 +1,1021 @@
+{
+ "batch": "calib-gabhard",
+ "made": "2026-10-23",
+ "status": "CANDIDATES - not labels; human / verifier sign-off required",
+ "selection": "named recordings kh11_sttm_desktop_2026_10_11T02_40_20_422Z,kh12_sttm_desktop_2026_10_11T02_50_05_783Z,kh13_sttm_desktop_2026_10_11T03_07_57_411Z,kh14_sttm_desktop_2026_10_11T13_42_38_291Z,kh15_sttm_desktop_2026_10_11T13_45_00_522Z,kh17_sttm_desktop_2026_10_11T18_10_13_059Z,kh18_sttm_desktop_2026_10_11T20_00_12_780Z,kh19_sttm_desktop_2026_10_11T20_08_08_535Z,kh20_sttm_desktop_2026_10_11T20_15_43_327Z,kh21_sttm_desktop_2026_10_11T20_29_16_335Z,kh22_sttm_desktop_2026_10_11T20_36_12_345Z,kh24_sttm_desktop_2026_10_13T02_34_02_550Z,kh25_sttm_desktop_2026_10_13T02_37_22_571Z,kh26_sttm_desktop_2026_10_13T02_43_13_981Z,kh27_sttm_desktop_2026_10_13T02_48_34_427Z,kh28_sttm_desktop_2026_10_13T03_01_13_513Z,kh29_sttm_desktop_2026_10_13T03_13_38_540Z,kh30_sttm_desktop_2026_10_14T02_35_12_435Z,kh31_sttm_desktop_2026_10_14T02_38_09_370Z,kh32_sttm_desktop_2026_10_14T03_11_54_037Z (dropped from c1-6a866c94-main.json: below the 60% bar or no pangti key); held-out test split and labels/accepted/ excluded",
+ "verify_rule": "every checker (each Fable / Opus verifier, plus the aligner) must name the same verseId for the span, each with confidence >= 0.95; accept only then, else send to a person",
+ "tiers": {
+  "A": "both models, same pangti, start within 1 s, check >= 0.5 (~97% right pangti)",
+  "B": "both models agree, check < 0.5 (~65%)",
+  "C": "one model only (~41%)",
+  "D": "one model only, other model put a different pangti here (conflict)"
+ },
+ "recordings": [
+  {
+   "recording": "kh11_sttm_desktop_2026_10_11T02_40_20_422Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "dev",
+   "duration_s": 496.3,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.935,
+   "coverage_after_high_only (current key + new tier A)": 0.103,
+   "candidates": 72,
+   "by_tier": {
+    "B": 10,
+    "D": 25,
+    "C": 24,
+    "A": 13
+   },
+   "new_vs_current_key": 72,
+   "gaps": [
+    {
+     "start_s": 105.73,
+     "end_s": 112.25,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 258.21,
+     "end_s": 260.29,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 292.93,
+     "end_s": 295.93,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 324.73,
+     "end_s": 330.69,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 352.49,
+     "end_s": 357.57,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 488.61,
+     "end_s": 496.3,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh12_sttm_desktop_2026_10_11T02_50_05_783Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "dev",
+   "duration_s": 905.3,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.955,
+   "coverage_after_high_only (current key + new tier A)": 0.098,
+   "candidates": 63,
+   "by_tier": {
+    "C": 32,
+    "A": 10,
+    "D": 14,
+    "B": 7
+   },
+   "new_vs_current_key": 63,
+   "gaps": [
+    {
+     "start_s": 47.38,
+     "end_s": 55.9,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 60.1,
+     "end_s": 63.3,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 120.66,
+     "end_s": 122.66,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 215.02,
+     "end_s": 220.22,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 710.98,
+     "end_s": 727.7,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 901.9,
+     "end_s": 905.3,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh13_sttm_desktop_2026_10_11T03_07_57_411Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "dev",
+   "duration_s": 491.09,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.937,
+   "coverage_after_high_only (current key + new tier A)": 0.07,
+   "candidates": 28,
+   "by_tier": {
+    "C": 18,
+    "D": 3,
+    "B": 4,
+    "A": 3
+   },
+   "new_vs_current_key": 28,
+   "gaps": [
+    {
+     "start_s": 74.44,
+     "end_s": 80.04,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 114.36,
+     "end_s": 116.68,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 140.4,
+     "end_s": 143.44,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 221,
+     "end_s": 228.52,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 462.16,
+     "end_s": 464.84,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 473.76,
+     "end_s": 476.04,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 485.16,
+     "end_s": 491.09,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh14_sttm_desktop_2026_10_11T13_42_38_291Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "dev",
+   "duration_s": 75.09,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.763,
+   "coverage_after_high_only (current key + new tier A)": 0.569,
+   "candidates": 4,
+   "by_tier": {
+    "C": 2,
+    "A": 1,
+    "D": 1
+   },
+   "new_vs_current_key": 4,
+   "gaps": [
+    {
+     "start_s": 16.75,
+     "end_s": 24.63,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 57.63,
+     "end_s": 60.95,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 71.83,
+     "end_s": 75.09,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh15_sttm_desktop_2026_10_11T13_45_00_522Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "dev",
+   "duration_s": 414.81,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.879,
+   "coverage_after_high_only (current key + new tier A)": 0.157,
+   "candidates": 38,
+   "by_tier": {
+    "A": 9,
+    "B": 4,
+    "D": 7,
+    "C": 18
+   },
+   "new_vs_current_key": 38,
+   "gaps": [
+    {
+     "start_s": 37.91,
+     "end_s": 41.91,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 57.79,
+     "end_s": 64.43,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 97.23,
+     "end_s": 101.07,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 151.83,
+     "end_s": 153.91,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 174.75,
+     "end_s": 177.91,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 287.03,
+     "end_s": 291.55,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 303.55,
+     "end_s": 321.19,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 408.39,
+     "end_s": 414.81,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh17_sttm_desktop_2026_10_11T18_10_13_059Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "train",
+   "duration_s": 986.88,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.967,
+   "coverage_after_high_only (current key + new tier A)": 0.092,
+   "candidates": 104,
+   "by_tier": {
+    "B": 6,
+    "A": 12,
+    "D": 48,
+    "C": 38
+   },
+   "new_vs_current_key": 104,
+   "gaps": [
+    {
+     "start_s": 82.58,
+     "end_s": 94.9,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 114.02,
+     "end_s": 126.06,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 226.34,
+     "end_s": 228.34,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 241.54,
+     "end_s": 243.66,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 319.54,
+     "end_s": 321.62,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh18_sttm_desktop_2026_10_11T20_00_12_780Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "train",
+   "duration_s": 417.54,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.962,
+   "coverage_after_high_only (current key + new tier A)": 0.0,
+   "candidates": 29,
+   "by_tier": {
+    "B": 6,
+    "A": 1,
+    "C": 9,
+    "D": 13
+   },
+   "new_vs_current_key": 29,
+   "gaps": [
+    {
+     "start_s": 45.36,
+     "end_s": 51.52,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 89.96,
+     "end_s": 92.84,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 410.96,
+     "end_s": 417.54,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh19_sttm_desktop_2026_10_11T20_08_08_535Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "train",
+   "duration_s": 405.25,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.919,
+   "coverage_after_high_only (current key + new tier A)": 0.144,
+   "candidates": 54,
+   "by_tier": {
+    "C": 19,
+    "A": 23,
+    "B": 6,
+    "D": 6
+   },
+   "new_vs_current_key": 54,
+   "gaps": [
+    {
+     "start_s": 13.4,
+     "end_s": 20.48,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 89.88,
+     "end_s": 108.6,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 283.6,
+     "end_s": 286.56,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 360.96,
+     "end_s": 363.04,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 403.24,
+     "end_s": 405.25,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh20_sttm_desktop_2026_10_11T20_15_43_327Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "train",
+   "duration_s": 754.77,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.928,
+   "coverage_after_high_only (current key + new tier A)": 0.15,
+   "candidates": 105,
+   "by_tier": {
+    "A": 30,
+    "D": 31,
+    "C": 27,
+    "B": 17
+   },
+   "new_vs_current_key": 105,
+   "gaps": [
+    {
+     "start_s": 4.32,
+     "end_s": 6.52,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 37.56,
+     "end_s": 39.72,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 66,
+     "end_s": 77.64,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 97.12,
+     "end_s": 99.68,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 244.8,
+     "end_s": 248.28,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 265.72,
+     "end_s": 271.36,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 277.52,
+     "end_s": 279.88,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 289.92,
+     "end_s": 294.32,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 338.32,
+     "end_s": 340.4,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 600.72,
+     "end_s": 607,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 644.68,
+     "end_s": 646.92,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 674.07,
+     "end_s": 679.51,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 727.35,
+     "end_s": 729.43,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 752.63,
+     "end_s": 754.77,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh21_sttm_desktop_2026_10_11T20_29_16_335Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "train",
+   "duration_s": 380.42,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.953,
+   "coverage_after_high_only (current key + new tier A)": 0.125,
+   "candidates": 19,
+   "by_tier": {
+    "B": 4,
+    "A": 3,
+    "D": 6,
+    "C": 6
+   },
+   "new_vs_current_key": 19,
+   "gaps": [
+    {
+     "start_s": 57.66,
+     "end_s": 60.34,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 99.62,
+     "end_s": 102.7,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 142.02,
+     "end_s": 144.02,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 221.5,
+     "end_s": 225.46,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 374.34,
+     "end_s": 380.42,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh22_sttm_desktop_2026_10_11T20_36_12_345Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "train",
+   "duration_s": 222.38,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.972,
+   "coverage_after_high_only (current key + new tier A)": 0.0,
+   "candidates": 12,
+   "by_tier": {
+    "D": 5,
+    "C": 6,
+    "B": 1
+   },
+   "new_vs_current_key": 12,
+   "gaps": [
+    {
+     "start_s": 136.65,
+     "end_s": 141.17,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 219.53,
+     "end_s": 222.38,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh24_sttm_desktop_2026_10_13T02_34_02_550Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "dev",
+   "duration_s": 160.6,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.972,
+   "coverage_after_high_only (current key + new tier A)": 0.0,
+   "candidates": 6,
+   "by_tier": {
+    "D": 4,
+    "C": 2
+   },
+   "new_vs_current_key": 6,
+   "gaps": [
+    {
+     "start_s": 155.69,
+     "end_s": 160.6,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh25_sttm_desktop_2026_10_13T02_37_22_571Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "dev",
+   "duration_s": 288.26,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.904,
+   "coverage_after_high_only (current key + new tier A)": 0.0,
+   "candidates": 9,
+   "by_tier": {
+    "B": 2,
+    "C": 6,
+    "D": 1
+   },
+   "new_vs_current_key": 9,
+   "gaps": [
+    {
+     "start_s": 202.82,
+     "end_s": 207.22,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 216.7,
+     "end_s": 220.5,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 285.58,
+     "end_s": 288.26,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh26_sttm_desktop_2026_10_13T02_43_13_981Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "dev",
+   "duration_s": 261.97,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.988,
+   "coverage_after_high_only (current key + new tier A)": 0.0,
+   "candidates": 19,
+   "by_tier": {
+    "C": 11,
+    "A": 1,
+    "B": 2,
+    "D": 5
+   },
+   "new_vs_current_key": 19,
+   "gaps": [
+    {
+     "start_s": 10.62,
+     "end_s": 12.78,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 259.62,
+     "end_s": 261.97,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh27_sttm_desktop_2026_10_13T02_48_34_427Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "dev",
+   "duration_s": 684.46,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.926,
+   "coverage_after_high_only (current key + new tier A)": 0.077,
+   "candidates": 75,
+   "by_tier": {
+    "D": 31,
+    "C": 28,
+    "A": 11,
+    "B": 5
+   },
+   "new_vs_current_key": 75,
+   "gaps": [
+    {
+     "start_s": 101.58,
+     "end_s": 105.14,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 114.26,
+     "end_s": 126.82,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 137.74,
+     "end_s": 142.98,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 265.78,
+     "end_s": 278.5,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 286.7,
+     "end_s": 299.3,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 487.84,
+     "end_s": 490.88,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh28_sttm_desktop_2026_10_13T03_01_13_513Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "dev",
+   "duration_s": 716.8,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.953,
+   "coverage_after_high_only (current key + new tier A)": 0.061,
+   "candidates": 36,
+   "by_tier": {
+    "A": 9,
+    "B": 9,
+    "D": 9,
+    "C": 9
+   },
+   "new_vs_current_key": 36,
+   "gaps": [
+    {
+     "start_s": 258,
+     "end_s": 263.48,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 276.12,
+     "end_s": 278.4,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 333.92,
+     "end_s": 336.24,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 420.24,
+     "end_s": 422.92,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 441.84,
+     "end_s": 444.28,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 470.32,
+     "end_s": 472.76,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 563.2,
+     "end_s": 566.88,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 592,
+     "end_s": 594.12,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 710.84,
+     "end_s": 716.8,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh29_sttm_desktop_2026_10_13T03_13_38_540Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "dev",
+   "duration_s": 231.77,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.85,
+   "coverage_after_high_only (current key + new tier A)": 0.319,
+   "candidates": 26,
+   "by_tier": {
+    "D": 7,
+    "A": 10,
+    "C": 6,
+    "B": 3
+   },
+   "new_vs_current_key": 26,
+   "gaps": [
+    {
+     "start_s": 31.45,
+     "end_s": 34.24,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 49.01,
+     "end_s": 52.8,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 65.88,
+     "end_s": 68.08,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 104.05,
+     "end_s": 110.89,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 131.16,
+     "end_s": 133.56,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 164.72,
+     "end_s": 169.16,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 175.88,
+     "end_s": 178.53,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 186.65,
+     "end_s": 189.28,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 204.13,
+     "end_s": 207.25,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 228.41,
+     "end_s": 231.77,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh30_sttm_desktop_2026_10_14T02_35_12_435Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "train",
+   "duration_s": 124.25,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.922,
+   "coverage_after_high_only (current key + new tier A)": 0.0,
+   "candidates": 3,
+   "by_tier": {
+    "B": 1,
+    "C": 2
+   },
+   "new_vs_current_key": 3,
+   "gaps": [
+    {
+     "start_s": 102.54,
+     "end_s": 106.7,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 122.14,
+     "end_s": 124.25,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh31_sttm_desktop_2026_10_14T02_38_09_370Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "train",
+   "duration_s": 1992.11,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.956,
+   "coverage_after_high_only (current key + new tier A)": 0.034,
+   "candidates": 192,
+   "by_tier": {
+    "B": 18,
+    "A": 26,
+    "D": 63,
+    "C": 85
+   },
+   "new_vs_current_key": 192,
+   "gaps": [
+    {
+     "start_s": 155.85,
+     "end_s": 161.97,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 179.85,
+     "end_s": 188.17,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 311.93,
+     "end_s": 314.61,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 370.77,
+     "end_s": 377.41,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 613.39,
+     "end_s": 622.55,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 953.91,
+     "end_s": 957.79,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 1107.08,
+     "end_s": 1113.91,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 1130.36,
+     "end_s": 1134.28,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 1290.63,
+     "end_s": 1294.99,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 1337.91,
+     "end_s": 1342.51,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 1403.64,
+     "end_s": 1406.36,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 1463.96,
+     "end_s": 1469.32,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 1486.64,
+     "end_s": 1500.44,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 1777.72,
+     "end_s": 1779.92,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 1787.16,
+     "end_s": 1789.52,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 1815.64,
+     "end_s": 1817.92,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "kh32_sttm_desktop_2026_10_14T03_11_54_037Z",
+   "category": "Kirtan",
+   "folder": "1-kirtan-shabad",
+   "split": "train",
+   "duration_s": 37.97,
+   "gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+   "coverage_before": null,
+   "coverage_before_recomputed": 0.0,
+   "coverage_after_all_candidates": 0.838,
+   "coverage_after_high_only (current key + new tier A)": 0.0,
+   "candidates": 3,
+   "by_tier": {
+    "B": 2,
+    "C": 1
+   },
+   "new_vs_current_key": 3,
+   "gaps": [
+    {
+     "start_s": 10.92,
+     "end_s": 12.96,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 24.76,
+     "end_s": 28,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  }
+ ]
+}

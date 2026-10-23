@@ -57,3 +57,9 @@ clip01,clip17,clip25,rn09,rn60,rn80,clip26,rn21,rn73,clip32 --max 15`. clip17: r
 should check it before checkers vote. rn14 (8), rn09 (6), rn80 (5) rows carry `evidence.key_mismatch`, not auto-accept
 eligible. Same verify rule: EVERY Fable / Opus checker must name the SAME pangti as the candidate and each checker's
 confidence must be >= 0.95 (plus the aligner); otherwise a person decides.
+
+Calibration (2026-10-23): `CALIBRATION.md`, `calibrated-rule.json`. Candidates `candidates/calib-gabhard.json`
+(`make-candidates.py --calib --ids <kh ids> --hf-dir <blind key copy: shabads.csv only>`), votes `votes/calib-gabhard-checker{1,2,3}.json`
+(checker 3: `TOKDIR=tokcal KEYDIR=<blind key copy> python vote6.py calib-gabhard`), scored by `tools/calibrate.py` against
+the human pangti keys (GAB-Hard / Fremont, non-test). Proposed rule: all 3 checkers name the candidate pangti and tier is
+A/B/C (98.3%, 57/58, 95% lower bound 90.9%; Kirtan only; thin data). Not applied to `accepted/` yet.

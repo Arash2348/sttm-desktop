@@ -1,0 +1,127 @@
+{
+ "name": "calibrated-3check-v1",
+ "made": "2026-10-23",
+ "status": "proposed; owner signs off before any merge or upload",
+ "rule": {
+  "all_checkers_name_candidate_pangti": true,
+  "checkers": [
+   "checker1",
+   "checker2",
+   "checker3"
+  ],
+  "aligner_tiers": [
+   "A",
+   "B",
+   "C"
+  ],
+  "exclude_tier": "D",
+  "min_each_confidence": null,
+  "never_accept_if_any_checker_names_another_pangti": true,
+  "never_accept_key_mismatch": true,
+  "text_must_equal_database_text_for_verseId": true
+ },
+ "python": "accept = all(v.my_verseId == cand.verseId for v in votes) and cand.evidence.tier in (\"A\",\"B\",\"C\") and not cand.evidence.get(\"key_mismatch\")",
+ "measured": {
+  "set": "calib-gabhard",
+  "basis": "human pangti keys (GAB-Hard / Fremont sevadaar screen, non-test), checkers blind",
+  "accepted": 58,
+  "correct": 57,
+  "precision": 0.9828,
+  "wilson95": [
+   0.9086,
+   0.997
+  ],
+  "yield_all": 0.0647,
+  "precision_lag0": 0.9483,
+  "precision_lenient": 1.0
+ },
+ "meets_target": {
+  "precision_ge_95": true,
+  "lower_bound_ge_93": false,
+  "n_ge_200": false
+ },
+ "scope": {
+  "measured_on": [
+   "Kirtan"
+  ],
+  "apply_to": [
+   "Kirtan"
+  ],
+  "not_measured": [
+   "Akhand Kirtan",
+   "Paath",
+   "Sung Bani",
+   "Sehaj / Akhand Paath"
+  ],
+  "note": "keep the strict 0.95 rule (or a person) for the unmeasured forms until they have human pangti keys"
+ },
+ "caveat": "thin data: only 64 calibration spans had all 3 checkers agree; Kirtan (Fremont hall audio) only; Akhand Kirtan, Paath, Sung Bani not measured",
+ "on_overnight_batches": {
+  "batch1": {
+   "spans": 500,
+   "all3_agree": 303,
+   "old_rule": 88,
+   "new_rule": 294,
+   "old_rule_new_to_key": 0,
+   "new_rule_new_to_key": 20,
+   "new_rule_min": 40.0,
+   "key_mismatch_blocked": 0,
+   "category": "Kirtan"
+  },
+  "batch2": {
+   "spans": 948,
+   "all3_agree": 504,
+   "old_rule": 154,
+   "new_rule": 484,
+   "old_rule_new_to_key": 0,
+   "new_rule_new_to_key": 63,
+   "new_rule_min": 64.4,
+   "key_mismatch_blocked": 0,
+   "category": "Kirtan"
+  },
+  "batch3": {
+   "spans": 443,
+   "all3_agree": 94,
+   "old_rule": 7,
+   "new_rule": 94,
+   "old_rule_new_to_key": 0,
+   "new_rule_new_to_key": 28,
+   "new_rule_min": 13.9,
+   "key_mismatch_blocked": 0,
+   "category": "Akhand Kirtan"
+  },
+  "batch4": {
+   "spans": 298,
+   "all3_agree": 57,
+   "old_rule": 3,
+   "new_rule": 50,
+   "old_rule_new_to_key": 1,
+   "new_rule_new_to_key": 4,
+   "new_rule_min": 4.7,
+   "key_mismatch_blocked": 0,
+   "category": "Paath"
+  },
+  "batch5": {
+   "spans": 909,
+   "all3_agree": 392,
+   "old_rule": 87,
+   "new_rule": 359,
+   "old_rule_new_to_key": 0,
+   "new_rule_new_to_key": 70,
+   "new_rule_min": 47.8,
+   "key_mismatch_blocked": 0,
+   "category": "Kirtan"
+  },
+  "batch6": {
+   "spans": 677,
+   "all3_agree": 269,
+   "old_rule": 47,
+   "new_rule": 247,
+   "old_rule_new_to_key": 1,
+   "new_rule_new_to_key": 52,
+   "new_rule_min": 40.5,
+   "key_mismatch_blocked": 0,
+   "category": "Kirtan"
+  }
+ }
+}

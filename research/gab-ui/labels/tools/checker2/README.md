@@ -88,3 +88,11 @@ rn80's 5 were not approved. clip38: the candidates at 28-40 s naming 58102 "ਐ�
 half of the salok, 58101 "ਕਬੀਰ ਮਰਤਾ ਮਰਤਾ ਜਗੁ ਮੂਆ" (0 approved). rn09 0-24 s is heard as the rahao 34271 "ਕਵਨ ਸੁ ਮਤਿ
 ਜਿਤੁ ਪ੍ਰੀਤਮੁ ਪਾਵਉ" at low confidence where the candidates name 50503/50504.
 Output `labels/votes/batch6-checker2.json`; working files (emissions, feats-*.json) in the session scratchpad only.
+
+## Batch 5 (2026-10-23, finished) and calibration
+
+Batch 5: the 8 missing emissions were made (`emis2.js karanbir`, int8, nice 19). The node process aborts on exit with a libc++
+mutex error AFTER the output is written; clip20 and rn67 were kept after a size check (frames x 257 x 4 bytes). Same
+`identify.py` / `decide.py` with `BATCH=batch5`: 909 spans, 473 agree, 124 approved (all tier A). Output `votes/batch5-checker2.json`.
+Calibration: `BATCH=calib-gabhard` on the 20 non-test GAB-Hard / Fremont recordings (human pangti keys hidden from the
+checker): 897 spans, 273 agree, 3 approved. See `labels/CALIBRATION.md`.

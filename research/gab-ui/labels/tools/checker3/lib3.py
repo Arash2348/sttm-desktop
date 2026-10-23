@@ -82,7 +82,8 @@ def rank(h, shabad_ids, extra=()):
     return ranked, scores, shabad_vs
 
 def key_rows(folder, rec):
-    kd = f'{GAB}/hf-keys/{folder}/{rec}'
+    # KEYDIR (calibration, 2026-10-23): read a BLIND key copy (shabads.csv only, empty lines.csv) instead of hf-keys
+    kd = f"{os.environ.get('KEYDIR', GAB + '/hf-keys')}/{folder}/{rec}"
     rd = lambda f: list(csv.DictReader(open(f'{kd}/{f}', encoding='utf-8', newline='')))
     shab = [(r['shabadId'], float(r['start_s']), float(r['end_s'])) for r in rd('shabads.csv') if r.get('shabadId')]
     lines = [(int(r['verseId']), float(r['start_s']), float(r['end_s']),

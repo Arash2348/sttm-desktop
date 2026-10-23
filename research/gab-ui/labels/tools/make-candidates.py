@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """make-candidates.py <gab-lines dir> <out.json> [--folder 1-kirtan-shabad] [--file c1-6a866c94-main.json]
                       [--lo 0.50] [--hi 0.60] [--max 15] [--category Kirtan]
+       or, calibration on human-keyed recordings: --calib --ids <ids> --hf-dir <BLIND key copy> (see below)
        or, for Banis (batch4): --ids pt01,pt05,... --file c1-6a866c94-paath.json,c1-6a866c94-sungbani.json
                       --hf-dir <HF dataset copy with nested content folders> (category from the content folder;
                       'no pangti key' = coverage 0; Bani verse membership from labels/bani-verse-cache.json,
@@ -75,6 +76,12 @@ for FN in FILE.split(','):
 if IDS: covers.sort(key=lambda x: IDS.index(x[1]))
 else: covers.sort(key=lambda x: (-x[0], x[1]))
 covers = covers[:MAX]
+# --calib (2026-10-23): calibration candidates for recordings with HUMAN pangti keys (GAB-Hard / Fremont). Same
+# candidate making, but the recordings are named directly (they pass the 60% bar, so the rescore report does not list
+# them) and --hf-dir must be a BLIND key copy (shabads.csv only, lines.csv header only), so nothing downstream sees
+# the human pangti key. Held-out test split still excluded.
+if '--calib' in argv:
+    covers = [(None, rid) for rid in IDS if manifest.get(rid, {}).get('split') not in (None, 'test')]
 verse_cache = json.load(open(f'{B}/verse-cache.json'))
 if os.path.exists(f'{B}/labels/bani-verse-cache.json'):
     for k, v in json.load(open(f'{B}/labels/bani-verse-cache.json')).items(): verse_cache.setdefault(k, v)
