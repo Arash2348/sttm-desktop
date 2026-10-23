@@ -1,0 +1,2982 @@
+[
+ {
+  "recording": "pt01",
+  "cand_verseId": 1,
+  "start_s": 28.28,
+  "end_s": 38.88,
+  "my_verseId": 1,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਅਜੂਨੀ ਸੈਭੰ ਗੁਰ ਪ੍ਰਸਾਦ\" ~ ਇਕਓਅਕਾਰਸਤਿਨਾਮੁਕਰਤਾਪੁਰਖੁਨਿਰਭਉਨਿ text 100 (next other pangti 0), 29% of the pangti heard; heard-token best fit 23.96-39.16 (forced alignment 23.56-38.84) vs candidate 28.28-38.88 (start -4.3 s, end +0.3 s)"
+ },
+ {
+  "recording": "pt01",
+  "cand_verseId": 2,
+  "start_s": 40.08,
+  "end_s": 40.44,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt01",
+  "cand_verseId": 3,
+  "start_s": 42.44,
+  "end_s": 47.64,
+  "my_verseId": 3,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਆਦਿ ਸਚੁ ਜੁਗਾ ਆਦਿ ਸਚੁ\" ~ ਆਦਿਸਚੁਜੁਗਾਦਿਸਚੁ text 97 (next other pangti 77), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt01",
+  "cand_verseId": 4,
+  "start_s": 49.92,
+  "end_s": 56.84,
+  "my_verseId": 4,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਹੈ ਭੀ ਸਚੁ ਨਾਨਕ ਹੋਸੀ ਭੀ ਸਚੁ\" ~ ਹੈਭੀਸਚੁਨਾਨਕਹੋਸੀਭੀਸਚੁ text 100 (next other pangti 71), 100% of the pangti heard; heard-token fit 49.92-60.68 is off (start +0.0 s, end +3.8 s); only the forced alignment 49.94-56.82 (same model as the aligner) agrees with the candidate"
+ },
+ {
+  "recording": "pt01",
+  "cand_verseId": 5,
+  "start_s": 59.32,
+  "end_s": 63,
+  "my_verseId": 5,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਸੋਚੈ ਸੋਚੁ ਨ ਹੋਵਈ ਜੇ ਸੋਚੀ\" ~ ਸੋਚੈਸੋਚਿਨਹੋਵਈਜੇਸੋਚੀਲਖਵਾਰ text 95 (next other pangti 58), 79% of the pangti heard; heard-token fit 59.32-68.92 is off (start +0.0 s, end +5.9 s); only the forced alignment 59.34-64.42 (same model as the aligner) agrees with the candidate"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74223,
+  "start_s": 27.84,
+  "end_s": 28.24,
+  "my_verseId": 58918,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਨ ਖਾਲੇ ਨ\" ~ ਸੂਰਨਬੀਰਨਮੀਰਨਖਾਨਮਸਗਿਨਕੋਊਦ੍ਰਿਸਟਿ text 80 (next other pangti 80), 16% of the pangti heard; candidate says 74223 \"ਨਮਸਤ੍ਵੰ ਅਕਾਲੇ ॥\""
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74224,
+  "start_s": 28.44,
+  "end_s": 29.96,
+  "my_verseId": 74224,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ੇ ਨਮਸ ਗੁੰ ਕ੍ਰਿਪਾਲੇਹ ਨ\" ~ ਨਮਸਤ੍ਵਕ੍ਰਿਪਾਲੇ text 73 (next other pangti 62), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74225,
+  "start_s": 30.16,
+  "end_s": 31.68,
+  "my_verseId": 74225,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ੇਹ ਨਮਸਤੰਗਿ ਰੂਚੇ ਨ\" ~ ਨਮਸਤਅਰੂਪੇ text 64 (next other pangti 58), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74226,
+  "start_s": 31.84,
+  "end_s": 33.44,
+  "my_verseId": 74225,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਚੇ ਨਮਸਤੰਗਿ ਰੂਚੇ\" ~ ਨਮਸਤਅਰੂਪੇ text 67 (next other pangti 61), 100% of the pangti heard; heard-token best fit 30.56-37.84 (forced alignment 37.1-37.62) vs candidate 31.84-33.44 (start -1.3 s, end +4.4 s); candidate says 74226 \"ਨਮਸਤੰ ਅਨੂਪੇ ॥੨॥\""
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74227,
+  "start_s": 37.08,
+  "end_s": 38.56,
+  "my_verseId": 74270,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਨਮਸਤੰਗਿ ਪੀਛੀ ਨ\" ~ ਨਮਸਤਨਿਧਾਨੇ text 57 (next other pangti 57), 100% of the pangti heard; candidate says 74227 \"ਨਮਸਤੰ ਅਭੇਖੇ ॥\""
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74228,
+  "start_s": 38.72,
+  "end_s": 40.24,
+  "my_verseId": 74228,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਛੀ ਨਮਸਤੰਗਿ ਲੇਖੀ ਨ\" ~ ਨਮਸਤਅਲੇਖੇ text 64 (next other pangti 57), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74229,
+  "start_s": 40.44,
+  "end_s": 41.88,
+  "my_verseId": 74229,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ੀ ਨਮਸਤੰਗ ਕਾਇ ਨ\" ~ ਨਮਸਤਅਕਾਏ text 67 (next other pangti 63), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74230,
+  "start_s": 42.12,
+  "end_s": 43.64,
+  "my_verseId": 74281,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਾਇ ਨਮਸਤੰਗ ਜਾਇ\" ~ ਨਮਸਤਜਲਾਸਰੇ text 71 (next other pangti 71), 100% of the pangti heard; heard-token best fit 40.84-48.12 (forced alignment 40.46-41.02) vs candidate 42.12-43.64 (start -1.3 s, end +4.5 s); candidate says 74230 \"ਨਮਸਤੰ ਅਜਾਏ ॥੩॥\""
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74231,
+  "start_s": 47.36,
+  "end_s": 48.8,
+  "my_verseId": 74256,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਨਮਸ ਤ ਗੰਞੇ ਨ\" ~ ਨਮਸਤਨ੍ਰਿਭਰਮੇ text 77 (next other pangti 77), 75% of the pangti heard; candidate says 74231 \"ਨਮਸਤੰ ਅਗੰਜੇ ॥\""
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74232,
+  "start_s": 49,
+  "end_s": 50.52,
+  "my_verseId": 74231,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਞੇ ਨਮਸਤੰਗ ਭੰਞੇ ਨ\" ~ ਨਮਸਤਅਗਜੇ text 63 (next other pangti 63), 100% of the pangti heard; the same words stand at several places of this Bani; the place is taken from the reading order only; candidate says 74232 \"ਨਮਸਤੰ ਅਭੰਜੇ ॥\""
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74233,
+  "start_s": 50.72,
+  "end_s": 52.24,
+  "my_verseId": 74282,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਞੇ ਨਮਸਤੰਗ ਨਮਿ ਨ\" ~ ਨਮਸਤਨਿਰਾਸਰੇ text 71 (next other pangti 74), 100% of the pangti heard; candidate says 74233 \"ਨਮਸਤੰ ਅਨਾਮੇ ॥\""
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74234,
+  "start_s": 52.4,
+  "end_s": 53.96,
+  "my_verseId": 25291,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਮਿ ਨਮਸਤੰਗ ਠਾਵ\" ~ ਜੋਸਰਣਿਆਵੈਗੁਣਨਿਧਾਨਪਾਵੈਸੋਬਹੁੜਿਜਨ text 71 (next other pangti 63), 30% of the pangti heard; candidate says 74234 \"ਨਮਸਤੰ ਅਠਾਮੇ ॥੪॥\""
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74235,
+  "start_s": 57.64,
+  "end_s": 59.12,
+  "my_verseId": 110143,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਨਮ ਸੰ ਕਰਮਨ ਨ\" ~ ਤੂਧਾਤ੍ਰੀਸ੍ਵਾਹਾਨਮਸਕਾਰਮੋਰੋ text 80 (next other pangti 75), 38% of the pangti heard; candidate says 74235 \"ਨਮਸਤੰ ਅਕਰਮੰ ॥\""
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74236,
+  "start_s": 59.28,
+  "end_s": 60.84,
+  "my_verseId": 74279,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਮਨ ਨਮਸ ਸੰੰਗ ਧਮੰ ਨ\" ~ ਨਮਸਤਅਗਮੇ text 56 (next other pangti 56), 100% of the pangti heard; candidate says 74236 \"ਨਮਸਤੰ ਅਧਰਮੰ ॥\""
+ },
+ {
+  "recording": "pt05",
+  "cand_verseId": 74237,
+  "start_s": 61,
+  "end_s": 62.52,
+  "my_verseId": 74464,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਮੰ ਨਮਸਤਗਾ ਨਵੰ ਨ\" ~ ਨਮਸਤ੍ਵਨ੍ਰਿਨਾਥੇ text 71 (next other pangti 63), 86% of the pangti heard; candidate says 74237 \"ਨਮਸਤੰ ਅਨਾਮੰ ॥\""
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74443,
+  "start_s": 27.36,
+  "end_s": 30.48,
+  "my_verseId": 74443,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਸਦਾ ਸਿਧ ਦਾ ਬੁਧਿ ਦਾ ਬਿਧਿ ਕਰਥਾ\" ~ ਸਦਾਸਿਧਦਾਬੁਧਦਾਬ੍ਰਿਧਕਰਤਾ text 86 (next other pangti 70), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74444,
+  "start_s": 30.84,
+  "end_s": 33.92,
+  "my_verseId": 74444,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਾ ਅਧਹੁ ਬੁਧ ਅਰਧਨ ਅੰਸੁਗਿ ਹਰਥਾ\" ~ ਅਧੋਉਰਧਅਰਧਅਘਓਘਹਰਤਾ text 53 (next other pangti 46), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74445,
+  "start_s": 34,
+  "end_s": 40.88,
+  "my_verseId": 74445,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਰਥਾ ਭਮ ਪਰਮ ਪਰਮੇਸਰ ਪੁਛ ਪਾਲੰ ਸ\" ~ ਪਰਪਰਮਪਰਮੇਸ੍ਵਰਪ੍ਰੋਛਪਾਲ text 71 (next other pangti 51), 100% of the pangti heard; heard-token best fit 38.12-39.08 (forced alignment 38.7-38.7) vs candidate 34-40.88 (start +4.1 s, end -1.8 s); overlaps the next candidate span by 3.3 s"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74445,
+  "start_s": 37.56,
+  "end_s": 40.88,
+  "my_verseId": 74445,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਭਮ ਪਰਮ ਪਰਮੇਸਰ ਪੁਛ ਪਾਲੰ ਸ\" ~ ਪਰਪਰਮਪਰਮੇਸ੍ਵਰਪ੍ਰੋਛਪਾਲ text 72 (next other pangti 52), 90% of the pangti heard; heard-token best fit 39.96-41.08 (forced alignment 40.18-40.86) vs candidate 37.56-40.88 (start +2.4 s, end +0.2 s); overlaps the previous candidate span by 3.3 s"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74446,
+  "start_s": 41.04,
+  "end_s": 44.32,
+  "my_verseId": 74446,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ੰ ਸਲਾ ਸਰਬ ਦਾਸ ਤੇਥ ਕਾ ਜਿਆਰਮ\" ~ ਸਦਾਸਰਬਦਾਸਿਧਦਾਤਾਦਿਆਲ text 63 (next other pangti 57), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74447,
+  "start_s": 47.8,
+  "end_s": 51.08,
+  "my_verseId": 74447,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਕਛੇ ਜਆ ਭੇਜੀਆ ਨਾਮਗਾਥਾਮ ਸਮ\" ~ ਅਛੇਦੀਅਭੇਦੀਅਨਾਮਅਕਾਮ text 53 (next other pangti 40), 100% of the pangti heard; no heard-token run of this pangti inside the window"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74448,
+  "start_s": 51.32,
+  "end_s": 54.56,
+  "my_verseId": 74448,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਸਮਸ ਕੋੋਇਆ ਜੀ ਸਮ ਸਤ ਧਵ\" ~ ਸਮਸਤੋਪਰਾਜੀਸਮਸਤਸਤੁਧਾਮ text 61 (next other pangti 47), 80% of the pangti heard"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74449,
+  "start_s": 57.24,
+  "end_s": 59.6,
+  "my_verseId": 22139,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਮਰਾ ਜੋ ਚ ਜ\" ~ ਹਮਰਾਜੋਰੁਸਭੁਰਹਿਓਮੇਰੇਬੀਰ text 77 (next other pangti 73), 32% of the pangti heard; candidate says 74449 \"ਤੇਰਾ ਜੋਰੁ ॥\""
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74450,
+  "start_s": 59.16,
+  "end_s": 60.56,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt06",
+  "cand_verseId": 74451,
+  "start_s": 61.52,
+  "end_s": 62.68,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74657,
+  "start_s": 27.24,
+  "end_s": 27.72,
+  "my_verseId": 74657,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਤਿ ਭਉਨੈ\" ~ ਕਿਸਰਬਤ੍ਰਭਉਨੈ text 80 (next other pangti 80), 50% of the pangti heard; heard-token fit 21.56-32.24 is off (start -5.7 s, end +4.5 s); only the forced alignment 27.24-27.68 (same model as the aligner) agrees with the candidate"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74658,
+  "start_s": 31.24,
+  "end_s": 32.8,
+  "my_verseId": 74666,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਕੇ ਸਰਬਤਿ ਦੇਸੈ ਕੇ\" ~ ਕਿਸਰਬਤ੍ਰਦੇਸੈ text 72 (next other pangti 61), 100% of the pangti heard; the same words stand at several places of this Bani; the place is taken from the reading order only; candidate says 74658 \"ਕਿ ਸਰਬੱਤ੍ਰ ਦੇਸੈ ॥\""
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74659,
+  "start_s": 33,
+  "end_s": 34.52,
+  "my_verseId": 74666,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਸੈ ਕੇ ਸਰਬਤਿ ਦੇਸੈ ਕੇ\" ~ ਕਿਸਰਬਤ੍ਰਦੇਸੈ text 67 (next other pangti 56), 100% of the pangti heard; the same words stand at several places of this Bani; the place is taken from the reading order only; candidate says 74659 \"ਕਿ ਸਰਬੱਤ੍ਰ ਭੇਸੈ ॥\""
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74660,
+  "start_s": 34.68,
+  "end_s": 36.24,
+  "my_verseId": 74675,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਸੈ ਕੇ ਸਰਬਤਿ ਰਾਜੈ ਕੇ\" ~ ਕਿਸਰਬਤ੍ਰਰਾਜੈ text 67 (next other pangti 59), 100% of the pangti heard; the same words stand at several places of this Bani; the place is taken from the reading order only; heard-token fit 33.0-37.36 is off (start -1.7 s, end +1.1 s); only the forced alignment 35.82-36.22 (same model as the aligner) agrees with the candidate; candidate says 74660 \"ਕਿ ਸਰਬੱਤ੍ਰ ਰਾਜੈ ॥\""
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74661,
+  "start_s": 36.4,
+  "end_s": 37.96,
+  "my_verseId": 74660,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਜੈ ਕੇ ਸਰਬਤਿ ਸਾਜੈ\" ~ ਕਿਸਰਬਤ੍ਰਰਾਜੈ text 64 (next other pangti 58), 100% of the pangti heard; candidate says 74661 \"ਕਿ ਸਰਬੱਤ੍ਰ ਸਾਜੈ ॥੧੧੨॥\""
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74662,
+  "start_s": 41.56,
+  "end_s": 43.08,
+  "my_verseId": 74662,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਕੇ ਸਰਬਤਿ ਲੀਨੈ ਕੇ\" ~ ਕਿਸਰਬਤ੍ਰਦੀਨੈ text 64 (next other pangti 61), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74663,
+  "start_s": 43.28,
+  "end_s": 44.8,
+  "my_verseId": 74662,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਨੈ ਕੇ ਸਰਬਤਿ ਲੀਨੈ ਕੇ\" ~ ਕਿਸਰਬਤ੍ਰਦੀਨੈ text 59 (next other pangti 56), 100% of the pangti heard; the same pangti was already sung in the previous span (repetition split); candidate says 74663 \"ਕਿ ਸਰਬੱਤ੍ਰ ਲੀਨੈ ॥\""
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74664,
+  "start_s": 45,
+  "end_s": 46.52,
+  "my_verseId": 74665,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਨੈ ਕੇ ਸਰਬਤਿ ਜਾਹੁ ਕੇ\" ~ ਕਿਸਰਬਤ੍ਰਭਾਹੋ text 52 (next other pangti 53), 100% of the pangti heard; heard-token best fit 43.28-47.64 (forced alignment 43.38-43.38) vs candidate 45-46.52 (start -1.7 s, end +1.1 s); candidate says 74664 \"ਕਿ ਸਰਬੱਤ੍ਰ ਜਾਹੋ ॥\""
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74665,
+  "start_s": 46.68,
+  "end_s": 48.28,
+  "my_verseId": 74665,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਹੁ ਕੇ ਸਰਬਤਿ ਪਾਾਹ\" ~ ਕਿਸਰਬਤ੍ਰਭਾਹੋ text 56 (next other pangti 56), 100% of the pangti heard; heard-token best fit 45.0-52.84 (forced alignment 51.82-52.46) vs candidate 46.68-48.28 (start -1.7 s, end +4.6 s)"
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74666,
+  "start_s": 51.8,
+  "end_s": 53.4,
+  "my_verseId": 74658,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਕੇ ਸਰਬਤਿ ਦੇਸੈ ਕੇ\" ~ ਕਿਸਰਬਤ੍ਰਦੇਸੈ text 72 (next other pangti 61), 100% of the pangti heard; the same words stand at several places of this Bani; the place is taken from the reading order only; candidate says 74666 \"ਕਿ ਸਰਬੱਤ੍ਰ ਦੇਸੈ ॥\""
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74667,
+  "start_s": 53.56,
+  "end_s": 55.08,
+  "my_verseId": 74659,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਸੈ ਕੇ ਸਰਬਤਿ ਭੇਸੈ ਕੇ\" ~ ਕਿਸਰਬਤ੍ਰਭੇਸੈ text 67 (next other pangti 56), 100% of the pangti heard; the same words stand at several places of this Bani; the place is taken from the reading order only; candidate says 74667 \"ਕਿ ਸਰਬੱਤ੍ਰ ਭੇਸੈ ॥\""
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74668,
+  "start_s": 55.28,
+  "end_s": 56.8,
+  "my_verseId": 74518,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਸੈ ਕੇ ਸਰਬਤ ਖਾਲੈ ਕੇ\" ~ ਸਰਬਕਾਲੇ text 64 (next other pangti 62), 100% of the pangti heard; heard-token best fit 53.56-56.44 (forced alignment 57.3-57.54) vs candidate 55.28-56.8 (start -1.7 s, end -0.4 s); candidate says 74668 \"ਕਿ ਸਰਬੱਤ੍ਰ ਕਾਲੈ ॥\""
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74669,
+  "start_s": 56.96,
+  "end_s": 58.56,
+  "my_verseId": 117699,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਾਲੈ ਕੇ ਸਰਬਤਿ ਫਾਲੈ\" ~ ਅਜਨਆਜਿਦੁਹੂਅਖਿਯਾਨਸੁਭਾਲਮੈਕੇਸਰਿਲਾ text 77 (next other pangti 62), 39% of the pangti heard; heard-token best fit 55.28-62.8 (forced alignment 63.26-63.38) vs candidate 56.96-58.56 (start -1.7 s, end +4.2 s); candidate says 74669 \"ਕਿ ਸਰਬੱਤ੍ਰ ਪਾਲੈ ॥੧੧੪॥\""
+ },
+ {
+  "recording": "pt07",
+  "cand_verseId": 74670,
+  "start_s": 62.08,
+  "end_s": 62.72,
+  "my_verseId": 129920,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਕੇ ਸਰਮਤ\" ~ ਸਮਰਮਤੀਰਾਨੀਗ੍ਰਿਹਤਾਕੇ text 73 (next other pangti 60), 32% of the pangti heard; heard-token best fit 62.92-68.44 (forced alignment 63.86-63.86) vs candidate 62.08-62.72 (start +0.8 s, end +5.7 s); candidate says 74670 \"ਕਿ ਸਰਬੱਤ੍ਰ ਹੰਤਾ ॥\""
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74869,
+  "start_s": 27.04,
+  "end_s": 28,
+  "my_verseId": 74869,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਗੁਨ ਗਨ ਪਰਨਾਮ\" ~ ਗੁਨਿਗਨਪ੍ਰਨਾਮ text 91 (next other pangti 80), 83% of the pangti heard"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74870,
+  "start_s": 28.28,
+  "end_s": 29.2,
+  "my_verseId": 74870,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਮ ਜਲ ਥਨ ਮੁਦਾਮ ਅ\" ~ ਜਲਥਲਮੁਦਾਮ text 80 (next other pangti 71), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74871,
+  "start_s": 29.44,
+  "end_s": 30.24,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74872,
+  "start_s": 30.52,
+  "end_s": 31.32,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74873,
+  "start_s": 31.56,
+  "end_s": 32.24,
+  "my_verseId": 37315,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਪਮ ਪਾਰ ਗਤਿ\" ~ ਨਾਨਕਸੋਪਾਰਗਤਿਹੋਇ text 86 (next other pangti 86), 53% of the pangti heard; candidate says 74873 \"ਉਪਮਾ ਅਪਾਰ ॥\""
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74874,
+  "start_s": 32.32,
+  "end_s": 33.08,
+  "my_verseId": 41344,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਪਾਰ ਗਤਿ ਨਾਰ\" ~ ਦੇਗੁਨਾਸਤਿਭੈਣਭਰਾਵਹੈਪਾਰਗਤਿਦਾਨੁਪੜ text 82 (next other pangti 80), 26% of the pangti heard; candidate says 74874 \"ਗਤਿ ਮਿਤਿ ਉਦਾਰ ॥੧੬੪॥\""
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74875,
+  "start_s": 33.36,
+  "end_s": 34.16,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74876,
+  "start_s": 34.24,
+  "end_s": 34.92,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74877,
+  "start_s": 35.32,
+  "end_s": 36.12,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74878,
+  "start_s": 36.2,
+  "end_s": 37.08,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74879,
+  "start_s": 37.48,
+  "end_s": 38.04,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74880,
+  "start_s": 38.16,
+  "end_s": 39,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74881,
+  "start_s": 39.32,
+  "end_s": 40.16,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74882,
+  "start_s": 40.2,
+  "end_s": 40.96,
+  "my_verseId": 74882,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਉ ਏੈਦਾਉ\" ~ ਏਕੈਸਦਾਹੁ text 57 (next other pangti 54), 75% of the pangti heard; no heard-token run of this pangti inside the window"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74883,
+  "start_s": 41.2,
+  "end_s": 42,
+  "my_verseId": 95964,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਉ ਅਉ ਕਰਿਆਦ ਕਥ\" ~ ਅਉਕਰਿਕੈਤਪਸ੍ਯਾਅਤਿਹੀਤਿਹਕੀਹਿਤਸੋਤਿ text 75 (next other pangti 56), 26% of the pangti heard; candidate says 74883 \"ਓਅੰਕਾਰ ਆਦਿ ॥\""
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74884,
+  "start_s": 42.04,
+  "end_s": 42.88,
+  "my_verseId": 74884,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਿਆਦ ਕਥਨੀ ਅਨਾਦ ਖ\" ~ ਕਥਨੀਅਨਾਦਿ text 76 (next other pangti 73), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74885,
+  "start_s": 43.08,
+  "end_s": 44.08,
+  "my_verseId": 74885,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਦ ਖ ਖੰਡਿਆਲ\" ~ ਖਲਖਡਖਿਆਲ text 80 (next other pangti 73), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74886,
+  "start_s": 44.36,
+  "end_s": 45.2,
+  "my_verseId": 74886,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਲ ਗੁਰ ਬ ਘ\" ~ ਗੁਰਬਰਅਕਾਲ text 80 (next other pangti 80), 67% of the pangti heard"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74887,
+  "start_s": 45.44,
+  "end_s": 46.32,
+  "my_verseId": 138725,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਘਿ ਕਰਿ ਪਰ ਨਾਮ ਚਿਤ\" ~ ਕਰਿਪ੍ਰਨਾਮਚਰਨਨਉਠਿਪਰੀ text 78 (next other pangti 70), 68% of the pangti heard; candidate says 74887 \"ਘਰ ਘਰਿ ਪ੍ਰਨਾਮ ॥\""
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74888,
+  "start_s": 46.4,
+  "end_s": 47.32,
+  "my_verseId": 74888,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਨਾਮ ਚਿਤ ਚਰਣ ਨਾਮੁ ਅ\" ~ ਚਿਤਚਰਨਨਾਮ text 70 (next other pangti 72), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74889,
+  "start_s": 47.56,
+  "end_s": 48.32,
+  "my_verseId": 74871,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਮੁ ਅੰਛਜ ਗਦ\" ~ ਅਨਛਿਜਅਗ text 57 (next other pangti 53), 100% of the pangti heard; no heard-token run of this pangti inside the window; candidate says 74889 \"ਅਨਛਿੱਜ ਗਾਤ ॥\""
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74890,
+  "start_s": 48.4,
+  "end_s": 49.4,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74891,
+  "start_s": 49.72,
+  "end_s": 50.56,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74892,
+  "start_s": 50.68,
+  "end_s": 51.68,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74893,
+  "start_s": 52,
+  "end_s": 53,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74894,
+  "start_s": 53.32,
+  "end_s": 54.2,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74895,
+  "start_s": 54.56,
+  "end_s": 55.44,
+  "my_verseId": 57571,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਆ ਡਟ ਧਰਮ\" ~ ਸਭਫੋਕਟਧਰਮਅਬੀਨਿਆ text 80 (next other pangti 80), 40% of the pangti heard; candidate says 74895 \"ਆਡੀਠ ਧਰਮ ॥\""
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74896,
+  "start_s": 55.8,
+  "end_s": 56.8,
+  "my_verseId": 74896,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਅਤਿਢੀਠ ਕਰਮ\" ~ ਅਤਿਢੀਠਕਰਮ text 100 (next other pangti 71), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74897,
+  "start_s": 57.16,
+  "end_s": 58.24,
+  "my_verseId": 74897,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਅਨ ਬਰਣ ਅਨੰਤ\" ~ ਅਣਬ੍ਰਣਅਨਤ text 82 (next other pangti 77), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74898,
+  "start_s": 58.6,
+  "end_s": 59.4,
+  "my_verseId": 74898,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਦਾਤਾ ਮੰਤ\" ~ ਦਾਤਾਮਹਤ text 92 (next other pangti 100), 100% of the pangti heard"
+ },
+ {
+  "recording": "pt34",
+  "cand_verseId": 74899,
+  "start_s": 59.76,
+  "end_s": 62.48,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 78277,
+  "start_s": 27.28,
+  "end_s": 39,
+  "my_verseId": 75017,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਸੰਗ ਅਪੰੰਤੰ ਤਕਾਲੰਕ ਕਰਣਾਸੀ ਦਇਆਲੰਸਦੇ ਦਆਾਰੰਗ ਸੰਦੇ\" ~ ਦੁਕਾਲਪ੍ਰਣਾਸੀਦਿਆਲਸਰੂਪੇ text 54 (next other pangti 44), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the next candidate span by 11.7 s; candidate says 78277 \"ਹੋਤ ਕੁਲਾਹਲ ਦੇਵਪੁਰੀ ਮਿਲ ਦੇਵਨ ਕੇ\""
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 78280,
+  "start_s": 27.28,
+  "end_s": 28.68,
+  "my_verseId": 115238,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਸੰਗ ਅਪੰ\" ~ ਛੋਰਿਨਚਲਿਯੋਧਾਮਸਗਅਪੁਨੇਲਈ text 100 (next other pangti 100), 27% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 11.7 s; candidate says 78280 \"ਤੀਨ ਲੋਕ ਜੈ ਜੈ ਕਰੈ ਰਰੈ ਨਾਮੁ ਸਤਿ\""
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95385,
+  "start_s": 29.16,
+  "end_s": 32.96,
+  "my_verseId": 78049,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ੰਤੰ ਤਕਾਲੰਕ ਕਰਣਾ\" ~ ਸਰਬਕਾਲਕਰਣਾਤਬਭਰੇ text 82 (next other pangti 78), 87% of the pangti heard; heard-token best fit 32.0-32.72 (forced alignment 28.46-28.46) vs candidate 29.16-32.96 (start +2.8 s, end -0.2 s); candidate says 95385 \"ਸਵੈਯਾ ॥\""
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95386,
+  "start_s": 33.32,
+  "end_s": 86.84,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 40): \"ਸੀ ਦਇਆਲੰਸਦੇ ਦਆਾਰੰਗ ਸੰਦੇ ਅਬੰਧਦੇੂੈ ਅਉ ਮੇਰੀ ਅਵ ਮੇਨਤੀ ਸੁਣਿ ਲਐ ਮੇ\"; overlaps the next candidate span by 47.3 s"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95385,
+  "start_s": 39.52,
+  "end_s": 40.88,
+  "my_verseId": 74314,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਅਬੰਧਦੇ\" ~ ਨਮੋਸਤਅਬਧੇ text 89 (next other pangti 80), 67% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 47.3 s; candidate says 95385 \"ਸਵੈਯਾ ॥\""
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95386,
+  "start_s": 42.72,
+  "end_s": 87.32,
+  "my_verseId": 31725,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ੈ ਅਉ ਮੇਰੀ ਅਵ ਮੇਨਤੀ ਸੁਣਿ ਲਐ ਮੇਰੀ\" ~ ਇਹਬੇਨਤੀਸੁਣਿਪ੍ਰਭਮੇਰੇ text 51 (next other pangti 45), 100% of the pangti heard; heard-token best fit 81.16-84.0 (forced alignment 42.94-42.94) vs candidate 42.72-87.32 (start +38.4 s, end -3.3 s); candidate says 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\""
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95386,
+  "start_s": 86.92,
+  "end_s": 99.24,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 43): \"ਮੇਰੀ ਆਰੈ ਮੇਤੀਰੀ ਮੇਰੀ ਆਵੈਵਹਣਤੀ ਸ\"; overlaps the next candidate span by 11.5 s"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95385,
+  "start_s": 87.76,
+  "end_s": 90.04,
+  "my_verseId": 434,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਆਰੈ ਮੇਤੀ\" ~ ਸੋਕਿਉਵਿਸਰੈਮੇਰੀਮਾਇ text 77 (next other pangti 77), 41% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 11.5 s; candidate says 95385 \"ਸਵੈਯਾ ॥\""
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95386,
+  "start_s": 93.76,
+  "end_s": 111.56,
+  "my_verseId": 37646,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਮੇਰੀ ਆਵੈਵਹਣਤੀ ਸ ਮੇਰੀ ਆਵੈ ਮੈਣ ਧਰੀ ਮੇਰੀ ਅਵੈ ਤਿਨ ਤੇਰੀ\" ~ ਮੇਰੀਤੇਰੀਮੁਦ੍ਰਾਧਾਰੀ text 54 (next other pangti 48), 100% of the pangti heard; heard-token best fit 89.68-94.6 (forced alignment 93.78-94.22) vs candidate 93.76-111.56 (start -4.1 s, end -17.0 s); overlaps the next candidate span by 11.3 s; candidate says 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\""
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95386,
+  "start_s": 100.24,
+  "end_s": 111.56,
+  "my_verseId": 37646,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਮੇਰੀ ਆਵੈ ਮੈਣ ਧਰੀ ਮੇਰੀ ਅਵੈ ਤਿਨ ਤੇਰੀ ਤੁ ਮੀਜਨ\" ~ ਮੇਰੀਤੇਰੀਮੁਦ੍ਰਾਧਾਰੀ text 52 (next other pangti 46), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 11.3 s; candidate says 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\""
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95385,
+  "start_s": 112.56,
+  "end_s": 114.64,
+  "my_verseId": 20780,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਤੇਰਾ ਅਮਹਿਸ\" ~ ਸਚਾਤੇਰਾਅਮਰੁਸਚਾਦੀਬਾਣੁ text 80 (next other pangti 80), 45% of the pangti heard; candidate says 95385 \"ਸਵੈਯਾ ॥\""
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95386,
+  "start_s": 115.08,
+  "end_s": 136.12,
+  "my_verseId": 95386,
+  "confidence": 0.5,
+  "agrees": true,
+  "reason": "heard \"ਕਰਰਿ ਨਾਮਵ ਸਚ ਹ ਨਾਨ ਮਰੀ ਆਵੈ ਬਿਨੁ ਮਿਹੀ ਸੁ ਮੇਰ\" ~ ਹੇਰਵਿਹੇਸਸਿਹੇਕਰੁਨਾਨਿਧਿਮੇਰੀਅਬੈਬਿ text 46 (next other pangti 45), 80% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the next candidate span by 20.0 s"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95386,
+  "start_s": 116.16,
+  "end_s": 149.96,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 44): \"ਕਰਰਿ ਨਾਮਵ ਸਚ ਹ ਨਾਨ ਮਰੀ ਆਵੈ ਬਿਨੁ ਮਿਹੀ ਸੁ ਮੇਰ ਮੇਰੀ ਆਰ ਮਨ ਤੇ ਸੁ\"; overlaps the previous candidate span by 20.0 s; overlaps the next candidate span by 13.0 s"
+ },
+ {
+  "recording": "aa16",
+  "cand_verseId": 95387,
+  "start_s": 136.96,
+  "end_s": 149.64,
+  "my_verseId": 29893,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਮੇਰੀ ਆਰ ਮਨ ਤੇ ਸੁਣਿ ਮੇਐ\" ~ ਨਾਮੁਤੇਰੋਆਰਤੀਮਜਨੁਮੁਰਾਰੇ text 51 (next other pangti 51), 77% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 13.0 s; candidate says 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \""
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95386,
+  "start_s": 27.2,
+  "end_s": 39.24,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 44): \"ੇਰੀ ਆਰੈ ਮੇਤੀਰੀ ਮੇਰੀ ਆਵੈਵਹਣਤੀ ਸ\"; overlaps the next candidate span by 11.5 s"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95385,
+  "start_s": 27.76,
+  "end_s": 30.04,
+  "my_verseId": 434,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਆਰੈ ਮੇਤੀ\" ~ ਸੋਕਿਉਵਿਸਰੈਮੇਰੀਮਾਇ text 77 (next other pangti 77), 41% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 11.5 s; candidate says 95385 \"ਸਵੈਯਾ ॥\""
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95386,
+  "start_s": 33.76,
+  "end_s": 51.56,
+  "my_verseId": 37646,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਮੇਰੀ ਆਵੈਵਹਣਤੀ ਸ ਮੇਰੀ ਆਵੈ ਮੈਣ ਧਰੀ ਮੇਰੀ ਅਵੈ ਤਿਨ ਤੇਰੀ\" ~ ਮੇਰੀਤੇਰੀਮੁਦ੍ਰਾਧਾਰੀ text 54 (next other pangti 48), 100% of the pangti heard; heard-token best fit 29.68-34.6 (forced alignment 33.78-34.22) vs candidate 33.76-51.56 (start -4.1 s, end -17.0 s); overlaps the next candidate span by 11.3 s; candidate says 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\""
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95386,
+  "start_s": 40.24,
+  "end_s": 51.56,
+  "my_verseId": 37646,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਮੇਰੀ ਆਵੈ ਮੈਣ ਧਰੀ ਮੇਰੀ ਅਵੈ ਤਿਨ ਤੇਰੀ ਤੁ ਮੀਜਨ\" ~ ਮੇਰੀਤੇਰੀਮੁਦ੍ਰਾਧਾਰੀ text 52 (next other pangti 46), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 11.3 s; candidate says 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\""
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95385,
+  "start_s": 52.56,
+  "end_s": 54.64,
+  "my_verseId": 20780,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਤੇਰਾ ਅਮਹਿਸ\" ~ ਸਚਾਤੇਰਾਅਮਰੁਸਚਾਦੀਬਾਣੁ text 80 (next other pangti 80), 45% of the pangti heard; candidate says 95385 \"ਸਵੈਯਾ ॥\""
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95386,
+  "start_s": 55.08,
+  "end_s": 76.12,
+  "my_verseId": 95386,
+  "confidence": 0.5,
+  "agrees": true,
+  "reason": "heard \"ਕਰਰਿ ਨਾਮਵ ਸਚ ਹ ਨਾਨ ਮਰੀ ਆਵੈ ਬਿਨੁ ਮਿਹੀ ਸੁ ਮੇਰ\" ~ ਹੇਰਵਿਹੇਸਸਿਹੇਕਰੁਨਾਨਿਧਿਮੇਰੀਅਬੈਬਿ text 46 (next other pangti 45), 80% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the next candidate span by 20.0 s"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95386,
+  "start_s": 56.16,
+  "end_s": 89.96,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 44): \"ਕਰਰਿ ਨਾਮਵ ਸਚ ਹ ਨਾਨ ਮਰੀ ਆਵੈ ਬਿਨੁ ਮਿਹੀ ਸੁ ਮੇਰ ਮੇਰੀ ਆਰ ਮਨ ਤੇ ਸੁ\"; overlaps the previous candidate span by 20.0 s; overlaps the next candidate span by 13.0 s"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95386,
+  "start_s": 76.96,
+  "end_s": 101.52,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 41): \"ਮੇਰੀ ਆਰ ਮਨ ਤੇ ਸੁਣਿ ਮੇਐਰ ਰਾਗ ਹਉ ਤੁੁਮ ਕਹਿ ਗਛ\"; overlaps the previous candidate span by 13.0 s; overlaps the next candidate span by 5.5 s"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95387,
+  "start_s": 96,
+  "end_s": 119.88,
+  "my_verseId": 95387,
+  "confidence": 0.5,
+  "agrees": true,
+  "reason": "heard \"ਰ ਰਾਗ ਹਉ ਤੁੁਮ ਕਹਿ ਗਛ ਹੋਇ ਨਾਮਾਗਿ ਹਉਮ ਗਮ ਤੇ ਚਾਤਿਆ ਜਿ\" ~ ਅਉਰਨਮਾਗਤਹਉਤੁਮਤੇਕਛੁਚਾਹਤਹਉਚਿਤਮੈਸ text 48 (next other pangti 46), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 5.5 s; overlaps the next candidate span by 11.5 s"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95387,
+  "start_s": 108.4,
+  "end_s": 119.88,
+  "my_verseId": 95387,
+  "confidence": 0.5,
+  "agrees": true,
+  "reason": "heard \"ਹੋਇ ਨਾਮਾਗਿ ਹਉਮ ਗਮ ਤੇ ਚਾਤਿਆ ਜਿਤੁ ਮਹਿ ਲੋਹੀ ਗੀਐ\" ~ ਅਉਰਨਮਾਗਤਹਉਤੁਮਤੇਕਛੁਚਾਹਤਹਉਚਿਤਮੈਸ text 48 (next other pangti 48), 97% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 11.5 s"
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95385,
+  "start_s": 127.36,
+  "end_s": 128.44,
+  "my_verseId": 209148,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਚਾਤਿਓਉ\" ~ ਚਾਤਿਰਚਤੁਰਪਾਠਸੇਵਕਸਹੇਲੀਸਾਠਿਸਪਦਾਸ text 80 (next other pangti 80), 12% of the pangti heard; candidate says 95385 \"ਸਵੈਯਾ ॥\""
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95386,
+  "start_s": 129.36,
+  "end_s": 144.92,
+  "my_verseId": 51494,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਚਿਤੁ ਰਹ ਨਹੀ ਕੀਜੈ ਮੇਰੀ ਆਵ ਲਿਨ ਤੇਰੀ ਸੁਈਐ ਪਰੀ ਅਵੈਿ ਧਰ\" ~ ਸੁਰਹਕੀਜੈਸੀਤੇਰੀਚਾਲ text 48 (next other pangti 41), 100% of the pangti heard; heard-token best fit 130.64-131.04 (forced alignment 137.22-137.22) vs candidate 129.36-144.92 (start +1.3 s, end -13.9 s); candidate says 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\""
+ },
+ {
+  "recording": "aa17",
+  "cand_verseId": 95387,
+  "start_s": 146,
+  "end_s": 152.36,
+  "my_verseId": 42303,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਤੇਰਾ ਹ ਏਕ ਹਾਨੈ ਮਿ\" ~ ਗੁਸਾਈਤੇਰਾਕਹਾਨਾਮੁਕੈਸੇਜਾਤੀ text 78 (next other pangti 42), 54% of the pangti heard; candidate says 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \""
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95386,
+  "start_s": 29,
+  "end_s": 41.52,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 43): \"ਰ ਰਾਗ ਹਉ ਤੁੁਮ ਕਹਿ ਗਛ\"; overlaps the next candidate span by 5.5 s"
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95387,
+  "start_s": 36,
+  "end_s": 59.88,
+  "my_verseId": 95387,
+  "confidence": 0.5,
+  "agrees": true,
+  "reason": "heard \"ਰ ਰਾਗ ਹਉ ਤੁੁਮ ਕਹਿ ਗਛ ਹੋਇ ਨਾਮਾਗਿ ਹਉਮ ਗਮ ਤੇ ਚਾਤਿਆ ਜਿ\" ~ ਅਉਰਨਮਾਗਤਹਉਤੁਮਤੇਕਛੁਚਾਹਤਹਉਚਿਤਮੈਸ text 48 (next other pangti 46), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 5.5 s; overlaps the next candidate span by 11.5 s"
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95387,
+  "start_s": 48.4,
+  "end_s": 59.88,
+  "my_verseId": 95387,
+  "confidence": 0.5,
+  "agrees": true,
+  "reason": "heard \"ਹੋਇ ਨਾਮਾਗਿ ਹਉਮ ਗਮ ਤੇ ਚਾਤਿਆ ਜਿਤੁ ਮਹਿ ਲੋਹੀ ਗੀਐ\" ~ ਅਉਰਨਮਾਗਤਹਉਤੁਮਤੇਕਛੁਚਾਹਤਹਉਚਿਤਮੈਸ text 48 (next other pangti 48), 97% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 11.5 s"
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95385,
+  "start_s": 67.36,
+  "end_s": 68.44,
+  "my_verseId": 209148,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਚਾਤਿਓਉ\" ~ ਚਾਤਿਰਚਤੁਰਪਾਠਸੇਵਕਸਹੇਲੀਸਾਠਿਸਪਦਾਸ text 80 (next other pangti 80), 12% of the pangti heard; candidate says 95385 \"ਸਵੈਯਾ ॥\""
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95386,
+  "start_s": 69.36,
+  "end_s": 84.92,
+  "my_verseId": 51494,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਚਿਤੁ ਰਹ ਨਹੀ ਕੀਜੈ ਮੇਰੀ ਆਵ ਲਿਨ ਤੇਰੀ ਸੁਈਐ ਪਰੀ ਅਵੈਿ ਧਰ\" ~ ਸੁਰਹਕੀਜੈਸੀਤੇਰੀਚਾਲ text 48 (next other pangti 41), 100% of the pangti heard; heard-token best fit 70.64-71.04 (forced alignment 77.22-77.22) vs candidate 69.36-84.92 (start +1.3 s, end -13.9 s); candidate says 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\""
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95386,
+  "start_s": 85.96,
+  "end_s": 103.84,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 43): \"ਤੇਰਾ ਹ ਏਕ ਹਾਨੈ ਮਿਰਾਵ ਮਿਲੇਕਵਵ ਦੇਹੀ ਆਵ ਤੈਹੀ ਸੂੀਜੁ\"; overlaps the next candidate span by 17.8 s"
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95387,
+  "start_s": 86,
+  "end_s": 108.84,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 40): \"ਤੇਰਾ ਹ ਏਕ ਹਾਨੈ ਮਿਰਾਵ ਮਿਲੇਕਵਵ ਦੇਹੀ ਆਵ ਤੈਹੀ ਸੂੀਜੁ ਮੇਰੀ ਆਵੈ ਤਿਨ\"; overlaps the previous candidate span by 17.8 s; overlaps the next candidate span by 4.2 s"
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95387,
+  "start_s": 104.64,
+  "end_s": 128.6,
+  "my_verseId": 34030,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਮੇਰੀ ਆਵੈ ਤਿਨ ਭ ਹੀ ਸੁਨ ਸਸਤਣ ਸਿਉ ਅਖ ਹੀਵਣ ਕੀੀਤ\" ~ ਨਦਰੀਆਵੈਤਿਸੁਸਿਉਮੋਹੁ text 51 (next other pangti 46), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 4.2 s; overlaps the next candidate span by 5.0 s; candidate says 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \""
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95388,
+  "start_s": 123.6,
+  "end_s": 130.6,
+  "my_verseId": 206263,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਸਸਤਣ ਸਿਉ ਅਖ ਹੀਵਣ ਕੀੀਤ\" ~ ਸੀਹੁਸਰਜੈਸਹਾਜਿਉਅਖੀਵੇਖਾਲੇ text 45 (next other pangti 44), 74% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 5.0 s; candidate says 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ \""
+ },
+ {
+  "recording": "aa18",
+  "cand_verseId": 95388,
+  "start_s": 136.16,
+  "end_s": 147.68,
+  "my_verseId": 104956,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਅਸਤਨ ਸਉ ਅਤਰਤੀ ਜੁਰਨ ਤਸਜਵ ਨਐ\" ~ ਸਬਦੇਸਭੇਸਅਰੁਰਾਜਸਬਤ੍ਰਾਸਜਵਨਕੋਮਾਨੀ text 46 (next other pangti 45), 68% of the pangti heard; heard-token best fit 145.84-146.64 (forced alignment 137.32-137.32) vs candidate 136.16-147.68 (start +9.7 s, end -1.0 s); candidate says 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ \""
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 87327,
+  "start_s": 27.28,
+  "end_s": 38.68,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 41): \"ਏਕ ਹਾਨੈ ਮਿਰਾਵ ਮਿਲੇਕਵਵ ਦੇ\"; overlaps the next candidate span by 11.4 s"
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95386,
+  "start_s": 27.32,
+  "end_s": 43.84,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 45): \"ਏਕ ਹਾਨੈ ਮਿਰਾਵ ਮਿਲੇਕਵਵ ਦੇਹੀ ਆਵ ਤੈਹੀ ਸੂੀਜੁ\"; overlaps the previous candidate span by 11.4 s; overlaps the next candidate span by 4.8 s"
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95387,
+  "start_s": 39.04,
+  "end_s": 70.6,
+  "my_verseId": 34030,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਹੀ ਆਵ ਤੈਹੀ ਸੂੀਜੁ ਮੇਰੀ ਆਵੈ ਤਿਨ ਭ ਹੀ ਸੁਨ ਸਸਤਣ ਸਿਉ ਅਖ\" ~ ਨਦਰੀਆਵੈਤਿਸੁਸਿਉਮੋਹੁ text 49 (next other pangti 43), 100% of the pangti heard; heard-token best fit 45.44-46.12 (forced alignment 45.1-45.9) vs candidate 39.04-70.6 (start +6.4 s, end -24.5 s); overlaps the previous candidate span by 4.8 s; overlaps the next candidate span by 26.0 s; candidate says 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \""
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95387,
+  "start_s": 44.64,
+  "end_s": 68.6,
+  "my_verseId": 34030,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਮੇਰੀ ਆਵੈ ਤਿਨ ਭ ਹੀ ਸੁਨ ਸਸਤਣ ਸਿਉ ਅਖ ਹੀਵਣ ਕੀੀਤ\" ~ ਨਦਰੀਆਵੈਤਿਸੁਸਿਉਮੋਹੁ text 51 (next other pangti 46), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 26.0 s; candidate says 95387 \"ਅਉਰ ਨ ਮਾਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛੁ ਚਾਹਤ \""
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95388,
+  "start_s": 76.16,
+  "end_s": 87.68,
+  "my_verseId": 104956,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਅਸਤਨ ਸਉ ਅਤਰਤੀ ਜੁਰਨ ਤਸਜਵ ਨਐ\" ~ ਸਬਦੇਸਭੇਸਅਰੁਰਾਜਸਬਤ੍ਰਾਸਜਵਨਕੋਮਾਨੀ text 46 (next other pangti 45), 68% of the pangti heard; heard-token best fit 85.84-86.64 (forced alignment 77.32-77.32) vs candidate 76.16-87.68 (start +9.7 s, end -1.0 s); candidate says 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ \""
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95389,
+  "start_s": 95.04,
+  "end_s": 115,
+  "my_verseId": 95389,
+  "confidence": 0.5,
+  "agrees": true,
+  "reason": "heard \"ਸੰਤਸਹਿ ਸ ਜਗ ਨ ਹੋਇ ਜਿਤਾ ਕਰਸਉ ਇਹ ਵਰ ਰਹੀਐ ਕਿਰਪਾ ਦਰਨਉ\" ~ ਸਤਸਹਾਇਸਦਾਜਗਮਾਇਕ੍ਰਿਪਾਕਰਸ੍ਯਾਮਇਹੈ text 49 (next other pangti 44), 100% of the pangti heard; heard-token best fit 95.28-96.12 (forced alignment 95.04-95.28) vs candidate 95.04-115 (start +0.2 s, end -18.9 s)"
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95386,
+  "start_s": 115.04,
+  "end_s": 137.44,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 42): \"ਨਉ ਇਹ ਰਇ ਰਐੈ ਮੇਰੀ ਅਵਰ ਬਿ ਤੇਰੀ ਸੁਰੀਐ ਮੇਰੀ ਆਰਾ ਤਿਨ ਨਹੀ ਸੁ ਮਜਨ \"; overlaps the next candidate span by 17.3 s"
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95386,
+  "start_s": 120.12,
+  "end_s": 131.24,
+  "my_verseId": 29893,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਮੇਰੀ ਅਵਰ ਬਿ ਤੇਰੀ ਸੁਰੀਐ ਮੇਰੀ ਆਰਾ ਤਿਨ ਨਹੀ ਸੁ ਮਜਨ\" ~ ਨਾਮੁਤੇਰੋਆਰਤੀਮਜਨੁਮੁਰਾਰੇ text 45 (next other pangti 47), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 17.3 s; candidate says 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\""
+ },
+ {
+  "recording": "aa19",
+  "cand_verseId": 95386,
+  "start_s": 132.16,
+  "end_s": 138.6,
+  "my_verseId": 127770,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਬਿਲਾਵ ਭ ਅਰਾਨ ਮੇਰਾ\" ~ ਉਠੋਬੇਗਿਬੈਠੇਕਹਾਪ੍ਰਾਨਮੇਰੇ text 49 (next other pangti 46), 61% of the pangti heard; heard-token best fit 137.24-138.92 (forced alignment 141.06-141.54) vs candidate 132.16-138.6 (start +5.1 s, end +0.3 s); candidate says 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\""
+ },
+ {
+  "recording": "aa20",
+  "cand_verseId": 95388,
+  "start_s": 27.48,
+  "end_s": 27.68,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "aa20",
+  "cand_verseId": 95389,
+  "start_s": 35.04,
+  "end_s": 55,
+  "my_verseId": 95389,
+  "confidence": 0.5,
+  "agrees": true,
+  "reason": "heard \"ਸੰਤਸਹਿ ਸ ਜਗ ਨ ਹੋਇ ਜਿਤਾ ਕਰਸਉ ਇਹ ਵਰ ਰਹੀਐ ਕਿਰਪਾ ਦਰਨਉ\" ~ ਸਤਸਹਾਇਸਦਾਜਗਮਾਇਕ੍ਰਿਪਾਕਰਸ੍ਯਾਮਇਹੈ text 49 (next other pangti 44), 100% of the pangti heard; heard-token best fit 35.28-36.12 (forced alignment 35.04-35.28) vs candidate 35.04-55 (start +0.2 s, end -18.9 s)"
+ },
+ {
+  "recording": "aa20",
+  "cand_verseId": 95386,
+  "start_s": 55.04,
+  "end_s": 77.44,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 42): \"ਨਉ ਇਹ ਰਇ ਰਐੈ ਮੇਰੀ ਅਵਰ ਬਿ ਤੇਰੀ ਸੁਰੀਐ ਮੇਰੀ ਆਰਾ ਤਿਨ ਨਹੀ ਸੁ ਮਜਨ \"; overlaps the next candidate span by 17.3 s"
+ },
+ {
+  "recording": "aa20",
+  "cand_verseId": 95386,
+  "start_s": 60.12,
+  "end_s": 71.24,
+  "my_verseId": 29893,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਮੇਰੀ ਅਵਰ ਬਿ ਤੇਰੀ ਸੁਰੀਐ ਮੇਰੀ ਆਰਾ ਤਿਨ ਨਹੀ ਸੁ ਮਜਨ\" ~ ਨਾਮੁਤੇਰੋਆਰਤੀਮਜਨੁਮੁਰਾਰੇ text 45 (next other pangti 47), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 17.3 s; candidate says 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\""
+ },
+ {
+  "recording": "aa20",
+  "cand_verseId": 95386,
+  "start_s": 72.16,
+  "end_s": 78.6,
+  "my_verseId": 127770,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਬਿਲਾਵ ਭ ਅਰਾਨ ਮੇਰਾ\" ~ ਉਠੋਬੇਗਿਬੈਠੇਕਹਾਪ੍ਰਾਨਮੇਰੇ text 49 (next other pangti 46), 61% of the pangti heard; heard-token best fit 77.24-78.92 (forced alignment 81.06-81.54) vs candidate 72.16-78.6 (start +5.1 s, end +0.3 s); candidate says 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\""
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 87326,
+  "start_s": 27.4,
+  "end_s": 102.4,
+  "my_verseId": 403465,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਸਰ ਪ੍ਰਬੰ ਕਮੇਝੂਚ ਨਾ ਵਾਹਿ ਗੁਰ ਜੀਨ ਬਰਦ\" ~ ਸ੍ਰੀਵਾਹਿਗੁਰੂਜੀਕੀਫ਼ਤਹਿ text 51 (next other pangti 45), 100% of the pangti heard; heard-token best fit 92.92-94.36 (forced alignment 92.92-92.92) vs candidate 27.4-102.4 (start +65.5 s, end -8.0 s); overlaps the next candidate span by 1.5 s; candidate says 87326 \"ਪਾਇ ਗਹੇ ਜਬ ਤੇ ਤੁਮਰੇ ਤਬ ਤੇ ਕੋਊ \""
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 78279,
+  "start_s": 100.88,
+  "end_s": 110.56,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 39): \"ਜੀਨ ਬਰਦ ਲੋਗੀ ਭਾਂਾਲੋ ਦੀਨ ਬੋਲ ਮੁੂਗੀ ਫੰਨ\"; overlaps the previous candidate span by 1.5 s; overlaps the next candidate span by 7.8 s"
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 76119,
+  "start_s": 102.8,
+  "end_s": 120.76,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 39): \"ਲੋਗੀ ਭਾਂਾਲੋ ਦੀਨ ਬੋਲ ਮੁੂਗੀ ਫੰਨ ਨੀਦੋਲ ਮੁਗੀਬੰਦਰਰਾ ਨਨੰਦਰਰ ਮੁਗੀ\"; overlaps the previous candidate span by 7.8 s; overlaps the next candidate span by 8.1 s"
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 78280,
+  "start_s": 112.64,
+  "end_s": 125.64,
+  "my_verseId": 55375,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਨੀਦੋਲ ਮੁਗੀਬੰਦਰਰਾ ਨਨੰਦਰਰ ਮੁਗੀ ਘਟਿ ਘਟਿ ਰਾਮ ਬਿ\" ~ ਨਾਨਾਰੂਪਰਗਹਰਿਕੇਰੇਘਟਿਘਟਿਰਾਮੁਰਵਿਓ text 46 (next other pangti 46), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 8.1 s; overlaps the next candidate span by 4.1 s; candidate says 78280 \"ਤੀਨ ਲੋਕ ਜੈ ਜੈ ਕਰੈ ਰਰੈ ਨਾਮੁ ਸਤਿ\""
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 76118,
+  "start_s": 121.56,
+  "end_s": 128.24,
+  "my_verseId": 56472,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਘਟਿ ਘਟਿ ਰਾਮ ਬਿ ਅਨਾ\" ~ ਜਿਉਸੂਰਜੁਕਿਰਣਿਰਵਿਆਸਰਬਠਾਈਸਭਘਟਿਘਟ text 78 (next other pangti 78), 35% of the pangti heard; heard-token best fit 124.36-125.24 (forced alignment 124.14-125.42) vs candidate 121.56-128.24 (start +2.8 s, end -3.0 s); overlaps the previous candidate span by 4.1 s; overlaps the next candidate span by 2.2 s; candidate says 76118 \"ਤ੍ਰਿਭੰਗੀ ਛੰਦ ॥\""
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 95385,
+  "start_s": 126.04,
+  "end_s": 131.92,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence); overlaps the previous candidate span by 2.2 s"
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 95386,
+  "start_s": 131.92,
+  "end_s": 150.16,
+  "my_verseId": 76179,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਘਤਿ ਖਤ ਨਾਮ ਜ ਹਖ ਦੀਨੰ ਦ ਜੀ ਹਚ ਨਾ ਦੀਨ ਅਗੀ ਘੈ ਨ\" ~ ਮਹਾਦੀਨਦੀਨਮਹਾਨਾਥਨਾਥ text 46 (next other pangti 41), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the next candidate span by 15.0 s; candidate says 95386 \"ਹੇ ਰਵਿ ਹੇ ਸਸਿ ਹੇ ਕਰੁਨਾਨਿਧਿ ਮੇਰ\""
+ },
+ {
+  "recording": "aa26",
+  "cand_verseId": 76119,
+  "start_s": 135.2,
+  "end_s": 150.16,
+  "my_verseId": 76179,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਘਤਿ ਖਤ ਨਾਮ ਜ ਹਖ ਦੀਨੰ ਦ ਜੀ ਹਚ ਨਾ ਦੀਨ ਅਗੀ ਘੈ ਨ\" ~ ਮਹਾਦੀਨਦੀਨਮਹਾਨਾਥਨਾਥ text 46 (next other pangti 41), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 15.0 s; candidate says 76119 \"ਖਗ ਖੰਡ ਬਿਹੰਡੰ ਖਲ ਦਲ ਖੰਡੰ ਅਤਿ ਰ\""
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 29926,
+  "start_s": 30.48,
+  "end_s": 43.28,
+  "my_verseId": 140155,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਵਾਹਿ ਗੁਰ ਜੀਨ ਬਰਦ ਲੋਗੀ\" ~ ਵਾਹਿਗੁਰੂਜੀਕੀਫ਼ਤਹ text 62 (next other pangti 60), 100% of the pangti heard; heard-token best fit 32.56-34.36 (forced alignment 32.56-32.92) vs candidate 30.48-43.28 (start +2.1 s, end -8.9 s); overlaps the next candidate span by 2.4 s; candidate says 29926 \"ਰਾਮਾ ਭਗਤਿ ਰਾਮਾਨੰਦੁ ਜਾਨੈ ॥\""
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 87327,
+  "start_s": 40.88,
+  "end_s": 58,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 40): \"ਜੀਨ ਬਰਦ ਲੋਗੀ ਭਾਂਾਲੋ ਦੀਨ ਬੋਲ ਮੁੂਗੀ ਫੰਨ ਨੀਦੋਲ ਮੁਗੀਬੰਦਰਰਾ ਨ\"; overlaps the previous candidate span by 2.4 s; overlaps the next candidate span by 14.3 s"
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 29927,
+  "start_s": 43.68,
+  "end_s": 49.76,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 38): \"ਭਾਂਾਲੋ ਦੀਨ ਬੋਲ ਮੁੂਗੀ ਫੰ\"; overlaps the previous candidate span by 14.3 s"
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 29928,
+  "start_s": 50.44,
+  "end_s": 61.6,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 42): \"ਨ ਨੀਦੋਲ ਮੁਗੀਬੰਦਰਰਾ ਨਨੰਦਰਰ ਮੁਗੀ\"; overlaps the next candidate span by 3.2 s"
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 87328,
+  "start_s": 58.44,
+  "end_s": 86.56,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 45): \"ਨੰਦਰਰ ਮੁਗੀ ਘਟਿ ਘਟਿ ਰਾਮ ਬਿ ਅਨਾ ਘਤਿ ਖਤ ਨਾਮ ਜ ਹਖ ਦੀਨੰ ਦ ਜੀ ਹਚ ਨ\"; overlaps the previous candidate span by 3.2 s; overlaps the next candidate span by 24.6 s"
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 29926,
+  "start_s": 62,
+  "end_s": 75.64,
+  "my_verseId": 43793,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਘਟਿ ਘਟਿ ਰਾਮ ਬਿ ਅਨਾ ਘਤਿ ਖਤ\" ~ ਘਟਿਘਟਿਰਮਈਆਰਾਮੁਪਿਆਰਾ text 58 (next other pangti 58), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 24.6 s; candidate says 29926 \"ਰਾਮਾ ਭਗਤਿ ਰਾਮਾਨੰਦੁ ਜਾਨੈ ॥\""
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 29927,
+  "start_s": 75.8,
+  "end_s": 84.08,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 44): \"ਿ ਖਤ ਨਾਮ ਜ ਹਖ ਦੀਨੰ ਦ ਜੀ ਹਚ\""
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 29928,
+  "start_s": 84.56,
+  "end_s": 107.36,
+  "my_verseId": 9430,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਨਾ ਦੀਨ ਅਗੀ ਘੈ ਨ ਸਰਤ ਤੁਮਾਈਾਇਓ\" ~ ਦੀਨਦਇਆਲਸਗਲਭੈਭਜਨਸਰਨਿਤਾਹਿਤੁਮਪਰੁਰ text 46 (next other pangti 43), 63% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the next candidate span by 19.4 s; candidate says 29928 \"ਮਦਨ ਮੂਰਤਿ ਭੈ ਤਾਰਿ ਗੋਬਿੰਦੇ ॥\""
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 87329,
+  "start_s": 88,
+  "end_s": 123.48,
+  "my_verseId": 11586,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਅਗੀ ਘੈ ਨ ਸਰਤ ਤੁਮਾਈਾਇਓ ਹਰਿ ਜਨ ਧਰ ਆਾਈਾਇਓ ਨਾਨਕੀ ਕੇ ਭਭ\" ~ ਸਰਣਿਤੁਮੑਾਰੀਆਇਓਨਾਨਕਕੇਪ੍ਰਭਸਾਥ text 53 (next other pangti 43), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 19.4 s; overlaps the next candidate span by 15.9 s; candidate says 87329 \"ਸ੍ਰੀ ਅਸਿਪਾਨ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਰਿ ਮ\""
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 29929,
+  "start_s": 107.56,
+  "end_s": 122,
+  "my_verseId": 11586,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਾਇਓ ਹਰਿ ਜਨ ਧਰ ਆਾਈਾਇਓ ਨਾਨਕੀ ਕੇ\" ~ ਸਰਣਿਤੁਮੑਾਰੀਆਇਓਨਾਨਕਕੇਪ੍ਰਭਸਾਥ text 48 (next other pangti 48), 85% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 15.9 s; candidate says 29929 \"ਸੈਨੁ ਭਣੈ ਭਜੁ ਪਰਮਾਨੰਦੇ ॥੪॥੨॥\""
+ },
+ {
+  "recording": "aa27",
+  "cand_verseId": 57509,
+  "start_s": 122.8,
+  "end_s": 125.36,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29942,
+  "start_s": 0.4,
+  "end_s": 5.28,
+  "my_verseId": 28395,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਭਗਤਨ ਕੀਜਈ ਮਾਲਾ ਅਪਣੀ ਲੀਜ ਅਉ ਮਾਾਂਗਹੁ ਸੰਤਨ ਰੇ\" ~ ਯਹਮਾਲਾਅਪਨੀਲੀਜੈ text 47 (next other pangti 45), 100% of the pangti heard; heard-token fit 2.16-3.48 is off (start +1.8 s, end -1.8 s); only the forced alignment 1.88-3.48 (same model as the aligner) agrees with the candidate; candidate says 29942 \"ਪਨੑੀਆ ਛਾਦਨੁ ਨੀਕਾ ॥ ਅਨਾਜੁ ਮਗਉ ਸ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29943,
+  "start_s": 5.32,
+  "end_s": 7.88,
+  "my_verseId": 28397,
+  "confidence": 0.9,
+  "agrees": false,
+  "reason": "heard \"ਨ ਰੇਨਾਮਹਿ ਨਾਹੀ ਕਿਸੀ ਕਾਦੇ ਨਾ\" ~ ਮੈਨਾਹੀਕਿਸੀਕਾਦੇਨਾ text 79 (next other pangti 61), 100% of the pangti heard; candidate says 29943 \"ਗਊ ਭੈਸ ਮਗਉ ਲਾਵੇਰੀ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29944,
+  "start_s": 8.2,
+  "end_s": 9.8,
+  "my_verseId": 17813,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਦੂ ਕੈ ਸਿਵ ਨ ਤੁਮ ਸੰੰਗਹਿ\" ~ ਉਨਕੈਸਗਿਹਮਤੁਮਸਗਿਮੇਲ text 71 (next other pangti 56), 94% of the pangti heard; candidate says 29944 \"ਇਕ ਤਾਜਨਿ ਤੁਰੀ ਚੰਗੇਰੀ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29945,
+  "start_s": 9.84,
+  "end_s": 12.52,
+  "my_verseId": 28399,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਸੰੰਗਹਿ ਆਪਨਾ ਦੇਉ ਤਲਓ ਮੰਗੇ\" ~ ਆਪਿਨਦੇਹੁਤਲੇਵਉਮਗੇਰਹਾਉ text 54 (next other pangti 44), 100% of the pangti heard; no heard-token run of this pangti inside the window; candidate says 29945 \"ਘਰ ਕੀ ਗੀਹਨਿ ਚੰਗੀ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29940,
+  "start_s": 12.88,
+  "end_s": 14.4,
+  "my_verseId": 28400,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਇ ਸਿਰ ਮਾਾਂਗਹੁ ਚੂਨਾ\" ~ ਦੁਇਸੇਰਮਾਗਉਚੂਨਾ text 77 (next other pangti 50), 100% of the pangti heard; overlaps the next candidate span by 1.0 s; candidate says 29940 \"ਦਾਲਿ ਸੀਧਾ ਮਾਗਉ ਘੀਉ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29946,
+  "start_s": 13.36,
+  "end_s": 16.16,
+  "my_verseId": 28400,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਇ ਸਿਰ ਮਾਾਂਗਹੁ ਚੂਨਾ ਭਉਕੇਓ ਸਗ ਦੁ\" ~ ਦੁਇਸੇਰਮਾਗਉਚੂਨਾ text 54 (next other pangti 44), 100% of the pangti heard; overlaps the previous candidate span by 1.0 s; candidate says 29946 \"ਜਨੁ ਧੰਨਾ ਲੇਵੈ ਮੰਗੀ ॥੨॥੪॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29941,
+  "start_s": 15.16,
+  "end_s": 18.32,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 44): \"ਭਉਕੇਓ ਸਗ ਦੁਨਾ ਸਿਰ ਮੰਗਉ ਦ\"; overlaps the next candidate span by 2.0 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29940,
+  "start_s": 16.32,
+  "end_s": 18.92,
+  "my_verseId": 28400,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਗ ਦੁਨਾ ਸਿਰ ਮੰਗਉ ਦਾਲ ਮੁ\" ~ ਦੁਇਸੇਰਮਾਗਉਚੂਨਾ text 53 (next other pangti 53), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 2.0 s; candidate says 29940 \"ਦਾਲਿ ਸੀਧਾ ਮਾਗਉ ਘੀਉ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29942,
+  "start_s": 18.52,
+  "end_s": 24.12,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 38): \"ੰਗਉ ਦਾਲ ਮੁਕ ਦੋਨੋ ਅਕਤ ਜੀਵਾਨ ਹਾਟਿ ਮੰਗਉ ਚਾਪਾਈ ਸਰਾ ਨ\"; overlaps the next candidate span by 5.1 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29941,
+  "start_s": 19.04,
+  "end_s": 21.2,
+  "my_verseId": 28403,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਾਲ ਮੁਕ ਦੋਨੋ ਅਕਤ ਜੀਵ\" ~ ਮੋਕਉਦੋਨਉਵਖਤਜਿਵਾਲੇ text 50 (next other pangti 44), 88% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 5.1 s; candidate says 29941 \"ਹਮਰਾ ਖੁਸੀ ਕਰੈ ਨਿਤ ਜੀਉ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29942,
+  "start_s": 21.48,
+  "end_s": 26.92,
+  "my_verseId": 28405,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਾਨ ਹਾਟਿ ਮੰਗਉ ਚਾਪਾਈ ਸਰਾ ਨ ਅਵ੍ਰਤੁ ਲਾਈ ਭਟਹੁ ਮਗਹੁ\" ~ ਸਿਰਹਾਨਾਅਵਰਤੁਲਾਈ text 52 (next other pangti 44), 100% of the pangti heard; heard-token best fit 24.52-25.6 (forced alignment 23.82-23.82) vs candidate 21.48-26.92 (start +3.0 s, end -1.3 s); overlaps the next candidate span by 2.6 s; candidate says 29942 \"ਪਨੑੀਆ ਛਾਦਨੁ ਨੀਕਾ ॥ ਅਨਾਜੁ ਮਗਉ ਸ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29938,
+  "start_s": 24.28,
+  "end_s": 26.64,
+  "my_verseId": 28405,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਰਾ ਨ ਅਵ੍ਰਤੁ ਲਾਈ ਭਟਹੁ ਮ\" ~ ਸਿਰਹਾਨਾਅਵਰਤੁਲਾਈ text 69 (next other pangti 41), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 2.6 s; candidate says 29938 \"ਗੋਪਾਲ ਤੇਰਾ ਆਰਤਾ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29939,
+  "start_s": 26.76,
+  "end_s": 32.68,
+  "my_verseId": 28407,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਟਹੁ ਮਗਹੁ ਕੀਦਾ ਤੇਰੇ ਭਗਤਿ ਕਰੇ ਜਨ ਥੀਨ ਮਹਿ ਨਾਹੀਥ ਲਭਹੁ \" ~ ਤੇਰੀਭਗਤਿਕਰੈਜਨੁਥੀਧਾ text 48 (next other pangti 45), 100% of the pangti heard; heard-token best fit 28.48-29.68 (forced alignment 28.14-29.5) vs candidate 26.76-32.68 (start +1.7 s, end -3.0 s); overlaps the next candidate span by 4.6 s; candidate says 29939 \"ਜੋ ਜਨ ਤੁਮਰੀ ਭਗਤਿ ਕਰੰਤੇ ਤਿਨ ਕੇ \""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28407,
+  "start_s": 28.12,
+  "end_s": 30.2,
+  "my_verseId": 28407,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਤੇਰੇ ਭਗਤਿ ਕਰੇ ਜਨ ਥੀਨ ਮਹਿ\" ~ ਤੇਰੀਭਗਤਿਕਰੈਜਨੁਥੀਧਾ text 70 (next other pangti 54), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 4.6 s; overlaps the next candidate span by 2.1 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28407,
+  "start_s": 28.12,
+  "end_s": 30.2,
+  "my_verseId": 28407,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਤੇਰੇ ਭਗਤਿ ਕਰੇ ਜਨ ਥੀਨ ਮਹਿ\" ~ ਤੇਰੀਭਗਤਿਕਰੈਜਨੁਥੀਧਾ text 70 (next other pangti 54), 100% of the pangti heard; overlaps the previous candidate span by 2.1 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28408,
+  "start_s": 30.32,
+  "end_s": 32.24,
+  "my_verseId": 132828,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਨ ਮਹਿ ਨਾਹੀਥ ਲਭਹੁ\" ~ ਤਾਸੀਦੂਸਰਿਜਗਮਹਿਨਾਹੀ text 70 (next other pangti 70), 72% of the pangti heard; overlaps the next candidate span by 1.9 s; candidate says 28408 \"ਮੈ ਨਾਹੀ ਕੀਤਾ ਲਬੋ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28408,
+  "start_s": 30.32,
+  "end_s": 32.24,
+  "my_verseId": 132828,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਨ ਮਹਿ ਨਾਹੀਥ ਲਭਹੁ\" ~ ਤਾਸੀਦੂਸਰਿਜਗਮਹਿਨਾਹੀ text 70 (next other pangti 70), 72% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 1.9 s; candidate says 28408 \"ਮੈ ਨਾਹੀ ਕੀਤਾ ਲਬੋ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28409,
+  "start_s": 32.64,
+  "end_s": 34.48,
+  "my_verseId": 51986,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਇਕ ਨਾਮੁ ਤੇਰਾ ਮੈ ਭਹੁ\" ~ ਮਾਣੁਤਾਣੁਸਭੁਤੂਹੈਤੂਹੈਇਕੁਨਾਮੁਤੇਰਾ text 86 (next other pangti 77), 42% of the pangti heard; overlaps the next candidate span by 1.8 s; candidate says 28409 \"ਇਕੁ ਨਾਉ ਤੇਰਾ ਮੈ ਫਬੋ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28409,
+  "start_s": 32.64,
+  "end_s": 34.48,
+  "my_verseId": 51986,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਇਕ ਨਾਮੁ ਤੇਰਾ ਮੈ ਭਹੁ\" ~ ਮਾਣੁਤਾਣੁਸਭੁਤੂਹੈਤੂਹੈਇਕੁਨਾਮੁਤੇਰਾ text 86 (next other pangti 77), 42% of the pangti heard; overlaps the previous candidate span by 1.8 s; candidate says 28409 \"ਇਕੁ ਨਾਉ ਤੇਰਾ ਮੈ ਫਬੋ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28410,
+  "start_s": 35.16,
+  "end_s": 36.8,
+  "my_verseId": 28410,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਕਹਤ ਕਬੀਰੁ ਮਨ ਮਾਨਿਆ\" ~ ਕਹਿਕਬੀਰਮਨੁਮਾਨਿਆ text 87 (next other pangti 76), 100% of the pangti heard; overlaps the next candidate span by 1.6 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28410,
+  "start_s": 35.16,
+  "end_s": 36.8,
+  "my_verseId": 28410,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਕਹਤ ਕਬੀਰੁ ਮਨ ਮਾਨਿਆ\" ~ ਕਹਿਕਬੀਰਮਨੁਮਾਨਿਆ text 87 (next other pangti 76), 100% of the pangti heard; overlaps the previous candidate span by 1.6 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28411,
+  "start_s": 37.08,
+  "end_s": 38.92,
+  "my_verseId": 28411,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਿਆ ਮਨ ਮਾਨਿਆ ਤਉ ਹਰਿ ਜਾਨਿਆ ਮਾ\" ~ ਮਨੁਮਾਨਿਆਤਉਹਰਿਜਾਨਿਆ text 87 (next other pangti 72), 100% of the pangti heard; overlaps the next candidate span by 1.8 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28411,
+  "start_s": 37.08,
+  "end_s": 38.92,
+  "my_verseId": 28411,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਿਆ ਮਨ ਮਾਨਿਆ ਤਉ ਹਰਿ ਜਾਨਿਆ ਮਾ\" ~ ਮਨੁਮਾਨਿਆਤਉਹਰਿਜਾਨਿਆ text 87 (next other pangti 72), 100% of the pangti heard; overlaps the previous candidate span by 1.8 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28402,
+  "start_s": 39.04,
+  "end_s": 42.44,
+  "my_verseId": 28398,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਾਨਿਆ ਮਾਧੋ ਕੈ ਸਿਬ ਤ ਸੰਗਿ ਸੰ\" ~ ਮਾਧੋਕੈਸੀਬਨੈਤੁਮਸਗੇ text 63 (next other pangti 44), 100% of the pangti heard; overlaps the next candidate span by 3.4 s; candidate says 28402 \"ਅਧ ਸੇਰੁ ਮਾਂਗਉ ਦਾਲੇ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28402,
+  "start_s": 39.04,
+  "end_s": 43.04,
+  "my_verseId": 28398,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਾਨਿਆ ਮਾਧੋ ਕੈ ਸਿਬ ਤ ਸੰਗਿ ਸੰਗਿ\" ~ ਮਾਧੋਕੈਸੀਬਨੈਤੁਮਸਗੇ text 60 (next other pangti 47), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 3.4 s; overlaps the next candidate span by 3.7 s; candidate says 28402 \"ਅਧ ਸੇਰੁ ਮਾਂਗਉ ਦਾਲੇ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28403,
+  "start_s": 39.32,
+  "end_s": 45.36,
+  "my_verseId": 28398,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਮਾਧੋ ਕੈ ਸਿਬ ਤ ਸੰਗਿ ਸੰਗਿ ਆਪਨਾ ਉਤ ਲੇ\" ~ ਮਾਧੋਕੈਸੀਬਨੈਤੁਮਸਗੇ text 58 (next other pangti 42), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 3.7 s; overlaps the next candidate span by 2.7 s; candidate says 28403 \"ਮੋ ਕਉ ਦੋਨਉ ਵਖਤ ਜਿਵਾਲੇ ॥੨॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28393,
+  "start_s": 42.68,
+  "end_s": 45.24,
+  "my_verseId": 95811,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਿ ਸੰਗਿ ਆਪਨਾ ਉਤ ਲੇ\" ~ ਤਉਰੁਕਮੀਦਲਲੈਬਹੁਤੋਸਗਿਆਪਨੇਆਪਹੀਜੁਧ text 74 (next other pangti 74), 36% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 2.7 s; overlaps the next candidate span by 1.7 s; candidate says 28393 \"ਰਾਗੁ ਸੋਰਠਿ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28399,
+  "start_s": 43.56,
+  "end_s": 47.6,
+  "my_verseId": 28399,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਆਪਨਾ ਉਤ ਲੇਹੁ ਮੰਗੇ ਮੰਗੇ\" ~ ਆਪਿਨਦੇਹੁਤਲੇਵਉਮਗੇਰਹਾਉ text 56 (next other pangti 44), 90% of the pangti heard; heard-token best fit 45.76-46.16 (forced alignment 44.18-44.18) vs candidate 43.56-47.6 (start +2.2 s, end -1.4 s); overlaps the previous candidate span by 1.7 s; overlaps the next candidate span by 1.8 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87330,
+  "start_s": 45.76,
+  "end_s": 46.84,
+  "my_verseId": 28398,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਹੁ ਮੰਗੇ ਮ\" ~ ਮਾਧੋਕੈਸੀਬਨੈਤੁਮਸਗੇ text 73 (next other pangti 73), 41% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 1.8 s; overlaps the next candidate span by 1.1 s; candidate says 87330 \"ਦੋਹਰਾ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28404,
+  "start_s": 45.76,
+  "end_s": 54,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 41): \"ਹੁ ਮੰਗੇ ਮੰਗੇਆ ਅਤੇ ਪ੍ਰਸਨੁ\"; overlaps the previous candidate span by 1.1 s; overlaps the next candidate span by 6.9 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 95385,
+  "start_s": 47.08,
+  "end_s": 50.52,
+  "my_verseId": 94994,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ੇ ਮੰਗੇਆ\" ~ ਅਬਯਾਕਹੁਮਾਰਤਹੈਰਨਮੈਮਨਮੈਰਸਬੀਰਮਿਲੇ text 80 (next other pangti 80), 18% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 6.9 s; candidate says 95385 \"ਸਵੈਯਾ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28398,
+  "start_s": 50.04,
+  "end_s": 55.4,
+  "my_verseId": 78270,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਆ ਅਤੇ ਪ੍ਰਸਨੁ ਪਏਹਿ ਮਹ\" ~ ਯਾਤੇਪ੍ਰਸਨਭਏਹੈਮਹਾਮੁਨਦੇਵਨਕੇਤਪਮੈਸ text 76 (next other pangti 52), 44% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the next candidate span by 4.9 s; candidate says 28398 \"ਮਾਧੋ ਕੈਸੀ ਬਨੈ ਤੁਮ ਸੰਗੇ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78270,
+  "start_s": 50.48,
+  "end_s": 59.48,
+  "my_verseId": 78270,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਆ ਅਤੇ ਪ੍ਰਸਨੁ ਪਏਹਿ ਮਹਮ ਦੇਵਨ ਕੇ ਤਬ ਮਹਿ ਸੁਖੁ ਪਾਵੈ\" ~ ਯਾਤੇਪ੍ਰਸਨਭਏਹੈਮਹਾਮੁਨਦੇਵਨਕੇਤਪਮੈਸ text 75 (next other pangti 51), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 4.9 s; overlaps the next candidate span by 6.7 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78270,
+  "start_s": 52.76,
+  "end_s": 59.44,
+  "my_verseId": 78270,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਅਤੇ ਪ੍ਰਸਨੁ ਪਏਹਿ ਮਹਮ ਦੇਵਨ ਕੇ ਤਬ ਮਹਿ ਸੁਖੁ ਪਾਵੈ\" ~ ਯਾਤੇਪ੍ਰਸਨਭਏਹੈਮਹਾਮੁਨਦੇਵਨਕੇਤਪਮੈਸ text 78 (next other pangti 51), 97% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 6.7 s; overlaps the next candidate span by 5.2 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28405,
+  "start_s": 54.28,
+  "end_s": 57.8,
+  "my_verseId": 78270,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਨੁ ਪਏਹਿ ਮਹਮ ਦੇਵਨ ਕੇ ਤਬ ਮ\" ~ ਯਾਤੇਪ੍ਰਸਨਭਏਹੈਮਹਾਮੁਨਦੇਵਨਕੇਤਪਮੈਸ text 72 (next other pangti 40), 50% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 5.2 s; overlaps the next candidate span by 2.2 s; candidate says 28405 \"ਸਿਰਹਾਨਾ ਅਵਰ ਤੁਲਾਈ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28399,
+  "start_s": 55.64,
+  "end_s": 60.2,
+  "my_verseId": 78270,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਹਮ ਦੇਵਨ ਕੇ ਤਬ ਮਹਿ ਸੁਖੁ ਪਾਵੈ ਜਗਿ\" ~ ਯਾਤੇਪ੍ਰਸਨਭਏਹੈਮਹਾਮੁਨਦੇਵਨਕੇਤਪਮੈਸ text 74 (next other pangti 58), 67% of the pangti heard; overlaps the previous candidate span by 2.2 s; overlaps the next candidate span by 2.2 s; candidate says 28399 \"ਆਪਿ ਨ ਦੇਹੁ ਤ ਲੇਵਉ ਮੰਗੇ ॥ ਰਹਾਉ \""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28406,
+  "start_s": 58.04,
+  "end_s": 62,
+  "my_verseId": 36860,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਬ ਮਹਿ ਸੁਖੁ ਪਾਵੈ ਜਗਿ ਕਰੈ ਇਕ ਬਿਦ\" ~ ਨਾਨਕਸੁਖੁਪਾਵੈਜਨਧੂਰਿ text 54 (next other pangti 52), 100% of the pangti heard; overlaps the previous candidate span by 2.2 s; overlaps the next candidate span by 2.2 s; candidate says 28406 \"ਊਪਰ ਕਉ ਮਾਂਗਉ ਖੀਂਧਾ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78271,
+  "start_s": 59.84,
+  "end_s": 66.48,
+  "my_verseId": 78271,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਜਗਿ ਕਰੈ ਇਕ ਬਿਦ ਰੈ ਭਵ ਤਪ ਹਰੈ ਮਿਲਿ  ਧਲ ਲਾਵੈ\" ~ ਜਗ੍ਯਕਰੈਇਕਬੇਦਰਰੈਭਵਤਾਪਹਰੈਮਿਲਿਧਿਆ text 81 (next other pangti 46), 81% of the pangti heard; heard-token best fit 60.52-62.16 (forced alignment 60.9-60.9) vs candidate 59.84-66.48 (start +0.7 s, end -4.3 s); overlaps the previous candidate span by 2.2 s; overlaps the next candidate span by 6.0 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28400,
+  "start_s": 60.52,
+  "end_s": 64.08,
+  "my_verseId": 78271,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਗਿ ਕਰੈ ਇਕ ਬਿਦ ਰੈ ਭਵ ਤਪ ਹਰ\" ~ ਜਗ੍ਯਕਰੈਇਕਬੇਦਰਰੈਭਵਤਾਪਹਰੈਮਿਲਿਧਿਆ text 83 (next other pangti 46), 49% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 6.0 s; overlaps the next candidate span by 1.8 s; candidate says 28400 \"ਦੁਇ ਸੇਰ ਮਾਂਗਉ ਚੂਨਾ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28407,
+  "start_s": 62.28,
+  "end_s": 66.2,
+  "my_verseId": 78271,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਦ ਰੈ ਭਵ ਤਪ ਹਰੈ ਮਿਲਿ  ਧਲ ਲਾਵੈ\" ~ ਜਗ੍ਯਕਰੈਇਕਬੇਦਰਰੈਭਵਤਾਪਹਰੈਮਿਲਿਧਿਆ text 78 (next other pangti 55), 54% of the pangti heard; overlaps the previous candidate span by 1.8 s; overlaps the next candidate span by 2.0 s; candidate says 28407 \"ਤੇਰੀ ਭਗਤਿ ਕਰੈ ਜਨੁ ਥੀਂਧਾ ॥੩॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28401,
+  "start_s": 64.24,
+  "end_s": 66.52,
+  "my_verseId": 78271,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਹਰੈ ਮਿਲਿ  ਧਲ ਲਾਵੈ\" ~ ਜਗ੍ਯਕਰੈਇਕਬੇਦਰਰੈਭਵਤਾਪਹਰੈਮਿਲਿਧਿਆ text 76 (next other pangti 73), 35% of the pangti heard; overlaps the previous candidate span by 2.0 s; candidate says 28401 \"ਪਾਉ ਘੀਉ ਸੰਗਿ ਲੂਨਾ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28408,
+  "start_s": 66.32,
+  "end_s": 69.04,
+  "my_verseId": 78272,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਲਾਵੈ ਝਲਰ ਤਾਲ ਦੰਗਿ\" ~ ਝਾਲਰਤਾਲਮ੍ਰਿਦਗਉਪਗਰਬਾਬਲੀਏਸੁਰਸਾਜਮ text 50 (next other pangti 44), 40% of the pangti heard; overlaps the next candidate span by 2.2 s; candidate says 28408 \"ਮੈ ਨਾਹੀ ਕੀਤਾ ਲਬੋ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78272,
+  "start_s": 66.88,
+  "end_s": 73.4,
+  "my_verseId": 78272,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਝਲਰ ਤਾਲ ਦੰਗਿ ਬੰਗਲ ਬਾਵਿਲਸਰ ਸਾਜ ਮਿਲਾਵੈ\" ~ ਝਾਲਰਤਾਲਮ੍ਰਿਦਗਉਪਗਰਬਾਬਲੀਏਸੁਰਸਾਜਮ text 73 (next other pangti 45), 86% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 2.2 s; overlaps the next candidate span by 6.4 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28402,
+  "start_s": 66.96,
+  "end_s": 70.44,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 45): \"ਝਲਰ ਤਾਲ ਦੰਗਿ ਬੰਗਲ ਬਾ\"; overlaps the previous candidate span by 6.4 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28403,
+  "start_s": 69.48,
+  "end_s": 74.04,
+  "my_verseId": 78272,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਬੰਗਲ ਬਾਵਿਲਸਰ ਸਾਜ ਮਿਲਾਵੈ ਨ\" ~ ਝਾਲਰਤਾਲਮ੍ਰਿਦਗਉਪਗਰਬਾਬਲੀਏਸੁਰਸਾਜਮ text 75 (next other pangti 46), 60% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the next candidate span by 3.3 s; candidate says 28403 \"ਮੋ ਕਉ ਦੋਨਉ ਵਖਤ ਜਿਵਾਲੇ ॥੨॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28403,
+  "start_s": 70.72,
+  "end_s": 74.92,
+  "my_verseId": 78272,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਵਿਲਸਰ ਸਾਜ ਮਿਲਾਵੈ ਨਰ ਗੰਧ\" ~ ਝਾਲਰਤਾਲਮ੍ਰਿਦਗਉਪਗਰਬਾਬਲੀਏਸੁਰਸਾਜਮ text 73 (next other pangti 46), 54% of the pangti heard; heard-token best fit 72.76-73.76 (forced alignment 72.66-73.38) vs candidate 70.72-74.92 (start +2.0 s, end -1.2 s); overlaps the previous candidate span by 3.3 s; overlaps the next candidate span by 1.1 s; candidate says 28403 \"ਮੋ ਕਉ ਦੋਨਉ ਵਖਤ ਜਿਵਾਲੇ ॥੨॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78273,
+  "start_s": 73.84,
+  "end_s": 80.24,
+  "my_verseId": 78273,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਨਰ ਗੰਧਵ ਗਾਨਕ ਗਨ ਕਚੇ ਅਪਚਰ ਨਿਰਤ ਦੇਖਾਵੈ\" ~ ਕਿਨਰਗਧ੍ਰਬਗਾਨਕਰੈਗਨਿਜਛਅਪਛਰਨਿਰਤਦਿ text 71 (next other pangti 47), 85% of the pangti heard; heard-token best fit 75.88-76.28 (forced alignment 74.34-74.94) vs candidate 73.84-80.24 (start +2.0 s, end -4.0 s); overlaps the previous candidate span by 1.1 s; overlaps the next candidate span by 5.6 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28404,
+  "start_s": 74.64,
+  "end_s": 78.44,
+  "my_verseId": 78273,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਰ ਗੰਧਵ ਗਾਨਕ ਗਨ ਕਚੇ ਅਪਚਰ\" ~ ਕਿਨਰਗਧ੍ਰਬਗਾਨਕਰੈਗਨਿਜਛਅਪਛਰਨਿਰਤਦਿ text 47 (next other pangti 41), 53% of the pangti heard; heard-token best fit 79.04-80.32 (forced alignment 79.86-80.22) vs candidate 74.64-78.44 (start +4.4 s, end +1.9 s); overlaps the previous candidate span by 5.6 s; candidate says 28404 \"ਖਾਟ ਮਾਂਗਉ ਚਉਪਾਈ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28405,
+  "start_s": 78.88,
+  "end_s": 81.24,
+  "my_verseId": 78273,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਰ ਨਿਰਤ ਦੇਖਾਵੈ ਸੰਕਨ ਕੀ\" ~ ਕਿਨਰਗਧ੍ਰਬਗਾਨਕਰੈਗਨਿਜਛਅਪਛਰਨਿਰਤਦਿ text 74 (next other pangti 53), 50% of the pangti heard; candidate says 28405 \"ਸਿਰਹਾਨਾ ਅਵਰ ਤੁਲਾਈ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78274,
+  "start_s": 80.64,
+  "end_s": 87.52,
+  "my_verseId": 78274,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਸੰਕਨ ਕੀ ਧਨ ਕੰਟਨ ਕੀ ਕਾ ਖੋਲਨ ਕੀ ਬਾਰਕਾ ਬਾਰਕਾ ਆ\" ~ ਸਖਨਕੀਧੁਨਘਟਨਿਕੀਕਰਿਫੂਲਨਕੀਬਰਖਾਬਰਖ text 66 (next other pangti 44), 100% of the pangti heard; heard-token best fit 80.08-82.44 (forced alignment 79.86-80.22) vs candidate 80.64-87.52 (start -0.6 s, end -5.1 s); overlaps the next candidate span by 6.0 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28406,
+  "start_s": 81.48,
+  "end_s": 85,
+  "my_verseId": 78274,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਨ ਕੀ ਧਨ ਕੰਟਨ ਕੀ ਕਾ ਖੋਲਨ ਕੀ\" ~ ਸਖਨਕੀਧੁਨਘਟਨਿਕੀਕਰਿਫੂਲਨਕੀਬਰਖਾਬਰਖ text 55 (next other pangti 44), 58% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 6.0 s; candidate says 28406 \"ਊਪਰ ਕਉ ਮਾਂਗਉ ਖੀਂਧਾ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28407,
+  "start_s": 85.28,
+  "end_s": 92.52,
+  "my_verseId": 78275,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਕੀ ਬਾਰਕਾ ਬਾਰਕਾ ਆਤੀ ਘਟਿ ਕਰੇ ਸੁਰਿ ਸੁੰਦਰੁ ਬੇਕੁਰੰ ਮਹਿ\" ~ ਆਰਤੀਕੋਟਿਕਰੈਸੁਰਸੁਦਰਿਪੇਖਪੁਰਦਰਕੇਬ text 49 (next other pangti 45), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the next candidate span by 5.0 s; candidate says 28407 \"ਤੇਰੀ ਭਗਤਿ ਕਰੈ ਜਨੁ ਥੀਂਧਾ ॥੩॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78275,
+  "start_s": 87.52,
+  "end_s": 94.2,
+  "my_verseId": 78275,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਆਤੀ ਘਟਿ ਕਰੇ ਸੁਰਿ ਸੁੰਦਰੁ ਬੇਕੁਰੰ ਮਹਿ ਕੈ ਬਲਿ ਜਾਵੈ\" ~ ਆਰਤੀਕੋਟਿਕਰੈਸੁਰਸੁਦਰਿਪੇਖਪੁਰਦਰਕੇਬ text 70 (next other pangti 48), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 5.0 s; overlaps the next candidate span by 6.7 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78275,
+  "start_s": 87.52,
+  "end_s": 94.2,
+  "my_verseId": 78275,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਆਤੀ ਘਟਿ ਕਰੇ ਸੁਰਿ ਸੁੰਦਰੁ ਬੇਕੁਰੰ ਮਹਿ ਕੈ ਬਲਿ ਜਾਵੈ\" ~ ਆਰਤੀਕੋਟਿਕਰੈਸੁਰਸੁਦਰਿਪੇਖਪੁਰਦਰਕੇਬ text 70 (next other pangti 48), 100% of the pangti heard; heard-token best fit 93.12-94.56 (forced alignment 93.14-94.18) vs candidate 87.52-94.2 (start +5.6 s, end +0.4 s); overlaps the previous candidate span by 6.7 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78276,
+  "start_s": 94.6,
+  "end_s": 101.12,
+  "my_verseId": 78276,
+  "confidence": 0.5,
+  "agrees": true,
+  "reason": "heard \"ਧਨਤ ਦਰਚਨ ਦੇਖੈ ਪਰ ਦਸਨ ਹਰ ਮਹਿ ਕਉਕ ਮਹਿ ਚਤ\" ~ ਦਾਨਤਦਛਨਦੈਕੈਪ੍ਰਦਛਨਭਾਲਮੈਕੁਕਮਅਛਤਲ text 48 (next other pangti 48), 88% of the pangti heard; heard-token best fit 93.76-94.16 (forced alignment 94.06-94.18) vs candidate 94.6-101.12 (start -0.8 s, end -7.0 s); overlaps the next candidate span by 6.5 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78276,
+  "start_s": 94.6,
+  "end_s": 101.12,
+  "my_verseId": 78276,
+  "confidence": 0.5,
+  "agrees": true,
+  "reason": "heard \"ਧਨਤ ਦਰਚਨ ਦੇਖੈ ਪਰ ਦਸਨ ਹਰ ਮਹਿ ਕਉਕ ਮਹਿ ਚਤ\" ~ ਦਾਨਤਦਛਨਦੈਕੈਪ੍ਰਦਛਨਭਾਲਮੈਕੁਕਮਅਛਤਲ text 48 (next other pangti 48), 88% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 6.5 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78277,
+  "start_s": 101.52,
+  "end_s": 108.08,
+  "my_verseId": 78277,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਤ ਕ ਲਹਨ ਦੇਵ ਪੁਰ ਮਿਲਿਵਨ ਕੇ ਕਲ ਮੰਗੈ ਲਗਾਵ\" ~ ਹੋਤਕੁਲਾਹਲਦੇਵਪੁਰੀਮਿਲਦੇਵਨਕੇਕੁਲਿਮ text 79 (next other pangti 46), 81% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the next candidate span by 6.6 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78277,
+  "start_s": 101.52,
+  "end_s": 109.4,
+  "my_verseId": 78277,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਤ ਕ ਲਹਨ ਦੇਵ ਪੁਰ ਮਿਲਿਵਨ ਕੇ ਕਲ ਮੰਗੈ ਲਗਾਵ ਅਵਹਿ\" ~ ਹੋਤਕੁਲਾਹਲਦੇਵਪੁਰੀਮਿਲਦੇਵਨਕੇਕੁਲਿਮ text 75 (next other pangti 45), 92% of the pangti heard; heard-token best fit 107.2-108.36 (forced alignment 107.22-107.22) vs candidate 101.52-109.4 (start +5.7 s, end -1.0 s); overlaps the previous candidate span by 6.6 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 95386,
+  "start_s": 108.48,
+  "end_s": 115.16,
+  "my_verseId": 95386,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਅਵਹਿ ਸਸ ਹੀ ਕਰਣ ਨਹੀ ਅਵੈ ਬਿਨਤੀ ਸੁਨਿ ਲੀਜੈ\" ~ ਹੇਰਵਿਹੇਸਸਿਹੇਕਰੁਨਾਨਿਧਿਮੇਰੀਅਬੈਬਿ text 71 (next other pangti 61), 73% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the next candidate span by 6.7 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78272,
+  "start_s": 108.48,
+  "end_s": 117.56,
+  "my_verseId": 95386,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਅਵਹਿ ਸਸ ਹੀ ਕਰਣ ਨਹੀ ਅਵੈ ਬਿਨਤੀ ਸੁਨਿ ਲੀਜੈ ਅਰੁ ਨ ਮਾਾਂਗ\" ~ ਹੇਰਵਿਹੇਸਸਿਹੇਕਰੁਨਾਨਿਧਿਮੇਰੀਅਬੈਬਿ text 58 (next other pangti 52), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 6.7 s; overlaps the next candidate span by 7.8 s; candidate says 78272 \"ਝਾਲਰ ਤਾਲ ਮ੍ਰਿਦੰਗ ਉਪੰਗ ਰਬਾਬ ਲੀਏ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78273,
+  "start_s": 109.72,
+  "end_s": 118.32,
+  "my_verseId": 36302,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਸਸ ਹੀ ਕਰਣ ਨਹੀ ਅਵੈ ਬਿਨਤੀ ਸੁਨਿ ਲੀਜੈ ਅਰੁ ਨ ਮਾਾਂਗਤ ਹਉ \" ~ ਕਹਿਕਬੀਰਇਹਬਿਨਤੀਸੁਨੀਅਹੁਮਤਘਾਲਹੁਜਮ text 53 (next other pangti 52), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 7.8 s; overlaps the next candidate span by 2.7 s; candidate says 78273 \"ਕਿੰਨਰ ਗੰਧ੍ਰਬ ਗਾਨ ਕਰੈ ਗਨਿ ਜਛ ਅਪ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 95387,
+  "start_s": 115.64,
+  "end_s": 122.32,
+  "my_verseId": 95387,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਅਰੁ ਨ ਮਾਾਂਗਤ ਹਉ ਤੁਮ ਤੇ ਕਛ ਚਹਤ ਹਉ ਚਿਤ ਮਹਿ ਸੋਈ ਕੀ ਜੈ\" ~ ਅਉਰਨਮਾਗਤਹਉਤੁਮਤੇਕਛੁਚਾਹਤਹਉਚਿਤਮੈਸ text 89 (next other pangti 44), 100% of the pangti heard; heard-token best fit 117.4-119.2 (forced alignment 117.06-119.18) vs candidate 115.64-122.32 (start +1.8 s, end -3.1 s); overlaps the previous candidate span by 2.7 s; overlaps the next candidate span by 4.4 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78273,
+  "start_s": 117.88,
+  "end_s": 126.2,
+  "my_verseId": 95387,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਤੁਮ ਤੇ ਕਛ ਚਹਤ ਹਉ ਚਿਤ ਮਹਿ ਸੋਈ ਕੀ ਜੈਤ੍ਰਣ ਸਿਉ ਅਤਿ ਹੀਰ\" ~ ਅਉਰਨਮਾਗਤਹਉਤੁਮਤੇਕਛੁਚਾਹਤਹਉਚਿਤਮੈਸ text 55 (next other pangti 46), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 4.4 s; overlaps the next candidate span by 7.6 s; candidate says 78273 \"ਕਿੰਨਰ ਗੰਧ੍ਰਬ ਗਾਨ ਕਰੈ ਗਨਿ ਜਛ ਅਪ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78274,
+  "start_s": 118.56,
+  "end_s": 125.64,
+  "my_verseId": 95387,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਤੇ ਕਛ ਚਹਤ ਹਉ ਚਿਤ ਮਹਿ ਸੋਈ ਕੀ ਜੈਤ੍ਰਣ ਸਿਉ ਅਤਿ ਹੀਰਣ ਭੀ\" ~ ਅਉਰਨਮਾਗਤਹਉਤੁਮਤੇਕਛੁਚਾਹਤਹਉਚਿਤਮੈਸ text 51 (next other pangti 45), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 7.6 s; overlaps the next candidate span by 3.0 s; candidate says 78274 \"ਸੰਖਨ ਕੀ ਧੁਨ ਘੰਟਨਿ ਕੀ ਕਰਿ ਫੂਲਨ \""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 95388,
+  "start_s": 122.64,
+  "end_s": 129.28,
+  "my_verseId": 95388,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਤ੍ਰਣ ਸਿਉ ਅਤਿ ਹੀਰਣ ਭੀਤਰ੍ਰ ਜੋ ਮਰ ਕ ਸਾਚੁ ਪਤ\" ~ ਸਸਤ੍ਰਨਸੋਅਤਿਹੀਰਨਭੀਤਰਜੂਝਿਮਰੋਕਹਿਸ text 71 (next other pangti 47), 84% of the pangti heard; heard-token best fit 124.24-125.72 (forced alignment 127.18-127.18) vs candidate 122.64-129.28 (start +1.6 s, end -3.6 s); overlaps the previous candidate span by 3.0 s; overlaps the next candidate span by 3.1 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78275,
+  "start_s": 126.16,
+  "end_s": 136.4,
+  "my_verseId": 95389,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"੍ਰ ਜੋ ਮਰ ਕ ਸਾਚੁ ਪਤ ਸੰਤ ਸਾਹਾ ਸਦਾ ਜਗ ਮਾਇ ਕ੍ਰਿਪਾ ਕਰਿ \" ~ ਸਤਸਹਾਇਸਦਾਜਗਮਾਇਕ੍ਰਿਪਾਕਰਸ੍ਯਾਮਇਹੈ text 70 (next other pangti 46), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 3.1 s; overlaps the next candidate span by 9.9 s; candidate says 78275 \"ਆਰਤੀ ਕੋਟਿ ਕਰੈ ਸੁਰ ਸੁੰਦਰਿ ਪੇਖ ਪ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78274,
+  "start_s": 126.48,
+  "end_s": 134.8,
+  "my_verseId": 95389,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਜੋ ਮਰ ਕ ਸਾਚੁ ਪਤ ਸੰਤ ਸਾਹਾ ਸਦਾ ਜਗ ਮਾਇ ਕ੍ਰਿਪਾ ਕਰਿ ਸਿਵ\" ~ ਸਤਸਹਾਇਸਦਾਜਗਮਾਇਕ੍ਰਿਪਾਕਰਸ੍ਯਾਮਇਹੈ text 63 (next other pangti 48), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 9.9 s; overlaps the next candidate span by 5.0 s; candidate says 78274 \"ਸੰਖਨ ਕੀ ਧੁਨ ਘੰਟਨਿ ਕੀ ਕਰਿ ਫੂਲਨ \""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 95389,
+  "start_s": 129.76,
+  "end_s": 136.4,
+  "my_verseId": 95389,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਸੰਤ ਸਾਹਾ ਸਦਾ ਜਗ ਮਾਇ ਕ੍ਰਿਪਾ ਕਰਿ ਸਿਵ ਇਹ ਵਰਿ ਦੀਿਜੈ\" ~ ਸਤਸਹਾਇਸਦਾਜਗਮਾਇਕ੍ਰਿਪਾਕਰਸ੍ਯਾਮਇਹੈ text 82 (next other pangti 52), 100% of the pangti heard; heard-token best fit 133.4-136.64 (forced alignment 136.26-136.38) vs candidate 129.76-136.4 (start +3.6 s, end +0.2 s); overlaps the previous candidate span by 5.0 s; overlaps the next candidate span by 1.0 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78275,
+  "start_s": 135.36,
+  "end_s": 145.28,
+  "my_verseId": 87326,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਵਰਿ ਦੀਿਜੈ ਕਹ ਜਬਦਿ ਤੁਮਰ ਤ ਕਥੇ ਕੋਆਤਰ ਨਹੀ ਅਨਮਹੀਮ ਕੁਰ\" ~ ਪਾਇਗਹੇਜਬਤੇਤੁਮਰੇਤਬਤੇਕੋਊਆਖਤਰੇਨਹੀ text 49 (next other pangti 41), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 1.0 s; overlaps the next candidate span by 8.4 s; candidate says 78275 \"ਆਰਤੀ ਕੋਟਿ ਕਰੈ ਸੁਰ ਸੁੰਦਰਿ ਪੇਖ ਪ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87326,
+  "start_s": 136.88,
+  "end_s": 143.52,
+  "my_verseId": 87326,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਕਹ ਜਬਦਿ ਤੁਮਰ ਤ ਕਥੇ ਕੋਆਤਰ ਨਹੀ ਅਨ\" ~ ਪਾਇਗਹੇਜਬਤੇਤੁਮਰੇਤਬਤੇਕੋਊਆਖਤਰੇਨਹੀ text 62 (next other pangti 45), 71% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 8.4 s; overlaps the next candidate span by 6.1 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78276,
+  "start_s": 137.4,
+  "end_s": 148.28,
+  "my_verseId": 87327,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਕਹ ਜਬਦਿ ਤੁਮਰ ਤ ਕਥੇ ਕੋਆਤਰ ਨਹੀ ਅਨਮਹੀਮ ਕੁਰਾਨਕੁਰਾਨ ਅਨੇ\" ~ ਰਾਮਰਹੀਮਪੁਰਾਨਕੁਰਾਨਅਨੇਕਕਹੈਮਤਏਕਨਮ text 54 (next other pangti 51), 100% of the pangti heard; heard-token best fit 144.56-144.96 (forced alignment 142.02-142.02) vs candidate 137.4-148.28 (start +7.2 s, end -3.3 s); overlaps the previous candidate span by 6.1 s; overlaps the next candidate span by 4.6 s; candidate says 78276 \"ਦਾਨਤ ਦਛਨ ਦੈ ਕੈ ਪ੍ਰਦਛਨ ਭਾਲ ਮੈ ਕ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87327,
+  "start_s": 143.72,
+  "end_s": 150.56,
+  "my_verseId": 87327,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਮਹੀਮ ਕੁਰਾਨਕੁਰਾਨ ਅਨੇਕ ਕਹਿ ਮਤਿ ਏਕੁ ਨਮਾਨਿਆ ਅੰਮ\" ~ ਰਾਮਰਹੀਮਪੁਰਾਨਕੁਰਾਨਅਨੇਕਕਹੈਮਤਏਕਨਮ text 78 (next other pangti 52), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 4.6 s; overlaps the next candidate span by 5.1 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78276,
+  "start_s": 145.44,
+  "end_s": 152.04,
+  "my_verseId": 87327,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਕੁਰਾਨਕੁਰਾਨ ਅਨੇਕ ਕਹਿ ਮਤਿ ਏਕੁ ਨਮਾਨਿਆ ਅੰਮ੍ਰਿਤ ਸਾਸਤ੍ਰ \" ~ ਰਾਮਰਹੀਮਪੁਰਾਨਕੁਰਾਨਅਨੇਕਕਹੈਮਤਏਕਨਮ text 60 (next other pangti 49), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 5.1 s; overlaps the next candidate span by 5.0 s; candidate says 78276 \"ਦਾਨਤ ਦਛਨ ਦੈ ਕੈ ਪ੍ਰਦਛਨ ਭਾਲ ਮੈ ਕ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87327,
+  "start_s": 147.08,
+  "end_s": 150.56,
+  "my_verseId": 87327,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਅਨੇਕ ਕਹਿ ਮਤਿ ਏਕੁ ਨਮਾਨਿਆ ਅੰਮ\" ~ ਰਾਮਰਹੀਮਪੁਰਾਨਕੁਰਾਨਅਨੇਕਕਹੈਮਤਏਕਨਮ text 74 (next other pangti 56), 65% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 5.0 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87328,
+  "start_s": 150.64,
+  "end_s": 156.92,
+  "my_verseId": 87328,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਅੰਮ੍ਰਿਤ ਸਾਸਤ੍ਰ ਬਿਦਿ ਸਭ ਬਹੁਇ ਕਹ ਹਮ ਏਕੁ ਨ ਜਾਨਿ ਸ\" ~ ਸਿਮ੍ਰਿਤਿਸਾਸਤ੍ਰਬੇਦਸਭੈਬਹੁਭੇਦਕਹੈਹ text 80 (next other pangti 56), 92% of the pangti heard; heard-token best fit 150.6-152.32 (forced alignment 150.74-152.02) vs candidate 150.64-156.92 (start -0.0 s, end -4.6 s); overlaps the next candidate span by 6.3 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87328,
+  "start_s": 150.64,
+  "end_s": 156.92,
+  "my_verseId": 87328,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਅੰਮ੍ਰਿਤ ਸਾਸਤ੍ਰ ਬਿਦਿ ਸਭ ਬਹੁਇ ਕਹ ਹਮ ਏਕੁ ਨ ਜਾਨਿ ਸ\" ~ ਸਿਮ੍ਰਿਤਿਸਾਸਤ੍ਰਬੇਦਸਭੈਬਹੁਭੇਦਕਹੈਹ text 80 (next other pangti 56), 92% of the pangti heard; heard-token best fit 155.92-156.56 (forced alignment 155.54-155.86) vs candidate 150.64-156.92 (start +5.3 s, end -0.4 s); overlaps the previous candidate span by 6.3 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87329,
+  "start_s": 157.12,
+  "end_s": 163.72,
+  "my_verseId": 87329,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਸ੍ਰਅਸ ਕਾ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਾ ਮੈ ਨ ਕਹਓ ਸਭਿ ਧੋਹਿ ਬਖਾਨਿਓ \" ~ ਸ੍ਰੀਅਸਿਪਾਨਕ੍ਰਿਪਾਤੁਮਰੀਕਰਿਮੈਨਕਹਯ text 78 (next other pangti 49), 93% of the pangti heard; heard-token best fit 157.24-158.08 (forced alignment 157.14-157.26) vs candidate 157.12-163.72 (start +0.1 s, end -5.6 s); overlaps the next candidate span by 6.6 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87329,
+  "start_s": 157.12,
+  "end_s": 164.12,
+  "my_verseId": 87329,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਸ੍ਰਅਸ ਕਾ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਾ ਮੈ ਨ ਕਹਓ ਸਭਿ ਧੋਹਿ ਬਖਾਨਿਓ \" ~ ਸ੍ਰੀਅਸਿਪਾਨਕ੍ਰਿਪਾਤੁਮਰੀਕਰਿਮੈਨਕਹਯ text 78 (next other pangti 49), 95% of the pangti heard; heard-token best fit 162.36-163.56 (forced alignment 162.38-162.38) vs candidate 157.12-164.12 (start +5.2 s, end -0.6 s); overlaps the previous candidate span by 6.6 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87330,
+  "start_s": 163.96,
+  "end_s": 164.44,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87331,
+  "start_s": 165.88,
+  "end_s": 170.52,
+  "my_verseId": 87331,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਸਗਲ ਦੁਆਰ ਕੋ ਛਾਡ ਕੈ ਗਹਓ ਤੁਹਰੋ ਦੁਆਰ\" ~ ਸਗਲਦੁਆਰਕਉਛਾਡਿਕੈਗਹਯੋਤੁਹਾਰੋਦੁਆਰ text 87 (next other pangti 42), 90% of the pangti heard; heard-token best fit 166.04-167.28 (forced alignment 165.9-166.66) vs candidate 165.88-170.52 (start +0.2 s, end -3.2 s); overlaps the next candidate span by 4.6 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87331,
+  "start_s": 165.88,
+  "end_s": 170.52,
+  "my_verseId": 87331,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਸਗਲ ਦੁਆਰ ਕੋ ਛਾਡ ਕੈ ਗਹਓ ਤੁਹਰੋ ਦੁਆਰ\" ~ ਸਗਲਦੁਆਰਕਉਛਾਡਿਕੈਗਹਯੋਤੁਹਾਰੋਦੁਆਰ text 87 (next other pangti 42), 90% of the pangti heard; heard-token best fit 169.24-170.88 (forced alignment 169.02-170.5) vs candidate 165.88-170.52 (start +3.4 s, end +0.4 s); overlaps the previous candidate span by 4.6 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87332,
+  "start_s": 171.36,
+  "end_s": 175.84,
+  "my_verseId": 87332,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਭਾਂਗੈ ਕੀ ਲਾਜ ਐਸ ਗੋਬਿੰਦ ਦਾਸ ਧਾਰੈ\" ~ ਬਾਹਿਗਹੇਕੀਲਾਜਅਸਿਗੋਬਿਦਦਾਸਤੁਹਾਰ text 73 (next other pangti 48), 89% of the pangti heard; heard-token best fit 169.24-172.96 (forced alignment 169.02-169.46) vs candidate 171.36-175.84 (start -2.1 s, end -2.9 s); overlaps the next candidate span by 4.5 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87332,
+  "start_s": 171.36,
+  "end_s": 176.72,
+  "my_verseId": 87332,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਭਾਂਗੈ ਕੀ ਲਾਜ ਐਸ ਗੋਬਿੰਦ ਦਾਸ ਧਾਰੈ ਐਸ\" ~ ਬਾਹਿਗਹੇਕੀਲਾਜਅਸਿਗੋਬਿਦਦਾਸਤੁਹਾਰ text 68 (next other pangti 46), 96% of the pangti heard; heard-token best fit 174.6-175.0 (forced alignment 175.82-175.82) vs candidate 171.36-176.72 (start +3.2 s, end -1.7 s); overlaps the previous candidate span by 4.5 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78279,
+  "start_s": 176.68,
+  "end_s": 181.28,
+  "my_verseId": 78279,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਐਸ ਚਨ ਪਰਤਾਪ ਤੇ ਦੇਵਨ ਵਡਿਓਪਰਥਾਪ\" ~ ਐਸੇਚਡਪ੍ਰਤਾਪਤੇਦੇਵਨਬਢਿਓਪ੍ਰਤਾਪ text 78 (next other pangti 52), 89% of the pangti heard; overlaps the next candidate span by 4.1 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87333,
+  "start_s": 177.16,
+  "end_s": 180.56,
+  "my_verseId": 78279,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਸ ਚਨ ਪਰਤਾਪ ਤੇ ਦੇਵਨ ਵਡਿਓਪਰਥਾ\" ~ ਐਸੇਚਡਪ੍ਰਤਾਪਤੇਦੇਵਨਬਢਿਓਪ੍ਰਤਾਪ text 74 (next other pangti 50), 81% of the pangti heard; heard-token best fit 180.12-180.52 (forced alignment 180.14-180.14) vs candidate 177.16-180.56 (start +3.0 s, end -0.0 s); overlaps the previous candidate span by 4.1 s; candidate says 87333 \"ਇਤਿ ਸ੍ਰੀ ਰਾਮਾਇਣ ਸਮਾਪਤਮ ਸਤੁ ਸੁਭ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 78280,
+  "start_s": 181.72,
+  "end_s": 186.8,
+  "my_verseId": 78280,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਹੀਨ ਲੋਕ ਜੈ ਜੈ ਕਰੇ ਰੈ ਨਾਮੁ ਸਦ ਜਾਪ\" ~ ਤੀਨਲੋਕਜੈਜੈਕਰੈਰਰੈਨਾਮੁਸਤਿਜਾਪ text 84 (next other pangti 56), 92% of the pangti heard"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28393,
+  "start_s": 187.4,
+  "end_s": 188.52,
+  "my_verseId": 75015,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਚਿਤ੍ਰ ਚਕਰ ਵਰ\" ~ ਚਤ੍ਰਚਕ੍ਰਵਰਤੀਚਤ੍ਰਚਕ੍ਰਭੁਗਤੇ text 90 (next other pangti 82), 40% of the pangti heard; overlaps the next candidate span by 1.1 s; candidate says 28393 \"ਰਾਗੁ ਸੋਰਠਿ ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 75015,
+  "start_s": 187.4,
+  "end_s": 191.6,
+  "my_verseId": 75015,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਚਿਤ੍ਰ ਚਕਰ ਵਰਤੀ ਚਿਤ੍ਰਿ ਚਕਰ ਭੂਤ\" ~ ਚਤ੍ਰਚਕ੍ਰਵਰਤੀਚਤ੍ਰਚਕ੍ਰਭੁਗਤੇ text 84 (next other pangti 76), 96% of the pangti heard; overlaps the previous candidate span by 1.1 s; overlaps the next candidate span by 3.0 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87328,
+  "start_s": 188.6,
+  "end_s": 201.16,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 43): \"ਰ ਵਰਤੀ ਚਿਤ੍ਰਿ ਚਕਰ ਭੂਤ ਸ ਅੰਬਸਨੋ ਸਰਬਧ ਸਰਵਜਤੇ ਕਾਲੰਕਣਾਸੀ ਦਇਆਲ\"; overlaps the previous candidate span by 3.0 s; overlaps the next candidate span by 8.5 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 75016,
+  "start_s": 192.64,
+  "end_s": 196.92,
+  "my_verseId": 75016,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਸ ਅੰਬਸਨੋ ਸਰਬਧ ਸਰਵਜਤੇ\" ~ ਸੁਯਭਵਸੁਭਸਰਬਦਾਸਰਬਜੁਗਤੇ text 54 (next other pangti 56), 81% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 8.5 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 75017,
+  "start_s": 198.04,
+  "end_s": 202.4,
+  "my_verseId": 75017,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਕਾਲੰਕਣਾਸੀ ਦਇਆਲੰ ਸਰਉਤੇ\" ~ ਦੁਕਾਲਪ੍ਰਣਾਸੀਦਿਆਲਸਰੂਪੇ text 71 (next other pangti 54), 90% of the pangti heard; overlaps the next candidate span by 1.1 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 95388,
+  "start_s": 201.32,
+  "end_s": 213.04,
+  "my_verseId": 75017,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਇਆਲੰ ਸਰਉਤੇ ਸਦਾ ਅੰਗਿ ਸੰੰਗੇ ਅੰਗੰਗ ਭੂਤੇ ਜੋ ਕਾਲੰ ਪ੍ਰਣਾ\" ~ ਦੁਕਾਲਪ੍ਰਣਾਸੀਦਿਆਲਸਰੂਪੇ text 58 (next other pangti 46), 100% of the pangti heard; heard-token best fit 201.32-201.92 (forced alignment 204.94-204.94) vs candidate 201.32-213.04 (start +0.0 s, end -11.1 s); overlaps the previous candidate span by 1.1 s; overlaps the next candidate span by 9.4 s; candidate says 95388 \"ਸਸਤ੍ਰਨ ਸੋ ਅਤਿ ਹੀ ਰਨ ਭੀਤਰ ਜੂਝਿ \""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 75018,
+  "start_s": 203.6,
+  "end_s": 207.6,
+  "my_verseId": 75018,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਸਦਾ ਅੰਗਿ ਸੰੰਗੇ ਅੰਗੰਗ ਭੂਤੇ\" ~ ਸਦਾਅਗਸਗੇਅਭਗਬਿਭੂਤੇ text 85 (next other pangti 44), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 9.4 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 75017,
+  "start_s": 208.76,
+  "end_s": 213.08,
+  "my_verseId": 75017,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਜੋ ਕਾਲੰ ਪ੍ਰਣਾਸੀ ਕਇਆਲੰਸ ਰੂਪੇ\" ~ ਦੁਕਾਲਪ੍ਰਣਾਸੀਦਿਆਲਸਰੂਪੇ text 81 (next other pangti 61), 100% of the pangti heard"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 75018,
+  "start_s": 214.12,
+  "end_s": 218.76,
+  "my_verseId": 75018,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਸਗ ਸੰਗੇ ਅਬੰਗੰਗ ਪਿਟ\" ~ ਸਦਾਅਗਸਗੇਅਭਗਬਿਭੂਤੇ text 55 (next other pangti 40), 88% of the pangti heard; heard-token best fit 215.2-215.6 (forced alignment 214.18-214.18) vs candidate 214.12-218.76 (start +1.1 s, end -3.2 s); overlaps the next candidate span by 4.6 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 95389,
+  "start_s": 214.16,
+  "end_s": 230,
+  "my_verseId": 57964,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਸਗ ਸੰਗੇ ਅਬੰਗੰਗ ਪਿਟ ਡਿਠੈ ਸਭ ਤ ਨਹੀ ਤੁਧ ਜਹਿਆ ਜਿਥੈ\" ~ ਡਿਠੇਸਭੇਥਾਵਨਹੀਤੁਧੁਜੇਹਿਆ text 54 (next other pangti 40), 100% of the pangti heard; heard-token best fit 222.12-222.92 (forced alignment 222.14-222.42) vs candidate 214.16-230 (start +8.0 s, end -7.1 s); overlaps the previous candidate span by 4.6 s; overlaps the next candidate span by 7.9 s; candidate says 95389 \"ਸੰਤ ਸਹਾਇ ਸਦਾ ਜਗ ਮਾਇ ਕ੍ਰਿਪਾ ਕਰ \""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 33,
+  "start_s": 222.08,
+  "end_s": 235.08,
+  "my_verseId": 57964,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਡਿਠੈ ਸਭ ਤ ਨਹੀ ਤੁਧ ਜਹਿਆ ਜਿਥੈ ਸਮੇਥਾ ਨਹਿ ਤੁਧ\" ~ ਡਿਠੇਸਭੇਥਾਵਨਹੀਤੁਧੁਜੇਹਿਆ text 66 (next other pangti 41), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 7.9 s; overlaps the next candidate span by 13.0 s; candidate says 33 \"ਦੇਗ਼ ਤੇਗ਼ ਫ਼ਤਹ ਨੁਸਰਤ ਬੇਦਰੰਗ ਯਾਫ਼ਤਜ਼\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57964,
+  "start_s": 222.12,
+  "end_s": 228.72,
+  "my_verseId": 57964,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਡਿਠੈ ਸਭ ਤ ਨਹੀ ਤੁਧ ਜਹਿਆ\" ~ ਡਿਠੇਸਭੇਥਾਵਨਹੀਤੁਧੁਜੇਹਿਆ text 77 (next other pangti 47), 77% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 13.0 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57964,
+  "start_s": 229.52,
+  "end_s": 236.52,
+  "my_verseId": 57964,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਜਿਥੈ ਸਮੇਥਾ ਨਹਿ ਤੁਧਸੇਹਿਆ\" ~ ਡਿਠੇਸਭੇਥਾਵਨਹੀਤੁਧੁਜੇਹਿਆ text 67 (next other pangti 59), 91% of the pangti heard; heard-token best fit 228.36-232.0 (forced alignment 228.38-228.7) vs candidate 229.52-236.52 (start -1.2 s, end -4.5 s); overlaps the next candidate span by 6.0 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87326,
+  "start_s": 230.52,
+  "end_s": 243.4,
+  "my_verseId": 57965,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਸਮੇਥਾ ਨਹਿ ਤੁਧਸੇਹਿਆ ਤਹੁ ਪੁਰਖੁ ਬਿਧਾ ਤੇ ਤਾ ਤੂ ਸੋ\" ~ ਬਧੋਹੁਪੁਰਖਿਬਿਧਾਤੈਤਾਤੂਸੋਹਿਆ text 59 (next other pangti 53), 100% of the pangti heard; heard-token best fit 235.6-236.6 (forced alignment 236.22-236.5) vs candidate 230.52-243.4 (start +5.1 s, end -6.8 s); overlaps the previous candidate span by 6.0 s; overlaps the next candidate span by 7.9 s; candidate says 87326 \"ਪਾਇ ਗਹੇ ਜਬ ਤੇ ਤੁਮਰੇ ਤਬ ਤੇ ਕੋਊ \""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 34,
+  "start_s": 235.48,
+  "end_s": 240.24,
+  "my_verseId": 26534,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਸੇਹਿਆ ਤਹੁ ਪੁਰਖੁ ਬਿਧਾ ਤੇ\" ~ ਜਿਹਨਰਬਿਸਰਿਆਪੁਰਖੁਬਿਧਾਤਾਤੇਦੁਖੀਆਮ text 78 (next other pangti 73), 53% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 7.9 s; overlaps the next candidate span by 2.8 s; candidate says 34 \"ਸ੍ਰੀ ਅਕਾਲ ਪੁਰਖ ਜੀ ਸਹਾਇ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57965,
+  "start_s": 237.48,
+  "end_s": 244.36,
+  "my_verseId": 57965,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਤਹੁ ਪੁਰਖੁ ਬਿਧਾ ਤੇ ਤਾ ਤੂ ਸੋਹਿਆ\" ~ ਬਧੋਹੁਪੁਰਖਿਬਿਧਾਤੈਤਾਤੂਸੋਹਿਆ text 89 (next other pangti 75), 92% of the pangti heard; heard-token best fit 239.04-243.2 (forced alignment 238.78-239.5) vs candidate 237.48-244.36 (start +1.6 s, end -1.2 s); overlaps the previous candidate span by 2.8 s; overlaps the next candidate span by 2.1 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 35,
+  "start_s": 242.24,
+  "end_s": 255.28,
+  "my_verseId": 57965,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਤਾ ਤੂ ਸੋਹਿਆ ਪਧਹੁਹੁ ਪੁਰਖ ਬਿਧਤੇ ਤ ਕੋਉ ਸੋਹ ਖਸਦੀ ਸਗਨ ਅ\" ~ ਬਧੋਹੁਪੁਰਖਿਬਿਧਾਤੈਤਾਤੂਸੋਹਿਆ text 53 (next other pangti 49), 100% of the pangti heard; heard-token best fit 243.36-244.72 (forced alignment 243.26-244.34) vs candidate 242.24-255.28 (start +1.1 s, end -10.6 s); overlaps the previous candidate span by 2.1 s; overlaps the next candidate span by 11.0 s; candidate says 35 \"ਜੀ ਦਰਬਾਰਨ ਮੈਂ ਤੇਰੋ ਦਰਬਾਰਾ ਸਚ ਖ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87327,
+  "start_s": 244.32,
+  "end_s": 257.64,
+  "my_verseId": 41771,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਹਿਆ ਪਧਹੁਹੁ ਪੁਰਖ ਬਿਧਤੇ ਤ ਕੋਉ ਸੋਹ ਖਸਦੀ ਸਗਨ ਅਪਾ ਅਲਹੁਪ\" ~ ਕ੍ਰਿਪਾਕਰਹੁਜਿਸੁਪੁਰਖਬਿਧਾਤੇਸੋਸਦਾਸ text 52 (next other pangti 46), 98% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 11.0 s; overlaps the next candidate span by 12.3 s; candidate says 87327 \"ਰਾਮ ਰਹੀਮ ਪੁਰਾਨ ਕੁਰਾਨ ਅਨੇਕ ਕਹੈਂ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57965,
+  "start_s": 245.32,
+  "end_s": 252.36,
+  "my_verseId": 41771,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਪਧਹੁਹੁ ਪੁਰਖ ਬਿਧਤੇ ਤ ਕੋਉ ਸੋਹ\" ~ ਕ੍ਰਿਪਾਕਰਹੁਜਿਸੁਪੁਰਖਬਿਧਾਤੇਸੋਸਦਾਸ text 70 (next other pangti 64), 54% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 12.3 s; candidate says 57965 \"ਬਧੋਹੁ ਪੁਰਖਿ ਬਿਧਾਤੈ ਤਾਂ ਤੂ ਸੋਹਿ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57966,
+  "start_s": 253.16,
+  "end_s": 260.2,
+  "my_verseId": 57966,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਖਸਦੀ ਸਗਨ ਅਪਾ ਅਲਹੁਪ ਰਾਮਦਾਸ ਪੁਰ\" ~ ਵਸਦੀਸਘਨਅਪਾਰਅਨੂਪਰਾਮਦਾਸਪੁਰ text 79 (next other pangti 53), 100% of the pangti heard; heard-token best fit 253.44-255.64 (forced alignment 253.54-253.54) vs candidate 253.16-260.2 (start +0.3 s, end -4.6 s); overlaps the next candidate span by 3.0 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 27,
+  "start_s": 257.16,
+  "end_s": 266.56,
+  "my_verseId": 57966,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਅਲਹੁਪ ਰਾਮਦਾਸ ਪੁਰ ਹਸਤੀ ਸਗਨੈ ਅਪਾ ਅਨੂਪ ਰਾਮ\" ~ ਵਸਦੀਸਘਨਅਪਾਰਅਨੂਪਰਾਮਦਾਸਪੁਰ text 70 (next other pangti 57), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 3.0 s; overlaps the next candidate span by 8.3 s; candidate says 27 \"ਮੇਰੋ ਨਾਉਂ ਗੁਰੂ ਗੋਬਿੰਦ ਸਿਘ ਸੋਢੀ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87328,
+  "start_s": 258.28,
+  "end_s": 272.28,
+  "my_verseId": 57966,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਰਾਮਦਾਸ ਪੁਰ ਹਸਤੀ ਸਗਨੈ ਅਪਾ ਅਨੂਪ ਰਾਮਦਾਸ ਪਰੁਰੈ ਹਰਿ ਹਰ \" ~ ਵਸਦੀਸਘਨਅਪਾਰਅਨੂਪਰਾਮਦਾਸਪੁਰ text 59 (next other pangti 53), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 8.3 s; overlaps the next candidate span by 11.4 s; candidate says 87328 \"ਸਿੰਮ੍ਰਿਤਿ ਸਾਸਤ੍ਰ ਬੇਦ ਸਭੈ ਬਹੁ ਭ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57966,
+  "start_s": 260.88,
+  "end_s": 268.12,
+  "my_verseId": 57966,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਹਸਤੀ ਸਗਨੈ ਅਪਾ ਅਨੂਪ ਰਾਮਦਾਸ ਪਰੁਰੈ\" ~ ਵਸਦੀਸਘਨਅਪਾਰਅਨੂਪਰਾਮਦਾਸਪੁਰ text 80 (next other pangti 51), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 11.4 s; overlaps the next candidate span by 1.2 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 28,
+  "start_s": 266.88,
+  "end_s": 279.4,
+  "my_verseId": 57967,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਮਦਾਸ ਪਰੁਰੈ ਹਰਿ ਹਰ ਨਾਨਕ ਕਸਮ ਲ ਜਾਇ ਨਾਇ ਰਾਮਦਾਸ ਹਰਿ ਹਰ\" ~ ਹਰਿਹਾਨਾਨਕਕਸਮਲਜਾਹਿਨਾਇਐਰਾਮਦਾਸਸਰ text 76 (next other pangti 57), 100% of the pangti heard; heard-token best fit 266.96-270.56 (forced alignment 269.06-269.3) vs candidate 266.88-279.4 (start +0.1 s, end -8.8 s); overlaps the previous candidate span by 1.2 s; overlaps the next candidate span by 10.4 s; candidate says 28 \"ਅਸ ਖਲੋਨਾ ਸਭ ਖਲਕਤ ਰਾਜ ਸਾਜ ਬਾਂਧ \""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57967,
+  "start_s": 269.04,
+  "end_s": 275.72,
+  "my_verseId": 57967,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਹਰਿ ਹਰ ਨਾਨਕ ਕਸਮ ਲ ਜਾਇ ਨਾਇ ਰਾਮਦਾਸ\" ~ ਹਰਿਹਾਨਾਨਕਕਸਮਲਜਾਹਿਨਾਇਐਰਾਮਦਾਸਸਰ text 85 (next other pangti 50), 86% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 10.4 s; overlaps the next candidate span by 2.0 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 87329,
+  "start_s": 273.68,
+  "end_s": 283.76,
+  "my_verseId": 57967,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਨਾਇ ਰਾਮਦਾਸ ਹਰਿ ਹਰਿ ਨਾਨਕ ਕਸਮਲਿ ਜਾਇ ਨਾਇ ਰਾਮਦਾਸ ਸਰ\" ~ ਹਰਿਹਾਨਾਨਕਕਸਮਲਜਾਹਿਨਾਇਐਰਾਮਦਾਸਸਰ text 81 (next other pangti 54), 100% of the pangti heard; heard-token best fit 274.84-278.48 (forced alignment 277.46-277.66) vs candidate 273.68-283.76 (start +1.2 s, end -5.3 s); overlaps the previous candidate span by 2.0 s; overlaps the next candidate span by 6.8 s; candidate says 87329 \"ਸ੍ਰੀ ਅਸਿਪਾਨ ਕ੍ਰਿਪਾ ਤੁਮਰੀ ਕਰਿ ਮ\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 57967,
+  "start_s": 277,
+  "end_s": 283.76,
+  "my_verseId": 57967,
+  "confidence": 0.85,
+  "agrees": true,
+  "reason": "heard \"ਹਰਿ ਹਰਿ ਨਾਨਕ ਕਸਮਲਿ ਜਾਇ ਨਾਇ ਰਾਮਦਾਸ ਸਰ\" ~ ਹਰਿਹਾਨਾਨਕਕਸਮਲਜਾਹਿਨਾਇਐਰਾਮਦਾਸਸਰ text 86 (next other pangti 52), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the previous candidate span by 6.8 s; overlaps the next candidate span by 4.0 s"
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 29,
+  "start_s": 279.76,
+  "end_s": 282.64,
+  "my_verseId": 57967,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਿ ਜਾਇ ਨਾਇ ਰਾਮਦਾ\" ~ ਹਰਿਹਾਨਾਨਕਕਸਮਲਜਾਹਿਨਾਇਐਰਾਮਦਾਸਸਰ text 78 (next other pangti 48), 41% of the pangti heard; heard-token best fit 282.6-284.12 (forced alignment 282.58-283.74) vs candidate 279.76-282.64 (start +2.8 s, end +1.5 s); overlaps the previous candidate span by 4.0 s; candidate says 29 \"ਹੁਕਮ ਸੱਤ॥\""
+ },
+ {
+  "recording": "aa05",
+  "cand_verseId": 30,
+  "start_s": 283.16,
+  "end_s": 295.68,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 29924,
+  "start_s": 27.88,
+  "end_s": 31.48,
+  "my_verseId": 29924,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਊਤਮਦੀਅ ਰਾਾਨ ਕਮਲ ਬਾਮੀ\" ~ ਊਤਮੁਦੀਅਰਾਨਿਰਮਲਬਾਤੀ text 80 (next other pangti 51), 94% of the pangti heard"
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 29925,
+  "start_s": 31.92,
+  "end_s": 35.52,
+  "my_verseId": null,
+  "confidence": 0.6,
+  "agrees": false,
+  "reason": "heard text matches no pangti well (best 44): \"ਰੂਅਲ ਕਤ ਕਮਲਾ ਬਾਜੀ\""
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 29926,
+  "start_s": 36.04,
+  "end_s": 39.76,
+  "my_verseId": 29926,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਰਾਮ ਭਗਤਿ ਰਾਮਾਨੰਦ ਜਾਨੈ\" ~ ਰਾਮਾਭਗਤਿਰਾਮਾਨਦੁਜਾਨੈ text 94 (next other pangti 71), 95% of the pangti heard"
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 29927,
+  "start_s": 40.16,
+  "end_s": 44.04,
+  "my_verseId": 29927,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਪੂਰਨ ਪਰਮਾਨਦ ਬਖਾਨਕ\" ~ ਪੂਰਨਪਰਮਾਨਦੁਬਖਾਨੈ text 93 (next other pangti 82), 94% of the pangti heard"
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 29928,
+  "start_s": 44.2,
+  "end_s": 47.52,
+  "my_verseId": 402574,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਕ ਮਦਰਤ ਬੈ ਦ ਪੂਰ\" ~ ਕਮਦਸ਼ਦਦੋਦਾਮਦਰਬਦਕਰਦ text 50 (next other pangti 41), 65% of the pangti heard; heard-token fit 49.08-49.48 is off (start +4.9 s, end +2.0 s); only the forced alignment 44.86-44.86 (same model as the aligner) agrees with the candidate; candidate says 29928 \"ਮਦਨ ਮੂਰਤਿ ਭੈ ਤਾਰਿ ਗੋਬਿੰਦੇ ॥\""
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 29929,
+  "start_s": 48,
+  "end_s": 52.24,
+  "my_verseId": 24093,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਵੈਨ ਕਰੈ ਦਨ ਨ ਨਾਨਕ ਸੁਨਿ ਸ\" ~ ਅਰਦਾਸਿਨਾਨਕਸੁਨਿਸੁਆਮੀਰਖਿਲੇਹੁਘਰਕੇ text 56 (next other pangti 53), 53% of the pangti heard; heard-token best fit 50.88-52.88 (forced alignment 50.46-52.5) vs candidate 48-52.24 (start +2.9 s, end +0.6 s); candidate says 29929 \"ਸੈਨੁ ਭਣੈ ਭਜੁ ਪਰਮਾਨੰਦੇ ॥੪॥੨॥\""
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 57510,
+  "start_s": 52.48,
+  "end_s": 59.04,
+  "my_verseId": 57510,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਨਿ ਸੁੰਧਿਆ ਤੇ ਦੇਵ ਦਆਗ ਅਦਿ ਬਤ ਆਦਿ ਸਮਾਈ\" ~ ਸੁਨਸਧਿਆਤੇਰੀਦੇਵਦੇਵਾਕਰਅਧਪਤਿਆਦਿਸਮ text 68 (next other pangti 46), 88% of the pangti heard"
+ },
+ {
+  "recording": "pt38",
+  "cand_verseId": 57511,
+  "start_s": 59.52,
+  "end_s": 62.84,
+  "my_verseId": 29938,
+  "confidence": 0.5,
+  "agrees": false,
+  "reason": "heard \"ਬਤ ਸਨਸਾਲ ਤੇਰਾਆ ਭ ਨਹੀ ਕ\" ~ ਗੋਪਾਲਤੇਰਾਆਰਤਾ text 47 (next other pangti 48), 100% of the pangti heard; heard-token best fit 61.36-62.2 (forced alignment 64.26-64.26) vs candidate 59.52-62.84 (start +1.8 s, end -0.6 s); candidate says 57511 \"ਸਿਧ ਸਮਾਧਿ ਅੰਤੁ ਨਹੀ ਪਾਇਆ ਲਾਗਿ ਰ\""
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28405,
+  "start_s": 27.16,
+  "end_s": 27.52,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28406,
+  "start_s": 28.2,
+  "end_s": 30.96,
+  "my_verseId": 28406,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਊਪਰ ਕਉ ਮਾਗੂਖੀਦਾ ਮੈ\" ~ ਊਪਰਕਉਮਾਗਉਖੀਧਾ text 79 (next other pangti 45), 100% of the pangti heard"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28407,
+  "start_s": 31.16,
+  "end_s": 33.68,
+  "my_verseId": 50375,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਮੈਰੀ ਭਗਤਿ ਕਰਹਿ ਜਨ ਛੀਦਾ\" ~ ਭਗਤਿਕਰਹਿਜਨਦੇਖਿਹਜੂਰਿ text 76 (next other pangti 73), 95% of the pangti heard; candidate says 28407 \"ਤੇਰੀ ਭਗਤਿ ਕਰੈ ਜਨੁ ਥੀਂਧਾ ॥੩॥\""
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28408,
+  "start_s": 34.2,
+  "end_s": 36.6,
+  "my_verseId": 28408,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਮੈ ਨਾਹੀਤ ਲਾਗਹੁ\" ~ ਮੈਨਾਹੀਕੀਤਾਲਬੋ text 73 (next other pangti 76), 92% of the pangti heard"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28409,
+  "start_s": 37.24,
+  "end_s": 39.6,
+  "my_verseId": 17302,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਇਕੁ ਨਾਮੁ ਧਿਆ ਮਹਿ ਖਬਹੁ\" ~ ਜਪਿਜਪਿਹੋਏਸਗਲਸਾਧਜਨਏਕੁਨਾਮੁਧਿਆਇਬਹ text 77 (next other pangti 71), 45% of the pangti heard; candidate says 28409 \"ਇਕੁ ਨਾਉ ਤੇਰਾ ਮੈ ਫਬੋ ॥\""
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28410,
+  "start_s": 40.56,
+  "end_s": 42.56,
+  "my_verseId": 28410,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਕਹਿ ਕਬਿਰੁ ਮਨਿ\" ~ ਕਹਿਕਬੀਰਮਨੁਮਾਨਿਆ text 80 (next other pangti 86), 73% of the pangti heard"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28411,
+  "start_s": 43.16,
+  "end_s": 45.48,
+  "my_verseId": 28411,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਮਿਆ ਤਉ ਹਰਿ ਜਾਨਿਆ ਦ\" ~ ਮਨੁਮਾਨਿਆਤਉਹਰਿਜਾਨਿਆ text 92 (next other pangti 75), 78% of the pangti heard"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 5591,
+  "start_s": 45.68,
+  "end_s": 48.2,
+  "my_verseId": 78267,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਿਆ ਦਹੁਰਾ ਲੋਪੰਡ ਕਾ ਹੋਇ\" ~ ਲੋਪਚਡਕਾਹੋਇਗਈਸੁਰਪਤਿਕੌਦੇਰਾਜ text 53 (next other pangti 48), 68% of the pangti heard; overlaps the next candidate span by 2.5 s; candidate says 5591 \"ਸਲੋਕੁ ਮਃ ੧ ॥\""
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28405,
+  "start_s": 45.72,
+  "end_s": 48.72,
+  "my_verseId": 78267,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਿਆ ਦਹੁਰਾ ਲੋਪੰਡ ਕਾ ਹੋਇ ਗਇ\" ~ ਲੋਪਚਡਕਾਹੋਇਗਈਸੁਰਪਤਿਕੌਦੇਰਾਜ text 53 (next other pangti 50), 76% of the pangti heard; heard-token best fit 47.64-50.2 (forced alignment 47.98-49.9) vs candidate 45.72-48.72 (start +1.9 s, end +1.5 s); overlaps the previous candidate span by 2.5 s; candidate says 28405 \"ਸਿਰਹਾਨਾ ਅਵਰ ਤੁਲਾਈ ॥\""
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28402,
+  "start_s": 48.52,
+  "end_s": 52.8,
+  "my_verseId": 29926,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਗਇ ਸੁਰਪਤਿ ਧੁਰਗਰਾਾਨ ਦਾਨ ਵਮ\" ~ ਰਾਮਾਭਗਤਿਰਾਮਾਨਦੁਜਾਨੈ text 50 (next other pangti 46), 100% of the pangti heard; no heard-token run of this pangti inside the window; overlaps the next candidate span by 3.6 s; candidate says 28402 \"ਅਧ ਸੇਰੁ ਮਾਂਗਉ ਦਾਲੇ ॥\""
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28406,
+  "start_s": 49.24,
+  "end_s": 53.96,
+  "my_verseId": 139512,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਸੁਰਪਤਿ ਧੁਰਗਰਾਾਨ ਦਾਨ ਵਮਾਰੇ ਭੇ\" ~ ਇਹਬਿਧਿਤਨਦਾਨਵਜਬਮਾਰੇ text 52 (next other pangti 52), 100% of the pangti heard; heard-token best fit 51.68-54.16 (forced alignment 53.3-53.3) vs candidate 49.24-53.96 (start +2.4 s, end +0.2 s); overlaps the previous candidate span by 3.6 s; candidate says 28406 \"ਊਪਰ ਕਉ ਮਾਂਗਉ ਖੀਂਧਾ ॥\""
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28403,
+  "start_s": 53,
+  "end_s": 56.92,
+  "my_verseId": 78268,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ਵਮਾਰੇ ਭੇਖ ਕਰਿ ਕੀਨੇ ਸੰਤਨ ਕਾ\" ~ ਦਾਨਵਮਾਰਿਅਭੇਖਕਰਿਕੀਨੇਸਤਨਕਾਜ text 90 (next other pangti 46), 84% of the pangti heard; overlaps the next candidate span by 2.7 s; candidate says 28403 \"ਮੋ ਕਉ ਦੋਨਉ ਵਖਤ ਜਿਵਾਲੇ ॥੨॥\""
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28396,
+  "start_s": 54.2,
+  "end_s": 58.12,
+  "my_verseId": 78268,
+  "confidence": 0.85,
+  "agrees": false,
+  "reason": "heard \"ੇਖ ਕਰਿ ਕੀਨੇ ਸੰਤਨ ਕਾਗ\" ~ ਦਾਨਵਮਾਰਿਅਭੇਖਕਰਿਕੀਨੇਸਤਨਕਾਜ text 93 (next other pangti 72), 64% of the pangti heard; heard-token fit 55.96-57.16 is off (start +1.8 s, end -1.0 s); only the forced alignment 55.62-58.18 (same model as the aligner) agrees with the candidate; overlaps the previous candidate span by 2.7 s; candidate says 28396 \"ਹਉ ਮਾਂਗਉ ਸੰਤਨ ਰੇਨਾ ॥\""
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28393,
+  "start_s": 58.12,
+  "end_s": 60,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87330,
+  "start_s": 59.52,
+  "end_s": 60,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87326,
+  "start_s": 62.08,
+  "end_s": 69.16,
+  "my_verseId": 87326,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਪਾਇ ਗਹਿ ਜਬ ਤੇ ਤੁਮਰੇ ਤਬ ਤੇ ਸੋਉ ਅਤਿਤਰਰੇ ਨਹੀ ਅਨੀਆ ਰਾ\" ~ ਪਾਇਗਹੇਜਬਤੇਤੁਮਰੇਤਬਤੇਕੋਊਆਖਤਰੇਨਹੀ text 72 (next other pangti 48), 100% of the pangti heard"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87327,
+  "start_s": 69.4,
+  "end_s": 76.16,
+  "my_verseId": 87327,
+  "confidence": 0.8,
+  "agrees": true,
+  "reason": "heard \"ਆ ਰਾਮ ਰਹੀਮ ਪੁਰਣੀ ਪ ਅਨੇਕ ਕਹਵਤ ਏਕੁ ਨ ਮਾਨਿਆ\" ~ ਰਾਮਰਹੀਮਪੁਰਾਨਕੁਰਾਨਅਨੇਕਕਹੈਮਤਏਕਨਮ text 71 (next other pangti 48), 91% of the pangti heard"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87328,
+  "start_s": 76.36,
+  "end_s": 82.96,
+  "my_verseId": 87328,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਿਆਮ੍ਰਤ ਸਸਤ੍ਰ ਬਦ ਸਭਿ ਬਹੁ ਭੇੜ ਕਹਿ ਹਮ ਏਖੁ ਨ ਜਾਨਐ\" ~ ਸਿਮ੍ਰਿਤਿਸਾਸਤ੍ਰਬੇਦਸਭੈਬਹੁਭੇਦਕਹੈਹ text 77 (next other pangti 54), 90% of the pangti heard"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87329,
+  "start_s": 83.32,
+  "end_s": 89.6,
+  "my_verseId": 87329,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਸ ਅਸ ਪਾਲਕ ਕ੍ਰਿਪਾ ਤੁਮਾਰੀ ਕਰ ਮੈ ਨ ਕਹਓ ਸਭ ਤੁਹਿ ਪਾਖਾਨਓ\" ~ ਸ੍ਰੀਅਸਿਪਾਨਕ੍ਰਿਪਾਤੁਮਰੀਕਰਿਮੈਨਕਹਯ text 76 (next other pangti 51), 93% of the pangti heard"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87330,
+  "start_s": 89.84,
+  "end_s": 90.32,
+  "my_verseId": null,
+  "confidence": 0.7,
+  "agrees": false,
+  "reason": "almost nothing heard in the span (alaap / music / silence)"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87331,
+  "start_s": 91.12,
+  "end_s": 95.88,
+  "my_verseId": 87331,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਸਗਲ ਦੁਆਰ ਕਉ ਛਾਡ ਕੈ ਕਇ ਉਤਾਰ ਦੁਆ\" ~ ਸਗਲਦੁਆਰਕਉਛਾਡਿਕੈਗਹਯੋਤੁਹਾਰੋਦੁਆਰ text 77 (next other pangti 51), 79% of the pangti heard"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 87332,
+  "start_s": 96.44,
+  "end_s": 101.44,
+  "my_verseId": 87332,
+  "confidence": 0.97,
+  "agrees": true,
+  "reason": "heard \"ਮਾਇ ਗਏ ਕੀ ਲਾਜ ਅਸੁ ਗੋਬਿੰਦ ਦਾਸ ਤੁਹਾ\" ~ ਬਾਹਿਗਹੇਕੀਲਾਜਅਸਿਗੋਬਿਦਦਾਸਤੁਹਾਰ text 83 (next other pangti 51), 93% of the pangti heard"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 78279,
+  "start_s": 101.88,
+  "end_s": 106.64,
+  "my_verseId": 78279,
+  "confidence": 0.65,
+  "agrees": true,
+  "reason": "heard \"ਐਸੀ ਜਨ ਪਰਤਾਪ ਤੇ ਜਵਨ ਵਡੀਓ ਭਤਾਮ\" ~ ਐਸੇਚਡਪ੍ਰਤਾਪਤੇਦੇਵਨਬਢਿਓਪ੍ਰਤਾਪ text 56 (next other pangti 45), 85% of the pangti heard"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 78280,
+  "start_s": 107.24,
+  "end_s": 112.32,
+  "my_verseId": 78280,
+  "confidence": 0.9,
+  "agrees": true,
+  "reason": "heard \"ਤਨ ਲੋਕ ਜਹ ਜੈ ਕਰੇ ਰ ਨਾਮ ਸ ਚਾਤ\" ~ ਤੀਨਲੋਕਜੈਜੈਕਰੈਰਰੈਨਾਮੁਸਤਿਜਾਪ text 75 (next other pangti 50), 77% of the pangti heard"
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28393,
+  "start_s": 112.56,
+  "end_s": 114.92,
+  "my_verseId": 75015,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਚਾਤ੍ਰ ਚਕ੍ਰ ਵਰਤੀ ਚਾ\" ~ ਚਤ੍ਰਚਕ੍ਰਵਰਤੀਚਤ੍ਰਚਕ੍ਰਭੁਗਤੇ text 93 (next other pangti 86), 60% of the pangti heard; candidate says 28393 \"ਰਾਗੁ ਸੋਰਠਿ ॥\""
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28394,
+  "start_s": 115.2,
+  "end_s": 119.2,
+  "my_verseId": 75015,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਚਾਤ੍ਰ ਚਤ੍ਰ ਭੁਗਤ ਪ੍ਰਮ ਸਬਮ\" ~ ਚਤ੍ਰਚਕ੍ਰਵਰਤੀਚਤ੍ਰਚਕ੍ਰਭੁਗਤੇ text 55 (next other pangti 51), 80% of the pangti heard; candidate says 28394 \"ਭੂਖੇ ਭਗਤਿ ਨ ਕੀਜੈ ॥\""
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28395,
+  "start_s": 119.36,
+  "end_s": 122.48,
+  "my_verseId": 75016,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਬਮ ਸਰਬ ਦਾਾ ਸਰਬ ਜੁਗ ਕੈ\" ~ ਸੁਯਭਵਸੁਭਸਰਬਦਾਸਰਬਜੁਗਤੇ text 76 (next other pangti 74), 76% of the pangti heard; candidate says 28395 \"ਯਹ ਮਾਲਾ ਅਪਨੀ ਲੀਜੈ ॥\""
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 78280,
+  "start_s": 123.2,
+  "end_s": 129.12,
+  "my_verseId": 75017,
+  "confidence": 0.65,
+  "agrees": false,
+  "reason": "heard \"ਅਲੰਕਨ ਸੀਦਇਿਆ ਅਲੰਸਰੋਪੇ ਸਦਾ ਅੰਗਿ\" ~ ਦੁਕਾਲਪ੍ਰਣਾਸੀਦਿਆਲਸਰੂਪੇ text 50 (next other pangti 42), 100% of the pangti heard; heard-token best fit 125.52-127.24 (forced alignment 127.26-127.38) vs candidate 123.2-129.12 (start +2.3 s, end -1.9 s); candidate says 78280 \"ਤੀਨ ਲੋਕ ਜੈ ਜੈ ਕਰੈ ਰਰੈ ਨਾਮੁ ਸਤਿ\""
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28393,
+  "start_s": 129.4,
+  "end_s": 131.72,
+  "my_verseId": 75018,
+  "confidence": 0.8,
+  "agrees": false,
+  "reason": "heard \"ਿ ਸੰਦੇੇ ਅਭੰਗੰਗਿ ਭ\" ~ ਸਦਾਅਗਸਗੇਅਭਗਬਿਭੂਤੇ text 70 (next other pangti 50), 82% of the pangti heard; candidate says 28393 \"ਰਾਗੁ ਸੋਰਠਿ ॥\""
+ },
+ {
+  "recording": "aa49",
+  "cand_verseId": 28394,
+  "start_s": 131.92,
+  "end_s": 138.04,
+  "my_verseId": 74796,
+  "confidence": 0.9,
+  "agrees": false,
+  "reason": "heard \"ਿ ਭੂਤੇ ਅਭੰਗੰਗ ਭੂਤੇ\" ~ ਅਭਗਬਿਭੂਤੇ text 78 (next other pangti 53), 100% of the pangti heard; candidate says 28394 \"ਭੂਖੇ ਭਗਤਿ ਨ ਕੀਜੈ ॥\""
+ }
+]

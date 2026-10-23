@@ -41,3 +41,20 @@ hearing is weaker: text match mostly 50-80, overlapping candidate spans, timing 
 pangti, 66 'none' (Vaheguru simran / alaap / silence). Heard-token timing within 1.5 s start / 3 s end for 47% of
 tier A, 20% B, 13% C, 21% D. Candidate spans in this batch overlap each other often (10th percentile gap to the next
 tier A span = -4.4 s), which alone blocks approval under the no-overlap rule.
+
+## Batch 4 (2026-10-23, Paath folder 2 + Sung Bani folder 3)
+
+Same method, `BATCH=batch4`; fresh app-model emissions (`emis2.js karanbir`, int8) for the 15 batch-4 recordings (still
+no second model on this Mac). Two changes to the tools: `identify.py` reads `labels/bani-verse-cache.json` so a `bani:<id>`
+key gives the Bani's pangtis (Japji 385, Jaap 808, Aarti 230), and with a pool over 48 pangtis the slow forced alignment
+runs only for the 40 best text matches (+ near ties + the candidate's own pangti); `decide.py` takes the candidate's place
+when the same words stand at several places of one Bani (Jaap Sahib) and caps that at 0.9 (reading order only).
+Result: 298 spans, 6 approved (agree and confidence >= 0.95: pt34 74896, pt38 29924/29926, aa05 78280/75017, aa49 87332),
+95 agree but under the bar, 144 a different pangti, 53 'none'. Paath (75): 1 approved, 27 agree under the bar: Jaap Sahib
+pangtis are 2-4 words, the int8 model hears them only partly (text match 55-80, neighbours bleed into the +-0.3 s window)
+and pt34 is read so fast that 15 spans have almost nothing heard; pt01 Japji rows are heard well (3, 4, 5 at 0.9) but the
+heard-token fit disagrees with the span end. Sung Bani (223): 5 approved; candidate spans overlap each other heavily
+(aa16-aa20, aa26, aa27: 10th percentile gap -5.2 s) and the Aarti alaap is long, so most rows fail the no-overlap rule or
+hear 'none'. aa27: the hearing says Shabad 880 (11586 "ਸਰਣਿ ਤੁਮੑਾਰੀ ਆਇਓ ...") at 100-125 s, i.e. the current key, not
+the Aarti text the aligner placed there; all 11 aa27 rows rejected. Heard-token timing within 1.5 s start / 3 s end for
+66% of tier A, 52% B, 12% C, 50% D.

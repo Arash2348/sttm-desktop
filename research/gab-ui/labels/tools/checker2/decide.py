@@ -28,7 +28,10 @@ for x in feats:
     if best:
         same = [a for a in top if a['ntext'] == best['ntext']]
         ins = [a for a in same if a['in_shabad']]
-        if ins: best = ins[0]
+        # the same text at several places of one Bani (Jaap Sahib): the words alone cannot tell them apart, only the
+        # reading order can; take the candidate's place (the aligner's sequence) but never above 0.9
+        dup_in_bani = len(ins) > 1
+        if ins: best = next((a for a in ins if a['verseId'] == c['verseId']), ins[0])
         # a near-duplicate of a keyed-Shabad pangti (one matra apart) is not evidence for another Shabad
         for a in top:
             if a['in_shabad'] and a is not best and fuzz.ratio(a['ntext'], best['ntext']) >= 88 and best['tscore'] - a['tscore'] <= 8:
@@ -41,6 +44,7 @@ for x in feats:
         ctx_tie = best['in_shabad'] and others and not others[0]['in_shabad'] and margin < 12
     reasons = []
     my = None; conf = 0.5
+    if best is None: dup_in_bani = False
     if len(hn) < 6 or simran_hits >= 2 or (best and best['tscore'] < 45):
         my = None
         if simran_hits >= 2: reasons.append(f'heard Vaheguru simran / jaikara, not a pangti: "{heard[:60]}"'); conf = 0.9
@@ -56,6 +60,8 @@ for x in feats:
         elif ts >= 50: conf = 0.65
         else: conf = 0.5
         reasons.append(f'heard "{heard[:50]}" ~ {best["ntext"][:30]} text {ts:.0f} (next other pangti {second:.0f}), {cov:.0%} of the pangti heard')
+        if dup_in_bani:
+            conf = min(conf, 0.9); reasons.append('the same words stand at several places of this Bani; the place is taken from the reading order only')
     # lens B timing: best-fit boundaries of MY pangti vs the candidate's; neighbour overlap
     timing_ok = True
     if my is not None:
