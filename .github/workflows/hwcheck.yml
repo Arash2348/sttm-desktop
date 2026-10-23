@@ -8,8 +8,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, windows-2019, macos-13, ubuntu-latest]
+        os: [windows-latest, ubuntu-latest]
+        threads: ['2', '4']
     runs-on: ${{ matrix.os }}
+    env:
+      VF_ORT_THREADS: ${{ matrix.threads }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -23,8 +26,8 @@ jobs:
         run: curl -sL -o model.int8.onnx "https://huggingface.co/karansea/indicconformer-stt-pa-ctc-shabad-preview/resolve/main/model.int8.onnx?download=true" && ls -la model.int8.onnx
       - name: Check this computer (3 runs)
         shell: bash
-        run: for i in 1 2 3; do node research/hwcheck/ci-run.js model.int8.onnx | tee -a hwcheck-${{ matrix.os }}.txt; done
+        run: for i in 1 2 3; do node research/hwcheck/ci-run.js model.int8.onnx | tee -a hwcheck-${{ matrix.os }}-t${{ matrix.threads }}.txt; done
       - uses: actions/upload-artifact@v4
         with:
-          name: hwcheck-${{ matrix.os }}
-          path: hwcheck-${{ matrix.os }}.txt
+          name: hwcheck-${{ matrix.os }}-t${{ matrix.threads }}
+          path: hwcheck-${{ matrix.os }}-t${{ matrix.threads }}.txt
