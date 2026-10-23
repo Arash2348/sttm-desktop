@@ -17,14 +17,12 @@ jobs:
           node-version: 18
       - name: Install onnxruntime-node only
         shell: bash
-        run: mkdir -p /tmp/ort && cd /tmp/ort && npm init -y >/dev/null && npm install onnxruntime-node@1.29.0 --no-audit --no-fund
+        run: mkdir ort && cd ort && npm init -y >/dev/null && npm install onnxruntime-node@1.29.0 --no-audit --no-fund && cd .. && mv ort/node_modules ./node_modules
       - name: Download the speech model
         shell: bash
         run: curl -sL -o model.int8.onnx "https://huggingface.co/karansea/indicconformer-stt-pa-ctc-shabad-preview/resolve/main/model.int8.onnx?download=true" && ls -la model.int8.onnx
       - name: Check this computer (3 runs)
         shell: bash
-        env:
-          NODE_PATH: /tmp/ort/node_modules
         run: for i in 1 2 3; do node research/hwcheck/ci-run.js model.int8.onnx | tee -a hwcheck-${{ matrix.os }}.txt; done
       - uses: actions/upload-artifact@v4
         with:
