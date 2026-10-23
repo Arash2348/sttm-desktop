@@ -53,6 +53,11 @@ measured model time, against what actually happened ("fell behind" = the app's a
   measures instead of reading the CPU name.
 - Dev Mac (Apple M4 Pro): 46–49 ms per 4 s window, Great (3.4–3.6× faster than needed).
 
+**The check measures what sessions log.** Same process on the dev Mac: the app's own speed self-test (logged as
+`selfTestMs` by every session above) vs the check — normal cores 49 ms vs 67 ms per 4 s window (Great); forced onto the
+slow efficiency cores (`taskpolicy -b`) 595 ms vs 569 ms (check: Below the minimum, about 3.4× too slow; the app itself
+dropped to its slowest tier). So the table above is what the check would report on those computers.
+
 Re-run: `python3 research/hwcheck/fleet_validate.py` (writes fleet-validate.json). Add tester "Copy details" lines as they come.
 
 ## Where the result goes
