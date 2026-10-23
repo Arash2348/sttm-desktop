@@ -143,7 +143,7 @@ const pangtiKeyed = (c) => SETPANGTI && !!c.basis;
 const PAATHSETS = ['paath', 'akhandpaath']; const SUNGBANI = 'sungbani';
 const isRead = () => PAATHSETS.includes(S.tier);
 const W = () => isRead() ? { act: 'read', place: 'the right place in the Bani', sung: 'Pangti read', while: 'while reading' } : S.tier === SUNGBANI ? { act: 'sung', place: 'the right place in the Bani', sung: 'Pangti sung', while: 'while singing' } : { act: 'sung', place: 'the right Shabad', sung: SETPANGTI ? 'Pangti sung' : 'Shabad sung', while: 'while singing' };
-const VDESC = { '5348d9a0': 'in the experimental app today', '9b1fa814': 'candidate, not in the app yet', '6a866c94': 'newest candidate, not in the app yet' };
+const VDESC = { 'f475fd9a': 'in the experimental app today', '5348d9a0': 'previous experimental', '9b1fa814': 'candidate, not in the app yet', '6a866c94': 'newest candidate, not in the app yet' };
 const KEYNOTE = { human: 'answer key checked by a person', aligned: 'answer key machine-aligned, not yet checked by a person', 'broadcast-caption': "answer key from the broadcast's own on-screen pangtis" };
 const keyNote = (b) => KEYNOTE[b] || 'answer key at Shabad level';
 function acc(c) { if (!c) return null; const t = scored(c); if (!t) return null;

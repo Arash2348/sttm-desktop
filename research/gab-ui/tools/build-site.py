@@ -46,6 +46,8 @@ def build(out, public):
         for b in t['builds']:
             d = json.load(open(src(b['file'])))
             if public: d['clips'] = [c for c in d['clips'] if c.get('yt')]
+            HOLD = set(filter(None, os.environ.get('GAB_HOLD', '').split(',')))  # recordings held back until a person settles their key
+            d['clips'] = [c for c in d['clips'] if c['id'] not in HOLD]
             T = d['texts']; tix = {t: i for i, t in enumerate(T)}
             for c in d['clips']:
                 c['gurdwara'] = tidy(c.get('gurdwara', ''))
