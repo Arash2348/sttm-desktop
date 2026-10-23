@@ -39,13 +39,13 @@ for s in sess:
     sj = get(f"{B}/{s}/session.json?{SAS}")
     try: m = json.loads(sj).get('machine', {})
     except Exception: m = {}
-    key = (re.sub(r'\s+', ' ', (m.get('cpuModel') or '?')).strip(), m.get('cpus'), m.get('os', '?'), m.get('host', '?'))
+    key = (re.sub(r'\s+', ' ', (m.get('cpuModel') or '?')).strip(), m.get('cpus'), m.get('os', '?'), m.get('host', '?'))  # host groups sessions; never written out
     r = rows[key]; r['sessions'] += 1; r['minutes'] += tmax / 60; r['backlog'] += back; r['peak'] = max(r['peak'], peak); r['p4'] += p4s
 out = []
 for (cpu, cores, osn, host), r in rows.items():
     p4 = statistics.median(r['p4']); v, load = grade(p4)
     perh = r['backlog'] / max(r['minutes'] / 60, 0.01)
-    out.append({'cpu': cpu, 'cores': cores, 'os': osn, 'host': host, 'sessions': r['sessions'], 'hours': round(r['minutes'] / 60, 1),
+    out.append({'cpu': cpu, 'cores': cores, 'os': osn, 'sessions': r['sessions'], 'hours': round(r['minutes'] / 60, 1),
                 'ms4s': round(p4), 'load': load, 'verdict': v, 'fellBehindPerHour': round(perh, 1), 'worstBehindS': round(r['peak'], 1)})
 out.sort(key=lambda x: -x['ms4s'])
 json.dump(out, open(os.path.join(os.path.dirname(__file__), 'fleet-validate.json'), 'w'), indent=1)
