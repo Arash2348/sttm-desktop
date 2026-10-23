@@ -1,11 +1,11 @@
 verseId,start_s,end_s,confidence,source
 22188,32.2,42.84,0.82,aligned-2model-audited
 22187,42.92,49.28,1,aligned-2model-audited
+22187,49.32,55.04,0.963,aligned-3check-calibrated
 22187,55.48,61.8,1,aligned-2model-audited
 22185,76.28,86.12,0.71,aligned-2model-audited
 22186,88.64,98.44,0.84,aligned-2model-audited
 22187,105.12,111.24,0.92,aligned-2model-audited
-22187,117.32,123.44,0.97,aligned-3check
 22189,137.44,147.08,0.89,aligned-2model-audited
 22190,149.6,159.16,0.71,aligned-2model-audited
 22191,198.4,207.96,0.9,aligned-2model-audited
@@ -17,6 +17,7 @@ verseId,start_s,end_s,confidence,source
 22187,297.92,303.96,1,aligned-2model-audited
 22188,305.72,311.6,0.75,aligned-2model-audited
 22188,311.72,325.12,0.74,aligned-2model-audited
+22187,325.72,333.64,0.963,aligned-3check-calibrated
 22187,334.04,340.2,1,aligned-2model-audited
 22187,340.28,345.96,1,aligned-2model-audited
 22187,346.36,352.4,0.92,aligned-2model-audited

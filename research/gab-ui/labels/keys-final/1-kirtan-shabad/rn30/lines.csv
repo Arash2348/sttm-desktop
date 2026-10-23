@@ -1,0 +1,16 @@
+verseId,start_s,end_s,confidence,source
+47137,28.68,36.52,0.963,aligned-3check-calibrated
+47137,37.52,45.2,0.86,aligned-2model-audited
+47138,46.4,55.28,0.96,aligned-2model-audited
+47141,77.4,84.36,0.9,aligned-2model-audited
+47142,86.36,91.84,0.69,aligned-2model-audited
+47142,93.44,100.72,0.81,aligned-2model-audited
+47137,102.16,110.04,0.963,aligned-3check-calibrated
+47137,110.96,118.6,1,aligned-2model-audited
+47138,119.68,127.24,1,aligned-2model-audited
+47137,128.36,134.2,0.85,aligned-2model-audited
+47137,178.6,186.24,0.963,aligned-3check-calibrated
+47137,187.12,194.64,0.963,aligned-3check-calibrated
+47138,195.8,203.4,1,aligned-2model-audited
+47137,204.48,211.88,0.79,aligned-2model-audited
+47137,213.12,222.04,0.67,aligned-2model-audited

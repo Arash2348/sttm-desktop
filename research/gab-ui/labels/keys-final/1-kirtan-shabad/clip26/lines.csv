@@ -1,0 +1,9 @@
+verseId,start_s,end_s,confidence,source
+33279,62.68,72.92,0.88,aligned-2model-audited
+33280,78.24,89.16,0.963,aligned-3check-calibrated
+33280,96.24,106.36,0.94,aligned-2model-audited
+33275,123.04,134.84,0.88,aligned-2model-audited
+33275,135.04,147,0.963,aligned-3check-calibrated
+33275,154.36,165.64,0.86,aligned-2model-audited
+33275,165.72,177.24,0.61,aligned-2model-audited
+33275,178.32,194.32,0.66,aligned-2model-audited

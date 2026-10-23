@@ -62,4 +62,10 @@ Calibration (2026-10-23): `CALIBRATION.md`, `calibrated-rule.json`. Candidates `
 (`make-candidates.py --calib --ids <kh ids> --hf-dir <blind key copy: shabads.csv only>`), votes `votes/calib-gabhard-checker{1,2,3}.json`
 (checker 3: `TOKDIR=tokcal KEYDIR=<blind key copy> python vote6.py calib-gabhard`), scored by `tools/calibrate.py` against
 the human pangti keys (GAB-Hard / Fremont, non-test). Proposed rule: all 3 checkers name the candidate pangti and tier is
-A/B/C (98.3%, 57/58, 95% lower bound 90.9%; Kirtan only; thin data). Not applied to `accepted/` yet.
+A/B/C (98.3%, 57/58, 95% lower bound 90.9%; Kirtan only; thin data).
+
+Re-merge (2026-10-23): `accepted/` now = `merge-votes.py batchN --rule=calibrated` for batches 1-6 (Kirtan: calibrated
+rule, basis `aligned-3check-calibrated` + per-span `score`; Akhand Kirtan / Paath / Sung Bani: strict rule, basis
+`aligned-3check`), then `validate-banidb.py` (verseId exists in BaniDB / the STTM database, belongs to the keyed
+Shabad / Bani, stored text equals the database text; failures dropped, `remerge/validation-report.json`), then
+`merge-keys.py`. Per-batch counts in `remerge/batchN.json`.

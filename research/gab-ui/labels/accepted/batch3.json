@@ -10,6 +10,8 @@
   "start_s": 63.16,
   "end_s": 68.28,
   "basis": "aligned-3check",
+  "rule": "strict-0.95",
+  "in_current_key": true,
   "min_confidence": 0.97,
   "checker_confidences": {
    "checker1": 0.98,
@@ -18,7 +20,13 @@
   },
   "tier": "A",
   "aligner_conf": 0.89,
-  "source_batch": "batch3"
+  "source_batch": "batch3",
+  "db_check": {
+   "banidb": true,
+   "sttm": true,
+   "keyed_in": "4239",
+   "text_equals": "banidb"
+  }
  },
  {
   "recording": "l3clip26",
@@ -31,6 +39,8 @@
   "start_s": 328.84,
   "end_s": 332.72,
   "basis": "aligned-3check",
+  "rule": "strict-0.95",
+  "in_current_key": true,
   "min_confidence": 0.96,
   "checker_confidences": {
    "checker1": 0.97,
@@ -39,7 +49,13 @@
   },
   "tier": "A",
   "aligner_conf": 0.81,
-  "source_batch": "batch3"
+  "source_batch": "batch3",
+  "db_check": {
+   "banidb": true,
+   "sttm": true,
+   "keyed_in": "4239",
+   "text_equals": "banidb"
+  }
  },
  {
   "recording": "l3clip32",
@@ -52,6 +68,8 @@
   "start_s": 232.76,
   "end_s": 236.88,
   "basis": "aligned-3check",
+  "rule": "strict-0.95",
+  "in_current_key": true,
   "min_confidence": 0.97,
   "checker_confidences": {
    "checker1": 0.99,
@@ -60,7 +78,13 @@
   },
   "tier": "A",
   "aligner_conf": 0.82,
-  "source_batch": "batch3"
+  "source_batch": "batch3",
+  "db_check": {
+   "banidb": true,
+   "sttm": true,
+   "keyed_in": "3152",
+   "text_equals": "banidb"
+  }
  },
  {
   "recording": "l3clip03",
@@ -73,6 +97,8 @@
   "start_s": 137.16,
   "end_s": 143.52,
   "basis": "aligned-3check",
+  "rule": "strict-0.95",
+  "in_current_key": true,
   "min_confidence": 0.96,
   "checker_confidences": {
    "checker1": 0.99,
@@ -81,7 +107,13 @@
   },
   "tier": "A",
   "aligner_conf": 0.74,
-  "source_batch": "batch3"
+  "source_batch": "batch3",
+  "db_check": {
+   "banidb": true,
+   "sttm": true,
+   "keyed_in": "3523",
+   "text_equals": "banidb"
+  }
  },
  {
   "recording": "l3clip03",
@@ -94,6 +126,8 @@
   "start_s": 169.76,
   "end_s": 176.08,
   "basis": "aligned-3check",
+  "rule": "strict-0.95",
+  "in_current_key": true,
   "min_confidence": 0.97,
   "checker_confidences": {
    "checker1": 0.98,
@@ -102,7 +136,13 @@
   },
   "tier": "A",
   "aligner_conf": 0.89,
-  "source_batch": "batch3"
+  "source_batch": "batch3",
+  "db_check": {
+   "banidb": true,
+   "sttm": true,
+   "keyed_in": "3523",
+   "text_equals": "banidb"
+  }
  },
  {
   "recording": "l3clip03",
@@ -115,6 +155,8 @@
   "start_s": 267.24,
   "end_s": 273.28,
   "basis": "aligned-3check",
+  "rule": "strict-0.95",
+  "in_current_key": true,
   "min_confidence": 0.97,
   "checker_confidences": {
    "checker1": 0.97,
@@ -123,7 +165,13 @@
   },
   "tier": "A",
   "aligner_conf": 0.75,
-  "source_batch": "batch3"
+  "source_batch": "batch3",
+  "db_check": {
+   "banidb": true,
+   "sttm": true,
+   "keyed_in": "3523",
+   "text_equals": "banidb"
+  }
  },
  {
   "recording": "l3clip35",
@@ -136,6 +184,8 @@
   "start_s": 46.32,
   "end_s": 51.96,
   "basis": "aligned-3check",
+  "rule": "strict-0.95",
+  "in_current_key": true,
   "min_confidence": 0.97,
   "checker_confidences": {
    "checker1": 0.97,
@@ -144,6 +194,12 @@
   },
   "tier": "A",
   "aligner_conf": 0.79,
-  "source_batch": "batch3"
+  "source_batch": "batch3",
+  "db_check": {
+   "banidb": true,
+   "sttm": true,
+   "keyed_in": "5042",
+   "text_equals": "banidb"
+  }
  }
 ]

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """merge-keys.py [--hf-dir <HF answer-key copy>] [--out labels/keys-final]
 
-Merge every labels/accepted/*.json row (basis 'aligned-3check': machine timing, accepted only when all 3 checkers
-named the SAME pangti as the candidate and each checker's confidence >= 0.95) into the existing pangti answer keys,
+Merge every labels/accepted/*.json row (machine timing; all 3 checkers named the SAME pangti as the candidate; basis
+'aligned-3check-calibrated' for Kirtan under labels/calibrated-rule.json with a per-span measured score, or
+'aligned-3check' = each checker's confidence >= 0.95; every row passed labels/tools/validate-banidb.py) into the existing pangti answer keys,
 in the Hugging Face dataset layout:  <out>/<content_folder>/<id>/lines.csv  (verseId,start_s,end_s,confidence,source)
 plus shabads.csv copied unchanged, <out>/confirmed-3check.csv (accepted rows that confirm a pangti row the key
 already scores: same pangti, overlapping; the key row is left as it is), <out>/manifest.csv (the HF manifest with lines_n / lines_source updated for the
@@ -31,9 +32,17 @@ rows = []
 for f in sorted(os.listdir(f'{L}/accepted')):
     if f.endswith('.json'):
         rows += json.load(open(f'{L}/accepted/{f}'))
-# the owner's rule, re-checked here: 3 checkers, every one >= 0.95 (merge-votes.py already required the same pangti)
-bad = [r for r in rows if len(r['checker_confidences']) < 3 or min(r['checker_confidences'].values()) < 0.95]
-assert not bad, f'{len(bad)} accepted rows break the 3-checker >= 0.95 rule'
+# the rules, re-checked here (merge-votes.py already required all 3 checkers to name the same pangti):
+#   aligned-3check             strict: 3 checkers, every one >= 0.95
+#   aligned-3check-calibrated  labels/calibrated-rule.json: 3 checkers, tier A/B/C, a per-span measured score, Kirtan only
+CR = json.load(open(f'{L}/calibrated-rule.json'))
+bad = [r for r in rows if len(r['checker_confidences']) < 3 or not (
+    (r['basis'] == 'aligned-3check' and min(r['checker_confidences'].values()) >= 0.95) or
+    (r['basis'] == 'aligned-3check-calibrated' and r['tier'] in CR['rule']['aligner_tiers'] and r['category'] in CR['scope']['apply_to']
+     and isinstance(r.get('score'), float)))]
+assert not bad, f'{len(bad)} accepted rows break their acceptance rule'
+# validate-banidb.py must have run: every row carries its database check (verseId exists, belongs, text equal)
+assert all('db_check' in r for r in rows), 'run labels/tools/validate-banidb.py first'
 
 man_text = open(f'{HF}/manifest.csv', encoding='utf-8', newline='').read()
 man = list(csv.DictReader(io.StringIO(man_text)))
@@ -58,7 +67,9 @@ def kind(rec, l):
     return 'scored' if c in (None, '') or float(c) >= MIN_CHECK else 'unscored'
 
 report = {'made_from': sorted(f for f in os.listdir(f'{L}/accepted') if f.endswith('.json')), 'hf_dir': HF,
-          'rule': 'accepted = all 3 checkers named the same pangti as the candidate, each confidence >= 0.95; '
+          'rule': 'accepted = all 3 checkers named the same pangti as the candidate; Kirtan: calibrated rule (tier A/B/C, '
+                  'source aligned-3check-calibrated, confidence column = per-span measured score); other forms: each '
+                  'confidence >= 0.95 (source aligned-3check, confidence column = min checker confidence); '
                   'existing key rows are never changed; overlap > 0.5 s with an existing row of another pangti or '
                   'any human row = keep existing, report',
           'recordings': {}, 'conflicts': [], 'totals': collections.Counter()}
@@ -98,14 +109,17 @@ for rid, new in sorted(by_rec.items()):
                 l0 = next(l for l in hits if int(l['verseId']) == vid and l['_kind'] == 'scored')
                 confirms.append({'recording': rid, 'folder': folder, 'verseId': vid, 'start_s': l0['start_s'], 'end_s': l0['end_s'],
                                  'key_confidence': l0.get('confidence', ''), 'key_source': l0.get('source', ''),
-                                 'check_start_s': a, 'check_end_s': b, 'checker_min_confidence': r['min_confidence'], 'batch': r['source_batch']})
+                                 'check_start_s': a, 'check_end_s': b, 'checker_min_confidence': r['min_confidence'],
+                                 'basis': r['basis'], 'score': r.get('score', ''), 'batch': r['source_batch']})
             if why.startswith('conflict') or why.startswith('overlaps'):
                 ex = [{k: l[k] for k in ('verseId', 'start_s', 'end_s', 'confidence', 'source') if k in l} | {'kind': l['_kind']} for l in hits]
-                report['conflicts'].append({'recording': rid, 'why': why, 'new': {k: r[k] for k in ('verseId', 'start_s', 'end_s', 'min_confidence', 'source_batch')}, 'existing': ex})
+                report['conflicts'].append({'recording': rid, 'why': why, 'new': {k: r.get(k) for k in ('verseId', 'start_s', 'end_s', 'basis', 'score', 'min_confidence', 'source_batch')}, 'existing': ex})
             continue
         st['added'] += 1
         st['added_s'] += b - a
-        add.append({'verseId': vid, 'start_s': a, 'end_s': b, 'confidence': r['min_confidence'], 'source': 'aligned-3check'})
+        st['added_' + r['basis']] += 1
+        conf = r['score'] if r['basis'] == 'aligned-3check-calibrated' else r['min_confidence']
+        add.append({'verseId': vid, 'start_s': a, 'end_s': b, 'confidence': conf, 'source': r['basis']})
     report['recordings'][rid] = {'folder': folder, 'category': new[0]['category'], 'split': new[0]['split'],
                                  'accepted': len(new), 'existing_rows': len(old), **st}
     for k, v in st.items():
@@ -126,7 +140,9 @@ for rid, new in sorted(by_rec.items()):
     if os.path.exists(sh):
         open(f'{d}/shabads.csv', 'wb').write(open(sh, 'rb').read())
     ls = m.get('lines_source') or 'none'
-    m['lines_source'] = 'aligned-3check' if ls in ('none', '', 'no') else (ls if 'aligned-3check' in ls else f'{ls}+aligned-3check')
+    for bas in sorted({x['source'] for x in add}):
+        ls = bas if ls in ('none', '', 'no') else (ls if bas in ls.split('+') else f'{ls}+{bas}')
+    m['lines_source'] = ls
     m['lines_n'] = str(len(out_rows))
     report['recordings'][rid]['written'] = f'{folder}/{rid}/lines.csv'
 os.makedirs(OUT, exist_ok=True)

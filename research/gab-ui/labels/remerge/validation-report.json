@@ -1,0 +1,52 @@
+{
+ "made": "2026-10-23",
+ "hf_dir": "/Users/asingh02/personal/live-darbar-venues/cache/gab-hf/701fee8e59c4",
+ "checks": [
+  "exists",
+  "belongs",
+  "text"
+ ],
+ "files": {
+  "batch1.json": {
+   "in": 294,
+   "kept": 294,
+   "dropped": 0
+  },
+  "batch2.json": {
+   "in": 484,
+   "kept": 484,
+   "dropped": 0
+  },
+  "batch3.json": {
+   "in": 7,
+   "kept": 7,
+   "dropped": 0
+  },
+  "batch4.json": {
+   "in": 3,
+   "kept": 3,
+   "dropped": 0
+  },
+  "batch5.json": {
+   "in": 359,
+   "kept": 359,
+   "dropped": 0
+  },
+  "batch6.json": {
+   "in": 247,
+   "kept": 247,
+   "dropped": 0
+  }
+ },
+ "dropped": [],
+ "totals": {
+  "in": 1394,
+  "kept": 1394,
+  "dropped": 0,
+  "banidb_fetched_now": [
+   "bani:22",
+   "2642",
+   "2513"
+  ]
+ }
+}

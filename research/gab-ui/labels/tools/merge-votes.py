@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
-"""merge-votes.py <batch>   e.g. batch1
+"""merge-votes.py <batch> [--rule=strict|calibrated]   e.g. batch1 --rule=calibrated
+
+--rule=calibrated (2026-10-23, labels/calibrated-rule.json, measured in CALIBRATION.md): for the forms of Guru's Bani
+the rule was measured on (scope.apply_to: Kirtan) a span is ACCEPTED when all 3 checkers name the candidate pangti
+(my_verseId == cand verseId for every checker; a span where any checker names another pangti or none is never
+accepted), the aligner tier is A, B or C (not D) and the candidate has no key_mismatch. No confidence bar. Rows get
+basis 'aligned-3check-calibrated' and a per-span 'score' = the measured right-pangti rate of its bucket (all 3 agree,
+same tier) on the human-keyed calibration set (tier B had no such span there: pooled A/B/C rate), with n and the 95%
+Wilson lower bound. Other forms (Akhand Kirtan, Paath, Sung Bani: not measured) keep the strict rule below.
+Default (--rule=strict):
 
 Owner rule (2026-10-23): a candidate span is ACCEPTED only when ALL checkers independently named the SAME pangti
 as the candidate (my_verseId == cand_verseId for each) AND every checker's confidence >= 0.95.
@@ -14,6 +23,25 @@ batch = args[0] if args else 'batch1'
 # --hf-dir=<dir>: HF answer-key root with <folder>/<rid>/{lines,shabads}.csv (as make-candidates.py --hf-dir)
 HF_DIR = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--hf-dir=')), None)
 MIN = 0.95
+RULE = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--rule=')), 'strict')
+assert RULE in ('strict', 'calibrated'), RULE
+CR = json.load(open(f'{L}/calibrated-rule.json'))
+CAL_SCOPE = set(CR['scope']['apply_to']) if RULE == 'calibrated' else set()
+CAL_TIERS = set(CR['rule']['aligner_tiers'])
+def wilson(k, n, z=1.96):
+    if not n: return None
+    p = k / n; d = 1 + z * z / n
+    return round((p + z * z / (2 * n) - z * (p * (1 - p) / n + z * z / (4 * n * n)) ** 0.5) / d, 4)
+TIER_SCORE = {}
+if RULE == 'calibrated':
+    cs = [x for x in json.load(open(f'{L}/calibration-spans.json')) if x['agree_n'] == 3 and x['ok'] is not None]
+    pool = [x for x in cs if x['tier'] in CAL_TIERS]
+    for t in sorted(CAL_TIERS):
+        b = [x for x in cs if x['tier'] == t]
+        src, use = (f'all 3 agree, tier {t}', b) if b else (f'all 3 agree, tier A/B/C pooled (no tier {t} span in calibration)', pool)
+        k = sum(x['ok'] for x in use)
+        TIER_SCORE[t] = {'score': round(k / len(use), 4), 'score_n': len(use), 'score_right': k,
+                         'score_wilson95_lo': wilson(k, len(use)), 'score_basis': f'calib-gabhard human pangti keys: {src}'}
 cands = json.load(open(f'{L}/candidates/{batch}.json'))
 vfiles = sorted(f for f in os.listdir(f'{L}/votes') if re.match(rf'{batch}-checker\d+\.json$', f))
 assert len(vfiles) == 3, f'need votes from all 3 checkers, found {vfiles}'
@@ -40,25 +68,41 @@ for i, c in enumerate(cands):
     vs = [d[i] if positional else d[k] for d in vix]
     same = all(v.get('my_verseId') is not None and int(v['my_verseId']) == int(c['verseId']) for v in vs)
     confs = [float(v.get('confidence') or 0) for v in vs]
-    ok = same and min(confs) >= MIN
-    all_same += same; thr_only += same and not ok
     cat = c['category']; st = stats[cat]
+    calibrated = cat in CAL_SCOPE
+    if calibrated:
+        ok = same and c['evidence']['tier'] in CAL_TIERS and not c['evidence'].get('key_mismatch')
+    else:
+        ok = same and min(confs) >= MIN
+    all_same += same; thr_only += same and not ok
+    st['all_same'] += same; st['spans'] += 1
     if ok:
         r = {x: c[x] for x in ('recording', 'category', 'folder', 'split', 'verseId', 'shabadId', 'text', 'start_s', 'end_s')}
-        r.update({'basis': 'aligned-3check', 'min_confidence': min(confs),
+        if calibrated:
+            r.update({'basis': 'aligned-3check-calibrated', 'rule': CR['name'], **TIER_SCORE[c['evidence']['tier']],
+                      'mean_confidence': round(sum(confs) / len(confs), 4)})
+        else:
+            r.update({'basis': 'aligned-3check', 'rule': 'strict-0.95'})
+        r['in_current_key'] = bool(c['evidence'].get('in_current_key'))
+        r.update({'min_confidence': min(confs),
                   'checker_confidences': dict(zip([f[len(batch) + 1:-5] for f in vfiles], confs)),
                   'tier': c['evidence']['tier'], 'aligner_conf': c['aligner_conf'], 'source_batch': batch})
         if k in seen:  # same span already accepted under another Shabad/Bani id: keep one row, note the alias
             seen[k].setdefault('also_shabadIds', []).append(c['shabadId']); st['accepted'] += 1; continue
         seen[k] = r
         acc.append(r); st['accepted'] += 1; st['accepted_s'] += c['end_s'] - c['start_s']
+        st['accepted_' + r['basis']] += 1
     else:
         st['rejected'] += 1
 os.makedirs(f'{L}/accepted', exist_ok=True)
 json.dump(acc, open(f'{L}/accepted/{batch}.json', 'w'), ensure_ascii=False, indent=1)
 n = len(cands)
-print(f'checkers {len(vfiles)}  spans {n}  all-same-pangti {all_same} ({all_same / n:.1%})  '
-      f'failed only on {MIN} threshold {thr_only}  accepted {len(acc)} ({len(acc) / n:.1%})')
+os.makedirs(f'{L}/remerge', exist_ok=True)
+json.dump({'batch': batch, 'rule': RULE, 'tier_score': TIER_SCORE, 'spans': len(cands), 'all_same': all_same,
+           'accepted': len(acc), 'by_category': {k: dict(v) for k, v in stats.items()}},
+          open(f'{L}/remerge/{batch}.json', 'w'), ensure_ascii=False, indent=1)
+print(f'rule {RULE}  checkers {len(vfiles)}  spans {n}  all-same-pangti {all_same} ({all_same / n:.1%})  '
+      f'not accepted although all same {thr_only}  accepted {len(acc)} ({len(acc) / n:.1%})')
 # coverage after: same as make-candidates.py coverage() (current key conf>=0.6 + accepted, merged)
 cov = json.load(open(f'{L}/candidates/{batch}-coverage.json'))
 def merged(sp):

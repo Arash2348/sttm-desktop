@@ -1,0 +1,40 @@
+{
+ "batch": "batch5",
+ "rule": "calibrated",
+ "tier_score": {
+  "A": {
+   "score": 1.0,
+   "score_n": 31,
+   "score_right": 31,
+   "score_wilson95_lo": 0.8897,
+   "score_basis": "calib-gabhard human pangti keys: all 3 agree, tier A"
+  },
+  "B": {
+   "score": 0.9828,
+   "score_n": 58,
+   "score_right": 57,
+   "score_wilson95_lo": 0.9086,
+   "score_basis": "calib-gabhard human pangti keys: all 3 agree, tier A/B/C pooled (no tier B span in calibration)"
+  },
+  "C": {
+   "score": 0.963,
+   "score_n": 27,
+   "score_right": 26,
+   "score_wilson95_lo": 0.8172,
+   "score_basis": "calib-gabhard human pangti keys: all 3 agree, tier C"
+  }
+ },
+ "spans": 909,
+ "all_same": 392,
+ "accepted": 359,
+ "by_category": {
+  "Kirtan": {
+   "all_same": 392,
+   "spans": 909,
+   "accepted": 359,
+   "accepted_s": 2868.2400000000007,
+   "accepted_aligned-3check-calibrated": 359,
+   "rejected": 550
+  }
+ }
+}
