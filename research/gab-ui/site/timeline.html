@@ -112,8 +112,10 @@ const short = (s) => String(s).replace(/^Gurbani Autopilot\s*/, '');
 const store = { get(k) { try { return localStorage.getItem(k); } catch (_) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (_) {} } };
 const COL = { P: 'var(--ok)', S: 'var(--ok)', B: 'var(--okb)', A: 'var(--near)', W: 'var(--bad)', N: 'var(--none)', V: 'var(--wg)' };
 const RIGHT = (k) => k === 'P' || k === 'S' || k === 'B';
-const TABNAME = { main: 'Kirtan', akhand: 'Akhand Kirtan', kbv1: "Karanbir Singh's benchmark", hard: 'Hall recordings (hard)', real: 'Real sessions' };
-const VERB = { main: 'Kirtan from Gurdwara Sahib broadcasts on YouTube', akhand: 'Akhand Kirtan from smagam recordings on YouTube', kbv1: "Karanbir Singh's 4 kirtan recordings, each also joined 1/3 and 2/3 of the way in", hard: 'Kirtan recorded in a resonant hall on a laptop microphone (the hardest audio)', real: "Real sangat sessions, replayed offline; the answer key is the sevadaar's screen, which itself lags the singing" };
+const TABNAME = { main: 'Kirtan', akhand: 'Akhand Kirtan', kbv1: "Karanbir Singh's benchmark", hard: 'Hall recordings (hard)', real: 'Real sessions', paath: 'Paath', sungbani: 'Sung Bani', akhandpaath: 'Akhand Paath' };
+const TABORDER = ['main', 'paath', 'sungbani', 'akhandpaath', 'akhand', 'kbv1', 'hard', 'real'];
+const tabsSorted = () => [...INDEX.tiers].sort((p, q) => (TABORDER.indexOf(p.key) + 99) % 99 - (TABORDER.indexOf(q.key) + 99) % 99);
+const VERB = { main: 'Kirtan from Gurdwara Sahib broadcasts on YouTube', akhand: 'Akhand Kirtan from smagam recordings on YouTube', kbv1: "Karanbir Singh's 4 kirtan recordings, each also joined 1/3 and 2/3 of the way in", hard: 'Kirtan recorded in a resonant hall on a laptop microphone (the hardest audio)', real: "Real sangat sessions, replayed offline; the answer key is the sevadaar's screen, which itself lags the singing", paath: 'Paath of the Banis (Japji Sahib, Rehras Sahib, Sohila Sahib and others), read aloud', sungbani: 'Banis sung like kirtan (for example Aarti, Anand Sahib, Asa di Vaar)', akhandpaath: 'Akhand Paath: Sri Guru Granth Sahib Ji read straight through, Ang after Ang' };
 // first Shabad of a "Shabad: A  /  Shabad: B" label, without the prefix
 const label = (t) => String(t || '').split(/\s+\/\s+/).map((x) => x.replace(/^Shabad:\s*/, '').replace(/^Bani:\s*(.*)$/, '$1 (Bani)')).join('  or  ');
 const label1 = (t) => label(t).split('  or  ')[0];
@@ -228,7 +230,7 @@ function renderList(dA, dB) {
   $('#app').innerHTML = `
     <h1>GAB: how well Voice Autopilot follows kirtan</h1>
     <p class="lead">How well does Voice Autopilot keep the right Gurbani on screen during real kirtan? Pick a set, then open any recording to see, second by second, what was sung and what was shown.</p>
-    <div class="tabs">${INDEX.tiers.map((t) => `<button data-tier="${esc(t.key)}" aria-pressed="${t.key === S.tier}">${esc(TABNAME[t.key] || t.title)}</button>`).join('')}</div>
+    <div class="tabs">${tabsSorted().map((t) => `<button data-tier="${esc(t.key)}" aria-pressed="${t.key === S.tier}">${esc(TABNAME[t.key] || t.title)}</button>`).join('')}</div>
     <div class="vs">Showing <select id="selA">${opts(S.a)}</select> compared with <select id="selB">${opts(S.b, true)}</select></div>
     <div class="summary">
       <p>${esc(VERB[S.tier] || tier.title)}: <b>${both.length} recordings</b>, ${TA.hours.toFixed(1)} hours of scored singing. ${verdictLine}</p>${bigLine}
