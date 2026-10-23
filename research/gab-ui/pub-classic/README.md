@@ -5,7 +5,7 @@ colorTo: gray
 sdk: static
 app_file: index.html
 pinned: false
-short_description: Earlier GAB views of Voice Autopilot on public kirtan and paath
+short_description: Earlier GAB views on public kirtan and paath
 ---
 
 # GAB classic views
