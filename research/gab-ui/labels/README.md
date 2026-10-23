@@ -46,3 +46,13 @@ says 35%) and 103 of its 143 rows are tier D (the two models aligned different p
 Shabad is sung where before checkers vote. rn67: 5 rows carry `evidence.key_mismatch` (aligned text not in the current
 key), not auto-accept eligible. Same verify rule: EVERY checker (each Fable / Opus verifier and the aligner) names the
 same pangti, each with confidence / agreement >= 0.95; otherwise a person decides.
+batch6 = the remaining Kirtan (folder 1) recordings below the 60% bar that no earlier batch took (15, closest to the bar
+first; dev 9, train 6; none held-out test, none accepted): clip38, rn50 (shown as 60%, just under), clip34, clip09, rn14,
+clip01, clip17, clip25, rn09, rn60, rn80, clip26, rn21, rn73 (40-43%, not taken by batch 2), clip32 (30%). 677 candidates
+(A 255, B 71, C 159, D 192; 231 tier A eligible for the 3-checker rule; 422 new vs the current key), same saved two-model
+alignment (no model re-run): `make-candidates.py <gab-lines> candidates/batch6.json --ids clip38,rn50,clip34,clip09,rn14,
+clip01,clip17,clip25,rn09,rn60,rn80,clip26,rn21,rn73,clip32 --max 15`. clip17: report says 41% but recomputed coverage is
+19% and 84 of its 138 rows are tier D (the two models put different pangtis of Shabad 3085 at the same time): a person
+should check it before checkers vote. rn14 (8), rn09 (6), rn80 (5) rows carry `evidence.key_mismatch`, not auto-accept
+eligible. Same verify rule: EVERY Fable / Opus checker must name the SAME pangti as the candidate and each checker's
+confidence must be >= 0.95 (plus the aligner); otherwise a person decides.
