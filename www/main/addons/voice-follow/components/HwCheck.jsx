@@ -89,7 +89,12 @@ const HwCheck = () => {
           : i18n.t(`VOICE_FOLLOW.HW_${verdict.toUpperCase()}`)}
       </div>
       <div className="vf-hw-detail">
-        {!result.error && `${i18n.t('VOICE_FOLLOW.HW_SPEED', { x: result.headroom })} · `}
+        {!result.error &&
+          `${
+            result.load > 1
+              ? i18n.t('VOICE_FOLLOW.HW_SLOW', { x: result.load })
+              : i18n.t('VOICE_FOLLOW.HW_SPEED', { x: result.headroom })
+          } · `}
         {`${s.cpu} · ${s.cores} cores · ${s.ramGb} GB`}
       </div>
       <div className="vf-hw-actions">

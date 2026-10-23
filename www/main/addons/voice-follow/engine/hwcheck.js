@@ -106,7 +106,7 @@ function summary(r, version) {
       }[r.verdict];
   const speed = r.error
     ? ''
-    : ` | ${r.headroom}x faster than needed (finding ${r.pass10Ms} ms per 10 s window, following ${r.pass4Ms} ms per 4 s window)`;
+    : ` | ${r.load > 1 ? `about ${r.load}x too slow` : `${r.headroom}x faster than needed`} (finding ${r.pass10Ms} ms per 10 s window, following ${r.pass4Ms} ms per 4 s window)`;
   return `${head}${speed} | ${s.cpu}, ${s.cores} cores, ${s.ramGb} GB RAM, ${s.os} ${s.arch}${
     version ? ` | Voice Autopilot ${version}` : ''
   }`;

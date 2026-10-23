@@ -537,6 +537,7 @@
     "HW_BELOW": "Below the minimum: Voice Autopilot may fall behind on this computer",
     "HW_FAILED": "The check could not run on this computer",
     "HW_SPEED": "{{x}}x faster than needed",
+    "HW_SLOW": "about {{x}}x too slow",
     "HW_COPY": "Copy details",
     "HW_COPIED": "Copied",
     "HW_AGAIN": "Check again",
