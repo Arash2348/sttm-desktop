@@ -52,3 +52,30 @@ aa16-20 / aa26 (Renton hall Aarti) are heard too sparsely to confirm any pangti;
 20 spans with nothing heard at all in the cache window 29-37 s and 48-59 s.
 Result: 298 spans, 89 agree, 52 approved (agree and confidence >= 0.95; A 42, B 1, C 2, D 7), 131 none, 78 a
 different pangti. Output `labels/votes/batch4-checker3.json`.
+
+## Batch 5 (Kirtan, folder 1, 25-40% coverage; `vote5.py batch5`, 2026-10-23)
+
+15 recordings decoded from the x86 q16 cache (`decode.py tok5 ...`, `~/personal/live-darbar-venues/cache/5f9e41d867de-q16-x86`,
+no model run; 93-100% of every recording covered). `lib3.py` reads the token directory from `TOKDIR` (default `tok`).
+Same scorer; the kbv1 calibration re-read from `calib4.json`: in-Shabad picks with 10-15 heard chars, in-Shabad
+margin >= 15, explain >= 60, corpus margin >= 0 are right 100% (n=281, 90% lower bound 0.994), so the floor for 0.95
+is 10 heard chars (batch 2 used 16); 0.96 / 0.97 unchanged (>= 16 chars). Lens C additions: a span under 2.5 s is a
+fragment unless most of the pangti's text was heard inside it (rn23 is brisk kirtan of 4-word pangtis, 2.2 s each, in
+Shabad order); when two keyed Shabads hold near-identical pangtis (clip40: SGGS salok 'ਸਿਰੁ ਦੀਜੈ ਕਾਣਿ ਨ ਕੀਜੈ' 59694 and
+Bhai Gurdas 'ਸਿਰੁ ਦੀਜੈ ਕਾਣ ਨ ਕੀਜੈ' 205113) the hearing cannot separate them, so the margin is re-measured against
+different-text pangtis and the copy is settled only by confident neighbours of the same Shabad within 20 s (cap
+0.95; no neighbour = 0.85, a person decides).
+Structural findings: clip12 (key 3014|2376, one 30-1170 s window) is three Shabads: 3014 ਭੂਲੇ ਮਾਰਗੁ / ਸਿਮਰਿ ਮਨਾ ਰਾਮ
+ਨਾਮੁ ਚਿਤਾਰੇ at 30-270 s (candidates right there, 19 approved), 2376 ਪਰਮੇਸਰਿ ਦਿਤਾ ਬੰਨਾ / ਧੁਰ ਕੀ ਬਾਣੀ ਆਈ at ~300-750 s
+(every candidate there names a 3014 pangti: wrong), and an unkeyed third Shabad 3535 ਜਿਸ ਕਾ ਕਰਤਾ ਮਿਤ੍ਰ / ਜਿਸੁ ਤੂੰ ਆਵਹਿ
+ਚਿਤਿ at ~750-1170 s (all candidates wrong; key needs a third row). clip40 (key 5475|5029|2289|40629) is a medley:
+the SGGS salok at 30-60 s and 143-210 s, Shabad 2289 ਸਬਦਿ ਮਰਹੁ ਫਿਰਿ ਜੀਵਹੁ at 65-100 s and Kabir salok 5029 ਕਬੀਰ ਮੁਹਿ
+ਮਰਨੇ ਕਾ ਚਾਉ at 100-130 s, where the candidates name 5475 pangtis (wrong). rn30 0-30 s is pauri 3950 (ਸਹਜੇ ਸਹਜਿ
+ਖਿਲਾਇਦਾ), not the keyed 3375 pangtis the candidates name. rn67 440-495 s is Bhai Gurdas 40621 ਦਾਤਾ ਓਹੁ ਨ ਮੰਗੀਐ (keyed),
+candidates name 2819 pangtis; its 5 key-mismatch rows (0-31 s) are heard as 31604/31605 at <= 0.93. clip04 87-115 s and
+278-325 s is the second keyed Shabad 628 ਥਿਰੁ ਘਰਿ ਬੈਸਹੁ where candidates name 1944 pangtis. rn13 hears too little
+(19 none). Vaheguru simran (clip04 76-90 s, 251-270 s, 354-365 s) and the closing jaikara / announcements (rn23 175-190 s,
+rn12 403-480 s, rn61 287-315 s, rn13 194-250 s, rn31 280-335 s) are none.
+Result: 909 spans, 458 agree, 362 approved (agree and confidence >= 0.95; A 283, B 0, C 61, D 18), 159 none, 292 a
+different pangti; 47 agree but stay below 0.95 on the calibration alone (short or thin hearing). Output
+`labels/votes/batch5-checker3.json`.

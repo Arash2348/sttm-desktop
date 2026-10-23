@@ -55,7 +55,7 @@ def explain(h, t):
     return 100.0 * max(0.0, 1.0 - prev.min() / n)
 
 _toks = {}
-def load_toks(rec, tokdir=os.path.join(S, 'tok')):
+def load_toks(rec, tokdir=os.path.join(S, os.environ.get('TOKDIR', 'tok'))):
     if rec not in _toks:
         tk = json.load(open(os.path.join(tokdir, rec + '.json')))
         _toks[rec] = (np.array([t for t, _ in tk['toks']]), [p for _, p in tk['toks']], tk['cov'], tk['dur'])
