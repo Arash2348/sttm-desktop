@@ -23,7 +23,8 @@ for t in pidx['tiers']:
     if t['key'] not in tiers: tiers[t['key']] = {**t, 'private_only': True}
 for t in tiers.values():
     t['builds'].sort(key=lambda b: VORDER.index(b.get('commit')) if b.get('commit') in VORDER else 99)
-import re
+import re, csv
+BANI = {r['id']: r['bani'] for r in csv.DictReader(open(os.path.expanduser('~/personal/vf-benchmark/manifest.csv'))) if r.get('bani')}
 def tidy(g):  # long YouTube playlist titles -> short, respectful source names
     m = re.search(r"Ang (\d+) Pankti \d+ to Ang (\d+)", g)
     if 'Sri Guru Granth Sahib Ji' in g and m: return f"Sehaj Paath on YouTube, Sri Guru Granth Sahib Ji Ang {m.group(1)} to {m.group(2)}"
@@ -39,7 +40,9 @@ def build(out, public):
         for b in t['builds']:
             d = json.load(open(src(b['file'])))
             if public: d['clips'] = [c for c in d['clips'] if c.get('yt')]
-            for c in d['clips']: c['gurdwara'] = tidy(c.get('gurdwara', ''))
+            for c in d['clips']:
+                c['gurdwara'] = tidy(c.get('gurdwara', ''))
+                if BANI.get(c['id']): c['bani'] = BANI[c['id']]
             if not d['clips']: continue
             json.dump(d, open(f'{tmp}/{b["file"]}', 'w'), ensure_ascii=False); bs.append(b)
         if bs: keep.append({k2: v for k2, v in t.items() if k2 != 'private_only'} | {'builds': bs})

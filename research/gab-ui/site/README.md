@@ -1,22 +1,19 @@
 ---
-title: GAB Public Bench
+title: GAB Voice Autopilot Benchmark
 colorFrom: blue
 colorTo: gray
 sdk: static
 app_file: index.html
 pinned: false
-short_description: Gurbani Autopilot Bench on public kirtan recordings
+short_description: How well STTM Voice Autopilot follows kirtan and paath
 ---
 
-# GAB: Gurbani Autopilot Bench (public recordings)
+# GAB: how well Voice Autopilot follows kirtan and paath
 
-How well Gurbani Autopilot, the Voice-Follow feature of SikhiToTheMax (STTM) Desktop, keeps the right Shabad and
-pangti of Gurbani on screen while kirtan is sung, so the sangat can follow along.
+GAB (Gurbani Autopilot Bench) measures how well Voice Autopilot in SikhiToTheMax (STTM) Desktop keeps the right
+Shabad and pangti of Gurbani on screen during kirtan and paath, so the sangat can follow along.
 
-This public copy covers only recordings that are public on YouTube (Gurdwara Sahib broadcasts and smagam kirtan) and
-Karanbir Singh's public [Live Captioning for Gurbani Kirtan benchmark v1](https://github.com/karanbirsingh/live-gurbani-captioning-benchmark-v1).
-The timeline format follows his benchmark and visualizations, with thanks. Practice recordings only; the held-out test
-set is never published. No audio is hosted here; each timeline row links to its public YouTube recording.
-
-Files: `index.html` (summary per set and version), `timeline.html` (one row per recording, second by second),
-`timeline/index.json` + `timeline/<build>-<set>.json` (per-second results).
+Categories: Kirtan, Paath, Sung Bani, Sehaj / Akhand Paath, Akhand Kirtan, and Karanbir Singh's public
+[Live Captioning for Gurbani Kirtan benchmark v1](https://github.com/karanbirsingh/live-gurbani-captioning-benchmark-v1),
+whose second-by-second view this page follows, with thanks. Only recordings that are public on YouTube are shown;
+practice recordings only, the held-out test set is never published, and no audio is hosted here.
