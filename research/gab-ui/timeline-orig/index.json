@@ -1,0 +1,64 @@
+{
+ "tiers": [
+  {
+   "key": "main",
+   "title": "Kirtan (Gurdwara Sahib broadcasts on YouTube)",
+   "builds": [
+    {
+     "slug": "v1004-9b1fa814",
+     "file": "v1004-9b1fa814-main.json",
+     "label": "Gurbani Autopilot 10.0.4",
+     "commit": "9b1fa814",
+     "note": "release"
+    },
+    {
+     "slug": "c1-6a866c94",
+     "file": "c1-6a866c94-main.json",
+     "label": "Gurbani Autopilot 10.0.5",
+     "commit": "6a866c94",
+     "note": "candidate"
+    }
+   ]
+  },
+  {
+   "key": "akhand",
+   "title": "Akhand Kirtan (smagam recordings on YouTube)",
+   "builds": [
+    {
+     "slug": "v1004-9b1fa814",
+     "file": "v1004-9b1fa814-akhand.json",
+     "label": "Gurbani Autopilot 10.0.4",
+     "commit": "9b1fa814",
+     "note": "release"
+    },
+    {
+     "slug": "c1-6a866c94",
+     "file": "c1-6a866c94-akhand.json",
+     "label": "Gurbani Autopilot 10.0.5",
+     "commit": "6a866c94",
+     "note": "candidate"
+    }
+   ]
+  },
+  {
+   "key": "kbv1",
+   "title": "Karanbir Singh's benchmark v1 (4 kirtan recordings × 3 starts)",
+   "builds": [
+    {
+     "slug": "v1004-9b1fa814",
+     "file": "v1004-9b1fa814-kbv1.json",
+     "label": "Gurbani Autopilot 10.0.4",
+     "commit": "9b1fa814",
+     "note": "release"
+    },
+    {
+     "slug": "c1-6a866c94",
+     "file": "c1-6a866c94-kbv1.json",
+     "label": "Gurbani Autopilot 10.0.5",
+     "commit": "6a866c94",
+     "note": "candidate"
+    }
+   ]
+  }
+ ]
+}
