@@ -346,15 +346,15 @@ function renderDetail(c, dA, dB) {
   const ticks = []; for (let t = 0; t <= c.dur; t += step) ticks.push(t);
   $('#app').innerHTML = `
     <a class="back" href="#">← All ${esc(TABNAME[S.tier] || '')} recordings</a>
-    <div class="dhead"><h2 class="g">${esc(title)}</h2>${c.yt ? `<a href="${yt(0)}" target="_blank" rel="noopener">Open on YouTube</a>` : ''}</div>
+    <div class="dhead"><h2 class="g">${esc(title)}</h2>${c.yt ? `<a class="dmeta" href="${yt(0)}" target="_blank" rel="noopener">Source recording ↗</a>` : ''}</div>
     <div class="dmeta">${esc(c.gurdwara || '')} · ${mmss(c.dur)} · judged on ${keyed ? `the exact pangti (${esc(keyNote(c.basis))})` : 'the Shabad (answer key at Shabad level)'}</div>
     <div class="verdicts">${verdict(nA, fa, c, dA)}${dB ? verdict(nB, fb, o, dB) : ''}</div>
-    ${AUDIO[c.id] ? `<div class="aplayer"><audio id="aud" controls preload="metadata" src="${esc(AUDIO[c.id])}"></audio></div><p class="playnote">This is the exact audio Voice Autopilot heard. Press play and the timeline and readout below follow along; click the bars, or a time in the list, to jump there.</p>`
+    ${AUDIO[c.id] ? `<div class="aplayer"><audio id="aud" controls preload="metadata" src="${esc(AUDIO[c.id])}"></audio></div><p class="playnote">This is the exact audio Voice Autopilot heard, cut from the source recording. Press play and the timeline and readout below follow along; click the bars, or a time in the list, to jump there.</p>`
       : c.yt ? `<div class="player"><div id="ytp"></div></div><p class="playnote">Press play and the timeline and readout below follow along. Click anywhere on the bars, or a time in the list, to jump there.</p>` : '<p class="playnote">This recording is private, so it cannot be played here.</p>'}
     <div class="tlbox">
-      <div class="legend"><span><i class="sw" style="background:var(--gt)"></i>${keyed ? `pangti being ${W().act} (each block is one pangti)` : 'Shabad being sung (each block is one Shabad; pangtis are not keyed here)'}</span>${legend(keyed, true)}</div>
+      <div class="legend"><span><i class="sw" style="background:var(--gt)"></i>${keyed ? `pangti being ${W().act} (each block is one pangti)` : c.sung ? 'pangti being sung (machine-aligned timing; scoring is by Shabad)' : 'Shabad being sung (each block is one Shabad)'}</span>${legend(keyed, true)}</div>
       <div class="tl" id="tl">
-        <span class="l">${keyed ? W().sung : 'Shabad sung'}</span><div class="big gt">${truthSegs.map((x) => `<i style="${pos(x.s, x.e, c.dur)};background:var(--gt);opacity:${0.65 + 0.35 * ((ids.indexOf(x.id) % 2))}"></i>`).join('')}</div>
+        <span class="l">${keyed ? W().sung : c.sung ? 'Pangti sung' : 'Shabad sung'}</span><div class="big gt">${!keyed && c.sung ? c.sung.map((x, i) => `<i style="${pos(x[0], x[1], c.dur)};background:var(--gt);opacity:${i % 2 ? 1 : 0.7}"></i>`).join('') : truthSegs.map((x) => `<i style="${pos(x.s, x.e, c.dur)};background:var(--gt);opacity:${0.65 + 0.35 * ((ids.indexOf(x.id) % 2))}"></i>`).join('')}</div>
         <span class="l">${dB ? esc(nA) : 'On screen'}</span><div class="big">${stripHtml(c)}</div>
         ${dB ? `<span class="l">${esc(nB)}</span><div class="big">${o ? stripHtml(o) : ''}</div>` : ''}
         <span></span><div class="axis">${ticks.map((t) => `<span style="left:${(100 * t / c.dur).toFixed(2)}%">${mmss(t)}</span>`).join('')}</div>
@@ -374,9 +374,11 @@ function renderDetail(c, dA, dB) {
     ph.style.display = 'block'; ph.style.left = (r.left - tr.left + r.width * (s + 0.5) / c.dur) + 'px';
     const rA = at(c, s), rB = at(o, s); const truth = rA && rA[3] >= 0 ? label(dA.texts[rA[3]]) : '';
     const shownTxt = (rr, d) => (rr && rr[4] >= 0 && rr[2] !== 'V' ? `<span class="g">${esc(label(d.texts[rr[4]]))}</span>` : rr && rr[2] === 'V' ? '<span class="dmeta">ਵਾਹਿਗੁਰੂ slide (searching)</span>' : '<span class="dmeta">nothing on screen</span>');
+    const sp = !keyed && c.sung ? c.sung.find((x) => s >= x[0] && s < x[1]) : null;
     const sungTxt = !truth ? '<span class="dmeta">not scored here (no answer key)</span>'
       : keyed ? `<span class="g">${esc(truth)}</span>`
-      : `<span class="dmeta">Shabad </span><span class="g">${esc(truth)}</span><span class="dmeta"> (first pangti shown; this recording's key names the Shabad, not each pangti)</span>`;
+      : sp ? `<span class="g">${esc(dA.texts[sp[2]])}</span><span class="dmeta"> (pangti from a machine-aligned key; scored on the Shabad)</span>`
+      : `<span class="dmeta">${c.sung ? 'between timed pangtis (alaap, a repeat or simran) in ' : ''}Shabad </span><span class="g">${esc(truth)}</span>`;
     now.innerHTML = `<span class="l">${mmss(s)} ${W().act}</span><span>${sungTxt}</span>`
       + `<span class="l">${dB ? esc(nA) : 'on screen'}</span><span>${truth ? mark(rA) : ''}${shownTxt(rA, dA)}</span>`
       + (dB ? `<span class="l">${esc(nB)}</span><span>${o ? (truth ? mark(rB) : '') + shownTxt(rB, dB) : '<span class="dmeta">not played</span>'}</span>` : '')

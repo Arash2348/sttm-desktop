@@ -24,6 +24,7 @@ for t in pidx['tiers']:
 for t in tiers.values():
     t['builds'].sort(key=lambda b: VORDER.index(b.get('commit')) if b.get('commit') in VORDER else 99)
 import re, csv
+SUNG = json.load(open(f'{B}/kirtan-lines.json')) if os.path.exists(f'{B}/kirtan-lines.json') else {}
 BANI = {r['id']: r['bani'] for r in csv.DictReader(open(os.path.expanduser('~/personal/vf-benchmark/manifest.csv'))) if r.get('bani')}
 def tidy(g):  # long YouTube playlist titles -> short, respectful source names
     m = re.search(r"Ang (\d+) Pankti \d+ to Ang (\d+)", g)
@@ -40,8 +41,15 @@ def build(out, public):
         for b in t['builds']:
             d = json.load(open(src(b['file'])))
             if public: d['clips'] = [c for c in d['clips'] if c.get('yt')]
+            T = d['texts']; tix = {t: i for i, t in enumerate(T)}
             for c in d['clips']:
                 c['gurdwara'] = tidy(c.get('gurdwara', ''))
+                if k in ('main', 'akhand') and SUNG.get(c['id']):  # display-only pangti track (scoring unchanged)
+                    tr = []
+                    for st, en, txt in SUNG[c['id']]:
+                        if txt not in tix: tix[txt] = len(T); T.append(txt)
+                        tr.append([st, en, tix[txt]])
+                    c['sung'] = tr
                 if BANI.get(c['id']): c['bani'] = BANI[c['id']]
             if not d['clips']: continue
             json.dump(d, open(f'{tmp}/{b["file"]}', 'w'), ensure_ascii=False); bs.append(b)
@@ -50,6 +58,14 @@ def build(out, public):
     shutil.rmtree(out, ignore_errors=True)
     r = subprocess.run([sys.executable, '-I', f'{H}/bani-fix.py', tmp, out], capture_output=True, text=True); shutil.rmtree(tmp)
     if r.returncode: sys.exit(r.stderr)
+    adir = os.path.join(os.path.dirname(out), 'audio'); src_a = f'{B}/private-fixed/audio'
+    if public and os.path.exists(f'{src_a}/index.json'):
+        allA = json.load(open(f'{src_a}/index.json')); ids = set()
+        for t in keep:
+            for b in t['builds']: ids |= {c['id'] for c in json.load(open(f'{out}/{b["file"]}'))['clips']}
+        os.makedirs(adir, exist_ok=True); pub = {i: v for i, v in allA.items() if i in ids}
+        for v in pub.values(): shutil.copy(f'{src_a}/{os.path.basename(v)}', f'{adir}/{os.path.basename(v)}')
+        json.dump(pub, open(f'{adir}/index.json', 'w'))
     return [(t['key'], [(b['file'], len(json.load(open(f'{out}/{b["file"]}'))['clips'])) for b in t['builds']]) for t in keep]
 for name, out, pub in [('public', f'{B}/site/timeline', True), ('private', f'{B}/private-fixed/timeline', False)]:
     print(name); [print('  ', k, v) for k, v in build(out, pub)]
