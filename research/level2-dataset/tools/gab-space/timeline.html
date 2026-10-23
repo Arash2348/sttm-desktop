@@ -6,261 +6,169 @@
 <title>GAB Timeline</title>
 <style>
 :root {
-  --bg: #fbfaf7; --panel: #ffffff; --ink: #1d1d1b; --muted: #6b6962; --line: #e4e1d8; --sub: #f6f4ef; --app: #1f5f8b;
-  --P: #2f8a4e; --A: #e2a93b; --S: #5b8fc9; --W: #c8372d; --N: #a3a097; --none: #ece9e1;
-  --better-ink: #13703b; --worse-ink: #b0241c;
+  --bg: #f7f7f5; --card: #ffffff; --ink: #1d1f22; --muted: #6b6f76; --line: #e3e4e6;
+  --gt: #6c8cb5; --a: #b48ead; --b: #c9a56a; --ok: #4f9a5b; --near: #d9a441; --bad: #c95a5e; --nil: rgba(0,0,0,.07);
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { --bg: #151514; --panel: #1e1e1c; --ink: #ecebe6; --muted: #a9a69c; --line: #34332f; --sub: #252522; --app: #9cc8ea;
-    --P: #4fb873; --A: #e8b54f; --S: #79a8de; --W: #ec6a5e; --N: #6f6c66; --none: #2b2a27; --better-ink: #7fd89e; --worse-ink: #f48a7e; }
+  :root:not([data-theme="light"]) { --bg: #0d1117; --card: #161b22; --ink: #e6edf3; --muted: #8b949e; --line: #30363d;
+    --ok: #6fa776; --near: #e0b157; --bad: #c96a6e; --nil: rgba(255,255,255,.06); color-scheme: dark; }
 }
-:root[data-theme="dark"] { --bg: #151514; --panel: #1e1e1c; --ink: #ecebe6; --muted: #a9a69c; --line: #34332f; --sub: #252522; --app: #9cc8ea;
-  --P: #4fb873; --A: #e8b54f; --S: #79a8de; --W: #ec6a5e; --N: #6f6c66; --none: #2b2a27; --better-ink: #7fd89e; --worse-ink: #f48a7e; }
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
-.page { max-width: 980px; margin: 0 auto; padding: 18px 16px 40px; }
-h1 { font-size: 22px; margin: 0 0 4px; }
-.sub { color: var(--muted); font-size: 13px; margin: 0 0 14px; }
-a { color: var(--app); }
-.box { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
-table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
-th, td { padding: 6px 12px; border-bottom: 1px solid var(--line); text-align: right; }
-th:first-child, td:first-child { text-align: left; }
-th { font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; }
-tbody tr:last-child td { border-bottom: 0; }
-tbody tr { cursor: pointer; }
-tbody tr:hover td { background: var(--sub); }
-tr.selA td:first-child { box-shadow: inset 4px 0 0 var(--app); font-weight: 600; }
-tr.selB td:first-child { box-shadow: inset 4px 0 0 var(--muted); font-weight: 600; }
-.tag { font-size: 11px; color: var(--muted); font-weight: 400; margin-left: 6px; }
-.controls { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin: 16px 0 10px; font-size: 14px; }
-.controls label { display: flex; gap: 6px; align-items: center; color: var(--muted); }
-select { font: inherit; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; max-width: 100%; }
-.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--muted); margin: 0 0 12px; }
-.legend span { display: inline-flex; align-items: center; gap: 5px; }
-.sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
-.clip { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px 8px; margin: 0 0 10px; }
-.clip h3 { font-size: 14px; margin: 0; font-weight: 600; display: flex; flex-wrap: wrap; gap: 2px 10px; align-items: baseline; }
-.clip h3 .meta { font-weight: 400; color: var(--muted); font-size: 12px; }
-.clip h3 .score { margin-left: auto; font-weight: 400; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.score b { color: var(--ink); }
-.dn { color: var(--worse-ink) !important; } .up { color: var(--better-ink) !important; }
-.lane { display: grid; grid-template-columns: 64px 1fr; gap: 8px; align-items: center; margin-top: 6px; }
-.lane .who { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.strip { position: relative; height: 20px; border-radius: 4px; overflow: hidden; cursor: crosshair;
-  background: repeating-linear-gradient(135deg, var(--none) 0 4px, transparent 4px 8px), var(--sub); }
-.strip i { position: absolute; top: 0; bottom: 0; }
-.strip .na { position: absolute; left: 8px; top: 1px; font-size: 11px; color: var(--muted); }
-.strip .cur { position: absolute; top: -2px; bottom: -2px; width: 2px; background: var(--ink); pointer-events: none; display: none; }
-.axis { display: grid; grid-template-columns: 64px 1fr; gap: 8px; font-size: 11px; color: var(--muted); margin-top: 2px; }
-.axis div { display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; }
-.tip { position: fixed; z-index: 10; max-width: min(520px, calc(100vw - 24px)); background: var(--panel); color: var(--ink); border: 1px solid var(--line);
-  border-radius: 8px; box-shadow: 0 6px 24px rgba(0,0,0,.18); padding: 8px 10px; font-size: 13px; pointer-events: none; display: none; }
-.tip .t { color: var(--muted); font-size: 12px; margin-bottom: 4px; }
-.tip .row { display: grid; grid-template-columns: 92px 1fr; gap: 6px; margin: 3px 0; }
-.tip .k { color: var(--muted); font-size: 12px; }
-.tip .g { font-family: "Noto Sans Gurmukhi", "Gurmukhi MN", "Raavi", system-ui, sans-serif; font-size: 15px; line-height: 1.35; }
-.tip .cat { display: inline-flex; gap: 5px; align-items: center; font-size: 12px; }
-.tip .hint { color: var(--muted); font-size: 11px; margin-top: 4px; }
-details { margin-top: 18px; font-size: 13px; color: var(--muted); }
-details summary { cursor: pointer; color: var(--ink); font-size: 14px; }
-details li { margin: 4px 0; }
-.empty { color: var(--muted); font-size: 14px; padding: 12px 0; }
-@media (max-width: 560px) { .lane, .axis { grid-template-columns: 44px 1fr; } th, td { padding: 6px 6px; font-size: 13px; } th { white-space: normal; } .hide-s { display: none; } .controls label { width: 100%; } .controls select { flex: 1; min-width: 0; } .tag { display: none; } }
-html, body { overflow-x: hidden; } .page { min-width: 0; } .clip, .box { min-width: 0; }
+:root[data-theme="dark"] { --bg: #0d1117; --card: #161b22; --ink: #e6edf3; --muted: #8b949e; --line: #30363d;
+  --ok: #6fa776; --near: #e0b157; --bad: #c96a6e; --nil: rgba(255,255,255,.06); color-scheme: dark; }
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+.wrap { max-width: 900px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { font-size: 22px; font-weight: 600; }
+.sub { color: var(--muted); font-size: 13px; margin: 2px 0 16px; }
+.sub a { color: inherit; }
+.bar { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; margin-bottom: 14px; font-size: 14px; }
+select { font: inherit; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; max-width: 100%; }
+.sum { font-size: 15px; margin-bottom: 16px; }
+.sum b { font-variant-numeric: tabular-nums; }
+.sum .k { color: var(--muted); }
+.cards { display: grid; gap: 12px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; min-width: 0; }
+.head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.title { font-weight: 600; font-size: 15px; min-width: 0; overflow-wrap: anywhere; }
+.meta { color: var(--muted); font-size: 12px; }
+.acc { text-align: right; white-space: nowrap; }
+.acc b { font-size: 20px; font-variant-numeric: tabular-nums; }
+.acc .vs { display: block; color: var(--muted); font-size: 12px; }
+.now { display: grid; grid-template-columns: 56px minmax(0,1fr) 18px; gap: 2px 8px; margin: 10px 0 8px; font-size: 14px; }
+.now .l { color: var(--muted); font-size: 12px; padding-top: 2px; }
+.g { font-family: "Mukta Mahee", "Noto Sans Gurmukhi", "Gurmukhi MN", "Raavi", sans-serif; overflow-wrap: anywhere; }
+.g.muted { color: var(--muted); }
+.st.ok { color: var(--ok); } .st.bad { color: var(--bad); } .st.near { color: var(--near); }
+.tl { display: grid; grid-template-columns: 56px minmax(0,1fr); gap: 3px 8px; align-items: center; position: relative; }
+.tl .l { color: var(--muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row { position: relative; height: 14px; border-radius: 3px; background: var(--nil); overflow: hidden; cursor: crosshair; }
+.row.diff { height: 4px; border-radius: 2px; }
+.row i { position: absolute; top: 0; bottom: 0; }
+.row.seg i { border-right: 1px solid var(--card); }
+.ph { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); pointer-events: none; display: none; }
+details { margin-top: 20px; font-size: 13px; color: var(--muted); }
+details summary { cursor: pointer; color: var(--ink); }
+details p { margin: 6px 0; max-width: 70ch; }
+.empty { color: var(--muted); padding: 12px 0; }
 </style>
 </head>
 <body>
-<div class="page">
-  <h1>GAB timeline: second by second</h1>
-  <p class="sub">For every second of each recording: was the right pangti on screen? Hover (or tap) a strip to see the true pangti and the pangti shown. <a href="./index.html">← Leaderboard</a></p>
-
-  <div class="controls">
-    <label>Set <select id="tier"></select></label>
-    <label>Version <select id="bA"></select></label>
-    <label>Compare with <select id="bB"></select></label>
-    <label>Behaviour <select id="folder"></select></label>
-    <label>Order <select id="sort">
-      <option value="clip">recording</option>
-      <option value="worst">worst first</option>
-      <option value="diff">biggest change first</option>
-    </select></label>
+<div class="wrap">
+  <h1>GAB timeline</h1>
+  <p class="sub">Each card is one recording. Hover the bars to see the actual pangti and what was shown. <a href="./index.html">Leaderboard</a></p>
+  <div class="bar">
+    <select id="tier" aria-label="Set"></select>
+    <select id="bA" aria-label="Version"></select>
+    <span class="meta">vs</span>
+    <select id="bB" aria-label="Compare with"></select>
   </div>
-
-  <div class="box"><table id="rel"></table></div>
-  <p class="sub" style="margin-top:6px">Share of the seconds that have an answer key, over the clips every version listed here played. Tap a row to view it; tap another to compare.</p>
-
-  <div class="legend" id="legend"></div>
-  <div id="clips"></div>
-
+  <div class="sum" id="sum"></div>
+  <div class="cards" id="cards"></div>
   <details>
-    <summary>How this is scored, and credit</summary>
-    <ul>
-      <li>Each second takes the verdict of GAB's own scorer (ten 0.1 s samples, majority): <b>right pangti</b> = the words of the pangti being sung or read are on screen, or the screen moved to it less than 1 s ago (GAB's ON + CATCHING UP); otherwise <b>right Shabad, other pangti</b> / <b>wrong Shabad</b> / <b>nothing shown</b> (blank or the ਵਾਹਿਗੁਰੂ slide) come from the Shabad answer key, so the strip agrees with the leaderboard's right-Shabad %.</li>
-      <li><b>Right Shabad (pangti not keyed)</b>: the recording has only a Shabad answer key here (most main-GAB kirtan), so pangti cannot be judged.</li>
-      <li><b>1 s collar score</b> (secondary, human pangti keys only): Karanbir Singh's benchmark metric, computed the way his eval.py does (it agrees with his scorer within 0.1 points on every GAB-Hard clip). Each whole second is a frame; inside a pangti only that pangti counts; within 1 s of a pangti change, or in a pause between pangtis, the pangti before or after or a blank screen also counts; seconds before the first and after the last pangti count as right. It is kinder than right pangti % (blank screens in pauses and edges count as right), so it reads higher.</li>
-      <li>Striped background = no answer key for that second (lead-in, silence, katha, the unlabelled tail): not scored.</li>
-      <li>Pangti answer keys: GAB-Hard = Jaspal's STTM Desktop sevadaar screen (human, may lag by a second or two). Pangti text comes from the STTM Desktop Gurbani database; a pangti is always shown whole.</li>
-      <li>Only practice clips (train + dev). The held-out test split is never shown. Replays come from cached model output (x86), the same runs as the leaderboard scorecards.</li>
-      <li>The per-second strip, the hover with the true vs shown pangti, and 1-second resolution follow Karanbir Singh's <a href="https://github.com/karanbirsingh/live-gurbani-captioning-benchmark-v1">Live Captioning for Gurbani Kirtan benchmark v1</a> (code MIT, annotations CC BY 4.0) and its <a href="https://karanbirsingh.github.io/live-gurbani-captioning-benchmark-v1/">visualizations</a>. No code or annotations are copied here; GAB keeps its own scoring (his uses a 1 s collar and accepts a blank in gaps between pangtis).</li>
-    </ul>
+    <summary>How it's scored</summary>
+    <p><b>Actual</b> is the pangti being sung or read (answer key). Each version's row is what Gurbani Autopilot put on screen. The thin strip under it is green when the right pangti was shown (or the screen moved to it less than 1 s ago), amber for the right Shabad but another pangti, red for a wrong Shabad, faint for nothing shown or no answer key.</p>
+    <p>Accuracy = share of scored seconds with the right pangti; where only a Shabad answer key exists, share with the right Shabad. Practice clips only; the held-out test set is never shown.</p>
+    <p>Format and idea from Karanbir Singh's <a href="https://github.com/karanbirsingh/live-gurbani-captioning-benchmark-v1">Live Captioning for Gurbani Kirtan benchmark</a> and its <a href="https://karanbirsingh.github.io/live-gurbani-captioning-benchmark-v1/perfect.html">visualizations</a>, with thanks.</p>
   </details>
 </div>
-<div class="tip" id="tip" role="tooltip"></div>
 <script>
-const CAT = {
-  P: ['right pangti', 'var(--P)'],
-  A: ['right Shabad, other pangti', 'var(--A)'],
-  S: ['right Shabad (pangti not keyed)', 'var(--S)'],
-  W: ['wrong Shabad', 'var(--W)'],
-  N: ['nothing shown', 'var(--N)'],
-};
-const FOLDER = { '1-kirtan-shabad': 'Kirtan', '2-bani-recited': 'Paath', '3-bani-sung-like-kirtan': 'Sung Bani', '4-akhand-paath': 'Akhand Paath', '5-akhand-kirtan': 'Akhand Kirtan' };
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const mmss = (s) => { s = Math.max(0, Math.round(s)); const h = Math.floor(s / 3600), m = Math.floor(s / 60) % 60, x = s % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(x).padStart(2, '0'); };
-const pct = (a, b) => (b ? (100 * a / b) : null);
+const mmss = (s) => { s = Math.max(0, Math.round(s)); const m = Math.floor(s / 60), x = s % 60; return m + ':' + String(x).padStart(2, '0'); };
 const f1 = (v) => (v == null ? '–' : v.toFixed(1));
+const short = (s) => String(s).replace(/^Gurbani Autopilot\s*/, '');
 const store = { get(k) { try { return localStorage.getItem(k); } catch (_) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (_) {} } };
-
+const DIFF = { P: 'var(--ok)', S: 'var(--ok)', A: 'var(--near)', W: 'var(--bad)', N: 'transparent' };
 let INDEX = null; const DATA = {};
-$('legend').innerHTML = Object.entries(CAT).map(([k, [t, c]]) => `<span><i class="sw" style="background:${c}"></i>${t}</span>`).join('')
-  + '<span><i class="sw" style="background:repeating-linear-gradient(135deg,var(--none) 0 3px,var(--sub) 3px 6px);border:1px solid var(--line)"></i>no answer key</span>';
+async function load(f) { if (!DATA[f]) DATA[f] = await (await fetch('timeline/' + f)).json(); return DATA[f]; }
 
-async function load(file) { if (!DATA[file]) DATA[file] = await (await fetch('timeline/' + file)).json(); return DATA[file]; }
+const acc = (c) => { if (!c) return null; const n = c.n; const t = n.P + n.A + n.S + n.W + n.N; if (!t) return null;
+  return c.basis ? 100 * n.P / (n.P + n.A + n.W + n.N) : 100 * (n.P + n.A + n.S) / t; };
+function total(clips) { let w = 0, v = 0, wrong = 0;
+  for (const c of clips) { const a = acc(c); if (a == null) continue; const t = c.n.P + c.n.A + c.n.S + c.n.W + c.n.N; w += t; v += a * t; wrong += c.n.W; }
+  return { acc: w ? v / w : null, wrongH: w ? wrong / (w / 3600) : null }; }
 
-function sums(clips) {
-  const n = { P: 0, A: 0, S: 0, W: 0, N: 0 };
-  let pk = 0, pp = 0, kw = 0, kv = 0; // pangti %: only clips with a human pangti key; kb = Karanbir's 1 s collar score
-  for (const c of clips) {
-    for (const k in n) n[k] += c.n[k] || 0;
-    if (c.basis === 'human') { pp += c.n.P; pk += c.n.P + c.n.A + c.n.W + c.n.N; } // machine-aligned keys never count
-    if (c.kb != null) { kw += c.dur; kv += c.kb * c.dur; }
-  }
-  const tot = n.P + n.A + n.S + n.W + n.N;
-  return { kb: kw ? kv / kw : null, hasP: pk > 0 && pk >= 0.5 * (n.P + n.A + n.S + n.W + n.N), pangti: pct(pp, pk), shabad: pct(n.P + n.A + n.S, tot), wrongH: tot ? n.W / (tot / 3600) : null, blank: pct(n.N, tot) };
-}
-
-function tierEntry() { return INDEX.tiers.find((t) => t.key === $('tier').value); }
+// merge per-second runs into segments by one field (3 = actual pangti, 4 = shown pangti)
+function segs(c, k) { const out = []; for (const r of c.runs) { const id = r[k]; const last = out[out.length - 1];
+  if (last && last.id === id && last.e === r[0]) last.e = r[1]; else out.push({ s: r[0], e: r[1], id }); } return out; }
+const pos = (s, e, d) => `left:${(100 * s / d).toFixed(3)}%;width:${(100 * (e - s) / d).toFixed(3)}%`;
+const segRow = (c, k, color) => segs(c, k).filter((x) => x.id >= 0).map((x) => `<i style="${pos(x.s, x.e, c.dur)};background:${color}"></i>`).join('');
+const diffRow = (c) => c.runs.map((r) => `<i style="${pos(r[0], r[1], c.dur)};background:${DIFF[r[2]]}"></i>`).join('');
+function at(c, s) { if (!c) return null; let lo = 0, hi = c.runs.length - 1;
+  while (lo <= hi) { const m = (lo + hi) >> 1, r = c.runs[m]; if (s < r[0]) hi = m - 1; else if (s >= r[1]) lo = m + 1; else return r; } return null; }
 
 async function render() {
-  const tier = tierEntry();
-  const builds = tier.builds;
+  const tier = INDEX.tiers.find((t) => t.key === $('tier').value);
   const a = $('bA').value, b = $('bB').value;
-  store.set('gab-tl', JSON.stringify({ tier: tier.key, a, b }));
-  const loaded = await Promise.all(builds.map((x) => load(x.file)));
-  const folders = [...new Set(loaded.flatMap((d) => d.clips.map((c) => c.folder)))].sort();
-  const fsel = $('folder'); const fwant = fsel.value;
-  fsel.innerHTML = (folders.length > 1 ? '<option value="">all</option>' : '') + folders.map((f) => `<option value="${esc(f)}">${esc(FOLDER[f] || f)}</option>`).join('');
-  fsel.value = folders.includes(fwant) || (fwant === '' && folders.length > 1) ? fwant : (folders.includes('1-kirtan-shabad') ? '1-kirtan-shabad' : fsel.options[0].value);
-  fsel.closest('label').style.display = folders.length > 1 ? '' : 'none';
-  const inF = (c) => !fsel.value || c.folder === fsel.value;
-  const all = loaded.map((d) => ({ ...d, clips: d.clips.filter(inF) }));
-  // clips every listed version played (so the table compares like with like)
-  const common = all.reduce((s, d) => { const ids = new Set(d.clips.map((c) => c.id)); return s ? new Set([...s].filter((x) => ids.has(x))) : ids; }, null) || new Set();
-  const rows = builds.map((x, i) => ({ x, s: sums(all[i].clips.filter((c) => common.has(c.id))) }));
-  const hasP = rows.some((r) => r.s.hasP); const hasK = rows.some((r) => r.s.kb != null);
-  $('rel').innerHTML = `<thead><tr><th>Version</th>${hasP ? '<th>Right pangti</th>' : ''}<th>Right Shabad</th><th>Wrong Shabad s/h</th><th class="hide-s">Nothing shown</th>${hasK ? '<th class="hide-s" title="Karanbir Singh benchmark score: 1 s frames, 1 s collar (secondary)">1 s collar score</th>' : ''}</tr></thead><tbody>`
-    + rows.map((r) => `<tr data-f="${esc(r.x.file)}" class="${r.x.file === a ? 'selA' : r.x.file === b ? 'selB' : ''}"><td>${esc(r.x.label)}${r.x.note ? `<span class="tag">${esc(r.x.note)}</span>` : ''}</td>${hasP ? `<td>${f1(r.s.pangti)}%</td>` : ''}<td>${f1(r.s.shabad)}%</td><td>${r.s.wrongH == null ? '–' : Math.round(r.s.wrongH)}</td><td class="hide-s">${f1(r.s.blank)}%</td>${hasK ? `<td class="hide-s">${f1(r.s.kb)}%</td>` : ''}</tr>`).join('')
-    + `</tbody>`;
-  $('rel').querySelectorAll('tbody tr').forEach((tr) => tr.onclick = () => {
-    const f = tr.dataset.f;
-    if (f === $('bA').value) return;
-    if ($('bB').value === f) { $('bB').value = ''; } else { $('bB').value = $('bA').value; $('bA').value = f; }
-    render();
-  });
-
-  const dA = all[builds.findIndex((x) => x.file === a)]; const dB = b ? all[builds.findIndex((x) => x.file === b)] : null;
+  store.set('gab-tl2', JSON.stringify({ tier: tier.key, a, b }));
+  const dA = await load(a), dB = b ? await load(b) : null;
   const byB = dB ? new Map(dB.clips.map((c) => [c.id, c])) : null;
-  const score = (c) => (c ? (c.basis ? pct(c.n.P, c.n.P + c.n.A + c.n.W + c.n.N) : pct(c.n.S + c.n.P + c.n.A, c.n.P + c.n.A + c.n.S + c.n.W + c.n.N)) : null);
-  let clips = dA.clips.map((c) => ({ c, o: byB ? byB.get(c.id) : null }));
-  const sort = $('sort').value;
-  if (sort === 'worst') clips.sort((x, y) => (score(x.c) ?? 101) - (score(y.c) ?? 101));
-  if (sort === 'diff' && byB) clips.sort((x, y) => Math.abs((score(y.c) ?? 0) - (score(y.o) ?? 0)) - Math.abs((score(x.c) ?? 0) - (score(x.o) ?? 0)));
-  const nameA = builds.find((x) => x.file === a).label, nameB = b ? builds.find((x) => x.file === b).label : '';
-  $('clips').innerHTML = clips.length ? clips.map(({ c, o }, i) => {
-    const sA = score(c), sB = o ? score(o) : null;
-    const what = c.basis ? 'right pangti' : 'right Shabad';
-    const d = sB != null && sA != null ? sA - sB : null;
-    return `<div class="clip" data-i="${i}"><h3>${esc(c.id.replace(/_sttm_desktop_.*/, ''))}<span class="meta">${esc(FOLDER[c.folder] || c.folder)} · ${esc(c.gurdwara)} · ${mmss(c.dur)}${c.basis === 'aligned' ? ' · pangti key machine-aligned (not checked by a person)' : ''}${c.kb != null ? ` · 1 s collar ${f1(c.kb)}%${o && o.kb != null ? ` vs ${f1(o.kb)}%` : ''}` : ''}</span>
-      <span class="score">${what}: <b>${f1(sA)}%</b>${sB != null ? ` vs ${f1(sB)}%${d != null && Math.abs(d) >= 1 ? ` <span class="${d > 0 ? 'up' : 'dn'}">${d > 0 ? '▲' : '▼'}${Math.abs(d).toFixed(1)}</span>` : ''}` : ''}</span></h3>
-      <div class="lane"><div class="who" title="${esc(nameA)}">${esc(short(nameA))}</div><div class="strip" data-w="a">${bars(c)}<span class="cur"></span></div></div>
-      ${dB ? `<div class="lane"><div class="who" title="${esc(nameB)}">${esc(short(nameB))}</div><div class="strip" data-w="b">${o ? bars(o) : '<span class="na">not played by this version (no cached model output)</span>'}<span class="cur"></span></div></div>` : ''}
-      <div class="axis"><span></span><div><span>0:00</span><span>${mmss(c.dur / 2)}</span><span>${mmss(c.dur)}</span></div></div></div>`;
-  }).join('') : '<p class="empty">No clips.</p>';
-  document.querySelectorAll('.clip').forEach((el) => {
-    const { c, o } = clips[Number(el.dataset.i)];
-    el.querySelectorAll('.strip').forEach((st) => hook(st, c, o, dA, dB, nameA, nameB));
-  });
-  // ?hover=<clip>,<fraction 0-1>: show one tooltip (for screenshots / sharing a moment)
-  const hv = new URLSearchParams(location.search).get('hover');
-  if (hv) {
-    const [cid, fr] = hv.split(',');
-    const el = [...document.querySelectorAll('.clip')].find((x) => x.querySelector('h3').textContent.startsWith(cid));
-    if (el) { const st = el.querySelector('.strip'); const r = st.getBoundingClientRect(); st.dispatchEvent(new MouseEvent('mousemove', { clientX: r.left + r.width * Number(fr || 0.5), clientY: r.top + r.height / 2 })); }
-  }
+  const nA = short(tier.builds.find((x) => x.file === a).label), nB = b ? short(tier.builds.find((x) => x.file === b).label) : '';
+  const both = dA.clips.filter((c) => !byB || byB.has(c.id));
+  const tA = total(both), tB = dB ? total(both.map((c) => byB.get(c.id))) : null;
+  $('sum').innerHTML = `<span class="k">Accuracy</span> <b>${f1(tA.acc)}%</b> ${esc(nA)}` + (tB ? ` <span class="k">vs</span> <b>${f1(tB.acc)}%</b> ${esc(nB)}` : '')
+    + ` <span class="k">· wrong Shabad</span> <b>${Math.round(tA.wrongH ?? 0)}</b>${tB ? ` vs <b>${Math.round(tB.wrongH ?? 0)}</b>` : ''} <span class="k">s per hour · ${both.length} recordings</span>`;
+  const list = dA.clips.map((c) => ({ c, o: byB ? byB.get(c.id) : null }));
+  if (byB) list.sort((x, y) => Math.abs((acc(y.c) ?? 0) - (acc(y.o) ?? 0)) - Math.abs((acc(x.c) ?? 0) - (acc(x.o) ?? 0)));
+  $('cards').innerHTML = list.length ? list.map(({ c, o }, i) => {
+    const first = c.runs.find((r) => r[3] >= 0);
+    const title = first ? dA.texts[first[3]] : c.id;
+    const aA = acc(c), aB = o ? acc(o) : null;
+    return `<div class="card" data-i="${i}">
+      <div class="head"><div style="min-width:0"><div class="title g">${esc(title)}</div>
+        <div class="meta">${esc(c.id.replace(/_sttm_desktop_.*/, ''))} · ${esc(c.gurdwara || '')} · ${mmss(c.dur)}</div></div>
+        <div class="acc"><b>${f1(aA)}%</b>${aB != null ? `<span class="vs">${esc(nB)}: ${f1(aB)}%</span>` : ''}</div></div>
+      <div class="now"></div>
+      <div class="tl">
+        <span class="l">Actual</span><div class="row seg">${segRow(c, 3, 'var(--gt)')}</div>
+        <span class="l">${esc(nA)}</span><div class="row seg">${segRow(c, 4, 'var(--a)')}</div>
+        <span></span><div class="row diff">${diffRow(c)}</div>
+        ${dB ? (o ? `<span class="l">${esc(nB)}</span><div class="row seg">${segRow(o, 4, 'var(--b)')}</div><span></span><div class="row diff">${diffRow(o)}</div>`
+          : `<span class="l">${esc(nB)}</span><div class="meta">not played by this version</div>`) : ''}
+        <div class="ph"></div>
+      </div></div>`;
+  }).join('') : '<p class="empty">No recordings.</p>';
+  document.querySelectorAll('.card').forEach((el) => { const { c, o } = list[Number(el.dataset.i)]; hook(el, c, o, dA, dB, nA, nB);
+    const f = c.runs.find((r) => r[3] >= 0); show(el, c, o, dA, dB, nA, nB, f ? f[0] : 0); });
 }
-const short = (s) => s.replace(/^Gurbani Autopilot\s*/, '');
-function bars(c) {
-  return c.runs.map(([s, e, k]) => `<i style="left:${(100 * s / c.dur).toFixed(3)}%;width:${(100 * (e - s) / c.dur).toFixed(3)}%;background:${CAT[k][1]}"></i>`).join('');
+function line(label, text, cat) {
+  const st = cat == null ? '' : cat === 'P' || cat === 'S' ? '<span class="st ok">✓</span>' : cat === 'A' ? '<span class="st near">~</span>' : cat === 'W' ? '<span class="st bad">✗</span>' : '';
+  return `<span class="l">${esc(label)}</span><span class="g${text ? '' : ' muted'}">${esc(text || '—')}</span>${st || '<span></span>'}`;
 }
-function at(c, s) { // binary search the run covering second s
-  if (!c) return null;
-  let lo = 0, hi = c.runs.length - 1;
-  while (lo <= hi) { const m = (lo + hi) >> 1; const r = c.runs[m]; if (s < r[0]) hi = m - 1; else if (s >= r[1]) lo = m + 1; else return r; }
-  return null;
+function show(el, c, o, dA, dB, nA, nB, s) {
+  const rA = at(c, s), rB = o ? at(o, s) : null;
+  const truth = rA && rA[3] >= 0 ? dA.texts[rA[3]] : (rB && rB[3] >= 0 ? dB.texts[rB[3]] : '');
+  el.querySelector('.now').innerHTML = line('Actual', truth) + line(nA, rA && rA[4] >= 0 ? dA.texts[rA[4]] : '', rA && truth ? rA[2] : null)
+    + (dB && o ? line(nB, rB && rB[4] >= 0 ? dB.texts[rB[4]] : '', rB && truth ? rB[2] : null) : '');
 }
-const tip = $('tip');
-function hook(st, c, o, dA, dB, nameA, nameB) {
-  const show = (ev) => {
-    const rect = st.getBoundingClientRect();
-    const x = Math.min(Math.max(ev.clientX - rect.left, 0), rect.width - 1);
-    const s = Math.floor(x / rect.width * c.dur);
-    document.querySelectorAll('.clip .cur').forEach((k) => (k.style.display = 'none'));
-    st.closest('.clip').querySelectorAll('.cur').forEach((k) => { k.style.display = 'block'; k.style.left = (100 * (s + 0.5) / c.dur) + '%'; });
-    const rA = at(c, s), rB = dB ? at(o, s) : null;
-    const T = (d, i) => (i >= 0 ? d.texts[i] : null);
-    const truth = (rA && T(dA, rA[3])) || (rB && T(dB, rB[3]));
-    const line = (name, d, r) => `<div class="row"><div class="k">${esc(name)}</div><div>${r ? `<span class="cat"><i class="sw" style="background:${CAT[r[2]][1]}"></i>${CAT[r[2]][0]}</span><div class="g">${esc(T(d, r[4]) || '(nothing on screen)')}</div>` : '<span class="k">not scored here</span>'}</div></div>`;
-    tip.innerHTML = `<div class="t">${mmss(s)} of ${mmss(c.dur)}</div>`
-      + `<div class="row"><div class="k">True</div><div class="g">${esc(truth || '(no answer key for this second)')}</div></div>`
-      + line(dB ? short(nameA) : 'On screen', dA, rA) + (dB ? line(short(nameB), dB, rB) : '')
-      + (c.yt ? '<div class="hint">Click to listen on YouTube at this second</div>' : '');
-    tip.style.display = 'block';
-    const w = tip.offsetWidth, h = tip.offsetHeight;
-    let left = ev.clientX + 14, top = ev.clientY + 16;
-    if (left + w > innerWidth - 8) left = Math.max(8, ev.clientX - w - 14);
-    if (top + h > innerHeight - 8) top = Math.max(8, ev.clientY - h - 12);
-    tip.style.left = left + 'px'; tip.style.top = top + 'px';
-    st._s = s;
-  };
-  st.addEventListener('mousemove', show);
-  st.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
-  st.addEventListener('click', (ev) => {
-    show(ev);
-    if (c.yt && !matchMedia('(hover: none)').matches) window.open(`https://www.youtube.com/watch?v=${c.yt.v}&t=${c.yt.at + st._s}s`, '_blank', 'noopener');
-  });
+function hook(el, c, o, dA, dB, nA, nB) {
+  const tl = el.querySelector('.tl'), ph = el.querySelector('.ph');
+  const move = (ev) => { const row = el.querySelector('.row'); const r = row.getBoundingClientRect();
+    const x = Math.min(Math.max(ev.clientX - r.left, 0), r.width - 1); const s = Math.floor(x / r.width * c.dur);
+    const tr = tl.getBoundingClientRect(); ph.style.display = 'block'; ph.style.left = (r.left - tr.left + x) + 'px';
+    show(el, c, o, dA, dB, nA, nB, s); el._s = s; };
+  tl.querySelectorAll('.row').forEach((row) => { row.addEventListener('mousemove', move); row.addEventListener('click', (ev) => { move(ev);
+    if (c.yt && !matchMedia('(hover: none)').matches) window.open(`https://www.youtube.com/watch?v=${c.yt.v}&t=${c.yt.at + el._s}s`, '_blank', 'noopener'); }); });
 }
-
-function fillBuilds(keep) {
-  const tier = tierEntry();
-  const opts = tier.builds.map((x) => `<option value="${esc(x.file)}">${esc(x.label)}</option>`).join('');
+function fill(keep) {
+  const tier = INDEX.tiers.find((t) => t.key === $('tier').value);
+  const opts = tier.builds.map((x) => `<option value="${esc(x.file)}">${esc(short(x.label))}</option>`).join('');
   $('bA').innerHTML = opts; $('bB').innerHTML = '<option value="">(none)</option>' + opts;
-  const files = tier.builds.map((x) => x.file);
-  $('bA').value = keep && files.includes(keep.a) ? keep.a : files[files.length - 1];
-  $('bB').value = keep && files.includes(keep.b) && keep.b !== $('bA').value ? keep.b : (files.length > 1 ? files[files.length - 2] : '');
+  const f = tier.builds.map((x) => x.file);
+  $('bA').value = keep && f.includes(keep.a) ? keep.a : f[f.length - 1];
+  $('bB').value = keep && f.includes(keep.b) && keep.b !== $('bA').value ? keep.b : (f.length > 1 ? f[f.length - 2] : '');
 }
 (async () => {
   INDEX = await (await fetch('timeline/index.json')).json();
   $('tier').innerHTML = INDEX.tiers.map((t) => `<option value="${esc(t.key)}">${esc(t.title)}</option>`).join('');
-  let keep = null; try { keep = JSON.parse(store.get('gab-tl') || 'null'); } catch (_) {}
+  let keep = null; try { keep = JSON.parse(store.get('gab-tl2') || 'null'); } catch (_) {}
   const q = new URLSearchParams(location.search);
   if (q.get('set') && INDEX.tiers.some((t) => t.key === q.get('set'))) keep = { tier: q.get('set') };
   if (keep && INDEX.tiers.some((t) => t.key === keep.tier)) $('tier').value = keep.tier;
-  fillBuilds(keep);
-  $('tier').onchange = () => { fillBuilds(null); $('folder').value = ''; render(); };
+  fill(keep);
+  $('tier').onchange = () => { fill(null); render(); };
   $('bA').onchange = () => { if ($('bB').value === $('bA').value) $('bB').value = ''; render(); };
-  $('bB').onchange = render; $('sort').onchange = render; $('folder').onchange = render;
+  $('bB').onchange = render;
   render();
 })();
 </script>
