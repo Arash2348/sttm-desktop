@@ -13,5 +13,9 @@ B both agree, check < 0.5 (~65%); C one model only (~41%); D one model only and 
 pangti there (conflict).
 
 Verification rule (owner, 2026-10-23): a candidate is accepted only when EVERY checker (each Fable / Opus verifier
-and the aligner) names the SAME pangti (verseId) for the span AND the agreement score is >= 0.95. Otherwise a person
+and the aligner) names the SAME pangti (verseId) for the span AND each checker's confidence / the agreement score is >= 0.95. Otherwise a person
 decides. Every row carries `verify: {pangti_must_match, min_agreement: 0.95, agreement_prior}`.
+
+Batches: batch1 = Kirtan (folder 1) recordings at 50-60% coverage (13). batch2 = Kirtan recordings at 40-50% coverage
+(15, closest to 50% first; 948 candidates, 492 tier A eligible for the 3-checker rule), same tool:
+`make-candidates.py <gab-lines> candidates/batch2.json --lo 0.40 --hi 0.50 --max 15`.

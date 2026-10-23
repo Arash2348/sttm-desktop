@@ -147,7 +147,7 @@ for cov_before, rid in covers:
                          'verseId': g['verseId'], 'shabadId': int(sid) if sid and str(sid).isdigit() else sid,
                          'text': g['text'], 'start_s': g['start'], 'end_s': g['end'],
                          'aligner_conf': round(chk, 3), 'confidence_flag': 'high' if (c['tier'] == 'A' and chk >= MIN_CONF) or in_key else 'low',
-                         'verify': {'pangti_must_match': True, 'min_agreement': 0.95, 'agreement_prior': agree_prior,
+                         'verify': {'pangti_must_match': True, 'min_agreement': 0.95, 'each_checker_min_conf': 0.95, 'agreement_prior': agree_prior,
                                     'auto_accept_eligible': c['tier'] == 'A' and chk >= MIN_CONF and ok},
                          'evidence': ev})
     rows += out_rows
@@ -179,11 +179,11 @@ for cov_before, rid in covers:
                 'new_vs_current_key': sum(not r['evidence']['in_current_key'] for r in out_rows),
                 'gaps': [{'start_s': a, 'end_s': b, 'kind': 'gap (alaap / simran / katha / silence, or not aligned): not a pangti'} for a, b in gaps]})
 
-doc = {'batch': 'batch1', 'made': '2026-10-23', 'status': 'CANDIDATES - not labels; human / verifier sign-off required',
+doc = {'batch': os.path.basename(re.sub(r'\.json$', '', OUT)), 'made': '2026-10-23', 'status': 'CANDIDATES - not labels; human / verifier sign-off required',
        'selection': f'{FOLDER} recordings with pangti coverage in [{LO:.0%}, {HI:.0%}) in timeline-pangti/rescore-report.json '
                     f'({FILE}), closest to the 60% bar first, max {MAX}; held-out test split and labels/accepted/ excluded',
-       'verify_rule': 'every checker (each Fable / Opus verifier, plus the aligner) must name the same verseId for the span; '
-                      'accept only when the agreement score >= 0.95, else send to a person',
+       'verify_rule': 'every checker (each Fable / Opus verifier, plus the aligner) must name the same verseId for the span, '
+                      'each with confidence >= 0.95; accept only then, else send to a person',
        'tiers': {'A': 'both models, same pangti, start within 1 s, check >= 0.5 (~97% right pangti)',
                  'B': 'both models agree, check < 0.5 (~65%)', 'C': 'one model only (~41%)',
                  'D': 'one model only, other model put a different pangti here (conflict)'},
