@@ -68,6 +68,10 @@ select { font: inherit; font-size: 14px; color: var(--ink); background: var(--ca
 .verdict h3 b { font-size: 18px; font-variant-numeric: tabular-nums; }
 .verdict ul { margin: 6px 0 0; padding-left: 18px; font-size: 14px; }
 .verdict li { margin: 2px 0; }
+.player { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16 / 9; margin: 0 0 12px; border-radius: 10px; overflow: hidden; background: #000; }
+.player iframe, .player > div { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.playnote { font-size: 13px; color: var(--muted); margin: -6px 0 12px; }
+.ev .when button { font: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; font-variant-numeric: tabular-nums; }
 .tlbox { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px 10px; margin-bottom: 14px; }
 .tl { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 4px 10px; align-items: center; position: relative; }
 .tl .l { font-size: 12px; color: var(--muted); text-align: right; }
@@ -80,6 +84,7 @@ select { font: inherit; font-size: 14px; color: var(--ink); background: var(--ca
 .ph { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); pointer-events: none; display: none; }
 .now { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 8px; display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 3px 10px; font-size: 14px; min-height: 64px; }
 .now .l { font-size: 12px; color: var(--muted); text-align: right; padding-top: 2px; }
+.linkbtn { font: inherit; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
 .now .hint { grid-column: 1 / -1; color: var(--muted); font-size: 13px; }
 .tag { display: inline-block; font-size: 11px; font-weight: 600; border-radius: 4px; padding: 0 6px; margin-right: 6px; color: #fff; vertical-align: 1px; }
 .events { background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
@@ -165,7 +170,7 @@ function readHash() { const h = decodeURIComponent(location.hash.slice(1)); retu
 
 async function main() {
   INDEX = await (await fetch('timeline/index.json')).json();
-  let keep = null; try { keep = JSON.parse(store.get('gab-v3') || 'null'); } catch (_) {}
+  let keep = null; try { keep = JSON.parse(store.get('gab-v4') || 'null'); } catch (_) {}
   const q = new URLSearchParams(location.search);
   S.tier = (q.get('set') && INDEX.tiers.some((t) => t.key === q.get('set'))) ? q.get('set') : (keep && INDEX.tiers.some((t) => t.key === keep.tier) ? keep.tier : INDEX.tiers[0].key);
   pickBuilds(keep);
@@ -176,10 +181,10 @@ function tierObj() { return INDEX.tiers.find((t) => t.key === S.tier); }
 function pickBuilds(keep) {
   const f = tierObj().builds.map((x) => x.file);
   S.a = keep && f.includes(keep.a) ? keep.a : f[f.length - 1];
-  S.b = keep && keep.b !== undefined && (keep.b === '' || f.includes(keep.b)) && keep.b !== S.a ? keep.b : (f.length > 1 ? f[f.length - 2] : '');
+  S.b = keep && keep.b && f.includes(keep.b) && keep.b !== S.a ? keep.b : ''; // one version by default; comparing is optional
 }
 const nameOf = (file) => short(tierObj().builds.find((x) => x.file === file)?.label || '');
-function save() { store.set('gab-v3', JSON.stringify({ tier: S.tier, a: S.a, b: S.b })); }
+function save() { store.set('gab-v4', JSON.stringify({ tier: S.tier, a: S.a, b: S.b })); }
 
 async function render() {
   save();
@@ -231,7 +236,7 @@ function renderList(dA, dB) {
     <h1>GAB: how well Voice Autopilot follows kirtan</h1>
     <p class="lead">How well does Voice Autopilot keep the right Gurbani on screen during real kirtan? Pick a set, then open any recording to see, second by second, what was sung and what was shown.</p>
     <div class="tabs">${tabsSorted().map((t) => `<button data-tier="${esc(t.key)}" aria-pressed="${t.key === S.tier}">${esc(TABNAME[t.key] || t.title)}</button>`).join('')}</div>
-    <div class="vs">Showing <select id="selA">${opts(S.a)}</select> compared with <select id="selB">${opts(S.b, true)}</select></div>
+    <div class="vs">Version <select id="selA">${opts(S.a)}</select><span class="cmp">${tier.builds.length > 1 ? `· compare with <select id="selB">${opts(S.b, true)}</select> <span class="dmeta">(optional)</span>` : ''}</span></div>
     <div class="summary">
       <p>${esc(VERB[S.tier] || tier.title)}: <b>${both.length} recordings</b>, ${TA.hours.toFixed(1)} hours of scored singing. ${verdictLine}</p>${bigLine}
       <div class="kpis">
@@ -257,7 +262,7 @@ function renderList(dA, dB) {
     ${about()}`;
   document.querySelectorAll('.tabs button').forEach((b) => b.onclick = () => { S.tier = b.dataset.tier; S.filter = 'worst'; pickBuilds(null); render(); });
   $('#selA').onchange = (e) => { S.a = e.target.value; if (S.b === S.a) S.b = ''; render(); };
-  $('#selB').onchange = (e) => { S.b = e.target.value; render(); };
+  if ($('#selB')) $('#selB').onchange = (e) => { S.b = e.target.value; render(); };
   document.querySelectorAll('.filters button').forEach((b) => b.onclick = () => { S.filter = b.dataset.f; render(); });
 }
 
@@ -270,7 +275,7 @@ function renderDetail(c, dA, dB) {
   const keyed = pangtiKeyed(c);
   const title = label(dA.texts[(c.runs.find((r) => r[3] >= 0) || [])[3]] || c.id);
   const yt = (s) => (c.yt ? `https://www.youtube.com/watch?v=${c.yt.v}&t=${c.yt.at + Math.max(0, Math.floor(s) - 2)}s` : null);
-  const when = (s) => (yt(s) ? `<a href="${yt(s)}" target="_blank" rel="noopener" title="Listen on YouTube">${mmss(s)} ▶</a>` : mmss(s));
+  const when = (s) => (c.yt ? `<button data-seek="${Math.max(0, Math.floor(s) - 2)}" title="Play from here">${mmss(s)} ▶</button>` : mmss(s));
   const verdict = (name, f, cc, d) => {
     if (!cc) return `<div class="verdict"><h3>${esc(name)}</h3><p class="dmeta">Not played by this version.</p></div>`;
     const items = [];
@@ -303,9 +308,10 @@ function renderDetail(c, dA, dB) {
   const ticks = []; const step = c.dur > 1200 ? 300 : c.dur > 400 ? 60 : 30; for (let t = 0; t <= c.dur; t += step) ticks.push(t);
   $('#app').innerHTML = `
     <a class="back" href="#">← All ${esc(TABNAME[S.tier] || '')} recordings</a>
-    <div class="dhead"><h2 class="g">${esc(title)}</h2>${c.yt ? `<a href="${yt(0)}" target="_blank" rel="noopener">Listen on YouTube ▶</a>` : ''}</div>
+    <div class="dhead"><h2 class="g">${esc(title)}</h2>${c.yt ? `<a href="${yt(0)}" target="_blank" rel="noopener">Open on YouTube</a>` : ''}</div>
     <div class="dmeta">${esc(c.gurdwara || '')} · ${mmss(c.dur)} · judged on ${keyed ? 'the exact pangti (answer key checked by a person)' : 'the Shabad (answer key at Shabad level)'}</div>
     <div class="verdicts">${verdict(nA, fa, c, dA)}${dB ? verdict(nB, fb, o, dB) : ''}</div>
+    ${c.yt ? `<div class="player"><div id="ytp"></div></div><p class="playnote">Press play and the timeline and readout below follow along. Click anywhere on the bars, or a time in the list, to jump there.</p>` : '<p class="playnote">This recording is private, so it cannot be played here.</p>'}
     <div class="tlbox">
       <div class="legend"><span><i class="sw" style="background:var(--gt)"></i>what was sung (${keyed ? 'each block is one pangti' : 'each block is one Shabad'})</span>${legend(keyed, true)}</div>
       <div class="tl" id="tl">
@@ -315,7 +321,7 @@ function renderDetail(c, dA, dB) {
         <span></span><div class="axis">${ticks.map((t) => `<span style="left:${(100 * t / c.dur).toFixed(2)}%">${mmss(t)}</span>`).join('')}</div>
         <div class="ph" id="ph"></div>
       </div>
-      <div class="now" id="now"><span class="hint">Move over (or tap) the bars to read what was sung and what each version showed at that moment, with a link to listen from there.</span></div>
+      <div class="now" id="now"><span class="hint">Move over (or tap) the bars to read what was sung and what was on screen at that moment.</span></div>
     </div>
     <div class="events"><h3>What happened, in order</h3>${ev.length ? ev.map((e) => `<div class="ev"><span class="when">${when(e.s)}</span><span class="who"><span class="tag" style="background:${KIND[e.kind][1]}">${KIND[e.kind][0]}</span>${esc(e.who)}</span><span>${e.text}</span></div>`).join('') : '<p class="empty">Nothing notable.</p>'}</div>
     ${about()}`;
@@ -323,16 +329,39 @@ function renderDetail(c, dA, dB) {
   const tl = $('#tl'), ph = $('#ph'), now = $('#now');
   const at = (cc, s) => { if (!cc) return null; let lo = 0, hi = cc.runs.length - 1; while (lo <= hi) { const m = (lo + hi) >> 1, r = cc.runs[m]; if (s < r[0]) hi = m - 1; else if (s >= r[1]) lo = m + 1; else return r; } return null; };
   const mark = (r) => (!r ? '' : r[2] === 'P' || r[2] === 'S' ? '<span class="tag" style="background:var(--ok)">right</span>' : r[2] === 'B' ? '<span class="tag" style="background:var(--ok)">right Bani</span>' : r[2] === 'A' ? '<span class="tag" style="background:var(--near)">other pangti</span>' : r[2] === 'W' ? '<span class="tag" style="background:var(--bad)">wrong</span>' : r[2] === 'V' ? '<span class="tag" style="background:var(--faint)">Waheguru slide</span>' : '<span class="tag" style="background:var(--faint)">nothing</span>');
-  const show = (ev2) => { const bar = tl.querySelector('.big'); const r = bar.getBoundingClientRect(); const x = Math.min(Math.max(ev2.clientX - r.left, 0), r.width - 1);
-    const s = Math.floor(x / r.width * c.dur); const tr = tl.getBoundingClientRect(); ph.style.display = 'block'; ph.style.left = (r.left - tr.left + x) + 'px';
+  const secAt = (ev2) => { const r = tl.querySelector('.big').getBoundingClientRect(); return Math.floor(Math.min(Math.max(ev2.clientX - r.left, 0), r.width - 1) / r.width * c.dur); };
+  const show = (ev2) => showAt(secAt(ev2));
+  const showAt = (s) => { s = Math.max(0, Math.min(c.dur - 1, Math.floor(s))); const r = tl.querySelector('.big').getBoundingClientRect(); const tr = tl.getBoundingClientRect();
+    ph.style.display = 'block'; ph.style.left = (r.left - tr.left + r.width * (s + 0.5) / c.dur) + 'px';
     const rA = at(c, s), rB = at(o, s); const truth = rA && rA[3] >= 0 ? label(dA.texts[rA[3]]) : '';
     const shownTxt = (rr, d) => (rr && rr[4] >= 0 && rr[2] !== 'V' ? `<span class="g">${esc(label(d.texts[rr[4]]))}</span>` : rr && rr[2] === 'V' ? '<span class="dmeta">ਵਾਹਿਗੁਰੂ slide (searching)</span>' : '<span class="dmeta">nothing on screen</span>');
     now.innerHTML = `<span class="l">${mmss(s)} sung</span><span class="g">${truth ? esc(truth) : '<span class="dmeta">not scored here</span>'}</span>`
       + `<span class="l">${esc(nA)}</span><span>${truth ? mark(rA) : ''}${shownTxt(rA, dA)}</span>`
       + (dB ? `<span class="l">${esc(nB)}</span><span>${o ? (truth ? mark(rB) : '') + shownTxt(rB, dB) : '<span class="dmeta">not played</span>'}</span>` : '')
-      + (yt(s) ? `<span></span><span><a href="${yt(s)}" target="_blank" rel="noopener">Listen from ${mmss(s)} ▶</a></span>` : '');
+      + (c.yt ? `<span></span><span><button class="linkbtn" data-seek="${s}">Play from ${mmss(s)} ▶</button></span>` : '');
     return s; };
-  tl.querySelectorAll('.big').forEach((b) => { b.addEventListener('mousemove', show); b.addEventListener('click', show); });
+  const seek = (s) => { if (P && P.seekTo) { P.seekTo(c.yt.at + s, true); P.playVideo(); } };
+  tl.querySelectorAll('.big').forEach((b) => { b.addEventListener('mousemove', (e) => { if (!playing()) show(e); }); b.addEventListener('click', (e) => { const s = show(e); seek(s); }); });
+  document.querySelectorAll('[data-seek]').forEach((b) => b.addEventListener('click', () => seek(Number(b.dataset.seek))));
+  now.addEventListener('click', (e) => { const b = e.target.closest('[data-seek]'); if (b) seek(Number(b.dataset.seek)); });
+  // in-page player (public YouTube recordings): the timeline follows the audio
+  let P = null; clearInterval(window.__gabTick);
+  const playing = () => P && P.getPlayerState && P.getPlayerState() === 1;
+  if (c.yt) {
+    ytReady(() => {
+      P = new YT.Player('ytp', { videoId: c.yt.v, playerVars: { start: c.yt.at, rel: 0, modestbranding: 1, playsinline: 1 } }); window.__gabPlayer = P;
+      window.__gabTick = setInterval(() => { if (!document.getElementById('ytp') && !document.querySelector('.player iframe')) { clearInterval(window.__gabTick); return; }
+        if (playing()) { const s = P.getCurrentTime() - c.yt.at; if (s >= 0 && s < c.dur) showAt(s); } }, 250);
+    });
+  }
+}
+// YouTube IFrame API, loaded once on first use
+let __ytQ = null;
+function ytReady(fn) {
+  if (window.YT && YT.Player) return fn();
+  if (!__ytQ) { __ytQ = []; window.onYouTubeIframeAPIReady = () => __ytQ.splice(0).forEach((f) => f());
+    const t = document.createElement('script'); t.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(t); }
+  __ytQ.push(fn);
 }
 let HAS = null; // which categories appear in the current view
 function legend(keyed, short) {
