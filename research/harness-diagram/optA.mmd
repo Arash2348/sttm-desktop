@@ -6,46 +6,46 @@ flowchart TD
   classDef out fill:#e6f5f5,stroke:#2c7a7b,color:#1d2127
   classDef dec fill:#ffffff,stroke:#4a5568,color:#1d2127
 
-  MIC([Mic / mixer audio]):::hear --> AW[Audio thread<br/>2048-sample chunks]:::hear
-  AW --> Q[Backlog queue<br/>merge if more than 1 s waiting<br/>nothing dropped]:::hear
-  Q --> REC[Recognizer every 0.5 s<br/>last 10 s while searching<br/>last 4 s while following]:::hear
-  REC --> MODEL[Speech model - CTC, int8<br/>greedy decode]:::hear
-  MODEL --> HYP[/Heard text + confidence/]:::hear
-  HYP --> PH{Which phase?}:::dec
+  MIC(["<b>Sound from the mic or mixer</b>"]):::hear --> AW["<b>Collect the sound</b><br/><i>on its own thread so the app never stutters</i><br/><n>2048-sample chunks</n>"]:::hear
+  AW --> Q["<b>Never fall behind</b><br/><i>if the PC is slow, waiting sound is joined up, not thrown away</i><br/><n>merge when more than 1 s is waiting</n>"]:::hear
+  Q --> REC["<b>Listen to the last few seconds</b><br/><i>longer while looking for the Shabad, shorter while following it</i><br/><n>10 s window searching · 4 s following · every 0.5 s</n>"]:::hear
+  REC --> MODEL["<b>Turn sound into Gurmukhi letters</b><br/><i>Karanbir Singh's speech model</i><br/><n>CTC model, int8, greedy decode</n>"]:::hear
+  MODEL --> HYP[/"<b>What was just sung or read</b><br/><i>rough text, never shown on screen</i>"/]:::hear
+  HYP --> PH{"<b>Do we know the Shabad yet?</b>"}:::dec
 
-  PH -- searching --> SB[Same heard text goes to<br/>two searches side by side]:::find
-  SB --> S1[Full-text search<br/>matches whole words, 3-letter pieces<br/>top 3 Shabads]:::find
-  SB --> S2[First-letter search<br/>matches first letters of words<br/>8,6,5,4-letter pieces, voting]:::find
-  S1 --> R1{Mool Mantar?<br/>4 hits on Shabad 1}:::dec
-  R1 -- no --> R2{Jaap / Aarti pool?<br/>5 of last 8 searches}:::dec
-  R2 -- no --> R3{Sound check?<br/>leaders scored vs audio<br/>3 agreeing votes}:::dec
-  R3 -- no --> R4{Text tally?<br/>6+ hits, 4+ wins<br/>2+ pangtis, margin 0.08}:::dec
-  S2 --> R5{First-letter lead?<br/>65% share, 8+ votes<br/>2 decodes + text agrees}:::dec
+  PH -- "no: searching" --> SB["<b>Look it up two ways at once</b><br/><i>each catches mistakes the other misses</i>"]:::find
+  SB --> S1["<b>Full-text search</b><br/><i>compare the heard words with every pangti</i><br/><n>3-letter pieces · top 3 Shabads</n>"]:::find
+  SB --> S2["<b>First-letter search</b><br/><i>like STTM's own search box: first letter of each word</i><br/><n>8/6/5/4-letter pieces · votes add up over time</n>"]:::find
+  S1 --> R1{"<b>Is it Mool Mantar?</b><br/><n>Shabad 1 on top 4 times</n>"}:::dec
+  R1 -- no --> R2{"<b>Is it Jaap Sahib or Aarti?</b><br/><i>many short Shabads of one Bani keep coming up</i><br/><n>5 of the last 8 searches</n>"}:::dec
+  R2 -- no --> R3{"<b>Does the audio really sound like it?</b><br/><i>check the top 3 against the sound itself</i><br/><n>3 agreeing checks over 2+ s</n>"}:::dec
+  R3 -- no --> R4{"<b>Has the same Shabad kept winning?</b><br/><i>steady winner across many tries, more than one pangti</i><br/><n>6+ hits · 4+ wins · 2+ pangtis · clear lead</n>"}:::dec
+  S2 --> R5{"<b>Do first letters clearly point to one Shabad?</b><br/><i>and full-text agrees, as a double check</i><br/><n>65% of votes · 8+ votes · 2 tries in a row</n>"}:::dec
   R1 -- yes --> LOCK
   R2 -- yes --> LOCK
   R3 -- yes --> LOCK
   R4 -- yes --> LOCK
   R5 -- yes --> LOCK
-  R4 -- no --> WAIT([keep listening]):::find
+  R4 -- no --> WAIT(["<b>Keep listening</b><br/><i>screen unchanged</i>"]):::find
   R5 -- no --> WAIT
 
-  LOCK[[LOCK a Shabad]]:::find --> BANI{Is it part of a Bani?<br/>pangti only in one Bani,<br/>2 Shabads in Bani order,<br/>or 3 pangtis read in order}:::dec
-  BANI -- yes --> OB[Open the Bani<br/>at that pangti]:::find
-  BANI -- no --> OS[Open the Shabad<br/>at that pangti]:::find
+  LOCK[["<b>LOCK: this is the Shabad</b>"]]:::find --> BANI{"<b>Is it part of a Bani being read?</b><br/><i>pangti only in one Bani, two Shabads in Bani order,<br/>or 3 pangtis read in order</i>"}:::dec
+  BANI -- yes --> OB["<b>Open the whole Bani</b><br/><i>e.g. Rehras, Japji, Aarti, at that pangti</i>"]:::find
+  BANI -- no --> OS["<b>Open the Shabad</b><br/><i>at the pangti being sung</i>"]:::find
   OB --> SCREEN
   OS --> SCREEN
 
-  PH -- following --> F{Shabad or Bani?}:::dec
-  F -- Shabad --> LF[Line follower<br/>fuzzy match each pangti<br/>next pangti easy, jumps need proof]:::follow
-  F -- Bani --> PF[Position follower<br/>align heard letters along the Bani]:::follow
-  LF --> GATE{Move the screen?<br/>confidence 0.4+, no switch building,<br/>sevadaar not just clicked}:::dec
+  PH -- "yes: following" --> F{"<b>Shabad or Bani?</b>"}:::dec
+  F -- Shabad --> LF["<b>Find the pangti being sung</b><br/><i>moving to the next pangti is easy; jumping back or far needs more proof</i><br/><n>4 s window · next 1 try · back 2 · far 3</n>"]:::follow
+  F -- Bani --> PF["<b>Track our place in the Bani</b><br/><i>like a finger moving along the Gutka as it is read</i><br/><n>4 pangtis back / 6 ahead</n>"]:::follow
+  LF --> GATE{"<b>Safe to move the screen?</b><br/><i>sure enough, no switch underway,<br/>sevadaar did not just click</i><br/><n>confidence 0.4+ · 12 s respect after a click</n>"}:::dec
   PF --> GATE
-  GATE -- yes --> SCREEN[(Screen: Shabad / pangti<br/>for the sangat)]:::out
-  GATE -- no --> HOLD([hold current pangti]):::follow
+  GATE -- yes --> SCREEN[("<b>Sangat screen</b><br/>Shabad and pangti")]:::out
+  GATE -- no --> HOLD(["<b>Hold the current pangti</b>"]):::follow
 
-  PH -- following --> J[Switch judge<br/>3 slots: first-letter, full-text,<br/>Shabad just left]:::sw
-  J --> W{Candidate beats current?<br/>0.65 and +0.15 gives 1 win<br/>0.80 and +0.30 gives 2 wins<br/>else minus 1}:::dec
-  W -- 2+ wins --> WAHE[ਵਾਹਿਗੁਰੂ slide while unsure]:::out
-  W -- 3 wins, or 2 to return --> LOCK
-  W -- not yet --> HOLD
-  TAP([Sevadaar taps a candidate]):::out --> LOCK
+  PH -- "yes: following" --> J["<b>Watch for a new Shabad</b><br/><i>3 candidates: from first letters, from full text,<br/>and the Shabad we just left (parmaan detour)</i>"]:::sw
+  J --> W{"<b>Does a new Shabad fit the singing better?</b><br/><i>points for clearly better, minus a point otherwise</i><br/><n>+1 if 0.65 and ahead by 0.15 · +2 if 0.80 and ahead by 0.30</n>"}:::dec
+  W -- "2 points: unsure" --> WAHE["<b>Show ਵਾਹਿਗੁਰੂ slide</b><br/><i>better than a wrong Shabad</i>"]:::out
+  W -- "3 points (2 to go back)" --> LOCK
+  W -- "not yet" --> HOLD
+  TAP(["<b>Sevadaar taps a suggestion</b>"]):::out --> LOCK
