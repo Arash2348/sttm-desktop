@@ -4,7 +4,7 @@
  *
  *   gab-quick <git ref | app worktree> [--set all|main,paath,sungbani,akhandpaath,akhand,kbv1] [--jobs 4]
  *             [--baseline <ref | worktree | none>] (default 6a866c94 = 10.0.5) [--no-reuse] [--keep-worktree]
- *             [--name <label>] [--no-query-cache]
+ *             [--name <label>] [--no-query-cache] [--keys-cache <dir with manifest.json + keys/>]
  *   gab-quick --pull [--set ...]      fresh machine: fill the local cache from the PRIVATE Hugging Face dataset
  *                                     khalisfoundation/GAB-cache (manifest, pangti keys, model output, audio)
  *   gab-quick --build-cache           maintainer, this Mac: write <cache>/gab-cache/{manifest.json,keys/,README.md}
@@ -39,6 +39,8 @@ const QOUT = path.join(GUI, 'quick-out');
 const REPO = execFileSync('git', ['-C', GUI, 'rev-parse', '--show-toplevel'], { encoding: 'utf8' }).trim();
 const ROOT = path.resolve(process.env.GAB_CACHE || path.join(H, 'personal/live-darbar-venues/cache'));
 const GC = path.join(ROOT, 'gab-cache');
+// --keys-cache <dir>: manifest.json + keys/ from another copy (e.g. gen/gab-cache-v2 from tools/quick-keys-v2.js: the
+// overnight-label keys); model output, clips and bench still come from GC
 const NODE_MODULES = process.env.GAB_NODE_MODULES || path.join(H, 'personal/sttm-desktop/node_modules');
 // the replay tools commit the viewer's pangti timelines were made with (branch gab-v1.5-timeline); its replay files
 // (bench-driver, emis-cache, runners) are identical in gab-tools-handoff
@@ -57,6 +59,8 @@ const argv = process.argv.slice(2);
 const flag = (n) => argv.includes(`--${n}`);
 const arg = (n, d) => { const i = argv.indexOf(`--${n}`); return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
 const JOBS = Math.max(1, Number(arg('jobs', 4)));
+const META = path.resolve(arg('keys-cache', GC));
+const KEYSFX = META === path.resolve(GC) ? '' : `-${path.basename(META)}`; // runs on other keys never overwrite the default output
 const sh = (cmd, args, opts = {}) => execFileSync(cmd, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 64 << 20, ...opts }).trim();
 const sha1 = (s) => crypto.createHash('sha1').update(s).digest('hex');
 const now = () => Date.now() / 1000;
@@ -101,7 +105,7 @@ function materialiseApp(spec, label) {
     let sha = 'nogit';
     try { sha = sh('git', ['-C', asDir, 'rev-parse', 'HEAD']); } catch (_) { /* plain copy */ }
     const dirty = !treeKey(asDir);
-    const slug = label || `wt-${path.basename(asDir)}-${sha.slice(0, 8)}${dirty ? '-dirty' : ''}`;
+    const slug = label || `wt-${path.basename(asDir)}-${sha.slice(0, 8)}${dirty ? '-dirty' : ''}${KEYSFX}`;
     return { root: asDir, sha, slug, spec, cleanup: () => {} };
   }
   let sha;
@@ -115,7 +119,7 @@ function materialiseApp(spec, label) {
     try { fs.unlinkSync(path.join(dir, 'node_modules')); } catch (_) { /* gone */ }
     try { sh('git', ['-C', REPO, 'worktree', 'remove', '--force', dir]); } catch (e) { console.error(`(could not remove ${dir}: ${e.message})`); }
   };
-  return { root: dir, sha, slug: label || `q-${sha.slice(0, 8)}`, spec, cleanup };
+  return { root: dir, sha, slug: label || `q-${sha.slice(0, 8)}${KEYSFX}`, spec, cleanup };
 }
 function modelPath() {
   const m = KNOWN_MODELS.filter(Boolean).find((f) => fs.existsSync(f));
@@ -125,7 +129,7 @@ function modelPath() {
 
 // ---------------------------------------------------------------- manifest -------------------
 function loadManifest() {
-  const f = path.join(GC, 'manifest.json');
+  const f = path.join(META, 'manifest.json');
   if (!fs.existsSync(f)) die(`no ${f}: run gab-quick --pull (fresh machine) or --build-cache (maintainer)`);
   return JSON.parse(fs.readFileSync(f, 'utf8'));
 }
@@ -245,7 +249,7 @@ function lib(T) {
   if (!LIB) { process.env.GAB_TOOLS = T.tools; LIB = require('./pangti-timeline.js'); }
   return LIB;
 }
-const keyOf = (r) => JSON.parse(fs.readFileSync(path.join(GC, r.key.path, 'key.json'), 'utf8'));
+const keyOf = (r) => JSON.parse(fs.readFileSync(path.join(META, r.key.path, 'key.json'), 'utf8'));
 function scoreCategory(T, man, cat, rep, slug, app) {
   const L = lib(T);
   const texts = []; const tIdx = new Map();

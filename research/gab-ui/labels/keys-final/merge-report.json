@@ -1,0 +1,383 @@
+{
+ "made_from": [
+  "batch1.json",
+  "batch2.json",
+  "batch3.json",
+  "batch4.json",
+  "batch6.json"
+ ],
+ "hf_dir": "/Users/asingh02/personal/live-darbar-venues/cache/gab-hf/701fee8e59c4",
+ "rule": "accepted = all 3 checkers named the same pangti as the candidate, each confidence >= 0.95; existing key rows are never changed; overlap > 0.5 s with an existing row of another pangti or any human row = keep existing, report",
+ "recordings": {
+  "aa05": {
+   "folder": "3-bani-sung-like-kirtan/aarti",
+   "category": "Sung Bani",
+   "split": "dev",
+   "accepted": 2,
+   "existing_rows": 46,
+   "already-keyed": 1,
+   "added": 1,
+   "added_s": 4.320000000000022,
+   "written": "3-bani-sung-like-kirtan/aarti/aa05/lines.csv"
+  },
+  "aa49": {
+   "folder": "3-bani-sung-like-kirtan/aarti",
+   "category": "Sung Bani",
+   "split": "dev",
+   "accepted": 1,
+   "existing_rows": 14,
+   "already-keyed": 1
+  },
+  "clip01": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 6,
+   "existing_rows": 10,
+   "already-keyed": 6
+  },
+  "clip06": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 8,
+   "existing_rows": 26,
+   "already-keyed": 8
+  },
+  "clip07": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 3,
+   "existing_rows": 13,
+   "already-keyed": 3
+  },
+  "clip08": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 5,
+   "existing_rows": 13,
+   "already-keyed": 5
+  },
+  "clip09": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 3,
+   "existing_rows": 23,
+   "already-keyed": 3
+  },
+  "clip10": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 11,
+   "existing_rows": 42,
+   "already-keyed": 11
+  },
+  "clip13": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 5,
+   "existing_rows": 20,
+   "already-keyed": 5
+  },
+  "clip15": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 4,
+   "existing_rows": 21,
+   "already-keyed": 4
+  },
+  "clip17": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 4,
+   "existing_rows": 18,
+   "already-keyed": 4
+  },
+  "clip18": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 10,
+   "existing_rows": 27,
+   "already-keyed": 10
+  },
+  "clip19": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 5,
+   "existing_rows": 17,
+   "already-keyed": 5
+  },
+  "clip21": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 4,
+   "existing_rows": 17,
+   "already-keyed": 4
+  },
+  "clip24": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 5,
+   "existing_rows": 55,
+   "already-keyed": 5
+  },
+  "clip25": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 8,
+   "existing_rows": 22,
+   "already-keyed": 8
+  },
+  "clip26": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 2,
+   "existing_rows": 6,
+   "already-keyed": 2
+  },
+  "clip27": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 20,
+   "existing_rows": 44,
+   "already-keyed": 20
+  },
+  "clip28": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 16,
+   "existing_rows": 17,
+   "already-keyed": 16
+  },
+  "clip30": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 7,
+   "existing_rows": 28,
+   "already-keyed": 7
+  },
+  "clip31": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 3,
+   "existing_rows": 28,
+   "already-keyed": 3
+  },
+  "clip32": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 6,
+   "existing_rows": 19,
+   "already-keyed": 6
+  },
+  "clip33": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 7,
+   "existing_rows": 50,
+   "already-keyed": 7
+  },
+  "clip34": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 1,
+   "existing_rows": 8,
+   "already-keyed": 1
+  },
+  "clip37": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 5,
+   "existing_rows": 12,
+   "already-keyed": 5
+  },
+  "clip41": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 10,
+   "existing_rows": 19,
+   "already-keyed": 10
+  },
+  "l3clip03": {
+   "folder": "5-akhand-kirtan",
+   "category": "Akhand Kirtan",
+   "split": "train",
+   "accepted": 3,
+   "existing_rows": 11,
+   "already-keyed": 3
+  },
+  "l3clip26": {
+   "folder": "5-akhand-kirtan",
+   "category": "Akhand Kirtan",
+   "split": "train",
+   "accepted": 2,
+   "existing_rows": 33,
+   "already-keyed": 2
+  },
+  "l3clip32": {
+   "folder": "5-akhand-kirtan",
+   "category": "Akhand Kirtan",
+   "split": "train",
+   "accepted": 1,
+   "existing_rows": 31,
+   "already-keyed": 1
+  },
+  "l3clip35": {
+   "folder": "5-akhand-kirtan",
+   "category": "Akhand Kirtan",
+   "split": "train",
+   "accepted": 1,
+   "existing_rows": 3,
+   "already-keyed": 1
+  },
+  "rn08": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "train",
+   "accepted": 16,
+   "existing_rows": 55,
+   "already-keyed": 16
+  },
+  "rn10": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "train",
+   "accepted": 11,
+   "existing_rows": 23,
+   "already-keyed": 11
+  },
+  "rn11": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "train",
+   "accepted": 17,
+   "existing_rows": 26,
+   "already-keyed": 17
+  },
+  "rn21": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "train",
+   "accepted": 3,
+   "existing_rows": 20,
+   "added": 1,
+   "added_s": 6.1200000000000045,
+   "already-keyed": 2,
+   "written": "1-kirtan-shabad/rn21/lines.csv"
+  },
+  "rn35": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "train",
+   "accepted": 1,
+   "existing_rows": 18,
+   "already-keyed": 1
+  },
+  "rn50": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 11,
+   "existing_rows": 48,
+   "already-keyed": 11
+  },
+  "rn52": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 10,
+   "existing_rows": 34,
+   "already-keyed": 10
+  },
+  "rn53": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 13,
+   "existing_rows": 43,
+   "already-keyed": 13
+  },
+  "rn60": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 2,
+   "existing_rows": 10,
+   "already-keyed": 2
+  },
+  "rn62": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 2,
+   "existing_rows": 36,
+   "already-keyed": 2
+  },
+  "rn63": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 28,
+   "existing_rows": 90,
+   "already-keyed": 28
+  },
+  "rn64": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 3,
+   "existing_rows": 15,
+   "already-keyed": 2,
+   "added": 1,
+   "added_s": 14.519999999999996,
+   "written": "1-kirtan-shabad/rn64/lines.csv"
+  },
+  "rn66": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "dev",
+   "accepted": 13,
+   "existing_rows": 35,
+   "already-keyed": 13
+  },
+  "rn73": {
+   "folder": "1-kirtan-shabad",
+   "category": "Kirtan",
+   "split": "train",
+   "accepted": 1,
+   "existing_rows": 8,
+   "added": 1,
+   "added_s": 7.479999999999997,
+   "written": "1-kirtan-shabad/rn73/lines.csv"
+  }
+ },
+ "conflicts": [],
+ "totals": {
+  "already-keyed": 295,
+  "added": 4,
+  "added_s": 32.44000000000002,
+  "accepted": 299
+ }
+}

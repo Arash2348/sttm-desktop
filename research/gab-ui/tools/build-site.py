@@ -6,9 +6,14 @@
 Every output file is passed through bani-fix (right Bani -> B, Waheguru slide -> V)."""
 import json, os, shutil, subprocess, sys, glob
 H = os.path.dirname(os.path.abspath(__file__)); B = os.path.dirname(H)
-O = f'{B}/timeline-pangti'; PS = f'{B}/timeline-pangti'  # pangti-level re-score (tools/pangti-timeline.js)
+# pangti-level re-score (tools/pangti-timeline.js); GAB_PANGTI_DIR=timeline-pangti-v2 builds from the re-score with the
+# overnight-label keys (labels/keys-final). Private-only tiers (hard, real) always come from timeline-pangti.
+O = os.path.join(B, os.environ.get('GAB_PANGTI_DIR', 'timeline-pangti')); PS = f'{B}/timeline-pangti'
+# GAB_SITE_OUT=<dir>: write <dir>/site/timeline and <dir>/private-fixed/timeline instead (dry run; the default
+# overwrites site/timeline and private-fixed/timeline, which the Spaces upload takes)
+SO = os.environ.get('GAB_SITE_OUT', B)
 ORDER = ['main', 'paath', 'sungbani', 'akhandpaath', 'akhand', 'kbv1', 'hard', 'real']
-VORDER = ['5348d9a0', '9b1fa814', '6a866c94']   # 9.0.5 current experimental, 10.0.4, 10.0.5
+VORDER = ['5348d9a0', '9b1fa814', '6a866c94', 'f475fd9a']   # 9.0.5 current experimental, 10.0.4, 10.0.5, 9.0.8 upstream experimental
 idx = json.load(open(f'{O}/index.json')); extra = json.load(open(f'{O}/index-extra.json'))
 tiers = {t['key']: t for t in idx['tiers']}
 for t in extra['tiers']:
@@ -67,5 +72,5 @@ def build(out, public):
         for v in pub.values(): shutil.copy(f'{src_a}/{os.path.basename(v)}', f'{adir}/{os.path.basename(v)}')
         json.dump(pub, open(f'{adir}/index.json', 'w'))
     return [(t['key'], [(b['file'], len(json.load(open(f'{out}/{b["file"]}'))['clips'])) for b in t['builds']]) for t in keep]
-for name, out, pub in [('public', f'{B}/site/timeline', True), ('private', f'{B}/private-fixed/timeline', False)]:
+for name, out, pub in [('public', f'{SO}/site/timeline', True), ('private', f'{SO}/private-fixed/timeline', False)]:
     print(name); [print('  ', k, v) for k, v in build(out, pub)]

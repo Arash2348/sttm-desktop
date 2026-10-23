@@ -2,7 +2,8 @@
 
 `candidates/batchN.json` = CANDIDATE pangti timings (not labels). `candidates/batchN-coverage.json` = per recording:
 coverage before / after, candidate count by tier, and the gaps (alaap / simran / katha / silence or not aligned).
-`accepted/` = rows a person or the verifier rule signed off (none yet).
+`accepted/` = rows the verifier rule signed off (`tools/merge-votes.py`; basis aligned-3check). `keys-final/` = accepted rows
+merged into the HF answer keys (`tools/merge-keys.py`; existing rows never changed); see OVERVIEW.md and UPLOAD-PLAN.md.
 
 Made by `tools/make-candidates.py` from the saved two-model forced alignment (`tools/line-build.js`, cloud run
 2026-10-15, Azure `gab-lines/align/<model>/<id>.json`, pulled read-only with

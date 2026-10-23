@@ -37,9 +37,13 @@ const H = os.homedir();
 const TOOLS = process.env.GAB_TOOLS || path.join(H, 'personal/gab-tools-x86-tmpcheck/wt/research/level2-dataset/tools');
 const sv = require(path.join(TOOLS, 'sangat-score.js'));
 const GUI = path.resolve(__dirname, '..');
-const SRC = path.join(GUI, 'private-fixed/timeline');
+// clip lists: the pre-pangti viewer timelines (every recording). private-fixed/timeline now holds pangti output (kept
+// recordings only), so a re-score with new keys reads GAB_TIMELINE_SRC=timeline-orig
+const SRC = path.resolve(process.env.GAB_TIMELINE_SRC || path.join(GUI, 'private-fixed/timeline'));
 const REPLAYS = path.join(H, 'personal/live-darbar-venues/cache/replays');
-const HF_DS = path.join(H, 'personal/live-darbar-venues/cache/gab-hf/701fee8e59c4'); // HF manifest copy (same lines.csv as hf-keys)
+// HF manifest copy (same lines.csv as hf-keys); GAB_HF_DS points at another copy (e.g. gen/keys-final-ds, the HF copy
+// with labels/keys-final overlaid: tools/keys-overlay.py)
+const HF_DS = process.env.GAB_HF_DS || path.join(H, 'personal/live-darbar-venues/cache/gab-hf/701fee8e59c4');
 const KBV1_DS = path.join(H, 'personal/gab-builds/kbv1-bench');
 const KBV1_SUB = { v1004: path.join(H, 'personal/gab-builds/timeline-kit/kbv1-sub-v1004'), c1: path.join(H, 'personal/gab-builds/timeline-kit/kbv1-sub-c1') };
 const KBV1_GT = path.join(H, 'AAI/models/benchmark/live-gurbani-captioning-benchmark-v1-main/test');
