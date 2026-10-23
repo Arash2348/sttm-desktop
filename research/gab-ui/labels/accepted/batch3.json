@@ -1,0 +1,149 @@
+[
+ {
+  "recording": "l3clip26",
+  "category": "Akhand Kirtan",
+  "folder": "5-akhand-kirtan",
+  "split": "train",
+  "verseId": 51371,
+  "shabadId": 4239,
+  "text": "ਮੇਰੋ ਅਉਰ ਪੜੑਨ ਸਿਉ ਨਹੀ ਕਾਮੁ ॥੧॥ ਰਹਾਉ ॥",
+  "start_s": 63.16,
+  "end_s": 68.28,
+  "basis": "aligned-3check",
+  "min_confidence": 0.97,
+  "checker_confidences": {
+   "checker1": 0.98,
+   "checker2": 0.97,
+   "checker3": 0.97
+  },
+  "tier": "A",
+  "aligner_conf": 0.89,
+  "source_batch": "batch3"
+ },
+ {
+  "recording": "l3clip26",
+  "category": "Akhand Kirtan",
+  "folder": "5-akhand-kirtan",
+  "split": "train",
+  "verseId": 51370,
+  "shabadId": 4239,
+  "text": "ਨਹੀ ਛੋਡਉ ਰੇ ਬਾਬਾ ਰਾਮ ਨਾਮ ॥",
+  "start_s": 328.84,
+  "end_s": 332.72,
+  "basis": "aligned-3check",
+  "min_confidence": 0.96,
+  "checker_confidences": {
+   "checker1": 0.97,
+   "checker2": 0.97,
+   "checker3": 0.96
+  },
+  "tier": "A",
+  "aligner_conf": 0.81,
+  "source_batch": "batch3"
+ },
+ {
+  "recording": "l3clip32",
+  "category": "Akhand Kirtan",
+  "folder": "5-akhand-kirtan",
+  "split": "train",
+  "verseId": 35751,
+  "shabadId": 3152,
+  "text": "ਜਿਸ ਦਾ ਸਾਹਿਬੁ ਡਾਢਾ ਹੋਇ ॥",
+  "start_s": 232.76,
+  "end_s": 236.88,
+  "basis": "aligned-3check",
+  "min_confidence": 0.97,
+  "checker_confidences": {
+   "checker1": 0.99,
+   "checker2": 0.97,
+   "checker3": 0.97
+  },
+  "tier": "A",
+  "aligner_conf": 0.82,
+  "source_batch": "batch3"
+ },
+ {
+  "recording": "l3clip03",
+  "category": "Akhand Kirtan",
+  "folder": "5-akhand-kirtan",
+  "split": "train",
+  "verseId": 40921,
+  "shabadId": 3523,
+  "text": "ਜਿਸੁ ਰਖੈ ਕਿਰਪਾ ਧਾਰਿ ਰਿਜਕੁ ਸਮਾਹੀਐ ॥",
+  "start_s": 137.16,
+  "end_s": 143.52,
+  "basis": "aligned-3check",
+  "min_confidence": 0.96,
+  "checker_confidences": {
+   "checker1": 0.99,
+   "checker2": 0.97,
+   "checker3": 0.96
+  },
+  "tier": "A",
+  "aligner_conf": 0.74,
+  "source_batch": "batch3"
+ },
+ {
+  "recording": "l3clip03",
+  "category": "Akhand Kirtan",
+  "folder": "5-akhand-kirtan",
+  "split": "train",
+  "verseId": 40922,
+  "shabadId": 3523,
+  "text": "ਕੋਇ ਨ ਕਿਸ ਹੀ ਵਸਿ ਸਭਨਾ ਇਕ ਧਰ ॥",
+  "start_s": 169.76,
+  "end_s": 176.08,
+  "basis": "aligned-3check",
+  "min_confidence": 0.97,
+  "checker_confidences": {
+   "checker1": 0.98,
+   "checker2": 0.97,
+   "checker3": 0.97
+  },
+  "tier": "A",
+  "aligner_conf": 0.89,
+  "source_batch": "batch3"
+ },
+ {
+  "recording": "l3clip03",
+  "category": "Akhand Kirtan",
+  "folder": "5-akhand-kirtan",
+  "split": "train",
+  "verseId": 40925,
+  "shabadId": 3523,
+  "text": "ਸਰਬ ਧਾਰ ਸਮਰਥ ਹਉ ਤਿਸੁ ਕੁਰਬਾਣੀਐ ॥",
+  "start_s": 267.24,
+  "end_s": 273.28,
+  "basis": "aligned-3check",
+  "min_confidence": 0.97,
+  "checker_confidences": {
+   "checker1": 0.97,
+   "checker2": 0.97,
+   "checker3": 0.97
+  },
+  "tier": "A",
+  "aligner_conf": 0.75,
+  "source_batch": "batch3"
+ },
+ {
+  "recording": "l3clip35",
+  "category": "Akhand Kirtan",
+  "folder": "5-akhand-kirtan",
+  "split": "train",
+  "verseId": 58192,
+  "shabadId": 5042,
+  "text": "ਗਲੇ ਹਮਾਰੇ ਜੇਵਰੀ ਜਹ ਖਿੰਚੈ ਤਹ ਜਾਉ ॥੭੪॥",
+  "start_s": 46.32,
+  "end_s": 51.96,
+  "basis": "aligned-3check",
+  "min_confidence": 0.97,
+  "checker_confidences": {
+   "checker1": 0.97,
+   "checker2": 0.97,
+   "checker3": 0.97
+  },
+  "tier": "A",
+  "aligner_conf": 0.79,
+  "source_batch": "batch3"
+ }
+]
