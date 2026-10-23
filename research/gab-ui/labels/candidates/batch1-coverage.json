@@ -1,0 +1,852 @@
+{
+ "batch": "batch1",
+ "made": "2026-10-23",
+ "status": "CANDIDATES - not labels; human / verifier sign-off required",
+ "selection": "1-kirtan-shabad recordings with pangti coverage in [50%, 60%) in timeline-pangti/rescore-report.json (c1-6a866c94-main.json), closest to the 60% bar first, max 15; held-out test split and labels/accepted/ excluded",
+ "verify_rule": "every checker (each Fable / Opus verifier, plus the aligner) must name the same verseId for the span; accept only when the agreement score >= 0.95, else send to a person",
+ "tiers": {
+  "A": "both models, same pangti, start within 1 s, check >= 0.5 (~97% right pangti)",
+  "B": "both models agree, check < 0.5 (~65%)",
+  "C": "one model only (~41%)",
+  "D": "one model only, other model put a different pangti here (conflict)"
+ },
+ "recordings": [
+  {
+   "recording": "clip19",
+   "split": "dev",
+   "duration_s": 363.02,
+   "gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "coverage_before": 0.59,
+   "coverage_before_recomputed": 0.598,
+   "coverage_after_all_candidates": 0.894,
+   "coverage_after_high_only (current key + new tier A)": 0.635,
+   "candidates": 26,
+   "by_tier": {
+    "A": 17,
+    "B": 5,
+    "C": 4
+   },
+   "new_vs_current_key": 9,
+   "gaps": [
+    {
+     "start_s": 47.76,
+     "end_s": 49.88,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 146.56,
+     "end_s": 165.2,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 201.8,
+     "end_s": 204.92,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 218.32,
+     "end_s": 220.4,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 248.24,
+     "end_s": 250.32,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 323.88,
+     "end_s": 331.76,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "clip31",
+   "split": "dev",
+   "duration_s": 519.01,
+   "gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "coverage_before": 0.59,
+   "coverage_before_recomputed": 0.601,
+   "coverage_after_all_candidates": 0.825,
+   "coverage_after_high_only (current key + new tier A)": 0.601,
+   "candidates": 38,
+   "by_tier": {
+    "A": 28,
+    "B": 2,
+    "D": 2,
+    "C": 6
+   },
+   "new_vs_current_key": 10,
+   "gaps": [
+    {
+     "start_s": 37.32,
+     "end_s": 39.72,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 48.84,
+     "end_s": 51.48,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 61.6,
+     "end_s": 63.6,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 90.96,
+     "end_s": 97.48,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 107.88,
+     "end_s": 110.68,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 140.12,
+     "end_s": 145.16,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 155.56,
+     "end_s": 157.84,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 171.68,
+     "end_s": 182.8,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 193.2,
+     "end_s": 195.44,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 205.36,
+     "end_s": 207.6,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 216.64,
+     "end_s": 219.32,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 305.92,
+     "end_s": 308.56,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 325.44,
+     "end_s": 330.68,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 337.96,
+     "end_s": 340.2,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 350.6,
+     "end_s": 367.96,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 389.76,
+     "end_s": 393.76,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 403.44,
+     "end_s": 405.64,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 415.4,
+     "end_s": 417.64,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 426.92,
+     "end_s": 429.28,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 462,
+     "end_s": 464.68,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "clip41",
+   "split": "dev",
+   "duration_s": 425.02,
+   "gurdwara": "Gurdwara Sahib Renton",
+   "coverage_before": 0.59,
+   "coverage_before_recomputed": 0.605,
+   "coverage_after_all_candidates": 0.829,
+   "coverage_after_high_only (current key + new tier A)": 0.629,
+   "candidates": 29,
+   "by_tier": {
+    "A": 19,
+    "C": 8,
+    "D": 2
+   },
+   "new_vs_current_key": 10,
+   "gaps": [
+    {
+     "start_s": 30.0,
+     "end_s": 32.64,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 45.2,
+     "end_s": 53.92,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 80.64,
+     "end_s": 89.44,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 161.48,
+     "end_s": 166.24,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 178.6,
+     "end_s": 187.4,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 213.52,
+     "end_s": 221.72,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 313.76,
+     "end_s": 316.56,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 340.4,
+     "end_s": 343.56,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 396.92,
+     "end_s": 415.0,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "clip13",
+   "split": "dev",
+   "duration_s": 222.01,
+   "gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "coverage_before": 0.58,
+   "coverage_before_recomputed": 0.587,
+   "coverage_after_all_candidates": 0.674,
+   "coverage_after_high_only (current key + new tier A)": 0.587,
+   "candidates": 26,
+   "by_tier": {
+    "A": 20,
+    "C": 2,
+    "D": 4
+   },
+   "new_vs_current_key": 6,
+   "gaps": [
+    {
+     "start_s": 30.6,
+     "end_s": 34.08,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 38.6,
+     "end_s": 42.44,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 55.8,
+     "end_s": 60.04,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 83.24,
+     "end_s": 86.44,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 90.56,
+     "end_s": 94.8,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 99.72,
+     "end_s": 104.04,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 108.76,
+     "end_s": 112.12,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 116.68,
+     "end_s": 119.96,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 123.84,
+     "end_s": 127.6,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 135.12,
+     "end_s": 138.56,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 143.4,
+     "end_s": 146.84,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 151.32,
+     "end_s": 154.96,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 159.64,
+     "end_s": 163.36,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 167.96,
+     "end_s": 171.2,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 176.04,
+     "end_s": 179.64,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 185,
+     "end_s": 188.32,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 192.72,
+     "end_s": 196.04,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "rn52",
+   "split": "dev",
+   "duration_s": 570.0,
+   "gurdwara": "Gurdwara Sahib Renton",
+   "coverage_before": 0.58,
+   "coverage_before_recomputed": 0.609,
+   "coverage_after_all_candidates": 0.92,
+   "coverage_after_high_only (current key + new tier A)": 0.609,
+   "candidates": 62,
+   "by_tier": {
+    "C": 13,
+    "B": 8,
+    "D": 7,
+    "A": 34
+   },
+   "new_vs_current_key": 28,
+   "gaps": [
+    {
+     "start_s": 79.04,
+     "end_s": 81.16,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 98.56,
+     "end_s": 115.8,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 189.08,
+     "end_s": 191.2,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 230.96,
+     "end_s": 233.4,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 238.52,
+     "end_s": 240.56,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 325.88,
+     "end_s": 328.2,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 384,
+     "end_s": 388.68,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 412.96,
+     "end_s": 417.36,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 480.12,
+     "end_s": 482.16,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 552.88,
+     "end_s": 560.0,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "clip18",
+   "split": "dev",
+   "duration_s": 314.0,
+   "gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "coverage_before": 0.57,
+   "coverage_before_recomputed": 0.617,
+   "coverage_after_all_candidates": 0.745,
+   "coverage_after_high_only (current key + new tier A)": 0.668,
+   "candidates": 30,
+   "by_tier": {
+    "A": 27,
+    "B": 3
+   },
+   "new_vs_current_key": 3,
+   "gaps": [
+    {
+     "start_s": 30.0,
+     "end_s": 36.64,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 41.96,
+     "end_s": 45.52,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 51.84,
+     "end_s": 54.56,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 73.52,
+     "end_s": 75.72,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 87.64,
+     "end_s": 95.2,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 164.48,
+     "end_s": 186.96,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 192.12,
+     "end_s": 200.04,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 211.52,
+     "end_s": 219.36,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 294.92,
+     "end_s": 304.0,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "clip08",
+   "split": "dev",
+   "duration_s": 308.01,
+   "gurdwara": "Gurdwara Sahib Fremont, CA",
+   "coverage_before": 0.55,
+   "coverage_before_recomputed": 0.565,
+   "coverage_after_all_candidates": 0.893,
+   "coverage_after_high_only (current key + new tier A)": 0.565,
+   "candidates": 24,
+   "by_tier": {
+    "A": 13,
+    "C": 7,
+    "D": 3,
+    "B": 1
+   },
+   "new_vs_current_key": 11,
+   "gaps": [
+    {
+     "start_s": 65.24,
+     "end_s": 71.44,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 82.84,
+     "end_s": 85.88,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 156,
+     "end_s": 158.24,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 164.08,
+     "end_s": 172.52,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 188.44,
+     "end_s": 194.4,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 276,
+     "end_s": 279.04,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "rn10",
+   "split": "train",
+   "duration_s": 415.0,
+   "gurdwara": "Gurdwara Sahib Renton",
+   "coverage_before": 0.55,
+   "coverage_before_recomputed": 0.559,
+   "coverage_after_all_candidates": 0.889,
+   "coverage_after_high_only (current key + new tier A)": 0.559,
+   "candidates": 43,
+   "by_tier": {
+    "B": 3,
+    "A": 23,
+    "D": 8,
+    "C": 9
+   },
+   "new_vs_current_key": 20,
+   "gaps": [
+    {
+     "start_s": 78.24,
+     "end_s": 87.64,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 208.64,
+     "end_s": 217,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 267.56,
+     "end_s": 276.52,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 349.08,
+     "end_s": 359.0,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "clip06",
+   "split": "dev",
+   "duration_s": 336.02,
+   "gurdwara": "Gurdwara Sahib Fremont, CA",
+   "coverage_before": 0.53,
+   "coverage_before_recomputed": 0.551,
+   "coverage_after_all_candidates": 0.811,
+   "coverage_after_high_only (current key + new tier A)": 0.696,
+   "candidates": 32,
+   "by_tier": {
+    "A": 26,
+    "B": 2,
+    "C": 4
+   },
+   "new_vs_current_key": 6,
+   "gaps": [
+    {
+     "start_s": 30.0,
+     "end_s": 32.8,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 55.64,
+     "end_s": 62.08,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 66.44,
+     "end_s": 68.6,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 103.4,
+     "end_s": 115.16,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 123.36,
+     "end_s": 125.64,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 144.2,
+     "end_s": 146.2,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 170,
+     "end_s": 181.36,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 189.52,
+     "end_s": 191.6,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 199.96,
+     "end_s": 206.44,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 243.04,
+     "end_s": 249.96,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "rn28",
+   "split": "train",
+   "duration_s": 230.0,
+   "gurdwara": "Gurdwara Sahib Renton",
+   "coverage_before": 0.52,
+   "coverage_before_recomputed": 0.554,
+   "coverage_after_all_candidates": 0.953,
+   "coverage_after_high_only (current key + new tier A)": 0.596,
+   "candidates": 37,
+   "by_tier": {
+    "A": 17,
+    "D": 20
+   },
+   "new_vs_current_key": 20,
+   "gaps": [
+    {
+     "start_s": 103.12,
+     "end_s": 111.56,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "rn53",
+   "split": "dev",
+   "duration_s": 545.0,
+   "gurdwara": "Gurdwara Sahib Renton",
+   "coverage_before": 0.52,
+   "coverage_before_recomputed": 0.579,
+   "coverage_after_all_candidates": 0.896,
+   "coverage_after_high_only (current key + new tier A)": 0.594,
+   "candidates": 72,
+   "by_tier": {
+    "B": 6,
+    "A": 43,
+    "D": 16,
+    "C": 7
+   },
+   "new_vs_current_key": 29,
+   "gaps": [
+    {
+     "start_s": 84,
+     "end_s": 91.28,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 102.76,
+     "end_s": 114.24,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 181.2,
+     "end_s": 194.92,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 382.36,
+     "end_s": 400.4,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 432,
+     "end_s": 435.04,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "clip30",
+   "split": "dev",
+   "duration_s": 446.01,
+   "gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+   "coverage_before": 0.5,
+   "coverage_before_recomputed": 0.532,
+   "coverage_after_all_candidates": 0.803,
+   "coverage_after_high_only (current key + new tier A)": 0.562,
+   "candidates": 51,
+   "by_tier": {
+    "B": 6,
+    "A": 28,
+    "D": 9,
+    "C": 8
+   },
+   "new_vs_current_key": 23,
+   "gaps": [
+    {
+     "start_s": 30.0,
+     "end_s": 38.84,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 80.84,
+     "end_s": 89.84,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 118.96,
+     "end_s": 130.24,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 137.52,
+     "end_s": 147.44,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 165,
+     "end_s": 172.92,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 217.8,
+     "end_s": 228.68,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 251.84,
+     "end_s": 254.04,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 270.2,
+     "end_s": 279.84,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 295.68,
+     "end_s": 305.4,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 386.36,
+     "end_s": 388.96,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  },
+  {
+   "recording": "rn35",
+   "split": "train",
+   "duration_s": 340.0,
+   "gurdwara": "Gurdwara Sahib Renton",
+   "coverage_before": 0.5,
+   "coverage_before_recomputed": 0.5,
+   "coverage_after_all_candidates": 0.825,
+   "coverage_after_high_only (current key + new tier A)": 0.5,
+   "candidates": 30,
+   "by_tier": {
+    "C": 4,
+    "A": 18,
+    "B": 4,
+    "D": 4
+   },
+   "new_vs_current_key": 12,
+   "gaps": [
+    {
+     "start_s": 31,
+     "end_s": 44.48,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 54.24,
+     "end_s": 56.72,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 66.32,
+     "end_s": 68.72,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 112.72,
+     "end_s": 115.28,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 155.76,
+     "end_s": 161.28,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 170.56,
+     "end_s": 173,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 182.2,
+     "end_s": 184.6,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 211,
+     "end_s": 218.52,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 228.04,
+     "end_s": 230.64,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    },
+    {
+     "start_s": 319.16,
+     "end_s": 330.0,
+     "kind": "gap (alaap / simran / katha / silence, or not aligned): not a pangti"
+    }
+   ]
+  }
+ ]
+}
