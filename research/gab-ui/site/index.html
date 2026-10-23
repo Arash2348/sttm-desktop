@@ -268,16 +268,16 @@ async function renderList(dA, dB) {
   $('#app').innerHTML = `
     <h1>GAB: how well Voice Autopilot follows kirtan and paath</h1>
     <p class="lead">How well does Voice Autopilot keep the right Gurbani on screen during real kirtan and paath? Pick a category, then open any recording to see, second by second, what was sung or read and what was shown.</p>
-    <div class="tabs">${tabsSorted().map((t) => `<button data-tier="${esc(t.key)}" aria-pressed="${t.key === S.tier}">${esc(TABNAME[t.key] || t.title)}${['main', 'akhand', 'paath', 'sungbani'].includes(t.key) ? ' <small>(provisional)</small>' : ''}</button>`).join('')}</div>
+    <div class="tabs">${tabsSorted().map((t) => `<button data-tier="${esc(t.key)}" aria-pressed="${t.key === S.tier}">${esc(TABNAME[t.key] || t.title)}${['main', 'akhand', 'paath', 'sungbani'].includes(t.key) ? ' <small>(reference only)</small>' : ''}</button>`).join('')}</div>
     <div class="vs">Version <select id="selA">${opts(S.a)}</select><span class="cmp">${tier.builds.length > 1 ? `· compare with <select id="selB">${opts(S.b, true)}</select> <span class="dmeta">(optional)</span>` : ''}</span></div>
     <div class="summary">
       <p>${esc(VERB[S.tier] || tier.title)}: <b>${both.length} recordings</b>, ${TA.hours.toFixed(1)} hours scored, judged on ${keyed ? 'the exact pangti' : 'the Shabad'}. ${verdictLine}</p>${bigLine}
-      ${prov ? `<p class="prov"><b>Provisional:</b> the pangti timings were made by machine alignment and have not yet been checked by a person. Only recordings whose pangtis are timed for most of the singing are shown (${both.length} here, ${TA.hours.toFixed(1)} h scored). Use it as a rough guide; the person-checked headline is Karanbir Singh's set.</p>` : ''}
+      ${prov ? `<p class="prov"><b>Not independent, reference only:</b> these pangti timings were made by an aligner that uses Voice Autopilot's own speech model, so they may flatter it. They will be replaced by independent labels (made by people or by models unrelated to Voice Autopilot). Independent sets today: Karanbir Singh's benchmark and Sehaj / Akhand Paath.</p>` : ''}
       <p class="dmeta">Scored only while a pangti is being ${W().act}: green = that exact pangti on screen; red = any other pangti or Shabad. When no pangti is being said (alaap, simran, a pause), a pangti already shown, or the current or previous Shabad, is fine and not counted.</p>
       ${keyed && majBasis === 'broadcast-caption' ? `<p class="prov">The answer key is the broadcast's own on-screen pangti, which can lag the reader by a second or two.</p>` : ''}
       ${vtable}
       <div class="kpis">
-        <div class="kpi"><div class="k">Right ${keyed ? 'pangti' : 'Shabad'} on screen${prov ? ' (provisional)' : ''}</div><div class="v${prov ? ' provv' : ''}">${f1(TA.acc)}%</div><div class="o">${TB ? `${esc(nB)} ${f1(TB.acc)}% · ${cmp(TA.acc, TB.acc, true, '%')}` : ''}</div></div>
+        <div class="kpi"><div class="k">Right ${keyed ? 'pangti' : 'Shabad'} on screen${prov ? ' (reference only)' : ''}</div><div class="v${prov ? ' provv' : ''}">${f1(TA.acc)}%</div><div class="o">${TB ? `${esc(nB)} ${f1(TB.acc)}% · ${cmp(TA.acc, TB.acc, true, '%')}` : ''}</div></div>
         <div class="kpi"><div class="k">Wrong ${S.tier === 'main' || S.tier === 'akhand' || S.tier === 'kbv1' ? 'Shabad' : 'Shabad or Bani'} shown, seconds per hour ${W().while.replace('while ', 'of ')}</div><div class="v">${Math.round(TA.wrongH ?? 0)}</div><div class="o">${TB ? `${esc(nB)} ${Math.round(TB.wrongH ?? 0)} · ${cmp(TA.wrongH, TB.wrongH, false, ' s')}` : ''}</div></div>
         <div class="kpi"><div class="k">Recordings where ${W().place} was never found</div><div class="v">${neverA} <span style="font-size:14px;font-weight:400;color:var(--muted)">of ${both.length}</span></div><div class="o">${neverB != null ? `${esc(nB)} ${neverB} · ${cmp(neverA, neverB, false, '')}` : ''}</div></div>
       </div>
