@@ -36,3 +36,13 @@ app's Gurbani database; bani:2 Japji, bani:4 Jaap, bani:22 Aarti, Shabads 880/26
 Shabad 880 for 39-138 s, but the 2026-10-15 run aligned the Aarti Bani text there; its 11 rows carry
 `evidence.key_mismatch` and are not auto-accept eligible: a person decides the key first. Tier precision was measured on
 Kirtan; for Paath and Sung Bani it is a prior only. Same verify rule: every checker names the same pangti, each >= 0.95.
+batch5 = Kirtan (folder 1) recordings at 25-40% coverage (15 of 29 in the band, closest to 40% first; train 7, dev 8;
+none held-out test, none accepted): clip04, rn22, clip36, clip20, rn13, rn67, rn23, rn61, clip03, clip12, rn12, rn71,
+clip40, rn30, rn31. 909 candidates (A 358, B 47, C 190, D 314; 331 tier A eligible for the 3-checker rule; 551 new vs
+the current key), same saved two-model alignment (no model re-run):
+`make-candidates.py <gab-lines> candidates/batch5.json --lo 0.25 --hi 0.40 --max 15`.
+clip12: its key is one 30-1170 s window with two possible Shabads (3014|2376); the recomputed coverage is 9% (report
+says 35%) and 103 of its 143 rows are tier D (the two models aligned different pangtis): a person should settle which
+Shabad is sung where before checkers vote. rn67: 5 rows carry `evidence.key_mismatch` (aligned text not in the current
+key), not auto-accept eligible. Same verify rule: EVERY checker (each Fable / Opus verifier and the aligner) names the
+same pangti, each with confidence / agreement >= 0.95; otherwise a person decides.
