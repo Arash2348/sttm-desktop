@@ -2760,7 +2760,9 @@ const VoiceFollow = () => {
     if (sq.lines.size < PAATH_SEQ_LINES && out.lineIndex < n - 1) return;
     // Reading pace: words of the lines finished per second (kirtan sung straight through
     // is slower).
-    const { seen } = sq;
+    // The first two lines after a lock are often the follower catching up with a Shabad
+    // already under way: measured from the third on when there are enough.
+    const seen = sq.seen.length >= PAATH_SEQ_PACE_LINES + 3 ? sq.seen.slice(2) : sq.seen;
     if (seen.length < PAATH_SEQ_PACE_LINES) return;
     const span = (seen[seen.length - 1].t - seen[0].t) / 1000;
     const words = seen.slice(0, -1).reduce((m, x) => m + x.words, 0);
