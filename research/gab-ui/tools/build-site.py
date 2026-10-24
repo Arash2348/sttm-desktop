@@ -42,6 +42,7 @@ def build(out, public):
     for k in sorted(tiers, key=lambda k: ORDER.index(k) if k in ORDER else 99):
         t = tiers[k]
         if public and t.get('private_only'): continue
+        if k in set(filter(None, os.environ.get('GAB_DROP_TIERS', '').split(','))): continue
         bs = []
         for b in t['builds']:
             d = json.load(open(src(b['file'])))
