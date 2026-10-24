@@ -1,0 +1,116 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Voice Autopilot harness</title>
+<style>
+:root{--ink:#1d2127;--mut:#5d6470;--line:#d9dde3;--bg:#f6f7f9;--card:#fff;
+--a:#2b6cb0;--b:#2f855a;--c:#b7791f;--d:#805ad5;--e:#c53030;--f:#2c7a7b;--g:#4a5568}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.35 -apple-system,"Segoe UI",Helvetica,Arial,sans-serif;width:2000px}
+.wrap{padding:28px 32px 36px;display:grid;gap:18px}
+h1{margin:0;font-size:30px}.sub{color:var(--mut);font-size:15px;margin-top:4px}
+.sec{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--k);border-radius:10px;padding:14px 16px}
+.sec h2{margin:0 0 10px;font-size:19px;color:var(--k)}
+.row{display:grid;gap:18px}
+.flow{display:flex;align-items:stretch;gap:8px;flex-wrap:nowrap}
+.box{background:#fbfcfd;border:1px solid var(--line);border-radius:8px;padding:8px 10px;flex:1;min-width:0}
+.box b{display:block;font-size:15px;margin-bottom:2px}
+.box small,.mut{color:var(--mut);font-size:13px}
+.arr{align-self:center;font-size:24px;color:var(--mut);flex:none}
+.state{display:flex;align-items:center;gap:10px}
+.st{border:2px solid var(--k);border-radius:22px;padding:8px 16px;font-weight:700;color:var(--k);background:#fff;white-space:nowrap}
+.lbl{font-size:13px;color:var(--mut);text-align:center}
+ol{margin:0;padding-left:22px}ol li{margin:0 0 8px}
+.route b{color:var(--ink)}
+code{font:12.5px ui-monospace,Menlo,monospace;background:#eef1f4;border-radius:4px;padding:0 4px}
+table{border-collapse:collapse;width:100%;font-size:14px}td,th{border-bottom:1px solid var(--line);padding:4px 6px;text-align:left}th{color:var(--mut);font-weight:600}
+.pill{display:inline-block;border-radius:10px;padding:0 7px;font-size:12px;font-weight:700;color:#fff;background:var(--k);margin-right:4px}
+.note{font-size:13px;color:var(--mut);margin-top:8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+</style></head><body><div class="wrap">
+
+<div><h1>STTM Voice Autopilot — how the harness works</h1>
+<div class="sub">Current experimental build (Voice Autopilot 9.0.5, KhalisFoundation/sttm-desktop <code>experimental-release</code>). Every condition below is the real threshold in the code (<code>www/main/addons/voice-follow/</code>). The draft 10.0.x work (Pankti Cumulation, fragment confirm) is not in this build.</div></div>
+
+<div class="sec" style="--k:var(--a)"><h2>1 · Audio in → text (every 0.5 s)</h2>
+<div class="flow">
+ <div class="box"><b>Mic / mixer</b><small>1 channel, echo cancel + noise suppression off; falls back to default mic</small></div><div class="arr">→</div>
+ <div class="box"><b>AudioWorklet</b><small>2048-sample chunks on the audio thread</small></div><div class="arr">→</div>
+ <div class="box"><b>Backlog queue</b><small>one serial loop; if &gt; 1.0 s waits, chunks are merged into one push (0.5 s on slowest tier) — nothing dropped</small></div><div class="arr">→</div>
+ <div class="box"><b>Resample → 16 kHz</b><small>linear</small></div><div class="arr">→</div>
+ <div class="box"><b>Recognizer window</b><small><b style="display:inline">10 s</b> while searching, <b style="display:inline">4 s</b> while following; hop 0.5 s; reset on every lock/switch</small></div><div class="arr">→</div>
+ <div class="box"><b>Speech model</b><small>Karanbir Singh's CTC model, int8 ONNX (~184 MB), onnxruntime; greedy decode → Gurmukhi text + confidence (mean top-token prob)</small></div><div class="arr">→</div>
+ <div class="box"><b>Hypothesis</b><small>"what was just sung/read" — never shown as Gurbani; used only to search and score</small></div>
+</div>
+<div class="note"><b>Speed tiers</b> (only while following a read Bani): fast / sync / lean / min chosen by a 2-second self-test at load; step down if backlog &gt; 0.5 s for 3 s, step up after 30 s of headroom. Kirtan always runs fast.</div>
+</div>
+
+<div class="sec" style="--k:var(--g)"><h2>2 · States</h2>
+<div class="state">
+ <div class="st">Start</div><div class="arr">→</div>
+ <div class="st" style="--k:var(--b)">SEARCHING</div>
+ <div><div class="arr">→</div><div class="lbl">lock (any route in 3)</div></div>
+ <div class="st" style="--k:var(--c)">FOLLOWING</div>
+ <div><div class="arr">⟲</div><div class="lbl">switch judge (5) re-locks a new Shabad</div></div>
+ <div class="box" style="flex:2"><small><b style="display:inline">Never goes back to searching by itself</b>: if the follower loses the line, the screen just holds. Stop never moves the screen. A <b style="display:inline">manual tap</b> on a candidate locks it and vetoes the Shabad tapped away from for 120 decodes. If the <b style="display:inline">sevadaar</b> clicks a line, the follower jumps there and for 12 s only moves to the next pangti (or on strong evidence). Background "hidden run" does the same silently (Shadower) and is adopted on Start.</small></div>
+</div></div>
+
+<div class="row" style="grid-template-columns:1.25fr 1fr">
+<div class="sec" style="--k:var(--b)"><h2>3 · Finding the first Shabad — checked on every decode, in this order</h2>
+<div class="note" style="margin:0 0 8px">Inputs: <b>full-text search</b> (character 3-grams over every pangti in the database, IDF-weighted, best pangti per Shabad, top 3 distinct Shabads) and <b>first-letter search</b> (Gurmukhi first letters of the words heard).</div>
+<ol class="route">
+<li><b>Mool Mantar home</b> — top hit is Shabad 1 verse 1 (score ≥ 0.6, exact tie) on 4 distinct hypotheses → lock Mool Mantar.</li>
+<li><b>Pooled Bani (Jaap Sahib, Aarti)</b> — full-text top (≥ 0.2) belongs to that Bani in 5 of the last 8 searches (4 for Aarti) → lock.</li>
+<li><b>Sound confirmation</b> — text top ≥ 0.3 and margin ≥ 0.08 → score the 3 leaders' pangtis against the last 10 s of audio (CTC). 3 agreeing votes (lead ≥ 0.05) over ≥ 4 decodes → lock.</li>
+<li><b>Context tally</b> (last 24 decodes) — same Shabad on top: count ≥ 6, wins ≥ 4, margin ≥ 0.08, ≥ 2 different pangtis (or one very strong hit ≥ 0.8), summed score beats runner-up by ≥ 1 → lock.</li>
+<li><b>First-letter voting</b> (≥ 4 letters) — up to 16 queries: start-anchored first 8 letters (weight 12), sliding 8/6/5/4-letter pieces (weight = length), one-letter-dropped variants; 8 results each; votes decay ×0.8 per decode, capped at 60.</li>
+<li><b>Pooled first-letter (Bani members)</b> — Bani's Shabads sum ≥ 8 votes with ≥ 65% share and full text agrees → lock best member after 3 stable decodes.</li>
+<li><b>First-letter lock</b> — ≥ 5 letters, leader ≥ 65% of (leader+runner-up), ≥ 8 votes, same leader 2 decodes, <i>and</i> full-text search agrees (margin ≥ 0.08) → lock.</li>
+</ol>
+<div class="note">Same Gurbani in two places (copies) counts as one Shabad when picking leaders.</div></div>
+
+<div class="sec" style="--k:var(--d)"><h2>3b · Opening a Bani instead of a single Shabad</h2>
+<ol>
+<li><b>Paath-only pangti</b>: the locked pangti exists in exactly one of Japji, Jaap, Anand, Rehras, Sohila, Chaupai, Aarti… (not Gur Mantar / Sohila / Ardas, not pangtis 1–4) → open that Bani at that pangti.</li>
+<li><b>Two Shabads in order</b>: the new Shabad comes within 3 positions after the previous one in the same Bani → open the Bani.</li>
+<li><b>Reading rule</b>: 3 different pangtis read in order inside a Shabad of Rehras / Anand / Japji / Aarti → open that Bani. Stepping back (sung, not read) on an Aarti piece → open Aarti there.</li>
+</ol>
+<div class="note">Rehras and Aarti open at the extra-long length; the length is restored afterwards.</div>
+</div>
+</div>
+
+<div class="row" style="grid-template-columns:1fr 1.25fr">
+<div class="sec" style="--k:var(--c)"><h2>4 · Following the pangti</h2>
+<div class="two">
+<div class="box"><b>Shabad → line follower</b><small>4 s window, every 0.25 s. Each pangti scored by fuzzy match to what was heard. Ignore the decode if best &lt; 0.55 or top-2 gap &lt; 0.10. Path over pangtis (Viterbi): next pangti cheap (0.03), step back 0.14, jump 0.28, rahao +0.18, revisit +0.10. First line needs 4 agreeing decodes; next pangti 1 decode, back 2, far jump 3 (and ≥ 8 letters). 14 bad decodes in a row → let go (screen holds).</small></div>
+<div class="box"><b>Bani → position follower</b><small>Whole Bani as one letter stream (spoken form). Each window aligned locally (Smith-Waterman); search 4 pangtis back / 6 ahead. Lock 0.6 over 3 windows; new pangti needs gain 3; skip gain 6; step back 4 windows; far jump margin 0.15 over 4 windows; catch-up when 4 windows match further ahead. Asa di Vaar has looser back/skip rules.</small></div>
+</div>
+<div class="note"><b>Writes to the screen only if</b> confidence ≥ 0.4, no switch is building (no slot has a win), the row is shown in this Bani length, and the sevadaar hasn't just clicked (12 s respect window).</div>
+</div>
+
+<div class="sec" style="--k:var(--e)"><h2>5 · Switching to a new Shabad (every following decode)</h2>
+<div class="two">
+<div>
+<div class="box" style="margin-bottom:8px"><b>Current Shabad's score</b><small>last 35 characters heard vs the pangtis near the cursor (1 back, 5 ahead), all pangtis, and an order-free word match; for a Bani only ±8 pangtis around the cursor.</small></div>
+<div class="box" style="margin-bottom:8px"><b>Candidates (3 slots)</b><small><b style="display:inline">Vote slot</b>: loudest different Shabad from first-letter voting (≥ 6 votes). <b style="display:inline">Backstop slot</b>: best of the top 60 full-text candidates. <b style="display:inline">Return slot</b>: the Shabad just left (parmaan detour) stays for ~2 min and returns on only 2 wins.</small></div>
+<div class="box"><b>Vetoes</b><small>tapped-away Shabad, other Shabads of the current Bani, copies of the current Shabad, exact text ties between different Shabads.</small></div>
+</div>
+<div>
+<table><tr><th>Each decode</th><th>Candidate wins</th></tr>
+<tr><td>heard &lt; 8 letters</td><td>hold</td></tr>
+<tr><td>cand ≥ 0.65 and beats current by ≥ 0.15</td><td>+1</td></tr>
+<tr><td>cand ≥ 0.80 and beats current by ≥ 0.30</td><td>+2</td></tr>
+<tr><td>anything else</td><td>−1</td></tr>
+<tr><td><b>3 wins</b> (return slot: 2)</td><td><b>switch</b> → lock, reset follower and votes</td></tr></table>
+<div class="note"><b>ਵਾਹਿਗੁਰੂ slide</b> goes up while the leading candidate has ≥ 2 wins (screen is uncertain), comes down on the switch or when the current Shabad clearly wins again. Showing it is not an error; a wrong Shabad is.</div>
+</div></div>
+<div class="note">No explicit end-of-Bani / end-of-Aarti exit in 9.0.5: leaving a Bani relies on this judge.</div>
+</div>
+</div>
+
+<div class="row" style="grid-template-columns:1fr 1fr">
+<div class="sec" style="--k:var(--f)"><h2>6 · What people see</h2>
+<div class="flow"><div class="box"><b>Screen (sangat)</b><small>Shabad opened at the locked pangti, or the Bani via Sundar Gutka; pangti moves as followed; ਵਾਹਿਗੁਰੂ slide while switching.</small></div>
+<div class="box"><b>Panel (sevadaar)</b><small>following card, "Possible new Shabads" (up to 5, tap to pick), confidence board, heard words (confident words only), volume.</small></div></div></div>
+<div class="sec" style="--k:var(--g)"><h2>7 · Safety</h2>
+<div class="box"><small>Stale work cancelled by session counters and abort signals · bad audio chunk skipped · backlog bounded (merge + speed tiers) · search runs in a separate process (5 s timeout, back-off, "search not available" message) · limited model threads · hidden run pauses when the PC is busy (CPU &gt; 90%) · failed switch keeps the old Shabad.</small></div></div>
+</div>
+
+</div></body></html>

@@ -1,0 +1,12 @@
+
+Approach 11 search-only bench — karanbir-fp32-q32, query 32 s, every 3 s, 112 s total
+
+tier     method  windows  top-1  top-5 conf-wrong   found median find s
+main     tri         538  84.6%  92.8%       0.0%   7/7               4
+main     triagree     538  84.6%  92.9%       0.0%   7/7               4
+hard     tri         651  26.1%  35.5%       0.0%   7/15             80
+hard     triagree     651  26.1%  35.5%       0.0%   7/15             80
+akhand   tri         178  46.6%  62.4%       0.0%   2/2              28
+akhand   triagree     178  46.6%  62.4%       0.0%   2/2              28
+all      tri        1367  51.8%  61.5%       0.0%  16/24             16
+all      triagree    1367  51.8%  61.6%       0.0%  16/24             16
