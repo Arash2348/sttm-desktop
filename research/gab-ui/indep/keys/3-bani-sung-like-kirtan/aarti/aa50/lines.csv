@@ -1,0 +1,9 @@
+verseId,start_s,end_s,confidence,source
+87331,32,35,0.999,indep-mms2-agree
+87332,37,41,0.9992,indep-mms2-agree
+78279,42,46,0.9992,indep-mms2-agree
+78280,48,51,0.999,indep-mms2-agree
+75015,53,57,1.0,indep-mms2-agree
+75016,60,62,1.0,indep-mms2-agree
+75017,63,67,1.0,indep-mms2-agree
+75018,68,72,1.0,indep-mms2-agree

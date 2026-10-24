@@ -1,0 +1,5 @@
+verseId,start_s,end_s,confidence,source
+29922,30,34,0.9981,indep-mms2-agree
+29923,38,47,1.0,indep-mms2-agree
+29924,51,55,0.9957,indep-mms2-agree
+29925,56,59,1.0,indep-mms2-agree

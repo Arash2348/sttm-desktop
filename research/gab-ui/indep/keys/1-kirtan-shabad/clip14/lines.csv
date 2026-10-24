@@ -1,0 +1,7 @@
+verseId,start_s,end_s,confidence,source
+56121,30,42,0.9985,indep-mms2-agree
+56120,59,106,0.992,indep-mms2-agree
+56121,108,169,0.9955,indep-mms2-agree
+56119,186,226,0.992,indep-mms2-agree
+56120,237,283,0.9994,indep-mms2-agree
+56121,287,328,0.9979,indep-mms2-agree

@@ -1,0 +1,16 @@
+verseId,start_s,end_s,confidence,source
+47139,0,11,0.998,indep-mms2-agree
+47140,14,27,1.0,indep-mms2-agree
+47137,33,45,1.0,indep-mms2-agree
+47138,47,54,1.0,indep-mms2-agree
+47137,56,63,1.0,indep-mms2-agree
+47141,71,84,1.0,indep-mms2-agree
+47142,87,102,0.9937,indep-mms2-agree
+47137,107,118,1.0,indep-mms2-agree
+47138,120,127,1.0,indep-mms2-agree
+47137,129,136,1.0,indep-mms2-agree
+47143,150,157,0.99,indep-mms2-agree
+47144,159,181,0.9928,indep-mms2-agree
+47137,183,194,1.0,indep-mms2-agree
+47138,196,203,1.0,indep-mms2-agree
+47137,206,248,0.9902,indep-mms2-agree

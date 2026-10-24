@@ -1,0 +1,12 @@
+verseId,start_s,end_s,confidence,source
+24408,30,65,1.0,indep-mms2-agree
+24409,69,101,0.9999,indep-mms2-agree
+24412,103,148,0.9905,indep-mms2-agree
+24410,167,199,0.998,indep-mms2-agree
+24411,202,233,0.9994,indep-mms2-agree
+24412,235,278,0.9995,indep-mms2-agree
+24408,280,304,0.9991,indep-mms2-agree
+24409,307,328,0.9972,indep-mms2-agree
+24410,330,341,0.9935,indep-mms2-agree
+24411,344,354,1.0,indep-mms2-agree
+24412,357,415,0.9997,indep-mms2-agree

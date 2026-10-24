@@ -1,0 +1,15 @@
+verseId,start_s,end_s,confidence,source
+57069,30,48,0.9996,indep-mms2-agree
+57068,52,74,0.995,indep-mms2-agree
+57070,97,154,0.9964,indep-mms2-agree
+57071,158,193,1.0,indep-mms2-agree
+57069,196,215,1.0,indep-mms2-agree
+57068,220,241,0.9996,indep-mms2-agree
+57072,268,316,0.9967,indep-mms2-agree
+57073,318,337,0.999,indep-mms2-agree
+57074,341,378,0.9992,indep-mms2-agree
+57075,394,403,0.9983,indep-mms2-agree
+57069,406,427,0.9954,indep-mms2-agree
+57068,430,449,1.0,indep-mms2-agree
+57069,454,472,0.998,indep-mms2-agree
+57068,478,507,0.9952,indep-mms2-agree

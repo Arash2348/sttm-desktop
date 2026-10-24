@@ -1,0 +1,6 @@
+verseId,start_s,end_s,confidence,source
+47268,30,99,0.9997,indep-mms2-agree
+47269,101,205,0.9934,indep-mms2-agree
+205113,209,229,0.9937,indep-mms2-agree
+47270,250,287,1.0,indep-mms2-agree
+47271,289,305,0.9991,indep-mms2-agree

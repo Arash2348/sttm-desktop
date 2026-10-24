@@ -1,0 +1,11 @@
+verseId,start_s,end_s,confidence,source
+48478,0,26,0.9984,indep-mms2-agree
+48480,46,59,1.0,indep-mms2-agree
+48478,61,75,0.998,indep-mms2-agree
+48476,86,91,0.9921,indep-mms2-agree
+48477,94,108,1.0,indep-mms2-agree
+48478,110,116,0.9999,indep-mms2-agree
+48481,127,142,0.9983,indep-mms2-agree
+48482,143,158,0.9971,indep-mms2-agree
+48478,160,174,0.9999,indep-mms2-agree
+48477,208,212,0.9979,indep-mms2-agree

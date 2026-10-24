@@ -1,0 +1,16 @@
+verseId,start_s,end_s,confidence,source
+51371,36,40,1.0,indep-mms2-agree
+51370,41,55,0.9975,indep-mms2-agree
+51371,63,68,0.991,indep-mms2-agree
+51370,69,129,0.9997,indep-mms2-agree
+51371,130,134,1.0,indep-mms2-agree
+51370,135,142,0.9997,indep-mms2-agree
+51371,191,195,1.0,indep-mms2-agree
+51366,233,236,1.0,indep-mms2-agree
+51367,238,240,1.0,indep-mms2-agree
+51366,242,244,0.9942,indep-mms2-agree
+51367,247,250,1.0,indep-mms2-agree
+51368,253,259,0.9939,indep-mms2-agree
+51369,267,291,0.9985,indep-mms2-agree
+51370,308,333,0.998,indep-mms2-agree
+51371,337,340,0.9947,indep-mms2-agree

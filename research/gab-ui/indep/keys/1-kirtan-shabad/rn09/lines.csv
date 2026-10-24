@@ -1,0 +1,14 @@
+verseId,start_s,end_s,confidence,source
+34271,13,21,0.9966,indep-mms2-agree
+34270,23,39,0.9936,indep-mms2-agree
+34268,59,74,0.9998,indep-mms2-agree
+34269,76,91,1.0,indep-mms2-agree
+34270,93,108,1.0,indep-mms2-agree
+34271,111,126,0.9992,indep-mms2-agree
+34270,128,143,1.0,indep-mms2-agree
+34272,163,177,0.9976,indep-mms2-agree
+34273,179,195,0.9951,indep-mms2-agree
+34270,196,212,0.9945,indep-mms2-agree
+34271,214,229,0.9971,indep-mms2-agree
+34270,230,263,0.9979,indep-mms2-agree
+34273,278,279,0.9926,indep-mms2-agree

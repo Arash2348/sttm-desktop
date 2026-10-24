@@ -1,0 +1,10 @@
+verseId,start_s,end_s,confidence,source
+25342,0,11,0.9907,indep-mms2-agree
+25343,13,30,0.9969,indep-mms2-agree
+25342,48,68,0.9977,indep-mms2-agree
+25338,81,97,0.999,indep-mms2-agree
+25339,98,114,0.9966,indep-mms2-agree
+25342,123,140,0.9906,indep-mms2-agree
+25340,153,168,0.9982,indep-mms2-agree
+25341,170,184,0.9904,indep-mms2-agree
+25342,195,209,0.9993,indep-mms2-agree

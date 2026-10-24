@@ -27,6 +27,10 @@ def opt(k, d=None):
 # ---------------------------------------------------------------- recordings
 def recordings():
     recs = {}
+    if os.environ.get('INDEP_JOBS'):  # full run (2026-10-23): jobs.py list (GAB HF copy, non-test, human Shabad key)
+        for j in json.load(open(os.environ['INDEP_JOBS']))['jobs']:
+            recs[j['id']] = dict(id=j['id'], dir=j['keydir'], form='kirtan' if j['form'] == 'akhand' else j['form'], set=j['form'])
+        return recs
     for x in csv.DictReader(open(f'{VB}/manifest.csv')):
         if x['lines_source'] not in ('human', 'broadcast-caption') or x['split'] == 'test' or x['id'].endswith('_x1.35'):
             continue
@@ -46,8 +50,13 @@ def pick(recs):
 
 # ---------------------------------------------------------------- Gurbani lookup (read-only)
 _corp = None
+_bani = None
 def shabad_verses(sid):
-    global _corp
+    global _corp, _bani
+    if str(sid).startswith('bani:'):  # a Bani key: its pangtis in the Bani's own order (bani_dump.js, STTM database)
+        if _bani is None:
+            _bani = json.load(open(f'{HERE}/out/bani-ordered.json'))
+        return [tuple(v) for v in _bani[sid]]
     if _corp is None:
         _corp = {}
         for r in json.load(open(CORPUS)):
@@ -146,7 +155,8 @@ def run_rec(rec, P):
         verses = []
         for s in sids:
             verses += [v for v in shabad_verses(s) if v not in verses]
-        verses.sort()
+        if not any(str(x).startswith('bani:') for x in sids):  # Shabads: database order; a Bani keeps its own order
+            verses.sort()
         verses = [v for v in verses if tokens(v[1])[0] and not (rec['form'] != 'paath' and P.get('noheader', 1) and is_header(v[1]))]
         if not verses:
             continue

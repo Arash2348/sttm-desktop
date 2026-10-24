@@ -1,0 +1,4 @@
+verseId,start_s,end_s,confidence,source
+36620,60,66,0.9952,indep-mms2-agree
+36621,71,84,0.9994,indep-mms2-agree
+36620,90,113,0.9918,indep-mms2-agree

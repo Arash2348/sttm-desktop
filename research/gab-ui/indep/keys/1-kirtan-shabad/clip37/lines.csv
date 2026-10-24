@@ -1,0 +1,9 @@
+verseId,start_s,end_s,confidence,source
+59691,30,46,0.9901,indep-mms2-agree
+59692,49,53,0.9969,indep-mms2-agree
+59691,64,68,0.9981,indep-mms2-agree
+59692,72,80,0.9995,indep-mms2-agree
+59693,81,84,0.9986,indep-mms2-agree
+59694,86,88,1.0,indep-mms2-agree
+59693,91,93,1.0,indep-mms2-agree
+59694,95,102,1.0,indep-mms2-agree

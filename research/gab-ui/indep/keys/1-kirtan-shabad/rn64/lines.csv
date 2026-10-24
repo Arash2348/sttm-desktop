@@ -1,0 +1,11 @@
+verseId,start_s,end_s,confidence,source
+35084,30,112,0.9935,indep-mms2-agree
+35081,121,134,0.9999,indep-mms2-agree
+35082,137,157,1.0,indep-mms2-agree
+35084,175,209,0.9998,indep-mms2-agree
+35083,228,239,0.9969,indep-mms2-agree
+35084,248,289,0.996,indep-mms2-agree
+35085,297,324,1.0,indep-mms2-agree
+35084,326,351,1.0,indep-mms2-agree
+35084,359,367,0.9917,indep-mms2-agree
+31132,400,410,0.9997,indep-mms2-agree

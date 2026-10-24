@@ -1,0 +1,10 @@
+verseId,start_s,end_s,confidence,source
+16821,31,48,0.9978,indep-mms2-agree
+16822,62,72,1.0,indep-mms2-agree
+16821,93,96,0.9996,indep-mms2-agree
+16823,114,123,0.9912,indep-mms2-agree
+16823,149,156,0.9905,indep-mms2-agree
+16824,160,183,0.9908,indep-mms2-agree
+16824,189,192,0.9997,indep-mms2-agree
+16825,219,230,0.9912,indep-mms2-agree
+16826,250,301,0.9908,indep-mms2-agree

@@ -1,0 +1,13 @@
+verseId,start_s,end_s,confidence,source
+55581,30,125,0.9976,indep-mms2-agree
+55582,141,168,0.9995,indep-mms2-agree
+55581,171,226,0.996,indep-mms2-agree
+55583,241,268,0.9996,indep-mms2-agree
+55581,270,320,0.9962,indep-mms2-agree
+55584,323,331,0.9953,indep-mms2-agree
+55585,333,338,0.9953,indep-mms2-agree
+55581,340,352,0.9986,indep-mms2-agree
+55582,474,476,0.9973,indep-mms2-agree
+55582,542,544,0.9994,indep-mms2-agree
+55582,565,567,0.9991,indep-mms2-agree
+55582,642,644,0.9969,indep-mms2-agree

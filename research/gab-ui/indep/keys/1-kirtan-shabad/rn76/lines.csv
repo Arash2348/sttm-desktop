@@ -1,0 +1,15 @@
+verseId,start_s,end_s,confidence,source
+39131,35,39,1.0,indep-mms2-agree
+39132,43,66,1.0,indep-mms2-agree
+39131,70,88,0.9941,indep-mms2-agree
+39133,111,118,0.9928,indep-mms2-agree
+39134,119,124,0.992,indep-mms2-agree
+39133,126,131,0.992,indep-mms2-agree
+39134,134,139,0.9957,indep-mms2-agree
+39132,142,164,1.0,indep-mms2-agree
+39131,169,174,0.9993,indep-mms2-agree
+39132,213,236,0.9933,indep-mms2-agree
+39132,267,290,0.9909,indep-mms2-agree
+39131,295,299,0.9905,indep-mms2-agree
+39132,324,345,1.0,indep-mms2-agree
+39131,566,567,0.9925,indep-mms2-agree

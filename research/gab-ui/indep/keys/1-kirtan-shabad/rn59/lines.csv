@@ -1,0 +1,17 @@
+verseId,start_s,end_s,confidence,source
+52200,37,49,1.0,indep-mms2-agree
+52201,59,77,0.9996,indep-mms2-agree
+52200,78,91,0.9982,indep-mms2-agree
+52203,107,118,0.996,indep-mms2-agree
+52200,132,138,0.9949,indep-mms2-agree
+52201,140,164,0.9942,indep-mms2-agree
+52200,166,178,0.995,indep-mms2-agree
+52200,212,223,0.9997,indep-mms2-agree
+52201,231,242,0.9981,indep-mms2-agree
+52200,250,261,0.9998,indep-mms2-agree
+52205,270,293,0.9993,indep-mms2-agree
+52200,295,306,1.0,indep-mms2-agree
+52201,308,325,0.9999,indep-mms2-agree
+52200,332,356,0.9962,indep-mms2-agree
+34967,383,396,0.9991,indep-mms2-agree
+34968,398,420,0.9991,indep-mms2-agree

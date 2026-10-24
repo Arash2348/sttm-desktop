@@ -1,0 +1,12 @@
+verseId,start_s,end_s,confidence,source
+591,41,65,0.9975,indep-mms2-agree
+592,68,87,0.9934,indep-mms2-agree
+595,104,128,0.9945,indep-mms2-agree
+596,132,156,0.9904,indep-mms2-agree
+597,159,184,0.9962,indep-mms2-agree
+598,194,218,0.994,indep-mms2-agree
+599,222,245,0.9956,indep-mms2-agree
+600,248,273,0.9933,indep-mms2-agree
+601,284,301,0.9969,indep-mms2-agree
+602,318,333,0.991,indep-mms2-agree
+603,337,351,0.9959,indep-mms2-agree

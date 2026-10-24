@@ -1,0 +1,8 @@
+verseId,start_s,end_s,confidence,source
+43179,0,24,0.9983,indep-mms2-agree
+43178,25,64,0.9978,indep-mms2-agree
+43180,76,89,0.9958,indep-mms2-agree
+43181,93,111,0.9995,indep-mms2-agree
+43178,113,126,1.0,indep-mms2-agree
+43179,133,145,0.999,indep-mms2-agree
+43178,154,169,0.9924,indep-mms2-agree

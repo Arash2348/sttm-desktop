@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""validate-banidb.py [--hf-dir <HF answer-key copy>]   (2026-10-23)
+"""validate-banidb.py [--hf-dir <HF answer-key copy>] [--in <rows json glob>] [--report <json>]   (2026-10-23)
+
+--in / --report (indep full run): check another set of label rows (same row fields) and write the report elsewhere;
+the defaults are unchanged (labels/accepted/*.json, labels/remerge/validation-report.json).
 
 Database check of every labels/accepted/*.json row BEFORE merge-keys.py. A label only maps audio to an existing
 pangti (verseId) of the Gurbani database; Gurbani text is never written, altered or taken from model output.
@@ -67,7 +70,7 @@ def members(spec):
 
 report = {'made': time.strftime('%Y-%m-%d'), 'hf_dir': HF, 'checks': ['exists', 'belongs', 'text'], 'files': {}, 'dropped': []}
 tot_in = tot_keep = 0
-for f in sorted(glob.glob(f'{L}/accepted/*.json')):
+for f in sorted(glob.glob(opt('in', f'{L}/accepted/*.json'))):
     rows = json.load(open(f))
     keep = []
     for r in rows:
@@ -100,8 +103,9 @@ for f in sorted(glob.glob(f'{L}/accepted/*.json')):
     json.dump(keep, open(f, 'w'), ensure_ascii=False, indent=1)
 report['totals'] = {'in': tot_in, 'kept': tot_keep, 'dropped': tot_in - tot_keep, 'banidb_fetched_now': fetched}
 json.dump(cache, open(CACHE_P, 'w'), ensure_ascii=False)
-os.makedirs(f'{L}/remerge', exist_ok=True)
-json.dump(report, open(f'{L}/remerge/validation-report.json', 'w'), ensure_ascii=False, indent=1)
+REPORT = opt('report', f'{L}/remerge/validation-report.json')
+os.makedirs(os.path.dirname(REPORT), exist_ok=True)
+json.dump(report, open(REPORT, 'w'), ensure_ascii=False, indent=1)
 print(f"rows {tot_in}  kept {tot_keep}  dropped {tot_in - tot_keep}  BaniDB fetched now: {fetched}")
 for d in report['dropped']:
     print('  DROP', d['recording'], d['verseId'], d['start_s'], d['why'])

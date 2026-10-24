@@ -1,0 +1,10 @@
+verseId,start_s,end_s,confidence,source
+403739,34,61,0.9999,indep-mms2-agree
+403732,62,72,0.9995,indep-mms2-agree
+403733,77,89,0.9982,indep-mms2-agree
+403732,90,102,0.9966,indep-mms2-agree
+403740,112,124,1.0,indep-mms2-agree
+403741,126,138,1.0,indep-mms2-agree
+403742,140,149,0.9985,indep-mms2-agree
+403743,154,179,1.0,indep-mms2-agree
+403732,181,192,0.9999,indep-mms2-agree

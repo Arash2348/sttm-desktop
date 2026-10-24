@@ -1,0 +1,4 @@
+verseId,start_s,end_s,confidence,source
+58712,15,108,0.9993,indep-mms2-agree
+58713,112,145,0.9921,indep-mms2-agree
+58712,150,210,0.9999,indep-mms2-agree

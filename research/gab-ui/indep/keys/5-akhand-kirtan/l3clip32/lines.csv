@@ -1,0 +1,14 @@
+verseId,start_s,end_s,confidence,source
+18433,0,6,0.9927,indep-mms2-agree
+35752,108,110,0.9954,indep-mms2-agree
+35753,116,129,0.9998,indep-mms2-agree
+35754,139,145,0.9912,indep-mms2-agree
+35752,226,231,0.992,indep-mms2-agree
+35751,233,237,0.9943,indep-mms2-agree
+35752,239,240,0.9997,indep-mms2-agree
+35752,278,284,0.9964,indep-mms2-agree
+35757,365,367,0.994,indep-mms2-agree
+35758,371,375,1.0,indep-mms2-agree
+35759,386,392,0.9919,indep-mms2-agree
+35761,416,419,0.9991,indep-mms2-agree
+35762,424,429,0.9992,indep-mms2-agree

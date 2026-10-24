@@ -1,0 +1,8 @@
+verseId,start_s,end_s,confidence,source
+54153,30,33,0.9995,indep-mms2-agree
+54154,40,69,0.9932,indep-mms2-agree
+54155,71,99,0.9973,indep-mms2-agree
+54153,125,159,0.9958,indep-mms2-agree
+54156,166,205,0.9999,indep-mms2-agree
+54157,207,258,1.0,indep-mms2-agree
+54153,260,305,1.0,indep-mms2-agree
