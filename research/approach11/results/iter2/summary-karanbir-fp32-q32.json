@@ -1,0 +1,74 @@
+{
+ "main": {
+  "tri": {
+   "windows": 538,
+   "top1": 84.5724907063197,
+   "top5": 92.75092936802974,
+   "confWrong": 0.0,
+   "found": "7/7",
+   "medianFind": 4.0
+  },
+  "triagree": {
+   "windows": 538,
+   "top1": 84.5724907063197,
+   "top5": 92.93680297397769,
+   "confWrong": 0.0,
+   "found": "7/7",
+   "medianFind": 4.0
+  }
+ },
+ "hard": {
+  "tri": {
+   "windows": 651,
+   "top1": 26.113671274961597,
+   "top5": 35.483870967741936,
+   "confWrong": 0.0,
+   "found": "7/15",
+   "medianFind": 80.302
+  },
+  "triagree": {
+   "windows": 651,
+   "top1": 26.113671274961597,
+   "top5": 35.483870967741936,
+   "confWrong": 0.0,
+   "found": "7/15",
+   "medianFind": 80.302
+  }
+ },
+ "akhand": {
+  "tri": {
+   "windows": 178,
+   "top1": 46.62921348314607,
+   "top5": 62.359550561797754,
+   "confWrong": 0.0,
+   "found": "2/2",
+   "medianFind": 28.0
+  },
+  "triagree": {
+   "windows": 178,
+   "top1": 46.62921348314607,
+   "top5": 62.359550561797754,
+   "confWrong": 0.0,
+   "found": "2/2",
+   "medianFind": 28.0
+  }
+ },
+ "all": {
+  "tri": {
+   "windows": 1367,
+   "top1": 51.79224579370885,
+   "top5": 61.52158010241404,
+   "confWrong": 0.0,
+   "found": "16/24",
+   "medianFind": 16.0
+  },
+  "triagree": {
+   "windows": 1367,
+   "top1": 51.79224579370885,
+   "top5": 61.59473299195318,
+   "confWrong": 0.0,
+   "found": "16/24",
+   "medianFind": 16.0
+  }
+ }
+}

@@ -1,0 +1,24 @@
+
+Approach 11 search-only bench — karanbir-fp32-q32-sggs, query 32 s, every 3 s, 470 s total
+
+tier     method  windows  top-1  top-5 conf-wrong   found median find s
+main     fl          538  36.1%  45.0%      20.4%   6/7              13
+main     flc         538  21.7%  37.4%      12.3%   4/7              46
+main     tri         538  83.6%  92.4%       0.0%   7/7               4
+main     fuzzy       538  56.1%  80.1%       0.0%   7/7              13
+main     hybrid      538  68.6%  83.8%       0.0%   7/7               4
+hard     fl          651   1.2%   3.4%      33.5%   1/15            275
+hard     flc         651   1.8%   3.8%      14.4%   2/15            275
+hard     tri         651  27.0%  38.1%       0.0%   7/15             83
+hard     fuzzy       651  15.4%  28.0%       0.0%   6/15            173
+hard     hybrid      651  23.7%  39.8%       0.0%   7/15             85
+akhand   fl          178   0.0%   0.0%       6.2%   0/2               -
+akhand   flc         178   0.0%   0.0%      30.9%   0/2               -
+akhand   tri         178  49.4%  64.0%       0.0%   2/2              28
+akhand   fuzzy       178  39.9%  55.1%       0.0%   2/2              34
+akhand   hybrid      178  48.9%  67.4%       0.0%   2/2              34
+all      fl         1367  14.8%  19.3%      24.8%   7/24             13
+all      flc        1367   9.4%  16.5%      15.7%   6/24             88
+all      tri        1367  52.2%  62.8%       0.0%  16/24             16
+all      fuzzy      1367  34.6%  52.0%       0.0%  15/24             16
+all      hybrid     1367  44.6%  60.7%       0.0%  16/24             16
