@@ -77,7 +77,7 @@ The four builds are within 0.7 points of each other on every set.
 
 ## Skipped or not scored
 
-- **Held-out test split:** not touched, for all forms.
+- **Held-out test split:** no labels were made or exported for it, and nothing from it is in keys/ or timeline-indep/. Correction (audit): the earlier feasibility stage ran the models on 4 Sehaj Paath recordings that the HF manifest marks as test (ytap_-1yA1ufOku0_2000-2600, ytap_DDHRQqbEnyo_1200-1800, ytap_OrG2-IsMDfg_1500-2100, ytap_cKpg64jaTAo_1200-1800) because the local manifest listed them as train/dev; the FEASIBILITY Paath row was measured partly on them. No thresholds were tuned on Paath, and their files have been deleted from out/.
 - **No human Shabad key file and no local audio (44).** 29 Kirtan YouTube broadcast-caption recordings (ytgr_* ×14,
   ytraji_* ×15). 15 Sung Bani recordings: ytaarti_807iTL4sFwM ×2, ytasa_zBJgPM2uR0Y ×9 (Asa di Vaar),
   ytrehras_g0RkPeycOCU ×3 and ytsalokm9_QjnT83rU4so ×1. Wherever a broadcast-caption key exists, it is still used in
@@ -90,7 +90,7 @@ The four builds are within 0.7 points of each other on every set.
   (sangat-score.js ALIGN_OVERRIDE) swap in a saved app-model alignment for these ids. ytasa1 was labelled, and its keys
   are in `keys/`.
 - Recordings below 60% coverage are dropped by the usual rule: Kirtan 46, Paath 15, Akhand Kirtan 17 and Sung Bani 24.
-  Another 5 Sung Bani recordings (aa17, aa18, aa19, aa20, pt41) were labelled, but no span reached 0.99 (0 rows), so they have no pangti key.
+  12 labelled recordings have no accepted span (0 rows): Sung Bani aa17-aa22, pt37, pt41, pt42, pt46, and Kirtan kh24, kh30 (their human key is kept in scoring).
 
 ## Run time (Mac, nice 19, 4 threads, one job at a time)
 
