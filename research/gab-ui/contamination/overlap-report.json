@@ -1,0 +1,61 @@
+{
+ "training_dataset": "gurbani-captioning/punjabi-ctc-data",
+ "training_clips": 34723,
+ "training_videos": 114,
+ "gab_youtube_recordings": 328,
+ "gab_youtube_videos": 122,
+ "gab_recordings_sharing_a_training_video": [
+  {
+   "gab_id": "ytraji_D-AMT8vwvfc_0-347",
+   "split": "dev",
+   "youtube_id": "D-AMT8vwvfc",
+   "gab_seconds": 347.0,
+   "training_clips_same_video": 41,
+   "overlapping_training_clips": 41,
+   "overlap_seconds": 183.8,
+   "training_time_range": [
+    0,
+    341
+   ]
+  },
+  {
+   "gab_id": "ytsalokm9_QjnT83rU4so_0-1210",
+   "split": "dev",
+   "youtube_id": "QjnT83rU4so",
+   "gab_seconds": 1210.0,
+   "training_clips_same_video": 11,
+   "overlapping_training_clips": 11,
+   "overlap_seconds": 37.1,
+   "training_time_range": [
+    18,
+    913
+   ]
+  },
+  {
+   "gab_id": "ytraji_T30vHxIXQ2I_0-721",
+   "split": "dev",
+   "youtube_id": "T30vHxIXQ2I",
+   "gab_seconds": 721.0,
+   "training_clips_same_video": 84,
+   "overlapping_training_clips": 84,
+   "overlap_seconds": 344.4,
+   "training_time_range": [
+    30,
+    719
+   ]
+  },
+  {
+   "gab_id": "ytraji_mQHmKVVMJNI_0-414",
+   "split": "dev",
+   "youtube_id": "mQHmKVVMJNI",
+   "gab_seconds": 414.0,
+   "training_clips_same_video": 31,
+   "overlapping_training_clips": 31,
+   "overlap_seconds": 247.6,
+   "training_time_range": [
+    0,
+    411
+   ]
+  }
+ ]
+}
