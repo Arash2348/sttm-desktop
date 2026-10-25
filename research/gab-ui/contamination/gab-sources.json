@@ -1,0 +1,3107 @@
+[
+{
+"id": "clip01",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "aQiVq9ZK8hA",
+"start_s": 23185,
+"end_s": 23437
+},
+{
+"id": "clip02",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 438,
+"end_s": 501
+},
+{
+"id": "clip03",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 3926,
+"end_s": 4376
+},
+{
+"id": "clip04",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont",
+"youtube_id": "IT9dBWP9hiw",
+"start_s": 4148,
+"end_s": 4563
+},
+{
+"id": "clip05",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont, CA",
+"youtube_id": "X8EN_dxTxFY",
+"start_s": 1035,
+"end_s": 1140
+},
+{
+"id": "clip06",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont, CA",
+"youtube_id": "X8EN_dxTxFY",
+"start_s": 1130,
+"end_s": 1466
+},
+{
+"id": "clip07",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont, CA",
+"youtube_id": "X8EN_dxTxFY",
+"start_s": 1533,
+"end_s": 1960
+},
+{
+"id": "clip08",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont, CA",
+"youtube_id": "TRFTO4-HsGk",
+"start_s": 10271,
+"end_s": 10579
+},
+{
+"id": "clip09",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont, CA",
+"youtube_id": "TRFTO4-HsGk",
+"start_s": 11353,
+"end_s": 11899
+},
+{
+"id": "clip10",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "5Nj1odTqjr8",
+"start_s": 1673,
+"end_s": 2203
+},
+{
+"id": "clip11",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "5Nj1odTqjr8",
+"start_s": 2917,
+"end_s": 3193
+},
+{
+"id": "clip12",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "AhRd4zcvGwA",
+"start_s": 415,
+"end_s": 1595
+},
+{
+"id": "clip13",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "AhRd4zcvGwA",
+"start_s": 4422,
+"end_s": 4644
+},
+{
+"id": "clip14",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "au0r538sNKo",
+"start_s": 475,
+"end_s": 835
+},
+{
+"id": "clip15",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "au0r538sNKo",
+"start_s": 1131,
+"end_s": 1582
+},
+{
+"id": "clip16",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "CqX9GifIDnk",
+"start_s": 765,
+"end_s": 1305
+},
+{
+"id": "clip17",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "eYgMiglXTpk",
+"start_s": 5638,
+"end_s": 6648
+},
+{
+"id": "clip18",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "yLEY7N51wyM",
+"start_s": 5657,
+"end_s": 5971
+},
+{
+"id": "clip19",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "yLEY7N51wyM",
+"start_s": 6019,
+"end_s": 6382
+},
+{
+"id": "clip20",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "duc_Yh0-hwY",
+"start_s": 635,
+"end_s": 1250
+},
+{
+"id": "clip21",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "eYgMiglXTpk",
+"start_s": 253,
+"end_s": 663
+},
+{
+"id": "clip22",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "eYgMiglXTpk",
+"start_s": 2717,
+"end_s": 3072
+},
+{
+"id": "clip23",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "eYgMiglXTpk",
+"start_s": 4214,
+"end_s": 4677
+},
+{
+"id": "clip24",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "guDwBxnCTnI",
+"start_s": 990,
+"end_s": 1448
+},
+{
+"id": "clip25",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "Mhy6xcAdKRQ",
+"start_s": 49,
+"end_s": 362
+},
+{
+"id": "clip26",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "Mhy6xcAdKRQ",
+"start_s": 574,
+"end_s": 796
+},
+{
+"id": "clip27",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "guDwBxnCTnI",
+"start_s": 439,
+"end_s": 964
+},
+{
+"id": "clip28",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "T9zISL2FYrQ",
+"start_s": 741,
+"end_s": 1060
+},
+{
+"id": "clip29",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "T9zISL2FYrQ",
+"start_s": 1922,
+"end_s": 2690
+},
+{
+"id": "clip30",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "xYk_5SClw2M",
+"start_s": 1649,
+"end_s": 2095
+},
+{
+"id": "clip31",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Sachkhand Sri Harmandir Sahib, Amritsar (SGPC broadcast)",
+"youtube_id": "rspWQFcyIs4",
+"start_s": 4183,
+"end_s": 4702
+},
+{
+"id": "clip32",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "-E-PjJz00j8",
+"start_s": 895,
+"end_s": 1575
+},
+{
+"id": "clip33",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "-E-PjJz00j8",
+"start_s": 1585,
+"end_s": 2675
+},
+{
+"id": "clip34",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "h37nNWBwZxk",
+"start_s": 1010,
+"end_s": 1160
+},
+{
+"id": "clip35",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "h37nNWBwZxk",
+"start_s": 1120,
+"end_s": 2315
+},
+{
+"id": "clip36",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "-0qd72W9sG8",
+"start_s": 21440,
+"end_s": 22110
+},
+{
+"id": "clip37",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "-0qd72W9sG8",
+"start_s": 22895,
+"end_s": 23030
+},
+{
+"id": "clip38",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "-0qd72W9sG8",
+"start_s": 22995,
+"end_s": 23155
+},
+{
+"id": "clip39",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "-0qd72W9sG8",
+"start_s": 23165,
+"end_s": 23480
+},
+{
+"id": "clip40",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "-0qd72W9sG8",
+"start_s": 23450,
+"end_s": 23755
+},
+{
+"id": "clip41",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "-0qd72W9sG8",
+"start_s": 20955,
+"end_s": 21380
+},
+{
+"id": "pt01",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "vbkJ39xnza8",
+"start_s": 10,
+"end_s": 80
+},
+{
+"id": "pt02",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "vbkJ39xnza8",
+"start_s": 420,
+"end_s": 490
+},
+{
+"id": "pt03",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "vbkJ39xnza8",
+"start_s": 920,
+"end_s": 990
+},
+{
+"id": "pt04",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "vbkJ39xnza8",
+"start_s": 1420,
+"end_s": 1490
+},
+{
+"id": "pt05",
+"split": "dev",
+"folder": "2-bani-recited/jaap",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "Juyj3z1_W8Q",
+"start_s": 30,
+"end_s": 100
+},
+{
+"id": "pt06",
+"split": "dev",
+"folder": "2-bani-recited/jaap",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "Juyj3z1_W8Q",
+"start_s": 570,
+"end_s": 640
+},
+{
+"id": "pt07",
+"split": "dev",
+"folder": "2-bani-recited/jaap",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "Juyj3z1_W8Q",
+"start_s": 1170,
+"end_s": 1240
+},
+{
+"id": "pt08",
+"split": "dev",
+"folder": "2-bani-recited/jaap",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "Juyj3z1_W8Q",
+"start_s": 1870,
+"end_s": 1940
+},
+{
+"id": "pt09",
+"split": "dev",
+"folder": "2-bani-recited/chaupai",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "m0vwa8RWzXg",
+"start_s": 10,
+"end_s": 80
+},
+{
+"id": "pt10",
+"split": "dev",
+"folder": "2-bani-recited/chaupai",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "m0vwa8RWzXg",
+"start_s": 120,
+"end_s": 190
+},
+{
+"id": "pt11",
+"split": "dev",
+"folder": "2-bani-recited/chaupai",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "m0vwa8RWzXg",
+"start_s": 250,
+"end_s": 320
+},
+{
+"id": "pt12",
+"split": "dev",
+"folder": "2-bani-recited/tav-prasad-savaiye",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "YPPSuG2Kxt8",
+"start_s": 10,
+"end_s": 80
+},
+{
+"id": "pt13",
+"split": "dev",
+"folder": "2-bani-recited/tav-prasad-savaiye",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "YPPSuG2Kxt8",
+"start_s": 120,
+"end_s": 190
+},
+{
+"id": "pt14",
+"split": "dev",
+"folder": "2-bani-recited/tav-prasad-savaiye",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "YPPSuG2Kxt8",
+"start_s": 230,
+"end_s": 300
+},
+{
+"id": "pt15",
+"split": "dev",
+"folder": "2-bani-recited/anand-40",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "KZVWcP8Qmdw",
+"start_s": 30,
+"end_s": 100
+},
+{
+"id": "pt16",
+"split": "dev",
+"folder": "2-bani-recited/anand-40",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "KZVWcP8Qmdw",
+"start_s": 370,
+"end_s": 440
+},
+{
+"id": "pt17",
+"split": "dev",
+"folder": "2-bani-recited/anand-40",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "KZVWcP8Qmdw",
+"start_s": 870,
+"end_s": 940
+},
+{
+"id": "pt18",
+"split": "dev",
+"folder": "2-bani-recited/anand-40",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "KZVWcP8Qmdw",
+"start_s": 1270,
+"end_s": 1340
+},
+{
+"id": "pt19",
+"split": "dev",
+"folder": "2-bani-recited/rehras",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "KSgSkLjLuA0",
+"start_s": 10,
+"end_s": 80
+},
+{
+"id": "pt20",
+"split": "dev",
+"folder": "2-bani-recited/rehras",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "KSgSkLjLuA0",
+"start_s": 170,
+"end_s": 240
+},
+{
+"id": "pt21",
+"split": "dev",
+"folder": "2-bani-recited/rehras",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "KSgSkLjLuA0",
+"start_s": 370,
+"end_s": 440
+},
+{
+"id": "pt22",
+"split": "dev",
+"folder": "2-bani-recited/rehras",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "KSgSkLjLuA0",
+"start_s": 570,
+"end_s": 640
+},
+{
+"id": "pt23",
+"split": "dev",
+"folder": "2-bani-recited/rehras",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "KSgSkLjLuA0",
+"start_s": 770,
+"end_s": 840
+},
+{
+"id": "pt24",
+"split": "dev",
+"folder": "2-bani-recited/rehras",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "KSgSkLjLuA0",
+"start_s": 970,
+"end_s": 1040
+},
+{
+"id": "pt26",
+"split": "dev",
+"folder": "2-bani-recited/rehras",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "KSgSkLjLuA0",
+"start_s": 1370,
+"end_s": 1440
+},
+{
+"id": "pt27",
+"split": "dev",
+"folder": "2-bani-recited/rehras",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "KSgSkLjLuA0",
+"start_s": 1570,
+"end_s": 1640
+},
+{
+"id": "pt28",
+"split": "dev",
+"folder": "2-bani-recited/sohila",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "IQkag1vkfAU",
+"start_s": 10,
+"end_s": 80
+},
+{
+"id": "pt29",
+"split": "dev",
+"folder": "2-bani-recited/sohila",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "IQkag1vkfAU",
+"start_s": 120,
+"end_s": 190
+},
+{
+"id": "pt30",
+"split": "dev",
+"folder": "2-bani-recited/sohila",
+"gurdwara": "Nitnem playlist, Bhai Gurpreet Singh Shimla Wale",
+"youtube_id": "IQkag1vkfAU",
+"start_s": 220,
+"end_s": 290
+},
+{
+"id": "pt31",
+"split": "dev",
+"folder": "2-bani-recited/jaap",
+"gurdwara": "Jaap Sahib live path, Bhai Manpreet Singh Kanpuri",
+"youtube_id": "V0yK9gjb-uA",
+"start_s": 30,
+"end_s": 100
+},
+{
+"id": "pt32",
+"split": "dev",
+"folder": "2-bani-recited/jaap",
+"gurdwara": "Jaap Sahib live path, Bhai Manpreet Singh Kanpuri",
+"youtube_id": "V0yK9gjb-uA",
+"start_s": 270,
+"end_s": 340
+},
+{
+"id": "pt33",
+"split": "dev",
+"folder": "2-bani-recited/jaap",
+"gurdwara": "Jaap Sahib live path, Bhai Manpreet Singh Kanpuri",
+"youtube_id": "V0yK9gjb-uA",
+"start_s": 520,
+"end_s": 590
+},
+{
+"id": "pt34",
+"split": "dev",
+"folder": "2-bani-recited/jaap",
+"gurdwara": "Jaap Sahib live path, Bhai Manpreet Singh Kanpuri",
+"youtube_id": "V0yK9gjb-uA",
+"start_s": 770,
+"end_s": 840
+},
+{
+"id": "pt35",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Aarti (verified bn07/bn08 video)",
+"youtube_id": "T8Qa1qq28IE",
+"start_s": 30,
+"end_s": 100
+},
+{
+"id": "pt36",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Aarti (verified bn07/bn08 video)",
+"youtube_id": "T8Qa1qq28IE",
+"start_s": 220,
+"end_s": 290
+},
+{
+"id": "pt37",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Aarti (verified bn07/bn08 video)",
+"youtube_id": "1dMpII7oxEg",
+"start_s": 30,
+"end_s": 100
+},
+{
+"id": "pt38",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Aarti (verified bn07/bn08 video)",
+"youtube_id": "1dMpII7oxEg",
+"start_s": 220,
+"end_s": 290
+},
+{
+"id": "pt39",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Aarti Darbar Sahib (No Ads)",
+"youtube_id": "Rvcw3XFSQbc",
+"start_s": 30,
+"end_s": 100
+},
+{
+"id": "pt40",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Aarti Darbar Sahib (No Ads)",
+"youtube_id": "Rvcw3XFSQbc",
+"start_s": 219,
+"end_s": 289
+},
+{
+"id": "pt41",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Aarti Darbar Sahib (No Ads)",
+"youtube_id": "Rvcw3XFSQbc",
+"start_s": 408,
+"end_s": 478
+},
+{
+"id": "pt42",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Aarti Darbar Sahib (No Ads)",
+"youtube_id": "Rvcw3XFSQbc",
+"start_s": 597,
+"end_s": 667
+},
+{
+"id": "pt43",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Aarti Darbar Sahib Amritsar",
+"youtube_id": "TgoswO8AtpY",
+"start_s": 30,
+"end_s": 100
+},
+{
+"id": "pt44",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Aarti Darbar Sahib Amritsar",
+"youtube_id": "TgoswO8AtpY",
+"start_s": 226,
+"end_s": 296
+},
+{
+"id": "pt45",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Aarti Darbar Sahib Amritsar",
+"youtube_id": "TgoswO8AtpY",
+"start_s": 423,
+"end_s": 493
+},
+{
+"id": "pt46",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Aarti Darbar Sahib Amritsar",
+"youtube_id": "TgoswO8AtpY",
+"start_s": 620,
+"end_s": 690
+},
+{
+"id": "pt51",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Aarti Bhai Karaj Singh Hazoori Ragi",
+"youtube_id": "aRvTXC1DRt0",
+"start_s": 30,
+"end_s": 100
+},
+{
+"id": "pt52",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Aarti Bhai Karaj Singh Hazoori Ragi",
+"youtube_id": "aRvTXC1DRt0",
+"start_s": 187,
+"end_s": 257
+},
+{
+"id": "pt53",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Aarti Bhai Karaj Singh Hazoori Ragi",
+"youtube_id": "aRvTXC1DRt0",
+"start_s": 344,
+"end_s": 414
+},
+{
+"id": "pt54",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Japji Bhai Manpreet Singh Kanpuri",
+"youtube_id": "SC1gipmk214",
+"start_s": 0,
+"end_s": 55
+},
+{
+"id": "pt55",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Japji Bhai Manpreet Singh Kanpuri",
+"youtube_id": "SC1gipmk214",
+"start_s": 432,
+"end_s": 502
+},
+{
+"id": "pt56",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Japji Bhai Manpreet Singh Kanpuri",
+"youtube_id": "SC1gipmk214",
+"start_s": 837,
+"end_s": 907
+},
+{
+"id": "pt57",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Japji Path Full (Fast)",
+"youtube_id": "JjW_SU0oBwU",
+"start_s": 0,
+"end_s": 55
+},
+{
+"id": "pt58",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Japji Path Full (Fast)",
+"youtube_id": "JjW_SU0oBwU",
+"start_s": 277,
+"end_s": 347
+},
+{
+"id": "pt59",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Japji Path Full (Fast)",
+"youtube_id": "JjW_SU0oBwU",
+"start_s": 546,
+"end_s": 616
+},
+{
+"id": "pt60",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Japji Bhai Gurbaj Singh",
+"youtube_id": "4PEORBA2KdU",
+"start_s": 0,
+"end_s": 55
+},
+{
+"id": "pt61",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Japji Bhai Gurbaj Singh",
+"youtube_id": "4PEORBA2KdU",
+"start_s": 518,
+"end_s": 588
+},
+{
+"id": "pt62",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Japji Bhai Gurbaj Singh",
+"youtube_id": "4PEORBA2KdU",
+"start_s": 997,
+"end_s": 1067
+},
+{
+"id": "pt63",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Japji Bhai Sahib Singh",
+"youtube_id": "KQIeS-hKWPk",
+"start_s": 0,
+"end_s": 55
+},
+{
+"id": "pt64",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Japji Bhai Sahib Singh",
+"youtube_id": "KQIeS-hKWPk",
+"start_s": 529,
+"end_s": 599
+},
+{
+"id": "pt65",
+"split": "dev",
+"folder": "2-bani-recited/japji",
+"gurdwara": "Japji Bhai Sahib Singh",
+"youtube_id": "KQIeS-hKWPk",
+"start_s": 1018,
+"end_s": 1088
+},
+{
+"id": "aa01",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 0,
+"end_s": 460
+},
+{
+"id": "aa02",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 15,
+"end_s": 460
+},
+{
+"id": "aa03",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 60,
+"end_s": 460
+},
+{
+"id": "aa04",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 105,
+"end_s": 460
+},
+{
+"id": "aa05",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 150,
+"end_s": 460
+},
+{
+"id": "aa06",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 195,
+"end_s": 460
+},
+{
+"id": "aa07",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 240,
+"end_s": 400
+},
+{
+"id": "aa08",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 285,
+"end_s": 445
+},
+{
+"id": "aa09",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 330,
+"end_s": 460
+},
+{
+"id": "aa10",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 0,
+"end_s": 130
+},
+{
+"id": "aa11",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 30,
+"end_s": 190
+},
+{
+"id": "aa12",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 90,
+"end_s": 200
+},
+{
+"id": "aa13",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 0,
+"end_s": 144
+},
+{
+"id": "aa14",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 44,
+"end_s": 204
+},
+{
+"id": "aa15",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 104,
+"end_s": 264
+},
+{
+"id": "aa16",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 164,
+"end_s": 324
+},
+{
+"id": "aa17",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 224,
+"end_s": 384
+},
+{
+"id": "aa18",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 284,
+"end_s": 444
+},
+{
+"id": "aa19",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 344,
+"end_s": 490
+},
+{
+"id": "aa20",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 404,
+"end_s": 564
+},
+{
+"id": "aa21",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 464,
+"end_s": 624
+},
+{
+"id": "aa22",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 524,
+"end_s": 654
+},
+{
+"id": "aa23",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 0,
+"end_s": 130
+},
+{
+"id": "aa24",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 30,
+"end_s": 190
+},
+{
+"id": "aa25",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 90,
+"end_s": 250
+},
+{
+"id": "aa26",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 150,
+"end_s": 310
+},
+{
+"id": "aa27",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 210,
+"end_s": 348
+},
+{
+"id": "aa43",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 0,
+"end_s": 130
+},
+{
+"id": "aa44",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 30,
+"end_s": 190
+},
+{
+"id": "aa45",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 90,
+"end_s": 250
+},
+{
+"id": "aa46",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 150,
+"end_s": 310
+},
+{
+"id": "aa47",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 210,
+"end_s": 370
+},
+{
+"id": "aa48",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 270,
+"end_s": 430
+},
+{
+"id": "aa49",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 330,
+"end_s": 490
+},
+{
+"id": "aa50",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": 390,
+"end_s": 516
+},
+{
+"id": "kh01_sttm_desktop_2026_10_08T03_18_48_617Z",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh02_sttm_desktop_2026_10_08T03_30_14_004Z",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh03_sttm_desktop_2026_10_08T03_40_41_289Z",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh04_sttm_desktop_2026_10_08T03_51_10_447Z",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh05_sttm_desktop_2026_10_08T04_05_00_105Z",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh06_sttm_desktop_2026_10_09T03_56_15_071Z",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh07_sttm_desktop_2026_10_09T03_14_15_214Z",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh08_sttm_desktop_2026_10_09T03_27_58_323Z",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh09_sttm_desktop_2026_10_09T03_39_34_494Z",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh10_sttm_desktop_2026_10_09T03_42_41_425Z",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh11_sttm_desktop_2026_10_11T02_40_20_422Z",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh12_sttm_desktop_2026_10_11T02_50_05_783Z",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh13_sttm_desktop_2026_10_11T03_07_57_411Z",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh14_sttm_desktop_2026_10_11T13_42_38_291Z",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh15_sttm_desktop_2026_10_11T13_45_00_522Z",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh16_sttm_desktop_2026_10_11T13_52_01_944Z",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/asa-di-vaar",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh17_sttm_desktop_2026_10_11T18_10_13_059Z",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh18_sttm_desktop_2026_10_11T20_00_12_780Z",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh19_sttm_desktop_2026_10_11T20_08_08_535Z",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh20_sttm_desktop_2026_10_11T20_15_43_327Z",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh21_sttm_desktop_2026_10_11T20_29_16_335Z",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh22_sttm_desktop_2026_10_11T20_36_12_345Z",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh23_sttm_desktop_2026_10_13T01_50_01_713Z",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh24_sttm_desktop_2026_10_13T02_34_02_550Z",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh25_sttm_desktop_2026_10_13T02_37_22_571Z",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh26_sttm_desktop_2026_10_13T02_43_13_981Z",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh27_sttm_desktop_2026_10_13T02_48_34_427Z",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh28_sttm_desktop_2026_10_13T03_01_13_513Z",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh29_sttm_desktop_2026_10_13T03_13_38_540Z",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh30_sttm_desktop_2026_10_14T02_35_12_435Z",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh31_sttm_desktop_2026_10_14T02_38_09_370Z",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "kh32_sttm_desktop_2026_10_14T03_11_54_037Z",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Fremont (Jaspal)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "rt11_rehras",
+"split": "test",
+"folder": "2-bani-recited/rehras",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "rt11_aarti",
+"split": "test",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "rt11_sohila",
+"split": "test",
+"folder": "2-bani-recited/sohila",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "rt11_kirtan1",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "rt11_fareed1",
+"split": "test",
+"folder": "3-bani-sung-like-kirtan/saloks-sung",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "rt11_fareed2",
+"split": "test",
+"folder": "3-bani-sung-like-kirtan/saloks-sung",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "rt11_hukamnama",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "rt11_handover",
+"split": "test",
+"folder": "3-bani-sung-like-kirtan/aarti",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "nw11_asa1",
+"split": "test",
+"folder": "3-bani-sung-like-kirtan/asa-di-vaar",
+"gurdwara": "Khalsa School Newton",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "nw11_asa2",
+"split": "test",
+"folder": "3-bani-sung-like-kirtan/asa-di-vaar",
+"gurdwara": "Khalsa School Newton",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "nw11_kirtan2",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Khalsa School Newton",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "nw11_kirtan3",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Khalsa School Newton",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "nw11_kirtan4",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Khalsa School Newton",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "ytasa1_4IXk2t_Irqo_900-1620",
+"split": "dev",
+"folder": "3-bani-sung-like-kirtan/asa-di-vaar",
+"gurdwara": "YouTube Asa di Vaar",
+"youtube_id": "4IXk2t_Irqo",
+"start_s": 900,
+"end_s": 1620
+},
+{
+"id": "ut13_s90",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "User test (Arash, home)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "ut13_s91",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "User test (Arash, home)",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "sp01_FGWBnA3nIOI_60-660",
+"split": "dev",
+"folder": "4-akhand-paath",
+"gurdwara": "Sehaj Path Ang 100-109, Bhai Sahib Singh Canada Wale",
+"youtube_id": "FGWBnA3nIOI",
+"start_s": 60,
+"end_s": 660
+},
+{
+"id": "sp02_n-xzrmDTrqY_60-660",
+"split": "dev",
+"folder": "4-akhand-paath",
+"gurdwara": "Sehaj Path Ang 103-110, Bhai Sarwan Singh",
+"youtube_id": "n-xzrmDTrqY",
+"start_s": 60,
+"end_s": 660
+},
+{
+"id": "sp03_06tOxT1xYu0_60-660",
+"split": "dev",
+"folder": "4-akhand-paath",
+"gurdwara": "Sehaj Path Ang 1000-1010, Bhai Gurpreet Singh NalviWale",
+"youtube_id": "06tOxT1xYu0",
+"start_s": 60,
+"end_s": 660
+},
+{
+"id": "nw11_session",
+"split": "test",
+"folder": "3-bani-sung-like-kirtan/asa-di-vaar",
+"gurdwara": "Khalsa School Newton",
+"youtube_id": "",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "ytrehras_Rt1TyWzPykc_4339-6253",
+"split": "test",
+"folder": "3-bani-sung-like-kirtan/rehras-sung",
+"gurdwara": "YouTube: Brother of Heaven, 'Sikh Daily Prayers: Each Nitnem Read-Along' (2025-04-18)",
+"youtube_id": "Rt1TyWzPykc",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "ytasa2_iB7HUIMltf4_full",
+"split": "test",
+"folder": "3-bani-sung-like-kirtan/asa-di-vaar",
+"gurdwara": "YouTube: Basics of Sikhi, 'Asa Ki Vaar by Rajan Singh B&B UK 2017' (2018-02-15)",
+"youtube_id": "iB7HUIMltf4",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "ytsukhmani_WV_66CLSQSU_full",
+"split": "test",
+"folder": "2-bani-recited/sukhmani",
+"gurdwara": "Sukhmani Sahib (RajKaregaKhalsa.Net video)",
+"youtube_id": "WV_66CLSQSU",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "ytsalokm9_UI8D1oI5aNk_full",
+"split": "test",
+"folder": "2-bani-recited/salok-m9",
+"gurdwara": "YouTube: Nirvair Khalsa Jatha UK, 'Salok Mehalaa 9' (2021-05-01)",
+"youtube_id": "UI8D1oI5aNk",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "ytkabeer_Zs5qq_OljyQ_full",
+"split": "test",
+"folder": "2-bani-recited/salok-kabeer",
+"gurdwara": "YouTube: rajikaurrr, 'Salok Bhagat Kabir Jeeo Ke' (2012-07-06)",
+"youtube_id": "Zs5qq_OljyQ",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "ytap_XEhUI8Vurj8_600-1200",
+"split": "test",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '97th Part Ang 1414 Pankti 10 to Ang 1426 Pankti 08 Guru Granth Sahib Ji in Punjabi, Hindi & English'",
+"youtube_id": "XEhUI8Vurj8",
+"start_s": 600,
+"end_s": 1200
+},
+{
+"id": "ytap_XEhUI8Vurj8_600-1200_x1.35",
+"split": "test",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '97th Part Ang 1414 Pankti 10 to Ang 1426 Pankti 08 Guru Granth Sahib Ji in Punjabi, Hindi & English'",
+"youtube_id": "XEhUI8Vurj8",
+"start_s": 600,
+"end_s": 1200
+},
+{
+"id": "ytjaap_RVz4yCr8j6A_full",
+"split": "test",
+"folder": "2-bani-recited/jaap",
+"gurdwara": "YouTube: SikhNet, 'Jaap Sahib with Gurmukhi, Transliteration and English subtitles' (2025-07-17)",
+"youtube_id": "RVz4yCr8j6A",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "ytfareed_jC8GOCZm0x0_full",
+"split": "test",
+"folder": "2-bani-recited/salok-fareed",
+"gurdwara": "YouTube: rajikaurrr, 'Salok Sheikh Fareed Ke' (2015-03-07)",
+"youtube_id": "jC8GOCZm0x0",
+"start_s": null,
+"end_s": null
+},
+{
+"id": "ytap_-1yA1ufOku0_2000-2600",
+"split": "train",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '91th Part Ang 1353 Pankti 04 to Ang 1363 Pankti 07 Audio Path Guru Granth Sahib With Hindi Meaning'",
+"youtube_id": "-1yA1ufOku0",
+"start_s": 2000,
+"end_s": 2600
+},
+{
+"id": "ytap_-1yA1ufOku0_2000-2600_x1.35",
+"split": "train",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '91th Part Ang 1353 Pankti 04 to Ang 1363 Pankti 07 Audio Path Guru Granth Sahib With Hindi Meaning'",
+"youtube_id": "-1yA1ufOku0",
+"start_s": 2000,
+"end_s": 2600
+},
+{
+"id": "ytap_5N6Cgw8WAaY_1200-1800",
+"split": "train",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '54th Part Ang 779 Pankti 09 to Ang 794 Pankti 19 Guru Granth Sahib Ji in Punjabi, Hindi & English'",
+"youtube_id": "5N6Cgw8WAaY",
+"start_s": 1200,
+"end_s": 1800
+},
+{
+"id": "ytap_5N6Cgw8WAaY_1200-1800_x1.35",
+"split": "train",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '54th Part Ang 779 Pankti 09 to Ang 794 Pankti 19 Guru Granth Sahib Ji in Punjabi, Hindi & English'",
+"youtube_id": "5N6Cgw8WAaY",
+"start_s": 1200,
+"end_s": 1800
+},
+{
+"id": "ytap_67Z-uUuScfs_300-900",
+"split": "train",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '45th Part Ang 645 Pankti 12 to Ang 661 Pankti 02 Sahaj Path Sri Guru Granth Sahib Ji Full'",
+"youtube_id": "67Z-uUuScfs",
+"start_s": 300,
+"end_s": 900
+},
+{
+"id": "ytap_67Z-uUuScfs_300-900_x1.35",
+"split": "train",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '45th Part Ang 645 Pankti 12 to Ang 661 Pankti 02 Sahaj Path Sri Guru Granth Sahib Ji Full'",
+"youtube_id": "67Z-uUuScfs",
+"start_s": 300,
+"end_s": 900
+},
+{
+"id": "ytap_DDHRQqbEnyo_1200-1800",
+"split": "train",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '2nd Part Ang 0016 Pankti 05 to Ang 0029 Pankti 10 Sri Guru Granth Sahib Ji Path Audio with Subtitles'",
+"youtube_id": "DDHRQqbEnyo",
+"start_s": 1200,
+"end_s": 1800
+},
+{
+"id": "ytap_DDHRQqbEnyo_1200-1800_x1.35",
+"split": "train",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '2nd Part Ang 0016 Pankti 05 to Ang 0029 Pankti 10 Sri Guru Granth Sahib Ji Path Audio with Subtitles'",
+"youtube_id": "DDHRQqbEnyo",
+"start_s": 1200,
+"end_s": 1800
+},
+{
+"id": "ytap_OrG2-IsMDfg_1500-2100",
+"split": "train",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '64th Part Ang 938 Pankti 05 to Ang 953 Pankti 18 Path Sri Guru Granth Sahib Ji Audio & Video'",
+"youtube_id": "OrG2-IsMDfg",
+"start_s": 1500,
+"end_s": 2100
+},
+{
+"id": "ytap_OrG2-IsMDfg_1500-2100_x1.35",
+"split": "train",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '64th Part Ang 938 Pankti 05 to Ang 953 Pankti 18 Path Sri Guru Granth Sahib Ji Audio & Video'",
+"youtube_id": "OrG2-IsMDfg",
+"start_s": 1500,
+"end_s": 2100
+},
+{
+"id": "ytap_PB6nfe3QKn4_900-1500",
+"split": "dev",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '21th Part Ang 296 Pankti 10 to Ang 311 Pankti 02 Guru Granth Sahib Ji English & Hindi Translation'",
+"youtube_id": "PB6nfe3QKn4",
+"start_s": 900,
+"end_s": 1500
+},
+{
+"id": "ytap_PB6nfe3QKn4_900-1500_x1.35",
+"split": "dev",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '21th Part Ang 296 Pankti 10 to Ang 311 Pankti 02 Guru Granth Sahib Ji English & Hindi Translation'",
+"youtube_id": "PB6nfe3QKn4",
+"start_s": 900,
+"end_s": 1500
+},
+{
+"id": "ytap_cKpg64jaTAo_1200-1800",
+"split": "dev",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '72th Part Ang 1066 Pankti 01 to Ang 1083 Pankti 13 Guru Granth Sahib Ji in Punjabi, Hindi & English'",
+"youtube_id": "cKpg64jaTAo",
+"start_s": 1200,
+"end_s": 1800
+},
+{
+"id": "ytap_cKpg64jaTAo_1200-1800_x1.35",
+"split": "dev",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '72th Part Ang 1066 Pankti 01 to Ang 1083 Pankti 13 Guru Granth Sahib Ji in Punjabi, Hindi & English'",
+"youtube_id": "cKpg64jaTAo",
+"start_s": 1200,
+"end_s": 1800
+},
+{
+"id": "ytap_mUPs0SqeXvY_1500-2100",
+"split": "test",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '82th Part - Ang 1229 Pankti 02 to Ang 1244 Pankti 04 Sri Guru Granth Sahib Ji Gurbani Sehaj Path'",
+"youtube_id": "mUPs0SqeXvY",
+"start_s": 1500,
+"end_s": 2100
+},
+{
+"id": "ytap_mUPs0SqeXvY_1500-2100_x1.35",
+"split": "test",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '82th Part - Ang 1229 Pankti 02 to Ang 1244 Pankti 04 Sri Guru Granth Sahib Ji Gurbani Sehaj Path'",
+"youtube_id": "mUPs0SqeXvY",
+"start_s": 1500,
+"end_s": 2100
+},
+{
+"id": "ytap_q_dwf8YWdXY_300-900",
+"split": "train",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '33th Part Ang 485 Pankti 01 to Ang 496 Pankti 03 Path Sri Guru Granth Sahib Ji Video & Audio'",
+"youtube_id": "q_dwf8YWdXY",
+"start_s": 300,
+"end_s": 900
+},
+{
+"id": "ytap_q_dwf8YWdXY_300-900_x1.35",
+"split": "train",
+"folder": "4-akhand-paath",
+"gurdwara": "YouTube playlist 'Sri Guru Granth Sahib Ji' Ang after Ang (PLZYyMXQ_ASWT31CR_szaYgaTdFiH_e4T2): '33th Part Ang 485 Pankti 01 to Ang 496 Pankti 03 Path Sri Guru Granth Sahib Ji Video & Audio'",
+"youtube_id": "q_dwf8YWdXY",
+"start_s": 300,
+"end_s": 900
+},
+{
+"id": "rn01",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 2055,
+"end_s": 2195
+},
+{
+"id": "rn02",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 2470,
+"end_s": 2910
+},
+{
+"id": "rn03",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 3020,
+"end_s": 3345
+},
+{
+"id": "rn04",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 3305,
+"end_s": 3630
+},
+{
+"id": "rn05",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 3750,
+"end_s": 3910
+},
+{
+"id": "rn06",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 4030,
+"end_s": 4400
+},
+{
+"id": "rn07",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 4360,
+"end_s": 4645
+},
+{
+"id": "rn08",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 4670,
+"end_s": 5450
+},
+{
+"id": "rn09",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 5410,
+"end_s": 5710
+},
+{
+"id": "rn10",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 5790,
+"end_s": 6205
+},
+{
+"id": "rn11",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 6170,
+"end_s": 6570
+},
+{
+"id": "rn12",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 6585,
+"end_s": 7070
+},
+{
+"id": "rn13",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 7030,
+"end_s": 7290
+},
+{
+"id": "rn14",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 7250,
+"end_s": 8110
+},
+{
+"id": "rn15",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 8200,
+"end_s": 8545
+},
+{
+"id": "rn16",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 8505,
+"end_s": 8775
+},
+{
+"id": "rn17",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 8735,
+"end_s": 9435
+},
+{
+"id": "rn18",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 9395,
+"end_s": 9710
+},
+{
+"id": "rn19",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 9710,
+"end_s": 10125
+},
+{
+"id": "rn20",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 10412,
+"end_s": 10812
+},
+{
+"id": "rn21",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 11490,
+"end_s": 11960
+},
+{
+"id": "rn22",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 11920,
+"end_s": 12310
+},
+{
+"id": "rn23",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "EyKDbSzESi0",
+"start_s": 13095,
+"end_s": 13335
+},
+{
+"id": "rn24",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "vvCujWQITiU",
+"start_s": 0,
+"end_s": 155
+},
+{
+"id": "rn25",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "vvCujWQITiU",
+"start_s": 175,
+"end_s": 310
+},
+{
+"id": "rn26",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "vvCujWQITiU",
+"start_s": 585,
+"end_s": 1385
+},
+{
+"id": "rn27",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "vvCujWQITiU",
+"start_s": 1345,
+"end_s": 2370
+},
+{
+"id": "rn28",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "vvCujWQITiU",
+"start_s": 2590,
+"end_s": 2820
+},
+{
+"id": "rn29",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "vvCujWQITiU",
+"start_s": 3060,
+"end_s": 3635
+},
+{
+"id": "rn30",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "vvCujWQITiU",
+"start_s": 3595,
+"end_s": 3855
+},
+{
+"id": "rn31",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "vvCujWQITiU",
+"start_s": 3915,
+"end_s": 4915
+},
+{
+"id": "rn32",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "vvCujWQITiU",
+"start_s": 5025,
+"end_s": 5280
+},
+{
+"id": "rn33",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "vvCujWQITiU",
+"start_s": 5480,
+"end_s": 6395
+},
+{
+"id": "rn34",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "vvCujWQITiU",
+"start_s": 6355,
+"end_s": 6550
+},
+{
+"id": "rn35",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "vvCujWQITiU",
+"start_s": 6890,
+"end_s": 7230
+},
+{
+"id": "rn36",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "vvCujWQITiU",
+"start_s": 7290,
+"end_s": 7470
+},
+{
+"id": "rn37",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "zuCiaw0exFA",
+"start_s": 15,
+"end_s": 570
+},
+{
+"id": "rn38",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "zuCiaw0exFA",
+"start_s": 530,
+"end_s": 1305
+},
+{
+"id": "rn39",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "zuCiaw0exFA",
+"start_s": 1390,
+"end_s": 1930
+},
+{
+"id": "rn40",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "zuCiaw0exFA",
+"start_s": 2075,
+"end_s": 3230
+},
+{
+"id": "rn41",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "zuCiaw0exFA",
+"start_s": 7270,
+"end_s": 7990
+},
+{
+"id": "rn42",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "zuCiaw0exFA",
+"start_s": 7950,
+"end_s": 8390
+},
+{
+"id": "rn43",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "zuCiaw0exFA",
+"start_s": 8350,
+"end_s": 9095
+},
+{
+"id": "rn44",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "zuCiaw0exFA",
+"start_s": 9055,
+"end_s": 9980
+},
+{
+"id": "rn45",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "zuCiaw0exFA",
+"start_s": 9940,
+"end_s": 10600
+},
+{
+"id": "rn46",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "zuCiaw0exFA",
+"start_s": 10590,
+"end_s": 10805
+},
+{
+"id": "rn47",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "zuCiaw0exFA",
+"start_s": 10830,
+"end_s": 11415
+},
+{
+"id": "rn48",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "zuCiaw0exFA",
+"start_s": 11465,
+"end_s": 11660
+},
+{
+"id": "rn49",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "zuCiaw0exFA",
+"start_s": 11765,
+"end_s": 12110
+},
+{
+"id": "rn50",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 0,
+"end_s": 600
+},
+{
+"id": "rn51",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 2765,
+"end_s": 2945
+},
+{
+"id": "rn52",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 2905,
+"end_s": 3475
+},
+{
+"id": "rn53",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 3495,
+"end_s": 4040
+},
+{
+"id": "rn54",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 5515,
+"end_s": 6115
+},
+{
+"id": "rn55",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 6940,
+"end_s": 7170
+},
+{
+"id": "rn56",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 10265,
+"end_s": 10490
+},
+{
+"id": "rn57",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 10450,
+"end_s": 10745
+},
+{
+"id": "rn58",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 10840,
+"end_s": 11150
+},
+{
+"id": "rn59",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 11150,
+"end_s": 11580
+},
+{
+"id": "rn60",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 11570,
+"end_s": 11815
+},
+{
+"id": "rn61",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 11840,
+"end_s": 12165
+},
+{
+"id": "rn62",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 12655,
+"end_s": 13275
+},
+{
+"id": "rn63",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 13235,
+"end_s": 14810
+},
+{
+"id": "rn64",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 16415,
+"end_s": 16835
+},
+{
+"id": "rn65",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 16795,
+"end_s": 17360
+},
+{
+"id": "rn66",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 17320,
+"end_s": 17930
+},
+{
+"id": "rn67",
+"split": "dev",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "iattXPs7Chg",
+"start_s": 17890,
+"end_s": 18395
+},
+{
+"id": "rn68",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 490,
+"end_s": 620
+},
+{
+"id": "rn69",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 900,
+"end_s": 1065
+},
+{
+"id": "rn70",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 1060,
+"end_s": 1720
+},
+{
+"id": "rn71",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 1680,
+"end_s": 2395
+},
+{
+"id": "rn72",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 2355,
+"end_s": 3485
+},
+{
+"id": "rn73",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 3445,
+"end_s": 3605
+},
+{
+"id": "rn74",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 3565,
+"end_s": 3775
+},
+{
+"id": "rn75",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 6335,
+"end_s": 6790
+},
+{
+"id": "rn76",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 6865,
+"end_s": 7475
+},
+{
+"id": "rn77",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 7435,
+"end_s": 8565
+},
+{
+"id": "rn78",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 8870,
+"end_s": 9540
+},
+{
+"id": "rn79",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 9745,
+"end_s": 10100
+},
+{
+"id": "rn80",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 10060,
+"end_s": 10660
+},
+{
+"id": "rn81",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurdwara Sahib Renton",
+"youtube_id": "l0EIMAuC0_U",
+"start_s": 10620,
+"end_s": 10820
+},
+{
+"id": "yuba01",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "jqEe6HCdGfo",
+"start_s": 0,
+"end_s": 483
+},
+{
+"id": "yuba02",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "Z3EZXcfJwAA",
+"start_s": 0,
+"end_s": 415
+},
+{
+"id": "yuba03",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "PKY0BQ8UB_E",
+"start_s": 0,
+"end_s": 544
+},
+{
+"id": "yuba04",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "2JBgXsU_fWI",
+"start_s": 0,
+"end_s": 712
+},
+{
+"id": "yuba05",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "J_AvMnaS_VI",
+"start_s": 0,
+"end_s": 276
+},
+{
+"id": "yuba06",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "NnnDZUscqvY",
+"start_s": 0,
+"end_s": 285
+},
+{
+"id": "yuba07",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "OSyPLtJWTXE",
+"start_s": 0,
+"end_s": 637
+},
+{
+"id": "yuba09",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "dDqADgSger4",
+"start_s": 0,
+"end_s": 345
+},
+{
+"id": "yuba10",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "PNXh-g-VsG8",
+"start_s": 0,
+"end_s": 831
+},
+{
+"id": "yuba11",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "AI5tu-IuNKw",
+"start_s": 0,
+"end_s": 170
+},
+{
+"id": "yuba12",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "CywrKsn6BmU",
+"start_s": 0,
+"end_s": 904
+},
+{
+"id": "yuba13",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "am1LMfhcGZ4",
+"start_s": 0,
+"end_s": 348
+},
+{
+"id": "yuba14",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "iA7SWl8kFM8",
+"start_s": 0,
+"end_s": 655
+},
+{
+"id": "yuba15",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "3cRxk-7gG4k",
+"start_s": 0,
+"end_s": 870
+},
+{
+"id": "yuba16",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "2n2WB_X3D5c",
+"start_s": 0,
+"end_s": 882
+},
+{
+"id": "yuba17",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "UsjYm_4ZZAw",
+"start_s": 0,
+"end_s": 542
+},
+{
+"id": "yuba18",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Gurudwara Yuba City (Jas Gurbani recordings)",
+"youtube_id": "O5Cyf05GSdQ",
+"start_s": 0,
+"end_s": 484
+},
+{
+"id": "l3clip01",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "AKJ Toronto Smagam 2022 (AKJ.Org)",
+"youtube_id": "WuciQokua6w",
+"start_s": 60,
+"end_s": 615
+},
+{
+"id": "l3clip02",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "AKJ Toronto Smagam 2022 (AKJ.Org)",
+"youtube_id": "WuciQokua6w",
+"start_s": 575,
+"end_s": 925
+},
+{
+"id": "l3clip03",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "AKJ Toronto Smagam 2022 (AKJ.Org)",
+"youtube_id": "WuciQokua6w",
+"start_s": 885,
+"end_s": 1270
+},
+{
+"id": "l3clip04",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "AKJ Toronto Smagam 2022 (AKJ.Org)",
+"youtube_id": "WuciQokua6w",
+"start_s": 1710,
+"end_s": 1970
+},
+{
+"id": "l3clip05",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "AKJ Toronto Smagam 2022, Saturday PM (AKJ.Org)",
+"youtube_id": "Q5QFYd6sL_w",
+"start_s": 85,
+"end_s": 1200
+},
+{
+"id": "l3clip06",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "AKJ Toronto Smagam 2022, Saturday PM (AKJ.Org)",
+"youtube_id": "Q5QFYd6sL_w",
+"start_s": 1360,
+"end_s": 1875
+},
+{
+"id": "l3clip07",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "AKJ Toronto Smagam 2022, Saturday PM (AKJ.Org)",
+"youtube_id": "Q5QFYd6sL_w",
+"start_s": 2565,
+"end_s": 3005
+},
+{
+"id": "l3clip08",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "AKJ Toronto Smagam 2022, Saturday PM (AKJ.Org)",
+"youtube_id": "Q5QFYd6sL_w",
+"start_s": 3035,
+"end_s": 3435
+},
+{
+"id": "l3clip09",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "AKJ Toronto Smagam 2022, Saturday PM (AKJ.Org)",
+"youtube_id": "Q5QFYd6sL_w",
+"start_s": 3395,
+"end_s": 3805
+},
+{
+"id": "l3clip10",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "AKJ Toronto Smagam 2022, Saturday PM (AKJ.Org)",
+"youtube_id": "Q5QFYd6sL_w",
+"start_s": 3765,
+"end_s": 3915
+},
+{
+"id": "l3clip12",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "AKJ Toronto Smagam 2022, Saturday PM (AKJ.Org)",
+"youtube_id": "Q5QFYd6sL_w",
+"start_s": 4090,
+"end_s": 4425
+},
+{
+"id": "l3clip13",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "AKJ Toronto Smagam 2022, Saturday PM (AKJ.Org)",
+"youtube_id": "Q5QFYd6sL_w",
+"start_s": 4385,
+"end_s": 4525
+},
+{
+"id": "l3clip14",
+"split": "test",
+"folder": "1-kirtan-shabad",
+"gurdwara": "AKJ Toronto Smagam 2022, Saturday PM (AKJ.Org)",
+"youtube_id": "Q5QFYd6sL_w",
+"start_s": 4490,
+"end_s": 5720
+},
+{
+"id": "l3clip15",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 0,
+"end_s": 220
+},
+{
+"id": "l3clip16",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 180,
+"end_s": 365
+},
+{
+"id": "l3clip18",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 615,
+"end_s": 750
+},
+{
+"id": "l3clip19",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 710,
+"end_s": 1075
+},
+{
+"id": "l3clip21",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 1500,
+"end_s": 1640
+},
+{
+"id": "l3clip22",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 1700,
+"end_s": 1820
+},
+{
+"id": "l3clip23",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 1945,
+"end_s": 2050
+},
+{
+"id": "l3clip24",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 2050,
+"end_s": 2115
+},
+{
+"id": "l3clip26",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 2390,
+"end_s": 2790
+},
+{
+"id": "l3clip27",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 2785,
+"end_s": 3110
+},
+{
+"id": "l3clip29",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 3298,
+"end_s": 3480
+},
+{
+"id": "l3clip31",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 3585,
+"end_s": 3820
+},
+{
+"id": "l3clip32",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 3780,
+"end_s": 4285
+},
+{
+"id": "l3clip34",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 4290,
+"end_s": 4630
+},
+{
+"id": "l3clip35",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 4590,
+"end_s": 4670
+},
+{
+"id": "l3clip36",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 4650,
+"end_s": 4740
+},
+{
+"id": "l3clip37",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 4700,
+"end_s": 4840
+},
+{
+"id": "l3clip38",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 4800,
+"end_s": 4885
+},
+{
+"id": "l3clip39",
+"split": "train",
+"folder": "1-kirtan-shabad",
+"gurdwara": "Manchester Smagam 2024 Rehnsabhai (Bhai Manpreet Singh Kanpuri)",
+"youtube_id": "V9r_8qByAXs",
+"start_s": 4850,
+"end_s": 5025
+}
+]
