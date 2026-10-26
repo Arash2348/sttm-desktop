@@ -529,6 +529,7 @@
     "INTRO_START": "Start",
     "INTRO_LATER": "Not now",
     "START_DESC": "Listens to the kirtan and follows the shabad on display.",
+    "RUNTIME_OFF": "Voice Autopilot can't start on this computer: the Microsoft Visual C++ runtime is missing or Windows blocked a component. Install the Microsoft Visual C++ Redistributable (x64) and restart.",
     "LISTENING_THROUGH": "Listening through",
     "HW_CHECK": "Check this computer",
     "HW_RUNNING": "Checking this computer (about 10 seconds)…",

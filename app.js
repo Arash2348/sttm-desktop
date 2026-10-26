@@ -1218,6 +1218,26 @@ if (!singleInstanceLock) {
   });
 }
 
+// A crash anywhere (the controller window, a display, the GPU, the retrieval worker) leaves a
+// line in logs/main.log with the reason and exit code, so a tester's "it closed on launch"
+// can be told apart: renderer crash (native module), GPU, out of memory, or the app quitting.
+app.on('render-process-gone', (_event, contents, details) => {
+  let url = '';
+  try {
+    url = contents.getURL().split('/').pop();
+  } catch (_) {
+    /* destroyed */
+  }
+  log.error(`[crash] renderer gone (${url}): ${details.reason} exit ${details.exitCode}`);
+});
+app.on('child-process-gone', (_event, details) => {
+  log.error(
+    `[crash] ${details.type} process gone${details.name ? ` (${details.name})` : ''}: ${
+      details.reason
+    } exit ${details.exitCode}`,
+  );
+});
+
 app.on('open-url', (event, url) => {
   handleDeeplink(url);
 });

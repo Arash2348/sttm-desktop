@@ -34,6 +34,17 @@ $vf2-yellow-bar: #f2c200;
   color: $vf2-muted;
   word-break: break-word;
 }
+// The speech runtime cannot load on this computer: what to install, with the link as text.
+.vf-runtime-off {
+  color: inherit;
+  user-select: text;
+}
+.vf-runtime-url {
+  display: block;
+  margin-top: 4px;
+  font-family: monospace;
+  user-select: text;
+}
 
 .vf2-body {
   display: flex;

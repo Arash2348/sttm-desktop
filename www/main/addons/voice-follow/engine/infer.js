@@ -1,7 +1,34 @@
 // Shared karansea CTC inference core (JS port of the numpy bits).
-const ort = require('onnxruntime-node');
 const VOCAB = require('./assets/vocab'); // id -> piece
 const pace = require('./pace');
+
+// The native ONNX Runtime binding is loaded on first use, never at module load: on a computer
+// where it cannot load (the Microsoft Visual C++ runtime missing, or Windows Smart App Control /
+// Defender blocking onnxruntime_binding.node) the require throws, and a throw at import time
+// took the whole STTM window down with it. Now only Voice Autopilot reports it.
+// VF_SIMULATE_ORT_FAIL=1 makes the load fail on purpose (to test that path on any computer).
+const RUNTIME_UNAVAILABLE = 'VF_RUNTIME_UNAVAILABLE';
+let ortModule = null;
+let ortError = null;
+function loadOrt() {
+  if (ortModule) return ortModule;
+  if (ortError) throw ortError;
+  try {
+    if (process.env.VF_SIMULATE_ORT_FAIL) {
+      throw new Error('onnxruntime_binding.node: simulated load failure (VF_SIMULATE_ORT_FAIL)');
+    }
+    // eslint-disable-next-line global-require
+    ortModule = require('onnxruntime-node');
+    return ortModule;
+  } catch (e) {
+    const err = new Error(`speech runtime could not load: ${(e && e.message) || e}`);
+    err.code = RUNTIME_UNAVAILABLE;
+    err.cause = e;
+    ortError = err;
+    throw err;
+  }
+}
+const isRuntimeUnavailable = (e) => !!e && e.code === RUNTIME_UNAVAILABLE;
 
 const TEST_PASS_MS = process.env.VF_TEST_WAV ? Number(process.env.VF_TEST_PASS_MS || 0) : 0;
 const SR = 16000;
@@ -83,6 +110,7 @@ class Infer {
     const env = parseInt(process.env.VF_ORT_THREADS || '', 10);
     let threads = cores >= 8 ? 4 : Math.max(1, Math.min(2, cores));
     if (env > 0) threads = env;
+    const ort = loadOrt();
     const sess = await ort.InferenceSession.create(modelPath, {
       intraOpNumThreads: threads,
       interOpNumThreads: 1,
@@ -118,6 +146,7 @@ class Infer {
 
   // One model pass, untimed (emissions() times it: a benchmark that slows the model wraps run).
   async run(buf) {
+    const ort = loadOrt();
     const feeds = {
       audio: new ort.Tensor('float32', buf, [1, buf.length]),
       audio_len: new ort.Tensor('int64', BigInt64Array.from([BigInt(buf.length)]), [1]),
@@ -168,4 +197,13 @@ class Infer {
   }
 }
 
-module.exports = { Infer, resampleTo16k, norm, SR, BLANK };
+module.exports = {
+  Infer,
+  resampleTo16k,
+  norm,
+  SR,
+  BLANK,
+  loadOrt,
+  isRuntimeUnavailable,
+  RUNTIME_UNAVAILABLE,
+};

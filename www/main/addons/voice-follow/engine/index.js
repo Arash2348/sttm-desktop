@@ -10,7 +10,7 @@
 //   const rec = await engine.createRecognizer(); // blind auto-detect
 //   const fol = await engine.createFollower(lines, opts); // track a shabad
 //   const out = await fol.push(float32PcmChunk); // per audio chunk
-const { Infer, norm } = require('./infer');
+const { Infer, norm, loadOrt, isRuntimeUnavailable } = require('./infer');
 const { SP } = require('./sentencepiece');
 const { Recognizer } = require('./recognizer');
 const { Follower } = require('./follower');
@@ -29,6 +29,9 @@ let loadedInfer = null; // the shared session once it is up (for perfStats)
 async function ready(onProgress) {
   if (!inferPromise) {
     inferPromise = (async () => {
+      // The native runtime first: a computer that cannot load it gets the reason now
+      // (isRuntimeUnavailable), not after a 184 MB download it could never use.
+      loadOrt();
       const modelPath = await modelManager.ensureModel(onProgress);
       loadedInfer = await Infer.create(modelPath);
       // ~1-2 s: pick the performance tier this computer can keep up with (see pace).
@@ -90,6 +93,8 @@ module.exports = {
   createRecognizer,
   createFollower,
   createPaathFollower,
+  // True for the error ready() rejects with when the native speech runtime cannot load.
+  isRuntimeUnavailable,
   // Performance tiers (self-test, live stepping, tier for the session log).
   pace,
   // Text helpers reused by the supervisor for acoustic switch-scoring: `norm`

@@ -30,7 +30,7 @@ const { vfAnalytics, createRunStats } = require('./vfAnalytics');
 
 installDemoAudio(); // developer demos only (VF_DEMO_WAV); a no-op otherwise
 const shadowBus = require('../shadow/bus');
-const { diag } = require('../shadow/diag');
+const { diag, errText } = require('../shadow/diag');
 const { SHADOW_BUILD, SHADOW_CPU_PAUSE, SHADOW_CPU_RESUME } = require('../shadow/config');
 const os = require('os'); // eslint-disable-line import/order
 const fs = require('fs'); // eslint-disable-line import/order
@@ -68,7 +68,27 @@ const WARM_MODEL_DELAY_MS = 2000;
 // renderer, so the guard delays the load; it never cancels it.
 const WARM_MODEL_BUSY_RETRY_MS = 30000;
 const WARM_MODEL_BUSY_RETRIES = 2;
-let modelWarm = 'idle'; // 'idle' | 'scheduled' | 'done'
+let modelWarm = 'idle'; // 'idle' | 'scheduled' | 'done' | 'blocked'
+
+// The native speech runtime could not load on this computer (engine/infer loadOrt: Visual C++
+// runtime missing, or Windows blocked onnxruntime_binding.node). The rest of STTM runs as
+// normal; the panel says why Voice Autopilot cannot start and the real error goes to
+// errors.log once. Panels subscribe so a failure found by the background warm-up shows too.
+const VC_REDIST_URL = 'https://aka.ms/vs/17/release/vc_redist.x64.exe';
+let runtimeOff = false;
+const runtimeListeners = new Set();
+const noteRuntimeError = (e) => {
+  if (!engine.isRuntimeUnavailable(e)) return false;
+  if (!runtimeOff) {
+    runtimeOff = true;
+    diag(`vf runtime unavailable: ${errText((e && e.cause) || e)}`);
+    runtimeListeners.forEach((fn) => fn());
+  }
+  return true;
+};
+// Detail line for a failed engine.ready(): empty when the runtime notice explains it.
+const modelErrDetail = (e) =>
+  noteRuntimeError(e) ? '' : `could not prepare the recognition model: ${e?.message || e}`;
 const atIdle = (fn) => {
   if (typeof window !== 'undefined' && window.requestIdleCallback) {
     window.requestIdleCallback(fn, { timeout: 5000 });
@@ -98,6 +118,10 @@ const warmModel = (delayMs = WARM_MODEL_DELAY_MS) => {
             diag(`vf model warm in ${Date.now() - t0} ms (cpu busy ${Math.round(busy * 100)}%)`);
           },
           (e) => {
+            if (noteRuntimeError(e)) {
+              modelWarm = 'blocked'; // cannot load on this computer: no retries
+              return;
+            }
             modelWarm = 'idle'; // Start will try again and show the error itself
             diag(`vf model warm failed: ${(e && e.message) || e}`);
           },
@@ -1082,6 +1106,13 @@ const VoiceFollow = () => {
   };
 
   const [status, setStatus] = useState('idle'); // idle|connecting|listening|detecting|error|stopped
+  const [noRuntime, setNoRuntime] = useState(runtimeOff);
+  useEffect(() => {
+    const fn = () => setNoRuntime(true);
+    runtimeListeners.add(fn);
+    if (runtimeOff) fn();
+    return () => runtimeListeners.delete(fn);
+  }, []);
   const [autopilot] = useState(true); // hands-free: detect + follow + auto-switch, one press
   const vetoRef = useRef(null); // { id, left }: shabad a tap just left, and judged decodes remaining
   const baniLengthRef = useRef('short');
@@ -1964,7 +1995,7 @@ const VoiceFollow = () => {
     } catch (e) {
       if (session !== sessionRef.current) return;
       setStatus('error');
-      setDetail(`could not prepare the recognition model: ${e?.message || e}`);
+      setDetail(modelErrDetail(e));
       vfError('model_load_failed');
       setDlProgress(null);
       return;
@@ -4161,7 +4192,7 @@ const VoiceFollow = () => {
     } catch (e) {
       if (session !== sessionRef.current) return;
       setStatus('error');
-      setDetail(`could not prepare the recognition model: ${e?.message || e}`);
+      setDetail(modelErrDetail(e));
       vfError('model_load_failed');
       setDlProgress(null);
       recognizingRef.current = false;
@@ -4271,7 +4302,7 @@ const VoiceFollow = () => {
     } catch (e) {
       if (session !== sessionRef.current) return;
       setStatus('error');
-      setDetail(`could not prepare the recognition model: ${e?.message || e}`);
+      setDetail(modelErrDetail(e));
       vfError('model_load_failed');
       setDlProgress(null);
       autopilotRef.current = false;
@@ -5299,9 +5330,16 @@ const VoiceFollow = () => {
               </select>
             </span>
           </label>
-          <HwCheck />
+          {noRuntime ? (
+            <div className="vf-status vf-runtime-off" role="alert">
+              {i18n.t('VOICE_FOLLOW.RUNTIME_OFF')}
+              <span className="vf-runtime-url">{VC_REDIST_URL}</span>
+            </div>
+          ) : (
+            <HwCheck />
+          )}
           {dlBar}
-          {status === 'error' && <div className="vf-status">{statusText}</div>}
+          {status === 'error' && !noRuntime && <div className="vf-status">{statusText}</div>}
           {ratingAsk}
         </div>
       )}

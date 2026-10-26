@@ -74,23 +74,27 @@ const ViewerState = createStore({
     },
     quickToolsOpen: false,
     paddingToolsOpen: false,
+    // These actions only mutate the draft and never return it. easy-peasy 6.1.1 writes a
+    // returned nested draft into the previous state object; when the action changes nothing
+    // (a padding value it already has, a panel already closed) that previous object stays
+    // the store's state, so state.viewerSettings became a revoked immer proxy. From then on
+    // every padding or quick-tools action in this window threw and the slide stopped
+    // updating: the "freeze" when padding is clicked twice before the first click's
+    // round trip through the controller returns (likely while Voice Autopilot keeps the
+    // controller busy).
+    /* eslint-disable no-param-reassign */
     setQuickToolsOpen: action((state, payload) => {
-      const newState = state;
-      newState.paddingToolsOpen = false; // explictely making sure we are closing the paddingTools when setting the quick tools.
-      newState.quickToolsOpen = payload;
-      return newState;
+      state.paddingToolsOpen = false; // explictely making sure we are closing the paddingTools when setting the quick tools.
+      state.quickToolsOpen = payload;
     }),
     setPaddingToolsOpen: action((state, payload) => {
-      const newState = state;
-      newState.quickToolsOpen = false; // explictely making sure we are closing the quickTools when setting the padding tools.
-      newState.paddingToolsOpen = payload;
-      return newState;
+      state.quickToolsOpen = false; // explictely making sure we are closing the quickTools when setting the padding tools.
+      state.paddingToolsOpen = payload;
     }),
     setPadding: action((state, payload) => {
-      const newState = state;
-      newState.containerPadding[payload.type] = payload.value;
-      return newState;
+      state.containerPadding[payload.type] = payload.value;
     }),
+    /* eslint-enable no-param-reassign */
   },
   hydrateProjectionState: action((state, payload) => {
     // Read the active pane from the plain IPC payload (never the immer draft) so no
