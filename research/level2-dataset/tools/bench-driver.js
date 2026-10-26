@@ -686,6 +686,7 @@ async function createDriver({
       if (id === 'react-dom') return { createPortal: (el) => el };
       if (id === './autopilotSlot') return { useAutopilotSlot: () => null, setAutopilotSlot: () => {} };
       if (id === './AudioCaptureIcon.jsx' || id === './AudioCaptureIcon') return { AudioCaptureIcon: () => null, default: () => null };
+      if (id === './HwCheck' || id === './HwCheck.jsx') return { default: () => null, __esModule: true };
       return localRequire(id);
     }
     let code = componentSource || fs.readFileSync(file, 'utf8');
