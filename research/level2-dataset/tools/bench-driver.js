@@ -355,7 +355,11 @@ async function createDriver({
     }
   }
   const actions = {
-    userSettings: { setBaniLength: (length) => emit('length', { length }) },
+    userSettings: {
+      setBaniLength: (length) => emit('length', { length }),
+      // Akhand Paath view (9.0.11): recorded as 'akhandpatt' events (only reached with VF_BENCH_PACE + VF_BENCH_VISIBLE).
+      setAkhandpatt: (on) => { state.userSettings.akhandpatt = !!on; emit('akhandpatt', { on: !!on }); },
+    },
     navigator: {
       setActiveVerseId: (verseId) => emit('verse', { verseId }),
       setLineNumber: () => {},
@@ -452,6 +456,11 @@ async function createDriver({
     if (e.code !== 'MODULE_NOT_FOUND') throw e;
   }
   const engine = engineOverride ? { norm, partialRatio, ...engineOverride } : nativeEngine;
+  // VF_BENCH_PACE=1: give normal (non-sim) replays engine/pace like the app (engine/index.js exports it). The
+  // component's pace block also carries non-tier work (the Akhand Paath view, 9.0.11). Unset = unchanged.
+  if (!sim && process.env.VF_BENCH_PACE === '1') {
+    try { nativeEngine.pace = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/pace')); } catch (_) { /* older builds */ }
+  }
   // Simulated slow PC: the build's performance tiers (engine/pace), when it has them, exactly as
   // engine/index.js ready() does: the self-test times its passes on the virtual clock.
   if (sim) {
@@ -842,7 +851,7 @@ ${full}`);
       code = code.replace(
         marker,
         `
-        __capture({ start, startDetect, startAutopilot, stop, autopilotLock, handleTranscript, chainRef, isMiscSlideRef,
+        __capture({ start, startDetect, startAutopilot, stop, autopilotLock, handleTranscript, chainRef, isMiscSlideRef, visibleRef: typeof visibleRef !== 'undefined' ? visibleRef : null,
           snapshot: () => ({ phase: phaseRef.current, current: currentShabadIdRef.current,
             locking: lockingRef.current, votes: [...detectVotesRef.current.entries()],
             vote: switchCandRef.current && { id: switchCandRef.current.shabadId, wins: switchCandRef.current.wins, score: switchCandRef.current.lastScore },
@@ -897,6 +906,8 @@ ${full}`);
         mode
       ](),
     start: async () => {
+      // VF_BENCH_VISIBLE=1: run as if Start were pressed (visible), not as the hidden background run. Unset = unchanged.
+      if (process.env.VF_BENCH_VISIBLE === '1' && bridge.visibleRef) bridge.visibleRef.current = true;
       await bridge.startAutopilot();
       await settle();
       if (!port?.onmessage) throw new Error('No audio handler');
@@ -927,6 +938,7 @@ ${full}`);
       clock: sim,
       stats: simStats,
       start: async () => {
+        if (process.env.VF_BENCH_VISIBLE === '1' && bridge.visibleRef) bridge.visibleRef.current = true;
         await sim.runUntil(bridge.startAutopilot());
         await settle();
         if (!port?.onmessage) throw new Error('No audio handler');

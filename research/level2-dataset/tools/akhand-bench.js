@@ -55,7 +55,7 @@ async function main() {
     const events = [];
     const t0 = Date.now();
     const driver = await createDriver({ model: MODEL, userData: USERDATA, cacheId: id, onEvent: (ev) => {
-      if (['shabad', 'seeking', 'verse', 'component-error'].includes(ev.type)) events.push({ t: ev.t, type: ev.type, shabadId: ev.shabadId, verseId: ev.verseId, visible: ev.visible, message: ev.message });
+      if (['shabad', 'seeking', 'verse', 'component-error', 'akhandpatt'].includes(ev.type)) events.push({ t: ev.t, type: ev.type, shabadId: ev.shabadId, verseId: ev.verseId, visible: ev.visible, message: ev.message, on: ev.on });
     } });
     await driver.start();
     const wall0 = Date.now();
