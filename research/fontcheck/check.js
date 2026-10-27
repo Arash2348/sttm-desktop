@@ -7,7 +7,8 @@ const path = require('path');
 const PANGTI = 'guru Arjunu Gir gur rwmdws AprMpru bIxw ]3]';
 const FONTS = ['GurbaniAkharTrue', 'GurbaniAkharHeavyTrue', 'GurbaniAkharThickTrue'];
 const SIZES = [24, 28, 32, 36, 40, 48, 56];
-const url = (p) => 'file:///' + path.resolve(p).replace(/\\/g, '/');
+const fs = require('fs');
+const url = (p) => 'data:font/ttf;base64,' + fs.readFileSync(path.resolve(p)).toString('base64');
 (async () => {
   const b = await puppeteer.launch({ args: ['--no-sandbox'] });
   const p = await b.newPage();
@@ -18,6 +19,8 @@ const url = (p) => 'file:///' + path.resolve(p).replace(/\\/g, '/');
     for (const px of SIZES) {
       await p.setContent(`<style>@font-face{font-family:T;src:url('${url(file)}')}body{margin:0;background:#000}div{font-family:T;font-size:${px}px;color:#fff;padding:20px;white-space:nowrap}</style><div>${PANGTI}</div>`);
       await p.evaluateHandle('document.fonts.ready');
+      const loaded = await p.evaluate(() => document.fonts.check('20px T'));
+      if (!loaded) throw new Error('font did not load: ' + file);
       const png = PNG.sync.read(await p.screenshot());
       const { width: w, height: h, data } = png;
       const lum = (x, y) => data[(y * w + x) * 4];
