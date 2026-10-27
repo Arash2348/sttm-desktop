@@ -1,0 +1,14 @@
+name: overlay-font-check
+on: { push: { branches: [test-overlay-font-windows] }, workflow_dispatch: {} }
+jobs:
+  check:
+    strategy: { matrix: { os: [windows-latest, ubuntu-latest] } }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm i --no-save --no-package-lock puppeteer@22 pngjs@7
+        working-directory: research/fontcheck
+      - run: node research/fontcheck/check.js
+        env: { NODE_PATH: research/fontcheck/node_modules }
