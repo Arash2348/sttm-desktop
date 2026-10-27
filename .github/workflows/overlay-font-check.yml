@@ -12,3 +12,5 @@ jobs:
         working-directory: research/fontcheck
       - run: node research/fontcheck/check.js
         env: { NODE_PATH: research/fontcheck/node_modules }
+      - uses: actions/upload-artifact@v4
+        with: { name: shots-${{ matrix.os }}, path: shots }

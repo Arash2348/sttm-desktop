@@ -24,19 +24,26 @@ const url = (p) => 'data:font/ttf;base64,' + fs.readFileSync(path.resolve(p)).to
       const png = PNG.sync.read(await p.screenshot());
       const { width: w, height: h, data } = png;
       const lum = (x, y) => data[(y * w + x) * 4];
-      const tops = [];
-      let run = null;
+      // Headline (the bar along the top of each akhar): for each column, the first row that starts
+      // a solid run of ink. Every column should share one row; count the columns that do not.
+      const head = [];
       for (let x = 0; x < w; x++) {
-        let t = -1;
-        for (let y = 0; y < h; y++) if (lum(x, y) > 200) { t = y; break; }
-        if (t >= 0) { if (!run) run = []; run.push(t); } else if (run) { if (run.length > 3) tops.push(run.sort((a, c) => a - c)[Math.floor(run.length / 4)]); run = null; }
+        for (let y = 0; y < h - 3; y++) {
+          if (lum(x, y) > 160 && lum(x, y + 1) > 160 && lum(x, y + 2) > 160) { head.push(y); break; }
+        }
       }
-      const common = tops.slice().sort((a, c) => tops.filter((v) => v === c).length - tops.filter((v) => v === a).length)[0];
-      const off = tops.filter((t) => Math.abs(t - common) <= 3 && t !== common).length;
-      out.push({ font: f, kind, px, glyphs: tops.length, offByOnePx: off, tops: tops.join(' ') });
+      const counts = {};
+      head.forEach((y) => { counts[y] = (counts[y] || 0) + 1; });
+      const mode = Number(Object.keys(counts).sort((a, c) => counts[c] - counts[a])[0]);
+      const near = head.filter((y) => Math.abs(y - mode) <= 3);
+      const off = near.filter((y) => y !== mode).length;
+      const tops = near;
+      fs.mkdirSync('shots', { recursive: true });
+      fs.writeFileSync(`shots/${f}-${kind}-${px}.png`, PNG.sync.write(png));
+      out.push({ font: f, kind, px, columns: near.length, offColumns: off, pctOff: Math.round((1000 * off) / Math.max(1, near.length)) / 10 });
     }
   }
-  console.table(out.map(({ tops, ...r }) => r));
+  console.table(out);
   console.log(JSON.stringify(out));
   await b.close();
 })();
