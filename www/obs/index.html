@@ -86,8 +86,8 @@
         .join(overlayLarivaar ? '' : ' ');
     };
 
-    const writeLine = (Line, larivaar, larivaarAssist, languageSettings) => {
-      lineBeforeAnnouncement = { Line, larivaar, larivaarAssist, languageSettings };
+    const writeLine = (Line, larivaar, larivaarAssist, languageSettings, akhand) => {
+      lineBeforeAnnouncement = { Line, larivaar, larivaarAssist, languageSettings, akhand };
       getElements('.o-gurbani').setProperty('innerHTML',
         assist(Line.Gurmukhi, larivaar, larivaarAssist));
 
@@ -107,9 +107,36 @@
 
       document.querySelector('.overlay-wrapper').hidden =
         Line.Gurmukhi === '' && Line.English === '';
+      writeAkhand(akhand, larivaar, larivaarAssist, languageSettings);
+    };
+
+    // Akhand Paath view (sent while STTM shows it): the pangti before (dimmed) and the current
+    // one, each with its translation right under it, in smaller text. Written into the overlay's
+    // own Gurbani place, so it follows the overlay's Position, colours, fonts and background.
+    const writeAkhand = (akhand, larivaar, larivaarAssist, languageSettings) => {
+      const lines = (akhand && akhand.lines) || [];
+      const cur = lines.findIndex((l) => l.current);
+      document.body.classList.toggle('akp-mode', cur >= 0);
+      if (cur < 0) return;
+      const lang = (languageSettings && languageSettings.translation) || 'English';
+      const prefs = overlayPrefs || {};
+      const trStyle = [
+        prefs.textFont ? `font-family: ${prefs.textFont}` : '',
+        prefs.textColor ? `color: ${prefs.textColor}` : '',
+        prefs.textSize ? `font-size: ${Math.max(1.7, prefs.textSize * 0.62)}vh` : '',
+      ].filter(Boolean).join('; ');
+      const block = (l, cls) => {
+        const tr = l[lang] || l.English || '';
+        return `<span class="${cls}"><span class="akp-g">${assist(l.Gurmukhi, larivaar, larivaarAssist)}</span>` +
+          (tr ? `<span class="akp-t" style="${trStyle}">${tr}</span>` : '') + '</span>';
+      };
+      getElements('.o-gurbani').setProperty('innerHTML',
+        (cur > 0 ? block(lines[cur - 1], 'akp-prev') : '') + block(lines[cur], 'akp-cur'));
+      getElements('.o-translation').setProperty('innerHTML', '');
     };
 
     const writeText = (text, isGurmukhi, isAnnouncement) => {
+      document.body.classList.remove('akp-mode');
       let htmlCode;
       if (isAnnouncement && !isGurmukhi) {
         htmlCode = `<span>${text}</span>`;
@@ -200,8 +227,8 @@
         }
       } else {
         if (Object.keys(lineBeforeAnnouncement).length) {
-          const { Line, larivaar, larivaarAssist, languageSettings } = lineBeforeAnnouncement;
-          writeLine(Line, larivaar, larivaarAssist, languageSettings);
+          const { Line, larivaar, larivaarAssist, languageSettings, akhand } = lineBeforeAnnouncement;
+          writeLine(Line, larivaar, larivaarAssist, languageSettings, akhand);
         }
       }
 
@@ -250,11 +277,18 @@
       $gurbaniWrapper.forEach($gurbani => {
         let line = '';
         const { overlayLarivaar, larivaarAssist } = overlayPrefs;
+        // Akhand Paath view: rewritten whole below (splitting the whole block garbles it).
+        if ($gurbani.querySelector('.akp-cur')) return;
         if ($gurbani.children.length) {
           line = [...$gurbani.children].map(word => word.innerHTML).join(' ');
         }
         $gurbani.innerHTML = assist(line, overlayLarivaar, larivaarAssist);
       });
+      if (document.body.classList.contains('akp-mode') && lineBeforeAnnouncement.akhand) {
+        const { overlayLarivaar, larivaarAssist } = overlayPrefs;
+        writeAkhand(lineBeforeAnnouncement.akhand, overlayLarivaar, larivaarAssist,
+          lineBeforeAnnouncement.languageSettings);
+      }
 
       // Apply the font weight and italic to translation and transliteration
       document.querySelectorAll('span.o-translation, span.o-transliteration').forEach(el => {
@@ -268,7 +302,7 @@
       if (!preview) {
         if (overlayPrefs) {
           const { overlayLarivaar, larivaarAssist } = overlayPrefs;
-          writeLine(request.Line, overlayLarivaar, larivaarAssist, request.languageSettings);
+          writeLine(request.Line, overlayLarivaar, larivaarAssist, request.languageSettings, request.akhand);
         }
       }
     });
