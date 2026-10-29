@@ -1,5 +1,7 @@
 # Benchmarking Voice Autopilot: the model and the harness
 
+**Benchmarking a new model? Follow [BENCHMARK-A-MODEL.md](BENCHMARK-A-MODEL.md) step by step (written so an AI agent can run it).**
+
 Two separate questions, two tools. Developer-only: nothing under `research/` ships in the installers.
 
 | Question | Tool | Where | Time |

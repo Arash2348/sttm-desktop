@@ -38,7 +38,8 @@ const CODEC = process.env.VF_EMIS_CODEC || 'q16';
 // entries are x86 by construction, so an entry without a provenance stamp counts as linux-x64, and no other platform
 // may record into it.
 const X86_NS = /-x86$/.test(CODEC);
-const MAIN_REPO = process.env.VF_MAIN_REPO || require('path').join(require('os').homedir(), 'personal/sttm-desktop');
+// the app checkout git revs resolve in: VF_MAIN_REPO, else the checkout these tools are in
+const MAIN_REPO = process.env.VF_MAIN_REPO || require('path').join(__dirname, '..', '..', '..');
 const argv = process.argv.slice(2);
 const flag = (n) => argv.includes(`--${n}`);
 const arg = (n, d) => { const i = argv.indexOf(`--${n}`); return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };

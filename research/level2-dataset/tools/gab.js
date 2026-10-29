@@ -25,7 +25,7 @@
  *                                                             checks the unsure pangti starts (sttm-desktop
  *                                                             research/level2-dataset/linelabel, LINE-LABEL.md)
  *
- * <build> = an app worktree path, or a git rev of ~/personal/sttm-desktop (`upstream` = khalis/experimental-release);
+ * <build> = an app worktree path, or a git rev of this checkout (`upstream` = KhalisFoundation experimental-release);
  * a rev gets a detached worktree under <cache>/worktrees/<sha12> (same place vf-check uses).
  * Cache rule (every command): an entry missing locally is pulled from the shared Azure bench-cache first; the model
  * runs only for entries missing in BOTH places (gab fill, under the bench lock, nice 19). gab run / compare never
@@ -41,7 +41,8 @@ const G = require('./gab-score');
 
 const TOOLS = __dirname;
 const DS = require('./gab-data').DS;
-const MAIN_REPO = process.env.VF_MAIN_REPO || require('path').join(require('os').homedir(), 'personal/sttm-desktop');
+// the app checkout git revs resolve in: VF_MAIN_REPO, else the checkout these tools are in
+const MAIN_REPO = process.env.VF_MAIN_REPO || require('path').join(__dirname, '..', '..', '..');
 let BENCH = process.env.VF_BENCHMARK || path.join(os.homedir(), 'personal/vf-benchmark');
 const { DEFAULT_ROOT, modelSha } = require('./emis-cache');
 const CACHE = path.resolve(process.env.VF_EMIS_CACHE || DEFAULT_ROOT);
@@ -131,7 +132,11 @@ function resolveBuild(spec) {
   if (!spec) throw new Error('missing <build> (an app worktree, or a git rev such as `upstream`)');
   let dir = path.resolve(spec.replace(/^~/, os.homedir()));
   if (!fs.existsSync(path.join(dir, 'www'))) {
-    const rev = spec === 'upstream' ? 'khalis/experimental-release' : spec;
+    // upstream = experimental-release of KhalisFoundation, whatever the remote is called in this checkout
+    const upstreamRev = () => ['khalis', 'upstream', 'origin'].map((r) => `${r}/experimental-release`).find((r) => {
+      try { sh('git', ['-C', MAIN_REPO, 'rev-parse', '--verify', '--quiet', `${r}^{commit}`]); return true; } catch (_) { return false; }
+    }) || 'experimental-release';
+    const rev = spec === 'upstream' ? upstreamRev() : spec;
     const sha = sh('git', ['-C', MAIN_REPO, 'rev-parse', '--verify', `${rev}^{commit}`]);
     dir = path.join(CACHE, 'worktrees', sha.slice(0, 12));
     if (!fs.existsSync(path.join(dir, 'www'))) {
@@ -448,9 +453,14 @@ async function cmdPull() {
 }
 
 async function cmdFill() {
-  // every manifest clip with a runner, all splits: pull from Azure first (thorough), then the model only for the rest
-  process.argv.push('--split', 'train,dev,test');
-  argv.push('--split', 'train,dev,test');
+  // every manifest clip with a runner, train + dev by default (the held-out test clips only with --split test or
+  // --split train,dev,test): pull from Azure first (thorough), then the model only for the rest
+  if (!arg('split')) {
+    process.argv.push('--split', 'train,dev');
+    argv.push('--split', 'train,dev');
+  }
+  // --jobs N: clips recorded side by side (each with its own model threads); default 1
+  if (arg('jobs')) process.env.VF_RECORD_JOBS = String(arg('jobs'));
   // --tier smoke: the smoke clips of the chosen GAB set (--set, default main); default: every clip of every set
   const sel = arg('tier') ? select({ tier: arg('tier') }) : select({ tier: 'full', set: 'all' });
   const left = await pullMissing(sel.jobs, { thorough: true });
@@ -491,6 +501,9 @@ if (require.main === module) {
   if (!commands[cmd]) {
     console.log(fs.readFileSync(__filename, 'utf8').split('*/')[0].split('\n').slice(1).map((l) => l.replace(/^ \* ?/, '').replace(/^\/\* ?/, '')).join('\n'));
     process.exit(cmd ? 2 : 0);
+  }
+  if (['run', 'compare', 'fill', 'slowpc', 'hard', 'akhand'].includes(cmd) && !flag('cards')) {
+    try { require('./gab-data').checkDb(); } catch (e) { console.error(`gab ${cmd}: ${e.message}`); process.exit(2); }
   }
   Promise.resolve(commands[cmd]()).catch((e) => { console.error(`gab ${cmd}: ${String(e.stack || e).replace(/sig=[^&\s"']+/g, 'sig=REDACTED').replace(/hf_[A-Za-z0-9]+/g, 'hf_REDACTED')}`); process.exit(2); });
 }

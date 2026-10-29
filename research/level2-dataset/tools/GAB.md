@@ -176,7 +176,7 @@ Verdicts: **PASS** = no guarded number got worse. **FAIL** = at least one did (t
 | `VF_CLIPS` | the clip audio (wav) the replay runners play | `~/personal/live-darbar-venues/clips` |
 | `VF_EMIS_CACHE` | model output cache (one folder per model and codec) | `~/personal/live-darbar-venues/cache` |
 | `VF_EMIS_CODEC` | cache codec: `q16` (default) or `f32` | `q16` |
-| `VF_MAIN_REPO` | the app checkout that git revs (`gab run <rev>`) resolve in | `~/personal/sttm-desktop` |
+| `VF_MAIN_REPO` | the app checkout that git revs (`gab run <rev>`) resolve in | the checkout these tools are in |
 | `VF_DRIVER_ROOT` | the app build the bench driver loads (set by `gab` for each build) | this checkout |
 | `VF_ORT_THREADS` | ONNX Runtime threads when the model runs (`gab fill`) | 4 (3 under the bench lock) |
 | `VF_SPLIT` | rows to score: `dev` (train + dev) or `test` (only for final numbers) | `dev` |
@@ -206,7 +206,7 @@ cd ~/personal/sttm-replay/research/level2-dataset/tools
 ./gab publish <main run>/scorecard.json --hard <hard run>/scorecard.json [--akhand <akhand run>/scorecard.json] --name "<build name>" --order N [--status candidate --base 2cb8b003]   # one row (both tiers) on the Space
 ./gab publish --batch batch.json        # every build in one commit (after a GAB version change); see gab-publish.js
 ```
-`<build>` is a worktree or a git rev of `~/personal/sttm-desktop` (`upstream` = khalis/experimental-release).
+`<build>` is a worktree or a git rev of this checkout (`upstream` = experimental-release of the KhalisFoundation remote).
 `--manifest hf` scores against the manifest + answer keys on Hugging Face instead of the local copy
 `~/personal/vf-benchmark`. `--folders 2-bani-recited/japji` narrows it. Output: `results/gab/<time>-run/scorecard.{md,json}`.
 
