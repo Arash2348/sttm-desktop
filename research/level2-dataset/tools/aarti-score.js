@@ -29,7 +29,11 @@ const AARTI = new Set(mem.members['22']);
 const ANAND = new Set([...mem.members['1000'], ...mem.members['10'], 3375, 333375]);
 const APP = require('./gab-data').USER_DATA;
 const sch = JSON.parse(fs.readFileSync(path.join(APP, 'realm-schema-evergreen.json')));
-const realm = new Realm({ path: '/tmp/ab-bani.realm', schema: sch.schemas, schemaVersion: sch.schemaVersion, readOnly: true });
+// a private copy of STTM's Gurbani database (the app may have the original open)
+const REALM_COPY = path.join(require('os').tmpdir(), `aarti-score-${process.pid}.realm`);
+fs.copyFileSync(path.join(APP, 'sttmdesktop-evergreen-v2.realm'), REALM_COPY);
+process.on('exit', () => { try { fs.rmSync(REALM_COPY, { force: true }); fs.rmSync(`${REALM_COPY}.lock`, { force: true }); fs.rmSync(`${REALM_COPY}.management`, { recursive: true, force: true }); } catch (_) { /* temp file */ } });
+const realm = new Realm({ path: REALM_COPY, schema: sch.schemas, schemaVersion: sch.schemaVersion, readOnly: true });
 const linesCache = new Map();
 const linesOf = (sid) => {
   if (!linesCache.has(sid)) linesCache.set(sid, realm.objects('Verse').filtered('ANY Shabads.ShabadID == $0', sid).map((v) => anvaad.unicode(v.Gurmukhi)));
