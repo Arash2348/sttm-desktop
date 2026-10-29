@@ -3,10 +3,12 @@
 Question (owner, Oct 29): is there a 10.x.y build with Pankti Cumulation that is better than the current experimental in
 all cases and does not degrade anything; if not, make one.
 
-**Answer.** Yes, now there is, on the benchmark: 10.0.1's logic was already equal-or-better on every GAB tier against
-9.0.20, and **10.0.6** (the 10.0.5 logic rebased onto experimental 9.0.20, branch `vf-10.0.6`) is better on six tiers,
-equal on four, and its two "worse" cells are 3 s and 7 s where the build showed the sung salok (a parmaan) and the key
-counts it as wrong. What is still missing is the owner's live test (every Voice Autopilot build needs one before merge).
+**Answer.** Yes, now there is, on the benchmark. 10.0.1's logic was already equal-or-better on every GAB tier against
+9.0.20. **10.0.7** (the 10.0.5 logic rebased onto experimental 9.0.20 plus one rule: fragment confirm leaves Shabads of
+fewer than three pangtis, saloks sung as parmaan, to the acoustic judge) is **better on 5 tiers, equal on 7, worse on
+none**; per clip 16 better, 287 same, 3 differences at the key's resolution. Draft PR KhalisFoundation#2296 (branch
+`vf-10.0.6`, head aa4152d1). What is still missing is the owner's live test (every Voice Autopilot build needs one before
+merge).
 
 ## Method (what changed since the 19 October numbers)
 
@@ -24,20 +26,20 @@ counts it as wrong. What is still missing is the owner's live test (every Voice 
 Cells: right Shabad % / right pangti % / wrong Shabad s per h. ✅ better than experimental on at least one measure and
 worse on none; ❌ worse on at least one (margin 0.05).
 
-| Tier / split | clips · hours | Experimental 9.0.20 | 10.0.1 | 10.0.4 | 10.0.5 | 10.0.6 |
-|---|---|---|---|---|---|---|
-| GAB-Hard test | 9 · 1.2 h | 84.9 / 64.8 / 185.3 | 84.9 / 64.8 / 185.3 | 81.3 / 61.7 / 355 ❌ | 84.9 / 64.8 / 185.3 | 84.9 / 64.8 / 185.3 |
-| GAB-Hard dev | 19 · 2.2 h | 56.9 / 51.3 / 201.5 | 56.9 / 51.3 / 201.5 | 53.2 / 47.0 / 555.3 ❌ | 56.9 / 51.3 / 201.5 | 56.9 / 51.3 / 201.5 |
-| Kirtan **test** | 35 · 5.5 h | 90.7 / 87.5 / 142 | 90.7 / 87.5 / 142 | 91.5 / 87.5 / 125.8 ✅ | 91.5 / 87.6 / 117.3 ✅ | 91.5 / 87.6 / 117.3 ✅ |
-| Kirtan dev | 106 · 13.5 h | 92.3 / 86.8 / 120.3 | 92.4 / 86.9 / 119.9 ✅ | 92.4 / 86.9 / 144.1 ❌ | 92.5 / 87.1 / 116.9 ✅ | 92.5 / 87.1 / 116.9 ✅ |
-| Bani sung **test** | 3 · 0.5 h | 96.8 / 88.3 / 28.4 | 96.8 / 88.3 / 28.4 | 96.6 / 88.3 / 34.8 ❌ | 96.6 / 88.3 / 34.8 ❌ | 96.6 / 88.3 / 34.8 ❌ (3 s, see below) |
-| Bani sung dev | 45 · 1.9 h | 84.1 / 81.1 / 23.4 | 85.4 / 82.5 / 18.6 ✅ | 85.5 / 82.6 / 18.6 ✅ | 85.4 / 82.5 / 18.6 ✅ | 85.4 / 82.5 / 18.6 ✅ |
-| Paath **test** | 1 · 0.5 h | 97.1 / 93.7 / 0.0 | same | same | same | same |
-| Paath dev | 45 · 0.9 h | 96.7 / 96.8 / 0 | same | same | same | same |
-| Akhand Paath **test** | 4 · 0.6 h | 98.2 / 97.7 / 24.2 | 98.2 / 97.7 / 22.8 ✅ | 98.3 / 97.8 / 22.8 ✅ | 98.2 / 97.7 / 22.8 ✅ | 98.2 / 97.7 / 24.2 |
-| Akhand Paath dev | 5 · 0.8 h | 98.1 / 97.4 / 28.7 | 98.2 / 97.4 / 26.0 ✅ | 98.2 / 97.5 / 26.0 ✅ | 98.2 / 97.4 / 26.0 ✅ | 98.1 / 97.4 / 28.7 |
-| Akhand Kirtan **test** | 10 · 1.5 h | 86.3 / 74.6 / 240.4 | 86.3 / 74.6 / 240.4 | 85.4 / 74.6 / 288.9 ❌ | 86.4 / 74.6 / 242.1 ❌ | 86.4 / 74.6 / 242.1 ❌ (7 s, see below) |
-| Akhand Kirtan dev | 24 · 1.7 h | 80.9 / 80.3 / 346.4 | 80.9 / 80.3 / 346.4 | 83 / 81.1 / 348.3 ❌ | 81.2 / 81 / 336.1 ✅ | 81.2 / 81 / 336.1 ✅ |
+| Tier / split | clips · hours | Experimental 9.0.20 | 10.0.1 | 10.0.4 | 10.0.5 | 10.0.6 | **10.0.7** |
+|---|---|---|---|---|---|---|---|
+| GAB-Hard test | 9 · 1.2 h | 84.9 / 64.8 / 185.3 | 84.9 / 64.8 / 185.3 | 81.3 / 61.7 / 355 ❌ | 84.9 / 64.8 / 185.3 | 84.9 / 64.8 / 185.3 | 84.9 / 64.8 / 185.3 |
+| GAB-Hard dev | 19 · 2.2 h | 56.9 / 51.3 / 201.5 | 56.9 / 51.3 / 201.5 | 53.2 / 47.0 / 555.3 ❌ | 56.9 / 51.3 / 201.5 | 56.9 / 51.3 / 201.5 | 56.9 / 51.3 / 201.5 |
+| Kirtan **test** | 35 · 5.5 h | 90.7 / 87.5 / 142 | 90.7 / 87.5 / 142 | 91.5 / 87.5 / 125.8 ✅ | 91.5 / 87.6 / 117.3 ✅ | 91.5 / 87.6 / 117.3 ✅ | 91.5 / 87.6 / 117.3 ✅ |
+| Kirtan dev | 106 · 13.5 h | 92.3 / 86.8 / 120.3 | 92.4 / 86.9 / 119.9 ✅ | 92.4 / 86.9 / 144.1 ❌ | 92.5 / 87.1 / 116.9 ✅ | 92.5 / 87.1 / 116.9 ✅ | 92.5 / 87.1 / 116.9 ✅ |
+| Bani sung **test** | 3 · 0.5 h | 96.8 / 88.3 / 28.4 | 96.8 / 88.3 / 28.4 | 96.6 / 88.3 / 34.8 ❌ | 96.6 / 88.3 / 34.8 ❌ | 96.6 / 88.3 / 34.8 ❌ (3 s, see below) | 96.8 / 88.3 / 28.4 |
+| Bani sung dev | 45 · 1.9 h | 84.1 / 81.1 / 23.4 | 85.4 / 82.5 / 18.6 ✅ | 85.5 / 82.6 / 18.6 ✅ | 85.4 / 82.5 / 18.6 ✅ | 85.4 / 82.5 / 18.6 ✅ | 85.4 / 82.5 / 18.6 ✅ |
+| Paath **test** | 1 · 0.5 h | 97.1 / 93.7 / 0.0 | same | same | same | same | same |
+| Paath dev | 45 · 0.9 h | 96.7 / 96.8 / 0 | same | same | same | same | same |
+| Akhand Paath **test** | 4 · 0.6 h | 98.2 / 97.7 / 24.2 | 98.2 / 97.7 / 22.8 ✅ | 98.3 / 97.8 / 22.8 ✅ | 98.2 / 97.7 / 22.8 ✅ | 98.2 / 97.7 / 24.2 | 98.2 / 97.7 / 24.2 |
+| Akhand Paath dev | 5 · 0.8 h | 98.1 / 97.4 / 28.7 | 98.2 / 97.4 / 26.0 ✅ | 98.2 / 97.5 / 26.0 ✅ | 98.2 / 97.4 / 26.0 ✅ | 98.1 / 97.4 / 28.7 | 98.1 / 97.4 / 28.7 |
+| Akhand Kirtan **test** | 10 · 1.5 h | 86.3 / 74.6 / 240.4 | 86.3 / 74.6 / 240.4 | 85.4 / 74.6 / 288.9 ❌ | 86.4 / 74.6 / 242.1 ❌ | 86.4 / 74.6 / 242.1 ❌ (7 s, see below) | 86.4 / 74.6 / 238.9 ✅ |
+| Akhand Kirtan dev | 24 · 1.7 h | 80.9 / 80.3 / 346.4 | 80.9 / 80.3 / 346.4 | 83 / 81.1 / 348.3 ❌ | 81.2 / 81 / 336.1 ✅ | 81.2 / 81 / 336.1 ✅ | 81.0 / 80.7 / 346.4 ✅ |
 
 Tier verdicts against experimental 9.0.20:
 
@@ -47,6 +49,7 @@ Tier verdicts against experimental 9.0.20:
 | 10.0.4 | 4 | 2 | 6 | no |
 | 10.0.5 | 6 | 4 | 2 (3 s + 7 s, both a sung salok shown) | no by the scorer, yes by the audio |
 | 10.0.6 | 4 (Kirtan test, Kirtan dev, Bani sung dev, Akhand Kirtan dev) | 6 | 2 (3 s + 7 s, both a sung salok shown) | no by the scorer, yes by the audio |
+| **10.0.7** | 5 (Kirtan test, Kirtan dev, Bani sung dev, Akhand Kirtan test, Akhand Kirtan dev) | 7 | 0 | **yes** |
 
 Clips left out (cache misses): 9.0.20 and 10.0.6 cannot replay 8 Akhand Paath clips and rt11_sohila from the x86 cache
 (9.0.20's Akhand Paath mode listens on a different window schedule); 10.0.5 / 10.0.6 miss kh31 (Hard dev), l3clip09
@@ -62,6 +65,7 @@ of 10.0.1-10.0.5 come from their 9.0.8 base and vanish in 10.0.6 (equal to exper
 | 10.0.4 | 309 | 37 | 232 | 40 | kh10 (+165 s, -21.8 pt), kh28 (+215 s, -29.9 pt), kh17 (+574 s), kh31 (+691 s), rn13 (+141 s, -35.3 pt), ... |
 | 10.0.5 | 306 | 21 | 278 | 7 | clip35 (+12 s, -1.0 pt), l3clip14 (+5 s), rt11_fareed2 (+3 s), four sub-second |
 | 10.0.6 | 306 | 17 | 284 | 5 | clip35 (+12 s, -1.0 pt), l3clip14 (+5 s), rt11_fareed2 (+3 s), two sub-second |
+| **10.0.7** | 306 | 16 | 287 | 3 | clip35 (+12 s, -1.0 pt), two zero-second pangti differences (rn37, aa08) |
 
 ## The "losses" of 10.0.5 / 10.0.6, checked against the audio
 
@@ -79,9 +83,12 @@ Replay transcripts (`cache/replays/<key>/<suite>/trace/<clip>.events.jsonl`) and
   those lines (experimental keeps "ਰਾਖੁ ਪਿਤਾ ਪ੍ਰਭ ਮੇਰੇ", which the key accepts; 10.0.6 shows 2673 "ਜਿਉ ਜਾਨਹੁ ਤਿਉ
   ਰਾਖੁ" for 16 s, which it does not).
 
-These are at the key's resolution (parmaan spans are not labelled), not app regressions. Two variants built to remove
-them anyway, 10.0.7a (a fragment confirm needs an 8-letter piece) and 10.0.7b (no fragment confirm within 10 s of a
-change), left the l3clip14 cell unchanged (242.1) and were dropped.
+These are at the key's resolution (parmaan spans are not labelled), not app regressions. Two variants, 10.0.7a (a
+fragment confirm needs an 8-letter piece) and 10.0.7b (no fragment confirm within 10 s of a change), left the l3clip14
+cell unchanged and were dropped. **10.0.7** (fragment confirm never switches to a Shabad of fewer than three real
+pangtis) removes both salok cells: Bani sung test equal to experimental, Akhand Kirtan test 238.9 (better), and keeps
+every find (yuba07, clip34, l3clip35, l3clip37, l3clip10, aa04, aa07). It gives back part of the Akhand Kirtan dev
+wrong-time gain (336 -> 346, equal to experimental) because the salok parmaans there are no longer followed.
 
 ## Why the 19 October picture was different
 
@@ -93,9 +100,18 @@ change), left the l3clip14 cell unchanged (242.1) and were dropped.
   finding shabads, follower worse in some cases" (Oct 18), 10.0.5 "minimal gains" (Oct 19). No build of this line has a
   live pass yet.
 
-## 10.0.6: what it is
+## Cost on a slow PC
 
-- Branch `vf-10.0.6` on github.com/Arash2348/sttm-desktop (c13807ab), 14 commits on 420732c9: the twelve 10.0.1-10.0.5
+From the replay traces (yuba07, 10 min): speech-model runs 1062 (experimental) vs 1063 (10.0.6 / 10.0.7);
+first-letter searches 494 vs 494; corpus text searches 540 vs 1047. The text search was timed standalone on the Mac
+over 1,200 real heard strings against the full 142,576-line corpus: mean 1.5 ms, p99 3.5 ms, in the retrieval worker
+thread. One extra search per second is about 0.15 % of a core on the Mac, roughly 1 % on a laptop five to ten times
+slower, against the model's roughly 75 % of a core. No new files, no new model, no installer growth. The two rules can
+share one search per decode (they often run their own today); that halves the extra calls and is a follow-up.
+
+## 10.0.6 / 10.0.7: what they are
+
+- 10.0.6 = c13807ab, 14 commits on 420732c9 (branch `vf-10.0.6` now carries 10.0.7 = aa4152d1 on top): the twelve 10.0.1-10.0.5
   logic commits cherry-picked (switch rule, end-of-Aarti exit, fragment confirm with judge assist off and the 20 s
   fresh window), VF_FEATURE_VERSION 10.0.6. Unit tests 134/134 (`node --test` on the components folder).
 - Kept the 9.0.20 Autopilot panel; the 10.0.x evidence panel (chips and bars) is not ported, so the sevadaar sees the
@@ -106,7 +122,8 @@ change), left the l3clip14 cell unchanged (242.1) and were dropped.
 
 ## Next
 
-1. Owner live test of 10.0.6 (build from `vf-10.0.6`, launch on the right monitor): the cases to watch are a Shabad
+1. Owner live test of 10.0.7 (build from `vf-10.0.6`, launch on the right monitor): the cases to watch are a Shabad
    change on a shared phrase, Aarti into a Shabad, and a long kirtan with parmaans.
-2. If it passes: port the evidence panel UI onto the branch, open the PR, close #2246 and #2253 as superseded.
+2. If it passes: share one text search per decode, port the evidence panel UI onto the branch, take PR #2296 out of
+   draft, close #2246 and #2253 as superseded.
 3. Label parmaan spans in the Akhand Kirtan and long-kirtan keys so a correctly shown salok stops counting as wrong.
