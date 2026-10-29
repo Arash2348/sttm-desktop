@@ -14,7 +14,7 @@ const ROOT = path.resolve(arg('root', path.resolve(__dirname, '../../..')));
 process.env.VF_DRIVER_ROOT = ROOT;
 { const cfg = require.resolve(path.join(ROOT, 'www/main/addons/voice-follow/shadow/config.js')); const real = require(cfg); require.cache[cfg].exports = { ...real, SHADOW_BUILD: false }; }
 const { createDriver } = require(path.join(__dirname, 'nw-driver'));
-const NW = path.join(__dirname, '../newton'); // taps, truth, Bani 90 row maps (committed)
+const NW = path.join(require('./gab-data').DS, 'newton'); // taps, truth, Bani 90 row maps (committed)
 const CLIPS = process.env.VF_CLIPS || require('path').join(require('os').homedir(), 'personal/live-darbar-venues/clips');
 const SESSION = path.join(CLIPS, 'nw11_session.wav'); // stitched 16 kHz session (2953 s)
 const TAPS = JSON.parse(fs.readFileSync(path.join(NW, 'taps.json')));

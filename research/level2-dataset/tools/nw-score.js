@@ -10,7 +10,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const NW = path.join(__dirname, '../newton'); // committed truth + row maps (Newton Oct 11 + YouTube Asa di Vaar)
+const NW = path.join(require('./gab-data').DS, 'newton'); // committed truth + row maps (Newton Oct 11 + YouTube Asa di Vaar)
 const STEP = 0.1;
 const rows90 = JSON.parse(fs.readFileSync(path.join(NW, 'app-bani90-sgpc.json')));
 const OK = new Set(['bani:90', ...rows90.map((r) => r.shabadId)]);
