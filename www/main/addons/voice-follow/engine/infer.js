@@ -1,11 +1,15 @@
 // Shared karansea CTC inference core (JS port of the numpy bits).
 const ort = require('onnxruntime-node');
-const VOCAB = require('./assets/vocab'); // id -> piece
 const pace = require('./pace');
+// The speech model's vocabulary (id -> piece), blank id and ONNX names: Karanbir's built-in model,
+// or the model pack VF_SPEECH_MODEL points at (see speech-model.js).
+const MODEL = require('./speech-model').active();
+
+const VOCAB = MODEL.vocab;
 
 const TEST_PASS_MS = process.env.VF_TEST_WAV ? Number(process.env.VF_TEST_PASS_MS || 0) : 0;
 const SR = 16000;
-const BLANK = 256;
+const BLANK = MODEL.blank;
 
 // strip whitespace, dandas, Gurmukhi/ASCII digits, punctuation (matches _STRIP)
 const STRIP = /[\s।॥|0-9੦-੯.,;:!?\-]+/g;
@@ -35,9 +39,11 @@ function resampleTo16k(pcm, inSr) {
 }
 
 class Infer {
-  constructor(sess, vocab) {
+  constructor(sess, vocab, frontend = null) {
     this.sess = sess;
     this.vocab = vocab;
+    // audio -> features session, for a model pack whose ONNX takes features (null: audio in).
+    this.frontend = frontend;
     // Wall ms of each model pass since perfStats() last read them (session health).
     this.perf = { ms: [], since: Date.now(), repeats: 0 };
     // The last window and its output. The recognizer and the follower each keep their own
@@ -83,12 +89,16 @@ class Infer {
     const env = parseInt(process.env.VF_ORT_THREADS || '', 10);
     let threads = cores >= 8 ? 4 : Math.max(1, Math.min(2, cores));
     if (env > 0) threads = env;
-    const sess = await ort.InferenceSession.create(modelPath, {
+    const opts = {
       intraOpNumThreads: threads,
       interOpNumThreads: 1,
       extra: { session: { 'session.intra_op.allow_spinning': '0' } },
-    });
-    return new Infer(sess, vocab);
+    };
+    const sess = await ort.InferenceSession.create(modelPath, opts);
+    const frontend = MODEL.frontend
+      ? await ort.InferenceSession.create(MODEL.frontend.onnx, opts)
+      : null;
+    return new Infer(sess, vocab, frontend);
   }
 
   // buf: Float32Array @16k -> {data:Float32Array flat, frames, C}
@@ -118,14 +128,31 @@ class Infer {
 
   // One model pass, untimed (emissions() times it: a benchmark that slows the model wraps run).
   async run(buf) {
-    const feeds = {
-      audio: new ort.Tensor('float32', buf, [1, buf.length]),
-      audio_len: new ort.Tensor('int64', BigInt64Array.from([BigInt(buf.length)]), [1]),
-    };
+    const { io } = MODEL;
+    const audio = new ort.Tensor('float32', buf, [1, buf.length]);
+    const audioLen = new ort.Tensor('int64', BigInt64Array.from([BigInt(buf.length)]), [1]);
+    let feeds;
+    if (this.frontend) {
+      const fe = MODEL.frontend;
+      const f = await this.frontend.run({ audio, audio_len: audioLen });
+      const len = f[fe.featuresLen];
+      feeds = {
+        [io.audio]: f[fe.features],
+        /* eslint-disable no-undef */
+        [io.audioLen]: new ort.Tensor(
+          'int64',
+          BigInt64Array.from(
+            Array.from(len.data, (v) => BigInt(typeof v === 'bigint' ? v : Math.round(v))),
+          ),
+          len.dims,
+        ),
+        /* eslint-enable no-undef */
+      };
+    } else feeds = { [io.audio]: audio, [io.audioLen]: audioLen };
     const out = await this.sess.run(feeds);
-    const lp = out.log_probs;
+    const lp = out[io.logProbs];
     const [, , C] = lp.dims;
-    const frames = Number(out.out_len.data[0]);
+    const frames = Number(out[io.outLen].data[0]);
     return { data: lp.data, frames, C };
   }
 
@@ -168,4 +195,4 @@ class Infer {
   }
 }
 
-module.exports = { Infer, resampleTo16k, norm, SR, BLANK };
+module.exports = { Infer, resampleTo16k, norm, SR, BLANK, MODEL };

@@ -5,6 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const os = require('os');
+// A model pack from VF_SPEECH_MODEL (developers, benchmarks) is used as it is: never downloaded.
+const SPEECH_MODEL = require('./speech-model').active();
 
 const MODEL_FILE = 'model.int8.onnx';
 const MODEL_BYTES = 184311219; // known size; used to detect a truncated download
@@ -34,6 +36,7 @@ function bundledModelPath() {
 }
 
 function modelPath() {
+  if (SPEECH_MODEL.onnx) return SPEECH_MODEL.onnx;
   const bundled = bundledModelPath();
   // eslint-disable-next-line no-use-before-define
   if (bundled && isComplete(bundled)) return bundled;
@@ -41,6 +44,7 @@ function modelPath() {
 }
 
 function isComplete(file) {
+  if (SPEECH_MODEL.onnx && file === SPEECH_MODEL.onnx) return fs.existsSync(file);
   try {
     return fs.statSync(file).size === MODEL_BYTES;
   } catch (_) {
@@ -104,6 +108,7 @@ function download(url, dest, onProgress, redirects = 0) {
 // Ensure the model exists locally; download it if missing. onProgress(0..1).
 async function ensureModel(onProgress) {
   if (isReady()) return modelPath();
+  if (SPEECH_MODEL.onnx) throw new Error(`speech model not found: ${SPEECH_MODEL.onnx}`);
   fs.mkdirSync(modelDir(), { recursive: true });
   // Earlier renderer versions accidentally used the plain-Node temporary path.
   // Preserve that cache while copying it atomically into the persistent profile.

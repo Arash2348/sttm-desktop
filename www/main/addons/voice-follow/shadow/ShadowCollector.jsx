@@ -11,6 +11,16 @@ const bus = require('./bus');
 const uploader = require('./uploader');
 const hf = require('./hf');
 const { HF_TOKEN, VF_FEATURE_VERSION, VF_BUILD_COMMIT } = require('./config');
+
+// Which speech model heard this session ('karanbir' unless a developer set VF_SPEECH_MODEL).
+function speechModelName() {
+  try {
+    // eslint-disable-next-line global-require
+    return require('../engine/speech-model').active().name;
+  } catch (_) {
+    return 'unknown';
+  }
+}
 const service = require('./service');
 const listener = require('./listener');
 const pcm = require('./pcm');
@@ -350,6 +360,7 @@ const ShadowCollector = () => {
               feature: {
                 version: VF_FEATURE_VERSION,
                 commit: VF_BUILD_COMMIT.startsWith('__') ? 'dev' : VF_BUILD_COMMIT,
+                speechModel: speechModelName(),
               },
               platform: process.platform,
               microphone: stream.getAudioTracks()[0]?.label || '',

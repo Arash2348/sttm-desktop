@@ -105,7 +105,9 @@ A model that passes A is worth our time for B and C. Only C and D decide what sh
 
 ## 7. What still needs building (us)
 
-- Step C needs the app engine to load another model's vocabulary and blank id (today it assumes Karanbir's) and a replay
-  cache per model. Until then, step A is the quick test.
+- Step C: the app engine can now run any CTC model of the section 2 shape (`VF_SPEECH_MODEL=<pack>`, a folder
+  with the ONNX, its SentencePiece file and a model.json naming the blank id; `make_packs.sh` builds one for each model
+  here). Still needed: the GAB tools reading the same pack (their bench driver loads Karanbir's vocabulary directly
+  today) and `gab fill` recording each model's windows once.
 - Sung-words labels: convert Sukhpal's reviewed data (text matching to verseId + words, people check the unsure
   lines) and mark repeats on GAB test clips.

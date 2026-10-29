@@ -45,11 +45,21 @@ Output: `results/gab/<time>-run/scorecard.{md,json}`; `gab publish` puts a row o
 `khalisfoundation/GAB-leaderboard` (private; public summary at `khalisfoundation/GAB`). Full reference: `GAB.md` next to
 `gab.js`.
 
-**Testing another speech model in the harness.** Today the app engine loads only Karanbir's model and vocabulary
-(`www/main/addons/voice-follow/engine/infer.js`: `assets/vocab`, blank id 256). For another model: point `MODEL=<onnx>`
-at it, add its vocabulary, then `gab fill` (the cache is keyed by model sha, so a new model records its own windows once),
-and `gab compare` against the same build with Karanbir's model. Making the engine load any model's tokenizer is open
-work (MODEL-GUIDE.md section 7).
+**Testing another speech model in the harness.** The app engine runs any CTC model of the shape in
+[MODEL-GUIDE.md](model-bench/MODEL-GUIDE.md) section 2, given as a model pack: a folder with the ONNX, the model's own
+SentencePiece `.model` and a `model.json`:
+
+```json
+{ "name": "jaspal-v1", "onnx": "sggs-large-epoch90.int8.onnx", "tokenizer": "bpe.model", "blank": 0 }
+```
+
+(optional: `"frontend"` for a model that takes features, and `"io"` for other input/output names; see
+`www/main/addons/voice-follow/engine/speech-model.js`). `model-bench/make_packs.sh` makes one for every model it
+fetched. Then `VF_SPEECH_MODEL=<pack folder>` makes the app (dev or packaged) and anything that loads the engine use
+that model; unset = Karanbir's built-in model, unchanged. Each Shadower session records the model in
+`session.json` (`feature.speechModel`). On 24 ten-second windows the app engine's text equals `infer.py`'s exactly for
+Karanbir, Jaspal v1 and Jaspal v2. GAB with a pack: `gab fill` records that model's windows once (the cache is keyed
+by model sha), then `gab compare` the same build with each model; the GAB tools reading the pack is the GAB tools PR.
 
 ## 3. Rules that keep both honest
 
