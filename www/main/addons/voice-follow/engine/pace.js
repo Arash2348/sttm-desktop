@@ -202,7 +202,7 @@ function markBeat(pcm) {
   beat = pcm;
 }
 function onBeat(pcm) {
-  return current().aligned && pcm === beat;
+  return pcm === beat;
 }
 
 async function measure(infer, passes, warm) {
