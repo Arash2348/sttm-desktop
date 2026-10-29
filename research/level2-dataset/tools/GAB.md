@@ -180,6 +180,8 @@ Verdicts: **PASS** = no guarded number got worse. **FAIL** = at least one did (t
 | `VF_DRIVER_ROOT` | the app build the bench driver loads (set by `gab` for each build) | this checkout |
 | `VF_ORT_THREADS` | ONNX Runtime threads when the model runs (`gab fill`) | 4 (3 under the bench lock) |
 | `VF_SPLIT` | rows to score: `dev` (train + dev) or `test` (only for final numbers) | `dev` |
+| `VF_REPLAY_SLOTS` | replay jobs that may run side by side on this machine | 2 (vf-check) / 3 (slow-PC sweep) |
+| `VF_REPLAY_MAX` | workers per replay run; raise it on a big cloud machine (e.g. 14 on 32 cores) | 4 |
 | `HF_TOKEN`, `VF_AZURE_SAS` | tokens, instead of `~/.vf-hf-token` / `~/.vf-azure-sas`; never printed | - |
 
 Locks: the model runs one job at a time under `/tmp/vf-bench.lock` (`lockf` on macOS, `flock` on Linux, none on
