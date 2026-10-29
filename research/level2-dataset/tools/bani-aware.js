@@ -11,7 +11,7 @@ function load() {
   try {
     const Realm = require(path.join(ROOT, 'node_modules/realm'));
     // On the AWS box HOME is /home/ubuntu; the benchmark scripts export VF_BANIDB_USER_DATA.
-    const APP = process.env.VF_BANIDB_USER_DATA || path.join(process.env.HOME, 'Library/Application Support/SikhiToTheMax');
+    const APP = require('./gab-data').USER_DATA;
     const sch = JSON.parse(fs.readFileSync(path.join(APP, 'realm-schema-evergreen.json')));
     const realm = new Realm({ path: path.join(APP, 'sttmdesktop-evergreen-v2.realm'), schema: sch.schemas, schemaVersion: sch.schemaVersion, readOnly: true });
     realm.objects('Banis_Shabad').forEach((r) => {
@@ -39,7 +39,7 @@ function linesOf(sid) {
     shabadLines = new Map();
     const Realm = require(path.join(ROOT, 'node_modules/realm'));
     const anvaad = require(path.join(ROOT, 'node_modules/anvaad-js'));
-    const APP = process.env.VF_BANIDB_USER_DATA || path.join(process.env.HOME, 'Library/Application Support/SikhiToTheMax');
+    const APP = require('./gab-data').USER_DATA;
     const sch = JSON.parse(fs.readFileSync(path.join(APP, 'realm-schema-evergreen.json')));
     const realm = new Realm({ path: path.join(APP, 'sttmdesktop-evergreen-v2.realm'), schema: sch.schemas, schemaVersion: sch.schemaVersion, readOnly: true });
     shabadLines.realm = realm;

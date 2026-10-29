@@ -16,7 +16,7 @@ const { createDriver } = require(path.join(__dirname, 'bench-driver'));
 const DS = require('./gab-data').DS;
 const CLIPS = process.env.VF_CLIPS || require('path').join(require('os').homedir(), 'personal/live-darbar-venues/clips');
 const MODEL = require('./speech-pack').speechModel().onnx;
-const USERDATA = process.env.VF_BANIDB_USER_DATA || path.join(process.env.HOME, 'Library/Application Support/SikhiToTheMax');
+const USERDATA = require('./gab-data').USER_DATA;
 const LEAD = 30, TAIL = 10, SR = 16000, CHUNK = 2048, STEP = 0.1;
 const arg = (n, d) => { const i = process.argv.indexOf(`--${n}`); return i > 0 ? process.argv[i + 1] : d; };
 const ONLY = arg('only', '') ? new Set(arg('only', '').split(',')) : null;

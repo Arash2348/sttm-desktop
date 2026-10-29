@@ -11,6 +11,8 @@
  * (check < 0.6 = listen before trusting). Sung kirtan repeats lines; the aligner allows going back 10
  * lines, but treat kirtan truth as provisional until spot-checked.
  */
+const { lockArgs } = require('./gab-data');
+const splitCmd = (a) => [a[0], a.slice(1)];
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -25,7 +27,7 @@ const CACHE = path.resolve(arg('cache', process.env.VF_EMIS_CACHE || DEFAULT_ROO
 const WORK = path.join(CACHE, 'line-truth');
 const FB = path.resolve(__dirname, '../../follower-bench');
 const MODEL = require('./speech-pack').speechModel().onnx;
-const APP = path.join(os.homedir(), 'Library/Application Support/SikhiToTheMax');
+const APP = require('./gab-data').USER_DATA;
 const ROOT = path.resolve(__dirname, '../../..');
 
 // text id: a Bani id, or 900000000 + n for a list of Shabads written as one text
@@ -92,7 +94,7 @@ function textJson(spec) {
     if (!fs.existsSync(emis)) {
       await politeTurn();
       if (!fs.existsSync(linked)) fs.symlinkSync(wav, linked);
-      const r = spawnSync('lockf', ['-k', '/tmp/vf-bench.lock', 'nice', '-n', '19', 'env', 'BENCH_THREADS=3', `MODEL_PATH=${MODEL}`, process.execPath, path.join(FB, 'emis.js'), linked], { cwd: WORK, encoding: 'utf8' });
+      const r = spawnSync(...splitCmd([...lockArgs('/tmp/vf-bench.lock'), 'nice', '-n', '19', 'env', 'BENCH_THREADS=3', `MODEL_PATH=${MODEL}`, process.execPath, path.join(FB, 'emis.js'), linked]), { cwd: WORK, encoding: 'utf8' });
       fs.rmSync(linked, { force: true });
       if (r.status) { console.log(`${j.id}: emis failed ${(r.stderr || '').slice(-300)}`); continue; }
     }

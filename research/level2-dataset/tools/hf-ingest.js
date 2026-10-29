@@ -136,7 +136,7 @@ let realmP = null;
 async function realm() {
   if (!realmP) {
     const Realm = require(path.join(ROOT, 'node_modules/realm'));
-    const dir = process.env.VF_BANIDB_USER_DATA || path.join(os.homedir(), 'Library/Application Support/SikhiToTheMax');
+    const dir = require('./gab-data').USER_DATA;
     const sj = JSON.parse(fs.readFileSync(path.join(dir, 'realm-schema-evergreen.json')));
     realmP = Realm.open({ path: path.join(dir, 'sttmdesktop-evergreen-v2.realm'), schema: sj.schemas, schemaVersion: sj.schemaVersion, readOnly: true });
   }

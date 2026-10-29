@@ -107,7 +107,7 @@ A model that passes A is worth our time for B and C. Only C and D decide what sh
 
 - Step C: the app engine can now run any CTC model of the section 2 shape (`VF_SPEECH_MODEL=<pack>`, a folder
   with the ONNX, its SentencePiece file and a model.json naming the blank id; `make_packs.sh` builds one for each model
-  here). Still needed: the GAB tools reading the same pack (their bench driver loads Karanbir's vocabulary directly
-  today) and `gab fill` recording each model's windows once.
+  here). The GAB tools run a pack too
+  (`VF_SPEECH_MODEL=<pack> ./gab ...`; `gab fill` records each model's windows once, then `gab compare --cards`).
 - Sung-words labels: convert Sukhpal's reviewed data (text matching to verseId + words, people check the unsure
   lines) and mark repeats on GAB test clips.

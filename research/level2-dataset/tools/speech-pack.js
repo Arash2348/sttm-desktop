@@ -6,7 +6,8 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const DEFAULT_MODEL = path.join(os.homedir(), 'AAI/models/karansea-shabad-ctc/model.int8.onnx');
+// The built-in model where the app keeps it (engine/model-manager.js: <user data>/voice-follow).
+const DEFAULT_MODEL = path.join(require('./gab-data').USER_DATA, 'voice-follow', 'model.int8.onnx');
 
 function speechModel() {
   const dir = process.env.VF_SPEECH_MODEL;

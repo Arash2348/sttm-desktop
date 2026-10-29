@@ -5,7 +5,7 @@ Two separate questions, two tools. Developer-only: nothing under `research/` shi
 | Question | Tool | Where | Time |
 |---|---|---|---|
 | **Model:** how well does a speech model hear Gurbani? (finds the right Shabad from 10 s of audio; WER / CER; speed) | `model-bench` | `research/model-bench/` (this branch) | about 1 h on 32 x86 cores |
-| **Harness:** how well does the whole app keep the right Gurbani on screen with a given build? (right Shabad %, sangat sees the pangti %, seconds behind, wrong Shabad s/h, time to find, switches) | GAB, the Gurbani Autopilot Bench | `research/level2-dataset/tools/` on branch `gab-tools-handoff` of github.com/Arash2348/sttm-desktop (not yet on experimental-release; a separate PR) | seconds to minutes from the cache |
+| **Harness:** how well does the whole app keep the right Gurbani on screen with a given build? (right Shabad %, sangat sees the pangti %, seconds behind, wrong Shabad s/h, time to find, switches) | GAB, the Gurbani Autopilot Bench | `research/level2-dataset/tools/` | seconds to minutes from the cache |
 
 A model that hears better is not always better in the app (settings were tuned on Karanbir's model), so a candidate
 model goes through both: model-bench first, then GAB with the app pointed at it. The bar for each step is in
@@ -30,8 +30,8 @@ GAB replays recorded clips through the real app (Electron, headless) and scores 
 answer keys. The speech model's output per window is cached (locally, and in the shared Azure `bench-cache`), so a run
 never waits for the model and the same build always gets the same numbers.
 
-Needs: a checkout of the GAB tools branch beside the app, Node 18+, `~/.vf-hf-token` (HF, khalisfoundation org), and
-`~/.vf-azure-sas` (read access to the shared cache; ask Arash). Dataset: `khalisfoundation/GurbaniAutopilotBench` (private).
+Needs: Node 20, `~/.vf-hf-token` (HF, khalisfoundation org) and `~/.vf-azure-sas` (read access to the shared cache; ask
+Arash). Setup and every setting: [GAB.md](level2-dataset/tools/GAB.md) "Setup". Dataset: `khalisfoundation/GurbaniAutopilotBench` (private).
 
 ```bash
 cd research/level2-dataset/tools
@@ -59,7 +59,7 @@ fetched. Then `VF_SPEECH_MODEL=<pack folder>` makes the app (dev or packaged) an
 that model; unset = Karanbir's built-in model, unchanged. Each Shadower session records the model in
 `session.json` (`feature.speechModel`). On 24 ten-second windows the app engine's text equals `infer.py`'s exactly for
 Karanbir, Jaspal v1 and Jaspal v2. GAB with a pack: `gab fill` records that model's windows once (the cache is keyed
-by model sha), then `gab compare` the same build with each model; the GAB tools reading the pack is the GAB tools PR.
+by model sha), then `gab compare --cards` the same build with each model (GAB.md "Setup").
 
 ## 3. Rules that keep both honest
 

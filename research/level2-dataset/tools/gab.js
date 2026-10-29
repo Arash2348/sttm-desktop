@@ -486,7 +486,7 @@ const commands = { run: cmdRun, compare: cmdCompare, slowpc: cmdSlowpc, pull: cm
   publish: () => require('./gab-publish').main(argv.slice(1)),
   harvest: () => require('./gab-harvest').main(argv.slice(1)),
   review: () => require('./gab-review').main(argv.slice(1)),
-  label: () => { const r = require('child_process').spawnSync(process.execPath, [path.join(os.homedir(), 'personal/sttm-desktop/research/level2-dataset/linelabel/label.js'), ...argv.slice(1)], { stdio: 'inherit' }); process.exitCode = r.status; } };
+  label: () => { const r = require('child_process').spawnSync(process.execPath, [(() => { const f = path.join(__dirname, '..', 'linelabel', 'label.js'); if (!fs.existsSync(f)) { console.error(`gab label: ${f} not found (the line-labelling tools are not in this checkout)`); process.exit(2); } return f; })(), ...argv.slice(1)], { stdio: 'inherit' }); process.exitCode = r.status; } };
 if (require.main === module) {
   if (!commands[cmd]) {
     console.log(fs.readFileSync(__filename, 'utf8').split('*/')[0].split('\n').slice(1).map((l) => l.replace(/^ \* ?/, '').replace(/^\/\* ?/, '')).join('\n'));

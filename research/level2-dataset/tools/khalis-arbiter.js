@@ -21,7 +21,7 @@ const Realm = require(path.join(ROOT, 'node_modules/realm'));
 const arg = (n, d) => { const i = process.argv.indexOf(`--${n}`); return i > 0 ? process.argv[i + 1] : d; };
 const STEP = 0.5, BEFORE = 1.0, AFTER = 4.0, MIN_CHARS = 6, MARGIN = 12, MIN_SCORE = 50;
 (async () => {
-  const dir = path.join(process.env.HOME, 'Library/Application Support/SikhiToTheMax');
+  const dir = require('./gab-data').USER_DATA;
   const sj = JSON.parse(fs.readFileSync(path.join(dir, 'realm-schema-evergreen.json')));
   const realm = await Realm.open({ path: path.join(dir, 'sttmdesktop-evergreen-v2.realm'), schema: sj.schemas, schemaVersion: sj.schemaVersion, readOnly: true });
   const lineText = new Map();

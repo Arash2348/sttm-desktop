@@ -38,7 +38,7 @@ const MIN_CHECK = 0.6;
 const GAP_BREAK_S = 5;
 const DS = require('./gab-data').DS;
 const ROOT = path.resolve(__dirname, '../../..');
-const APP = path.join(os.homedir(), 'Library/Application Support/SikhiToTheMax');
+const APP = require('./gab-data').USER_DATA;
 const DEFAULT_DATASET = process.env.VF_BENCHMARK || path.join(os.homedir(), 'personal/vf-benchmark');
 const BUCKETS = ['on', 'catching', 'behind', 'ahead', 'lost', 'wrong', 'blank'];
 const r1 = (x) => (x == null ? null : +x.toFixed(1));

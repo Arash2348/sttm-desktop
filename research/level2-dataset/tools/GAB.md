@@ -146,26 +146,51 @@ reconciliation rows (64.0% -> 73.1% with line hold) reproduce exactly under GAB-
 
 ## Setup (any machine)
 
-The tools run from this folder with Node 20 and the app's `node_modules` (link or install them at the repo root).
-Everything machine-specific comes from the environment; the defaults are the paths under the home folder that the
-original Mac used.
+Developer-only: nothing here ships in the app (`research/` is left out of the installers).
+
+1. **Node 20** and the app's dependencies at the repo root: `npm ci`. If `better-sqlite3` or `realm` fails to load,
+   rebuild it from source for Node: `npm rebuild better-sqlite3 --build-from-source`.
+2. **Dataset** (private, khalisfoundation org on Hugging Face): put a read token in `~/.vf-hf-token` (or `HF_TOKEN`).
+   `gab pull` fetches what a run needs.
+3. **Model output cache**: read access to the shared Azure `bench-cache` in `~/.vf-azure-sas` (or `VF_AZURE_SAS`; ask
+   Arash). Without it, `gab fill` records the model's windows on your machine once (hours on a laptop; an x86 VM is faster).
+4. **Answer keys and test lists** (`VF_GAB_DATA`) are not in this public repository, so the test split cannot leak into
+   training data. Get them with the dataset.
+
+Then, from this folder:
+
+    ./gab run upstream --tier smoke                 # one build, 9 clips, under a minute from the cache
+    ./gab compare upstream <worktree> --tier full   # before / after on every main-GAB clip
+    VF_SPEECH_MODEL=<pack> ./gab run <worktree> --tier smoke   # the same build with another speech model
+
+Verdicts: **PASS** = no guarded number got worse. **FAIL** = at least one did (the table says which). **INCOMPLETE** (exit 3)
+= some clip could not replay, usually model output missing from the cache (`gab fill`), so there is no verdict.
 
 | variable | what | default |
 |---|---|---|
-| `VF_GAB_DATA` | benchmark data the tools read and write: answer keys and test lists (`*-tests.json`, `clip-notes.json`, `aarti/`, `renton-oct11/`, ...), `results/` | the folder above `tools/` |
+| `VF_SPEECH_MODEL` | a speech model pack: a folder with `model.json` (`name`, `onnx`, `tokenizer`, `blank`, optional `frontend`/`io`; see the app's `engine/speech-model.js`, and `research/model-bench/make_packs.sh`). The cache is keyed per model and scorecards name it | unset = the built-in Karanbir model |
+| `MODEL` | the built-in model's ONNX (only when `VF_SPEECH_MODEL` is unset) | `<user data>/voice-follow/model.int8.onnx`, where the app downloads it |
+| `VF_BANIDB_USER_DATA` | the app's user-data folder (STTM database, the downloaded model) | the SikhiToTheMax folder Electron uses on this OS |
+| `VF_GAB_DATA` | answer keys and test lists (`*-tests.json`, `clip-notes.json`, `aarti/`, ...) and `results/` | the folder above `tools/` |
 | `VF_BENCHMARK` | local copy of the GAB dataset (`manifest.csv`, `<folder>/<id>/lines.csv`, `shabads.csv`, audio) | `~/personal/vf-benchmark` |
 | `VF_CLIPS` | the clip audio (wav) the replay runners play | `~/personal/live-darbar-venues/clips` |
-| `VF_EMIS_CACHE` | speech-model output cache (one folder per model and codec) | see `emis-cache.js` |
-| `VF_MAIN_REPO` | app checkout that git revs (`gab run <rev>`) resolve in | `~/personal/sttm-desktop` |
-| `VF_SPEECH_MODEL` | a speech model pack: a folder with `model.json` (`name`, `onnx`, `tokenizer`, `blank`, optional `frontend`/`io`; see the app's `engine/speech-model.js`). Every command runs that CTC model; the cache is keyed per model and scorecards name it | unset = the built-in Karanbir model |
-| `MODEL` | path of the built-in model's ONNX (only when `VF_SPEECH_MODEL` is unset) | `~/AAI/models/karansea-shabad-ctc/model.int8.onnx` |
+| `VF_EMIS_CACHE` | model output cache (one folder per model and codec) | `~/personal/live-darbar-venues/cache` |
+| `VF_EMIS_CODEC` | cache codec: `q16` (default) or `f32` | `q16` |
+| `VF_MAIN_REPO` | the app checkout that git revs (`gab run <rev>`) resolve in | `~/personal/sttm-desktop` |
+| `VF_DRIVER_ROOT` | the app build the bench driver loads (set by `gab` for each build) | this checkout |
+| `VF_ORT_THREADS` | ONNX Runtime threads when the model runs (`gab fill`) | 4 (3 under the bench lock) |
+| `VF_SPLIT` | rows to score: `dev` (train + dev) or `test` (only for final numbers) | `dev` |
+| `HF_TOKEN`, `VF_AZURE_SAS` | tokens, instead of `~/.vf-hf-token` / `~/.vf-azure-sas`; never printed | - |
+
+Locks: the model runs one job at a time under `/tmp/vf-bench.lock` (`lockf` on macOS, `flock` on Linux, none on
+Windows), at `nice 19`.
 
 Two speech models on one build: run it once per model, then compare the saved scorecards:
 
-    gab run <build> --tier smoke --out /tmp/gab-karanbir
-    VF_SPEECH_MODEL=<pack> gab fill --root <build> --tier smoke --no-push   # model output for that pack (x86 machine)
-    VF_SPEECH_MODEL=<pack> gab run <build> --tier smoke --out /tmp/gab-pack
-    gab compare --cards /tmp/gab-karanbir/scorecard.json /tmp/gab-pack/scorecard.json --name-a karanbir --name-b <pack>
+    ./gab run <build> --tier smoke --out /tmp/gab-karanbir
+    VF_SPEECH_MODEL=<pack> ./gab fill --root <build> --tier smoke --no-push   # that model's output, recorded once
+    VF_SPEECH_MODEL=<pack> ./gab run <build> --tier smoke --out /tmp/gab-pack
+    ./gab compare --cards /tmp/gab-karanbir/scorecard.json /tmp/gab-pack/scorecard.json --name-a karanbir --name-b <pack>
 
 ## Run it (one line)
 

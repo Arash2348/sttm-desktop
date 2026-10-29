@@ -19,7 +19,7 @@ const CLIPS = process.env.VF_CLIPS || require('path').join(require('os').homedir
 const SESSION = path.join(CLIPS, 'nw11_session.wav'); // stitched 16 kHz session (2953 s)
 const TAPS = JSON.parse(fs.readFileSync(path.join(NW, 'taps.json')));
 const MODEL = require('./speech-pack').speechModel().onnx;
-const USERDATA = process.env.VF_BANIDB_USER_DATA || path.join(process.env.HOME, 'Library/Application Support/SikhiToTheMax');
+const USERDATA = require('./gab-data').USER_DATA;
 const SR = 16000, CHUNK = 2048;
 const MODE = arg('mode', 'session');
 const FROM = Number(arg('from', 0)), TO = Number(arg('to', 1e9));

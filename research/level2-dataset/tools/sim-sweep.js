@@ -13,6 +13,8 @@
  * (sim-score.js) and deleted unless --keep <dir>.
  * Clips: rehras = rt11_rehras 0-600 s; kh01..kh06 / ytasa1 = the whole clip; or <cache id>[:from:to].
  */
+const { lockArgs } = require('./gab-data');
+const splitCmd = (a) => [a[0], a.slice(1)];
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -46,8 +48,8 @@ async function inSlot() {
   for (;;) {
     for (let k = 0; k < SLOTS; k += 1) {
       // eslint-disable-next-line no-await-in-loop
-      const code = await new Promise((resolve) => spawn('lockf', ['-k', '-t', '0', `/tmp/vf-replay-slot-${k}.lock`, 'env', `VF_SIM_SLOT=${k}`,
-        process.execPath, __filename, ...argv], { stdio: 'inherit' }).on('close', resolve));
+      const code = await new Promise((resolve) => spawn(...splitCmd([...lockArgs(`/tmp/vf-replay-slot-${k}.lock`, { noWait: true }), 'env', `VF_SIM_SLOT=${k}`,
+        process.execPath, __filename, ...argv]), { stdio: 'inherit' }).on('close', resolve));
       if (code !== 75) process.exit(code);
     }
     if (!said) { process.stderr.write(`all ${SLOTS} replay slots busy, waiting ...\n`); said = true; }

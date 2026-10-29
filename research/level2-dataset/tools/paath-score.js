@@ -13,7 +13,7 @@ const Realm = require(path.join(ROOT, 'node_modules/realm'));
 
 const dir = process.argv[2];
 const truth = JSON.parse(fs.readFileSync(path.join(require('./gab-data').DS, process.argv[3] || 'paath-tests.json')));
-const APP = path.join(process.env.HOME, 'Library/Application Support/SikhiToTheMax');
+const APP = require('./gab-data').USER_DATA;
 const sch = JSON.parse(fs.readFileSync(path.join(APP, 'realm-schema-evergreen.json')));
 const realm = new Realm({ path: path.join(APP, 'sttmdesktop-evergreen-v2.realm'), schema: sch.schemas, schemaVersion: sch.schemaVersion, readOnly: true });
 const members = new Map(); // bani -> Set(shabad) at any length

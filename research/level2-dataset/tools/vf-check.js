@@ -20,6 +20,8 @@
  * VF_ORT_THREADS=3. A cache miss in replay is a hard error for that clip; --fill records the
  * missing clips (model, under the lock) and replays them again.
  */
+const { lockArgs } = require('./gab-data');
+const splitCmd = (a) => [a[0], a.slice(1)];
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -146,7 +148,7 @@ function runLocked(plan, file, { threads } = {}) {
   }
   if (!replayOnly) {
     process.stderr.write(`  waiting for ${LOCK} ...\n`);
-    return new Promise((resolve, reject) => spawn('lockf', ['-k', LOCK, ...poolArgs], { stdio: ['ignore', 'inherit', 'inherit'] }).on('close', finish(resolve, reject)));
+    return new Promise((resolve, reject) => spawn(...splitCmd([...lockArgs(LOCK), ...poolArgs]), { stdio: ['ignore', 'inherit', 'inherit'] }).on('close', finish(resolve, reject)));
   }
   // Replay: try each slot without waiting (lockf -t 0 exits 75 when the slot is busy); retry every 5 s.
   return new Promise((resolve, reject) => {
@@ -157,7 +159,7 @@ function runLocked(plan, file, { threads } = {}) {
         return setTimeout(() => attempt(0), 5000);
       }
       const slot = `/tmp/vf-replay-slot-${k}.lock`;
-      const child = spawn('lockf', ['-k', '-t', '0', slot, ...poolArgs], { stdio: ['ignore', 'inherit', 'inherit'] });
+      const child = spawn(...splitCmd([...lockArgs(slot, { noWait: true }), ...poolArgs]), { stdio: ['ignore', 'inherit', 'inherit'] });
       child.on('close', (code) => (code === 75 ? attempt(k + 1) : finish(resolve, reject)(code)));
     };
     attempt(0);
@@ -341,7 +343,7 @@ function foreignWaiters() {
   try { out = sh('ps', ['-Ao', 'pid=,ppid=,command=']); } catch (_) { return 0; }
   const procs = out.split('\n').map((l) => l.trim().match(/^(\d+)\s+(\d+)\s+(.*)$/)).filter(Boolean).map((m) => ({ pid: +m[1], ppid: +m[2], cmd: m[3] }));
   const parents = new Set(procs.map((p) => p.ppid));
-  return procs.filter((p) => /^lockf -k \/tmp\/vf-bench\.lock/.test(p.cmd) && p.ppid !== process.pid && !parents.has(p.pid)).length;
+  return procs.filter((p) => /^(lockf -k|flock) \/tmp\/vf-bench\.lock/.test(p.cmd) && p.ppid !== process.pid && !parents.has(p.pid)).length;
 }
 async function politeTurn() {
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

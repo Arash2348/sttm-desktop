@@ -31,7 +31,7 @@ function realmDb() {
   const ROOT = path.resolve(__dirname, '../../..');
   const Realm = require(path.join(ROOT, 'node_modules/realm'));
   const anvaad = require(path.join(ROOT, 'node_modules/anvaad-js'));
-  const APP = path.join(os.homedir(), 'Library/Application Support/SikhiToTheMax');
+  const APP = require('./gab-data').USER_DATA;
   const sch = JSON.parse(fs.readFileSync(path.join(APP, 'realm-schema-evergreen.json'), 'utf8'));
   const realm = new Realm({ path: path.join(APP, 'sttmdesktop-evergreen-v2.realm'), schema: sch.schemas, schemaVersion: sch.schemaVersion, readOnly: true });
   return { realm, anvaad };

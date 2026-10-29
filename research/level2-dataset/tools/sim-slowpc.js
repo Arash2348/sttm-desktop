@@ -18,6 +18,8 @@
  *                       3 threads) into the sim overlay store; without it a miss exits 3
  *     --tier T          pin a tier (VF_TIER); default: unpinned = self-test + live stepping
  */
+const { lockArgs } = require('./gab-data');
+const splitCmd = (a) => [a[0], a.slice(1)];
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
@@ -37,13 +39,13 @@ const FILL = flag('fill');
 
 // --fill: re-run this command under the exclusive bench lock (the model runs for missing windows).
 if (FILL && !process.env.VF_SIM_LOCKED) {
-  const r = spawnSync('lockf', ['-k', '/tmp/vf-bench.lock', 'nice', '-n', '19', 'env', 'VF_SIM_LOCKED=1',
-    `VF_ORT_THREADS=${process.env.VF_ORT_THREADS || 3}`, process.execPath, __filename, ...argv], { stdio: 'inherit' });
+  const r = spawnSync(...splitCmd([...lockArgs('/tmp/vf-bench.lock'), 'nice', '-n', '19', 'env', 'VF_SIM_LOCKED=1',
+    `VF_ORT_THREADS=${process.env.VF_ORT_THREADS || 3}`, process.execPath, __filename, ...argv]), { stdio: 'inherit' });
   process.exit(r.status == null ? 1 : r.status);
 }
 
 const MODEL = require('./speech-pack').speechModel().onnx;
-const USERDATA = process.env.VF_BANIDB_USER_DATA || path.join(process.env.HOME, 'Library/Application Support/SikhiToTheMax');
+const USERDATA = require('./gab-data').USER_DATA;
 Object.assign(process.env, {
   VF_EMIS_CACHE: process.env.VF_EMIS_CACHE || require('path').join(require('os').homedir(), 'personal/live-darbar-venues/cache'),
   VF_EMIS_MODE: FILL ? 'record' : 'replay',

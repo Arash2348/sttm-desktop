@@ -65,9 +65,9 @@ Results of a committed, unchanged app tree are kept per tree hash (`<cache>/resu
 backlog bound, tier self-test and stepping run unmodified). Validated against the x86 VM runs:
 `results/SIM-SLOWPC.md`.
 
-**Still needs live-paced runs:** anything about timing — backlog/throughput (`vf-lag-stress.js`
+**Still needs live-paced runs:** anything about timing — backlog/throughput (`vf-lag-stress.js`, on branch gab-tools-handoff
 `--pace wall` with a slowed engine), decision cancellation on a slow PC, Start/Stop/take-over in the
-app (`stop-keeps-screen-test.js`), and a final PR spot check of a few clips with the real model
+app (`stop-keeps-screen-test.js`, on branch gab-tools-handoff), and a final PR spot check of a few clips with the real model
 (`--fast`) to confirm the cache still matches (model / ORT / tokenizer updates).
 
 ## Build the cache (once per model; the record runs ARE real `--fast` runs)

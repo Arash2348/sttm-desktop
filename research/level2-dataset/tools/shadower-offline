@@ -1,3 +1,0 @@
-#!/bin/sh
-# Shadower offline: replay the speech model + Voice Autopilot over real sessions and score them (see shadower-offline.js)
-exec node "$(dirname "$0")/shadower-offline.js" "$@"
