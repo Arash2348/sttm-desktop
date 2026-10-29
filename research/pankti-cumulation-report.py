@@ -1,6 +1,6 @@
 import json,glob,os
 W='/Users/asingh02/personal/gab-builds/pc-final'; D=f'{W}/cards'
-BUILDS=[('x9020','Experimental 9.0.20'),('v1001','10.0.1'),('v1004','10.0.4'),('c1','10.0.5'),('v1006','10.0.6'),('v1007','10.0.7a'),('v1007b','10.0.7b')]
+BUILDS=[('x9020','Experimental 9.0.20'),('v1001','10.0.1'),('v1004','10.0.4'),('c1','10.0.5'),('v1006','10.0.6'),('v1007','10.0.7a'),('v1007b','10.0.7b'),('v1007c','10.0.7c')]
 ROWS=[('GAB-Hard test','hard','test','1-kirtan-shabad'),('GAB-Hard dev','hard','dev','1-kirtan-shabad'),
  ('Kirtan test','main','test','1-kirtan-shabad'),('Kirtan dev','main','dev','1-kirtan-shabad'),
  ('Bani sung test','main','test','3-bani-sung-like-kirtan'),('Bani sung dev','main','dev','3-bani-sung-like-kirtan'),
