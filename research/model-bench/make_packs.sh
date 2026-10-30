@@ -22,6 +22,7 @@ pack() { # name onnx tokenizer blank [frontend json + io json]
 pack karanbir model.int8.onnx tokenizer.model 256
 pack jaspal-v0 sggs-asr-v0.int8.onnx bpe.model 0
 pack jaspal-v1 sggs-large-epoch90.int8.onnx bpe.model 0
+pack jaspal-v3 sggs-asr-v3.int8.onnx bpe.model 0
 # v2 takes features, not audio: v1's front-end (make_v2_frontend.py) runs first, as in infer.py.
 pack jaspal-v2 sggs-asr-v2.int8.onnx bpe.model 0 ',
   "frontend": { "onnx": "frontend-from-v1.onnx", "features": "/Div_output_0", "featuresLen": "/Where_output_0" },

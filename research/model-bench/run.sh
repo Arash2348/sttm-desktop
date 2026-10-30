@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 JOBS=${1:-1}
 PY=${PY:-python3}
 $PY fetch.py
-for w in 10 4; do for m in karanbir jaspal-v0 jaspal-v1 jaspal-v2; do echo "$m $w"; done; done |
+for w in 10 4; do for m in karanbir jaspal-v0 jaspal-v1 jaspal-v2 jaspal-v3; do echo "$m $w"; done; done |
   xargs -P "$JOBS" -L 1 sh -c "$PY infer.py --model \$0 --win \$1 > /dev/null"
 node score.js --md results.md --json results.json
 $PY wer.py --md results-wer.md --json results-wer.json

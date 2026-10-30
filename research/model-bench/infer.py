@@ -31,6 +31,8 @@ MODELS = {
     # /Where_output_0). Un-normalised features give much shorter, less accurate text; with this front-end v2 matches v1's
     # style. PROVISIONAL: the model card describes an audio-input graph, so the author should confirm the file and front-end.
     'jaspal-v2': ('jssaluja/sggs-asr-v2-onnx', 'sggs-asr-v2.int8.onnx', 'bpe.model', 0, 'frontend-from-v1.onnx'),
+    # v3 (Oct 30 2026): audio-input graph again (fbank in-graph), epoch 90 of the 199,855-row run; blank 0, 1000 classes.
+    'jaspal-v3': ('jssaluja/sggs-asr-v3-onnx', 'sggs-asr-v3.int8.onnx', 'bpe.model', 0, None),
 }
 # v0 has no tokenizer in its ONNX repo: the author's matching bpe.model lives in jssaluja/sggs-asr-v0.
 TOKENIZER_REPO = {'jaspal-v0': 'jssaluja/sggs-asr-v0'}
@@ -44,6 +46,8 @@ SHA256 = {
     'jaspal-v0/bpe.model': '8223a4bfad0d02488de835dcdbcf0934ee1aff17c20a55b662b0d8657ab4e8c2',
     'karanbir/tokenizer.model': '63a2e8f1221ba60a7b315a14c8da49ff4873d6b5e46e9145dc4f7a4fe4742834',
     'jaspal-v2/frontend-from-v1.onnx': '66f9b763f3c7e84945d63f76ccc5f1d832a82cfae262c59afd7d171c9754fdea',
+    'jaspal-v3/sggs-asr-v3.int8.onnx': '2dbc62f949cb4988de0ad58ac3758912b6ce54f39bc77e2b0534d65cb0f492a1',
+    'jaspal-v3/bpe.model': '1d7979fd05be60f660a52f6feac9fadc3c96c9a2345cb31e78ab12fef48617f1',
 }
 
 

@@ -17,24 +17,49 @@ research/BENCHMARK-A-MODEL.md, and report the tables from step 7."
 - Never print tokens (`~/.vf-hf-token`, `~/.vf-azure-sas`). HF data stays private to the khalisfoundation org.
 - Write to Azure only under `bench-cache/` (what `gab fill` pushes).
 - Gurbani text is never written or changed: everything refers to pangtis by verse id.
-- Record model output on **x86-64** (Linux or Intel). That is the reference. Arm Macs agree on rankings but are not
-  byte-identical.
+- The shared cache is recorded on **x86-64** (Linux or Intel); that is the reference for numbers that go into the
+  leaderboard. For the question "is model X better than Karanbir's?" any machine is fine **as long as both models are
+  run on the same machine**: Arm Macs agree on rankings but are not byte-identical with x86, so never mix an x86 run of
+  one model with an Arm run of the other.
 
 ## 0. Setup (once)
 
 ```bash
 git clone https://github.com/KhalisFoundation/sttm-desktop && cd sttm-desktop && git checkout experimental-release
-npm ci                                       # Node 20; if realm/better-sqlite3 fail to load: npm rebuild <name> --build-from-source
+nvm use                                      # Node 20 (.nvmrc). Native modules are built for the Node that runs them.
+npm ci
+npm rebuild realm better-sqlite3 --build-from-source   # if `node -e "require('realm')"` fails: the prebuilt addons do not match this Node
 python3 -m venv research/model-bench/.venv && research/model-bench/.venv/bin/pip install -r research/model-bench/requirements.txt
 ```
 
-Also needed:
-- `~/.vf-hf-token`: an HF read token for the khalisfoundation org.
-- `~/.vf-azure-sas`: Azure bench-cache access (write access lets `gab fill` share what it records).
-- STTM's Gurbani database. Open STTM once on this machine, or set `VF_BANIDB_USER_DATA` to a folder that has
-  `sttmdesktop-evergreen-v2.realm` and `realm-schema-evergreen.json`. `gab` stops with this message when it is missing.
-- GAB answer keys and test lists (`VF_GAB_DATA`). They are kept out of this public repo; they come with the private
-  GAB data.
+Also needed (each one has a no-credentials or no-app way):
+
+- **Hugging Face read access** to the khalisfoundation org: `~/.vf-hf-token`, or the `HF_TOKEN` environment variable
+  (the tools read either). Never print it.
+- **Azure bench-cache** (`~/.vf-azure-sas` or `VF_AZURE_SAS`): only for pulling the shared model-output cache and for
+  `gab fill` to push what it records. Without it, use `gab fill --no-push`; everything is recorded locally and the
+  comparison is still valid, it just takes the hours once on your machine.
+- **STTM's Gurbani database** (`sttmdesktop-evergreen-v2.realm` + `realm-schema-evergreen.json`). Either open STTM once
+  on the machine, or download it without the app:
+  ```bash
+  mkdir -p ~/sttm-db && cd ~/sttm-db
+  curl -LO https://banidb.blob.core.windows.net/database/sttmdesktop-evergreen-v2.zip && unzip -o sttmdesktop-evergreen-v2.zip
+  export VF_BANIDB_USER_DATA=~/sttm-db            # the zip holds both files
+  ```
+  `gab` stops with a clear message when the database is not where it looks.
+- **GAB answer keys and test lists** (`VF_GAB_DATA`). They are kept out of this public repo. They are the private HF
+  dataset `khalisfoundation/gab-data` (org members only):
+  ```bash
+  hf download khalisfoundation/gab-data --repo-type dataset --local-dir ~/gab-data
+  export VF_GAB_DATA=~/gab-data
+  ```
+- **The clips** (`VF_BENCHMARK`): a local download of the GAB dataset root (`manifest.csv` + the five behaviour
+  folders with `audio.wav`, `shabads.csv`, `lines.csv`):
+  ```bash
+  hf download khalisfoundation/GurbaniAutopilotBench --repo-type dataset --local-dir ~/gab
+  export VF_BENCHMARK=~/gab
+  ```
+  `model-bench/fetch.py` downloads its own 48-clip sample on its own; `VF_BENCHMARK` is for the GAB steps (4 to 6).
 
 ## 1. Make a model pack
 
