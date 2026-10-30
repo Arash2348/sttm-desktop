@@ -1,0 +1,1868 @@
+{
+ "provenance": {
+  "commit": "765db095cb0f07bbef3f998175bc6d30faa8ad1a",
+  "gab_revision": "0b307522287c6ea1a9773ee8a620707b2b7e9f84",
+  "files": {
+   "www/main/addons/voice-follow/engine/retrieval/text-index.js": "0894d01b40d29b2ce8e0170ac759748a8300a6f797482161fb23666e9337a31d",
+   "www/main/addons/voice-follow/components/switchPolicy.js": "1d23c16129229b3006d44851a99cd6298fbbd19c3b067698a8f4b372a92235b6"
+  },
+  "transcripts": {
+   "karanbir-w10": {
+    "model": "karanbir",
+    "onnx_sha256": "5f9e41d867dee2883796e290eef85abc11cbd32fe0f10c1f763a638d824634f9",
+    "tokenizer_sha256": "63a2e8f1221ba60a7b315a14c8da49ff4873d6b5e46e9145dc4f7a4fe4742834",
+    "frontend_sha256": null,
+    "window_s": 10,
+    "hop_s": 1,
+    "blank": 256,
+    "threads": 4,
+    "onnxruntime": "1.29.0",
+    "numpy": "2.5.3",
+    "machine": "arm64",
+    "started": "2026-10-30 14:46",
+    "key": {
+     "onnx_sha256": "5f9e41d867dee2883796e290eef85abc11cbd32fe0f10c1f763a638d824634f9",
+     "tokenizer_sha256": "63a2e8f1221ba60a7b315a14c8da49ff4873d6b5e46e9145dc4f7a4fe4742834",
+     "frontend_sha256": null,
+     "window_s": 10,
+     "blank": 256
+    },
+    "seconds": 1395,
+    "windows_this_run": 12019,
+    "complete": true
+   },
+   "jaspal-v3-w10": {
+    "model": "/Users/asingh02/AAI/models/jaspal-sggs-v3-onnx/sggs-asr-v3.int8.onnx",
+    "onnx_sha256": "2dbc62f949cb4988de0ad58ac3758912b6ce54f39bc77e2b0534d65cb0f492a1",
+    "tokenizer_sha256": "1d7979fd05be60f660a52f6feac9fadc3c96c9a2345cb31e78ab12fef48617f1",
+    "frontend_sha256": null,
+    "window_s": 10,
+    "hop_s": 1,
+    "blank": 0,
+    "threads": 4,
+    "onnxruntime": "1.29.0",
+    "numpy": "2.5.3",
+    "machine": "arm64",
+    "started": "2026-10-30 15:09",
+    "key": {
+     "onnx_sha256": "2dbc62f949cb4988de0ad58ac3758912b6ce54f39bc77e2b0534d65cb0f492a1",
+     "tokenizer_sha256": "1d7979fd05be60f660a52f6feac9fadc3c96c9a2345cb31e78ab12fef48617f1",
+     "frontend_sha256": null,
+     "window_s": 10,
+     "blank": 0
+    },
+    "seconds": 816,
+    "windows_this_run": 12019,
+    "complete": true
+   },
+   "karanbir-w4": {
+    "model": "karanbir",
+    "onnx_sha256": "5f9e41d867dee2883796e290eef85abc11cbd32fe0f10c1f763a638d824634f9",
+    "tokenizer_sha256": "63a2e8f1221ba60a7b315a14c8da49ff4873d6b5e46e9145dc4f7a4fe4742834",
+    "frontend_sha256": null,
+    "window_s": 4,
+    "hop_s": 1,
+    "blank": 256,
+    "threads": 4,
+    "onnxruntime": "1.29.0",
+    "numpy": "2.5.3",
+    "machine": "arm64",
+    "started": "2026-10-30 15:23",
+    "key": {
+     "onnx_sha256": "5f9e41d867dee2883796e290eef85abc11cbd32fe0f10c1f763a638d824634f9",
+     "tokenizer_sha256": "63a2e8f1221ba60a7b315a14c8da49ff4873d6b5e46e9145dc4f7a4fe4742834",
+     "frontend_sha256": null,
+     "window_s": 4,
+     "blank": 256
+    },
+    "seconds": 648,
+    "windows_this_run": 12301,
+    "complete": true
+   },
+   "jaspal-v3-w4": {
+    "model": "/Users/asingh02/AAI/models/jaspal-sggs-v3-onnx/sggs-asr-v3.int8.onnx",
+    "onnx_sha256": "2dbc62f949cb4988de0ad58ac3758912b6ce54f39bc77e2b0534d65cb0f492a1",
+    "tokenizer_sha256": "1d7979fd05be60f660a52f6feac9fadc3c96c9a2345cb31e78ab12fef48617f1",
+    "frontend_sha256": null,
+    "window_s": 4,
+    "hop_s": 1,
+    "blank": 0,
+    "threads": 4,
+    "onnxruntime": "1.29.0",
+    "numpy": "2.5.3",
+    "machine": "arm64",
+    "started": "2026-10-30 15:33",
+    "key": {
+     "onnx_sha256": "2dbc62f949cb4988de0ad58ac3758912b6ce54f39bc77e2b0534d65cb0f492a1",
+     "tokenizer_sha256": "1d7979fd05be60f660a52f6feac9fadc3c96c9a2345cb31e78ab12fef48617f1",
+     "frontend_sha256": null,
+     "window_s": 4,
+     "blank": 0
+    },
+    "seconds": 405,
+    "windows_this_run": 12301,
+    "complete": true
+   }
+  }
+ },
+ "models": [
+  "karanbir-w10",
+  "jaspal-v3-w10",
+  "karanbir-w4",
+  "jaspal-v3-w4"
+ ],
+ "agg": [
+  {
+   "tier": "main",
+   "model": "karanbir-w10",
+   "clips": 7,
+   "windows": 1778,
+   "hit1": 54.9,
+   "hit5": 69.2,
+   "hit5ClipMean": 68.9,
+   "usable": 87.5,
+   "vote": 85,
+   "voteWrong": 7.8
+  },
+  {
+   "tier": "main",
+   "model": "jaspal-v3-w10",
+   "clips": 7,
+   "windows": 1778,
+   "hit1": 57.3,
+   "hit5": 69.3,
+   "hit5ClipMean": 71.3,
+   "usable": 89.6,
+   "vote": 86.1,
+   "voteWrong": 7,
+   "vsBaseline": {
+    "baseline": "karanbir-w10",
+    "diff": 0.1,
+    "ci95": [
+     -3.4,
+     4.4
+    ],
+    "clear": false
+   }
+  },
+  {
+   "tier": "main",
+   "model": "karanbir-w4",
+   "clips": 7,
+   "windows": 1820,
+   "hit1": 19.2,
+   "hit5": 32.7,
+   "hit5ClipMean": 33,
+   "usable": 57.6,
+   "vote": 59.3,
+   "voteWrong": 17.7
+  },
+  {
+   "tier": "main",
+   "model": "jaspal-v3-w4",
+   "clips": 7,
+   "windows": 1820,
+   "hit1": 17.1,
+   "hit5": 27.6,
+   "hit5ClipMean": 29.6,
+   "usable": 59.2,
+   "vote": 50.5,
+   "voteWrong": 23.4,
+   "vsBaseline": {
+    "baseline": "karanbir-w4",
+    "diff": -5.1,
+    "ci95": [
+     -9.4,
+     -0.2
+    ],
+    "clear": true
+   }
+  },
+  {
+   "tier": "hard",
+   "model": "karanbir-w10",
+   "clips": 7,
+   "windows": 1943,
+   "hit1": 13.5,
+   "hit5": 20,
+   "hit5ClipMean": 19.9,
+   "usable": 80.8,
+   "vote": 40.3,
+   "voteWrong": 30.4
+  },
+  {
+   "tier": "hard",
+   "model": "jaspal-v3-w10",
+   "clips": 7,
+   "windows": 1943,
+   "hit1": 4.9,
+   "hit5": 9.5,
+   "hit5ClipMean": 9.6,
+   "usable": 71.3,
+   "vote": 14.9,
+   "voteWrong": 37.2,
+   "vsBaseline": {
+    "baseline": "karanbir-w10",
+    "diff": -10.5,
+    "ci95": [
+     -18.5,
+     -2.2
+    ],
+    "clear": true
+   }
+  },
+  {
+   "tier": "hard",
+   "model": "karanbir-w4",
+   "clips": 7,
+   "windows": 1958,
+   "hit1": 2.5,
+   "hit5": 4.5,
+   "hit5ClipMean": 4.5,
+   "usable": 38,
+   "vote": 7.4,
+   "voteWrong": 11
+  },
+  {
+   "tier": "hard",
+   "model": "jaspal-v3-w4",
+   "clips": 7,
+   "windows": 1958,
+   "hit1": 0.6,
+   "hit5": 1.9,
+   "hit5ClipMean": 1.9,
+   "usable": 26.5,
+   "vote": 0,
+   "voteWrong": 6.5,
+   "vsBaseline": {
+    "baseline": "karanbir-w4",
+    "diff": -2.7,
+    "ci95": [
+     -5.3,
+     0
+    ],
+    "clear": false
+   }
+  },
+  {
+   "tier": "akhand",
+   "model": "karanbir-w10",
+   "clips": 7,
+   "windows": 1879,
+   "hit1": 29.2,
+   "hit5": 39.9,
+   "hit5ClipMean": 39.4,
+   "usable": 81.5,
+   "vote": 64.6,
+   "voteWrong": 23.1
+  },
+  {
+   "tier": "akhand",
+   "model": "jaspal-v3-w10",
+   "clips": 7,
+   "windows": 1879,
+   "hit1": 22.9,
+   "hit5": 29.8,
+   "hit5ClipMean": 29.8,
+   "usable": 93.6,
+   "vote": 58.6,
+   "voteWrong": 21.9,
+   "vsBaseline": {
+    "baseline": "karanbir-w10",
+    "diff": -10.1,
+    "ci95": [
+     -14.5,
+     -5
+    ],
+    "clear": true
+   }
+  },
+  {
+   "tier": "akhand",
+   "model": "karanbir-w4",
+   "clips": 7,
+   "windows": 1891,
+   "hit1": 10,
+   "hit5": 15.1,
+   "hit5ClipMean": 14.8,
+   "usable": 50.6,
+   "vote": 42.6,
+   "voteWrong": 19.4
+  },
+  {
+   "tier": "akhand",
+   "model": "jaspal-v3-w4",
+   "clips": 7,
+   "windows": 1891,
+   "hit1": 7,
+   "hit5": 10.8,
+   "hit5ClipMean": 10.8,
+   "usable": 55.1,
+   "vote": 36,
+   "voteWrong": 11.4,
+   "vsBaseline": {
+    "baseline": "karanbir-w4",
+    "diff": -4.3,
+    "ci95": [
+     -8.4,
+     -0.5
+    ],
+    "clear": true
+   }
+  },
+  {
+   "tier": "paath-hall",
+   "model": "karanbir-w10",
+   "clips": 6,
+   "windows": 1031,
+   "hit1": 85.3,
+   "hit5": 93.9,
+   "hit5ClipMean": 85.7,
+   "usable": 99.5,
+   "vote": 94,
+   "voteWrong": 4.1
+  },
+  {
+   "tier": "paath-hall",
+   "model": "jaspal-v3-w10",
+   "clips": 6,
+   "windows": 1031,
+   "hit1": 82.9,
+   "hit5": 90,
+   "hit5ClipMean": 61.1,
+   "usable": 99.6,
+   "vote": 87.7,
+   "voteWrong": 9.2,
+   "vsBaseline": {
+    "baseline": "karanbir-w10",
+    "diff": -3.9,
+    "ci95": [
+     -38.7,
+     -0.1
+    ],
+    "clear": true
+   }
+  },
+  {
+   "tier": "paath-hall",
+   "model": "karanbir-w4",
+   "clips": 6,
+   "windows": 1043,
+   "hit1": 70.9,
+   "hit5": 80.1,
+   "hit5ClipMean": 69.7,
+   "usable": 94.2,
+   "vote": 89.5,
+   "voteWrong": 7.7
+  },
+  {
+   "tier": "paath-hall",
+   "model": "jaspal-v3-w4",
+   "clips": 6,
+   "windows": 1043,
+   "hit1": 67.3,
+   "hit5": 79.6,
+   "hit5ClipMean": 57.7,
+   "usable": 96.7,
+   "vote": 86.5,
+   "voteWrong": 7.4,
+   "vsBaseline": {
+    "baseline": "karanbir-w4",
+    "diff": -0.5,
+    "ci95": [
+     -19.9,
+     3.1
+    ],
+    "clear": false
+   }
+  },
+  {
+   "tier": "paath-studio",
+   "model": "karanbir-w10",
+   "clips": 8,
+   "windows": 761,
+   "hit1": 74.9,
+   "hit5": 87.1,
+   "hit5ClipMean": 86.4,
+   "usable": 99.9,
+   "vote": 95.8,
+   "voteWrong": 0.3
+  },
+  {
+   "tier": "paath-studio",
+   "model": "jaspal-v3-w10",
+   "clips": 8,
+   "windows": 761,
+   "hit1": 70,
+   "hit5": 81.7,
+   "hit5ClipMean": 79.2,
+   "usable": 99.9,
+   "vote": 94.2,
+   "voteWrong": 2.1,
+   "vsBaseline": {
+    "baseline": "karanbir-w10",
+    "diff": -5.4,
+    "ci95": [
+     -14.2,
+     -0.8
+    ],
+    "clear": true
+   }
+  },
+  {
+   "tier": "paath-studio",
+   "model": "karanbir-w4",
+   "clips": 8,
+   "windows": 767,
+   "hit1": 29.1,
+   "hit5": 42.1,
+   "hit5ClipMean": 60.7,
+   "usable": 69.1,
+   "vote": 70.7,
+   "voteWrong": 10
+  },
+  {
+   "tier": "paath-studio",
+   "model": "jaspal-v3-w4",
+   "clips": 8,
+   "windows": 767,
+   "hit1": 23.2,
+   "hit5": 32.5,
+   "hit5ClipMean": 55,
+   "usable": 62.3,
+   "vote": 62.5,
+   "voteWrong": 4.7,
+   "vsBaseline": {
+    "baseline": "karanbir-w4",
+    "diff": -9.6,
+    "ci95": [
+     -12.9,
+     -2
+    ],
+    "clear": true
+   }
+  },
+  {
+   "tier": "sung-bani",
+   "model": "karanbir-w10",
+   "clips": 6,
+   "windows": 2346,
+   "hit1": 65,
+   "hit5": 72.6,
+   "hit5ClipMean": 77.1,
+   "usable": 97.1,
+   "vote": 79.1,
+   "voteWrong": 13.4
+  },
+  {
+   "tier": "sung-bani",
+   "model": "jaspal-v3-w10",
+   "clips": 6,
+   "windows": 2346,
+   "hit1": 54.9,
+   "hit5": 62.4,
+   "hit5ClipMean": 67.5,
+   "usable": 95.4,
+   "vote": 67.9,
+   "voteWrong": 9.6,
+   "vsBaseline": {
+    "baseline": "karanbir-w10",
+    "diff": -10.3,
+    "ci95": [
+     -17.3,
+     -3.2
+    ],
+    "clear": true
+   }
+  },
+  {
+   "tier": "sung-bani",
+   "model": "karanbir-w4",
+   "clips": 6,
+   "windows": 2381,
+   "hit1": 35.5,
+   "hit5": 45.9,
+   "hit5ClipMean": 48.6,
+   "usable": 85.3,
+   "vote": 72.1,
+   "voteWrong": 6.2
+  },
+  {
+   "tier": "sung-bani",
+   "model": "jaspal-v3-w4",
+   "clips": 6,
+   "windows": 2381,
+   "hit1": 27.8,
+   "hit5": 37,
+   "hit5ClipMean": 39.2,
+   "usable": 76.8,
+   "vote": 63.5,
+   "voteWrong": 4.2,
+   "vsBaseline": {
+    "baseline": "karanbir-w4",
+    "diff": -8.9,
+    "ci95": [
+     -13,
+     -6
+    ],
+    "clear": true
+   }
+  },
+  {
+   "tier": "akhand-paath",
+   "model": "karanbir-w10",
+   "clips": 4,
+   "windows": 1104,
+   "hit1": 93.6,
+   "hit5": 97.6,
+   "hit5ClipMean": 97.5,
+   "usable": 99.7,
+   "vote": 66.4,
+   "voteWrong": 28.8
+  },
+  {
+   "tier": "akhand-paath",
+   "model": "jaspal-v3-w10",
+   "clips": 4,
+   "windows": 1104,
+   "hit1": 94.2,
+   "hit5": 98.8,
+   "hit5ClipMean": 98.8,
+   "usable": 100,
+   "vote": 67,
+   "voteWrong": 30.3,
+   "vsBaseline": {
+    "baseline": "karanbir-w10",
+    "diff": 1.3,
+    "ci95": [
+     0,
+     2.5
+    ],
+    "clear": false
+   }
+  },
+  {
+   "tier": "akhand-paath",
+   "model": "karanbir-w4",
+   "clips": 4,
+   "windows": 1127,
+   "hit1": 84.6,
+   "hit5": 93.1,
+   "hit5ClipMean": 93,
+   "usable": 99.1,
+   "vote": 74.1,
+   "voteWrong": 23.4
+  },
+  {
+   "tier": "akhand-paath",
+   "model": "jaspal-v3-w4",
+   "clips": 4,
+   "windows": 1127,
+   "hit1": 86.3,
+   "hit5": 95.1,
+   "hit5ClipMean": 95.1,
+   "usable": 99.7,
+   "vote": 73.1,
+   "voteWrong": 24,
+   "vsBaseline": {
+    "baseline": "karanbir-w4",
+    "diff": 2,
+    "ci95": [
+     -0.3,
+     4.5
+    ],
+    "clear": false
+   }
+  },
+  {
+   "tier": "akhand-paath-fast",
+   "model": "karanbir-w10",
+   "clips": 2,
+   "windows": 545,
+   "hit1": 77.6,
+   "hit5": 85.9,
+   "hit5ClipMean": 85.1,
+   "usable": 97.8,
+   "vote": 61.1,
+   "voteWrong": 34.7
+  },
+  {
+   "tier": "akhand-paath-fast",
+   "model": "jaspal-v3-w10",
+   "clips": 2,
+   "windows": 545,
+   "hit1": 89,
+   "hit5": 97.4,
+   "hit5ClipMean": 97.2,
+   "usable": 100,
+   "vote": 58.9,
+   "voteWrong": 38.3,
+   "vsBaseline": {
+    "baseline": "karanbir-w10",
+    "diff": 11.6,
+    "ci95": [
+     3.1,
+     21.3
+    ],
+    "clear": true
+   }
+  },
+  {
+   "tier": "akhand-paath-fast",
+   "model": "karanbir-w4",
+   "clips": 2,
+   "windows": 557,
+   "hit1": 81.5,
+   "hit5": 89.9,
+   "hit5ClipMean": 89.5,
+   "usable": 98,
+   "vote": 66.6,
+   "voteWrong": 29.1
+  },
+  {
+   "tier": "akhand-paath-fast",
+   "model": "jaspal-v3-w4",
+   "clips": 2,
+   "windows": 557,
+   "hit1": 82,
+   "hit5": 89.8,
+   "hit5ClipMean": 89.3,
+   "usable": 100,
+   "vote": 61.9,
+   "voteWrong": 34.3,
+   "vsBaseline": {
+    "baseline": "karanbir-w4",
+    "diff": -0.2,
+    "ci95": [
+     -0.4,
+     0
+    ],
+    "clear": false
+   }
+  }
+ ],
+ "clips": [
+  {
+   "clip": "clip01",
+   "tier": "main",
+   "models": {
+    "karanbir-w10": {
+     "n": 235,
+     "hit1": 56.2,
+     "hit5": 89.4
+    },
+    "jaspal-v3-w10": {
+     "n": 235,
+     "hit1": 60,
+     "hit5": 91.1
+    },
+    "karanbir-w4": {
+     "n": 241,
+     "hit1": 23.2,
+     "hit5": 46.5
+    },
+    "jaspal-v3-w4": {
+     "n": 241,
+     "hit1": 20.7,
+     "hit5": 41.5
+    }
+   }
+  },
+  {
+   "clip": "clip03",
+   "tier": "main",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 41.6,
+     "hit5": 45
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 39.9,
+     "hit5": 44.7
+    },
+    "karanbir-w4": {
+     "n": 297,
+     "hit1": 8.8,
+     "hit5": 19.2
+    },
+    "jaspal-v3-w4": {
+     "n": 297,
+     "hit1": 7.4,
+     "hit5": 16.8
+    }
+   }
+  },
+  {
+   "clip": "clip05",
+   "tier": "main",
+   "models": {
+    "karanbir-w10": {
+     "n": 88,
+     "hit1": 45.5,
+     "hit5": 60.2
+    },
+    "jaspal-v3-w10": {
+     "n": 88,
+     "hit1": 76.1,
+     "hit5": 83
+    },
+    "karanbir-w4": {
+     "n": 94,
+     "hit1": 23.4,
+     "hit5": 31.9
+    },
+    "jaspal-v3-w4": {
+     "n": 94,
+     "hit1": 35.1,
+     "hit5": 44.7
+    }
+   }
+  },
+  {
+   "clip": "clip06",
+   "tier": "main",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 72.9,
+     "hit5": 81.1
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 76.3,
+     "hit5": 79.7
+    },
+    "karanbir-w4": {
+     "n": 297,
+     "hit1": 36,
+     "hit5": 49.2
+    },
+    "jaspal-v3-w4": {
+     "n": 297,
+     "hit1": 37,
+     "hit5": 48.8
+    }
+   }
+  },
+  {
+   "clip": "clip12",
+   "tier": "main",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 48.5,
+     "hit5": 63.9
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 57.4,
+     "hit5": 68.4
+    },
+    "karanbir-w4": {
+     "n": 297,
+     "hit1": 15.5,
+     "hit5": 23.9
+    },
+    "jaspal-v3-w4": {
+     "n": 297,
+     "hit1": 11.1,
+     "hit5": 20.2
+    }
+   }
+  },
+  {
+   "clip": "clip17",
+   "tier": "main",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 62.5,
+     "hit5": 80.4
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 63.6,
+     "hit5": 78.4
+    },
+    "karanbir-w4": {
+     "n": 297,
+     "hit1": 13.1,
+     "hit5": 32.3
+    },
+    "jaspal-v3-w4": {
+     "n": 297,
+     "hit1": 15.2,
+     "hit5": 22.6
+    }
+   }
+  },
+  {
+   "clip": "clip33",
+   "tier": "main",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 50.9,
+     "hit5": 62.2
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 41.6,
+     "hit5": 53.6
+    },
+    "karanbir-w4": {
+     "n": 297,
+     "hit1": 18.2,
+     "hit5": 27.9
+    },
+    "jaspal-v3-w4": {
+     "n": 297,
+     "hit1": 6.1,
+     "hit5": 12.8
+    }
+   }
+  },
+  {
+   "clip": "kh11_sttm_desktop_2026_10_11T02_40_20_422Z",
+   "tier": "hard",
+   "models": {
+    "karanbir-w10": {
+     "n": 267,
+     "hit1": 3,
+     "hit5": 9
+    },
+    "jaspal-v3-w10": {
+     "n": 267,
+     "hit1": 8.2,
+     "hit5": 17.2
+    },
+    "karanbir-w4": {
+     "n": 267,
+     "hit1": 0.4,
+     "hit5": 1.9
+    },
+    "jaspal-v3-w4": {
+     "n": 267,
+     "hit1": 0.4,
+     "hit5": 5.2
+    }
+   }
+  },
+  {
+   "clip": "kh12_sttm_desktop_2026_10_11T02_50_05_783Z",
+   "tier": "hard",
+   "models": {
+    "karanbir-w10": {
+     "n": 255,
+     "hit1": 8.6,
+     "hit5": 15.3
+    },
+    "jaspal-v3-w10": {
+     "n": 255,
+     "hit1": 2,
+     "hit5": 6.3
+    },
+    "karanbir-w4": {
+     "n": 255,
+     "hit1": 1.6,
+     "hit5": 3.1
+    },
+    "jaspal-v3-w4": {
+     "n": 255,
+     "hit1": 0,
+     "hit5": 0
+    }
+   }
+  },
+  {
+   "clip": "kh13_sttm_desktop_2026_10_11T03_07_57_411Z",
+   "tier": "hard",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 6.9,
+     "hit5": 11.3
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 2.7,
+     "hit5": 9.6
+    },
+    "karanbir-w4": {
+     "n": 295,
+     "hit1": 0.3,
+     "hit5": 1.4
+    },
+    "jaspal-v3-w4": {
+     "n": 295,
+     "hit1": 0,
+     "hit5": 0.7
+    }
+   }
+  },
+  {
+   "clip": "kh15_sttm_desktop_2026_10_11T13_45_00_522Z",
+   "tier": "hard",
+   "models": {
+    "karanbir-w10": {
+     "n": 272,
+     "hit1": 16.5,
+     "hit5": 20.6
+    },
+    "jaspal-v3-w10": {
+     "n": 272,
+     "hit1": 5.1,
+     "hit5": 9.6
+    },
+    "karanbir-w4": {
+     "n": 272,
+     "hit1": 2.9,
+     "hit5": 5.1
+    },
+    "jaspal-v3-w4": {
+     "n": 272,
+     "hit1": 0.7,
+     "hit5": 1.5
+    }
+   }
+  },
+  {
+   "clip": "kh19_sttm_desktop_2026_10_11T20_08_08_535Z",
+   "tier": "hard",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 25.1,
+     "hit5": 34
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 3.4,
+     "hit5": 5.5
+    },
+    "karanbir-w4": {
+     "n": 297,
+     "hit1": 6.4,
+     "hit5": 11.1
+    },
+    "jaspal-v3-w4": {
+     "n": 297,
+     "hit1": 0.7,
+     "hit5": 1.7
+    }
+   }
+  },
+  {
+   "clip": "kh20_sttm_desktop_2026_10_11T20_15_43_327Z",
+   "tier": "hard",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 15.1,
+     "hit5": 22.3
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 5.5,
+     "hit5": 7.6
+    },
+    "karanbir-w4": {
+     "n": 296,
+     "hit1": 2.7,
+     "hit5": 3.7
+    },
+    "jaspal-v3-w4": {
+     "n": 296,
+     "hit1": 1,
+     "hit5": 1.4
+    }
+   }
+  },
+  {
+   "clip": "kh27_sttm_desktop_2026_10_13T02_48_34_427Z",
+   "tier": "hard",
+   "models": {
+    "karanbir-w10": {
+     "n": 276,
+     "hit1": 18.5,
+     "hit5": 26.4
+    },
+    "jaspal-v3-w10": {
+     "n": 276,
+     "hit1": 7.2,
+     "hit5": 11.2
+    },
+    "karanbir-w4": {
+     "n": 276,
+     "hit1": 2.5,
+     "hit5": 5.1
+    },
+    "jaspal-v3-w4": {
+     "n": 276,
+     "hit1": 1.1,
+     "hit5": 2.9
+    }
+   }
+  },
+  {
+   "clip": "l3clip01",
+   "tier": "akhand",
+   "models": {
+    "karanbir-w10": {
+     "n": 269,
+     "hit1": 19.7,
+     "hit5": 32.7
+    },
+    "jaspal-v3-w10": {
+     "n": 269,
+     "hit1": 19.7,
+     "hit5": 29.4
+    },
+    "karanbir-w4": {
+     "n": 269,
+     "hit1": 3.7,
+     "hit5": 6.3
+    },
+    "jaspal-v3-w4": {
+     "n": 269,
+     "hit1": 5.2,
+     "hit5": 9.7
+    }
+   }
+  },
+  {
+   "clip": "l3clip26",
+   "tier": "akhand",
+   "models": {
+    "karanbir-w10": {
+     "n": 269,
+     "hit1": 40.5,
+     "hit5": 58
+    },
+    "jaspal-v3-w10": {
+     "n": 269,
+     "hit1": 38.3,
+     "hit5": 46.8
+    },
+    "karanbir-w4": {
+     "n": 269,
+     "hit1": 11.2,
+     "hit5": 20.1
+    },
+    "jaspal-v3-w4": {
+     "n": 269,
+     "hit1": 12.6,
+     "hit5": 20.8
+    }
+   }
+  },
+  {
+   "clip": "l3clip02",
+   "tier": "akhand",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 46,
+     "hit5": 58.1
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 33.7,
+     "hit5": 40.5
+    },
+    "karanbir-w4": {
+     "n": 297,
+     "hit1": 21.5,
+     "hit5": 29
+    },
+    "jaspal-v3-w4": {
+     "n": 297,
+     "hit1": 11.4,
+     "hit5": 15.8
+    }
+   }
+  },
+  {
+   "clip": "l3clip03",
+   "tier": "akhand",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 29.2,
+     "hit5": 38.1
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 16.5,
+     "hit5": 23
+    },
+    "karanbir-w4": {
+     "n": 297,
+     "hit1": 8.1,
+     "hit5": 13.5
+    },
+    "jaspal-v3-w4": {
+     "n": 297,
+     "hit1": 3,
+     "hit5": 6.1
+    }
+   }
+  },
+  {
+   "clip": "l3clip04",
+   "tier": "akhand",
+   "models": {
+    "karanbir-w10": {
+     "n": 221,
+     "hit1": 19,
+     "hit5": 29.4
+    },
+    "jaspal-v3-w10": {
+     "n": 221,
+     "hit1": 20.8,
+     "hit5": 33
+    },
+    "karanbir-w4": {
+     "n": 221,
+     "hit1": 7.7,
+     "hit5": 12.7
+    },
+    "jaspal-v3-w4": {
+     "n": 221,
+     "hit1": 6.3,
+     "hit5": 10
+    }
+   }
+  },
+  {
+   "clip": "l3clip06",
+   "tier": "akhand",
+   "models": {
+    "karanbir-w10": {
+     "n": 269,
+     "hit1": 26.4,
+     "hit5": 31.6
+    },
+    "jaspal-v3-w10": {
+     "n": 269,
+     "hit1": 19.7,
+     "hit5": 21.6
+    },
+    "karanbir-w4": {
+     "n": 269,
+     "hit1": 10,
+     "hit5": 12.3
+    },
+    "jaspal-v3-w4": {
+     "n": 269,
+     "hit1": 7.4,
+     "hit5": 8.6
+    }
+   }
+  },
+  {
+   "clip": "l3clip07",
+   "tier": "akhand",
+   "models": {
+    "karanbir-w10": {
+     "n": 269,
+     "hit1": 20.1,
+     "hit5": 27.9
+    },
+    "jaspal-v3-w10": {
+     "n": 269,
+     "hit1": 10.8,
+     "hit5": 14.5
+    },
+    "karanbir-w4": {
+     "n": 269,
+     "hit1": 6.7,
+     "hit5": 10
+    },
+    "jaspal-v3-w4": {
+     "n": 269,
+     "hit1": 3,
+     "hit5": 4.5
+    }
+   }
+  },
+  {
+   "clip": "rt11_rehras",
+   "tier": "paath-hall",
+   "models": {
+    "karanbir-w10": {
+     "n": 591,
+     "hit1": 85.1,
+     "hit5": 95.4
+    },
+    "jaspal-v3-w10": {
+     "n": 591,
+     "hit1": 89,
+     "hit5": 96.4
+    },
+    "karanbir-w4": {
+     "n": 597,
+     "hit1": 68.8,
+     "hit5": 79.9
+    },
+    "jaspal-v3-w4": {
+     "n": 597,
+     "hit1": 71.5,
+     "hit5": 84.1
+    }
+   }
+  },
+  {
+   "clip": "rt11_sohila",
+   "tier": "paath-hall",
+   "models": {
+    "karanbir-w10": {
+     "n": 316,
+     "hit1": 95.6,
+     "hit5": 96.2
+    },
+    "jaspal-v3-w10": {
+     "n": 316,
+     "hit1": 94.6,
+     "hit5": 96.2
+    },
+    "karanbir-w4": {
+     "n": 322,
+     "hit1": 81.7,
+     "hit5": 87
+    },
+    "jaspal-v3-w4": {
+     "n": 322,
+     "hit1": 76.4,
+     "hit5": 84.8
+    }
+   }
+  },
+  {
+   "clip": "pt31",
+   "tier": "paath-hall",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 61.3,
+     "hit5": 74.2
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 6.5,
+     "hit5": 19.4
+    },
+    "karanbir-w4": {
+     "n": 31,
+     "hit1": 61.3,
+     "hit5": 67.7
+    },
+    "jaspal-v3-w4": {
+     "n": 31,
+     "hit1": 9.7,
+     "hit5": 35.5
+    }
+   }
+  },
+  {
+   "clip": "pt32",
+   "tier": "paath-hall",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 38.7,
+     "hit5": 77.4
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 9.7,
+     "hit5": 32.3
+    },
+    "karanbir-w4": {
+     "n": 31,
+     "hit1": 38.7,
+     "hit5": 45.2
+    },
+    "jaspal-v3-w4": {
+     "n": 31,
+     "hit1": 16.1,
+     "hit5": 32.3
+    }
+   }
+  },
+  {
+   "clip": "pt33",
+   "tier": "paath-hall",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 87.1,
+     "hit5": 100
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 48.4,
+     "hit5": 77.4
+    },
+    "karanbir-w4": {
+     "n": 31,
+     "hit1": 83.9,
+     "hit5": 96.8
+    },
+    "jaspal-v3-w4": {
+     "n": 31,
+     "hit1": 51.6,
+     "hit5": 77.4
+    }
+   }
+  },
+  {
+   "clip": "pt34",
+   "tier": "paath-hall",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 51.6,
+     "hit5": 71
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 32.3,
+     "hit5": 45.2
+    },
+    "karanbir-w4": {
+     "n": 31,
+     "hit1": 29,
+     "hit5": 41.9
+    },
+    "jaspal-v3-w4": {
+     "n": 31,
+     "hit1": 16.1,
+     "hit5": 32.3
+    }
+   }
+  },
+  {
+   "clip": "pt01",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 77.4,
+     "hit5": 90.3
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 64.5,
+     "hit5": 67.7
+    },
+    "karanbir-w4": {
+     "n": 31,
+     "hit1": 45.2,
+     "hit5": 45.2
+    },
+    "jaspal-v3-w4": {
+     "n": 31,
+     "hit1": 41.9,
+     "hit5": 45.2
+    }
+   }
+  },
+  {
+   "clip": "pt05",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 12.9,
+     "hit5": 45.2
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 0,
+     "hit5": 0
+    },
+    "karanbir-w4": {
+     "n": 31,
+     "hit1": 6.5,
+     "hit5": 16.1
+    },
+    "jaspal-v3-w4": {
+     "n": 31,
+     "hit1": 0,
+     "hit5": 0
+    }
+   }
+  },
+  {
+   "clip": "pt09",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 100,
+     "hit5": 100
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 100,
+     "hit5": 100
+    },
+    "karanbir-w4": {
+     "n": 31,
+     "hit1": 71,
+     "hit5": 90.3
+    },
+    "jaspal-v3-w4": {
+     "n": 31,
+     "hit1": 80.6,
+     "hit5": 87.1
+    }
+   }
+  },
+  {
+   "clip": "pt15",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 100,
+     "hit5": 100
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 100,
+     "hit5": 100
+    },
+    "karanbir-w4": {
+     "n": 31,
+     "hit1": 67.7,
+     "hit5": 96.8
+    },
+    "jaspal-v3-w4": {
+     "n": 31,
+     "hit1": 74.2,
+     "hit5": 96.8
+    }
+   }
+  },
+  {
+   "clip": "pt19",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 80.6,
+     "hit5": 83.9
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 87.1,
+     "hit5": 100
+    },
+    "karanbir-w4": {
+     "n": 31,
+     "hit1": 58.1,
+     "hit5": 74.2
+    },
+    "jaspal-v3-w4": {
+     "n": 31,
+     "hit1": 58.1,
+     "hit5": 74.2
+    }
+   }
+  },
+  {
+   "clip": "pt28",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 96.8,
+     "hit5": 96.8
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 100,
+     "hit5": 100
+    },
+    "karanbir-w4": {
+     "n": 31,
+     "hit1": 80.6,
+     "hit5": 96.8
+    },
+    "jaspal-v3-w4": {
+     "n": 31,
+     "hit1": 83.9,
+     "hit5": 93.5
+    }
+   }
+  },
+  {
+   "clip": "ytsalokm9_UI8D1oI5aNk_full",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 284,
+     "hit1": 73.6,
+     "hit5": 87.3
+    },
+    "jaspal-v3-w10": {
+     "n": 284,
+     "hit1": 72.2,
+     "hit5": 84.2
+    },
+    "karanbir-w4": {
+     "n": 284,
+     "hit1": 17.3,
+     "hit5": 26.4
+    },
+    "jaspal-v3-w4": {
+     "n": 284,
+     "hit1": 9.9,
+     "hit5": 18
+    }
+   }
+  },
+  {
+   "clip": "ytkabeer_Zs5qq_OljyQ_full",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 74.2,
+     "hit5": 87.6
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 64.6,
+     "hit5": 81.8
+    },
+    "karanbir-w4": {
+     "n": 297,
+     "hit1": 24.2,
+     "hit5": 39.7
+    },
+    "jaspal-v3-w4": {
+     "n": 297,
+     "hit1": 15.2,
+     "hit5": 25.3
+    }
+   }
+  },
+  {
+   "clip": "rt11_aarti",
+   "tier": "sung-bani",
+   "models": {
+    "karanbir-w10": {
+     "n": 591,
+     "hit1": 91.4,
+     "hit5": 94.8
+    },
+    "jaspal-v3-w10": {
+     "n": 591,
+     "hit1": 85.3,
+     "hit5": 90.5
+    },
+    "karanbir-w4": {
+     "n": 597,
+     "hit1": 52.4,
+     "hit5": 64.7
+    },
+    "jaspal-v3-w4": {
+     "n": 597,
+     "hit1": 46.7,
+     "hit5": 58.8
+    }
+   }
+  },
+  {
+   "clip": "aa01",
+   "tier": "sung-bani",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 84.5,
+     "hit5": 94.8
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 80.1,
+     "hit5": 87.6
+    },
+    "karanbir-w4": {
+     "n": 297,
+     "hit1": 49.8,
+     "hit5": 64
+    },
+    "jaspal-v3-w4": {
+     "n": 297,
+     "hit1": 41.1,
+     "hit5": 57.6
+    }
+   }
+  },
+  {
+   "clip": "aa05",
+   "tier": "sung-bani",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 80.8,
+     "hit5": 85.2
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 67,
+     "hit5": 75.9
+    },
+    "karanbir-w4": {
+     "n": 297,
+     "hit1": 40.4,
+     "hit5": 51.5
+    },
+    "jaspal-v3-w4": {
+     "n": 297,
+     "hit1": 28.3,
+     "hit5": 40.4
+    }
+   }
+  },
+  {
+   "clip": "nw11_asa1",
+   "tier": "sung-bani",
+   "models": {
+    "karanbir-w10": {
+     "n": 591,
+     "hit1": 14.2,
+     "hit5": 24.5
+    },
+    "jaspal-v3-w10": {
+     "n": 591,
+     "hit1": 1.7,
+     "hit5": 4.2
+    },
+    "karanbir-w4": {
+     "n": 597,
+     "hit1": 5.7,
+     "hit5": 11.1
+    },
+    "jaspal-v3-w4": {
+     "n": 597,
+     "hit1": 0.8,
+     "hit5": 2.2
+    }
+   }
+  },
+  {
+   "clip": "ytasa1_4IXk2t_Irqo_900-1620",
+   "tier": "sung-bani",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 75.6,
+     "hit5": 84.2
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 78,
+     "hit5": 88.3
+    },
+    "karanbir-w4": {
+     "n": 297,
+     "hit1": 53.2,
+     "hit5": 64
+    },
+    "jaspal-v3-w4": {
+     "n": 297,
+     "hit1": 46.5,
+     "hit5": 60.3
+    }
+   }
+  },
+  {
+   "clip": "kh23_sttm_desktop_2026_10_13T01_50_01_713Z",
+   "tier": "sung-bani",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 68.7,
+     "hit5": 79
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 40.5,
+     "hit5": 58.4
+    },
+    "karanbir-w4": {
+     "n": 296,
+     "hit1": 24.7,
+     "hit5": 36.5
+    },
+    "jaspal-v3-w4": {
+     "n": 296,
+     "hit1": 11.1,
+     "hit5": 16.2
+    }
+   }
+  },
+  {
+   "clip": "ytap_PB6nfe3QKn4_900-1500",
+   "tier": "akhand-paath",
+   "models": {
+    "karanbir-w10": {
+     "n": 266,
+     "hit1": 89.5,
+     "hit5": 95.9
+    },
+    "jaspal-v3-w10": {
+     "n": 266,
+     "hit1": 91,
+     "hit5": 98.9
+    },
+    "karanbir-w4": {
+     "n": 271,
+     "hit1": 86.7,
+     "hit5": 94.5
+    },
+    "jaspal-v3-w4": {
+     "n": 271,
+     "hit1": 91.5,
+     "hit5": 98.2
+    }
+   }
+  },
+  {
+   "clip": "ytap_cKpg64jaTAo_1200-1800",
+   "tier": "akhand-paath",
+   "models": {
+    "karanbir-w10": {
+     "n": 274,
+     "hit1": 97.1,
+     "hit5": 98.5
+    },
+    "jaspal-v3-w10": {
+     "n": 274,
+     "hit1": 94.9,
+     "hit5": 98.2
+    },
+    "karanbir-w4": {
+     "n": 280,
+     "hit1": 89.3,
+     "hit5": 94.3
+    },
+    "jaspal-v3-w4": {
+     "n": 280,
+     "hit1": 88.9,
+     "hit5": 95
+    }
+   }
+  },
+  {
+   "clip": "ytap_mUPs0SqeXvY_1500-2100",
+   "tier": "akhand-paath",
+   "models": {
+    "karanbir-w10": {
+     "n": 273,
+     "hit1": 89.7,
+     "hit5": 96.7
+    },
+    "jaspal-v3-w10": {
+     "n": 273,
+     "hit1": 91.2,
+     "hit5": 98.2
+    },
+    "karanbir-w4": {
+     "n": 279,
+     "hit1": 74.6,
+     "hit5": 86.4
+    },
+    "jaspal-v3-w4": {
+     "n": 279,
+     "hit1": 77.1,
+     "hit5": 91.8
+    }
+   }
+  },
+  {
+   "clip": "ytap_XEhUI8Vurj8_600-1200",
+   "tier": "akhand-paath",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 97.6,
+     "hit5": 99
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 99.3,
+     "hit5": 100
+    },
+    "karanbir-w4": {
+     "n": 297,
+     "hit1": 87.9,
+     "hit5": 97
+    },
+    "jaspal-v3-w4": {
+     "n": 297,
+     "hit1": 87.9,
+     "hit5": 95.6
+    }
+   }
+  },
+  {
+   "clip": "ytap_5N6Cgw8WAaY_1200-1800_x1.35",
+   "tier": "akhand-paath-fast",
+   "models": {
+    "karanbir-w10": {
+     "n": 254,
+     "hit1": 60.2,
+     "hit5": 73.2
+    },
+    "jaspal-v3-w10": {
+     "n": 254,
+     "hit1": 76.4,
+     "hit5": 94.5
+    },
+    "karanbir-w4": {
+     "n": 260,
+     "hit1": 73.1,
+     "hit5": 82.3
+    },
+    "jaspal-v3-w4": {
+     "n": 260,
+     "hit1": 69.6,
+     "hit5": 81.9
+    }
+   }
+  },
+  {
+   "clip": "ytap_XEhUI8Vurj8_600-1200_x1.35",
+   "tier": "akhand-paath-fast",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 92.8,
+     "hit5": 96.9
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 100,
+     "hit5": 100
+    },
+    "karanbir-w4": {
+     "n": 297,
+     "hit1": 88.9,
+     "hit5": 96.6
+    },
+    "jaspal-v3-w4": {
+     "n": 297,
+     "hit1": 92.9,
+     "hit5": 96.6
+    }
+   }
+  }
+ ]
+}
