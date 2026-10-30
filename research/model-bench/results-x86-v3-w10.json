@@ -1,0 +1,1855 @@
+{
+ "models": [
+  "karanbir-w10",
+  "jaspal-v0-w10",
+  "jaspal-v1-w10",
+  "jaspal-v2-w10",
+  "jaspal-v3-w10"
+ ],
+ "agg": [
+  {
+   "tier": "main",
+   "model": "karanbir-w10",
+   "clips": 7,
+   "windows": 1778,
+   "hit1": 54.7,
+   "hit5": 69.3,
+   "usable": 87.3,
+   "vote": 86.1,
+   "voteWrong": 7.4
+  },
+  {
+   "tier": "main",
+   "model": "jaspal-v0-w10",
+   "clips": 7,
+   "windows": 1778,
+   "hit1": 27.1,
+   "hit5": 39.5,
+   "usable": 87.7,
+   "vote": 65.7,
+   "voteWrong": 15.6
+  },
+  {
+   "tier": "main",
+   "model": "jaspal-v1-w10",
+   "clips": 7,
+   "windows": 1778,
+   "hit1": 34.8,
+   "hit5": 46.2,
+   "usable": 94.7,
+   "vote": 78.2,
+   "voteWrong": 6.2
+  },
+  {
+   "tier": "main",
+   "model": "jaspal-v2-w10",
+   "clips": 7,
+   "windows": 1778,
+   "hit1": 56.3,
+   "hit5": 70.5,
+   "usable": 92,
+   "vote": 84.9,
+   "voteWrong": 7.9
+  },
+  {
+   "tier": "main",
+   "model": "jaspal-v3-w10",
+   "clips": 7,
+   "windows": 1778,
+   "hit1": 57.3,
+   "hit5": 69.7,
+   "usable": 89.6,
+   "vote": 85.9,
+   "voteWrong": 7.3
+  },
+  {
+   "tier": "hard",
+   "model": "karanbir-w10",
+   "clips": 7,
+   "windows": 1943,
+   "hit1": 14.1,
+   "hit5": 20,
+   "usable": 80.9,
+   "vote": 42,
+   "voteWrong": 23.7
+  },
+  {
+   "tier": "hard",
+   "model": "jaspal-v0-w10",
+   "clips": 7,
+   "windows": 1943,
+   "hit1": 0,
+   "hit5": 0.1,
+   "usable": 71.6,
+   "vote": 0,
+   "voteWrong": 22.6
+  },
+  {
+   "tier": "hard",
+   "model": "jaspal-v1-w10",
+   "clips": 7,
+   "windows": 1943,
+   "hit1": 0.4,
+   "hit5": 1.5,
+   "usable": 94.4,
+   "vote": 2.7,
+   "voteWrong": 24.4
+  },
+  {
+   "tier": "hard",
+   "model": "jaspal-v2-w10",
+   "clips": 7,
+   "windows": 1943,
+   "hit1": 5.1,
+   "hit5": 9.7,
+   "usable": 89.1,
+   "vote": 18,
+   "voteWrong": 33.7
+  },
+  {
+   "tier": "hard",
+   "model": "jaspal-v3-w10",
+   "clips": 7,
+   "windows": 1943,
+   "hit1": 5.1,
+   "hit5": 9.7,
+   "usable": 70.8,
+   "vote": 18.4,
+   "voteWrong": 29.8
+  },
+  {
+   "tier": "akhand",
+   "model": "karanbir-w10",
+   "clips": 7,
+   "windows": 1879,
+   "hit1": 29.6,
+   "hit5": 40.2,
+   "usable": 81.4,
+   "vote": 64.4,
+   "voteWrong": 25.2
+  },
+  {
+   "tier": "akhand",
+   "model": "jaspal-v0-w10",
+   "clips": 7,
+   "windows": 1879,
+   "hit1": 1.9,
+   "hit5": 4.5,
+   "usable": 92.9,
+   "vote": 5.9,
+   "voteWrong": 35.6
+  },
+  {
+   "tier": "akhand",
+   "model": "jaspal-v1-w10",
+   "clips": 7,
+   "windows": 1879,
+   "hit1": 6.4,
+   "hit5": 10.7,
+   "usable": 98.6,
+   "vote": 21.9,
+   "voteWrong": 27.9
+  },
+  {
+   "tier": "akhand",
+   "model": "jaspal-v2-w10",
+   "clips": 7,
+   "windows": 1879,
+   "hit1": 20.6,
+   "hit5": 27.7,
+   "usable": 97,
+   "vote": 56.8,
+   "voteWrong": 23.3
+  },
+  {
+   "tier": "akhand",
+   "model": "jaspal-v3-w10",
+   "clips": 7,
+   "windows": 1879,
+   "hit1": 22.4,
+   "hit5": 29.3,
+   "usable": 93.4,
+   "vote": 59,
+   "voteWrong": 14.2
+  },
+  {
+   "tier": "paath-hall",
+   "model": "karanbir-w10",
+   "clips": 6,
+   "windows": 1031,
+   "hit1": 84.7,
+   "hit5": 93.6,
+   "usable": 99.6,
+   "vote": 93.1,
+   "voteWrong": 3.8
+  },
+  {
+   "tier": "paath-hall",
+   "model": "jaspal-v0-w10",
+   "clips": 6,
+   "windows": 1031,
+   "hit1": 73.7,
+   "hit5": 84.9,
+   "usable": 99.9,
+   "vote": 85.7,
+   "voteWrong": 5.9
+  },
+  {
+   "tier": "paath-hall",
+   "model": "jaspal-v1-w10",
+   "clips": 6,
+   "windows": 1031,
+   "hit1": 71.6,
+   "hit5": 86.3,
+   "usable": 99.6,
+   "vote": 77.6,
+   "voteWrong": 14.3
+  },
+  {
+   "tier": "paath-hall",
+   "model": "jaspal-v2-w10",
+   "clips": 6,
+   "windows": 1031,
+   "hit1": 80.9,
+   "hit5": 89.7,
+   "usable": 99.8,
+   "vote": 85.3,
+   "voteWrong": 10.6
+  },
+  {
+   "tier": "paath-hall",
+   "model": "jaspal-v3-w10",
+   "clips": 6,
+   "windows": 1031,
+   "hit1": 82.9,
+   "hit5": 90.3,
+   "usable": 99.6,
+   "vote": 87.5,
+   "voteWrong": 9.7
+  },
+  {
+   "tier": "paath-studio",
+   "model": "karanbir-w10",
+   "clips": 8,
+   "windows": 761,
+   "hit1": 74.2,
+   "hit5": 86.5,
+   "usable": 99.9,
+   "vote": 95.8,
+   "voteWrong": 1.4
+  },
+  {
+   "tier": "paath-studio",
+   "model": "jaspal-v0-w10",
+   "clips": 8,
+   "windows": 761,
+   "hit1": 30.9,
+   "hit5": 41.5,
+   "usable": 98.6,
+   "vote": 62.3,
+   "voteWrong": 14.7
+  },
+  {
+   "tier": "paath-studio",
+   "model": "jaspal-v1-w10",
+   "clips": 8,
+   "windows": 761,
+   "hit1": 45.6,
+   "hit5": 56,
+   "usable": 99.5,
+   "vote": 80.4,
+   "voteWrong": 10.8
+  },
+  {
+   "tier": "paath-studio",
+   "model": "jaspal-v2-w10",
+   "clips": 8,
+   "windows": 761,
+   "hit1": 66.6,
+   "hit5": 79.5,
+   "usable": 99.9,
+   "vote": 92.4,
+   "voteWrong": 4.7
+  },
+  {
+   "tier": "paath-studio",
+   "model": "jaspal-v3-w10",
+   "clips": 8,
+   "windows": 761,
+   "hit1": 69.9,
+   "hit5": 81.5,
+   "usable": 99.9,
+   "vote": 94.3,
+   "voteWrong": 2.1
+  },
+  {
+   "tier": "sung-bani",
+   "model": "karanbir-w10",
+   "clips": 6,
+   "windows": 2346,
+   "hit1": 65.1,
+   "hit5": 72.4,
+   "usable": 97.2,
+   "vote": 79.2,
+   "voteWrong": 12.3
+  },
+  {
+   "tier": "sung-bani",
+   "model": "jaspal-v0-w10",
+   "clips": 6,
+   "windows": 2346,
+   "hit1": 27.6,
+   "hit5": 38.3,
+   "usable": 96.2,
+   "vote": 56.7,
+   "voteWrong": 9.4
+  },
+  {
+   "tier": "sung-bani",
+   "model": "jaspal-v1-w10",
+   "clips": 6,
+   "windows": 2346,
+   "hit1": 36.1,
+   "hit5": 46.9,
+   "usable": 99.4,
+   "vote": 64.9,
+   "voteWrong": 8.5
+  },
+  {
+   "tier": "sung-bani",
+   "model": "jaspal-v2-w10",
+   "clips": 6,
+   "windows": 2346,
+   "hit1": 58.5,
+   "hit5": 67.1,
+   "usable": 98,
+   "vote": 72.4,
+   "voteWrong": 11.6
+  },
+  {
+   "tier": "sung-bani",
+   "model": "jaspal-v3-w10",
+   "clips": 6,
+   "windows": 2346,
+   "hit1": 55.3,
+   "hit5": 62.4,
+   "usable": 95.4,
+   "vote": 68.1,
+   "voteWrong": 10.4
+  },
+  {
+   "tier": "akhand-paath",
+   "model": "karanbir-w10",
+   "clips": 6,
+   "windows": 1649,
+   "hit1": 88.3,
+   "hit5": 93.6,
+   "usable": 99.2,
+   "vote": 64.6,
+   "voteWrong": 31.1
+  },
+  {
+   "tier": "akhand-paath",
+   "model": "jaspal-v0-w10",
+   "clips": 6,
+   "windows": 1649,
+   "hit1": 81.7,
+   "hit5": 89.9,
+   "usable": 100,
+   "vote": 62.9,
+   "voteWrong": 32.8
+  },
+  {
+   "tier": "akhand-paath",
+   "model": "jaspal-v1-w10",
+   "clips": 6,
+   "windows": 1649,
+   "hit1": 87.3,
+   "hit5": 94.3,
+   "usable": 100,
+   "vote": 63.7,
+   "voteWrong": 33.5
+  },
+  {
+   "tier": "akhand-paath",
+   "model": "jaspal-v2-w10",
+   "clips": 6,
+   "windows": 1649,
+   "hit1": 89.1,
+   "hit5": 96.8,
+   "usable": 100,
+   "vote": 62.9,
+   "voteWrong": 33.1
+  },
+  {
+   "tier": "akhand-paath",
+   "model": "jaspal-v3-w10",
+   "clips": 6,
+   "windows": 1649,
+   "hit1": 92.4,
+   "hit5": 98.5,
+   "usable": 100,
+   "vote": 64.3,
+   "voteWrong": 32.6
+  }
+ ],
+ "clips": [
+  {
+   "clip": "clip01",
+   "tier": "main",
+   "models": {
+    "karanbir-w10": {
+     "n": 235,
+     "hit1": 55.3,
+     "hit5": 88.5
+    },
+    "jaspal-v0-w10": {
+     "n": 235,
+     "hit1": 43.8,
+     "hit5": 71.1
+    },
+    "jaspal-v1-w10": {
+     "n": 235,
+     "hit1": 46,
+     "hit5": 65.5
+    },
+    "jaspal-v2-w10": {
+     "n": 235,
+     "hit1": 58.7,
+     "hit5": 94.5
+    },
+    "jaspal-v3-w10": {
+     "n": 235,
+     "hit1": 59.6,
+     "hit5": 91.1
+    }
+   }
+  },
+  {
+   "clip": "clip03",
+   "tier": "main",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 43,
+     "hit5": 46
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 7.6,
+     "hit5": 15.5
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 17.5,
+     "hit5": 22.7
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 36.8,
+     "hit5": 44.3
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 40.9,
+     "hit5": 45.7
+    }
+   }
+  },
+  {
+   "clip": "clip05",
+   "tier": "main",
+   "models": {
+    "karanbir-w10": {
+     "n": 88,
+     "hit1": 45.5,
+     "hit5": 60.2
+    },
+    "jaspal-v0-w10": {
+     "n": 88,
+     "hit1": 17,
+     "hit5": 34.1
+    },
+    "jaspal-v1-w10": {
+     "n": 88,
+     "hit1": 36.4,
+     "hit5": 42
+    },
+    "jaspal-v2-w10": {
+     "n": 88,
+     "hit1": 68.2,
+     "hit5": 83
+    },
+    "jaspal-v3-w10": {
+     "n": 88,
+     "hit1": 75,
+     "hit5": 83
+    }
+   }
+  },
+  {
+   "clip": "clip06",
+   "tier": "main",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 72.5,
+     "hit5": 81.8
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 24.4,
+     "hit5": 31.6
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 44.7,
+     "hit5": 54.6
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 71.8,
+     "hit5": 77
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 76.6,
+     "hit5": 79.7
+    }
+   }
+  },
+  {
+   "clip": "clip12",
+   "tier": "main",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 47.8,
+     "hit5": 63.2
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 31.3,
+     "hit5": 44.7
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 38.8,
+     "hit5": 50.2
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 54.6,
+     "hit5": 66.7
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 57.4,
+     "hit5": 68.7
+    }
+   }
+  },
+  {
+   "clip": "clip17",
+   "tier": "main",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 61.5,
+     "hit5": 79.7
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 38.5,
+     "hit5": 47.4
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 44.7,
+     "hit5": 58.8
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 68.7,
+     "hit5": 79.4
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 63.2,
+     "hit5": 78.7
+    }
+   }
+  },
+  {
+   "clip": "clip33",
+   "tier": "main",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 51.2,
+     "hit5": 62.9
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 23,
+     "hit5": 34.7
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 18.9,
+     "hit5": 30.2
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 44,
+     "hit5": 62.2
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 41.2,
+     "hit5": 54.3
+    }
+   }
+  },
+  {
+   "clip": "kh11_sttm_desktop_2026_10_11T02_40_20_422Z",
+   "tier": "hard",
+   "models": {
+    "karanbir-w10": {
+     "n": 267,
+     "hit1": 2.6,
+     "hit5": 10.1
+    },
+    "jaspal-v0-w10": {
+     "n": 267,
+     "hit1": 0,
+     "hit5": 0
+    },
+    "jaspal-v1-w10": {
+     "n": 267,
+     "hit1": 0,
+     "hit5": 1.1
+    },
+    "jaspal-v2-w10": {
+     "n": 267,
+     "hit1": 2.2,
+     "hit5": 6
+    },
+    "jaspal-v3-w10": {
+     "n": 267,
+     "hit1": 8.6,
+     "hit5": 18.4
+    }
+   }
+  },
+  {
+   "clip": "kh12_sttm_desktop_2026_10_11T02_50_05_783Z",
+   "tier": "hard",
+   "models": {
+    "karanbir-w10": {
+     "n": 255,
+     "hit1": 10.6,
+     "hit5": 15.7
+    },
+    "jaspal-v0-w10": {
+     "n": 255,
+     "hit1": 0,
+     "hit5": 0
+    },
+    "jaspal-v1-w10": {
+     "n": 255,
+     "hit1": 2.4,
+     "hit5": 4.7
+    },
+    "jaspal-v2-w10": {
+     "n": 255,
+     "hit1": 2,
+     "hit5": 9
+    },
+    "jaspal-v3-w10": {
+     "n": 255,
+     "hit1": 2.7,
+     "hit5": 7.1
+    }
+   }
+  },
+  {
+   "clip": "kh13_sttm_desktop_2026_10_11T03_07_57_411Z",
+   "tier": "hard",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 7.2,
+     "hit5": 12.4
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 0,
+     "hit5": 0
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 0.3,
+     "hit5": 1
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 4.1,
+     "hit5": 8.2
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 2.7,
+     "hit5": 9.3
+    }
+   }
+  },
+  {
+   "clip": "kh15_sttm_desktop_2026_10_11T13_45_00_522Z",
+   "tier": "hard",
+   "models": {
+    "karanbir-w10": {
+     "n": 272,
+     "hit1": 16.2,
+     "hit5": 19.5
+    },
+    "jaspal-v0-w10": {
+     "n": 272,
+     "hit1": 0,
+     "hit5": 0.4
+    },
+    "jaspal-v1-w10": {
+     "n": 272,
+     "hit1": 0,
+     "hit5": 1.8
+    },
+    "jaspal-v2-w10": {
+     "n": 272,
+     "hit1": 11.8,
+     "hit5": 16.5
+    },
+    "jaspal-v3-w10": {
+     "n": 272,
+     "hit1": 5.9,
+     "hit5": 10.3
+    }
+   }
+  },
+  {
+   "clip": "kh19_sttm_desktop_2026_10_11T20_08_08_535Z",
+   "tier": "hard",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 26.1,
+     "hit5": 34.4
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 0,
+     "hit5": 0
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 0,
+     "hit5": 0.3
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 5.5,
+     "hit5": 7.9
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 3.8,
+     "hit5": 5.5
+    }
+   }
+  },
+  {
+   "clip": "kh20_sttm_desktop_2026_10_11T20_15_43_327Z",
+   "tier": "hard",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 15.8,
+     "hit5": 21.6
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 0,
+     "hit5": 0
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 0.3,
+     "hit5": 1
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 5.5,
+     "hit5": 10.7
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 5.5,
+     "hit5": 6.9
+    }
+   }
+  },
+  {
+   "clip": "kh27_sttm_desktop_2026_10_13T02_48_34_427Z",
+   "tier": "hard",
+   "models": {
+    "karanbir-w10": {
+     "n": 276,
+     "hit1": 19.2,
+     "hit5": 25.4
+    },
+    "jaspal-v0-w10": {
+     "n": 276,
+     "hit1": 0,
+     "hit5": 0
+    },
+    "jaspal-v1-w10": {
+     "n": 276,
+     "hit1": 0,
+     "hit5": 0.7
+    },
+    "jaspal-v2-w10": {
+     "n": 276,
+     "hit1": 4.3,
+     "hit5": 9.8
+    },
+    "jaspal-v3-w10": {
+     "n": 276,
+     "hit1": 6.9,
+     "hit5": 10.9
+    }
+   }
+  },
+  {
+   "clip": "l3clip01",
+   "tier": "akhand",
+   "models": {
+    "karanbir-w10": {
+     "n": 269,
+     "hit1": 20.4,
+     "hit5": 32.3
+    },
+    "jaspal-v0-w10": {
+     "n": 269,
+     "hit1": 1.9,
+     "hit5": 4.1
+    },
+    "jaspal-v1-w10": {
+     "n": 269,
+     "hit1": 1.5,
+     "hit5": 7.4
+    },
+    "jaspal-v2-w10": {
+     "n": 269,
+     "hit1": 19,
+     "hit5": 25.7
+    },
+    "jaspal-v3-w10": {
+     "n": 269,
+     "hit1": 18.2,
+     "hit5": 28.3
+    }
+   }
+  },
+  {
+   "clip": "l3clip26",
+   "tier": "akhand",
+   "models": {
+    "karanbir-w10": {
+     "n": 269,
+     "hit1": 40.9,
+     "hit5": 59.1
+    },
+    "jaspal-v0-w10": {
+     "n": 269,
+     "hit1": 0.7,
+     "hit5": 1.9
+    },
+    "jaspal-v1-w10": {
+     "n": 269,
+     "hit1": 1.9,
+     "hit5": 4.5
+    },
+    "jaspal-v2-w10": {
+     "n": 269,
+     "hit1": 37.5,
+     "hit5": 44.2
+    },
+    "jaspal-v3-w10": {
+     "n": 269,
+     "hit1": 37.2,
+     "hit5": 44.6
+    }
+   }
+  },
+  {
+   "clip": "l3clip02",
+   "tier": "akhand",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 46,
+     "hit5": 58.8
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 4.5,
+     "hit5": 11.3
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 12,
+     "hit5": 21
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 26.8,
+     "hit5": 39.9
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 32.6,
+     "hit5": 40.2
+    }
+   }
+  },
+  {
+   "clip": "l3clip03",
+   "tier": "akhand",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 29.2,
+     "hit5": 37.1
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 2.7,
+     "hit5": 4.8
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 11,
+     "hit5": 16.2
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 12.7,
+     "hit5": 17.2
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 16.8,
+     "hit5": 24.1
+    }
+   }
+  },
+  {
+   "clip": "l3clip04",
+   "tier": "akhand",
+   "models": {
+    "karanbir-w10": {
+     "n": 221,
+     "hit1": 19.5,
+     "hit5": 30.3
+    },
+    "jaspal-v0-w10": {
+     "n": 221,
+     "hit1": 0.5,
+     "hit5": 4.1
+    },
+    "jaspal-v1-w10": {
+     "n": 221,
+     "hit1": 4.5,
+     "hit5": 8.1
+    },
+    "jaspal-v2-w10": {
+     "n": 221,
+     "hit1": 19,
+     "hit5": 29
+    },
+    "jaspal-v3-w10": {
+     "n": 221,
+     "hit1": 22.2,
+     "hit5": 33
+    }
+   }
+  },
+  {
+   "clip": "l3clip06",
+   "tier": "akhand",
+   "models": {
+    "karanbir-w10": {
+     "n": 269,
+     "hit1": 27.1,
+     "hit5": 32.3
+    },
+    "jaspal-v0-w10": {
+     "n": 269,
+     "hit1": 1.1,
+     "hit5": 3
+    },
+    "jaspal-v1-w10": {
+     "n": 269,
+     "hit1": 9.7,
+     "hit5": 11.5
+    },
+    "jaspal-v2-w10": {
+     "n": 269,
+     "hit1": 20.1,
+     "hit5": 21.9
+    },
+    "jaspal-v3-w10": {
+     "n": 269,
+     "hit1": 19.7,
+     "hit5": 20.8
+    }
+   }
+  },
+  {
+   "clip": "l3clip07",
+   "tier": "akhand",
+   "models": {
+    "karanbir-w10": {
+     "n": 269,
+     "hit1": 20.8,
+     "hit5": 28.3
+    },
+    "jaspal-v0-w10": {
+     "n": 269,
+     "hit1": 1.1,
+     "hit5": 1.5
+    },
+    "jaspal-v1-w10": {
+     "n": 269,
+     "hit1": 3,
+     "hit5": 4.5
+    },
+    "jaspal-v2-w10": {
+     "n": 269,
+     "hit1": 8.9,
+     "hit5": 16
+    },
+    "jaspal-v3-w10": {
+     "n": 269,
+     "hit1": 9.7,
+     "hit5": 14.1
+    }
+   }
+  },
+  {
+   "clip": "rt11_rehras",
+   "tier": "paath-hall",
+   "models": {
+    "karanbir-w10": {
+     "n": 591,
+     "hit1": 84.9,
+     "hit5": 94.9
+    },
+    "jaspal-v0-w10": {
+     "n": 591,
+     "hit1": 76.3,
+     "hit5": 90.2
+    },
+    "jaspal-v1-w10": {
+     "n": 591,
+     "hit1": 76.3,
+     "hit5": 91.4
+    },
+    "jaspal-v2-w10": {
+     "n": 591,
+     "hit1": 89.5,
+     "hit5": 97.1
+    },
+    "jaspal-v3-w10": {
+     "n": 591,
+     "hit1": 89.2,
+     "hit5": 96.4
+    }
+   }
+  },
+  {
+   "clip": "rt11_sohila",
+   "tier": "paath-hall",
+   "models": {
+    "karanbir-w10": {
+     "n": 316,
+     "hit1": 95.6,
+     "hit5": 96.2
+    },
+    "jaspal-v0-w10": {
+     "n": 316,
+     "hit1": 88.6,
+     "hit5": 92.4
+    },
+    "jaspal-v1-w10": {
+     "n": 316,
+     "hit1": 85.8,
+     "hit5": 91.1
+    },
+    "jaspal-v2-w10": {
+     "n": 316,
+     "hit1": 91.8,
+     "hit5": 94.9
+    },
+    "jaspal-v3-w10": {
+     "n": 316,
+     "hit1": 94.6,
+     "hit5": 96.2
+    }
+   }
+  },
+  {
+   "clip": "pt31",
+   "tier": "paath-hall",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 54.8,
+     "hit5": 77.4
+    },
+    "jaspal-v0-w10": {
+     "n": 31,
+     "hit1": 0,
+     "hit5": 22.6
+    },
+    "jaspal-v1-w10": {
+     "n": 31,
+     "hit1": 9.7,
+     "hit5": 35.5
+    },
+    "jaspal-v2-w10": {
+     "n": 31,
+     "hit1": 12.9,
+     "hit5": 48.4
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 3.2,
+     "hit5": 19.4
+    }
+   }
+  },
+  {
+   "clip": "pt32",
+   "tier": "paath-hall",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 38.7,
+     "hit5": 74.2
+    },
+    "jaspal-v0-w10": {
+     "n": 31,
+     "hit1": 3.2,
+     "hit5": 16.1
+    },
+    "jaspal-v1-w10": {
+     "n": 31,
+     "hit1": 9.7,
+     "hit5": 48.4
+    },
+    "jaspal-v2-w10": {
+     "n": 31,
+     "hit1": 3.2,
+     "hit5": 16.1
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 3.2,
+     "hit5": 35.5
+    }
+   }
+  },
+  {
+   "clip": "pt33",
+   "tier": "paath-hall",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 80.6,
+     "hit5": 100
+    },
+    "jaspal-v0-w10": {
+     "n": 31,
+     "hit1": 67.7,
+     "hit5": 87.1
+    },
+    "jaspal-v1-w10": {
+     "n": 31,
+     "hit1": 25.8,
+     "hit5": 80.6
+    },
+    "jaspal-v2-w10": {
+     "n": 31,
+     "hit1": 22.6,
+     "hit5": 64.5
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 51.6,
+     "hit5": 80.6
+    }
+   }
+  },
+  {
+   "clip": "pt34",
+   "tier": "paath-hall",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 48.4,
+     "hit5": 71
+    },
+    "jaspal-v0-w10": {
+     "n": 31,
+     "hit1": 22.6,
+     "hit5": 35.5
+    },
+    "jaspal-v1-w10": {
+     "n": 31,
+     "hit1": 6.5,
+     "hit5": 35.5
+    },
+    "jaspal-v2-w10": {
+     "n": 31,
+     "hit1": 9.7,
+     "hit5": 35.5
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 35.5,
+     "hit5": 48.4
+    }
+   }
+  },
+  {
+   "clip": "pt01",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 77.4,
+     "hit5": 90.3
+    },
+    "jaspal-v0-w10": {
+     "n": 31,
+     "hit1": 48.4,
+     "hit5": 58.1
+    },
+    "jaspal-v1-w10": {
+     "n": 31,
+     "hit1": 67.7,
+     "hit5": 71
+    },
+    "jaspal-v2-w10": {
+     "n": 31,
+     "hit1": 77.4,
+     "hit5": 80.6
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 64.5,
+     "hit5": 67.7
+    }
+   }
+  },
+  {
+   "clip": "pt05",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 6.5,
+     "hit5": 38.7
+    },
+    "jaspal-v0-w10": {
+     "n": 31,
+     "hit1": 0,
+     "hit5": 3.2
+    },
+    "jaspal-v1-w10": {
+     "n": 31,
+     "hit1": 0,
+     "hit5": 0
+    },
+    "jaspal-v2-w10": {
+     "n": 31,
+     "hit1": 0,
+     "hit5": 3.2
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 0,
+     "hit5": 0
+    }
+   }
+  },
+  {
+   "clip": "pt09",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 100,
+     "hit5": 100
+    },
+    "jaspal-v0-w10": {
+     "n": 31,
+     "hit1": 96.8,
+     "hit5": 96.8
+    },
+    "jaspal-v1-w10": {
+     "n": 31,
+     "hit1": 93.5,
+     "hit5": 96.8
+    },
+    "jaspal-v2-w10": {
+     "n": 31,
+     "hit1": 90.3,
+     "hit5": 96.8
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 96.8,
+     "hit5": 96.8
+    }
+   }
+  },
+  {
+   "clip": "pt15",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 100,
+     "hit5": 100
+    },
+    "jaspal-v0-w10": {
+     "n": 31,
+     "hit1": 100,
+     "hit5": 100
+    },
+    "jaspal-v1-w10": {
+     "n": 31,
+     "hit1": 100,
+     "hit5": 100
+    },
+    "jaspal-v2-w10": {
+     "n": 31,
+     "hit1": 100,
+     "hit5": 100
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 100,
+     "hit5": 100
+    }
+   }
+  },
+  {
+   "clip": "pt19",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 80.6,
+     "hit5": 83.9
+    },
+    "jaspal-v0-w10": {
+     "n": 31,
+     "hit1": 80.6,
+     "hit5": 96.8
+    },
+    "jaspal-v1-w10": {
+     "n": 31,
+     "hit1": 87.1,
+     "hit5": 100
+    },
+    "jaspal-v2-w10": {
+     "n": 31,
+     "hit1": 77.4,
+     "hit5": 96.8
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 83.9,
+     "hit5": 100
+    }
+   }
+  },
+  {
+   "clip": "pt28",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 31,
+     "hit1": 93.5,
+     "hit5": 93.5
+    },
+    "jaspal-v0-w10": {
+     "n": 31,
+     "hit1": 100,
+     "hit5": 100
+    },
+    "jaspal-v1-w10": {
+     "n": 31,
+     "hit1": 100,
+     "hit5": 100
+    },
+    "jaspal-v2-w10": {
+     "n": 31,
+     "hit1": 100,
+     "hit5": 100
+    },
+    "jaspal-v3-w10": {
+     "n": 31,
+     "hit1": 100,
+     "hit5": 100
+    }
+   }
+  },
+  {
+   "clip": "ytsalokm9_UI8D1oI5aNk_full",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 284,
+     "hit1": 74.3,
+     "hit5": 88
+    },
+    "jaspal-v0-w10": {
+     "n": 284,
+     "hit1": 29.6,
+     "hit5": 47.5
+    },
+    "jaspal-v1-w10": {
+     "n": 284,
+     "hit1": 52.1,
+     "hit5": 68
+    },
+    "jaspal-v2-w10": {
+     "n": 284,
+     "hit1": 72.9,
+     "hit5": 87.7
+    },
+    "jaspal-v3-w10": {
+     "n": 284,
+     "hit1": 72.5,
+     "hit5": 84.2
+    }
+   }
+  },
+  {
+   "clip": "ytkabeer_Zs5qq_OljyQ_full",
+   "tier": "paath-studio",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 72.9,
+     "hit5": 86.3
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 6.5,
+     "hit5": 13.7
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 20.6,
+     "hit5": 30.2
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 55.7,
+     "hit5": 71.5
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 64.6,
+     "hit5": 81.4
+    }
+   }
+  },
+  {
+   "clip": "rt11_aarti",
+   "tier": "sung-bani",
+   "models": {
+    "karanbir-w10": {
+     "n": 591,
+     "hit1": 91.7,
+     "hit5": 94.9
+    },
+    "jaspal-v0-w10": {
+     "n": 591,
+     "hit1": 51.4,
+     "hit5": 63.1
+    },
+    "jaspal-v1-w10": {
+     "n": 591,
+     "hit1": 54.7,
+     "hit5": 69.5
+    },
+    "jaspal-v2-w10": {
+     "n": 591,
+     "hit1": 86.8,
+     "hit5": 91.7
+    },
+    "jaspal-v3-w10": {
+     "n": 591,
+     "hit1": 86,
+     "hit5": 90.4
+    }
+   }
+  },
+  {
+   "clip": "aa01",
+   "tier": "sung-bani",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 84.5,
+     "hit5": 93.5
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 47.8,
+     "hit5": 63.6
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 62.2,
+     "hit5": 76.6
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 84.2,
+     "hit5": 93.8
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 82.1,
+     "hit5": 88.7
+    }
+   }
+  },
+  {
+   "clip": "aa05",
+   "tier": "sung-bani",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 80.1,
+     "hit5": 83.8
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 39.2,
+     "hit5": 54.6
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 59.1,
+     "hit5": 69.4
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 69.8,
+     "hit5": 80.8
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 68.4,
+     "hit5": 76.3
+    }
+   }
+  },
+  {
+   "clip": "nw11_asa1",
+   "tier": "sung-bani",
+   "models": {
+    "karanbir-w10": {
+     "n": 591,
+     "hit1": 14.9,
+     "hit5": 25
+    },
+    "jaspal-v0-w10": {
+     "n": 591,
+     "hit1": 1.2,
+     "hit5": 5.4
+    },
+    "jaspal-v1-w10": {
+     "n": 591,
+     "hit1": 0.7,
+     "hit5": 4.4
+    },
+    "jaspal-v2-w10": {
+     "n": 591,
+     "hit1": 3,
+     "hit5": 9.1
+    },
+    "jaspal-v3-w10": {
+     "n": 591,
+     "hit1": 1.4,
+     "hit5": 4.1
+    }
+   }
+  },
+  {
+   "clip": "ytasa1_4IXk2t_Irqo_900-1620",
+   "tier": "sung-bani",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 75.3,
+     "hit5": 83.5
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 28.5,
+     "hit5": 48.8
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 44,
+     "hit5": 63.2
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 78.4,
+     "hit5": 89
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 78.4,
+     "hit5": 89.3
+    }
+   }
+  },
+  {
+   "clip": "kh23_sttm_desktop_2026_10_13T01_50_01_713Z",
+   "tier": "sung-bani",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 68.4,
+     "hit5": 79
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 0,
+     "hit5": 2.4
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 13.7,
+     "hit5": 18.9
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 56.7,
+     "hit5": 72.5
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 39.5,
+     "hit5": 57.4
+    }
+   }
+  },
+  {
+   "clip": "ytap_PB6nfe3QKn4_900-1500",
+   "tier": "akhand-paath",
+   "models": {
+    "karanbir-w10": {
+     "n": 266,
+     "hit1": 89.5,
+     "hit5": 96.2
+    },
+    "jaspal-v0-w10": {
+     "n": 266,
+     "hit1": 88.3,
+     "hit5": 97
+    },
+    "jaspal-v1-w10": {
+     "n": 266,
+     "hit1": 89.8,
+     "hit5": 98.9
+    },
+    "jaspal-v2-w10": {
+     "n": 266,
+     "hit1": 91,
+     "hit5": 99.2
+    },
+    "jaspal-v3-w10": {
+     "n": 266,
+     "hit1": 90.6,
+     "hit5": 99.2
+    }
+   }
+  },
+  {
+   "clip": "ytap_cKpg64jaTAo_1200-1800",
+   "tier": "akhand-paath",
+   "models": {
+    "karanbir-w10": {
+     "n": 274,
+     "hit1": 97.1,
+     "hit5": 97.8
+    },
+    "jaspal-v0-w10": {
+     "n": 274,
+     "hit1": 96.4,
+     "hit5": 98.9
+    },
+    "jaspal-v1-w10": {
+     "n": 274,
+     "hit1": 96.7,
+     "hit5": 98.9
+    },
+    "jaspal-v2-w10": {
+     "n": 274,
+     "hit1": 94.5,
+     "hit5": 98.9
+    },
+    "jaspal-v3-w10": {
+     "n": 274,
+     "hit1": 95.3,
+     "hit5": 98.5
+    }
+   }
+  },
+  {
+   "clip": "ytap_mUPs0SqeXvY_1500-2100",
+   "tier": "akhand-paath",
+   "models": {
+    "karanbir-w10": {
+     "n": 273,
+     "hit1": 90.5,
+     "hit5": 96.7
+    },
+    "jaspal-v0-w10": {
+     "n": 273,
+     "hit1": 85.7,
+     "hit5": 94.5
+    },
+    "jaspal-v1-w10": {
+     "n": 273,
+     "hit1": 90.1,
+     "hit5": 98.2
+    },
+    "jaspal-v2-w10": {
+     "n": 273,
+     "hit1": 91.2,
+     "hit5": 97.4
+    },
+    "jaspal-v3-w10": {
+     "n": 273,
+     "hit1": 91.6,
+     "hit5": 98.5
+    }
+   }
+  },
+  {
+   "clip": "ytap_XEhUI8Vurj8_600-1200",
+   "tier": "akhand-paath",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 97.6,
+     "hit5": 99
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 97.6,
+     "hit5": 100
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 98.6,
+     "hit5": 100
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 97.9,
+     "hit5": 100
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 99.3,
+     "hit5": 100
+    }
+   }
+  },
+  {
+   "clip": "ytap_5N6Cgw8WAaY_1200-1800_x1.35",
+   "tier": "akhand-paath",
+   "models": {
+    "karanbir-w10": {
+     "n": 254,
+     "hit1": 59.4,
+     "hit5": 73.6
+    },
+    "jaspal-v0-w10": {
+     "n": 254,
+     "hit1": 35.8,
+     "hit5": 52.8
+    },
+    "jaspal-v1-w10": {
+     "n": 254,
+     "hit1": 55.5,
+     "hit5": 68.5
+    },
+    "jaspal-v2-w10": {
+     "n": 254,
+     "hit1": 63.8,
+     "hit5": 85
+    },
+    "jaspal-v3-w10": {
+     "n": 254,
+     "hit1": 75.6,
+     "hit5": 94.1
+    }
+   }
+  },
+  {
+   "clip": "ytap_XEhUI8Vurj8_600-1200_x1.35",
+   "tier": "akhand-paath",
+   "models": {
+    "karanbir-w10": {
+     "n": 291,
+     "hit1": 92.8,
+     "hit5": 96.2
+    },
+    "jaspal-v0-w10": {
+     "n": 291,
+     "hit1": 82.1,
+     "hit5": 92.8
+    },
+    "jaspal-v1-w10": {
+     "n": 291,
+     "hit1": 90,
+     "hit5": 99
+    },
+    "jaspal-v2-w10": {
+     "n": 291,
+     "hit1": 93.8,
+     "hit5": 99.3
+    },
+    "jaspal-v3-w10": {
+     "n": 291,
+     "hit1": 100,
+     "hit5": 100
+    }
+   }
+  }
+ ]
+}
