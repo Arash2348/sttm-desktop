@@ -43,7 +43,7 @@ print(json.dumps(out, ensure_ascii=False))
 `;
 const a = {
   onnx: path.join(pack, cfg.onnx),
-  tok: path.join(pack, cfg.tokenizer),
+  tok: path.join(pack, cfg.tokenizer || 'bpe.model'), // make_pack_json.py copies the .model in
   blank: cfg.blank,
   fe: cfg.frontend ? path.join(pack, cfg.frontend.onnx) : null,
   wins,

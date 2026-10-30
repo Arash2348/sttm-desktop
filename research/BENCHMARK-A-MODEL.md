@@ -24,8 +24,14 @@ research/BENCHMARK-A-MODEL.md, and report the tables from step 7."
 
 ## 0. Setup (once)
 
+Two checkouts: the **app** (the product repository, which only carries the small model-pack engine change) and
+the **harness** (this guide, `research/model-bench`, `research/level2-dataset/tools`), which lives on the fork branch
+`Arash2348/sttm-desktop@gab-harness` so that benchmark code never ships to users.
+
 ```bash
 git clone https://github.com/KhalisFoundation/sttm-desktop && cd sttm-desktop && git checkout experimental-release
+git clone -b gab-harness https://github.com/Arash2348/sttm-desktop ../sttm-harness   # run every tool from here;
+export VF_DRIVER_ROOT=$PWD                                                           # the GAB tools drive this app
 nvm use                                      # Node 20 (.nvmrc). Native modules are built for the Node that runs them.
 npm ci
 npm rebuild realm better-sqlite3 --build-from-source   # if `node -e "require('realm')"` fails: the prebuilt addons do not match this Node
@@ -63,17 +69,18 @@ Also needed (each one has a no-credentials or no-app way):
 
 ## 1. Make a model pack
 
-A pack is a folder: the ONNX, the model's own SentencePiece `.model`, and a `model.json`:
+A pack is a folder the app engine runs with `VF_SPEECH_MODEL=<folder>`: the ONNX, `vocab.json` (id -> piece),
+`pieces.json` (pieces with scores, for the app's encoder) and a `model.json` with the blank id. One command writes
+it from the model's own SentencePiece file (the app never parses `.model` files):
 
-```json
-{ "name": "jaspal-v3", "onnx": "model.int8.onnx", "tokenizer": "bpe.model", "blank": 0 }
+```bash
+cd research/model-bench
+.venv/bin/python make_pack_json.py <model.int8.onnx> <bpe.model> <blank id> data/packs/<name> <name>
 ```
 
-- The ONNX takes `audio` (float32, 16 kHz mono, shape [1, samples]) and `audio_len` (int64), and returns `log_probs`
-  (CTC, [1, frames, classes]) and `out_len`.
-  - Other names: add `"io": {"audio": ..., "audioLen": ..., "logProbs": ..., "outLen": ...}`.
-  - A model that takes features: add `"frontend": {"onnx": ..., "features": ..., "featuresLen": ...}`. See
-    `model-bench/make_packs.sh` for Jaspal v2.
+- The ONNX must take `audio` (float32, 16 kHz mono, shape [1, samples]) and `audio_len` (int64) and return
+  `log_probs` (CTC, [1, frames, classes]) and `out_len`, like Karanbir's and Jaspal's v0/v1/v3. A model that takes
+  features instead of audio (Jaspal's v2 export) cannot run in the app; benchmark it with model-bench only.
 - `blank` is the CTC blank id. Output class `i` must be tokenizer piece `i`.
 - `model-bench/make_packs.sh` builds packs for the published models that `fetch.py` downloads.
 
@@ -85,7 +92,7 @@ node check_pack.js <pack folder>                              # must print 24/24
 ```
 
 This runs the same 10 s windows through the app's engine and through `infer.py`. Anything less than all identical
-means a wrong `blank`, tokenizer, front-end or `io` name. Fix the pack before going on.
+means a wrong `blank` or tokenizer. Fix the pack before going on.
 
 ## 3. model-bench (step A of MODEL-GUIDE section 5, about 1 h)
 
