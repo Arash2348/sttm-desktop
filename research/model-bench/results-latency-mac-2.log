@@ -1,0 +1,6 @@
+karanbir {'load_ms': 394, 'size_mb': 184, '4s': {'median_ms': 61, 'p90_ms': 85}, '10s': {'median_ms': 146, 'p90_ms': 166}}
+jaspal-v0 {'load_ms': 1352, 'size_mb': 155, '4s': {'median_ms': 42, 'p90_ms': 47}, '10s': {'median_ms': 92, 'p90_ms': 98}}
+jaspal-v1 {'load_ms': 1649, 'size_mb': 155, '4s': {'median_ms': 42, 'p90_ms': 48}, '10s': {'median_ms': 94, 'p90_ms': 106}}
+jaspal-v2 {'load_ms': 600, 'size_mb': 157, '4s': {'median_ms': 41, 'p90_ms': 46}, '10s': {'median_ms': 91, 'p90_ms': 99}}
+jaspal-v3 {'load_ms': 1384, 'size_mb': 155, '4s': {'median_ms': 41, 'p90_ms': 46}, '10s': {'median_ms': 92, 'p90_ms': 100}}
+{"machine": "arm", "cores": 14, "threads": 2, "ort": "1.29.0", "models": {"karanbir": {"load_ms": 394, "size_mb": 184, "4s": {"median_ms": 61, "p90_ms": 85}, "10s": {"median_ms": 146, "p90_ms": 166}}, "jaspal-v0": {"load_ms": 1352, "size_mb": 155, "4s": {"median_ms": 42, "p90_ms": 47}, "10s": {"median_ms": 92, "p90_ms": 98}}, "jaspal-v1": {"load_ms": 1649, "size_mb": 155, "4s": {"median_ms": 42, "p90_ms": 48}, "10s": {"median_ms": 94, "p90_ms": 106}}, "jaspal-v2": {"load_ms": 600, "size_mb": 157, "4s": {"median_ms": 41, "p90_ms": 46}, "10s": {"median_ms": 91, "p90_ms": 99}}, "jaspal-v3": {"load_ms": 1384, "size_mb": 155, "4s": {"median_ms": 41, "p90_ms": 46}, "10s": {"median_ms": 92, "p90_ms": 100}}}}

@@ -1,0 +1,7 @@
+karanbir {'load_ms': 307, 'size_mb': 184, '4s': {'median_ms': 52, 'p90_ms': 66}, '10s': {'median_ms': 116, 'p90_ms': 129}}
+jaspal-v0 {'load_ms': 1387, 'size_mb': 155, '4s': {'median_ms': 38, 'p90_ms': 41}, '10s': {'median_ms': 87, 'p90_ms': 97}}
+jaspal-v1 {'load_ms': 1624, 'size_mb': 155, '4s': {'median_ms': 39, 'p90_ms': 43}, '10s': {'median_ms': 90, 'p90_ms': 103}}
+jaspal-v2 {'load_ms': 614, 'size_mb': 157, '4s': {'median_ms': 38, 'p90_ms': 40}, '10s': {'median_ms': 87, 'p90_ms': 96}}
+jaspal-v3 {'load_ms': 1393, 'size_mb': 155, '4s': {'median_ms': 39, 'p90_ms': 41}, '10s': {'median_ms': 87, 'p90_ms': 93}}
+{"machine": "arm", "cores": 14, "threads": 4, "ort": "1.29.0", "models": {"karanbir": {"load_ms": 307, "size_mb": 184, "4s": {"median_ms": 52, "p90_ms": 66}, "10s": {"median_ms": 116, "p90_ms": 129}}, "jaspal-v0": {"load_ms": 1387, "size_mb": 155, "4s": {"median_ms": 38, "p90_ms": 41}, "10s": {"median_ms": 87, "p90_ms": 97}}, "jaspal-v1": {"load_ms": 1624, "size_mb": 155, "4s": {"median_ms": 39, "p90_ms": 43}, "10s": {"median_ms": 90, "p90_ms": 103}}, "jaspal-v2": {"load_ms": 614, "size_mb": 157, "4s": {"median_ms": 38, "p90_ms": 40}, "10s": {"median_ms": 87, "p90_ms": 96}}, "jaspal-v3": {"load_ms": 1393, "size_mb": 155, "4s": {"median_ms": 39, "p90_ms": 41}, "10s": {"median_ms": 87, "p90_ms": 93}}}}
+libc++abi: terminating due to uncaught exception of type std::__1::system_error: recursive_mutex lock failed: Invalid argument

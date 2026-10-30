@@ -1,0 +1,133 @@
+{
+ "jiwer": "4.0.0",
+ "onnxruntime": "1.29.0",
+ "machine": "arm64",
+ "agg": [
+  {
+   "tier": "hard",
+   "model": "karanbir",
+   "clips": 7,
+   "pangtis": 81,
+   "wer": 169.3,
+   "cer": 118.5,
+   "cer_clip_mean": 122.3,
+   "cer_edge_tolerant": 53.5,
+   "cer_edge_tolerant_clip_mean": 52.1
+  },
+  {
+   "tier": "hard",
+   "model": "jaspal-v3",
+   "clips": 7,
+   "pangtis": 81,
+   "wer": 129.4,
+   "cer": 94.6,
+   "cer_clip_mean": 96.6,
+   "cer_edge_tolerant": 62.3,
+   "cer_edge_tolerant_clip_mean": 59.4,
+   "edge_vs_baseline": {
+    "diff": 8.9,
+    "ci95": [
+     4.6,
+     11.6
+    ],
+    "clear": true
+   }
+  },
+  {
+   "tier": "paath-studio",
+   "model": "karanbir",
+   "clips": 2,
+   "pangtis": 43,
+   "wer": 78.4,
+   "cer": 46.4,
+   "cer_clip_mean": 46.3,
+   "cer_edge_tolerant": 27.1,
+   "cer_edge_tolerant_clip_mean": 26.9
+  },
+  {
+   "tier": "paath-studio",
+   "model": "jaspal-v3",
+   "clips": 2,
+   "pangtis": 43,
+   "wer": 71.6,
+   "cer": 45.5,
+   "cer_clip_mean": 45.5,
+   "cer_edge_tolerant": 28.9,
+   "cer_edge_tolerant_clip_mean": 28.8
+  },
+  {
+   "tier": "sung-bani",
+   "model": "karanbir",
+   "clips": 1,
+   "pangtis": 44,
+   "wer": 86.3,
+   "cer": 48.6,
+   "cer_clip_mean": 48.6,
+   "cer_edge_tolerant": 34.9,
+   "cer_edge_tolerant_clip_mean": 34.9
+  },
+  {
+   "tier": "sung-bani",
+   "model": "jaspal-v3",
+   "clips": 1,
+   "pangtis": 44,
+   "wer": 85.6,
+   "cer": 56.6,
+   "cer_clip_mean": 56.6,
+   "cer_edge_tolerant": 46.2,
+   "cer_edge_tolerant_clip_mean": 46.2
+  },
+  {
+   "tier": "akhand-paath",
+   "model": "karanbir",
+   "clips": 4,
+   "pangtis": 269,
+   "wer": 63.1,
+   "cer": 32.3,
+   "cer_clip_mean": 32.2,
+   "cer_edge_tolerant": 14.3,
+   "cer_edge_tolerant_clip_mean": 14.2
+  },
+  {
+   "tier": "akhand-paath",
+   "model": "jaspal-v3",
+   "clips": 4,
+   "pangtis": 269,
+   "wer": 41.8,
+   "cer": 24.8,
+   "cer_clip_mean": 24.6,
+   "cer_edge_tolerant": 9.1,
+   "cer_edge_tolerant_clip_mean": 9.0,
+   "edge_vs_baseline": {
+    "diff": -5.2,
+    "ci95": [
+     -6.2,
+     -3.8
+    ],
+    "clear": false
+   }
+  },
+  {
+   "tier": "akhand-paath-fast",
+   "model": "karanbir",
+   "clips": 2,
+   "pangtis": 179,
+   "wer": 75.2,
+   "cer": 43.2,
+   "cer_clip_mean": 44.1,
+   "cer_edge_tolerant": 23.7,
+   "cer_edge_tolerant_clip_mean": 24.0
+  },
+  {
+   "tier": "akhand-paath-fast",
+   "model": "jaspal-v3",
+   "clips": 2,
+   "pangtis": 179,
+   "wer": 61.9,
+   "cer": 36.6,
+   "cer_clip_mean": 37.2,
+   "cer_edge_tolerant": 20.2,
+   "cer_edge_tolerant_clip_mean": 20.7
+  }
+ ]
+}
