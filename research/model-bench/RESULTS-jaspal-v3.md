@@ -27,6 +27,9 @@ Akhand Paath (both sets) 98.5 vs Karanbir 93.6.
 
 ## 4 s window (what the app leans on while following a line), Mac, same machine
 
+x86 (`results-x86-v3.md`) agrees within 0.5 points: v3 27.6 / 1.9 / 10.9 / 79.6 / 32.9 / 37.3 vs Karanbir 32.4 / 4.2 / 14.7 /
+79.4 / 41.3 / 45.8 on the six rows below in order; Akhand Paath (both sets) 93.1 vs 91.4.
+
 | Behaviour | Karanbir | Jaspal v3 | Call |
 |---|---|---|---|
 | Kirtan, mixer feed | 32.7 | 27.6 | ⚠️ |
