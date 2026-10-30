@@ -10,7 +10,9 @@ same 10 s / 4 s windows, same greedy decode and corpus search for every model). 
 
 v0, v1, v2 and the Karanbir column: x86 run of 2026-10-27 (`results.md`). v3: Mac M4 run of 2026-10-30 scored against
 Karanbir on the same Mac (`results-mac-v3.md`; Karanbir's Mac numbers are within 0.6 points of its x86 numbers on
-every row). The x86 v3 column is appended below when scored.
+every row). x86 v3 (GCP n2-standard-32, 2026-10-30, `results-x86-v3-w10.md`) agrees with the Mac within 0.5 points on
+every row: kirtan 69.7, GAB-Hard 9.7, Akhand Kirtan 29.3, paath hall 90.3, paath studio 81.5, sung Bani 62.4,
+Akhand Paath (both sets) 98.5 vs Karanbir 93.6.
 
 | Behaviour | Karanbir | Jaspal v0 | Jaspal v1 | Jaspal v2 | Jaspal v3 |
 |---|---|---|---|---|---|
