@@ -171,7 +171,7 @@ NOTE = ('Edge-tolerant CER is the headline; plain WER / CER on exact label times
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--models', default='karanbir,jaspal-v0,jaspal-v1,jaspal-v2')
+    ap.add_argument('--models', default='karanbir,jaspal-v0,jaspal-v1,jaspal-v2,jaspal-v3')
     ap.add_argument('--data', default=os.path.join(HERE, 'data'))
     ap.add_argument('--out', default=os.path.join(HERE, 'transcripts-lines'))
     ap.add_argument('--threads', type=int, default=4)
