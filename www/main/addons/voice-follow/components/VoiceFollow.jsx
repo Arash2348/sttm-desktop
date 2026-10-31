@@ -666,6 +666,10 @@ const TALK_HOLD_MIN_S = 0;
 const TALK_HOLD_MAX_S = 40;
 const TALK_HOLD_FIT = 0.5; // the Shabad on screen matches the heard text at this score
 const TALK_HOLD_CHARS = 8;
+// ...and (TALK_HOLD_CLASSIFIER 1) the speech/singing classifier calls the last TALK_HOLD_MIN_S talk: voiced in
+// NG_TALK_VOICED of its windows, sung in no more than NG_TALK_SUNG (a wrong Shabad under singing is not talk:
+// the usual switch must stay quick there); singing for NG_SUNG_END windows in a row ends the hold.
+const TALK_HOLD_CLASSIFIER = 1;
 // 3. Bani-copy preference: a Shabad whose pangti also lives in a Bani (Japji, Aarti, Asa di Vaar,
 // Anand ...) is promoted to that Bani only after the follower has gone on BANI_COPY_PANGTIS pangtis
 // in order (kirtan repeats and circles; a reading goes straight on).
@@ -4579,6 +4583,7 @@ const VoiceFollow = () => {
           } else {
             const gap = (nowT - Math.max(th.lastFit, ngRef.current.lastProgress || 0)) / 1000;
             if (gap > TALK_HOLD_MAX_S) th.on = false;
+            else if (th.on && TALK_HOLD_CLASSIFIER > 0 && ngSungLong()) th.on = false;
             else if (!th.on && gap >= TALK_HOLD_MIN_S) {
               const speech = vfNorm(text).length >= TALK_HOLD_CHARS;
               const sc = switchCandRef.current;
@@ -4587,7 +4592,15 @@ const VoiceFollow = () => {
                 sc && sc.lastScore != null ? sc.lastScore : 0,
                 bsl && bsl.lastScore != null ? bsl.lastScore : 0,
               );
-              if (speech && bestCand < SWITCH_ACOUSTIC_MIN) {
+              let talk = true;
+              if (TALK_HOLD_CLASSIFIER > 0) {
+                const sm = ngRef.current.sm.filter((x) => nowT - x.t <= TALK_HOLD_MIN_S * 1000);
+                talk =
+                  sm.length >= 3 &&
+                  sm.filter((x) => x.voice).length >= sm.length * NG_TALK_VOICED &&
+                  sm.filter((x) => x.sung).length <= sm.length * NG_TALK_SUNG;
+              }
+              if (speech && talk && bestCand < SWITCH_ACOUSTIC_MIN) {
                 th.on = true;
                 sessionLog.logEvent('talk_hold', { session: sessionIdRef.current, shabadId: curId, gap });
               }
