@@ -653,6 +653,24 @@ const RETURN_WINDOW_DECODES = 240; // ~2 min at the 0.5 s following hop
 // unmistakable cases go faster.
 const SWITCH_STRONG_MIN = 0.8; // candidate absolute score for a decisive win
 const SWITCH_STRONG_MARGIN = 0.3; // ...and margin over the current shabad
+// Experimental lock rules (Oct 31 2026 wrong-Shabad diagnosis), all OFF (0) by default; the bench
+// sets them through VF_SW_CFG. 1. Fragment lock guard: a first lock or a switch needs the heard
+// text to carry at least LOCK_GUARD_CHARS Gurmukhi letters per 4 s of audio (median of the last
+// LOCK_GUARD_DECODES decodes); wrong locks on a laptop mic come from 3-6-letter fragments.
+const LOCK_GUARD_CHARS = 0;
+const LOCK_GUARD_DECODES = 3;
+// 2. Short-talk hold: when the Shabad on screen has not matched for TALK_HOLD_MIN_S..TALK_HOLD_MAX_S
+// seconds and the audio is speech-like (TALK_HOLD_CHARS letters or more per decode), a switch needs
+// SWITCH_CONFIRM wins at the STRONG thresholds (vichar mid-Shabad; the 30-s katha rule covers long talk).
+const TALK_HOLD_MIN_S = 0;
+const TALK_HOLD_MAX_S = 40;
+const TALK_HOLD_FIT = 0.5; // the Shabad on screen matches the heard text at this score
+const TALK_HOLD_CHARS = 8;
+// 3. Bani-copy preference: a Shabad whose pangti also lives in a Bani (Japji, Aarti, Asa di Vaar,
+// Anand ...) is promoted to that Bani only after the follower has gone on BANI_COPY_PANGTIS pangtis
+// in order (kirtan repeats and circles; a reading goes straight on).
+const BANI_COPY_PREF = 0;
+const BANI_COPY_PANGTIS = 2;
 // Acoustic backstop (FOLLOWING phase): sung shabads the first-letter vote never
 // surfaces are the measured starvation case, so a second proposer screens the
 // WHOLE shabad field by first-letter overlap (cheap) and rescores survivors by
@@ -1706,6 +1724,30 @@ const VoiceFollow = () => {
     holdLogAt: 0,
   });
   const ngRef = useRef(ngFresh());
+  // Lock rules (LOCK_GUARD_*, TALK_HOLD_*, BANI_COPY_*): heard letters per 4 s of the last decodes;
+  // the short-talk hold's clock; the follower's in-order pangti count; a Bani promotion waiting for it.
+  const heardLenRef = useRef([]); // [{ t, cp4 }]
+  const talkHoldRef = useRef({ lastFit: 0, on: false });
+  const inorderRef = useRef(0);
+  const pendingPromoteRef = useRef(null);
+  const noteHeardLen = (text) => {
+    if (LOCK_GUARD_CHARS <= 0) return;
+    const now = Date.now();
+    const winS = phaseRef.current === 'following' ? AP_FOLLOW_WIN_S : AP_SEARCH_WIN_S;
+    let hl = heardLenRef.current;
+    if (hl.length && now - hl[hl.length - 1].t > 3000) hl = []; // a pause: start afresh
+    hl.push({ t: now, cp4: (vfNorm(text || '').length * 4) / winS });
+    while (hl.length > LOCK_GUARD_DECODES) hl.shift();
+    heardLenRef.current = hl;
+  };
+  // Fragment lock guard: enough letters in the recent decodes for a lock or a switch?
+  const fragmentOk = () => {
+    if (LOCK_GUARD_CHARS <= 0) return true;
+    const hl = heardLenRef.current;
+    if (hl.length < LOCK_GUARD_DECODES) return false;
+    const v = hl.map((x) => x.cp4).sort((a, b) => a - b);
+    return v[Math.floor(v.length / 2)] >= LOCK_GUARD_CHARS;
+  };
   const ngEnterSearchingRef = useRef(null); // enterSearching, defined further down
   // What the panel says while the hold is on (null: nothing held).
   const [ngHoldView, setNgHoldView] = useState(null);
@@ -2660,6 +2702,9 @@ const VoiceFollow = () => {
     switchCandRef.current = null;
     backstopRef.current = null;
     bsWinsRef.current.clear();
+    talkHoldRef.current = { lastFit: 0, on: false };
+    inorderRef.current = 0;
+    pendingPromoteRef.current = null;
     bsAdoptKeyRef.current = '';
     setSwitchView(null);
     cleanup();
@@ -2873,6 +2918,9 @@ const VoiceFollow = () => {
     switchCandRef.current = null;
     backstopRef.current = null;
     bsWinsRef.current.clear();
+    talkHoldRef.current = { lastFit: 0, on: false };
+    inorderRef.current = 0;
+    pendingPromoteRef.current = null;
     bsAdoptKeyRef.current = '';
     setSwitchView(null);
     contextEvidenceRef.current = null;
@@ -3245,6 +3293,136 @@ const VoiceFollow = () => {
   // follower for it, project it (unless it's the one already up), and (keep)
   // following — all without tearing down the single continuous mic session.
   // Re-entrancy-guarded so overlapping detections can't double-commit.
+  // The Bani promotions that follow a lock (see autopilotLock): a line only a paath contains opens
+  // its Bani; two Shabads of one Bani in recitation order open the Bani. Under BANI_COPY_PREF a
+  // promotion waits (pendingPromoteRef) until the follower has gone on BANI_COPY_PANGTIS pangtis in
+  // order, and runs again from the follower then.
+  const promoteToBaniRef = useRef(null);
+  const promoteToBani = useCallback(
+    async (cand, opts, baniId, fromId, session) => {
+      const copyOk = !(BANI_COPY_PREF > 0) || inorderRef.current >= BANI_COPY_PANGTIS;
+      const cursorVerseId = () => {
+        const prof = curProfileRef.current;
+        const at = curCursorRef.current;
+        return prof && at != null && prof.verses[at] ? prof.verses[at].verseId : undefined;
+      };
+      // A line only a paath contains: open that Bani straight away.
+      if (
+        !opts.promote &&
+        !opts.manual &&
+        baniId == null &&
+        !PAATH_SKIP_SHABADS.has(cand.shabadId) &&
+        session === sessionRef.current &&
+        autopilotRef.current &&
+        currentShabadIdRef.current === cand.shabadId
+      ) {
+        let lines = null;
+        try {
+          lines = await getPaathLines();
+        } catch (_) {
+          lines = null;
+        }
+        const paathBani = lines && (lines.get(cand.verseId) ?? lines.get(cursorVerseId()));
+        if (paathBani != null && !copyOk) {
+          pendingPromoteRef.current = () => promoteToBaniRef.current(cand, opts, baniId, fromId, session);
+          return;
+        }
+        if (
+          paathBani != null &&
+          session === sessionRef.current &&
+          currentShabadIdRef.current === cand.shabadId &&
+          !lockingRef.current &&
+          autopilotLockRef.current
+        ) {
+          autopilotLockRef.current(
+            { shabadId: `${BANI_KEY}${paathBani}`, verseId: cand.verseId, verse: cand.verse },
+            { promote: true, startAt: true },
+          );
+          return;
+        }
+      }
+      // Two shabads of one Bani in recitation order: follow the whole Bani.
+      if (
+        !opts.promote &&
+        baniId == null &&
+        typeof fromId === 'number' &&
+        fromId !== cand.shabadId &&
+        session === sessionRef.current &&
+        autopilotRef.current &&
+        currentShabadIdRef.current === cand.shabadId
+      ) {
+        let index = null;
+        try {
+          index = await getBaniIndex();
+        } catch (_) {
+          index = null;
+        }
+        if (
+          index &&
+          session === sessionRef.current &&
+          currentShabadIdRef.current === cand.shabadId &&
+          !lockingRef.current
+        ) {
+          const prefer = baniPreference(index, recentShabadsRef.current.slice(0, -1));
+          let bani = findBaniSequence(index, fromId, cand.shabadId, prefer);
+          // The previous shabad may have been locked as the other Bani's copy of the
+          // same Gurbani (Sohila's Gagan mai thaal before Aarti's next shabad).
+          if (
+            bani == null &&
+            (index.byShabad.get(fromId) || []).some((x) => PAATH_READ_BANIS.includes(x.bani))
+          ) {
+            let copies = null;
+            try {
+              copies = await paathCopies(fromId, index);
+            } catch (_) {
+              copies = null;
+            }
+            [...((copies && copies.values()) || [])].some((c) => {
+              bani = findBaniSequence(index, c, cand.shabadId, prefer);
+              return bani != null;
+            });
+            if (
+              session !== sessionRef.current ||
+              currentShabadIdRef.current !== cand.shabadId ||
+              lockingRef.current
+            ) {
+              bani = null;
+            }
+          }
+          // Akhand Paath through a section of Sri Guru Granth Sahib Ji (a Raag's Bhagat
+          // Bani, a Vaar): the next Shabad, the one before read at a reading pace.
+          if (
+            bani != null &&
+            AKHAND_SECTION_BANIS.has(bani) &&
+            cand.shabadId === fromId + 1 &&
+            readAtPaceRef.current(fromId) &&
+            autopilotLockRef.current
+          ) {
+            sessionLog.logEvent('paath_seq_on', {
+              session: sessionIdRef.current,
+              shabadId: cand.shabadId,
+              section: bani,
+            });
+            autopilotLockRef.current(
+              { shabadId: cand.shabadId, verseId: cand.verseId, verse: cand.verse },
+              { promote: true, window: true },
+            );
+          } else if (bani != null && !copyOk) {
+            pendingPromoteRef.current = () => promoteToBaniRef.current(cand, opts, baniId, fromId, session);
+          } else if (bani != null && autopilotLockRef.current) {
+            autopilotLockRef.current(
+              { shabadId: `${BANI_KEY}${bani}`, verseId: cand.verseId, verse: cand.verse },
+              { promote: true, startAt: true },
+            );
+          }
+        }
+      }
+    },
+    [getBaniIndex, getPaathLines, paathCopies],
+  );
+  promoteToBaniRef.current = (cand, opts, baniId, fromId, session) =>
+    promoteToBani(cand, opts, baniId, fromId, session);
+
   const autopilotLock = useCallback(
     async (cand, opts = {}) => {
       if (!cand || !cand.verse) return;
@@ -3367,6 +3545,9 @@ const VoiceFollow = () => {
         setCurrentView({ id: cand.shabadId, line: anvaad.unicode(cand.verse) });
         lockedVerseRef.current = { verseId: cand.verseId, verse: cand.verse };
         curCursorRef.current = null; // new shabad — cursor unknown until the follower reports
+        talkHoldRef.current = { lastFit: Date.now(), on: false };
+        inorderRef.current = 0;
+        pendingPromoteRef.current = null;
         // Seed the panel's position at the verse we locked on. Without this the
         // stale fix from the previous shabad (or line 1) shows for a beat until
         // the new follower reports, which reads as a jump to the wrong pangti.
@@ -3538,111 +3719,9 @@ const VoiceFollow = () => {
       } finally {
         if (session === sessionRef.current) lockingRef.current = false;
       }
-      // A line only a paath contains: open that Bani straight away.
-      if (
-        !opts.promote &&
-        !opts.manual &&
-        baniId == null &&
-        !PAATH_SKIP_SHABADS.has(cand.shabadId) &&
-        session === sessionRef.current &&
-        autopilotRef.current &&
-        currentShabadIdRef.current === cand.shabadId
-      ) {
-        let lines = null;
-        try {
-          lines = await getPaathLines();
-        } catch (_) {
-          lines = null;
-        }
-        const paathBani = lines && lines.get(cand.verseId);
-        if (
-          paathBani != null &&
-          session === sessionRef.current &&
-          currentShabadIdRef.current === cand.shabadId &&
-          !lockingRef.current &&
-          autopilotLockRef.current
-        ) {
-          autopilotLockRef.current(
-            { shabadId: `${BANI_KEY}${paathBani}`, verseId: cand.verseId, verse: cand.verse },
-            { promote: true, startAt: true },
-          );
-          return;
-        }
-      }
-      // Two shabads of one Bani in recitation order: follow the whole Bani.
-      if (
-        !opts.promote &&
-        baniId == null &&
-        typeof fromId === 'number' &&
-        fromId !== cand.shabadId &&
-        session === sessionRef.current &&
-        autopilotRef.current &&
-        currentShabadIdRef.current === cand.shabadId
-      ) {
-        let index = null;
-        try {
-          index = await getBaniIndex();
-        } catch (_) {
-          index = null;
-        }
-        if (
-          index &&
-          session === sessionRef.current &&
-          currentShabadIdRef.current === cand.shabadId &&
-          !lockingRef.current
-        ) {
-          const prefer = baniPreference(index, recentShabadsRef.current.slice(0, -1));
-          let bani = findBaniSequence(index, fromId, cand.shabadId, prefer);
-          // The previous shabad may have been locked as the other Bani's copy of the
-          // same Gurbani (Sohila's Gagan mai thaal before Aarti's next shabad).
-          if (
-            bani == null &&
-            (index.byShabad.get(fromId) || []).some((x) => PAATH_READ_BANIS.includes(x.bani))
-          ) {
-            let copies = null;
-            try {
-              copies = await paathCopies(fromId, index);
-            } catch (_) {
-              copies = null;
-            }
-            [...((copies && copies.values()) || [])].some((c) => {
-              bani = findBaniSequence(index, c, cand.shabadId, prefer);
-              return bani != null;
-            });
-            if (
-              session !== sessionRef.current ||
-              currentShabadIdRef.current !== cand.shabadId ||
-              lockingRef.current
-            ) {
-              bani = null;
-            }
-          }
-          // Akhand Paath through a section of Sri Guru Granth Sahib Ji (a Raag's Bhagat
-          // Bani, a Vaar): the next Shabad, the one before read at a reading pace.
-          if (
-            bani != null &&
-            AKHAND_SECTION_BANIS.has(bani) &&
-            cand.shabadId === fromId + 1 &&
-            readAtPaceRef.current(fromId) &&
-            autopilotLockRef.current
-          ) {
-            sessionLog.logEvent('paath_seq_on', {
-              session: sessionIdRef.current,
-              shabadId: cand.shabadId,
-              section: bani,
-            });
-            autopilotLockRef.current(
-              { shabadId: cand.shabadId, verseId: cand.verseId, verse: cand.verse },
-              { promote: true, window: true },
-            );
-          } else if (bani != null && autopilotLockRef.current) {
-            autopilotLockRef.current(
-              { shabadId: `${BANI_KEY}${bani}`, verseId: cand.verseId, verse: cand.verse },
-              { promote: true, startAt: true },
-            );
-          }
-        }
-      }
+      // Bani promotions (a paath line, two Shabads of a Bani in order): at once, or, under
+      // BANI_COPY_PREF, once the follower has gone on BANI_COPY_PANGTIS pangtis in order.
+      await promoteToBaniRef.current(cand, opts, baniId, fromId, session);
     },
     [
       enterSearching,
@@ -3867,6 +3946,7 @@ const VoiceFollow = () => {
       if (!recognizingRef.current) return;
       // Shadow activity log: words are being heard (singing or speech) right now.
       if (SHADOW_BUILD) shadowBus.heard(text || '');
+      noteHeardLen(text);
       const session = sessionRef.current;
       // Accumulate distinct hypotheses while identifying the first Shabad.
       // Canonical retrieval supplies identities; recognized text is never displayed.
@@ -4045,6 +4125,7 @@ const VoiceFollow = () => {
                 const profile = profiles[0];
                 const canonicalIndex = profile.verses.findIndex((v) => v.verseId === top.verseId);
                 if (canonicalIndex >= 0) {
+                  if (!fragmentOk()) return;
                   autopilotLock({
                     shabadId: top.shabadId,
                     verseId: top.verseId,
@@ -4170,6 +4251,7 @@ const VoiceFollow = () => {
                 return;
               const canonicalIndex = profile.verses.findIndex((v) => v.verseId === top.verseId);
               if (canonicalIndex >= 0) {
+                if (!fragmentOk()) return;
                 autopilotLock({
                   shabadId: top.shabadId,
                   verseId: top.verseId,
@@ -4368,6 +4450,7 @@ const VoiceFollow = () => {
             else poolStableRef.current = { bani: pooled.bani, count: 1 };
             const row = pooled && rowByShabad.get(pooled.sid);
             if (row && row.verse && poolStableRef.current.count >= PAATH_POOL_STABLE) {
+              if (!fragmentOk()) return;
               poolStableRef.current = { bani: null, count: 0 };
               autopilotLock({ shabadId: pooled.sid, verseId: row.verseId, verse: row.verse });
               return;
@@ -4406,6 +4489,7 @@ const VoiceFollow = () => {
               (leaders[1] && leaders[0].score - leaders[1].score < AP_LOCK_TEXT_MARGIN)
             )
               return;
+            if (!fragmentOk()) return;
             autopilotLock(cand);
           }
           return;
@@ -4480,14 +4564,52 @@ const VoiceFollow = () => {
           orderFreeLineScore(hypWordsNorm, curWordsAll, SWITCH_CAND_MIN_LINE_CHARS),
         );
         const sCurFull = Math.max(sCurWindow, sCurAll);
-        const acousticCfg = {
-          min: SWITCH_ACOUSTIC_MIN,
-          margin: SWITCH_ACOUSTIC_MARGIN,
-          strongMin: SWITCH_STRONG_MIN,
-          strongMargin: SWITCH_STRONG_MARGIN,
-          hypLen: hypFull.length,
-          hypMin: SWITCH_HYP_MIN,
-        };
+        // Short-talk hold (TALK_HOLD_*): the Shabad on screen unmatched for a while, speech-like
+        // audio, nothing above the usual bar when it starts -> only strong wins count until the
+        // Shabad matches again, a switch commits, or TALK_HOLD_MAX_S is over.
+        let talkHoldOn = false;
+        if (TALK_HOLD_MIN_S > 0 && baniIdOf(curId) == null) {
+          const th = talkHoldRef.current;
+          const nowT = Date.now();
+          if (hypFull.length >= SWITCH_HYP_MIN && sCurFull >= TALK_HOLD_FIT) {
+            th.lastFit = nowT;
+            th.on = false;
+          } else {
+            const gap = (nowT - Math.max(th.lastFit, ngRef.current.lastProgress || 0)) / 1000;
+            if (gap > TALK_HOLD_MAX_S) th.on = false;
+            else if (!th.on && gap >= TALK_HOLD_MIN_S) {
+              const speech = vfNorm(text).length >= TALK_HOLD_CHARS;
+              const sc = switchCandRef.current;
+              const bsl = backstopRef.current;
+              const bestCand = Math.max(
+                sc && sc.lastScore != null ? sc.lastScore : 0,
+                bsl && bsl.lastScore != null ? bsl.lastScore : 0,
+              );
+              if (speech && bestCand < SWITCH_ACOUSTIC_MIN) {
+                th.on = true;
+                sessionLog.logEvent('talk_hold', { session: sessionIdRef.current, shabadId: curId, gap });
+              }
+            }
+          }
+          talkHoldOn = th.on;
+        }
+        const acousticCfg = talkHoldOn
+          ? {
+              min: SWITCH_STRONG_MIN,
+              margin: SWITCH_STRONG_MARGIN,
+              strongMin: 2, // every win counts once: SWITCH_CONFIRM strong wins
+              strongMargin: 2,
+              hypLen: hypFull.length,
+              hypMin: SWITCH_HYP_MIN,
+            }
+          : {
+              min: SWITCH_ACOUSTIC_MIN,
+              margin: SWITCH_ACOUSTIC_MARGIN,
+              strongMin: SWITCH_STRONG_MIN,
+              strongMargin: SWITCH_STRONG_MARGIN,
+              hypLen: hypFull.length,
+              hypMin: SWITCH_HYP_MIN,
+            };
         const stepSlot = (slot, sCand) => {
           // Suppress confirmation only for identities in the tied leader set.
           const vetoed =
@@ -4507,6 +4629,12 @@ const VoiceFollow = () => {
           if (!step.held) {
             slot.lastScore = sCand; // eslint-disable-line no-param-reassign
             slot.bestScore = Math.max(slot.bestScore || 0, sCand); // eslint-disable-line no-param-reassign
+          }
+          if (slot.wins >= SWITCH_CONFIRM && !fragmentOk()) {
+            // Fragment lock guard: the win stands on too few letters; one more winning decode
+            // with enough letters commits it.
+            slot.wins = SWITCH_CONFIRM - 1; // eslint-disable-line no-param-reassign
+            return false;
           }
           return slot.wins >= SWITCH_CONFIRM;
         };
@@ -5100,6 +5228,9 @@ const VoiceFollow = () => {
     switchCandRef.current = null;
     backstopRef.current = null;
     bsWinsRef.current.clear();
+    talkHoldRef.current = { lastFit: 0, on: false };
+    inorderRef.current = 0;
+    pendingPromoteRef.current = null;
     bsAdoptKeyRef.current = '';
     setSwitchView(null);
     contextEvidenceRef.current = null;
@@ -5253,6 +5384,18 @@ const VoiceFollow = () => {
             if (moved && out.confidence >= NG_FOLLOW_CONF && Date.now() - ngf.lastFollow >= 500) {
               ngf.lastFollow = Date.now();
               ngTickRef.current({ follow: true });
+            }
+          }
+          // In-order pangti count (BANI_COPY_PREF): the next pangti adds one, a jump or a return
+          // starts again; a waiting Bani promotion runs once BANI_COPY_PANGTIS are reached.
+          if (BANI_COPY_PREF > 0) {
+            const was = curCursorRef.current;
+            if (was != null && out.lineIndex === was + 1) inorderRef.current += 1;
+            else if (was != null && out.lineIndex !== was) inorderRef.current = 0;
+            if (inorderRef.current >= BANI_COPY_PANGTIS && pendingPromoteRef.current) {
+              const run = pendingPromoteRef.current;
+              pendingPromoteRef.current = null;
+              run().catch(() => {});
             }
           }
           // Remember where we are so the switch test can score the current shabad
