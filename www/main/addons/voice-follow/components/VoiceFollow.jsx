@@ -1727,13 +1727,15 @@ const VoiceFollow = () => {
   // Lock rules (LOCK_GUARD_*, TALK_HOLD_*, BANI_COPY_*): heard letters per 4 s of the last decodes;
   // the short-talk hold's clock; the follower's in-order pangti count; a Bani promotion waiting for it.
   const heardLenRef = useRef([]); // [{ t, cp4 }]
+  const heardAudioSecRef = useRef(null); // seconds of audio in the recognizer window of the last decode
   const talkHoldRef = useRef({ lastFit: 0, on: false });
   const inorderRef = useRef(0);
   const pendingPromoteRef = useRef(null);
   const noteHeardLen = (text) => {
     if (LOCK_GUARD_CHARS <= 0) return;
     const now = Date.now();
-    const winS = phaseRef.current === 'following' ? AP_FOLLOW_WIN_S : AP_SEARCH_WIN_S;
+    // letters per 4 s of the audio actually in the window (the buffer is short just after a start or a lock)
+    const winS = heardAudioSecRef.current || (phaseRef.current === 'following' ? AP_FOLLOW_WIN_S : AP_SEARCH_WIN_S);
     let hl = heardLenRef.current;
     if (hl.length && now - hl[hl.length - 1].t > 3000) hl = []; // a pause: start afresh
     hl.push({ t: now, cp4: (vfNorm(text || '').length * 4) / winS });
@@ -5327,6 +5329,7 @@ const VoiceFollow = () => {
             noteHeard(rout.text, rout.confidence);
             ngRetProbeRef.current(rout);
             if (phaseRef.current === 'following') ngHeardRef.current(rout);
+            heardAudioSecRef.current = rout.audioSec || null;
             handleTranscript(rout.text);
           }
         }
