@@ -168,13 +168,7 @@ const {
 // Respecting the sevadaar's line moves (tag / adopt / hold), unit-tested in lineRespect.test.js.
 const { createLineRespect, lineOfVerse } = require('./lineRespect');
 // Silence (no instrument, no voice) for the not-Gurbani slide, unit-tested in quietRoom.test.js.
-const {
-  QUIET_MS,
-  QUIET_SOHILA_MS,
-  createQuietRoom,
-  noteChunk,
-  silentFor,
-} = require('./quietRoom');
+const { QUIET_MS, QUIET_SOHILA_MS, createQuietRoom, noteChunk, silentFor } = require('./quietRoom');
 
 // maxLineScore lives in ./switchPolicy (same implementation, unit-tested there)
 // so the benchmarked length-penalty math is shared, not duplicated.

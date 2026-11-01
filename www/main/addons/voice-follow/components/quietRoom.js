@@ -1,4 +1,4 @@
-// Is the room silent, no instrument and no voice (pure; unit-tested in quietRoom.test.js)? Used
+// Is the room silent, no instrument and no voice (no app state; unit-tested in quietRoom.test.js)? Used
 // by the not-Gurbani slide in VoiceFollow.jsx: Waheguru goes up after QUIET_MS of silence with no
 // Gurbani heard (QUIET_SOHILA_MS after Sohila Sahib, the end of the day).
 //
@@ -7,6 +7,7 @@
 // noise = the 10th percentile of FLOOR_BUCKET_MS buckets (each its quiet 25th percentile) over
 // the last FLOOR_MS. On 16 h of Gurdwara Sahib recordings this went up 1 to 2.5 min after the
 // diwan ended, and mid-diwan almost only in gaps after a Shabad or Bani was done.
+/* eslint-disable no-param-reassign */ // q: the slide's own state, updated in place
 const QUIET_MS = 45000;
 const QUIET_SOHILA_MS = 30000;
 const QUIET_LOUD_S = 2;
