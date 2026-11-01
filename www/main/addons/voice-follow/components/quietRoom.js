@@ -15,7 +15,7 @@ const QUIET_FLOOR = 3;
 const FLOOR_MS = 600000;
 const FLOOR_BUCKET_MS = 5000;
 const FLOOR_WARM = 60000 / FLOOR_BUCKET_MS; // a minute of background noise before any bar
-const GAP_MS = 2000; // no audio this long: a gap, not silence
+const GAP_MS = 10000; // no audio this long: a gap, not silence (slow PCs can lag a few s)
 const SILENT_RMS = 0.0005; // the lowest bar (VOL_SILENT_RMS: a mic that hears nothing)
 
 // floor and floorNow outlive a Shabad lock (the room is the same room); loud and loudFrom do not.
