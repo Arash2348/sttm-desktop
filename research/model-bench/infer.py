@@ -33,6 +33,9 @@ MODELS = {
     'jaspal-v2': ('jssaluja/sggs-asr-v2-onnx', 'sggs-asr-v2.int8.onnx', 'bpe.model', 0, 'frontend-from-v1.onnx'),
     # v3 (Oct 30 2026): audio-input graph again (fbank in-graph), epoch 90 of the 199,855-row run; blank 0, 1000 classes.
     'jaspal-v3': ('jssaluja/sggs-asr-v3-onnx', 'sggs-asr-v3.int8.onnx', 'bpe.model', 0, None),
+    # indic-v0 (Nov 1 2026): AI4Bharat IndicConformer Punjabi encoder fine-tuned CTC-only on SGGS paath + kirtan, new
+    # 512-piece BPE; audio-input graph (NeMo mel front-end in-graph); blank is the LAST id (512), not 0.
+    'jaspal-indic-v0': ('jssaluja/sggs-asr-indic-v0-onnx', 'sggs-asr-indic-v0.int8.onnx', 'bpe.model', 512, None),
 }
 # v0 has no tokenizer in its ONNX repo: the author's matching bpe.model lives in jssaluja/sggs-asr-v0.
 TOKENIZER_REPO = {'jaspal-v0': 'jssaluja/sggs-asr-v0'}
@@ -48,6 +51,8 @@ SHA256 = {
     'jaspal-v2/frontend-from-v1.onnx': '66f9b763f3c7e84945d63f76ccc5f1d832a82cfae262c59afd7d171c9754fdea',
     'jaspal-v3/sggs-asr-v3.int8.onnx': '2dbc62f949cb4988de0ad58ac3758912b6ce54f39bc77e2b0534d65cb0f492a1',
     'jaspal-v3/bpe.model': '1d7979fd05be60f660a52f6feac9fadc3c96c9a2345cb31e78ab12fef48617f1',
+    'jaspal-indic-v0/sggs-asr-indic-v0.int8.onnx': 'a8653cec4c338ad298ff0004cac83b28e5a7d6e2a676e0be49bd9cb7b3726f89',
+    'jaspal-indic-v0/bpe.model': '0ed5757167fd3ac7108adbdb7ace017b5ad51bf5b40cf2e3ff82d55c4479fe07',
 }
 
 

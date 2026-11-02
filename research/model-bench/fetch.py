@@ -31,6 +31,7 @@ MODEL_REVISIONS = {
     'jssaluja/sggs-asr-v1-onnx': '97e333b38ef5a5f9b3f3a5e48e7ad08bfc47a078',
     'jssaluja/sggs-asr-v2-onnx': 'db4d932121f999c1781860ecc9db4582cac80494',
     'jssaluja/sggs-asr-v3-onnx': '89bc09c69a7001ed22eb466818fdd8f8c4b9073e',
+    'jssaluja/sggs-asr-indic-v0-onnx': 'eaffa4d34f60f69d7e3d4fe614b7fc38b7124175',
 }
 
 
