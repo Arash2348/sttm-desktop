@@ -4,7 +4,7 @@ tags: [gurbani, benchmark, speech-recognition]
 ---
 # GAB hearing bench: test your Gurbani speech model the way STTM uses it
 
-Private to the khalisfoundation org. One command compares **your** ONNX speech model with Karanbir's model (the one
+Private to the khalisfoundation org. One command (`bash bench.sh`) compares **your** ONNX speech model with Karanbir's model (the one
 STTM Voice Autopilot ships) on the same 47 Gurbani Autopilot Bench (GAB) clips and the same machine, and prints the
 tables we share: how often the right Shabad comes up from what the model heard, per behaviour, plus letter error and
 speed. You do not need the STTM app or its code.
@@ -18,7 +18,7 @@ hf download khalisfoundation/sttm-model-bench --repo-type dataset --local-dir ga
 cd gab-hearing-bench
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 export HF_TOKEN=hf_...   # or: hf auth login
-PY=.venv/bin/python ./bench.sh --name my-model --onnx /path/model.int8.onnx --tokenizer /path/bpe.model --blank 512 --jobs 2
+PY=.venv/bin/python bash bench.sh --name my-model --onnx /path/model.int8.onnx --tokenizer /path/bpe.model --blank 512 --jobs 2
 ```
 
 It ends by printing `results/my-model/summary.md`:
