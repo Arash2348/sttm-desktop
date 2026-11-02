@@ -4,3 +4,5 @@ results.json
 .venv/
 transcripts-lines/
 results-wer.json
+local-models.json
+results/

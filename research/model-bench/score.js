@@ -18,9 +18,12 @@ const path = require('path');
 
 const argv = process.argv.slice(2);
 const arg = (n, d) => { const i = argv.indexOf(`--${n}`); return i >= 0 ? argv[i + 1] : d; };
-const ROOT = path.resolve(__dirname, '../..');
-const { TextIndex } = require(path.join(ROOT, 'www/main/addons/voice-follow/engine/retrieval/text-index.js'));
-const { sameGurbani } = require(path.join(ROOT, 'www/main/addons/voice-follow/components/switchPolicy.js'));
+// The app's search code: a copy in app-search/ (the standalone package) or else the STTM checkout this folder sits in.
+const VENDORED = path.join(__dirname, 'app-search');
+const ROOT = fs.existsSync(VENDORED) ? VENDORED : path.resolve(__dirname, '../..');
+const APP = fs.existsSync(VENDORED) ? '' : 'www/main/addons/voice-follow/';
+const { TextIndex } = require(path.join(ROOT, APP + 'engine/retrieval/text-index.js'));
+const { sameGurbani } = require(path.join(ROOT, APP + 'components/switchPolicy.js'));
 
 const DATA = arg('data', path.join(__dirname, 'data'));
 const TR = arg('transcripts', path.join(__dirname, 'transcripts'));
@@ -158,9 +161,10 @@ const { execSync } = require('child_process');
 const crypto = require('crypto');
 const fileSha = (f) => crypto.createHash('sha256').update(fs.readFileSync(path.join(ROOT, f))).digest('hex');
 let commit = null;
-try { commit = execSync('git rev-parse HEAD', { cwd: ROOT }).toString().trim(); } catch (_) { /* not a git checkout */ }
+if (APP) { try { commit = execSync('git rev-parse HEAD', { cwd: ROOT }).toString().trim(); } catch (_) { /* not a git checkout */ } }
+else { commit = JSON.parse(fs.readFileSync(path.join(VENDORED, 'SOURCE.json'), 'utf8')).sttm_commit; }
 const provenance = { commit, gab_revision: SAMPLE.gab_revision,
-  files: Object.fromEntries(['www/main/addons/voice-follow/engine/retrieval/text-index.js', 'www/main/addons/voice-follow/components/switchPolicy.js']
+  files: Object.fromEntries([APP + 'engine/retrieval/text-index.js', APP + 'components/switchPolicy.js']
     .map((f) => [f, fileSha(f)])),
   transcripts: Object.fromEntries(models.map((m) => [m, JSON.parse(fs.readFileSync(path.join(TR, m, 'meta.json'), 'utf8'))])) };
 if (arg('json')) fs.writeFileSync(arg('json'), JSON.stringify({ provenance, models, agg, clips: clipRows }, null, 1));

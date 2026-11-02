@@ -37,6 +37,14 @@ MODELS = {
     # 512-piece BPE; audio-input graph (NeMo mel front-end in-graph); blank is the LAST id (512), not 0.
     'jaspal-indic-v0': ('jssaluja/sggs-asr-indic-v0-onnx', 'sggs-asr-indic-v0.int8.onnx', 'bpe.model', 512, None),
 }
+# Your own models: bench.sh registers each one in local-models.json (name -> [null, ONNX file, tokenizer file, blank,
+# front-end or null]) and copies its files into <data>/models/<name>/, so every script takes it by name like a published one.
+_LOCAL = os.path.join(HERE, 'local-models.json')
+LOCAL_MODELS = set()
+if os.path.exists(_LOCAL):
+    for _n, _v in json.load(open(_LOCAL)).items():
+        MODELS[_n] = tuple(_v)
+        LOCAL_MODELS.add(_n)
 # v0 has no tokenizer in its ONNX repo: the author's matching bpe.model lives in jssaluja/sggs-asr-v0.
 TOKENIZER_REPO = {'jaspal-v0': 'jssaluja/sggs-asr-v0'}
 SHA256 = {

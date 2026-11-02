@@ -1,4 +1,4 @@
-"""latency.py [threads] - per-window latency of each model, set up like the app (engine/infer.js): batch 1, intra-op
+"""latency.py [threads] [models a,b] - per-window latency of each model, set up like the app (engine/infer.js): batch 1, intra-op
 threads 4 (the app uses 2 on < 8 cores), inter-op 1, no spinning, CPU. Real audio windows of 4 s and 10 s (the app's
 recognizer window) from one benchmark clip; 5 warm-up runs, then the median and 90th percentile of 40."""
 import json, os, platform, statistics, sys, time, wave
@@ -9,7 +9,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from infer import MODELS as PUBLISHED  # noqa: E402
 M = os.path.join(HERE, 'data', 'models')
-MODELS = {n: f'{M}/{n}/{v[1]}' for n, v in PUBLISHED.items()}
+PICK = sys.argv[2].split(',') if len(sys.argv) > 2 else list(PUBLISHED)
+MODELS = {n: f'{M}/{n}/{v[1]}' for n, v in PUBLISHED.items() if n in PICK}
 FRONTEND = {n: f'{M}/{n}/{v[4]}' for n, v in PUBLISHED.items() if v[4]}
 wav = os.path.join(HERE, 'data', 'clips', 'ytap_5N6Cgw8WAaY_1200-1800_x1.35', 'audio.wav')
 threads = int(sys.argv[1]) if len(sys.argv) > 1 else 4
