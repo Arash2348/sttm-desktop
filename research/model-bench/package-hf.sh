@@ -11,7 +11,7 @@ rm -rf "$OUT" && mkdir -p "$OUT/app-search/engine/retrieval" "$OUT/app-search/co
 cp bench.sh run.sh fetch.py infer.py score.js wer.py latency.py summary.py make_v2_frontend.py sample.json \
    requirements.txt gab-do-not-train.csv MODEL-GUIDE.md "$OUT/"
 cp HF-CARD.md "$OUT/README.md"
-cp README.md "$OUT/README-method.md"
+{ printf '> In this package: start with README.md and `./bench.sh`. The app search code is in `app-search/`, so no STTM checkout is needed;\n> the paths and commands below are written for the STTM repo (`research/model-bench`).\n\n'; cat README.md; } > "$OUT/README-method.md"
 cp RESULTS-*.md results*.md results*.json results-latency-*.log "$OUT/results/published/" 2>/dev/null || true
 cp "$ROOT/$VF/engine/retrieval/text-index.js" "$OUT/app-search/engine/retrieval/"
 cp "$ROOT/$VF/engine/fuzz.js" "$OUT/app-search/engine/"
