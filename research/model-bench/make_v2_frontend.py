@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""make_v2_frontend.py <v1.onnx> <out.onnx> - cut v1's in-graph audio front-end out of jssaluja/sggs-asr-v1-onnx.
+"""make_v2_frontend.py <v1.onnx> <out.onnx> - take v1's in-graph audio front-end from jssaluja/sggs-asr-v1-onnx.
 
 v1's graph = 16 kHz audio -> 80-bin log-mel fbank -> per-utterance mean/std normalisation (/Div_output_0) and frame
 counts (/Where_output_0) -> Zipformer encoder -> CTC. The published v2 ONNX starts at the encoder (inputs x, x_lens),
-so the benchmark feeds it this front-end. The cut keeps only the nodes between the graph inputs and those two tensors.
+so the benchmark feeds it this front-end. The extracted graph keeps only the nodes between the graph inputs and those two tensors.
 """
 import sys
 
