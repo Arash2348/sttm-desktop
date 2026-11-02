@@ -3,7 +3,7 @@
 
   data/clips/<id>/{audio.wav, shabads.csv, lines.csv}  from khalisfoundation/GurbaniAutopilotBench at sample.json's revision
   data/models/<name>/...                              the published ONNX models + tokenizers (sha256-checked)
-  data/models/jaspal-v2/frontend-from-v1.onnx         v1's front-end, cut out by make_v2_frontend.py
+  data/models/jaspal-v2/frontend-from-v1.onnx         v1's front-end, taken out by make_v2_frontend.py
   data/scoring/{corpus.json, bani-members.json}        from khalisfoundation/sttm-model-bench at SCORING_REVISION
 
   python fetch.py --models karanbir   only the clips, Karanbir's model and the scoring inputs (what bench.sh needs)

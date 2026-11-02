@@ -37,7 +37,7 @@ it is compared. What the app uses, so you know what matters:
 
 | The app uses | How | What this asks of the model |
 |---|---|---|
-| Greedy CTC text of the last **10 s** (searching) or **4 s** (following), redone every **0.5 s** | first letters of each word + full text, searched over all Gurbani | correct **spelling as in Sri Guru Granth Sahib Ji** (BaniDB), not pronunciation; real word breaks (spaces); good on short windows that start or end mid-word |
+| Greedy CTC text of the last **10 s** (searching) or **4 s** (following), redone every **0.5 s** | Voice Autopilot's own Gurbani search (not the STTM search box): runs of 3 letters across the whole heard text, spaces and vishraams ignored, plus a second pass that ignores vowel signs | consonants right and in order; correct **spelling as in Sri Guru Granth Sahib Ji** (BaniDB), not pronunciation; real word breaks (spaces); good on short windows that start or end mid-word |
 | Fuzzy text match of that text against candidate pangtis | decides switches and whether the Shabad on screen still fits (scores 0.55-0.65 today) | stable text window to window; few invented letters between lines |
 | `log_probs` directly | the kirtan follower scores candidate lines by CTC alignment, using the model's own tokenizer | sensible probabilities (a clear line scores high, harmonium / tabla low) |
 | Confidence = mean over frames of the top probability | below 0.88 the text is treated as noise (sung lines score 0.93-0.99 today) | confident on Gurbani, unconfident on music and noise |

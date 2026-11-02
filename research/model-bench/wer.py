@@ -3,7 +3,7 @@
 
 hit@5 (score.js) asks "did the right Shabad come up?". This asks the component question "how accurately does the model
 transcribe a pangti?", on the same clips:
-  - Segments: every lines.csv row whose source is human or the broadcaster's caption (never aligned-*, which were cut
+  - Segments: every lines.csv row whose source is human or the broadcaster's caption (never aligned-*, which were timed
     with Karanbir's model), inside the clip's [start, end]. Each segment is transcribed whole (pangtis over 20 s in equal parts of at most
     20 s, the most Karanbir's model accepts), batch 1, greedy CTC.
   - Reference: that pangti's text from the pinned corpus (BaniDB text, by verseId; never edited).
@@ -73,9 +73,9 @@ def transcribe(name, sample, data, out, verse_text, threads):
             continue
         m = m or Model(paths[0], paths[1], blank, paths[2] if fe else None, threads)
         pcm = read_wav(os.path.join(data, 'clips', c['id'], 'audio.wav'))
-        cut = lambda a, b: pcm[max(0, int(round(a * SR))):int(round(b * SR))]
-        rows = [dict(s, text=transcribe_long(m, cut(s['start'], s['end'])),
-                     text_padded=transcribe_long(m, cut(s['start'] - PAD_S, s['end'] + PAD_S))) for s in segs]
+        span = lambda a, b: pcm[max(0, int(round(a * SR))):int(round(b * SR))]
+        rows = [dict(s, text=transcribe_long(m, span(s['start'], s['end'])),
+                     text_padded=transcribe_long(m, span(s['start'] - PAD_S, s['end'] + PAD_S))) for s in segs]
         with open(fp + '.tmp', 'w', encoding='utf8') as fh:
             fh.write(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in rows))
         os.replace(fp + '.tmp', fp)
@@ -166,7 +166,7 @@ NOTE = ('Edge-tolerant CER is the headline; plain WER / CER on exact label times
         'errors. Only behaviours with human or broadcast-caption pangti times appear: kirtan (mixer feed), Akhand Kirtan and '
         'paath (hall) have only model-aligned times, so they are left out. Rows with 1-2 clips are examples, not evidence. '
         'Pangtis are scored inside the same [start, end] of each clip as hit@5, so the longer recordings contribute only that '
-        'part. Pangtis over 20 s (39 of 81 on hall kirtan) are cut into equal parts for every model.\n')
+        'part. Pangtis over 20 s (39 of 81 on hall kirtan) are given to every model as equal consecutive stretches of audio (the reference pangti text is always whole).\n')
 
 
 def main():

@@ -44,7 +44,7 @@ See `MODEL-GUIDE.md` for what the app needs (speed, size, behaviour during katha
 
 ## What it measures
 
-- **hit@5 (headline).** Each clip is cut into overlapping windows (one per second) of 10 s (what the app searches with)
+- **hit@5 (headline).** Each recording is listened to in overlapping windows (one per second) of 10 s (what the app searches with)
   and 4 s (what it follows lines with). Each window is decoded alone (greedy CTC), and its text is searched with the
   app's own Gurbani search (`app-search/`, copied unchanged from STTM; `app-search/SOURCE.json` names the commit) over
   the pinned STTM corpus. A hit means the true Shabad is among the top 5. For paath, any Shabad of the true Bani counts.

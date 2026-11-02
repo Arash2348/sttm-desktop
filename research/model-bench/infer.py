@@ -27,7 +27,7 @@ MODELS = {
     'jaspal-v0': ('jssaluja/sggs-asr-v0-onnx', 'sggs-asr-v0.int8.onnx', 'bpe.model', 0, None),
     'jaspal-v1': ('jssaluja/sggs-asr-v1-onnx', 'sggs-large-epoch90.int8.onnx', 'bpe.model', 0, None),
     # The published v2 ONNX takes 80-dim features (x [N,T,80], x_lens), not audio. Its front-end is v1's in-graph
-    # fbank + per-utterance normalisation, cut out of the v1 file by make_v2_frontend.py (outputs /Div_output_0,
+    # fbank + per-utterance normalisation, taken from the v1 file by make_v2_frontend.py (outputs /Div_output_0,
     # /Where_output_0). Un-normalised features give much shorter, less accurate text; with this front-end v2 matches v1's
     # style. PROVISIONAL: the model card describes an audio-input graph, so the author should confirm the file and front-end.
     'jaspal-v2': ('jssaluja/sggs-asr-v2-onnx', 'sggs-asr-v2.int8.onnx', 'bpe.model', 0, 'frontend-from-v1.onnx'),

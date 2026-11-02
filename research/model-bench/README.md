@@ -31,7 +31,7 @@ Then re-run `score.js`.
 
 ## What is measured
 
-- **Windows.** Each clip is cut into overlapping windows of `--win` seconds, one every second. 10 s is what the app's
+- **Windows.** Each recording is listened to in overlapping windows of `--win` seconds, one every second. 10 s is what the app's
   recognizer hears; 4 s is shown as well. Each window is decoded alone: greedy CTC, blank dropped, SentencePiece decode,
   as in each model card's own script.
 - **hit@5 (headline) and hit@1.** The window's text is searched with the app's search
@@ -115,7 +115,7 @@ Results (x86-64, the GCP benchmark VM; an Apple M-series Mac gives the same rank
 | Akhand Paath sped up 1.35x (synthetic; one clip repeats a natural-speed clip) | jaspal-v1 | 2 | 179 | 77.4 | 46.2 | 36.2 (36.8) | too few clips |
 | Akhand Paath sped up 1.35x (synthetic; one clip repeats a natural-speed clip) | jaspal-v2 | 2 | 179 | 73.7 | 45.3 | 30.4 (30.7) | too few clips |
 
-Edge-tolerant CER is the headline; plain WER / CER on exact label times count repeated singing and late captions as errors. Only behaviours with human or broadcast-caption pangti times appear: kirtan (mixer feed), Akhand Kirtan and paath (hall) have only model-aligned times, so they are left out. Rows with 1-2 clips are examples, not evidence. Pangtis are scored inside the same [start, end] of each clip as hit@5, so the longer recordings contribute only that part. Pangtis over 20 s (39 of 81 on hall kirtan) are cut into equal parts for every model.
+Edge-tolerant CER is the headline; plain WER / CER on exact label times count repeated singing and late captions as errors. Only behaviours with human or broadcast-caption pangti times appear: kirtan (mixer feed), Akhand Kirtan and paath (hall) have only model-aligned times, so they are left out. Rows with 1-2 clips are examples, not evidence. Pangtis are scored inside the same [start, end] of each clip as hit@5, so the longer recordings contribute only that part. Pangtis over 20 s (39 of 81 on hall kirtan) are given to every model as equal consecutive stretches of audio (the reference pangti text is always whole).
 
 ## Why other runs give different numbers
 
@@ -124,7 +124,7 @@ The same model can score very differently depending on these choices:
 | Choice | Here | Effect if different |
 |---|---|---|
 | Window length | 10 s (the app's), also 4 s | 4 s windows score far lower for every model, and much lower again for models trained on whole pangtis |
-| What counts as right | the true Shabad found by the app's search | CER/WER on whole pangtis cut at true line boundaries measures something else (transcription accuracy, not finding) |
+| What counts as right | the true Shabad found by the app's search | CER/WER on whole pangtis timed at their true start and end measures something else (transcription accuracy, not finding) |
 | v2 front-end | v1's fbank + normalisation (`make_v2_frontend.py`) | the published v2 ONNX takes features, not audio. Feeding it audio fails, and un-normalised features give much shorter, less accurate text |
 | Clips | the 47 in `sample.json`, at a fixed benchmark revision | other clips or tiers give other numbers |
 | Paath truth | a whole Bani counts any of its Shabads | scoring paath by single Shabad id makes every model look near 0 |
