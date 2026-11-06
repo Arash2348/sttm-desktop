@@ -24,7 +24,7 @@ Remove-Item Env:ELECTRON_RUN_AS_NODE
 # 2) UI: launch the app with its own profile and count the text rendered in the main window.
 $ud = Join-Path $env:RUNNER_TEMP "ud-$Label"
 Remove-Item $ud -Recurse -Force -ErrorAction SilentlyContinue
-$p = Start-Process $exe -ArgumentList "--remote-debugging-port=9555", "--user-data-dir=$ud" -PassThru
+$p = Start-Process $exe -ArgumentList "--remote-debugging-port=9555", "--remote-allow-origins=*", "--user-data-dir=$ud" -PassThru
 $ws = $null
 for ($i = 0; $i -lt 60 -and -not $ws; $i++) {
   Start-Sleep 2
@@ -44,3 +44,4 @@ $logErr = if (Test-Path $log) { (Select-String -Path $log -Pattern '\[renderer\]
 $line = "RESULT $Label | engine: $engine | ui chars: $ui | log: $logErr"
 Write-Host $line
 Add-Content $env:GITHUB_STEP_SUMMARY "- $line"
+exit 0
