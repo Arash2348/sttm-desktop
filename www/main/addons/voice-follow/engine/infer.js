@@ -46,6 +46,28 @@ class Infer {
     // window (a third of the passes while following) — in the aligned tiers only, see
     // emissions(). VF_NO_MEMO=1 turns it off (A/B).
     this.memo = process.env.VF_NO_MEMO ? null : { buf: null, out: null };
+    // Hear once (experiment, VF_HEAR_ONCE=1): every second of audio is encoded once and each
+    // engine's window is served from one stitched timeline (hearonce.js).
+    this.ho = null;
+    if (process.env.VF_HEAR_ONCE === '1') {
+      // eslint-disable-next-line global-require
+      const { HearOnce } = require('./hearonce');
+      const num = (k) => (process.env[k] != null && process.env[k] !== '' ? Number(process.env[k]) : undefined);
+      this.ho = new HearOnce(this, {
+        L: num('VF_HO_L'),
+        C: num('VF_HO_C'),
+        R: num('VF_HO_R'),
+        Ld: num('VF_HO_LD'),
+        draft: process.env.VF_HO_DRAFT === '1',
+        draftHop: num('VF_HO_DRAFT_HOP'),
+      });
+    }
+  }
+
+  // A model pass made outside emissions() (hear once): timed for the session health and pace.
+  notePassExternal(ms, samples) {
+    if (this.perf.ms.length < 100000) this.perf.ms.push(ms);
+    pace.notePass(ms, samples);
   }
 
   static sameWindow(a, b) {
@@ -93,6 +115,10 @@ class Infer {
 
   // buf: Float32Array @16k -> {data:Float32Array flat, frames, C}
   async emissions(buf) {
+    if (this.ho) {
+      const served = await this.ho.serve(buf);
+      if (served) return served;
+    }
     // The memo serves the aligned tiers only: in the fast tier (a computer that keeps up)
     // every window is a model pass, exactly as before the tiers existed.
     const memo = this.memo && pace.current().aligned ? this.memo : null;
