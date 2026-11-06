@@ -19,8 +19,10 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-        with: { sparse-checkout: 'www/main/addons/voice-follow/engine
-research/hear-once' }
+        with:
+          sparse-checkout: |
+            www/main/addons/voice-follow/engine
+            research/hear-once
       - uses: actions/setup-node@v4
         with: { node-version: 18 }
       - name: onnxruntime-node only
