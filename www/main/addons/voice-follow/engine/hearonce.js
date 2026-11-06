@@ -224,9 +224,14 @@ class HearOnce {
         }
         return;
       }
-    })().finally(() => {
-      this.busy = null;
-    });
+    })()
+      .catch((e) => {
+        // surfaced by the next serve() (an engine call), never an unhandled rejection
+        this.err = e;
+      })
+      .finally(() => {
+        this.busy = null;
+      });
     return this.busy;
   }
 
@@ -267,6 +272,11 @@ class HearOnce {
 
   // The window's model output: { data, frames, C } as Infer.run returns, or null (do a pass).
   async serve(buf) {
+    if (this.err) {
+      const e = this.err;
+      this.err = null;
+      throw e;
+    }
     const end = this.place(buf);
     if (end == null) return null;
     const work = this.kick();
@@ -274,6 +284,11 @@ class HearOnce {
     if (!out && work) {
       // the stream's first seconds: wait for the first pieces once
       await work;
+      if (this.err) {
+        const e = this.err;
+        this.err = null;
+        throw e;
+      }
       out = this.slice(buf, end);
     }
     return out;
