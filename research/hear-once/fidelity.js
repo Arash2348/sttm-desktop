@@ -18,7 +18,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ENGINE = path.resolve(__dirname, '../../www/main/addons/voice-follow/engine');
-const { Infer, norm } = require(path.join(ENGINE, 'infer'));
+const { Infer } = require(path.join(ENGINE, 'infer'));
 const { heardMatch, comparedLength } = require('./compare');
 const anvaad = require('anvaad-js');
 const Realm = require('realm');

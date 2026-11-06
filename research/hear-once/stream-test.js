@@ -15,7 +15,6 @@ const sim = (a, b) => (a.length || b.length ? 1 - lev(a, b) / Math.max(a.length,
 const TOOLS = '/Users/asingh02/personal/sttm-ws4/research/level2-dataset/tools';
 const BENCH = path.join(process.env.HOME, 'personal/vf-benchmark');
 const { heardMatch, comparedLength } = require('./compare');
-const { norm } = require(path.join(ENGINE, 'infer'));
 async function truthFor(id) {
   const { parseCsv } = require(path.join(TOOLS, 'vf-manifest'));
   const man = parseCsv(fs.readFileSync(path.join(BENCH, 'manifest.csv'), 'utf8'));

@@ -140,3 +140,23 @@ lockf: /tmp/vf-replay-slot-0.lock: already locked
   bg-nodraft kh27 0.54x: cache miss, filling with the model (bench lock) ...
   bg-nodraft kh27 0.54x done in 49 s (filled)
   bg-nodraft kh28 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-nodraft kh28 0.54x done in 57 s (filled)
+  bg-nodraft kh29 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-nodraft kh29 0.54x done in 22 s (filled)
+
+### bg-nodraft (/Users/asingh02/personal/sttm-b-stream)
+| clip | speed (ms per 4 s pass) | result | audio backlog max / p95 | tier/steps | passes per audio s | wall s |
+|---|---|---|---|---|---|---|
+| kh12 | 0.54x (309) | right 58.4% / wrong 158 s / wrong sw 4 / lag 3.7 s / first -23 s | 0.13 / 0 s | fast/1 | 0.84 | 57.1 (fill run) |
+| kh13 | 0.54x (309) | right 0% / wrong 131 s / wrong sw 2 / lag null s / first null s | 0 / 0 s | fast/1 | 0.81 | 38.5 (fill run) |
+| kh17 | 0.54x (309) | right 23.1% / wrong 253 s / wrong sw 8 / lag 6.9 s / first 200 s / 5443:never 3590:never 5447:4 | 0.77 / 0 s | fast/1 | 0.86 | 89.7 (fill run) |
+| kh19 | 0.54x (309) | right 31.1% / wrong 15 s / wrong sw 1 / lag 4.3 s / first 254 s | 0 / 0 s | fast/1 | 0.85 | 50 (fill run) |
+| kh20 | 0.54x (309) | right 50.2% / wrong 130 s / wrong sw 2 / lag 7.2 s / first 241 s / 3590:never 4086:51 4725:17 4086:5 1067:never 4086:27 | 0 / 0 s | fast/1 | 0.84 | 55.6 (fill run) |
+| kh21 | 0.54x (309) | right 69.3% / wrong 84 s / wrong sw 3 / lag 1.5 s / first 24 s | 0 / 0 s | fast/1 | 0.87 | 22.9 (fill run) |
+| kh26 | 0.54x (309) | right 5.3% / wrong 173 s / wrong sw 0 / lag null s / first 68 s / 5172:never | 0 / 0 s | fast/1 | 0.84 | 20.6 (fill run) |
+| kh27 | 0.54x (309) | right 49.1% / wrong 207 s / wrong sw 6 / lag 16.5 s / first 52 s / 2763:never 2774:18 | 0.13 / 0 s | fast/1 | 0.86 | 48.6 (fill run) |
+| kh28 | 0.54x (309) | right 94.9% / wrong 0 s / wrong sw 0 / lag 14 s / first 31 s | 0 / 0 s | fast/1 | 0.8 | 56.6 (fill run) |
+| kh29 | 0.54x (309) | right 79.7% / wrong 0 s / wrong sw 0 / lag 5.3 s / first 46 s | 0 / 0 s | fast/1 | 0.85 | 21.5 (fill run) |
+
+10 cells, 660 s wall; runs kept in /Users/asingh02/personal/sttm-b-stream/research/hear-once/e2e3/bg-nodraft
+E2E3 DONE
