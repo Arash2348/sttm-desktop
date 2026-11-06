@@ -1,0 +1,78 @@
+name: Windows test for PR 2312 (white screen)
+
+on:
+  push:
+    branches:
+      - wintest-2312
+
+jobs:
+  wintest:
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        ref: [a760584940bf3cb77f8c903f1ce859ab6ebe7283, vf-lazy-native]
+    env:
+      BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: harness
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.ref }}
+          path: app
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip setuptools wheel
+      - run: echo "npm_config_python=$env:pythonLocation\python.exe" >> $env:GITHUB_ENV
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18.18.0'
+      - name: Bonjour SDK
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/KhalisFoundation/sttm-desktop/raw/master/assets/Bonjour64.msi" -OutFile "Bonjour64.msi"
+          Start-Process msiexec.exe -ArgumentList "/i Bonjour64.msi /qn" -Wait
+          Invoke-WebRequest -Uri "https://github.com/KhalisFoundation/sttm-desktop/raw/master/assets/bonjoursdksetup.exe" -OutFile "bonjoursdksetup.exe"
+          Start-Process bonjoursdksetup.exe -ArgumentList "/quiet" -Wait
+      - name: Install
+        working-directory: app
+        run: |
+          npm install -g npm@9.8.1
+          npm install --legacy-peer-deps
+      - name: Speech model
+        working-directory: app
+        shell: bash
+        run: |
+          mkdir -p build-resources/voice-follow
+          curl -L --retry 3 -o build-resources/voice-follow/model.int8.onnx \
+            "https://huggingface.co/karansea/indicconformer-stt-pa-ctc-shabad-preview/resolve/main/model.int8.onnx?download=true"
+      - name: Pack (unpacked dir, no installer, no publish)
+        working-directory: app
+        run: |
+          npm run build
+          npx electron-builder --win --x64 --dir --publish never
+          Get-ChildItem builds\win-unpacked\resources\app.asar.unpacked\node_modules\onnxruntime-node\bin\napi-v6\win32\x64 | Select-Object Name, Length | Format-Table
+      - name: 1 normal PC (system Visual C++ runtime present)
+        working-directory: app
+        run: ..\harness\.github\wintest\check.ps1 -Label "${{ matrix.ref }} / normal PC"
+      - name: Remove the system Visual C++ runtime (simulates a fresh or older PC)
+        run: |
+          foreach ($d in @("$env:SystemRoot\System32")) {
+            Get-ChildItem $d -Filter *.dll | Where-Object { $_.Name -match '^(msvcp140|vcruntime140|concrt140)' } | ForEach-Object {
+              takeown /f $_.FullName | Out-Null
+              icacls $_.FullName /grant "$($env:USERNAME):F" | Out-Null
+              Rename-Item $_.FullName "$($_.Name).bak" -ErrorAction Continue
+            }
+          }
+          Get-ChildItem "$env:SystemRoot\System32" -Filter *.dll.bak | Select-Object Name
+      - name: 2 PC without the Visual C++ runtime
+        working-directory: app
+        run: ..\harness\.github\wintest\check.ps1 -Label "${{ matrix.ref }} / no VC runtime"
+      - name: 3 no VC runtime and no bundled copy (engine cannot load at all)
+        if: matrix.ref == 'vf-lazy-native'
+        working-directory: app
+        run: |
+          Get-ChildItem builds\win-unpacked\resources\app.asar.unpacked\node_modules\onnxruntime-node\bin\napi-v6\win32\x64 -Filter *.dll | Where-Object { $_.Name -match '^(msvcp140|vcruntime140|concrt140)' } | Remove-Item
+          ..\harness\.github\wintest\check.ps1 -Label "${{ matrix.ref }} / no VC runtime, no bundled copy"
