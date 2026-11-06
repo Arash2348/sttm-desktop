@@ -19,7 +19,7 @@ const path = require('path');
 
 const ENGINE = path.resolve(__dirname, '../../www/main/addons/voice-follow/engine');
 const { Infer, norm } = require(path.join(ENGINE, 'infer'));
-const { partialRatio } = require(path.join(ENGINE, 'fuzz'));
+const { heardMatch, comparedLength } = require('./compare');
 const anvaad = require('anvaad-js');
 const Realm = require('realm');
 const TOOLS = process.env.VF_TOOLS || '/Users/asingh02/personal/sttm-ws4/research/level2-dataset/tools';
@@ -93,7 +93,7 @@ async function main() {
   const textOf = (vid) => {
     if (!verseText.has(vid)) {
       const v = realm.objects('Verse').filtered('ID == $0', vid)[0];
-      verseText.set(vid, v ? norm(anvaad.unicode(v.Gurmukhi)) : '');
+      verseText.set(vid, v ? anvaad.unicode(v.Gurmukhi) : ''); // the pangti as the database gives it
     }
     return verseText.get(vid);
   };
@@ -120,9 +120,8 @@ async function main() {
     // How well a window's transcript matches the pangtis really sung in it (the app's own measure).
     const heard = (text, T) => {
       const lines = truth.filter((l) => l.a < T && l.b > T - WIN).map((l) => textOf(l.v)).filter(Boolean);
-      const h = norm(text);
-      if (!lines.length || h.length < 4) return null;
-      return Math.max(...lines.map((ln) => partialRatio(h, ln) / 100));
+      if (!lines.length || comparedLength(text) < 4) return null;
+      return Math.max(...lines.map((ln) => heardMatch(text, ln)));
     };
     // Reference: one pass per 4 s window at every 0.25 s (today's follower) — cached by end time.
     const ref = new Map();

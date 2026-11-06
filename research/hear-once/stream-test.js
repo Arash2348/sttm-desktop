@@ -14,7 +14,7 @@ function lev(a, b) { let p = Array.from({ length: b.length + 1 }, (_, i) => i); 
 const sim = (a, b) => (a.length || b.length ? 1 - lev(a, b) / Math.max(a.length, b.length) : 1);
 const TOOLS = '/Users/asingh02/personal/sttm-ws4/research/level2-dataset/tools';
 const BENCH = path.join(process.env.HOME, 'personal/vf-benchmark');
-const { partialRatio } = require(path.join(ENGINE, 'fuzz'));
+const { heardMatch, comparedLength } = require('./compare');
 const { norm } = require(path.join(ENGINE, 'infer'));
 async function truthFor(id) {
   const { parseCsv } = require(path.join(TOOLS, 'vf-manifest'));
@@ -24,8 +24,8 @@ async function truthFor(id) {
   const lines = parseCsv(fs.readFileSync(path.join(BENCH, row.content_folder, row.id, 'lines.csv'), 'utf8')).map((l) => ({ v: Number(l.verseId), a: Number(l.start_s), b: Number(l.end_s) })).filter((l) => Number.isFinite(l.v));
   const Realm = require('realm'); const anvaad = require('anvaad-js');
   const realm = await Realm.open({ path: path.join(process.env.HOME, 'Library/Application Support/SikhiToTheMax/sttmdesktop-evergreen-v2.realm'), readOnly: true });
-  const txt = new Map(); lines.forEach((l) => { if (!txt.has(l.v)) { const v = realm.objects('Verse').filtered('ID == $0', l.v)[0]; txt.set(l.v, v ? norm(anvaad.unicode(v.Gurmukhi)) : ''); } });
-  return (text, a, b) => { const ls = lines.filter((l) => l.a < b && l.b > a).map((l) => txt.get(l.v)).filter(Boolean); const h = norm(text); if (!ls.length || h.length < 4) return null; return Math.max(...ls.map((x) => partialRatio(h, x) / 100)); };
+  const txt = new Map(); lines.forEach((l) => { if (!txt.has(l.v)) { const v = realm.objects('Verse').filtered('ID == $0', l.v)[0]; txt.set(l.v, v ? anvaad.unicode(v.Gurmukhi) : ''); /* the pangti as the database gives it */ } });
+  return (text, a, b) => { const ls = lines.filter((l) => l.a < b && l.b > a).map((l) => txt.get(l.v)).filter(Boolean); if (!ls.length || comparedLength(text) < 4) return null; return Math.max(...ls.map((x) => heardMatch(text, x))); };
 }
 (async () => {
   const heard = process.env.CLIP ? await truthFor(process.env.CLIP) : null;

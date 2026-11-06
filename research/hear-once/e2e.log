@@ -1,0 +1,384 @@
+=== base 2.08,0.54,0.33 
+lockf: /tmp/vf-replay-slot-0.lock: already locked
+  base kh11 2.08x done in 56 s
+  base kh11 0.54x done in 35 s
+  base kh11 0.33x done in 22 s
+  base kh12 2.08x done in 25 s
+  base kh12 0.54x: cache miss, filling with the model (bench lock) ...
+  base kh12 0.54x done in 51 s (filled)
+  base kh12 0.33x: cache miss, filling with the model (bench lock) ...
+  base kh12 0.33x done in 34 s (filled)
+  base kh13 2.08x done in 47 s
+  base kh13 0.54x done in 29 s
+  base kh13 0.33x done in 17 s
+  base kh14 2.08x done in 7 s
+  base kh14 0.54x done in 5 s
+  base kh14 0.33x done in 4 s
+  base kh17 2.08x: cache miss, filling with the model (bench lock) ...
+  base kh17 2.08x done in 274 s (filled)
+  base kh17 0.54x: cache miss, filling with the model (bench lock) ...
+  base kh17 0.54x done in 70 s (filled)
+  base kh17 0.33x: cache miss, filling with the model (bench lock) ...
+  base kh17 0.33x done in 53 s (filled)
+  base kh18 2.08x done in 48 s
+  base kh18 0.54x: cache miss, filling with the model (bench lock) ...
+  base kh18 0.54x done in 77 s (filled)
+  base kh18 0.33x: cache miss, filling with the model (bench lock) ...
+  base kh18 0.33x done in 41 s (filled)
+  base kh19 2.08x: cache miss, filling with the model (bench lock) ...
+  base kh19 2.08x done in 37 s (filled)
+  base kh19 0.54x: cache miss, filling with the model (bench lock) ...
+  base kh19 0.54x done in 71 s (filled)
+  base kh19 0.33x: cache miss, filling with the model (bench lock) ...
+  base kh19 0.33x done in 40 s (filled)
+  base kh20 2.08x: cache miss, filling with the model (bench lock) ...
+  base kh20 2.08x done in 92 s (filled)
+  base kh20 0.54x: cache miss, filling with the model (bench lock) ...
+  base kh20 0.54x done in 73 s (filled)
+  base kh20 0.33x: cache miss, filling with the model (bench lock) ...
+  base kh20 0.33x done in 41 s (filled)
+  base kh21 2.08x: cache miss, filling with the model (bench lock) ...
+  base kh21 2.08x done in 31 s (filled)
+  base kh21 0.54x: cache miss, filling with the model (bench lock) ...
+  base kh21 0.54x done in 39 s (filled)
+  base kh21 0.33x: cache miss, filling with the model (bench lock) ...
+  base kh21 0.33x done in 25 s (filled)
+  base kh22 2.08x done in 24 s
+  base kh22 0.54x: cache miss, filling with the model (bench lock) ...
+  base kh22 0.54x done in 46 s (filled)
+  base kh22 0.33x: cache miss, filling with the model (bench lock) ...
+  base kh22 0.33x done in 24 s (filled)
+  base kh24 2.08x done in 8 s
+  base kh24 0.54x done in 6 s
+  base kh24 0.33x done in 5 s
+  base kh25 2.08x done in 18 s
+  base kh25 0.54x done in 11 s
+  base kh25 0.33x done in 8 s
+  base kh26 2.08x done in 9 s
+  base kh26 0.54x done in 15 s
+  base kh26 0.33x done in 11 s
+  base kh27 2.08x: cache miss, filling with the model (bench lock) ...
+  base kh27 2.08x done in 199 s (filled)
+  base kh27 0.54x: cache miss, filling with the model (bench lock) ...
+  base kh27 0.54x done in 32 s (filled)
+  base kh27 0.33x: cache miss, filling with the model (bench lock) ...
+  base kh27 0.33x done in 28 s (filled)
+  base kh28 2.08x: cache miss, filling with the model (bench lock) ...
+  base kh28 2.08x done in 193 s (filled)
+  base kh28 0.54x: cache miss, filling with the model (bench lock) ...
+  base kh28 0.54x done in 27 s (filled)
+  base kh28 0.33x: cache miss, filling with the model (bench lock) ...
+  base kh28 0.33x done in 17 s (filled)
+  base kh29 2.08x: cache miss, filling with the model (bench lock) ...
+  base kh29 2.08x done in 65 s (filled)
+  base kh29 0.54x: cache miss, filling with the model (bench lock) ...
+  base kh29 0.54x done in 14 s (filled)
+  base kh29 0.33x: cache miss, filling with the model (bench lock) ...
+  base kh29 0.33x done in 8 s (filled)
+
+### base (/Users/asingh02/personal/sttm-b-stream)
+| clip | speed (ms per 4 s pass) | result | audio backlog max / p95 | tier/steps | passes per audio s | wall s |
+|---|---|---|---|---|---|---|
+| kh11 | 2.08x (80) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 0.13 / 0.13 s | fast/1 | 2.16 | 56.3 |
+| kh11 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.02 / 0.9 s | sync/1 | 1.43 | 34.6 |
+| kh11 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.28 / 1.15 s | min/1 | 0.88 | 22.2 |
+| kh12 | 2.08x (80) | right 95% / wrong 44 s / wrong sw 1 / lag 2 s / first -23 s | 0.13 / 0.13 s | fast/1 | 5.77 | 25.3 |
+| kh12 | 0.54x (309) | right 82.4% / wrong 0 s / wrong sw 0 / lag 3.8 s / first 152 s | 1.02 / 0.9 s | sync/1 | 2.88 | 50.4 (fill run) |
+| kh12 | 0.33x (505) | right 46.6% / wrong 0 s / wrong sw 0 / lag 6.1 s / first 460 s | 1.28 / 1.15 s | min/1 | 1.4 | 33.8 (fill run) |
+| kh13 | 2.08x (80) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 0.13 / 0.13 s | fast/1 | 2.2 | 46.5 |
+| kh13 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.02 / 0.9 s | sync/1 | 1.49 | 28.5 |
+| kh13 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.28 / 1.15 s | min/1 | 0.92 | 17.3 |
+| kh14 | 2.08x (80) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 0.13 / 0.13 s | fast/1 | 2.22 | 6.5 |
+| kh14 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.02 / 0.9 s | sync/1 | 1.58 | 5.2 |
+| kh14 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.28 / 1.15 s | min/1 | 1.03 | 3.8 |
+| kh17 | 2.08x (80) | right 65.6% / wrong 68 s / wrong sw 0 / lag 22.1 s / first 99 s / 5443:never 3590:never 5447:never | 0.13 / 0.13 s | fast/1 | 5.21 | 273.6 (fill run) |
+| kh17 | 0.54x (309) | right 55.1% / wrong 160 s / wrong sw 0 / lag 4.4 s / first 111 s / 5443:never 3590:never 5447:never | 1.02 / 0.9 s | sync/1 | 2.93 | 69.8 (fill run) |
+| kh17 | 0.33x (505) | right 60.1% / wrong 160 s / wrong sw 0 / lag 6 s / first 204 s / 5443:never 3590:never 5447:never | 1.28 / 1.02 s | min/1 | 1.7 | 52.9 (fill run) |
+| kh18 | 2.08x (80) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 0.13 / 0.13 s | fast/1 | 2.13 | 48.1 |
+| kh18 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.02 / 0.9 s | sync/1 | 1.43 | 77 (fill run) |
+| kh18 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.28 / 1.15 s | min/1 | 0.89 | 41 (fill run) |
+| kh19 | 2.08x (80) | right 78.3% / wrong 0 s / wrong sw 0 / lag 1.1 s / first 88 s | 0.13 / 0.13 s | fast/1 | 5.04 | 36.8 (fill run) |
+| kh19 | 0.54x (309) | right 35.9% / wrong 0 s / wrong sw 0 / lag 2.1 s / first 259 s | 1.02 / 0.9 s | sync/1 | 2.1 | 70.4 (fill run) |
+| kh19 | 0.33x (505) | right 34% / wrong 0 s / wrong sw 0 / lag 2.3 s / first 266 s | 1.28 / 1.15 s | min/1 | 1.28 | 39.7 (fill run) |
+| kh20 | 2.08x (80) | right 62% / wrong 78 s / wrong sw 0 / lag 4.6 s / first 207 s / 3590:never 4086:never 4725:19 4086:29 1067:never 4086:never | 0.13 / 0.13 s | fast/1 | 4.83 | 92 (fill run) |
+| kh20 | 0.54x (309) | right 52.3% / wrong 122 s / wrong sw 0 / lag 9.3 s / first 236 s / 3590:never 4086:never 4725:22 4086:71 1067:never 4086:never | 1.02 / 0.9 s | sync/1 | 2.72 | 72.5 (fill run) |
+| kh20 | 0.33x (505) | right 51.8% / wrong 117 s / wrong sw 0 / lag 9 s / first 242 s / 3590:never 4086:never 4725:20 4086:71 1067:never 4086:never | 1.28 / 1.02 s | min/1 | 1.68 | 41.2 (fill run) |
+| kh21 | 2.08x (80) | right 64.9% / wrong 0 s / wrong sw 0 / lag 9.8 s / first 126 s | 0.13 / 0.13 s | fast/1 | 4.45 | 30.9 (fill run) |
+| kh21 | 0.54x (309) | right 64.4% / wrong 0 s / wrong sw 0 / lag 21.7 s / first 128 s | 1.02 / 0.9 s | sync/1 | 2.59 | 38.8 (fill run) |
+| kh21 | 0.33x (505) | right 60.8% / wrong 0 s / wrong sw 0 / lag 25.3 s / first 141 s | 1.28 / 1.15 s | min/1 | 1.59 | 24.8 (fill run) |
+| kh22 | 2.08x (80) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 0.13 / 0.13 s | fast/1 | 2.12 | 24 |
+| kh22 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.02 / 0.9 s | sync/1 | 1.43 | 46.1 (fill run) |
+| kh22 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.28 / 1.15 s | min/1 | 0.92 | 24.2 (fill run) |
+| kh24 | 2.08x (80) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 0.13 / 0.13 s | fast/1 | 2.14 | 8.1 |
+| kh24 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.02 / 0.9 s | sync/1 | 1.44 | 6.3 |
+| kh24 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.28 / 1.15 s | min/1 | 0.95 | 4.6 |
+| kh25 | 2.08x (80) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 0.13 / 0.13 s | fast/1 | 2.21 | 17.4 |
+| kh25 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.02 / 0.9 s | sync/1 | 1.43 | 10.9 |
+| kh25 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.28 / 1.15 s | min/1 | 0.9 | 8.3 |
+| kh26 | 2.08x (80) | right 26.1% / wrong 173 s / wrong sw 0 / lag 26.3 s / first 15 s / 5172:never | 0.13 / 0.13 s | fast/1 | 5.57 | 8.7 |
+| kh26 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 5172:never | 1.02 / 0.9 s | sync/1 | 1.55 | 14.6 |
+| kh26 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 5172:never | 1.28 / 1.15 s | min/1 | 0.97 | 10.4 |
+| kh27 | 2.08x (80) | right 74.5% / wrong 117 s / wrong sw 0 / lag 2.2 s / first 52 s / 2763:never 2774:never | 0.13 / 0.13 s | fast/1 | 5.48 | 198.8 (fill run) |
+| kh27 | 0.54x (309) | right 65.5% / wrong 173 s / wrong sw 1 / lag 3.6 s / first 55 s / 2763:never 2774:never | 1.15 / 0.9 s | sync/1 | 3.09 | 32 (fill run) |
+| kh27 | 0.33x (505) | right 64.8% / wrong 117 s / wrong sw 0 / lag 11 s / first 116 s / 2763:never 2774:never | 1.28 / 1.02 s | min/1 | 1.8 | 27.4 (fill run) |
+| kh28 | 2.08x (80) | right 81.4% / wrong 112 s / wrong sw 1 / lag 3.2 s / first -74 s | 0.13 / 0.13 s | fast/1 | 5.66 | 193.2 (fill run) |
+| kh28 | 0.54x (309) | right 81.5% / wrong 111 s / wrong sw 1 / lag 7.5 s / first -36 s | 1.02 / 0.9 s | sync/1 | 3.11 | 27.2 (fill run) |
+| kh28 | 0.33x (505) | right 100% / wrong 0 s / wrong sw 0 / lag 15.2 s / first -33 s | 1.28 / 1.02 s | min/1 | 1.9 | 16.9 (fill run) |
+| kh29 | 2.08x (80) | right 92.4% / wrong 0 s / wrong sw 0 / lag 3.8 s / first 17 s | 0.13 / 0.13 s | fast/1 | 5.49 | 64.5 (fill run) |
+| kh29 | 0.54x (309) | right 82.4% / wrong 0 s / wrong sw 0 / lag 4.4 s / first 40 s | 1.02 / 0.9 s | sync/1 | 2.98 | 13.7 (fill run) |
+| kh29 | 0.33x (505) | right 91.6% / wrong 0 s / wrong sw 0 / lag 4.4 s / first 19 s | 1.15 / 1.02 s | min/1 | 1.95 | 7.6 (fill run) |
+
+48 cells, 2321 s wall; runs kept in /Users/asingh02/personal/sttm-b-stream/research/hear-once/e2e/base
+=== ho-draftlite 0.54,0.33 VF_TIER=fast VF_HEAR_ONCE=1 VF_HO_DRAFT=1 VF_HO_LD=0.64 VF_HO_DRAFT_HOP=1
+  ho-draftlite kh11 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh11 0.54x done in 37 s (filled)
+  ho-draftlite kh11 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh11 0.33x done in 35 s (filled)
+  ho-draftlite kh12 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh12 0.54x done in 109 s (filled)
+  ho-draftlite kh12 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh12 0.33x done in 93 s (filled)
+  ho-draftlite kh13 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh13 0.54x done in 69 s (filled)
+  ho-draftlite kh13 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh13 0.33x done in 52 s (filled)
+  ho-draftlite kh14 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh14 0.54x done in 11 s (filled)
+  ho-draftlite kh14 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh14 0.33x done in 8 s (filled)
+  ho-draftlite kh17 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh17 0.54x done in 164 s (filled)
+  ho-draftlite kh17 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh17 0.33x done in 51 s (filled)
+  ho-draftlite kh18 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh18 0.54x done in 78 s (filled)
+  ho-draftlite kh18 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh18 0.33x done in 46 s (filled)
+  ho-draftlite kh19 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh19 0.54x done in 26 s (filled)
+  ho-draftlite kh19 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh19 0.33x done in 52 s (filled)
+  ho-draftlite kh20 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh20 0.54x done in 134 s (filled)
+  ho-draftlite kh20 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh20 0.33x done in 24 s (filled)
+  ho-draftlite kh21 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh21 0.54x done in 61 s (filled)
+  ho-draftlite kh21 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh21 0.33x done in 26 s (filled)
+  ho-draftlite kh22 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh22 0.54x done in 38 s (filled)
+  ho-draftlite kh22 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh22 0.33x done in 19 s (filled)
+  ho-draftlite kh24 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh24 0.54x done in 21 s (filled)
+  ho-draftlite kh24 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh24 0.33x done in 19 s (filled)
+  ho-draftlite kh25 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh25 0.54x done in 43 s (filled)
+  ho-draftlite kh25 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh25 0.33x done in 13 s (filled)
+  ho-draftlite kh26 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh26 0.54x done in 46 s (filled)
+  ho-draftlite kh26 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh26 0.33x done in 32 s (filled)
+  ho-draftlite kh27 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh27 0.54x done in 100 s (filled)
+  ho-draftlite kh27 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh27 0.33x done in 62 s (filled)
+  ho-draftlite kh28 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh28 0.54x done in 94 s (filled)
+  ho-draftlite kh28 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh28 0.33x done in 32 s (filled)
+  ho-draftlite kh29 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh29 0.54x done in 37 s (filled)
+  ho-draftlite kh29 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-draftlite kh29 0.33x done in 27 s (filled)
+
+### ho-draftlite (/Users/asingh02/personal/sttm-b-stream)
+| clip | speed (ms per 4 s pass) | result | audio backlog max / p95 | tier/steps | passes per audio s | wall s |
+|---|---|---|---|---|---|---|
+| kh11 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 34.18 / 19.2 s | fast/1 | 2.3 | 36.4 (fill run) |
+| kh11 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 62.72 / 38.66 s | fast/1 | 1.17 | 35.2 (fill run) |
+| kh12 | 0.54x (309) | right 57.1% / wrong 10 s / wrong sw 1 / lag 10.1 s / first -24 s | 1.02 / 0.51 s | fast/1 | 2.81 | 108.5 (fill run) |
+| kh12 | 0.33x (505) | right 94.2% / wrong 0 s / wrong sw 0 / lag 3.1 s / first -23 s | 2.18 / 1.02 s | fast/1 | 2.49 | 93.1 (fill run) |
+| kh13 | 0.54x (309) | right 78.9% / wrong 0 s / wrong sw 0 / lag 7.1 s / first 103 s | 2.94 / 0.64 s | fast/1 | 2.97 | 69.2 (fill run) |
+| kh13 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 51.71 / 39.94 s | fast/1 | 1.65 | 51.8 (fill run) |
+| kh14 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 3.84 / 2.94 s | fast/1 | 2.76 | 11.2 (fill run) |
+| kh14 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 26.75 / 23.68 s | fast/1 | 2.33 | 7.5 (fill run) |
+| kh17 | 0.54x (309) | right 6.5% / wrong 115 s / wrong sw 2 / lag 24.7 s / first 269 s / 5443:never 3590:never 5447:2 | 31.23 / 6.14 s | fast/1 | 2.75 | 163.6 (fill run) |
+| kh17 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 5443:never 3590:never 5447:never | 52.74 / 23.68 s | fast/1 | 0.65 | 50.4 (fill run) |
+| kh18 | 0.54x (309) | right 0% / wrong 28 s / wrong sw 1 / lag null s / first null s | 34.18 / 23.17 s | fast/1 | 2.26 | 77.8 (fill run) |
+| kh18 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 58.88 / 47.49 s | fast/1 | 1.55 | 46.3 (fill run) |
+| kh19 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 0.77 / 0.26 s | fast/1 | 0.58 | 25.9 (fill run) |
+| kh19 | 0.33x (505) | right 48.3% / wrong 0 s / wrong sw 0 / lag 4.3 s / first 208 s | 7.04 / 2.43 s | fast/1 | 2.1 | 51.8 (fill run) |
+| kh20 | 0.54x (309) | right 11% / wrong 198 s / wrong sw 1 / lag 16.3 s / first 705 s / 3590:never 4086:never 4725:19 4086:never 1067:never 4086:42 | 35.71 / 13.18 s | fast/1 | 2.56 | 133.7 (fill run) |
+| kh20 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 3590:never 4086:never 4725:never 4086:never 1067:never 4086:never | 33.54 / 2.56 s | fast/1 | 0.39 | 23.9 (fill run) |
+| kh21 | 0.54x (309) | right 60.1% / wrong 0 s / wrong sw 0 / lag 20.6 s / first 143 s | 25.34 / 6.27 s | fast/1 | 2.71 | 60.5 (fill run) |
+| kh21 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 49.41 / 39.42 s | fast/1 | 1.02 | 26.3 (fill run) |
+| kh22 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 3.2 / 0.77 s | fast/1 | 2.2 | 37.6 (fill run) |
+| kh22 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 48.51 / 42.5 s | fast/1 | 1.39 | 18.4 (fill run) |
+| kh24 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.41 / 0.64 s | fast/1 | 2.54 | 20.4 (fill run) |
+| kh24 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 57.98 / 50.05 s | fast/1 | 1.92 | 18.8 (fill run) |
+| kh25 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 29.82 / 17.41 s | fast/1 | 2.4 | 42.6 (fill run) |
+| kh25 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 8.32 / 2.3 s | fast/1 | 0.85 | 12.6 (fill run) |
+| kh26 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 5172:never | 35.71 / 22.78 s | fast/1 | 2.32 | 45.5 (fill run) |
+| kh26 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 5172:never | 59.26 / 46.21 s | fast/1 | 1.8 | 31.9 (fill run) |
+| kh27 | 0.54x (309) | right 53% / wrong 117 s / wrong sw 0 / lag 4.9 s / first 116 s / 2763:never 2774:never | 4.22 / 0.77 s | fast/1 | 3 | 99.4 (fill run) |
+| kh27 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 2763:never 2774:never | 53.25 / 35.71 s | fast/1 | 1.09 | 62.3 (fill run) |
+| kh28 | 0.54x (309) | right 99.2% / wrong 0 s / wrong sw 0 / lag 7.3 s / first 5 s | 24.58 / 0.77 s | fast/1 | 2.97 | 93.6 (fill run) |
+| kh28 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 42.88 / 12.93 s | fast/1 | 0.58 | 31.6 (fill run) |
+| kh29 | 0.54x (309) | right 73.7% / wrong 0 s / wrong sw 0 / lag 3.4 s / first 60 s | 3.58 / 0.64 s | fast/1 | 2.89 | 36.7 (fill run) |
+| kh29 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 17.28 / 7.3 s | fast/1 | 1.91 | 26.8 (fill run) |
+
+32 cells, 1775 s wall; runs kept in /Users/asingh02/personal/sttm-b-stream/research/hear-once/e2e/ho-draftlite
+=== ho-nodraft 0.54,0.33 VF_TIER=fast VF_HEAR_ONCE=1
+  ho-nodraft kh11 0.54x done in 48 s
+  ho-nodraft kh11 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh11 0.33x done in 8 s (filled)
+  ho-nodraft kh12 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh12 0.54x done in 59 s (filled)
+  ho-nodraft kh12 0.33x done in 19 s
+  ho-nodraft kh13 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh13 0.54x done in 32 s (filled)
+  ho-nodraft kh13 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh13 0.33x done in 10 s (filled)
+  ho-nodraft kh14 0.54x done in 5 s
+  ho-nodraft kh14 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh14 0.33x done in 5 s (filled)
+  ho-nodraft kh17 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh17 0.54x done in 112 s (filled)
+  ho-nodraft kh17 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh17 0.33x done in 20 s (filled)
+  ho-nodraft kh18 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh18 0.54x done in 56 s (filled)
+  ho-nodraft kh18 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh18 0.33x done in 13 s (filled)
+  ho-nodraft kh19 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh19 0.54x done in 64 s (filled)
+  ho-nodraft kh19 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh20 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh20 0.54x done in 74 s (filled)
+  ho-nodraft kh20 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh20 0.33x done in 14 s (filled)
+  ho-nodraft kh21 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh21 0.54x done in 31 s (filled)
+  ho-nodraft kh21 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh21 0.33x done in 36 s (filled)
+  ho-nodraft kh22 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh22 0.54x done in 27 s (filled)
+  ho-nodraft kh22 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh22 0.33x done in 24 s (filled)
+  ho-nodraft kh24 0.54x done in 10 s
+  ho-nodraft kh24 0.33x done in 6 s
+  ho-nodraft kh25 0.54x done in 13 s
+  ho-nodraft kh25 0.33x done in 5 s
+  ho-nodraft kh26 0.54x done in 11 s
+  ho-nodraft kh26 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh26 0.33x done in 10 s (filled)
+  ho-nodraft kh27 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh27 0.54x done in 31 s (filled)
+  ho-nodraft kh27 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh27 0.33x done in 12 s (filled)
+  ho-nodraft kh28 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh28 0.54x done in 59 s (filled)
+  ho-nodraft kh28 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh28 0.33x done in 46 s (filled)
+  ho-nodraft kh29 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh29 0.54x done in 24 s (filled)
+  ho-nodraft kh29 0.33x: cache miss, filling with the model (bench lock) ...
+  ho-nodraft kh29 0.33x done in 15 s (filled)
+
+### ho-nodraft (/Users/asingh02/personal/sttm-b-stream)
+| clip | speed (ms per 4 s pass) | result | audio backlog max / p95 | tier/steps | passes per audio s | wall s |
+|---|---|---|---|---|---|---|
+| kh11 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 0.26 / 0.26 s | fast/1 | 0.82 | 48.3 |
+| kh11 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 4.1 / 0.26 s | fast/1 | 0.26 | 8.2 (fill run) |
+| kh12 | 0.54x (309) | right 83% / wrong 55 s / wrong sw 3 / lag 7.4 s / first -23 s | 0.9 / 0.26 s | fast/1 | 0.84 | 59.3 (fill run) |
+| kh12 | 0.33x (505) | right 75.4% / wrong 123 s / wrong sw 2 / lag 3.8 s / first -23 s | 1.92 / 0.38 s | fast/1 | 0.84 | 19 |
+| kh13 | 0.54x (309) | right 0% / wrong 131 s / wrong sw 2 / lag null s / first null s | 0.26 / 0.26 s | fast/1 | 0.83 | 31.4 (fill run) |
+| kh13 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 2.69 / 0.26 s | fast/1 | 0.24 | 10.2 (fill run) |
+| kh14 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 0.26 / 0.26 s | fast/1 | 1.04 | 5.2 |
+| kh14 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 0.51 / 0.38 s | fast/1 | 1.07 | 4.8 (fill run) |
+| kh17 | 0.54x (309) | right 5.6% / wrong 526 s / wrong sw 15 / lag 51.9 s / first 200 s / 5443:never 3590:never 5447:never | 0.26 / 0.26 s | fast/1 | 0.88 | 111.7 (fill run) |
+| kh17 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 5443:never 3590:never 5447:never | 3.71 / 0 s | fast/1 | 0.13 | 19.6 (fill run) |
+| kh18 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 0.26 / 0.26 s | fast/1 | 0.83 | 56.3 (fill run) |
+| kh18 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 0.51 / 0.26 s | fast/1 | 0.31 | 13.2 (fill run) |
+| kh19 | 0.54x (309) | right 29.8% / wrong 28 s / wrong sw 2 / lag 4 s / first 254 s | 0.26 / 0.26 s | fast/1 | 0.88 | 63.5 (fill run) |
+| kh19 | 0.33x (505) | libc++abi: terminating due to uncaught exception of type std::__1::system_error: recursive_mutex lock failed: Invalid argument | - | - | - | - |
+| kh20 | 0.54x (309) | right 38.1% / wrong 222 s / wrong sw 3 / lag 15.3 s / first 241 s / 3590:never 4086:99 4725:17 4086:3 1067:never 4086:45 | 0.26 / 0.26 s | fast/1 | 0.87 | 73.5 (fill run) |
+| kh20 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 3590:never 4086:never 4725:never 4086:never 1067:never 4086:never | 0.51 / 0.26 s | fast/1 | 0.2 | 14.3 (fill run) |
+| kh21 | 0.54x (309) | right 89.9% / wrong 12 s / wrong sw 1 / lag 11 s / first 24 s | 0.26 / 0.26 s | fast/1 | 0.87 | 30.4 (fill run) |
+| kh21 | 0.33x (505) | right 61.5% / wrong 0 s / wrong sw 0 / lag 11.8 s / first 138 s | 43.65 / 31.87 s | fast/1 | 0.91 | 35.5 (fill run) |
+| kh22 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 0.26 / 0.26 s | fast/1 | 0.87 | 26.7 (fill run) |
+| kh22 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 8.83 / 3.2 s | fast/1 | 1.07 | 24 (fill run) |
+| kh24 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 0.26 / 0.26 s | fast/1 | 0.9 | 9.5 |
+| kh24 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 6.02 / 1.66 s | fast/1 | 1.1 | 6.2 |
+| kh25 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 2.18 / 0.26 s | fast/1 | 0.87 | 12.8 |
+| kh25 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 59.52 / 45.57 s | fast/1 | 1.14 | 5.3 |
+| kh26 | 0.54x (309) | right 5.4% / wrong 93 s / wrong sw 0 / lag null s / first 68 s / 5172:never | 0.26 / 0.26 s | fast/1 | 0.88 | 11.3 |
+| kh26 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 5172:never | 4.35 / 0.38 s | fast/1 | 0.52 | 9.5 (fill run) |
+| kh27 | 0.54x (309) | right 74.5% / wrong 117 s / wrong sw 0 / lag 11.5 s / first 52 s / 2763:never 2774:never | 0.26 / 0.26 s | fast/1 | 0.82 | 31.2 (fill run) |
+| kh27 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 2763:never 2774:never | 0.51 / 0 s | fast/1 | 0.11 | 11.7 (fill run) |
+| kh28 | 0.54x (309) | right 76.3% / wrong 112 s / wrong sw 1 / lag 2.6 s / first 31 s | 0.26 / 0.26 s | fast/1 | 0.82 | 58.3 (fill run) |
+| kh28 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 12.29 / 1.15 s | fast/1 | 0.53 | 46.2 (fill run) |
+| kh29 | 0.54x (309) | right 71.6% / wrong 18 s / wrong sw 1 / lag 3.4 s / first 46 s | 0.26 / 0.26 s | fast/1 | 0.93 | 24.3 (fill run) |
+| kh29 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 8.45 / 2.82 s | fast/1 | 0.67 | 14.7 (fill run) |
+
+32 cells, 1141 s wall; runs kept in /Users/asingh02/personal/sttm-b-stream/research/hear-once/e2e/ho-nodraft
+=== ho-draft 0.54 VF_TIER=fast VF_HEAR_ONCE=1 VF_HO_DRAFT=1
+  ho-draft kh11 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh11 0.54x done in 109 s (filled)
+  ho-draft kh12 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh12 0.54x done in 188 s (filled)
+  ho-draft kh13 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh13 0.54x done in 61 s (filled)
+  ho-draft kh14 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh14 0.54x done in 12 s (filled)
+  ho-draft kh17 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh17 0.54x done in 166 s (filled)
+  ho-draft kh18 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh18 0.54x done in 54 s (filled)
+  ho-draft kh19 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh19 0.54x done in 21 s (filled)
+  ho-draft kh20 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh20 0.54x done in 156 s (filled)
+  ho-draft kh21 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh21 0.54x done in 62 s (filled)
+  ho-draft kh22 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh22 0.54x done in 13 s (filled)
+  ho-draft kh24 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh24 0.54x done in 27 s (filled)
+  ho-draft kh25 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh25 0.54x done in 43 s (filled)
+  ho-draft kh26 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh26 0.54x done in 46 s (filled)
+  ho-draft kh27 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh27 0.54x done in 115 s (filled)
+  ho-draft kh28 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh28 0.54x done in 136 s (filled)
+  ho-draft kh29 0.54x: cache miss, filling with the model (bench lock) ...
+  ho-draft kh29 0.54x done in 53 s (filled)
+
+### ho-draft (/Users/asingh02/personal/sttm-b-stream)
+| clip | speed (ms per 4 s pass) | result | audio backlog max / p95 | tier/steps | passes per audio s | wall s |
+|---|---|---|---|---|---|---|
+| kh11 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 37.89 / 23.94 s | fast/1 | 2.59 | 108.6 (fill run) |
+| kh12 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 29.95 / 18.69 s | fast/1 | 2.65 | 187.5 (fill run) |
+| kh13 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 37.25 / 24.96 s | fast/1 | 2.19 | 60.8 (fill run) |
+| kh14 | 0.54x (309) | right 62.2% / wrong 0 s / wrong sw 0 / lag 28.7 s / first 22 s | 3.97 / 2.82 s | fast/1 | 3.38 | 12 (fill run) |
+| kh17 | 0.54x (309) | right 8.4% / wrong 78 s / wrong sw 2 / lag 34.7 s / first 274 s / 5443:never 3590:never 5447:never | 39.42 / 17.92 s | fast/1 | 3.29 | 165.6 (fill run) |
+| kh18 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 34.43 / 22.91 s | fast/1 | 1.68 | 53.7 (fill run) |
+| kh19 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.15 / 0.38 s | fast/1 | 0.68 | 20.6 (fill run) |
+| kh20 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 3590:never 4086:never 4725:never 4086:never 1067:never 4086:never | 33.92 / 24.19 s | fast/1 | 2.54 | 155.5 (fill run) |
+| kh21 | 0.54x (309) | right 60.8% / wrong 0 s / wrong sw 0 / lag 11.5 s / first 141 s | 20.99 / 15.62 s | fast/1 | 3.23 | 61.7 (fill run) |
+| kh22 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.15 / 0.51 s | fast/1 | 1.06 | 12.7 (fill run) |
+| kh24 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 3.46 / 1.15 s | fast/1 | 2.98 | 27.3 (fill run) |
+| kh25 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 21.76 / 12.8 s | fast/1 | 2.85 | 43.3 (fill run) |
+| kh26 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 5172:never | 18.18 / 10.24 s | fast/1 | 3.05 | 46.1 (fill run) |
+| kh27 | 0.54x (309) | right 74% / wrong 117 s / wrong sw 0 / lag 5.1 s / first 55 s / 2763:never 2774:never | 18.69 / 0.77 s | fast/1 | 3.49 | 114.6 (fill run) |
+| kh28 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 37.38 / 14.46 s | fast/1 | 2.86 | 135.8 (fill run) |
+| kh29 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 3.71 / 2.43 s | fast/1 | 3.15 | 52.9 (fill run) |
+
+16 cells, 1284 s wall; runs kept in /Users/asingh02/personal/sttm-b-stream/research/hear-once/e2e/ho-draft
+E2E DONE

@@ -1,0 +1,142 @@
+=== bg-search-only 0.33 VF_TIER=fast VF_HEAR_ONCE=1 VF_HO_MINS=5
+lockf: /tmp/vf-replay-slot-0.lock: already locked
+  bg-search-only kh12 0.33x: cache miss, filling with the model (bench lock) ...
+  bg-search-only kh12 0.33x done in 14 s (filled)
+  bg-search-only kh13 0.33x: cache miss, filling with the model (bench lock) ...
+  bg-search-only kh13 0.33x done in 36 s (filled)
+  bg-search-only kh17 0.33x: cache miss, filling with the model (bench lock) ...
+  bg-search-only kh17 0.33x done in 56 s (filled)
+  bg-search-only kh19 0.33x: cache miss, filling with the model (bench lock) ...
+  bg-search-only kh19 0.33x done in 46 s (filled)
+  bg-search-only kh20 0.33x: cache miss, filling with the model (bench lock) ...
+  bg-search-only kh20 0.33x done in 36 s (filled)
+  bg-search-only kh21 0.33x: cache miss, filling with the model (bench lock) ...
+  bg-search-only kh21 0.33x done in 12 s (filled)
+  bg-search-only kh26 0.33x: cache miss, filling with the model (bench lock) ...
+  bg-search-only kh26 0.33x done in 29 s (filled)
+  bg-search-only kh27 0.33x: cache miss, filling with the model (bench lock) ...
+  bg-search-only kh27 0.33x done in 21 s (filled)
+  bg-search-only kh28 0.33x: cache miss, filling with the model (bench lock) ...
+  bg-search-only kh28 0.33x done in 24 s (filled)
+  bg-search-only kh29 0.33x: cache miss, filling with the model (bench lock) ...
+  bg-search-only kh29 0.33x done in 10 s (filled)
+
+### bg-search-only (/Users/asingh02/personal/sttm-b-stream)
+| clip | speed (ms per 4 s pass) | result | audio backlog max / p95 | tier/steps | passes per audio s | wall s |
+|---|---|---|---|---|---|---|
+| kh12 | 0.33x (505) | right 100% / wrong 0 s / wrong sw 0 / lag 4 s / first -23 s | 1.28 / 1.02 s | fast/1 | 1.98 | 13.6 (fill run) |
+| kh13 | 0.33x (505) | right 0% / wrong 131 s / wrong sw 2 / lag null s / first null s | 1.28 / 0.9 s | fast/1 | 1.15 | 35.4 (fill run) |
+| kh17 | 0.33x (505) | right 60.1% / wrong 46 s / wrong sw 0 / lag 5.1 s / first 200 s / 5443:never 3590:never 5447:never | 1.28 / 0.9 s | fast/1 | 1.67 | 55.8 (fill run) |
+| kh19 | 0.33x (505) | right 36.9% / wrong 0 s / wrong sw 0 / lag 2.1 s / first 255 s | 1.28 / 0.9 s | fast/1 | 1.28 | 45.5 (fill run) |
+| kh20 | 0.33x (505) | right 54.8% / wrong 46 s / wrong sw 0 / lag 8.4 s / first 241 s / 3590:never 4086:never 4725:never 4086:never 1067:never 4086:never | 1.28 / 1.02 s | fast/1 | 1.62 | 36.1 (fill run) |
+| kh21 | 0.33x (505) | right 93.1% / wrong 0 s / wrong sw 0 / lag 39.5 s / first 25 s | 1.28 / 1.02 s | fast/1 | 1.89 | 11.7 (fill run) |
+| kh26 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 5172:never | 1.28 / 0 s | fast/1 | 0.87 | 28.5 (fill run) |
+| kh27 | 0.33x (505) | right 74.4% / wrong 117 s / wrong sw 0 / lag 5.7 s / first 53 s / 2763:never 2774:never | 1.28 / 1.02 s | fast/1 | 1.88 | 21.1 (fill run) |
+| kh28 | 0.33x (505) | right 94.8% / wrong 0 s / wrong sw 0 / lag 28.9 s / first 31 s | 1.28 / 0.9 s | fast/1 | 1.77 | 24 (fill run) |
+| kh29 | 0.33x (505) | right 79.5% / wrong 0 s / wrong sw 0 / lag 7.5 s / first 46 s | 1.28 / 1.02 s | fast/1 | 1.81 | 10.2 (fill run) |
+
+10 cells, 482 s wall; runs kept in /Users/asingh02/personal/sttm-b-stream/research/hear-once/e2e3/bg-search-only
+=== bg-search-only-sync 0.54,0.33 VF_HEAR_ONCE=1 VF_HO_MINS=5
+  bg-search-only-sync kh12 0.54x done in 17 s
+  bg-search-only-sync kh12 0.33x done in 12 s
+  bg-search-only-sync kh13 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-search-only-sync kh13 0.54x done in 48 s (filled)
+  bg-search-only-sync kh13 0.33x: cache miss, filling with the model (bench lock) ...
+  bg-search-only-sync kh13 0.33x done in 36 s (filled)
+  bg-search-only-sync kh17 0.54x done in 59 s
+  bg-search-only-sync kh17 0.33x done in 52 s
+  bg-search-only-sync kh19 0.54x done in 44 s
+  bg-search-only-sync kh19 0.33x done in 43 s
+  bg-search-only-sync kh20 0.54x done in 36 s
+  bg-search-only-sync kh20 0.33x done in 34 s
+  bg-search-only-sync kh21 0.54x done in 13 s
+  bg-search-only-sync kh21 0.33x done in 11 s
+  bg-search-only-sync kh26 0.54x done in 11 s
+  bg-search-only-sync kh26 0.33x done in 16 s
+  bg-search-only-sync kh27 0.54x done in 23 s
+  bg-search-only-sync kh27 0.33x done in 20 s
+  bg-search-only-sync kh28 0.54x done in 24 s
+  bg-search-only-sync kh28 0.33x done in 24 s
+  bg-search-only-sync kh29 0.54x done in 11 s
+  bg-search-only-sync kh29 0.33x done in 9 s
+
+### bg-search-only-sync (/Users/asingh02/personal/sttm-b-stream)
+| clip | speed (ms per 4 s pass) | result | audio backlog max / p95 | tier/steps | passes per audio s | wall s |
+|---|---|---|---|---|---|---|
+| kh12 | 0.54x (309) | right 99.3% / wrong 0 s / wrong sw 0 / lag 4.2 s / first -23 s | 1.02 / 0.9 s | sync/1 | 3.21 | 16.9 |
+| kh12 | 0.33x (505) | right 100% / wrong 0 s / wrong sw 0 / lag 4 s / first -23 s | 1.28 / 1.02 s | min/1 | 1.98 | 12.4 |
+| kh13 | 0.54x (309) | right 0% / wrong 131 s / wrong sw 2 / lag null s / first null s | 0.26 / 0.13 s | sync/1 | 1.64 | 48 (fill run) |
+| kh13 | 0.33x (505) | right 0% / wrong 131 s / wrong sw 2 / lag null s / first null s | 1.28 / 0.26 s | min/1 | 0.87 | 36.2 (fill run) |
+| kh17 | 0.54x (309) | right 17.4% / wrong 0 s / wrong sw 0 / lag 4.7 s / first 200 s / 5443:never 3590:never 5447:never | 1.02 / 0.9 s | sync/1 | 2.58 | 58.9 |
+| kh17 | 0.33x (505) | right 60.1% / wrong 46 s / wrong sw 0 / lag 5.1 s / first 200 s / 5443:never 3590:never 5447:never | 1.28 / 0.9 s | min/1 | 1.67 | 52.3 |
+| kh19 | 0.54x (309) | right 37% / wrong 0 s / wrong sw 0 / lag 1.7 s / first 254 s | 1.02 / 0.77 s | sync/1 | 1.74 | 44.4 |
+| kh19 | 0.33x (505) | right 36.9% / wrong 0 s / wrong sw 0 / lag 2.1 s / first 255 s | 1.28 / 0.9 s | min/1 | 1.28 | 43.4 |
+| kh20 | 0.54x (309) | right 58.6% / wrong 70 s / wrong sw 0 / lag 10.6 s / first 241 s / 3590:never 4086:never 4725:22 4086:19 1067:never 4086:never | 1.02 / 0.9 s | sync/1 | 2.49 | 35.7 |
+| kh20 | 0.33x (505) | right 54.8% / wrong 46 s / wrong sw 0 / lag 8.4 s / first 241 s / 3590:never 4086:never 4725:never 4086:never 1067:never 4086:never | 1.28 / 1.02 s | min/1 | 1.62 | 33.9 |
+| kh21 | 0.54x (309) | right 93.3% / wrong 0 s / wrong sw 0 / lag 20.8 s / first 24 s | 1.02 / 0.9 s | sync/1 | 3 | 12.6 |
+| kh21 | 0.33x (505) | right 93.1% / wrong 0 s / wrong sw 0 / lag 39.5 s / first 25 s | 1.28 / 1.02 s | min/1 | 1.89 | 10.6 |
+| kh26 | 0.54x (309) | right 5.3% / wrong 173 s / wrong sw 0 / lag null s / first 68 s / 5172:never | 1.02 / 0.9 s | sync/1 | 2.61 | 10.7 |
+| kh26 | 0.33x (505) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 5172:never | 1.28 / 0 s | min/1 | 0.87 | 15.4 |
+| kh27 | 0.54x (309) | right 74.4% / wrong 117 s / wrong sw 0 / lag 8.2 s / first 52 s / 2763:never 2774:never | 1.02 / 0.9 s | sync/1 | 3 | 23.4 |
+| kh27 | 0.33x (505) | right 74.4% / wrong 117 s / wrong sw 0 / lag 5.7 s / first 53 s / 2763:never 2774:never | 1.28 / 1.02 s | min/1 | 1.88 | 20.2 |
+| kh28 | 0.54x (309) | right 94.9% / wrong 0 s / wrong sw 0 / lag 2.6 s / first 31 s | 1.02 / 0.9 s | sync/1 | 2.77 | 23.9 |
+| kh28 | 0.33x (505) | right 94.8% / wrong 0 s / wrong sw 0 / lag 28.9 s / first 31 s | 1.28 / 0.9 s | min/1 | 1.77 | 24 |
+| kh29 | 0.54x (309) | right 79.7% / wrong 0 s / wrong sw 0 / lag 3.3 s / first 46 s | 1.02 / 0.9 s | sync/1 | 2.79 | 10.7 |
+| kh29 | 0.33x (505) | right 79.5% / wrong 0 s / wrong sw 0 / lag 7.5 s / first 46 s | 1.28 / 1.02 s | min/1 | 1.81 | 9.2 |
+
+20 cells, 605 s wall; runs kept in /Users/asingh02/personal/sttm-b-stream/research/hear-once/e2e3/bg-search-only-sync
+=== bg-follow-only 0.54 VF_TIER=fast VF_HEAR_ONCE=1 VF_HO_MAXS=4.1
+  bg-follow-only kh12 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-follow-only kh12 0.54x done in 85 s (filled)
+  bg-follow-only kh13 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-follow-only kh13 0.54x done in 28 s (filled)
+  bg-follow-only kh17 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-follow-only kh17 0.54x done in 78 s (filled)
+  bg-follow-only kh19 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-follow-only kh19 0.54x done in 42 s (filled)
+  bg-follow-only kh20 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-follow-only kh20 0.54x done in 55 s (filled)
+  bg-follow-only kh21 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-follow-only kh21 0.54x done in 34 s (filled)
+  bg-follow-only kh26 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-follow-only kh26 0.54x done in 15 s (filled)
+  bg-follow-only kh27 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-follow-only kh27 0.54x done in 50 s (filled)
+  bg-follow-only kh28 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-follow-only kh28 0.54x done in 16 s (filled)
+  bg-follow-only kh29 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-follow-only kh29 0.54x done in 26 s (filled)
+
+### bg-follow-only (/Users/asingh02/personal/sttm-b-stream)
+| clip | speed (ms per 4 s pass) | result | audio backlog max / p95 | tier/steps | passes per audio s | wall s |
+|---|---|---|---|---|---|---|
+| kh12 | 0.54x (309) | right 47.1% / wrong 37 s / wrong sw 2 / lag 5.9 s / first 417 s | 1.15 / 0.9 s | fast/1 | 1.17 | 84.5 (fill run) |
+| kh13 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s | 1.15 / 0.9 s | fast/1 | 1.5 | 28.3 (fill run) |
+| kh17 | 0.54x (309) | right 1.5% / wrong 633 s / wrong sw 13 / lag null s / first 200 s / 5443:never 3590:never 5447:never | 1.15 / 0.77 s | fast/1 | 1.06 | 77.8 (fill run) |
+| kh19 | 0.54x (309) | right 32.5% / wrong 0 s / wrong sw 0 / lag 4 s / first 272 s | 1.15 / 0.9 s | fast/1 | 1.24 | 42.2 (fill run) |
+| kh20 | 0.54x (309) | right 45.3% / wrong 119 s / wrong sw 3 / lag 6.5 s / first 303 s / 3590:11 4086:6 4725:17 4086:4 1067:never 4086:26 | 1.15 / 0.77 s | fast/1 | 1.12 | 54.7 (fill run) |
+| kh21 | 0.54x (309) | right 62.3% / wrong 0 s / wrong sw 0 / lag 11.9 s / first 135 s | 1.02 / 0.77 s | fast/1 | 1.11 | 34 (fill run) |
+| kh26 | 0.54x (309) | right 0% / wrong 0 s / wrong sw 0 / lag null s / first null s / 5172:never | 1.15 / 0.9 s | fast/1 | 1.55 | 14.7 (fill run) |
+| kh27 | 0.54x (309) | right 64.8% / wrong 117 s / wrong sw 0 / lag 4.4 s / first 116 s / 2763:never 2774:never | 1.02 / 0.64 s | fast/1 | 0.97 | 49.4 (fill run) |
+| kh28 | 0.54x (309) | right 79.1% / wrong 112 s / wrong sw 1 / lag 3.1 s / first 10 s | 1.02 / 0.64 s | fast/1 | 0.96 | 15.8 (fill run) |
+| kh29 | 0.54x (309) | right 65% / wrong 0 s / wrong sw 0 / lag 6.2 s / first 79 s | 1.02 / 0.77 s | fast/1 | 1.15 | 25.4 (fill run) |
+
+10 cells, 438 s wall; runs kept in /Users/asingh02/personal/sttm-b-stream/research/hear-once/e2e3/bg-follow-only
+=== bg-nodraft 0.54 VF_TIER=fast VF_HEAR_ONCE=1
+  bg-nodraft kh12 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-nodraft kh12 0.54x done in 57 s (filled)
+  bg-nodraft kh13 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-nodraft kh13 0.54x done in 39 s (filled)
+  bg-nodraft kh17 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-nodraft kh17 0.54x done in 90 s (filled)
+  bg-nodraft kh19 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-nodraft kh19 0.54x done in 50 s (filled)
+  bg-nodraft kh20 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-nodraft kh20 0.54x done in 56 s (filled)
+  bg-nodraft kh21 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-nodraft kh21 0.54x done in 23 s (filled)
+  bg-nodraft kh26 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-nodraft kh26 0.54x done in 21 s (filled)
+  bg-nodraft kh27 0.54x: cache miss, filling with the model (bench lock) ...
+  bg-nodraft kh27 0.54x done in 49 s (filled)
+  bg-nodraft kh28 0.54x: cache miss, filling with the model (bench lock) ...
