@@ -115,7 +115,8 @@ class Infer {
 
   // buf: Float32Array @16k -> {data:Float32Array flat, frames, C}
   async emissions(buf) {
-    if (this.ho) {
+    const hoS = buf.length / 16000;
+    if (this.ho && hoS <= (Number(process.env.VF_HO_MAXS) || 1e9) && hoS >= (Number(process.env.VF_HO_MINS) || 0)) {
       const served = await this.ho.serve(buf);
       if (served) return served;
     }
