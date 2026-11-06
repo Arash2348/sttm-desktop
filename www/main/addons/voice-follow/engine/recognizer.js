@@ -17,7 +17,13 @@ class Recognizer {
 
   async push(pcm) {
     const res = resampleTo16k(pcm, this.inputSr);
-    this.win = Math.floor(pace.windowS('recognizer', this.windowS) * SR);
+    // Screening switches (experiments, default off):
+    //   VF_REC_SEARCH_WIN=S  searching window S seconds instead of 10 (e.g. 4: the follower's
+    //                        window, so in an aligned tier one model pass serves both)
+    //   VF_REC_FOLLOW_HOP=S  while following (window <= 4 s), the recognizer listens every S s
+    const searchWin = Number(process.env.VF_REC_SEARCH_WIN) || 0;
+    const ownWin = searchWin && this.windowS > 4 ? searchWin : this.windowS;
+    this.win = Math.floor(pace.windowS('recognizer', ownWin) * SR);
     if (res.length) {
       let merged = new Float32Array(this.buf.length + res.length);
       merged.set(this.buf, 0);
@@ -26,7 +32,9 @@ class Recognizer {
       this.buf = merged;
       this.acc += res.length;
     }
-    this.hop = Math.floor(pace.hopS('recognizer', this.hopS) * SR); // performance tier
+    const followHop = Number(process.env.VF_REC_FOLLOW_HOP) || 0;
+    const ownHop = followHop && this.windowS <= 4 ? Math.max(this.hopS, followHop) : this.hopS;
+    this.hop = Math.floor(pace.hopS('recognizer', ownHop) * SR); // performance tier
     if (this.acc < this.hop || this.buf.length < SR) return null;
     this.acc = 0;
     pace.markBeat(pcm);
