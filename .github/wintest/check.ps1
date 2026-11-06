@@ -39,7 +39,7 @@ try { $ws = (Invoke-RestMethod 'http://127.0.0.1:9555/json' | Where-Object { $_.
 $ui = 'no-window'
 if ($ws) {
   $env:NODE_PATH = (Resolve-Path 'node_modules').Path
-  $ui = (& $node (Join-Path $PSScriptRoot 'probe.js') $ws 2>&1 | Out-String).Trim()
+  $ui = (& $node (Join-Path $PSScriptRoot 'probe.js') 2>&1 | Out-String).Trim()
 }
 Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue
 Get-Process SikhiToTheMax -ErrorAction SilentlyContinue | Stop-Process -Force
