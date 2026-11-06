@@ -41,4 +41,6 @@ jobs:
           nproc 2>/dev/null; lscpu 2>/dev/null | grep -E 'Model name|Thread|Core|Socket' || true
           $PRE node research/hear-once/hw-timing.js timing-${{ matrix.label }}.json
       - uses: actions/upload-artifact@v4
-        with: { name: timing-${{ matrix.label }}, path: timing-${{ matrix.label }}.json }
+        with:
+          name: timing-${{ matrix.label }}
+          path: timing-${{ matrix.label }}.json
