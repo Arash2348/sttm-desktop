@@ -38,7 +38,8 @@ Start-Sleep 60
 try { $ws = (Invoke-RestMethod 'http://127.0.0.1:9555/json' | Where-Object { $_.url -like '*index.html' } | Select-Object -First 1).webSocketDebuggerUrl } catch {}
 $ui = 'no-window'
 if ($ws) {
-  $ui = (& $node -e "const W=require('ws');const w=new W(process.argv[1]);w.on('open',()=>w.send(JSON.stringify({id:1,method:'Runtime.evaluate',params:{expression:'document.body.innerText.trim().length+\" | \"+document.body.innerText.trim().slice(0,80).replace(/\\s+/g,\" \")+\" | root children: \"+(document.getElementById(\"app\")||document.body).children.length'}})));w.on('message',d=>{const m=JSON.parse(d);if(m.id===1){console.log(m.result.result.value);process.exit(0)}});setTimeout(()=>{console.log('timeout');process.exit(0)},15000)" $ws 2>&1 | Out-String).Trim()
+  $env:NODE_PATH = (Resolve-Path 'node_modules').Path
+  $ui = (& $node (Join-Path $PSScriptRoot 'probe.js') $ws 2>&1 | Out-String).Trim()
 }
 Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue
 Get-Process SikhiToTheMax -ErrorAction SilentlyContinue | Stop-Process -Force
