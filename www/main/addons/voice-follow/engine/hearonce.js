@@ -40,7 +40,8 @@ class HearOnce {
     this.draftHop = Math.round((opts.draftHop != null ? opts.draftHop : 0.5) * SR);
     this.keepS = opts.keepS || 30;
     this.stats = { slices: 0, direct: 0, commits: 0, drafts: 0, encodedS: 0, resets: 0 };
-    this.lock = Promise.resolve();
+    this.busy = null;
+    this.gen = 0;
     this.reset();
   }
 
@@ -168,49 +169,91 @@ class HearOnce {
     return null;
   }
 
-  // The window's model output: { data, frames, C } as Infer.run returns, or null (do a pass).
-  async emissions(buf) {
+  // Locate buf in the stream (restarting the stream when buf starts a new one). Returns its end
+  // (absolute sample) or null when buf is not part of the stream.
+  place(buf) {
     let end = this.locate(buf);
-    if (end == null) {
-      // Not part of the stream. A window that extends the last unmatched one means a new stream
-      // (a new session): restart the history from it.
-      const alt = this.alt;
+    if (end != null) return end;
+    // Not part of the stream. A window that extends the last unmatched one means a new stream
+    // (a new session, or audio the app dropped): restart the history from it. A stream starts
+    // only when a second window extends the first: the self-test's noise windows never do.
+    const alt = this.alt;
+    this.alt = buf.slice(0);
+    if (!alt) return null;
+    // Keep the whole state: a window that only looks new (a one-off check, the self-test) must
+    // not cost the timeline built so far.
+    const saved = {
+      hist: this.hist, abs0: this.abs0, tl: this.tl, C: this.C, committedF: this.committedF, draftF: this.draftF,
+    };
+    const gen = this.gen;
+    this.reset();
+    this.hist = alt;
+    end = this.locate(buf);
+    if (end == null || end <= alt.length) {
+      Object.assign(this, saved);
       this.alt = buf.slice(0);
-      // (A stream starts only when a second window extends the first: the speed self-test's
-      // unrelated noise windows never do.)
-      if (!alt) return null;
-      {
-        // Keep the whole state: a window that only looks new (a one-off check, the self-test)
-        // must not cost the timeline built so far.
-        const saved = {
-          hist: this.hist, abs0: this.abs0, tl: this.tl, C: this.C, committedF: this.committedF, draftF: this.draftF,
-        };
-        this.reset();
-        this.hist = alt;
-        end = this.locate(buf);
-        if (end == null || end <= alt.length) {
-          Object.assign(this, saved);
-          this.alt = buf.slice(0);
-          return null;
+      return null;
+    }
+    this.gen = gen + 1; // background work for the old stream is void
+    this.stats.resets += 1;
+    return end;
+  }
+
+  // Background worker: final pieces first, then a draft of the newest audio. Engines never wait
+  // for it (except at a stream's start); they read whatever is ready.
+  kick() {
+    if (this.busy) return this.busy;
+    const gen = this.gen;
+    this.busy = (async () => {
+      for (;;) {
+        const endF = Math.floor(this.histEnd / HOP);
+        if (this.committedF + this.Cf + this.Rf <= endF) {
+          // eslint-disable-next-line no-await-in-loop
+          await this.commitOne(gen);
+          if (gen !== this.gen) return;
+          continue;
         }
-        this.stats.resets += 1;
+        const end = this.histEnd;
+        const d = this.draftF;
+        const stale = !d || d.from !== this.committedF || end - d.endAbs >= this.draftHop;
+        if (this.draft && end > this.committedF * HOP && stale) {
+          // eslint-disable-next-line no-await-in-loop
+          await this.draftTo(end);
+          if (gen !== this.gen) return;
+          continue;
+        }
+        return;
       }
+    })().finally(() => {
+      this.busy = null;
+    });
+    return this.busy;
+  }
+
+  async commitOne(gen) {
+    const c0 = this.committedF;
+    const c1 = c0 + this.Cf;
+    const a0 = Math.max(this.abs0 / HOP, c0 - this.Lf);
+    const a1 = c1 + this.Rf;
+    const e = await this.pass(a0 * HOP, a1 * HOP);
+    if (gen !== this.gen) return;
+    for (let f = c0; f < c1; f += 1) {
+      const src = f - a0;
+      if (src >= 0 && src < e.frames) this.tl.set(f, e.data.slice(src * e.C, (src + 1) * e.C));
     }
-    await this.commit();
+    this.committedF = c1;
+    this.stats.commits += 1;
+  }
+
+  slice(buf, end) {
     let lastF = this.committedF;
-    if (this.draft && end > this.committedF * HOP) {
-      const d = this.draftF;
-      const fresh = d && d.from === this.committedF && end - d.endAbs < this.draftHop && d.endAbs <= end;
-      const to = fresh ? d.endAbs : end;
-      if (!fresh) await this.draftTo(end);
-      lastF = Math.floor(to / HOP);
-    }
+    const d = this.draftF;
+    if (this.draft && d && d.from === this.committedF && d.endAbs <= end) lastF = Math.max(lastF, Math.floor(d.endAbs / HOP));
     const want = framesFor(buf.length);
-    // A window ending at end (or at the last ready frame, when that is earlier: the price of R).
     const stopF = Math.min(lastF, Math.ceil(end / HOP));
     const startF = Math.max(this.abs0 / HOP, stopF - want);
     const n = stopF - startF;
-    if (n < Math.min(want, 25)) return null; // too little ready yet (the first seconds)
+    if (n < Math.min(want, 25) || !this.C) return null;
     const C = this.C;
     const data = new Float32Array(n * C);
     for (let i = 0; i < n; i += 1) {
@@ -222,11 +265,18 @@ class HearOnce {
     return { data, frames: n, C, hearOnce: { lagS: (end - stopF * HOP) / SR } };
   }
 
-  // Serialised: two engines asking at once must not encode the same piece twice.
-  serve(buf) {
-    const job = this.lock.then(() => this.emissions(buf));
-    this.lock = job.catch(() => null);
-    return job;
+  // The window's model output: { data, frames, C } as Infer.run returns, or null (do a pass).
+  async serve(buf) {
+    const end = this.place(buf);
+    if (end == null) return null;
+    const work = this.kick();
+    let out = this.slice(buf, end);
+    if (!out && work) {
+      // the stream's first seconds: wait for the first pieces once
+      await work;
+      out = this.slice(buf, end);
+    }
+    return out;
   }
 }
 

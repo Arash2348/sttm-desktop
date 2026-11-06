@@ -12,7 +12,23 @@ const SR = 16000;
 function readWav(f) { const b = fs.readFileSync(f); let o = 12; while (o + 8 <= b.length) { const id = b.toString('ascii', o, o + 4), sz = b.readUInt32LE(o + 4); if (id === 'data') { const n = sz >> 1, a = new Float32Array(n); for (let i = 0; i < n; i++) a[i] = b.readInt16LE(o + 8 + 2 * i) / 32768; return a; } o += 8 + sz + (sz & 1); } }
 function lev(a, b) { let p = Array.from({ length: b.length + 1 }, (_, i) => i); for (let i = 1; i <= a.length; i++) { const c = [i]; for (let j = 1; j <= b.length; j++) c[j] = Math.min(p[j] + 1, c[j - 1] + 1, p[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); p = c; } return p[b.length]; }
 const sim = (a, b) => (a.length || b.length ? 1 - lev(a, b) / Math.max(a.length, b.length) : 1);
+const TOOLS = '/Users/asingh02/personal/sttm-ws4/research/level2-dataset/tools';
+const BENCH = path.join(process.env.HOME, 'personal/vf-benchmark');
+const { partialRatio } = require(path.join(ENGINE, 'fuzz'));
+const { norm } = require(path.join(ENGINE, 'infer'));
+async function truthFor(id) {
+  const { parseCsv } = require(path.join(TOOLS, 'vf-manifest'));
+  const man = parseCsv(fs.readFileSync(path.join(BENCH, 'manifest.csv'), 'utf8'));
+  const row = man.find((r) => r.id.split('_')[0] === id && Number(r.lines_n) > 0);
+  if (!row) return null;
+  const lines = parseCsv(fs.readFileSync(path.join(BENCH, row.content_folder, row.id, 'lines.csv'), 'utf8')).map((l) => ({ v: Number(l.verseId), a: Number(l.start_s), b: Number(l.end_s) })).filter((l) => Number.isFinite(l.v));
+  const Realm = require('realm'); const anvaad = require('anvaad-js');
+  const realm = await Realm.open({ path: path.join(process.env.HOME, 'Library/Application Support/SikhiToTheMax/sttmdesktop-evergreen-v2.realm'), readOnly: true });
+  const txt = new Map(); lines.forEach((l) => { if (!txt.has(l.v)) { const v = realm.objects('Verse').filtered('ID == $0', l.v)[0]; txt.set(l.v, v ? norm(anvaad.unicode(v.Gurmukhi)) : ''); } });
+  return (text, a, b) => { const ls = lines.filter((l) => l.a < b && l.b > a).map((l) => txt.get(l.v)).filter(Boolean); const h = norm(text); if (!ls.length || h.length < 4) return null; return Math.max(...ls.map((x) => partialRatio(h, x) / 100)); };
+}
 (async () => {
+  const heard = process.env.CLIP ? await truthFor(process.env.CLIP) : null;
   const pcm = readWav(process.argv[2]).subarray(0, Number(process.argv[3] || 60) * SR);
   const infer = await Infer.create(MODEL);
   // frame-count formula check
@@ -37,14 +53,17 @@ const sim = (a, b) => (a.length || b.length ? 1 - lev(a, b) / Math.max(a.length,
       const got = await ho.serve(bufs[k]);
       if (!got) { res[k].push({ t: (p + ch.length) / SR, served: false }); continue; }
       const a = infer.decode(infer.greedy(ref)).replace(/\s+/g, ''), b = infer.decode(infer.greedy(got)).replace(/\s+/g, '');
-      res[k].push({ t: (p + ch.length) / SR, served: true, sim: sim(a, b), lag: got.hearOnce.lagS, framesOk: got.frames === ref.frames });
+      const tE = (p + ch.length) / SR, n = bufs[k].length / SR;
+      const hd = heard ? heard(infer.decode(infer.greedy(ref)), tE - n, tE) : null;
+      const hh = heard ? heard(infer.decode(infer.greedy(got)), tE - n - got.hearOnce.lagS, tE - got.hearOnce.lagS) : null;
+      res[k].push({ t: tE, served: true, sim: sim(a, b), lag: got.hearOnce.lagS, framesOk: got.frames === ref.frames, hd, hh });
     }
   }
   const dur = pcm.length / SR;
   for (const k of ['rec', 'fol']) {
     const s = res[k].filter((r) => r.served);
     const mean = (xs) => xs.reduce((x, y) => x + y, 0) / (xs.length || 1);
-    console.log(k, { windows: res[k].length, served: s.length, textSimVsDirect: +mean(s.map((r) => r.sim)).toFixed(3), lagS: +mean(s.map((r) => r.lag)).toFixed(2), framesEqual: s.filter((r) => r.framesOk).length });
+    console.log(k, { windows: res[k].length, served: s.length, textSimVsDirect: +mean(s.map((r) => r.sim)).toFixed(3), heardToday: +mean(s.filter((r) => r.hd != null && r.hh != null).map((r) => r.hd)).toFixed(3), heardHearOnce: +mean(s.filter((r) => r.hd != null && r.hh != null).map((r) => r.hh)).toFixed(3), lagS: +mean(s.map((r) => r.lag)).toFixed(2), framesEqual: s.filter((r) => r.framesOk).length });
   }
   console.log({ stats: ho.stats, hearOnceEncodePerAudioS: +(ho.stats.encodedS / dur).toFixed(2), todayEncodePerAudioS: +(direct / dur).toFixed(2) });
 })().catch((e) => { console.error(e); process.exit(1); });
