@@ -2,6 +2,10 @@
 # Usage: check.ps1 -Label <name>   (run from the repo root after electron-builder --dir)
 param([string]$Label)
 $ErrorActionPreference = 'Continue'
+$node = (Get-Command node).Source
+if ($env:MIN_PATH) { $env:PATH = "$env:SystemRoot\System32;$env:SystemRoot" }
+Write-Host "msvcp140 on PATH: $((where.exe msvcp140.dll 2>$null) -join ', ')"
+Write-Host "vcruntime140 on PATH: $((where.exe vcruntime140.dll 2>$null) -join ', ')"
 $app = Resolve-Path 'builds\win-unpacked'
 $exe = Join-Path $app 'SikhiToTheMax.exe'
 $ort = Join-Path $app 'resources\app.asar.unpacked\node_modules\onnxruntime-node'
@@ -31,9 +35,10 @@ for ($i = 0; $i -lt 60 -and -not $ws; $i++) {
   try { $ws = (Invoke-RestMethod 'http://127.0.0.1:9555/json' | Where-Object { $_.url -like '*index.html' } | Select-Object -First 1).webSocketDebuggerUrl } catch {}
 }
 Start-Sleep 20
+try { $ws = (Invoke-RestMethod 'http://127.0.0.1:9555/json' | Where-Object { $_.url -like '*index.html' } | Select-Object -First 1).webSocketDebuggerUrl } catch {}
 $ui = 'no-window'
 if ($ws) {
-  $ui = (node -e "const W=require('ws');const w=new W(process.argv[1]);w.on('open',()=>w.send(JSON.stringify({id:1,method:'Runtime.evaluate',params:{expression:'document.body.innerText.trim().length'}})));w.on('message',d=>{const m=JSON.parse(d);if(m.id===1){console.log(m.result.result.value);process.exit(0)}});setTimeout(()=>{console.log('timeout');process.exit(0)},15000)" $ws 2>&1 | Out-String).Trim()
+  $ui = (& $node -e "const W=require('ws');const w=new W(process.argv[1]);w.on('open',()=>w.send(JSON.stringify({id:1,method:'Runtime.evaluate',params:{expression:'document.body.innerText.trim().length'}})));w.on('message',d=>{const m=JSON.parse(d);if(m.id===1){console.log(m.result.result.value);process.exit(0)}});setTimeout(()=>{console.log('timeout');process.exit(0)},15000)" $ws 2>&1 | Out-String).Trim()
 }
 Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue
 Get-Process SikhiToTheMax -ErrorAction SilentlyContinue | Stop-Process -Force

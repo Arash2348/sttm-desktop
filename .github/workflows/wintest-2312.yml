@@ -63,15 +63,19 @@ jobs:
             Get-ChildItem $d -Filter *.dll | Where-Object { $_.Name -match '^(msvcp140|vcruntime140|concrt140)' } | ForEach-Object {
               takeown /f $_.FullName | Out-Null
               icacls $_.FullName /grant "$($env:USERNAME):F" | Out-Null
-              Rename-Item $_.FullName "$($_.Name).bak" -ErrorAction Continue
+              try { Rename-Item $_.FullName "$($_.Name).bak" -Force -ErrorAction Stop } catch { Write-Host "RENAME FAILED $($_.Exception.Message)" }
             }
           }
-          Get-ChildItem "$env:SystemRoot\System32" -Filter *.dll.bak | Select-Object Name
+          Get-ChildItem "$env:SystemRoot\System32" | Where-Object { $_.Name -match '^(msvcp140|vcruntime140|concrt140)' } | Select-Object Name
       - name: 2 PC without the Visual C++ runtime
         working-directory: app
+        env:
+          MIN_PATH: "1"
         run: ..\harness\.github\wintest\check.ps1 -Label "${{ matrix.ref }} / no VC runtime"
       - name: 3 no VC runtime and no bundled copy (engine cannot load at all)
         if: matrix.ref == 'vf-lazy-native'
+        env:
+          MIN_PATH: "1"
         working-directory: app
         run: |
           Get-ChildItem builds\win-unpacked\resources\app.asar.unpacked\node_modules\onnxruntime-node\bin\napi-v6\win32\x64 -Filter *.dll | Where-Object { $_.Name -match '^(msvcp140|vcruntime140|concrt140)' } | Remove-Item
