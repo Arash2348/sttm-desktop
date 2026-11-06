@@ -180,7 +180,11 @@ class HearOnce {
       // unrelated noise windows never do.)
       if (!alt) return null;
       {
-        const saved = { hist: this.hist, abs0: this.abs0 };
+        // Keep the whole state: a window that only looks new (a one-off check, the self-test)
+        // must not cost the timeline built so far.
+        const saved = {
+          hist: this.hist, abs0: this.abs0, tl: this.tl, C: this.C, committedF: this.committedF, draftF: this.draftF,
+        };
         this.reset();
         this.hist = alt;
         end = this.locate(buf);
