@@ -727,6 +727,12 @@ const PAATH_POOL_TEXT_MIN = 0.2; // minimum full-text score of that top line
 // opening passed (sim 0.48: Japji 100 -> 0). Counts and vote fading are kept per second instead:
 // a count of k searches becomes k / scale, and each vote is worth scale times as much and fades
 // scale times as fast. At scale 1 every rule is exactly as before.
+// Bench switch (VF_SW_CFG): > 0 = the paath Banis' per-second lock evidence (scaleFor, and the
+// pool's scaled counts) applies only for this many seconds after a search phase starts (session
+// start, or a Shabad released). Japji and Jaap open a search phase; kirtan heard deep into a
+// search phase keeps today's per-search rules (C's recount: rn16 locked Jaap and rn05 Japji on
+// kirtan under the scaled counts). 0 = always, as before.
+const PAATH_SCALE_WINDOW_S = 0;
 const perSearch = (k, scale) => (scale > 1 ? Math.max(1, Math.round(k / scale)) : k);
 // A leader must still hold for at least two searches in a row: one search alone never locks
 // (at the 0.75 s hop, round(2 / 1.5) = 1 let single searches lock wrong Shabads; GCP 0.65 pt01).
@@ -2986,6 +2992,7 @@ const VoiceFollow = () => {
   const detectStableRef = useRef({ id: null, count: 0 }); // leader-stability counter
   const poolStableRef = useRef({ bani: null, count: 0 }); // PAATH_POOL_STABLE counter
   const searchScaleRef = useRef(1); // kirtan pace: this search's hop / today's (see perSearch)
+  const searchStartRef = useRef(0); // when this search phase began (PAATH_SCALE_WINDOW_S)
   const emptyStreakRef = useRef(0); // consecutive no-hit decodes (shortlist hold)
 
   const cleanup = useCallback(() => {
@@ -3453,6 +3460,7 @@ const VoiceFollow = () => {
   // previous shabad's audio tail can't bias the next identification.
   const enterSearching = useCallback(async () => {
     phaseRef.current = 'searching';
+    searchStartRef.current = Date.now();
     followerRef.current = null;
     curLinesComparedRef.current = [];
     curWordsComparedRef.current = [];
@@ -4481,7 +4489,11 @@ const VoiceFollow = () => {
   const handleTranscript = useCallback(
     async (text) => {
       if (!recognizingRef.current) return;
-      const scale = searchScaleRef.current; // kirtan pace (see perSearch)
+      const paceScale = searchScaleRef.current; // kirtan pace (see perSearch)
+      const scaleOpen =
+        !(PAATH_SCALE_WINDOW_S > 0) ||
+        Date.now() - searchStartRef.current <= PAATH_SCALE_WINDOW_S * 1000;
+      const scale = scaleOpen ? paceScale : 1; // the pool's counts and scaleFor below
       // Lock evidence is kept per second only for a Shabad of a Bani (Paath, sung Banis); a kirtan
       // Shabad keeps today's per-search rules under the plain pace (sim 0.48: per-second evidence
       // on kirtan cost ~17 points right vs plain pacing; it is what lets Japji and Jaap lock).
@@ -6158,6 +6170,7 @@ const VoiceFollow = () => {
     autopilotRef.current = true;
     recognizingRef.current = true;
     phaseRef.current = 'searching';
+    searchStartRef.current = Date.now();
     lockingRef.current = false;
     currentShabadIdRef.current = null;
     curLinesComparedRef.current = [];
