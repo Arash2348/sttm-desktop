@@ -168,8 +168,19 @@ function notePass(ms, samples) {
 }
 
 // Hop for an engine: its own hop, or the tier's when that is longer.
+// Screening switches (experiments, default off): the least time between model passes, in
+// seconds, for the line followers (VF_FOLLOW_HOP) and the Shabad recognizer (VF_REC_HOP). Every
+// window still overlaps its neighbours; there are just fewer of them per second of audio.
+const HOP_FLOOR = {
+  follower: Number(process.env.VF_FOLLOW_HOP) || 0,
+  recognizer: Number(process.env.VF_REC_HOP) || 0,
+};
 function hopS(kind, ownHopS) {
-  if (kind === 'akhand') return akhandFast() ? AKHAND.followerHopS : hopS('follower', ownHopS);
+  const floor = HOP_FLOOR[kind === 'recognizer' ? 'recognizer' : 'follower'];
+  return Math.max(hopSTier(kind, ownHopS), floor);
+}
+function hopSTier(kind, ownHopS) {
+  if (kind === 'akhand') return akhandFast() ? AKHAND.followerHopS : hopSTier('follower', ownHopS);
   if (kind === 'recognizer' && akhandOn()) {
     return Math.max(ownHopS, current().recognizerHopS, AKHAND.recognizerHopS);
   }
