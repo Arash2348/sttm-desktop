@@ -1,8 +1,9 @@
 // JS port of karansea_engine.py KaranseaEngine: streaming CTC + online
 // token-passing line decoder + CTC word alignment. Mirrors push().
-const { resampleTo16k, norm, SR, BLANK } = require('./infer');
+const { resampleTo16k, heardForComparing, SR, BLANK } = require('./infer');
 const pace = require('./pace');
 const { partialRatio, partialRatioAlignment } = require('./fuzz');
+const { Compared, ComparedJoin } = require('./compared');
 
 const NEG = -1e30;
 
@@ -16,9 +17,16 @@ const DEFAULTS = {
   // challenger line clearly better than the current line (a word shared by both
   // lines is not evidence of a jump). 0 disables.
   jumpEmisGap: 0.0,
-  // A fragment shorter than this (normalized chars) cannot move the cursor anywhere
+  // A fragment shorter than this (compared characters) cannot move the cursor anywhere
   // but the next line: one common word is not evidence of a jump. 0 disables.
   minHypJump: 8,
+  // Pankti Cumulation (follower): a pangti that the heard words match clearly better than every
+  // other line of the Shabad (partial-ratio gap >= uniqueGap, match >= uniqueMin) moves the line
+  // after uniqueDwell decodes even across a jump (a half pangti of the rahao sung after a pause).
+  // 0 = off (the jump keeps needing `dwell` decodes).
+  uniqueGap: 0,
+  uniqueMin: 0.8,
+  uniqueDwell: 1,
   // Decodes a 2..skipSpan-line skip must persist (default: same as dwellAdv).
   dwellSkip: null,
 };
@@ -34,7 +42,9 @@ class Follower {
     this.c = c;
 
     this.lineText = lines.map((l) => (l.words || []).join(' '));
-    this.linesNorm = this.lineText.map((t) => norm(t));
+    // Each pangti's words exactly as given, read through a view that skips spaces, dandas and
+    // numbers while comparing (the pangti is not changed or rebuilt).
+    this.linesCmp = lines.map((l) => new ComparedJoin((l.words || []).map((w) => new Compared(w))));
     this.linesTok = this.lineText.map((t) => sp.encode(t));
     this.lineWords = lines.map((l) => [...(l.words || [])]);
     this.wa = this.lineWords.map((ws) => this._buildWordAlign(ws));
@@ -66,8 +76,8 @@ class Follower {
   // The sevadaar moved the screen to `line`: follow on from there. The line memory is
   // reset with it, or the old line's banked score pulls the cursor straight back.
   seek(line) {
-    if (!Number.isInteger(line) || line < 0 || line >= this.linesNorm.length) return false;
-    this.score = new Float64Array(this.linesNorm.length).fill(-this.c.jumpCost);
+    if (!Number.isInteger(line) || line < 0 || line >= this.linesCmp.length) return false;
+    this.score = new Float64Array(this.linesCmp.length).fill(-this.c.jumpCost);
     this.score[line] = 0;
     this.cur = line;
     this.challenger = null;
@@ -158,7 +168,7 @@ class Follower {
 
   _viterbi(emis) {
     const c = this.c;
-    const L = this.linesNorm.length;
+    const L = this.linesCmp.length;
     const prev = new Float64Array(L);
     for (let l = 0; l < L; l++) prev[l] = this.score[l] * c.decay;
     let pmax = -Infinity; for (const v of prev) if (v > pmax) pmax = v;
@@ -180,12 +190,22 @@ class Follower {
     return argmax(nw);
   }
 
+  // Pankti Cumulation (follower): the heard words match line `top` clearly better than every other
+  // line of the Shabad (uniqueGap > 0 turns it on).
+  uniqueLine(emis, top) {
+    const { c } = this;
+    if (!(c.uniqueGap > 0) || emis[top] < c.uniqueMin) return false;
+    let second = 0;
+    for (let l = 0; l < emis.length; l++) if (l !== top && emis[l] > second) second = emis[l];
+    return emis[top] - second >= c.uniqueGap;
+  }
+
   _freeze() {
     this.miss += 1;
     this.initCand = null; this.initCount = 0;
     if (this.c.release && this.miss >= this.c.release && this.cur !== null) {
       this.cur = null; this.challenger = null; this.dwell = 0;
-      this.score = new Float64Array(this.linesNorm.length);
+      this.score = new Float64Array(this.linesCmp.length);
       return { verseIndex: -1, verseId: null, wordIndex: -1, lineIndex: null, confidence: 0.0 };
     }
     return null;
@@ -207,10 +227,10 @@ class Follower {
     this.acc = 0;
 
     const emis0 = await this.infer.emissions(this.buf);
-    const hyp = norm(this.infer.decode(this._greedy(emis0)));
+    const hyp = heardForComparing(this.infer.decode(this._greedy(emis0)));
     if (hyp.length < c.minHyp) return this._freeze();
 
-    const emis = this.linesNorm.map((ln) => (ln ? partialRatio(hyp, ln) / 100.0 : 0.0));
+    const emis = this.linesCmp.map((ln) => (ln ? partialRatio(hyp, ln) / 100.0 : 0.0));
     let emax = -Infinity; for (const v of emis) if (v > emax) emax = v;
     if (emax < c.guard) return this._freeze();
     if (c.marginGate > 0 && emis.length >= 2) {
@@ -226,7 +246,7 @@ class Follower {
       const acs = {};
       for (const ci of idx) {
         const yk = this.linesTok[ci];
-        const lc = this.linesNorm[ci].length;
+        const lc = this.linesCmp[ci].length;
         const frac = lc === 0 ? 1.0 : Math.min(1.0, hyp.length / lc);
         const kk = Math.max(1, Math.round(frac * yk.length));
         acs[ci] = this._ctcScore(emis0, yk.slice(0, kk), [t0, emis0.frames]);
@@ -238,14 +258,26 @@ class Follower {
     }
 
     this.miss = 0;
-    const top = this._viterbi(emis);
+    let top = this._viterbi(emis);
+    if (this.c.uniqueGap > 0) {
+      // a half pangti heard clearly for one line wins over the line prior (Pankti Cumulation)
+      let eTop = 0;
+      for (let l = 1; l < emis.length; l++) if (emis[l] > emis[eTop]) eTop = l;
+      if (eTop !== top && this.uniqueLine(emis, eTop)) top = eTop;
+    }
     if (c.onTrace) c.onTrace({ hyp, top, cur: this.cur, emisTop: emis[top], emisCur: this.cur == null ? null : emis[this.cur], scoreTop: this.score[top], scoreCur: this.cur == null ? null : this.score[this.cur], dwell: this.dwell, challenger: this.challenger });
 
     if (this.cur === null) {
       if (top === this.initCand) this.initCount += 1;
       else { this.initCand = top; this.initCount = 1; }
-      if (this.initCount >= c.initConfirm) { this.cur = top; this.initCand = null; this.initCount = 0; }
-      else return null;
+      if (
+        this.initCount >=
+        (this.uniqueLine(emis, top) ? Math.min(c.initConfirm, c.uniqueDwell) : c.initConfirm)
+      ) {
+        this.cur = top;
+        this.initCand = null;
+        this.initCount = 0;
+      } else return null;
     } else if (top === this.cur) {
       this.challenger = null; this.dwell = 0;
     } else {
@@ -257,8 +289,15 @@ class Follower {
       else if (d >= 2 && d <= c.skipSpan) need = c.dwellSkip == null ? c.dwellAdv : c.dwellSkip;
       else if (d >= -c.backSpan && d <= -1) need = c.dwellBack;
       else need = c.dwell;
+      const uniq = this.uniqueLine(emis, top);
+      if (uniq) need = Math.min(need, c.uniqueDwell);
       const evid = d === 1 || ((c.jumpEmisGap <= 0 || emis[top] - emis[this.cur] >= c.jumpEmisGap) && hyp.length >= c.minHypJump);
-      if (evid && this.dwell >= need && this.score[top] >= this.score[this.cur] + c.margin) {
+      // a unique half pangti is enough evidence by itself: the line prior (jump cost) does not hold it back
+      if (
+        evid &&
+        this.dwell >= need &&
+        (uniq || this.score[top] >= this.score[this.cur] + c.margin)
+      ) {
         this.cur = top; this.challenger = null; this.dwell = 0;
       }
     }
@@ -269,7 +308,7 @@ class Follower {
 
     let wi = this._wordIndexCtc(emis0, cur);
     if (wi < 0) {
-      const ln = this.linesNorm[cur];
+      const ln = this.linesCmp[cur];
       if (ln) {
         const al = partialRatioAlignment(hyp, ln);
         if (al && ln.length > 0) {

@@ -1,7 +1,7 @@
 {
   "productName": "SikhiToTheMax",
   "name": "sttm-desktop",
-  "version": "9.3.2",
+  "version": "9.3.3",
   "description": "The SikhiToTheMax desktop app",
   "main": "app.js",
   "scripts": {
@@ -164,10 +164,12 @@
       "!**/*.map",
       "!www/main/**/*.{js,jsx}",
       "!build-resources${/*}",
+      "!research${/*}",
       "!www/assets/*.db"
     ],
     "asarUnpack": [
-      "node_modules/better-sqlite3/**/*"
+      "node_modules/better-sqlite3/**/*",
+      "node_modules/onnxruntime-node/bin/**/*"
     ],
     "npmRebuild": false,
     "extraResources": [
@@ -213,6 +215,7 @@
       }
     },
     "afterSign": "./notarize.js",
+    "afterPack": "./packaging/after-pack-vc-runtime.js",
     "nsis": {
       "artifactName": "SikhiToTheMaxSetup-${version}.${ext}",
       "deleteAppDataOnUninstall": true,

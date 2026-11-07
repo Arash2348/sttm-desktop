@@ -121,6 +121,8 @@ app.on('will-quit', (e) => {
     /* unreadable settings: fall through to the usual flush */
   }
   e.preventDefault();
+  // The windows are gone while the session uploads: let a relaunch start normally (not find us).
+  app.releaseSingleInstanceLock();
   try {
     // eslint-disable-next-line global-require
     const shadowUploader = require('./www/js/addons/voice-follow/shadow/uploader');
@@ -1209,7 +1211,7 @@ if (!singleInstanceLock) {
   app.quit();
 } else {
   app.on('second-instance', (event, commandLine) => {
-    if (mainWindow) {
+    if (mainWindow && !mainWindow.isDestroyed()) {
       if (mainWindow.isMinimized()) {
         mainWindow.restore();
       }
@@ -1227,6 +1229,7 @@ app.on('open-url', (event, url) => {
 });
 
 app.on('ready', () => {
+  if (!singleInstanceLock) return; // another STTM is running: this copy only hands over and quits
   // Retrieve the userid value, and if it's not there, assign it a new uuid.
   let userId = store.get('userId');
 
@@ -1355,6 +1358,20 @@ app.on('ready', () => {
     syncViewerWindows();
   });
   mainWindow.loadURL(`file://${__dirname}/www/index.html`);
+  // A window that stays white means the page failed while loading. Write why to the log file
+  // (electron-log, userData/logs/main.log) so a tester's report carries the cause.
+  mainWindow.webContents.on('console-message', (_e, level, message, line, sourceId) => {
+    // electron-log echoes main-process lines into the page console: skip those, or this loops.
+    if (level >= 3 && !String(message).includes('[renderer]')) {
+      log.error(`[renderer] ${message} (${sourceId}:${line})`);
+    }
+  });
+  mainWindow.webContents.on('render-process-gone', (_e, details) => {
+    log.error(`[renderer] gone: ${JSON.stringify(details)}`);
+  });
+  mainWindow.webContents.on('did-fail-load', (_e, code, description, url) => {
+    log.error(`[renderer] failed to load ${url}: ${code} ${description}`);
+  });
 
   // Automated smoke test: `VF_SMOKE=1 electron .` (or `npm run smoke`).
   // Launches the real app, waits for the renderer to settle, then checks
